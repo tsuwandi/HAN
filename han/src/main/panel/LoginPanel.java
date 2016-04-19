@@ -33,6 +33,7 @@ public class LoginPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public LoginPanel() {
+		System.out.println("Login Panel");
 		setPreferredSize(new Dimension(450, 250));
 		setBorder(new LineBorder(Color.WHITE, 2));
 		//setBounds(400, 400, 400, 400);
