@@ -60,7 +60,7 @@ public class MainPanel extends JFrame {
 
 					bodyPanel = new JPanel();
 					bodyPanel.setLayout(null);
-					bodyPanel.setBorder(new LineBorder(Color.BLACK, 2));
+					bodyPanel.setBorder(new LineBorder(Color.BLACK, 1));
 					bodyPanel.setBounds(200, 100, 1166, 630);
 					bodyPanel.setBackground(Color.LIGHT_GRAY);
 					frame.add(bodyPanel);
@@ -104,7 +104,7 @@ public class MainPanel extends JFrame {
 		//setContentPane(headerPanel);
 
 		menuPanel = new MenuPanel();
-		menuPanel.setBorder(new LineBorder(Color.BLACK, 2));
+		menuPanel.setBorder(new LineBorder(Color.BLACK, 1));
 		menuPanel.setBounds(0, 100, 200, 630);
 
 		//add(glassPane);
@@ -120,7 +120,7 @@ public class MainPanel extends JFrame {
 			bodyPanel.removeAll();
 			bodyPanel.revalidate();
 			bodyPanel.repaint();
-			classPane.setBounds(0, 0, 1166, 630);
+			classPane.setBounds(0, 0, 1366, 630);
 			bodyPanel.add(classPane);	
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -142,7 +142,7 @@ public class MainPanel extends JFrame {
 		   bodyPanel.removeAll();
 		   bodyPanel.revalidate();
 		   bodyPanel.repaint();
-		   classPane.setBounds(0, 0, 1100, 648);
+		   classPane.setBounds(0, 0, 1366, 630);
 		   bodyPanel.add(classPane);
 		  } catch (InstantiationException e) {
 		   e.printStackTrace();

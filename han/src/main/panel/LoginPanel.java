@@ -33,7 +33,6 @@ public class LoginPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public LoginPanel() {
-		System.out.println("Login Panel");
 		setPreferredSize(new Dimension(450, 250));
 		setBorder(new LineBorder(Color.WHITE, 2));
 		//setBounds(400, 400, 400, 400);
@@ -75,20 +74,20 @@ public class LoginPanel extends JPanel {
 	public void doLogin(){
 		user = new User();
 		boolean test;
-		try {
-			user = DaoFactory.getUserDao().getUserByIdAndPassword(usernameField.getText(), passwordField.getText());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(user != null){
-			System.out.println("Sukses");
+//		try {
+//			user = DaoFactory.getUserDao().getUserByIdAndPassword(usernameField.getText(), passwordField.getText());
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		if(user != null){
+			//System.out.println("Sukses");
 			setVisible(false);
 			MainPanel.glassPane.setVisible(false);
-		}else{
-			JOptionPane.showMessageDialog(null, "Username atau password salah");
-			System.out.println("gagal");
-		}
+//		}else{
+//			JOptionPane.showMessageDialog(null, "Username atau password salah");
+//			System.out.println("gagal");
+//		}
 	}
 
 }
