@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import dao.UserDao;
 import module.employee.dao.EmployeeDao;
+import module.product.dao.ProductDao;
 
 
 /**
@@ -59,6 +60,15 @@ public class DaoFactory {
 	public static EmployeeDao getEmployeeDao() {
 		try {
 			return new EmployeeDao(DataSourceFactory.getDataSource());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static ProductDao getProductDao() {
+		try {
+			return new ProductDao(DataSourceFactory.getDataSource());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
