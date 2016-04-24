@@ -55,8 +55,16 @@ public class MenuPanel extends JPanel {
 			}
 		});
 
-		menuBtn3 = new JButton("Menu3");
+		menuBtn3 = new JButton("Master Produk");
 		menuBtn3.setBounds(0, 70, 200, 35);
+		menuBtn3.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				MainPanel.changePanel("module.product.ui.ProductListPanel");
+			}
+		});
 
 		menuBtn4 = new JButton("Menu4");
 		menuBtn4.setBounds(0, 105, 200, 35);
