@@ -1,15 +1,15 @@
-package module.sn.vehicletype.model;
+package module.dryout.model;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class VehicleType implements Serializable {
+public class DryOutPallet implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-	private String vehicleType;
-	private int capacity;
+	private String dryOutCode;
+	private String palletCardCode;
 	private Date inputDate;
 	private String inputBy;
 	private Date editDate;
@@ -25,20 +25,20 @@ public class VehicleType implements Serializable {
 		this.id = id;
 	}
 
-	public String getVehicleType() {
-		return vehicleType;
+	public String getDryOutCode() {
+		return dryOutCode;
 	}
 
-	public void setVehicleType(String vehicleType) {
-		this.vehicleType = vehicleType;
+	public void setDryOutCode(String dryOutCode) {
+		this.dryOutCode = dryOutCode;
 	}
 
-	public int getCapacity() {
-		return capacity;
+	public String getPalletCardCode() {
+		return palletCardCode;
 	}
 
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
+	public void setPalletCardCode(String palletCardCode) {
+		this.palletCardCode = palletCardCode;
 	}
 
 	public Date getInputDate() {
@@ -93,15 +93,15 @@ public class VehicleType implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + capacity;
 		result = prime * result + ((deletedBy == null) ? 0 : deletedBy.hashCode());
 		result = prime * result + ((deletedDate == null) ? 0 : deletedDate.hashCode());
+		result = prime * result + ((dryOutCode == null) ? 0 : dryOutCode.hashCode());
 		result = prime * result + ((editDate == null) ? 0 : editDate.hashCode());
 		result = prime * result + ((editedBy == null) ? 0 : editedBy.hashCode());
+		result = prime * result + ((palletCardCode == null) ? 0 : palletCardCode.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
-		result = prime * result + ((vehicleType == null) ? 0 : vehicleType.hashCode());
 		return result;
 	}
 
@@ -113,9 +113,7 @@ public class VehicleType implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		VehicleType other = (VehicleType) obj;
-		if (capacity != other.capacity)
-			return false;
+		DryOutPallet other = (DryOutPallet) obj;
 		if (deletedBy == null) {
 			if (other.deletedBy != null)
 				return false;
@@ -126,6 +124,11 @@ public class VehicleType implements Serializable {
 				return false;
 		} else if (!deletedDate.equals(other.deletedDate))
 			return false;
+		if (dryOutCode == null) {
+			if (other.dryOutCode != null)
+				return false;
+		} else if (!dryOutCode.equals(other.dryOutCode))
+			return false;
 		if (editDate == null) {
 			if (other.editDate != null)
 				return false;
@@ -135,6 +138,11 @@ public class VehicleType implements Serializable {
 			if (other.editedBy != null)
 				return false;
 		} else if (!editedBy.equals(other.editedBy))
+			return false;
+		if (palletCardCode == null) {
+			if (other.palletCardCode != null)
+				return false;
+		} else if (!palletCardCode.equals(other.palletCardCode))
 			return false;
 		if (id != other.id)
 			return false;
@@ -148,11 +156,6 @@ public class VehicleType implements Serializable {
 				return false;
 		} else if (!inputDate.equals(other.inputDate))
 			return false;
-		if (vehicleType == null) {
-			if (other.vehicleType != null)
-				return false;
-		} else if (!vehicleType.equals(other.vehicleType))
-			return false;
 		return true;
 	}
 
@@ -163,8 +166,8 @@ public class VehicleType implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "VehicleType(id=" + id + ",vehicleType=" + vehicleType + ",capacity=" + capacity + ",inputDate=" + inputDate
-				+ ",inputBy=" + inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate="
-				+ deletedDate + ",deletedBy=" + deletedBy + ')';
+		return "DryOutPallet(id=" + id + ",dryOutCode=" + dryOutCode + ",palletCardCode=" + palletCardCode + ",inputDate="
+				+ inputDate + ",inputBy=" + inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy
+				+ ",deletedDate=" + deletedDate + ",deletedBy=" + deletedBy + ')';
 	}
 }

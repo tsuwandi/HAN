@@ -1,15 +1,14 @@
-package module.sn.vehicletype.model;
+package module.sn.chamber.model;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class VehicleType implements Serializable {
+public class Chamber implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-	private String vehicleType;
-	private int capacity;
+	private String chamber;
 	private Date inputDate;
 	private String inputBy;
 	private Date editDate;
@@ -25,20 +24,12 @@ public class VehicleType implements Serializable {
 		this.id = id;
 	}
 
-	public String getVehicleType() {
-		return vehicleType;
+	public String getChamber() {
+		return chamber;
 	}
 
-	public void setVehicleType(String vehicleType) {
-		this.vehicleType = vehicleType;
-	}
-
-	public int getCapacity() {
-		return capacity;
-	}
-
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
+	public void setChamber(String chamber) {
+		this.chamber = chamber;
 	}
 
 	public Date getInputDate() {
@@ -93,7 +84,7 @@ public class VehicleType implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + capacity;
+		result = prime * result + ((chamber == null) ? 0 : chamber.hashCode());
 		result = prime * result + ((deletedBy == null) ? 0 : deletedBy.hashCode());
 		result = prime * result + ((deletedDate == null) ? 0 : deletedDate.hashCode());
 		result = prime * result + ((editDate == null) ? 0 : editDate.hashCode());
@@ -101,7 +92,6 @@ public class VehicleType implements Serializable {
 		result = prime * result + id;
 		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
-		result = prime * result + ((vehicleType == null) ? 0 : vehicleType.hashCode());
 		return result;
 	}
 
@@ -113,8 +103,11 @@ public class VehicleType implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		VehicleType other = (VehicleType) obj;
-		if (capacity != other.capacity)
+		Chamber other = (Chamber) obj;
+		if (chamber == null) {
+			if (other.chamber != null)
+				return false;
+		} else if (!chamber.equals(other.chamber))
 			return false;
 		if (deletedBy == null) {
 			if (other.deletedBy != null)
@@ -148,11 +141,6 @@ public class VehicleType implements Serializable {
 				return false;
 		} else if (!inputDate.equals(other.inputDate))
 			return false;
-		if (vehicleType == null) {
-			if (other.vehicleType != null)
-				return false;
-		} else if (!vehicleType.equals(other.vehicleType))
-			return false;
 		return true;
 	}
 
@@ -163,8 +151,8 @@ public class VehicleType implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "VehicleType(id=" + id + ",vehicleType=" + vehicleType + ",capacity=" + capacity + ",inputDate=" + inputDate
-				+ ",inputBy=" + inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate="
-				+ deletedDate + ",deletedBy=" + deletedBy + ')';
+		return "Chamber(id=" + id + ",chamber=" + chamber + ",inputDate=" + inputDate + ",inputBy="
+				+ inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate=" + deletedDate
+				+ ",deletedBy=" + deletedBy + ')';
 	}
 }

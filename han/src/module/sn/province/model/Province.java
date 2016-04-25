@@ -151,7 +151,7 @@ public class Province implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Supplier(id=" + id + ",province=" + province + ",inputDate=" + inputDate + ",inputBy=" + inputBy
+		return "Province(id=" + id + ",province=" + province + ",inputDate=" + inputDate + ",inputBy=" + inputBy
 				+ ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate=" + deletedDate + ",deletedBy="
 				+ deletedBy + ')';
 	}

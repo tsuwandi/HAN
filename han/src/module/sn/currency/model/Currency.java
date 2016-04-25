@@ -181,7 +181,7 @@ public class Currency implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Supplier(id=" + id + ",currencyAbbr=" + currencyAbbr + ",currencySymbol=" + currencySymbol
+		return "Currency(id=" + id + ",currencyAbbr=" + currencyAbbr + ",currencySymbol=" + currencySymbol
 				+ ",currency=" + currency + ",inputDate=" + inputDate + ",inputBy=" + inputBy + ",editDate=" + editDate
 				+ ",editedBy=" + editedBy + ",deletedDate=" + deletedDate + ",deletedBy=" + deletedBy + ')';
 	}

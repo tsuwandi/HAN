@@ -196,39 +196,6 @@ INSERT INTO `ms_position` (`position_id`, `position_name`, `min_salary`, `max_sa
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ms_supplier`
---
-
-CREATE TABLE IF NOT EXISTS `ms_supplier` (
-  `id` int(9) NOT NULL AUTO_INCREMENT,
-  `supplier_id` varchar(9) DEFAULT NULL,
-  `supplier_name` varchar(200) DEFAULT NULL,
-  `supplier_code` varchar(50) DEFAULT NULL,
-  `default_currency` int(11) DEFAULT NULL,
-  `npwp` varchar(30) DEFAULT NULL,
-  `default_tax` int(11) DEFAULT NULL,
-  `pt` varchar(200) DEFAULT NULL,
-  `credit_days` int(11) DEFAULT NULL,
-  `supplier_type` int(3) DEFAULT NULL,
-  `input_date` date DEFAULT NULL,
-  `input_by` varchar(25) DEFAULT NULL,
-  `is_deleted` int(8) DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL,
-  `last_edited` date DEFAULT NULL,
-  `edited_by` varchar(15) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `ms_supplier`
---
-
-INSERT INTO `ms_supplier` (`id`, `supplier_id`, `supplier_name`, `supplier_code`, `default_currency`, `npwp`, `default_tax`, `pt`, `credit_days`, `supplier_type`, `input_date`, `input_by`, `is_deleted`, `deleted_by`, `last_edited`, `edited_by`) VALUES
-(1, '1', 'PT. ABC', 'ABC001', 1, '901.101.101.250', 10, 'PT ABC', 10, 1, '2016-04-12', NULL, 1, NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users`
 --
 
@@ -370,7 +337,7 @@ CREATE TABLE IF NOT EXISTS `supplier` (
   `npwp` varchar(30) NOT NULL,
   `supp_type_id` int(3) NOT NULL,
   `supp_status` varchar(30) NOT NULL,
-  `default_tax` int(3) NOT NULL,
+  `default_tax` decimal(5,2) NOT NULL,
   `account_no` varchar(30) NOT NULL,
   `bank_id` int(3) NOT NULL,
   `account_name` varchar(30) NOT NULL,
@@ -687,4 +654,191 @@ ADD CONSTRAINT `supp_address_ibfk_1` FOREIGN KEY (`supp_code`) REFERENCES `suppl
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
 
+--
+-- Struktur dari tabel `chamber`
+--
+
+CREATE TABLE IF NOT EXISTS `chamber` (
+  `id` int(5) NOT NULL,
+  `chamber` varchar(50) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Struktur dari tabel `dry_in`
+--
+
+CREATE TABLE IF NOT EXISTS `dry_in` (
+  `id` int(12) NOT NULL,
+  `dry_in_code` varchar(14) NOT NULL,
+  `date_in` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `chamber_id` int(5) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `dry_in_pallet`
+--
+
+CREATE TABLE IF NOT EXISTS `dry_in_pallet` (
+  `id` int(12) NOT NULL,
+  `dry_in_code` varchar(14) NOT NULL,
+  `pallet_card_code` varchar(21) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `dry_out`
+--
+
+CREATE TABLE IF NOT EXISTS `dry_out` (
+  `id` int(12) NOT NULL,
+  `dry_out_code` varchar(14) NOT NULL,
+  `date_out` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `chamber_id` int(5) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `dry_out_pallet`
+--
+
+CREATE TABLE IF NOT EXISTS `dry_out_pallet` (
+  `id` int(12) NOT NULL,
+  `dry_out_code` varchar(14) NOT NULL,
+  `pallet_card_code` varchar(21) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `pallet_card` (
+  `id` int(12) NOT NULL,
+  `pallet_card_code` varchar(21) NOT NULL,
+  `received_code` varchar(16) NOT NULL,
+  `emp_code` varchar(10) NOT NULL,
+  `grade_id` int(3) NOT NULL,
+  `total_volume` decimal(7,2) NOT NULL DEFAULT '0.00',
+  `total_log` int(5) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `chamber`
+--
+ALTER TABLE `chamber`
+  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`);
+
+--
+-- Indexes for table `dry_in`
+--
+ALTER TABLE `dry_in`
+  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`), ADD KEY `chamber_id` (`chamber_id`);
+
+--
+-- Indexes for table `dry_in_pallet`
+--
+ALTER TABLE `dry_in_pallet`
+  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`), ADD KEY `dry_in_code` (`dry_in_code`), ADD KEY `pallet_card_code` (`pallet_card_code`);
+
+--
+-- Indexes for table `dry_out`
+--
+ALTER TABLE `dry_out`
+  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`), ADD KEY `chamber_id` (`chamber_id`);
+
+--
+-- Indexes for table `dry_out_pallet`
+--
+ALTER TABLE `dry_out_pallet`
+  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`), ADD KEY `dry_in_code` (`dry_out_code`), ADD KEY `pallet_card_code` (`pallet_card_code`);
+
+--
+-- Indexes for table `pic_tally`
+--
+ALTER TABLE `pic_tally`
+  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`), ADD KEY `dry_in_code` (`dry_in_code`), ADD KEY `emp_code` (`emp_code`);
+
+ALTER TABLE `pallet_card`
+  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`);
+
+--
+-- AUTO_INCREMENT for table `dry_in`
+--
+ALTER TABLE `dry_in`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `dry_in_pallet`
+--
+ALTER TABLE `dry_in_pallet`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `dry_out`
+--
+ALTER TABLE `dry_out`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `dry_out_pallet`
+--
+ALTER TABLE `dry_out_pallet`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+  
+--
+-- AUTO_INCREMENT for table `pic_tally`
+--
+ALTER TABLE `pic_tally`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `pallet_card`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `chamber`
+--
+ALTER TABLE `chamber`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 

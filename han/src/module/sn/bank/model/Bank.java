@@ -166,7 +166,7 @@ public class Bank implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Supplier(id=" + id + ",bank=" + bank + ",bankAbbr=" + bankAbbr + ",inputDate=" + inputDate + ",inputBy="
+		return "Bank(id=" + id + ",bank=" + bank + ",bankAbbr=" + bankAbbr + ",inputDate=" + inputDate + ",inputBy="
 				+ inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate=" + deletedDate
 				+ ",deletedBy=" + deletedBy + ')';
 	}
