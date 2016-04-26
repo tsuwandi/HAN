@@ -151,7 +151,7 @@ public class SuppType implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Supplier(id=" + id + ",suppType=" + suppType + ",inputDate=" + inputDate + ",inputBy=" + inputBy
+		return "SuppType(id=" + id + ",suppType=" + suppType + ",inputDate=" + inputDate + ",inputBy=" + inputBy
 				+ ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate=" + deletedDate + ",deletedBy="
 				+ deletedBy + ')';
 	}

@@ -167,7 +167,7 @@ public class City implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Supplier(id=" + id + ",city=" + city + ",provinceId=" + provinceId + ",inputDate=" + inputDate
+		return "Province(id=" + id + ",city=" + city + ",provinceId=" + provinceId + ",inputDate=" + inputDate
 				+ ",inputBy=" + inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate="
 				+ deletedDate + ",deletedBy=" + deletedBy + ')';
 	}
