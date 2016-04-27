@@ -3,6 +3,8 @@ package module.dryin.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import module.employee.model.Employee;
+
 public class PicTally implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -170,4 +172,28 @@ public class PicTally implements Serializable {
 				+ ",inputBy=" + inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate="
 				+ deletedDate + ",deletedBy=" + deletedBy + ')';
 	}
+
+	public boolean isFlag() {
+		return isFlag;
+	}
+
+	public void setFlag(boolean isFlag) {
+		this.isFlag = isFlag;
+	}
+
+	public Employee getEmployee() {
+		if(employee == null)
+			employee = new Employee();
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		if(employee == null)
+			employee = new Employee();
+		this.employee = employee;
+	}
+
+	private boolean isFlag;
+	
+	private Employee employee;
 }

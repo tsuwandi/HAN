@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -15,6 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import controller.DaoFactory;
+import controller.DataSourceFactory;
+import controller.ServiceFactory;
 import dao.UserDao;
 import model.User;
 
@@ -74,6 +77,19 @@ public class LoginPanel extends JPanel {
 	public void doLogin(){
 		user = new User();
 		boolean test;
+		Connection con;
+		try {
+			con = DataSourceFactory.getDataSource().getConnection();
+			if(con != null) {
+				setVisible(false);
+				MainPanel.glassPane.setVisible(false);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 //		try {
 //			user = DaoFactory.getUserDao().getUserByIdAndPassword(usernameField.getText(), passwordField.getText());
 //		} catch (SQLException e) {
@@ -82,8 +98,7 @@ public class LoginPanel extends JPanel {
 //		}
 //		if(user != null){
 			//System.out.println("Sukses");
-			setVisible(false);
-			MainPanel.glassPane.setVisible(false);
+			
 //		}else{
 //			JOptionPane.showMessageDialog(null, "Username atau password salah");
 //			System.out.println("gagal");

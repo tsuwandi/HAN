@@ -26,6 +26,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controller.DaoFactory;
+import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.employee.model.Employee;
 
@@ -88,7 +89,7 @@ public class EmployeeListPanel extends JPanel {
 		searchField.setBounds(900, 100, 150, 25);
 
 		try{
-			employees = DaoFactory.getEmployeeDao().getAll();
+			employees = ServiceFactory.getEmployeeBL().getAll();
 		}catch(SQLException e1){
 			e1.printStackTrace();
 		}

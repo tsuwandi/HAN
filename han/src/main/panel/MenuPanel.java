@@ -66,8 +66,16 @@ public class MenuPanel extends JPanel {
 			}
 		});
 
-		menuBtn4 = new JButton("Menu4");
+		menuBtn4 = new JButton("Pengeringan");
 		menuBtn4.setBounds(0, 105, 200, 35);
+		menuBtn4.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				MainPanel.changePanel("module.dryin.ui.DryInCreatePanel");
+			}
+		});
 
 		menuBtn5 = new JButton("Menu5");
 		menuBtn5.setBounds(0, 140, 200, 35);

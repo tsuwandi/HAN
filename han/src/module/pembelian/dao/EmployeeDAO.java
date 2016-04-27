@@ -10,19 +10,17 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import module.pembelian.model.Employee;
-import module.pembelian.model.Grade;
 
 public class EmployeeDAO {
 	private DataSource dataSource;
 
 	private PreparedStatement getAllStatement;
 
-	private String getAllQuery = "SELECT id, employee_code, employee_name"
-			+ " FROM employee WHERE role = 1 ";
+	private String getAllQuery = "SELECT id, employee_code, employee_name" + " FROM employee WHERE role = 1 ";
 
 	public EmployeeDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
-		
+
 	}
 
 	public List<Employee> getAllPICDocking() throws SQLException {
@@ -32,7 +30,7 @@ public class EmployeeDAO {
 		try {
 			con = dataSource.getConnection();
 			getAllStatement = con.prepareStatement(getAllQuery);
-			
+
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
 				Employee employee = new Employee();

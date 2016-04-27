@@ -14,10 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
-import controller.DaoFactory;
+import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.employee.model.Employee;
 
@@ -124,7 +123,7 @@ public class CreateEmployeePanel extends JPanel {
 		//nikField.setEnabled(false);
 		
 		try {
-			employeeTypes = DaoFactory.getEmployeeDao().getAllEmployeeType();
+			employeeTypes = ServiceFactory.getEmployeeBL().getAllEmployeeType();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -154,7 +153,7 @@ public class CreateEmployeePanel extends JPanel {
 		phoneField.setBounds(145, 330, 150, 25);
 		
 		try {
-			genders = DaoFactory.getEmployeeDao().getAllGender();
+			genders = ServiceFactory.getEmployeeBL().getAllGender();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -166,7 +165,7 @@ public class CreateEmployeePanel extends JPanel {
 		}
 		
 		try {
-			maritals = DaoFactory.getEmployeeDao().getAllMarital();
+			maritals = ServiceFactory.getEmployeeBL().getAllMarital();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -178,7 +177,7 @@ public class CreateEmployeePanel extends JPanel {
 		}
 		
 		try {
-			positions = DaoFactory.getEmployeeDao().getAllPosition();
+			positions = ServiceFactory.getEmployeeBL().getAllPosition();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -190,7 +189,7 @@ public class CreateEmployeePanel extends JPanel {
 		}
 		
 		try {
-			departments = DaoFactory.getEmployeeDao().getAllDepartment();
+			departments = ServiceFactory.getEmployeeBL().getAllDepartment();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -202,7 +201,7 @@ public class CreateEmployeePanel extends JPanel {
 		}
 		
 		try {
-			divisions = DaoFactory.getEmployeeDao().getAllDivision();
+			divisions = ServiceFactory.getEmployeeBL().getAllDivision();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -295,7 +294,7 @@ public class CreateEmployeePanel extends JPanel {
 		employee.setStartDate(startDateField.getDate());
 		
 		try {
-			DaoFactory.getEmployeeDao().save(employee);
+			ServiceFactory.getEmployeeBL().save(employee);
 			JOptionPane.showMessageDialog(null, "Sukses Menyimpan Data");
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Gagal Menyimpan Data");

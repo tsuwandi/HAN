@@ -3,7 +3,6 @@ package controller;
 import java.sql.SQLException;
 
 import dao.UserDao;
-import module.employee.dao.EmployeeDao;
 import module.product.dao.ProductDao;
 
 
@@ -51,15 +50,6 @@ public class DaoFactory {
 	public static UserDao getUserDao() {
 		try {
 			return new UserDao(DataSourceFactory.getDataSource());
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	public static EmployeeDao getEmployeeDao() {
-		try {
-			return new EmployeeDao(DataSourceFactory.getDataSource());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
