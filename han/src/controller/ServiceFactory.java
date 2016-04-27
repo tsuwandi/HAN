@@ -1,5 +1,6 @@
 package controller;
 
+import module.dryin.bl.DryInBL;
 import module.employee.bl.EmployeeBL;
 import module.supplier.bl.SupplierBL;
 
@@ -8,6 +9,7 @@ public class ServiceFactory {
 
 	private static SupplierBL supplierBL = null;
 	private static EmployeeBL employeeBL = null;
+	private static DryInBL dryInBL = null;
 
 	/**
 	 * Method to init or return {@link SupplierBL}
@@ -31,5 +33,17 @@ public class ServiceFactory {
 			employeeBL = new EmployeeBL(DataSourceFactory.getDataSource());
 		}
 		return employeeBL;
+	}
+	
+	/**
+	 * Method to init or return {@link DryInBL}
+	 * 
+	 * @return {@link DryInBL}
+	 */
+	public static DryInBL getDryInBL() {
+		if (dryInBL == null) {
+			dryInBL = new DryInBL(DataSourceFactory.getDataSource());
+		}
+		return dryInBL;
 	}
 }

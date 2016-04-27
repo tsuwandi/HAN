@@ -212,7 +212,6 @@ public class Employee {
 	}
 
 	private boolean isFlag;
-	private String employeeCode;
 
 	public boolean isFlag() {
 		return isFlag;
@@ -220,13 +219,5 @@ public class Employee {
 
 	public void setFlag(boolean isFlag) {
 		this.isFlag = isFlag;
-	}
-
-	public String getEmployeeCode() {
-		return employeeCode;
-	}
-
-	public void setEmployeeCode(String employeeCode) {
-		this.employeeCode = employeeCode;
 	}
 }

@@ -252,5 +252,38 @@ public class EmployeeDAO {
 
 		return employees;
 	}
+	
+	public List<Employee> getAllBySearch(String keyword) throws SQLException {
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+			String query = new StringBuilder()
+					.append("select employee_id, employee_name from employee where ")
+					.append("lower(employee_id)=lower('% ")
+					.append(keyword)
+					.append("%') ")
+					.append("or lower(employee_name) like lower('%")
+					.append(keyword)
+					.append("%') ")
+					.append("order by employee_id ").toString();
+			
+			getAllEmployeeStatement = connection.prepareStatement(query);
+			
+			ResultSet rs = getAllEmployeeStatement.executeQuery();
+			
+			while (rs.next()) {
+				Employee employee = new Employee();
+				employee.setEmployeeId(rs.getString("employee_id"));
+				employee.setEmployeeName(rs.getString("employee_name"));
+				
+				employees.add(employee);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return employees;
+	}
 
 }

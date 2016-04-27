@@ -4,11 +4,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -19,8 +24,6 @@ import javax.swing.table.AbstractTableModel;
 import com.toedter.calendar.JDateChooser;
 
 import main.component.ComboBox;
-import main.panel.MainPanel;
-import module.dryin.model.DryIn;
 import module.dryin.model.DryInPallet;
 import module.dryin.model.PicTally;
 import module.sn.chamber.model.Chamber;
@@ -77,8 +80,20 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 	
 	private PicTallyTableModel picTallyTableModel;
 	private DryInPalletTableModel dryInPalletTableModel;
+	private List<PicTally> listOfPicTally;
+	private DryInCreatePanel dryInCreatePanel;
 	
+	public List<PicTally> getListOfPicTally() {
+		return listOfPicTally;
+	}
+
+	public void setListOfPicTally(List<PicTally> listOfPicTally) {
+		this.listOfPicTally = listOfPicTally;
+	}
+
 	public DryInCreatePanel() {
+		dryInCreatePanel = this;
+		
 		setPreferredSize(new Dimension(1080, 600));
 		setLayout(null);
 		
@@ -131,15 +146,29 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		scrollPanePicTally.setBounds(50, 240, 600, 150);
 		panel.add(scrollPanePicTally);
 		
-		picTallyTableModel = new PicTallyTableModel(new ArrayList<PicTally>());
+		listOfPicTally = new ArrayList<PicTally>();
+		picTallyTableModel = new PicTallyTableModel(listOfPicTally);
 		tblPicTally = new JTable(picTallyTableModel);
+		tblPicTally.setFocusable(false);
 		tblPicTally.setBorder(new EmptyBorder(5, 5, 5, 5));
 		scrollPanePicTally.setViewportView(tblPicTally);
+		
+		tblPicTally.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (tblPicTally.getValueAt(tblPicTally.getSelectedRow(), 0).equals(true))
+					listOfPicTally.get(tblPicTally.getSelectedRow()).setFlag(false);
+				else
+					listOfPicTally.get(tblPicTally.getSelectedRow()).setFlag(true);
+
+				refreshTablePicTally();
+			}
+		});
 		
 		btnSearchPicTally = new JButton("Cari");
 		btnSearchPicTally.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				showAddPicTallyDialog(dryInCreatePanel);
 			}
 		});
 		btnSearchPicTally.setBounds(445, 200, 100, 30);
@@ -148,7 +177,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		btnDeletePicTally = new JButton("Hapus");
 		btnDeletePicTally.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				doDeletePicTally();
 			}
 		});
 		btnDeletePicTally.setBounds(550, 200, 100, 30);
@@ -272,6 +301,57 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		});
 		btnCancel.setBounds(49, 810, 100, 30);
 		panel.add(btnCancel);
+		
+		setPalletCardCode();
+	}
+	
+	public void setPalletCardCode() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		
+		int date = cal.get(Calendar.DATE);
+		int month = cal.get(Calendar.MONTH);
+		int year = cal.get(Calendar.YEAR);
+		
+		txtDate.setText(String.valueOf(date));
+		txtMonth.setText(String.format("%03d", month));
+		txtYear.setText(String.valueOf(year));
+	}
+	
+	/**
+	 * Method to display add supp cp dialog
+	 */
+	protected void showAddPicTallyDialog(DryInCreatePanel dryInCreatePanel) {
+		PicTallyDialog picTallyDialog = new PicTallyDialog(dryInCreatePanel);
+		picTallyDialog.setTitle("Pic Tally");
+		picTallyDialog.setLocationRelativeTo(null);
+		picTallyDialog.setVisible(true);
+	}
+	
+	protected void doDeletePicTally() {
+		List<PicTally> temp = new ArrayList<PicTally>();
+		for (PicTally s : listOfPicTally) {
+			if (Boolean.TRUE.equals(s.isFlag())) {
+				temp.add(s);
+			}
+		}
+
+		if (Boolean.FALSE.equals(temp.isEmpty())) {
+			for (PicTally s : temp) {
+				listOfPicTally.remove(s);
+			}
+			refreshTablePicTally();
+			JOptionPane.showMessageDialog(null, "Data berhasil dihapus", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+	
+	public void refreshTablePicTally() {
+		try {
+			tblPicTally.setModel(new PicTallyTableModel(listOfPicTally));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, e1.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	/**

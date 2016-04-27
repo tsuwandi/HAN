@@ -26,4 +26,14 @@ public class DryInBL {
 			con.close();
 		}
 	}
+	
+	public List<Employee> getAllEmployeeBySearch(String value) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new EmployeeDAO(con).getAllBySearch(value);
+		} finally {
+			con.close();
+		}
+	}
 }
