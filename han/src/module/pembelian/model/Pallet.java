@@ -8,7 +8,7 @@ public class Pallet {
 	String empName;
 	String grade;
 	int gradeID;
-	int totalProduct;
+	int totalLog;
 	int totalVolume;
 	
 	
@@ -25,11 +25,11 @@ public class Pallet {
 	public void setEmpName(String empName) {
 		this.empName = empName;
 	}
-	public int getTotalProduct() {
-		return totalProduct;
+	public int getTotalLog() {
+		return totalLog;
 	}
-	public void setTotalProduct(int totalProduct) {
-		this.totalProduct = totalProduct;
+	public void setTotalLog(int totalLog) {
+		this.totalLog = totalLog;
 	}
 	public int getTotalVolume() {
 		return totalVolume;

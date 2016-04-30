@@ -246,7 +246,7 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 	            case 1 : 
 	                return p.getPalletCardCode();
 	            case 2 :
-	                return p.getTotalProduct();
+	                return p.getTotalLog();
 	            case 3 :
 	                return p.getTotalVolume();
 	            case 4 :
