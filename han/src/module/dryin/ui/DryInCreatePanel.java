@@ -184,7 +184,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			listOfChamber = ServiceFactory.getDryInBL().getAllChamber();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Terjadi kesalahan pada sistem.", "Error", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 
 		cbChamber = new ComboBox<Chamber>();
@@ -234,7 +234,10 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		btnDeletePicTally = new JButton("Hapus");
 		btnDeletePicTally.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// int response = DialogBox.showDeleteChoice();
+				// if (response == JOptionPane.YES_OPTION) {
 				doDeletePicTally();
+				// }
 			}
 		});
 		btnDeletePicTally.setBounds(925, 200, 100, 30);
@@ -330,7 +333,10 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		btnInsertDryInPallet = new JButton("Insert");
 		btnInsertDryInPallet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// int response = DialogBox.showInsertChoice();
+				// if (response == JOptionPane.YES_OPTION) {
 				doInsertDryInPallet();
+				// }
 			}
 		});
 		btnInsertDryInPallet.setBounds(220, 540, 100, 30);
@@ -382,10 +388,15 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		btnSave = new JButton("Simpan");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (doValidate() == false) {
+					return;
+				}
+				
 				int response = DialogBox.showInsertChoice();
 				if (response == JOptionPane.YES_OPTION) {
 					doSave();
 				}
+
 			}
 		});
 		btnSave.setBounds(925, 810, 100, 30);
@@ -527,7 +538,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			isValid = false;
 		} else {
 			try {
-				if (ServiceFactory.getSupplierBL().isSuppCodeExists(txtDryInCode.getText()) > 0) {
+				if (ServiceFactory.getDryInBL().isDryInCodeExists(txtDryInCode.getText()) > 0) {
 					lblErrorDryInCode.setText("Kode Pemasukan sudah pernah diinput.");
 					isValid = false;
 				}
@@ -547,7 +558,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			lblErrorDateIn.setText("Jam dan menit harus dipilih.");
 			isValid = false;
 		}
-		
+
 		if (cbChamber.getSelectedItem() == null) {
 			lblErrorChamber.setText("Combobox chamber harus dipilih.");
 			isValid = false;
@@ -557,10 +568,6 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 	}
 
 	public void doSave() {
-		if (doValidate() == false) {
-			return;
-		}
-
 		DryIn dryIn = new DryIn();
 		dryIn.setDryInCode(txtDryInCode.getText());
 		dryIn.setDateIn(
@@ -568,7 +575,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 						Integer.parseInt(cbDateInMinute.getSelectedItem().toString()), 0));
 		dryIn.setChamberId(cbChamber.getDataIndex().getId());
 		dryIn.setTotalVolume(Double.parseDouble(txtTotalVolume.getText()));
-		
+
 		try {
 			ServiceFactory.getDryInBL().save(dryIn, listOfPicTally, listOfDryInPallet);
 			DialogBox.showInsert();
@@ -657,7 +664,6 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		dryInPalletDialog.setLocationRelativeTo(null);
 		dryInPalletDialog.setVisible(true);
 	}
-	
 
 	public void searchPalletCardByCode(String ritNo, String date, String month, String year, String ordinal) {
 		final String constant = "BL";
@@ -706,11 +712,11 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			refreshTableDryInPallet();
 
 			countTotalVolumeDryInPalletCard();
-		} else if(palletCard == null && isExists == false){
+		} else if (palletCard == null && isExists == false) {
 			lblErrorPalletCard.setText("Data tidak ditemukan.");
 		}
 	}
-	
+
 	protected void doDeleteDryInPallet(DryInPallet dryInPallet) {
 		listOfDryInPallet.remove(dryInPallet);
 
@@ -725,9 +731,10 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		makeDefaultDatePalletCardCode();
 		txtOrdinal.setText("");
 		txtTotalVolumePalletCard.setText("");
+		lblErrorPalletCard.setText("");
 		palletCard = null;
 	}
-	
+
 	public void refreshTableDryInPallet() {
 		try {
 			tblDryInPallet.setModel(new DryInPalletTableModel(listOfDryInPallet));
@@ -745,7 +752,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 
 		txtTotalVolume.setText(String.valueOf(totalVolume));
 	}
-	
+
 	/**
 	 * Class as TableModel for Supp Address table
 	 * 

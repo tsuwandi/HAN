@@ -1,4 +1,4 @@
-package module.supplier.ui;
+package module.dryout.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,13 +22,12 @@ import javax.swing.table.AbstractTableModel;
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.supplier.model.Supplier;
-import module.util.JTextFieldLimit;
+import module.dryout.model.DryOut;
+import module.util.DateUtil;
 
-public class SupplierListPanel extends JPanel {
+public class DryOutListPanel extends JPanel {
 
 	JButton btnCreateNew;
-	JButton btnExport;
 	JButton btnAdvancedSearch;
 	JButton btnSearch;
 
@@ -36,29 +36,29 @@ public class SupplierListPanel extends JPanel {
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
 
-	JScrollPane scrollPaneSupplier;
+	JScrollPane scrollPaneDryOut;
 
-	private SupplierTableModel supplierTableModel;
-	public List<Supplier> listOfSupplier = new ArrayList<Supplier>();
+	private DryOutTableModel dryOutTableModel;
+	public List<DryOut> listOfDryOut = new ArrayList<DryOut>();
 
-	JTable tblSupplier;
+	JTable tblDryOut;
 
-	private SupplierListPanel supplierListPanel;
+	private DryOutListPanel dryOutListPanel;
 
 	private static final long serialVersionUID = 1L;
 
-	public SupplierListPanel() {
-		supplierListPanel = this;
+	public DryOutListPanel() {
+		dryOutListPanel = this;
 		setLayout(null);
 
 		setPreferredSize(new Dimension(1024, 768));
 
-		lblBreadcrumb = new JLabel("ERP > Pembelian");
+		lblBreadcrumb = new JLabel("ERP > Pengeringan");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		lblHeader = new JLabel("SUPPLIER");
+		lblHeader = new JLabel("PENGELUARAN");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -66,25 +66,16 @@ public class SupplierListPanel extends JPanel {
 		btnCreateNew = new JButton("Create New");
 		btnCreateNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MainPanel.changePanel("module.supplier.ui.SupplierCreatePanel");
+				MainPanel.changePanel("module.dryout.ui.DryOutCreatePanel");
 			}
 		});
-		btnCreateNew.setBounds(750, 80, 100, 40);
+		btnCreateNew.setBounds(850, 80, 100, 40);
 		add(btnCreateNew);
-
-		btnExport = new JButton("Eksport");
-		btnExport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		btnExport.setBounds(850, 80, 100, 40);
-		add(btnExport);
 
 		btnAdvancedSearch = new JButton("<html><center>Advanced <br> Search<center></html>");
 		btnAdvancedSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showAdvancedSearchDialog(supplierListPanel);
+				showAdvancedSearchDialog(dryOutListPanel);
 			}
 		});
 		btnAdvancedSearch.setBounds(950, 80, 100, 40);
@@ -92,7 +83,6 @@ public class SupplierListPanel extends JPanel {
 
 		txtSearch = new JTextField();
 		txtSearch.setBounds(775, 130, 150, 30);
-		txtSearch.setDocument(new JTextFieldLimit(9));
 		add(txtSearch);
 
 		btnSearch = new JButton("Search");
@@ -104,15 +94,15 @@ public class SupplierListPanel extends JPanel {
 		btnSearch.setBounds(950, 130, 100, 40);
 		add(btnSearch);
 
-		scrollPaneSupplier = new JScrollPane();
-		scrollPaneSupplier.setBounds(50, 200, 1000, 200);
-		add(scrollPaneSupplier);
+		scrollPaneDryOut = new JScrollPane();
+		scrollPaneDryOut.setBounds(50, 200, 1000, 200);
+		add(scrollPaneDryOut);
 
-		supplierTableModel = new SupplierTableModel(new ArrayList<Supplier>());
-		tblSupplier = new JTable(supplierTableModel);
-		scrollPaneSupplier.setViewportView(tblSupplier);
+		dryOutTableModel = new DryOutTableModel(new ArrayList<DryOut>());
+		tblDryOut = new JTable(dryOutTableModel);
+		scrollPaneDryOut.setViewportView(tblDryOut);
 
-		tblSupplier.addMouseListener(new MouseAdapter() {
+		tblDryOut.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -120,16 +110,16 @@ public class SupplierListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 3)
-						MainPanel.changePanel("module.supplier.ui.SupplierViewPanel", listOfSupplier.get(row));
+					if (column == 4)
+						MainPanel.changePanel("module.dryout.ui.DryOutViewPanel", listOfDryOut.get(row));
 				}
 			}
 		});
 
 		try {
-			listOfSupplier = new ArrayList<Supplier>();
-			listOfSupplier = ServiceFactory.getSupplierBL().getAllSupplier();
-			refreshTableSupplier();
+			listOfDryOut = new ArrayList<DryOut>();
+			listOfDryOut = ServiceFactory.getDryOutBL().getAllDryOut();
+			refreshTableDryOut();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
@@ -137,22 +127,20 @@ public class SupplierListPanel extends JPanel {
 
 	}
 
-	public void refreshTableSupplier() {
+	public void refreshTableDryOut() {
 		try {
-			tblSupplier.setModel(new SupplierTableModel(listOfSupplier));
+			tblDryOut.setModel(new DryOutTableModel(listOfDryOut));
 		} catch (Exception e1) {
-			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
 	}
 
 	public void doSearch(String value) {
 		try {
-			listOfSupplier = new ArrayList<Supplier>();
-			listOfSupplier = ServiceFactory.getSupplierBL().getAllSupplierBySimpleSearch(value);
-			refreshTableSupplier();
+			listOfDryOut = new ArrayList<DryOut>();
+			listOfDryOut = ServiceFactory.getDryOutBL().getAllDryOutBySimpleSearch(value);
+			refreshTableDryOut();
 		} catch (SQLException e1) {
-			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
 	}
@@ -160,27 +148,28 @@ public class SupplierListPanel extends JPanel {
 	/**
 	 * Method to display add supp cp dialog
 	 */
-	protected void showAdvancedSearchDialog(SupplierListPanel supplierListPanel) {
-		SupplierAdvSearchDialog suppAdvSearchDialog = new SupplierAdvSearchDialog(supplierListPanel);
-		suppAdvSearchDialog.setTitle("Advanced Search");
-		suppAdvSearchDialog.setLocationRelativeTo(null);
-		suppAdvSearchDialog.setVisible(true);
+	protected void showAdvancedSearchDialog(DryOutListPanel dryOutListPanel) {
+		// DryOutAdvSearchDialog dryOutAdvSearchDialog = new
+		// DryOutAdvSearchDialog(dryOutListPanel);
+		// dryOutAdvSearchDialog.setTitle("Advanced Search");
+		// dryOutAdvSearchDialog.setLocationRelativeTo(null);
+		// dryOutAdvSearchDialog.setVisible(true);
 	}
 
 	/**
-	 * Class as TableModel for Supplier table
+	 * Class as TableModel for Dry In table
 	 * 
 	 * @author TSI
 	 *
 	 */
-	class SupplierTableModel extends AbstractTableModel {
+	class DryOutTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 1L;
 
-		private List<Supplier> listOfSupplier;
+		private List<DryOut> listOfDryOut;
 
-		public SupplierTableModel(List<Supplier> listOfSupplier) {
-			this.listOfSupplier = listOfSupplier;
+		public DryOutTableModel(List<DryOut> listOfDryOut) {
+			this.listOfDryOut = listOfDryOut;
 		}
 
 		/**
@@ -189,14 +178,14 @@ public class SupplierListPanel extends JPanel {
 		 * @return int
 		 */
 		public int getRowCount() {
-			return listOfSupplier.size();
+			return listOfDryOut.size();
 		}
 
 		/**
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 4;
+			return 5;
 		}
 
 		public boolean isCellEditable(int row, int column) {
@@ -210,6 +199,10 @@ public class SupplierListPanel extends JPanel {
 			case 1:
 				return String.class;
 			case 2:
+				return String.class;
+			case 3:
+				return String.class;
+			case 4:
 				return String.class;
 			default:
 				return String.class;
@@ -226,15 +219,17 @@ public class SupplierListPanel extends JPanel {
 		 * @return ({@link SupplierAddress}) Object
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			Supplier p = listOfSupplier.get(rowIndex);
+			DryOut p = listOfDryOut.get(rowIndex);
 			switch (columnIndex) {
 			case 0:
-				return p.getSuppCode();
+				return p.getDryOutCode();
 			case 1:
-				return p.getSuppName();
+				return DateUtil.setFormatedDate(DateUtil.toDate(p.getDateOut()));
 			case 2:
-				return p.getSuppType().getSuppType();
+				return p.getChamber().getChamber();
 			case 3:
+				return p.getTotalVolume();
+			case 4:
 				return "<html><a><u>View</u></a></html>";
 			default:
 				return "";
@@ -251,12 +246,14 @@ public class SupplierListPanel extends JPanel {
 		public String getColumnName(int column) {
 			switch (column) {
 			case 0:
-				return "Kode Supplier";
+				return "Kode Pengeluaran";
 			case 1:
-				return "Nama Supplier";
+				return "Tanggal Keluar";
 			case 2:
-				return "Tipe Supplier";
+				return "Chamber";
 			case 3:
+				return "Total Volume";
+			case 4:
 				return "Tindakan";
 			default:
 				return "";

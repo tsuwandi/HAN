@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import module.sn.chamber.model.Chamber;
+
 public class DryOut implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -11,6 +13,8 @@ public class DryOut implements Serializable {
 	private int id;
 	private String dryOutCode;
 	private Timestamp dateOut;
+	private int chamberId;
+	private double totalVolume;
 	private Date inputDate;
 	private String inputBy;
 	private Date editDate;
@@ -40,6 +44,22 @@ public class DryOut implements Serializable {
 
 	public void setDateOut(Timestamp dateOut) {
 		this.dateOut = dateOut;
+	}
+
+	public int getChamberId() {
+		return chamberId;
+	}
+
+	public void setChamberId(int chamberId) {
+		this.chamberId = chamberId;
+	}
+
+	public double getTotalVolume() {
+		return totalVolume;
+	}
+
+	public void setTotalVolume(double totalVolume) {
+		this.totalVolume = totalVolume;
 	}
 
 	public Date getInputDate() {
@@ -94,6 +114,7 @@ public class DryOut implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + chamberId;
 		result = prime * result + ((dateOut == null) ? 0 : dateOut.hashCode());
 		result = prime * result + ((deletedBy == null) ? 0 : deletedBy.hashCode());
 		result = prime * result + ((deletedDate == null) ? 0 : deletedDate.hashCode());
@@ -103,6 +124,9 @@ public class DryOut implements Serializable {
 		result = prime * result + id;
 		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(totalVolume);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
 
@@ -115,6 +139,8 @@ public class DryOut implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		DryOut other = (DryOut) obj;
+		if (chamberId != other.chamberId)
+			return false;
 		if (dateOut == null) {
 			if (other.dateOut != null)
 				return false;
@@ -157,18 +183,31 @@ public class DryOut implements Serializable {
 				return false;
 		} else if (!inputDate.equals(other.inputDate))
 			return false;
+		if (Double.doubleToLongBits(totalVolume) != Double.doubleToLongBits(other.totalVolume))
+			return false;
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "DryOut(id=" + id + ",dryOutCode=" + dryOutCode + ",dateOut=" + dateOut + ",inputDate=" + inputDate
-				+ ",inputBy=" + inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate="
-				+ deletedDate + ",deletedBy=" + deletedBy + ')';
+		return "DryOut [id=" + id + ", dryOutCode=" + dryOutCode + ", dateOut=" + dateOut + ", chamberId=" + chamberId
+				+ ", totalVolume=" + totalVolume + ", inputDate=" + inputDate + ", inputBy=" + inputBy + ", editDate="
+				+ editDate + ", editedBy=" + editedBy + ", deletedDate=" + deletedDate + ", deletedBy=" + deletedBy
+				+ "]";
 	}
+
+	private Chamber chamber;
+
+	public Chamber getChamber() {
+		if (chamber == null)
+			chamber = new Chamber();
+		return chamber;
+	}
+
+	public void setChamber(Chamber chamber) {
+		if (chamber == null)
+			chamber = new Chamber();
+		this.chamber = chamber;
+	}
+
 }

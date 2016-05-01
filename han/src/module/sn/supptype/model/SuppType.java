@@ -3,7 +3,9 @@ package module.sn.supptype.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class SuppType implements Serializable {
+import module.util.ComboBoxProperties;
+
+public class SuppType implements Serializable, ComboBoxProperties {
 
 	private static final long serialVersionUID = 1L;
 
@@ -154,5 +156,10 @@ public class SuppType implements Serializable {
 		return "SuppType(id=" + id + ",suppType=" + suppType + ",inputDate=" + inputDate + ",inputBy=" + inputBy
 				+ ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate=" + deletedDate + ",deletedBy="
 				+ deletedBy + ')';
+	}
+
+	@Override
+	public Object getField() {
+		return suppType;
 	}
 }

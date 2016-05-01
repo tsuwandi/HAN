@@ -11,7 +11,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -26,10 +25,13 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
-import org.apache.log4j.chainsaw.Main;
-
 import controller.ServiceFactory;
+import main.component.ComboBox;
+import main.component.DialogBox;
 import main.panel.MainPanel;
+import module.sn.bank.model.Bank;
+import module.sn.currency.model.Currency;
+import module.sn.supptype.model.SuppType;
 import module.supplier.model.SuppAddress;
 import module.supplier.model.SuppCp;
 import module.supplier.model.SuppVehicle;
@@ -68,12 +70,12 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 	JTextField txtSuppName;
 	JTextField txtPt;
 	JTextField txtNpwp;
-	JComboBox<String> cbSuppType;
+	ComboBox<SuppType> cbSuppType;
 	JComboBox<String> cbSuppStatus;
 	JTextField txtAccountNo;
-	JComboBox<String> cbBank;
+	ComboBox<Bank> cbBank;
 	JTextField txtAccountName;
-	JComboBox<String> cbCurrency;
+	ComboBox<Currency> cbCurrency;
 	JTextField txtTop;
 	JTextField txtDefaultTax;
 
@@ -113,9 +115,9 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 
 	private SupplierCreatePanel supplierCreate;
 
-	HashMap<String, Integer> mapSuppType;
-	HashMap<String, Integer> mapBank;
-	HashMap<String, Integer> mapCurrency;
+	List<SuppType> listOfSuppType;
+	List<Bank> listOfBank;
+	List<Currency> listOfCurrency;
 
 	public SupplierCreatePanel() {
 		supplier = new Supplier();
@@ -178,17 +180,16 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		lblSuppType.setBounds(50, 240, 150, 30);
 		panel.add(lblSuppType);
 
-		mapSuppType = new HashMap<String, Integer>();
+		listOfSuppType = new ArrayList<SuppType>();
 		try {
-			mapSuppType = ServiceFactory.getSupplierBL().getAllSuppType();
+			listOfSuppType = ServiceFactory.getSupplierBL().getAllSuppType();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			DialogBox.showErrorException();
 		}
-		cbSuppType = new JComboBox<String>();
+		cbSuppType = new ComboBox<SuppType>();
 		cbSuppType.addItem("-- Pilih Tipe Supplier --");
-		for (String s : mapSuppType.keySet()) {
-			cbSuppType.addItem(s);
-		}
+		cbSuppType.setList(listOfSuppType);
 		cbSuppType.setBounds(220, 240, 150, 30);
 		panel.add(cbSuppType);
 
@@ -272,7 +273,10 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		btnDeleteSuppAddress = new JButton("Hapus");
 		btnDeleteSuppAddress.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// int response = DialogBox.showDeleteChoice();
+				// if (response == JOptionPane.YES_OPTION) {
 				doDeleteSuppAddress();
+				// }
 			}
 		});
 		btnDeleteSuppAddress.setBounds(925, 330, 100, 30);
@@ -327,7 +331,10 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		btnDeleteSuppCp = new JButton("Hapus");
 		btnDeleteSuppCp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// int response = DialogBox.showDeleteChoice();
+				// if (response == JOptionPane.YES_OPTION) {
 				doDeleteSuppCp();
+				// }
 			}
 		});
 		btnDeleteSuppCp.setBounds(925, 540, 100, 30);
@@ -383,7 +390,10 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		btnDeleteSuppCp = new JButton("Hapus");
 		btnDeleteSuppCp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// int response = DialogBox.showDeleteChoice();
+				// if (response == JOptionPane.YES_OPTION) {
 				doDeleteSuppVehicle();
+				// }
 			}
 		});
 		btnDeleteSuppCp.setBounds(925, 750, 100, 30);
@@ -404,17 +414,16 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		lblBank.setBounds(50, 1000, 150, 30);
 		panel.add(lblBank);
 
-		mapBank = new HashMap<String, Integer>();
+		listOfBank = new ArrayList<Bank>();
 		try {
-			mapBank = ServiceFactory.getSupplierBL().getAllBank();
+			listOfBank = ServiceFactory.getSupplierBL().getAllBank();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			DialogBox.showErrorException();
 		}
-		cbBank = new JComboBox<String>();
+		cbBank = new ComboBox<Bank>();
 		cbBank.addItem("-- Pilih Bank --");
-		for (String s : mapBank.keySet()) {
-			cbBank.addItem(s);
-		}
+		cbBank.setList(listOfBank);
 		cbBank.setBounds(220, 1000, 150, 30);
 		panel.add(cbBank);
 
@@ -431,17 +440,16 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		lblCurrency.setBounds(50, 1100, 150, 30);
 		panel.add(lblCurrency);
 
-		mapCurrency = new HashMap<String, Integer>();
+		listOfCurrency = new ArrayList<Currency>();
 		try {
-			mapCurrency = ServiceFactory.getSupplierBL().getAllCurrency();
+			listOfCurrency = ServiceFactory.getSupplierBL().getAllCurrency();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			DialogBox.showErrorException();
 		}
-		cbCurrency = new JComboBox<String>();
+		cbCurrency = new ComboBox<Currency>();
 		cbCurrency.addItem("-- Pilih Kurs --");
-		for (String s : mapCurrency.keySet()) {
-			cbCurrency.addItem(s);
-		}
+		cbCurrency.setList(listOfCurrency);
 		cbCurrency.setBounds(220, 1100, 150, 30);
 		panel.add(cbCurrency);
 
@@ -511,7 +519,13 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		btnSave = new JButton("Simpan");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				doSave();
+				if (doValidate() == false) {
+					return;
+				}
+				int response = DialogBox.showInsertChoice();
+				if (response == JOptionPane.YES_OPTION) {
+					doSave();
+				}
 			}
 		});
 		btnSave.setBounds(925, 1240, 100, 30);
@@ -548,7 +562,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Terjadi kesalahan pada sistem.", "Error", JOptionPane.ERROR_MESSAGE);
+				DialogBox.showErrorException();
 				isValid = false;
 			}
 		}
@@ -572,31 +586,27 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 	}
 
 	protected void doSave() {
-		if (doValidate() == false) {
-			return;
-		}
-
 		supplier = new Supplier();
 		supplier.setSuppCode(txtSuppCode.getText());
 		supplier.setSuppName(txtSuppName.getText());
 		supplier.setPt(txtPt.getText());
 		supplier.setNpwp(txtNpwp.getText());
-		supplier.setSuppTypeId(mapSuppType.get(cbSuppType.getSelectedItem().toString()));
+		supplier.setSuppTypeId(cbSuppType.getDataIndex().getId());
 		supplier.setSuppStatus(cbSuppStatus.getSelectedItem().toString());
 		supplier.setAccountNo(txtAccountNo.getText());
-		supplier.setBankId(mapBank.get(cbBank.getSelectedItem().toString()));
+		supplier.setBankId(cbBank.getDataIndex().getId());
 		supplier.setAccountName(txtAccountName.getText());
-		supplier.setCurrencyId(mapCurrency.get(cbCurrency.getSelectedItem().toString()));
+		supplier.setCurrencyId(cbCurrency.getDataIndex().getId());
 		supplier.setTop(Integer.valueOf(txtTop.getText()));
-		supplier.setDefaultTax(Integer.valueOf(txtDefaultTax.getText()));
+		supplier.setDefaultTax(Double.valueOf(txtDefaultTax.getText()));
 
 		try {
 			ServiceFactory.getSupplierBL().save(supplier, listOfSuppAddress, listOfSuppCp, listOfSuppVehicle);
-			JOptionPane.showMessageDialog(null, "Data berhasil disimpan", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+			DialogBox.showInsert();
 			MainPanel.changePanel("module.supplier.ui.SupplierListPanel");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Data gagal disimpan", "Error", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 	}
 
@@ -610,7 +620,8 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		suppAddressDialog.setVisible(true);
 	}
 
-	protected void showEditSuppAddressDialog(SuppAddress suppAddress, SupplierCreatePanel supplierCreate, Integer index) {
+	protected void showEditSuppAddressDialog(SuppAddress suppAddress, SupplierCreatePanel supplierCreate,
+			Integer index) {
 		SuppAddressDialog suppAddressDialog = new SuppAddressDialog(true, suppAddress, supplierCreate, index);
 		suppAddressDialog.setTitle("Alamat");
 		suppAddressDialog.setLocationRelativeTo(null);
@@ -630,7 +641,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 				listOfSuppAddress.remove(s);
 			}
 			refreshTableSuppAddress();
-			JOptionPane.showMessageDialog(null, "Data berhasil dihapus", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+			DialogBox.showDelete();
 		}
 	}
 
@@ -664,7 +675,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 				listOfSuppCp.remove(s);
 			}
 			refreshTableSuppCp();
-			JOptionPane.showMessageDialog(null, "Data berhasil dihapus", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+			DialogBox.showDelete();
 		}
 	}
 
@@ -678,7 +689,8 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		suppVehicleDialog.setVisible(true);
 	}
 
-	protected void showEditSuppVehicleDialog(SuppVehicle suppVehicle, SupplierCreatePanel supplierCreate, Integer index) {
+	protected void showEditSuppVehicleDialog(SuppVehicle suppVehicle, SupplierCreatePanel supplierCreate,
+			Integer index) {
 		SuppVehicleDialog suppVehicleDialog = new SuppVehicleDialog(true, suppVehicle, supplierCreate, index);
 		suppVehicleDialog.setTitle("Kendaraan");
 		suppVehicleDialog.setLocationRelativeTo(null);
@@ -698,7 +710,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 				listOfSuppVehicle.remove(s);
 			}
 			refreshTableSuppVehicle();
-			JOptionPane.showMessageDialog(null, "Data berhasil dihapus", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+			DialogBox.showDelete();
 		}
 	}
 
@@ -1034,7 +1046,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 			tblSuppAddress.setModel(new SuppAddressTableModel(listOfSuppAddress));
 		} catch (Exception e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, e1.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 	}
 
@@ -1043,7 +1055,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 			tblSuppCp.setModel(new SuppCpTableModel(listOfSuppCp));
 		} catch (Exception e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, e1.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 	}
 
@@ -1052,7 +1064,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 			tblSuppVehicle.setModel(new SuppVehicleTableModel(listOfSuppVehicle));
 		} catch (Exception e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, e1.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 	}
 }

@@ -4,7 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import module.sn.province.model.Province;
 
@@ -27,38 +28,8 @@ public class ProvinceDAO {
 		this.connection = connection;
 	}
 
-//	public List<Province> getAll() throws SQLException {
-//		Connection con = null;
-//		List<Province> provinces = new ArrayList<Province>();
-//
-//		try {
-//			con = dataSource.getConnection();
-//			getAllStatement = con.prepareStatement(getAllQuery);
-//
-//			ResultSet rs = getAllStatement.executeQuery();
-//			while (rs.next()) {
-//				Province province = new Province();
-//				province.setId(rs.getInt("id"));
-//				province.setProvince(rs.getString("province"));
-//
-//				provinces.add(province);
-//			}
-//
-//		} catch (SQLException ex) {
-//			ex.printStackTrace();
-//			throw new SQLException(ex.getMessage());
-//		} finally {
-//			try {
-//				con.close();
-//			} catch (SQLException e) {
-//			}
-//		}
-//
-//		return provinces;
-//	}
-
-	public HashMap<String, Integer> getAll() throws SQLException {
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
+	public List<Province> getAll() throws SQLException {
+		List<Province> provinces = new ArrayList<Province>();
 
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery);
@@ -68,7 +39,8 @@ public class ProvinceDAO {
 				Province province = new Province();
 				province.setId(rs.getInt("id"));
 				province.setProvince(rs.getString("province"));
-				map.put(province.getProvince(), province.getId());
+
+				provinces.add(province);
 			}
 
 		} catch (SQLException ex) {
@@ -76,6 +48,6 @@ public class ProvinceDAO {
 			throw new SQLException(ex.getMessage());
 		}
 
-		return map;
+		return provinces;
 	}
 }

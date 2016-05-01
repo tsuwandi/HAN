@@ -110,8 +110,8 @@ public class DryInDAO {
 		return dryIns;
 	}
 
-	public Integer getOrdinalOfCodeNumber() throws SQLException {
-		Integer ordinal = null;
+	public int getOrdinalOfCodeNumber() throws SQLException {
+		int ordinal = 0;
 		try {
 			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
 

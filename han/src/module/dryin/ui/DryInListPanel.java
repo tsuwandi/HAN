@@ -55,12 +55,12 @@ public class DryInListPanel extends JPanel {
 
 		setPreferredSize(new Dimension(1024, 768));
 
-		lblBreadcrumb = new JLabel("ERP > Pembelian");
+		lblBreadcrumb = new JLabel("ERP > Pengeringan");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		lblHeader = new JLabel("SUPPLIER");
+		lblHeader = new JLabel("PEMASUKAN");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);

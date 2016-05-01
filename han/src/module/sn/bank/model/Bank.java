@@ -3,7 +3,9 @@ package module.sn.bank.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Bank implements Serializable {
+import module.util.ComboBoxProperties;
+
+public class Bank implements Serializable, ComboBoxProperties {
 
 	private static final long serialVersionUID = 1L;
 
@@ -169,5 +171,10 @@ public class Bank implements Serializable {
 		return "Bank(id=" + id + ",bank=" + bank + ",bankAbbr=" + bankAbbr + ",inputDate=" + inputDate + ",inputBy="
 				+ inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate=" + deletedDate
 				+ ",deletedBy=" + deletedBy + ')';
+	}
+	
+	@Override
+	public Object getField() {
+		return bankAbbr + " - " + bank ;
 	}
 }

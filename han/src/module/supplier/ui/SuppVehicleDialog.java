@@ -4,10 +4,10 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.ServiceFactory;
+import main.component.ComboBox;
+import main.component.DialogBox;
 import module.sn.vehicletype.model.VehicleType;
 import module.supplier.model.SuppVehicle;
 import module.util.JTextFieldLimit;
@@ -29,7 +31,7 @@ public class SuppVehicleDialog extends JDialog {
 	JLabel lblVehicleType;
 
 	JTextField txtLicensePlate;
-	JComboBox<String> cbVehicleType;
+	ComboBox<VehicleType> cbVehicleType;
 
 	JButton btnInsert;
 
@@ -41,7 +43,7 @@ public class SuppVehicleDialog extends JDialog {
 	private SupplierCreatePanel supplierCreate;
 	private SupplierEditPanel supplierEdit;
 
-	HashMap<String, Integer> mapVehicleType;
+	List<VehicleType> listOfVehicleType;
 
 	private Integer index;
 
@@ -87,19 +89,18 @@ public class SuppVehicleDialog extends JDialog {
 		lblVehicleType.setBounds(25, 50, 150, 30);
 		getContentPane().add(lblVehicleType);
 
-		mapVehicleType = new HashMap<String, Integer>();
+		listOfVehicleType = new ArrayList<VehicleType>();
 		try {
-			mapVehicleType = ServiceFactory.getSupplierBL().getAllVehicleType();
+			listOfVehicleType = ServiceFactory.getSupplierBL().getAllVehicleType();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			DialogBox.showErrorException();
 		}
 
-		cbVehicleType = new JComboBox<String>();
+		cbVehicleType = new ComboBox<VehicleType>();
 		cbVehicleType.addItem("-- Pilih Tipe Kendaraan --");
 		cbVehicleType.setBounds(150, 50, 150, 30);
-		for (String s : mapVehicleType.keySet()) {
-			cbVehicleType.addItem(s);
-		}
+		cbVehicleType.setList(listOfVehicleType);
 		getContentPane().add(cbVehicleType);
 
 		lblErrorVehicleType = new JLabel();
@@ -110,7 +111,14 @@ public class SuppVehicleDialog extends JDialog {
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doInsert();
+				if (doValidate() == false) {
+					return;
+				}
+				
+//				int response = DialogBox.showInsertChoice();
+//				if (response == JOptionPane.YES_OPTION) {
+					doInsert();
+//				}
 			}
 		});
 		btnInsert.setBounds(460, 95, 100, 30);
@@ -133,12 +141,13 @@ public class SuppVehicleDialog extends JDialog {
 			isValid = false;
 		}
 
-		if (cbVehicleType.getSelectedItem() == null || cbVehicleType.getSelectedIndex() == 0) {
+		if (cbVehicleType.getSelectedItem() == null) {
 			lblErrorVehicleType.setText("Combobox Tipe Kendaraan harus dipilih.");
 			isValid = false;
 		} else {
 			try {
-				if (ServiceFactory.getSupplierBL().isLicensePlateExists(txtLicensePlate.getText()) > 0 && isEdit == false) {
+				if (ServiceFactory.getSupplierBL().isLicensePlateExists(txtLicensePlate.getText()) > 0
+						&& isEdit == false) {
 					lblErrorLicensePlate.setText("No Kendaraan sudah pernah diinput.");
 					isValid = false;
 				}
@@ -160,7 +169,7 @@ public class SuppVehicleDialog extends JDialog {
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "No Kendaraan gagal diinput.", "Error", JOptionPane.ERROR_MESSAGE);
+				DialogBox.showErrorException();
 				isValid = false;
 			}
 		}
@@ -169,43 +178,38 @@ public class SuppVehicleDialog extends JDialog {
 	}
 
 	protected void doInsert() {
-		if (doValidate() == true) {
-			//suppVehicle = new SuppVehicle();
-			suppVehicle.setLicensePlate(txtLicensePlate.getText());
-			suppVehicle.setVehicleTypeId(mapVehicleType.get(cbVehicleType.getSelectedItem().toString()));
-			// add object vehicle type
-			VehicleType vehicleType = new VehicleType();
-			vehicleType.setId(suppVehicle.getVehicleTypeId());
-			vehicleType.setVehicleType(cbVehicleType.getSelectedItem().toString());
-			suppVehicle.setVehicleType(vehicleType);
-			try {
-				if (isEdit == false) {
-					if (supplierCreate != null) {
-						supplierCreate.listOfSuppVehicle.add(suppVehicle);
-					} else if (supplierEdit != null) {
-						supplierEdit.listOfSuppVehicle.add(suppVehicle);
-					}
-					
-					JOptionPane.showMessageDialog(null, "Data berhasil ditambah", "Informasi",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else {
-					if (supplierCreate != null) {
-						supplierCreate.listOfSuppVehicle.set(index, suppVehicle);
-					} else if (supplierEdit != null) {
-						supplierEdit.listOfSuppVehicle.set(index, suppVehicle);
-					}
-					
-					JOptionPane.showMessageDialog(null, "Data berhasil diubah", "Informasi",
-							JOptionPane.INFORMATION_MESSAGE);
+
+		// suppVehicle = new SuppVehicle();
+		suppVehicle.setLicensePlate(txtLicensePlate.getText());
+		suppVehicle.setVehicleTypeId(cbVehicleType.getDataIndex().getId());
+		// add object vehicle type
+		VehicleType vehicleType = new VehicleType();
+		vehicleType.setId(suppVehicle.getVehicleTypeId());
+		vehicleType.setVehicleType(cbVehicleType.getSelectedItem().toString());
+		suppVehicle.setVehicleType(vehicleType);
+		try {
+			if (isEdit == false) {
+				if (supplierCreate != null) {
+					supplierCreate.listOfSuppVehicle.add(suppVehicle);
+				} else if (supplierEdit != null) {
+					supplierEdit.listOfSuppVehicle.add(suppVehicle);
 				}
 
-				closeDialog();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Data gagal ditambah", "Error", JOptionPane.ERROR_MESSAGE);
+				DialogBox.showInsert();
+			} else {
+				if (supplierCreate != null) {
+					supplierCreate.listOfSuppVehicle.set(index, suppVehicle);
+				} else if (supplierEdit != null) {
+					supplierEdit.listOfSuppVehicle.set(index, suppVehicle);
+				}
+
+				DialogBox.showInsert();
 			}
-		} else {
-			return;
+
+			closeDialog();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			DialogBox.showErrorException();
 		}
 	}
 

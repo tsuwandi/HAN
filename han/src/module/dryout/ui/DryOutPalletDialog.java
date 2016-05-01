@@ -1,4 +1,4 @@
-package module.dryin.ui;
+package module.dryout.ui;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -12,7 +12,6 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -21,11 +20,11 @@ import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
-import module.dryin.model.DryInPallet;
+import module.dryout.model.DryOutPallet;
 import module.pembelian.model.Pallet;
 import module.util.DateUtil;
 
-public class DryInPalletDialog extends JDialog {
+public class DryOutPalletDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,12 +39,12 @@ public class DryInPalletDialog extends JDialog {
 
 	List<Pallet> listOfPalletCard;
 
-	private DryInCreatePanel dryInCreatePanel;
-	private DryInEditPanel dryInEditPanel;
+	private DryOutCreatePanel dryOutCreatePanel;
+	private DryOutEditPanel dryOutEditPanel;
 
-	public DryInPalletDialog(DryInCreatePanel dryInCreatePanel, DryInEditPanel dryInEditPanel) {
-		this.dryInCreatePanel = dryInCreatePanel;
-		this.dryInEditPanel = dryInEditPanel;
+	public DryOutPalletDialog(DryOutCreatePanel dryOutCreatePanel, DryOutEditPanel dryOutEditPanel) {
+		this.dryOutCreatePanel = dryOutCreatePanel;
+		this.dryOutEditPanel = dryOutEditPanel;
 
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -76,21 +75,23 @@ public class DryInPalletDialog extends JDialog {
 
 		try {
 			listOfPalletCard = new ArrayList<Pallet>();
-			listOfPalletCard = ServiceFactory.getDryInBL().getAllPallet();
-			if (dryInCreatePanel != null) {
-				for (DryInPallet dryInPallet : dryInCreatePanel.getListOfDryInPallet()) {
-					Integer index = listOfPalletCard.indexOf(dryInPallet.getPalletCard());
-					listOfPalletCard.set(index, dryInPallet.getPalletCard());
+			if (dryOutCreatePanel != null) {
+				listOfPalletCard = ServiceFactory.getDryOutBL()
+						.getAllPalletByChamberId(dryOutCreatePanel.cbChamber.getDataIndex().getId());
+
+				for (DryOutPallet dryOutPallet : dryOutCreatePanel.getListOfDryOutPallet()) {
+					Integer index = listOfPalletCard.indexOf(dryOutPallet.getPalletCard());
+					listOfPalletCard.set(index, dryOutPallet.getPalletCard());
 				}
-			} else if (dryInEditPanel != null) {
-				for (DryInPallet dryInPallet : dryInEditPanel.getListOfDryInPallet()) {
-					dryInPallet.getPalletCard().setFlag(true);
-					dryInPallet.getPalletCard().setRowNum(dryInPallet.getId());
-					if (!listOfPalletCard.contains(dryInPallet.getPalletCard())) {
-						listOfPalletCard.add(dryInPallet.getPalletCard());
+			} else if (dryOutEditPanel != null) {
+				for (DryOutPallet dryOutPallet : dryOutEditPanel.getListOfDryOutPallet()) {
+					dryOutPallet.getPalletCard().setFlag(true);
+					dryOutPallet.getPalletCard().setRowNum(dryOutPallet.getId());
+					if (!listOfPalletCard.contains(dryOutPallet.getPalletCard())) {
+						listOfPalletCard.add(dryOutPallet.getPalletCard());
 					} else {
-						Integer index = listOfPalletCard.indexOf(dryInPallet.getPalletCard());
-						listOfPalletCard.set(index, dryInPallet.getPalletCard());
+						Integer index = listOfPalletCard.indexOf(dryOutPallet.getPalletCard());
+						listOfPalletCard.set(index, dryOutPallet.getPalletCard());
 					}
 				}
 			}
@@ -120,10 +121,7 @@ public class DryInPalletDialog extends JDialog {
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				int response = DialogBox.showInsertChoice();
-//				if (response == JOptionPane.YES_OPTION) {
-					doInsert();
-//				}
+				doInsert();
 			}
 		});
 		btnInsert.setBounds(480, 250, 95, 30);
@@ -131,41 +129,42 @@ public class DryInPalletDialog extends JDialog {
 	}
 
 	private void doInsert() {
-		List<DryInPallet> listOfDryInPallet = new ArrayList<DryInPallet>();
+		List<DryOutPallet> listOfDryOutPallet = new ArrayList<DryOutPallet>();
 
 		for (Pallet palletCard : listOfPalletCard) {
-			DryInPallet dryInPallet = new DryInPallet();
+			DryOutPallet dryOutPallet = new DryOutPallet();
 			if (palletCard.isFlag()) {
-				dryInPallet.setPalletCard(palletCard);
-				dryInPallet.setPalletCardCode(palletCard.getPalletCardCode());
-				if (palletCard.getRowNum() != 0 && dryInEditPanel != null)
-					dryInPallet.setId(palletCard.getRowNum());
-				listOfDryInPallet.add(dryInPallet);
+				dryOutPallet.setPalletCard(palletCard);
+				dryOutPallet.setPalletCardCode(palletCard.getPalletCardCode());
+				if (palletCard.getRowNum() != 0 && dryOutEditPanel != null)
+					dryOutPallet.setId(palletCard.getRowNum());
+				listOfDryOutPallet.add(dryOutPallet);
 			} else {
-				if (palletCard.getRowNum() != 0 && dryInEditPanel != null) {
-					dryInPallet.setPalletCard(palletCard);
-					dryInPallet.setPalletCardCode(palletCard.getPalletCardCode());
-					dryInPallet.setId(palletCard.getRowNum());
-					dryInEditPanel.listOfDeletedDryInPallet.add(dryInPallet);
+				if (palletCard.getRowNum() != 0 && dryOutEditPanel != null) {
+					dryOutPallet.setPalletCard(palletCard);
+					dryOutPallet.setPalletCardCode(palletCard.getPalletCardCode());
+					dryOutPallet.setId(palletCard.getRowNum());
+					dryOutEditPanel.listOfDeletedDryOutPallet.add(dryOutPallet);
 				}
 			}
 		}
 
-		if (dryInCreatePanel != null)
-			dryInCreatePanel.setListOfDryInPallet(listOfDryInPallet);
-		else if (dryInEditPanel != null)
-			dryInEditPanel.setListOfDryInPallet(listOfDryInPallet);
+		if (dryOutCreatePanel != null)
+			dryOutCreatePanel.setListOfDryOutPallet(listOfDryOutPallet);
+		else if (dryOutEditPanel != null) {
+			dryOutEditPanel.setListOfDryOutPallet(listOfDryOutPallet);
+		}
 
 		closeDialog();
 	}
 
 	protected void closeDialog() {
-		if (dryInCreatePanel != null) {
-			dryInCreatePanel.refreshTableDryInPallet();
-			dryInCreatePanel.countTotalVolumeDryInPalletCard();
-		} else if (dryInEditPanel != null) {
-			dryInEditPanel.refreshTableDryInPallet();
-			dryInEditPanel.countTotalVolumeDryInPalletCard();
+		if (dryOutCreatePanel != null) {
+			dryOutCreatePanel.refreshTableDryOutPallet();
+			dryOutCreatePanel.countTotalVolumeDryOutPalletCard();
+		} else if (dryOutEditPanel != null) {
+			dryOutEditPanel.refreshTableDryOutPallet();
+			dryOutEditPanel.countTotalVolumeDryOutPalletCard();
 		}
 
 		dispose();
@@ -174,8 +173,15 @@ public class DryInPalletDialog extends JDialog {
 	private void doSearchPalletCard(String value) {
 		try {
 			listOfPalletCard = new ArrayList<Pallet>();
-			listOfPalletCard = ServiceFactory.getDryInBL().getAllPalletBySearch(value);
-			
+			if (dryOutCreatePanel != null) {
+				listOfPalletCard = ServiceFactory.getDryOutBL().getAllPalletBySearchAndChamberId(value,
+						dryOutCreatePanel.cbChamber.getDataIndex().getId());
+			}
+
+			if (dryOutEditPanel != null) {
+				listOfPalletCard = ServiceFactory.getDryOutBL().getAllPalletBySearchAndChamberId(value,
+						dryOutEditPanel.cbChamber.getDataIndex().getId());
+			}
 			refreshTablePalletCard();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -239,7 +245,7 @@ public class DryInPalletDialog extends JDialog {
 			case 0:
 				return p.isFlag();
 			case 1:
-				return DateUtil.setFormatedDate(p.getReceived().getReceivedDate());
+				return DateUtil.setFormatedDate(p.getDateIn());
 			case 2:
 				return p.getReceived().getRitNo();
 			case 3:
@@ -284,7 +290,7 @@ public class DryInPalletDialog extends JDialog {
 			case 0:
 				return "";
 			case 1:
-				return "Tanggal Penerimaan";
+				return "Tanggal Pemasukan";
 			case 2:
 				return "No Rit";
 			case 3:

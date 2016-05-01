@@ -4,7 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import module.sn.currency.model.Currency;
 
@@ -24,40 +25,8 @@ public class CurrencyDAO {
 		this.connection = connection;
 	}
 
-//	public List<Currency> getAll() throws SQLException {
-//		Connection con = null;
-//		List<Currency> currencies = new ArrayList<Currency>();
-//
-//		try {
-//			con = dataSource.getConnection();
-//			getAllStatement = con.prepareStatement(getAllQuery);
-//
-//			ResultSet rs = getAllStatement.executeQuery();
-//			while (rs.next()) {
-//				Currency currency = new Currency();
-//				currency.setId(rs.getInt("id"));
-//				currency.setCurrencyAbbr(rs.getString("currency_abbr"));
-//				currency.setCurrencySymbol(rs.getString("currency_symbol"));
-//				currency.setCurrency(rs.getString("currency"));
-//				
-//				currencies.add(currency);
-//			}
-//
-//		} catch (SQLException ex) {
-//			ex.printStackTrace();
-//			throw new SQLException(ex.getMessage());
-//		} finally {
-//			try {
-//				con.close();
-//			} catch (SQLException e) {
-//			}
-//		}
-//
-//		return currencies;
-//	}
-	
-	public HashMap<String, Integer> getAll() throws SQLException {
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
+	public List<Currency> getAll() throws SQLException {
+		List<Currency> currencies = new ArrayList<Currency>();
 
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery);
@@ -67,8 +36,10 @@ public class CurrencyDAO {
 				Currency currency = new Currency();
 				currency.setId(rs.getInt("id"));
 				currency.setCurrencyAbbr(rs.getString("currency_abbr"));
+				currency.setCurrencySymbol(rs.getString("currency_symbol"));
 				currency.setCurrency(rs.getString("currency"));
-				map.put(currency.getCurrencyAbbr() + " - " + currency.getCurrency(), currency.getId());
+				
+				currencies.add(currency);
 			}
 
 		} catch (SQLException ex) {
@@ -76,6 +47,6 @@ public class CurrencyDAO {
 			throw new SQLException(ex.getMessage());
 		}
 
-		return map;
+		return currencies;
 	}
 }

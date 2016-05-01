@@ -4,7 +4,8 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,6 +17,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import controller.ServiceFactory;
+import main.component.ComboBox;
+import main.component.DialogBox;
+import module.sn.city.model.City;
+import module.sn.province.model.Province;
 import module.supplier.model.SuppAddress;
 import module.util.JTextFieldLimit;
 
@@ -36,8 +41,8 @@ public class SuppAddressDialog extends JDialog {
 	JComboBox<String> cbAddressType;
 	JTextArea txtAddress;
 	JTextField txtZipCode;
-	JComboBox<String> cbProvince;
-	JComboBox<String> cbCity;
+	ComboBox<Province> cbProvince;
+	ComboBox<City> cbCity;
 	JTextField txtPhone;
 	JTextField txtFax;
 
@@ -52,8 +57,8 @@ public class SuppAddressDialog extends JDialog {
 	private SupplierCreatePanel supplierCreate;
 	private SupplierEditPanel supplierEdit;
 
-	HashMap<String, Integer> mapProvince;
-	HashMap<String, Integer> mapCity;
+	List<Province> listOfProvince;
+	List<City> listOfCity;
 
 	private Integer index;
 
@@ -79,13 +84,14 @@ public class SuppAddressDialog extends JDialog {
 		setBounds(100, 100, 600, 400);
 		getContentPane().setLayout(null);
 
-		mapProvince = new HashMap<String, Integer>();
-		mapCity = new HashMap<String, Integer>();
+		listOfProvince = new ArrayList<Province>();
+		listOfCity = new ArrayList<City>();
 
 		try {
-			mapProvince = ServiceFactory.getSupplierBL().getAllProvince();
+			listOfProvince = ServiceFactory.getSupplierBL().getAllProvince();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			DialogBox.showErrorException();
 		}
 
 		lblAddressType = new JLabel("<html>Tipe Alamat <font color=\"red\">*</font></html>");
@@ -135,45 +141,53 @@ public class SuppAddressDialog extends JDialog {
 		lblProvince.setBounds(25, 170, 150, 30);
 		getContentPane().add(lblProvince);
 
-		cbProvince = new JComboBox<String>();
+		cbProvince = new ComboBox<Province>();
 		cbProvince.addItem("-- Pilih Provinsi --");
+		cbProvince.setList(listOfProvince);
 		cbProvince.setBounds(150, 170, 150, 30);
-		for (String s : mapProvince.keySet()) {
-			cbProvince.addItem(s);
-		}
 		getContentPane().add(cbProvince);
 
 		lblCity = new JLabel("Kota");
 		lblCity.setBounds(25, 205, 150, 30);
 		getContentPane().add(lblCity);
 
-		cbCity = new JComboBox<String>();
+		cbCity = new ComboBox<City>();
 		cbCity.addItem("-- Pilih Kota --");
 		cbCity.setBounds(150, 205, 150, 30);
 
+		int provinceId = cbProvince.getDataIndex().getId();
+		try {
+			listOfCity = ServiceFactory.getSupplierBL().getAllCityByProvinceId(provinceId);
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			DialogBox.showErrorException();
+		}
+
+		cbCity.removeAllItems();
+		cbCity.setList(listOfCity);
+		cbCity.updateUI();
+		lblCity.setText("<html>Kota <font color=\"red\">*</font></html>");
+
 		cbProvince.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (cbProvince.getSelectedIndex() != 0) {
-					int provinceId = mapProvince.get(cbProvince.getSelectedItem().toString());
-					try {
-						mapCity = ServiceFactory.getSupplierBL().getAllCityByProvinceId(provinceId);
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-					}
-
-					cbCity.removeAllItems();
-					cbCity.addItem("-- Pilih Kota --");
-					for (String s : mapCity.keySet()) {
-						cbCity.addItem(s);
-					}
-					cbCity.updateUI();
-					lblCity.setText("<html>Kota <font color=\"red\">*</font></html>");
-				} else {
-					cbCity.removeAllItems();
-					cbCity.addItem("-- Pilih Kota --");
-					lblCity.setText("Kota");
-					lblErrorCity.setText("");
+				// if (cbProvince.getSelectedIndex() != 0) {
+				int provinceId = cbProvince.getDataIndex().getId();
+				try {
+					listOfCity = ServiceFactory.getSupplierBL().getAllCityByProvinceId(provinceId);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+					DialogBox.showErrorException();
 				}
+
+				cbCity.removeAllItems();
+				cbCity.setList(listOfCity);
+				cbCity.updateUI();
+				lblCity.setText("<html>Kota <font color=\"red\">*</font></html>");
+				// } else {
+				// cbCity.removeAllItems();
+				// lblCity.setText("Kota");
+				// lblErrorCity.setText("");
+				// }
 			}
 		});
 
@@ -205,7 +219,13 @@ public class SuppAddressDialog extends JDialog {
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doInsert();
+				if (doValidate() == false) {
+					return;
+				}
+//					int response = DialogBox.showInsertChoice();
+//					if (response == JOptionPane.YES_OPTION) {
+						doInsert();
+//					}
 			}
 		});
 		btnInsert.setBounds(460, 315, 100, 30);
@@ -236,8 +256,8 @@ public class SuppAddressDialog extends JDialog {
 			isValid = false;
 		}
 
-		if (cbProvince.getSelectedItem() == null || cbProvince.getSelectedIndex() != 0) {
-			if (cbCity.getSelectedItem() == null || cbCity.getSelectedIndex() == 0) {
+		if (cbProvince.getSelectedItem() == null) {
+			if (cbCity.getSelectedItem() == null) {
 				lblErrorCity.setText("Combobox Kota harus dipilih.");
 				isValid = false;
 			}
@@ -248,45 +268,39 @@ public class SuppAddressDialog extends JDialog {
 
 	protected void doInsert() {
 
-		if (doValidate() == true) {
-			// suppAddress = new SuppAddress();
-			suppAddress.setAddressType(String.valueOf(cbAddressType.getSelectedItem()));
-			suppAddress.setAddress(txtAddress.getText());
-			suppAddress.setZipCode(txtZipCode.getText());
+		// suppAddress = new SuppAddress();
+		suppAddress.setAddressType(String.valueOf(cbAddressType.getSelectedItem()));
+		suppAddress.setAddress(txtAddress.getText());
+		suppAddress.setZipCode(txtZipCode.getText());
 
-			if (cbProvince.getSelectedIndex() != 0 && cbCity.getSelectedIndex() != 0)
-				suppAddress.setCityId(mapCity.get(cbCity.getSelectedItem().toString()));
+		if (cbProvince.getSelectedIndex() != 0 && cbCity.getSelectedIndex() != 0)
+			suppAddress.setCityId(cbCity.getDataIndex().getId());
 
-			suppAddress.setPhone(txtPhone.getText());
-			suppAddress.setFax(txtFax.getText());
+		suppAddress.setPhone(txtPhone.getText());
+		suppAddress.setFax(txtFax.getText());
 
-			try {
-				if (isEdit == false) {
-					if (supplierCreate != null)
-						supplierCreate.listOfSuppAddress.add(suppAddress);
-					else if (supplierEdit != null)
-						supplierEdit.listOfSuppAddress.add(suppAddress);
+		try {
+			if (isEdit == false) {
+				if (supplierCreate != null)
+					supplierCreate.listOfSuppAddress.add(suppAddress);
+				else if (supplierEdit != null)
+					supplierEdit.listOfSuppAddress.add(suppAddress);
 
-					JOptionPane.showMessageDialog(null, "Data berhasil ditambah", "Informasi",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else {
-					if (supplierCreate != null) {
-						supplierCreate.listOfSuppAddress.set(index, suppAddress);
-					} else if (supplierEdit != null) {
-						supplierEdit.listOfSuppAddress.set(index, suppAddress);
-					}
-
-					JOptionPane.showMessageDialog(null, "Data berhasil diubah", "Informasi",
-							JOptionPane.INFORMATION_MESSAGE);
+				DialogBox.showInsert();
+			} else {
+				if (supplierCreate != null) {
+					supplierCreate.listOfSuppAddress.set(index, suppAddress);
+				} else if (supplierEdit != null) {
+					supplierEdit.listOfSuppAddress.set(index, suppAddress);
 				}
-				closeDialog();
 
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Data gagal ditambah", "Error", JOptionPane.ERROR_MESSAGE);
+				DialogBox.showInsert();
 			}
-		} else {
-			return;
+			closeDialog();
+
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			DialogBox.showErrorException();
 		}
 	}
 
