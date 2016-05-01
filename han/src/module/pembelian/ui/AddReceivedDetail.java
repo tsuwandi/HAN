@@ -1,5 +1,6 @@
 package module.pembelian.ui;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -7,11 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
 
 import com.toedter.calendar.JDateChooser;
@@ -87,98 +90,170 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		setLayout(null);
 		this.parent = this;
 		
+		containerPnl = new JPanel();
+		containerPnl.setPreferredSize(new Dimension(1100, 800));
+		containerPnl.setLayout(null);
+		
+		scrollPane = new JScrollPane(containerPnl);
+		scrollPane.setBounds(0,0,1100,630);
+		add(scrollPane);
+		
+		//Code Label
 		receivedCodeLbl = new JLabel("Kode Penerimaan");
-		receivedCodeLbl.setBounds(50,70,150,30);
-		add(receivedCodeLbl);
+		receivedCodeLbl.setBounds(50,70,150,20);
+		containerPnl.add(receivedCodeLbl);
 		
-		receivedDateLbl = new JLabel("Tanggal Penerimaan");
-		receivedDateLbl.setBounds(50,120,150,30);
-		add(receivedDateLbl);
-		
-		ritNumberLbl = new JLabel("No Rit");
-		ritNumberLbl.setBounds(50,170,150,30);
-		add(ritNumberLbl);
+		firstCodeSeparator = new JLabel("/BL/");
+		firstCodeSeparator.setBounds(320,70,20,20);
+		firstCodeSeparator.setHorizontalAlignment(SwingConstants.CENTER);
+		containerPnl.add(firstCodeSeparator);
 
-		supplierLbl = new JLabel("Supplier");
-		supplierLbl.setBounds(50,220,150,30);
-		add(supplierLbl);
+		secondCodeSeparator = new JLabel("/");
+		secondCodeSeparator.setBounds(370,70,10,20);
+		secondCodeSeparator.setHorizontalAlignment(SwingConstants.CENTER);
+		containerPnl.add(secondCodeSeparator);
+		
+		thirdCodeSeparator = new JLabel("/");
+		thirdCodeSeparator.setBounds(410,70,10,20);
+		thirdCodeSeparator.setHorizontalAlignment(SwingConstants.CENTER);
+		containerPnl.add(thirdCodeSeparator);
 		
 		receivedCodeField = new JTextField();
-		receivedCodeField.setBounds(220, 70, 150, 30);
-//		receivedCodeField.setEnabled(false);
-		add(receivedCodeField);
+		receivedCodeField.setBounds(220, 70, 100, 20);
+		containerPnl.add(receivedCodeField);
+		
+		receivedCodeDateField = new JTextField();
+		receivedCodeDateField.setBounds(340, 70, 30, 20);
+		containerPnl.add(receivedCodeDateField);
+		
+		receivedCodeMonthField = new JTextField();
+		receivedCodeMonthField.setBounds(380, 70, 30, 20);
+		containerPnl.add(receivedCodeMonthField);
+		
+		receivedCodeYearField = new JTextField();
+		receivedCodeYearField.setBounds(420, 70, 50, 20);
+		containerPnl.add(receivedCodeYearField);
+		
+		
+		//Receive Date
+		receivedDateLbl = new JLabel("Tanggal Penerimaan");
+		receivedDateLbl.setBounds(50,110,150,20);
+		containerPnl.add(receivedDateLbl);
 		
 		receivedDateChooser = new JDateChooser();
-		receivedDateChooser.setBounds(220,120,150,30);
-		add(receivedDateChooser);
+		receivedDateChooser.setBounds(220,110,150,20);
+		containerPnl.add(receivedDateChooser);
+		
+		//Rit Number
+		ritNumberLbl = new JLabel("No Rit");
+		ritNumberLbl.setBounds(50,150,150,20);
+		containerPnl.add(ritNumberLbl);
 		
 		ritNumberField = new JTextField();
-		ritNumberField.setBounds(220, 170, 150, 30);
-		add(ritNumberField);
+		ritNumberField.setBounds(220, 150, 150, 20);
+		containerPnl.add(ritNumberField);
 		
-		supplierTextField = new JTextField();
-		supplierTextField.setBounds(220,220,150,30);
-		add(supplierTextField);
-		
+		//License Plate
 		licensePlateLbl = new JLabel("No Kendaraan");
-		licensePlateLbl.setBounds(450,70,150,30);
-		add(licensePlateLbl);
-		
-		driverLbl =  new JLabel("Supir");
-		driverLbl.setBounds(450,120,150,30);
-		add(driverLbl);
-		
-		woodDomicileLbl = new JLabel("Asal Barang");
-		woodDomicileLbl.setBounds(450,170,150,30);
-		add(woodDomicileLbl);
+		licensePlateLbl.setBounds(50,190,150,20);
+		containerPnl.add(licensePlateLbl);
 		
 		licensePlateComboBox = new ComboBox<SupplierVehicle>();
-		licensePlateComboBox.setBounds(620,70,150,30);
-		add(licensePlateComboBox);
+		licensePlateComboBox.setBounds(220,190,150,20);
+		containerPnl.add(licensePlateComboBox);
+		
+		//Supplier
+		supplierLbl = new JLabel("Supplier");
+		supplierLbl.setBounds(50,230,150,20);
+		containerPnl.add(supplierLbl);
+		
+		supplierTextField = new JTextField();
+		supplierTextField.setBounds(220,230,150,20);
+		containerPnl.add(supplierTextField);
+		
+		//Driver
+		driverLbl =  new JLabel("Supir");
+		driverLbl.setBounds(50,270,150,20);
+		containerPnl.add(driverLbl);
 		
 		driverField = new JTextField();
-		driverField.setBounds(620, 120, 150, 30);
-		add(driverField);
+		driverField.setBounds(220, 270, 150, 20);
+		containerPnl.add(driverField);
+	
+		// Document Number
+		docNoLbl =  new JLabel("No Dokumen");
+		docNoLbl.setBounds(50,310,150,20);
+		containerPnl.add(docNoLbl);
+		
+		docNoComboBox = new ComboBox<>();
+		docNoComboBox.setBounds(220, 310, 150, 20);
+		containerPnl.add(docNoComboBox);
+		
+		//Wood Domicile
+		woodDomicileLbl = new JLabel("Asal Barang");
+		woodDomicileLbl.setBounds(50,350,150,20);
+		containerPnl.add(woodDomicileLbl);
 		
 		woodDomicileField = new JTextField();
-		woodDomicileField.setBounds(620, 170, 150, 30);
-		add(woodDomicileField);
+		woodDomicileField.setBounds(220, 350, 150, 20);
+		containerPnl.add(woodDomicileField);
+	
+		//Wood Resource
+		woodResourceLbl = new JLabel("Asal Sumber Bahan Baku");
+		woodResourceLbl.setBounds(50, 390, 150, 20);
+		containerPnl.add(woodResourceLbl);
 		
+		woodResourceField = new JTextField();
+		woodResourceField.setBounds(220, 390, 150, 20);
+		containerPnl.add(woodResourceField);
+		
+		
+		//Wood Type
+		woodTypeLbl = new JLabel("Asal Sumber Bahan Baku");
+		woodTypeLbl.setBounds(50, 430, 150, 20);
+		containerPnl.add(woodTypeLbl);
+		
+		woodTypeComboBox = new ComboBox<>();
+		woodTypeComboBox.setBounds(220, 430, 150, 20);
+		containerPnl.add(woodTypeComboBox);
+		
+		//Pallet Card
 		pallets = new ArrayList<>();
 		palletTableModel = new PalletTableModel(pallets);
 		palletTable = new JTable(palletTableModel);
 		
 		palletScrollPane = new JScrollPane(palletTable);
-		palletScrollPane.setBounds(50,300,1000,150);
-		add(palletScrollPane);
+		palletScrollPane.setBounds(50,500,1000,150);
+		containerPnl.add(palletScrollPane);
 		
 		addPalletBtn = new JButton("Add");
-		addPalletBtn.setBounds(900,250,100,30);
-		add(addPalletBtn);
+		addPalletBtn.setBounds(900,450,100,30);
+		containerPnl.add(addPalletBtn);
 		
 		deletePalletBtn = new JButton("Delete");
-		deletePalletBtn.setBounds(800,250,100,30);
-		add(deletePalletBtn);
+		deletePalletBtn.setBounds(800,450,100,30);
+		containerPnl.add(deletePalletBtn);
 		
+		//Pic Docking
 		picDockings = new ArrayList<>();
 		picDockingTableModel = new PicDockingTableModel(picDockings);
 		dockingPICTable = new JTable(picDockingTableModel);
 		
 		dockingPicScrollPane = new JScrollPane(dockingPICTable);
-		dockingPicScrollPane.setBounds(50,500,500,100);
-		add(dockingPicScrollPane);
+		dockingPicScrollPane.setBounds(50,670,500,100);
+		containerPnl.add(dockingPicScrollPane);
 		
 		deletePicBtn = new JButton("Delete");
-		deletePicBtn.setBounds(570,550,100,30);
-		add(deletePicBtn);
+		deletePicBtn.setBounds(570,710,100,30);
+		containerPnl.add(deletePicBtn);
 		
 		searchPicBtn = new JButton("Search");
-		searchPicBtn.setBounds(570,500,100,30);
-		add(searchPicBtn);
+		searchPicBtn.setBounds(570,670,100,30);
+		containerPnl.add(searchPicBtn);
 		
 		saveBtn = new JButton("Save");
-		saveBtn.setBounds(950,570,100,30);
-		add(saveBtn);
+		saveBtn.setBounds(950,750,100,30);
+		containerPnl.add(saveBtn);
 		
 		
 		

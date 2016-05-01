@@ -761,6 +761,87 @@ CREATE TABLE IF NOT EXISTS `pallet_card` (
 -- Indexes for dumped tables
 --
 
+
+--
+-- Table structure for table `wood_resource`
+--
+
+CREATE TABLE IF NOT EXISTS `wood_resource` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `wood_resource` varchar(20) NOT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wood_type`
+--
+
+CREATE TABLE IF NOT EXISTS `wood_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `wood_type` varchar(50) NOT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Constraints for dumped tables
+--
+
+CREATE TABLE IF NOT EXISTS `delivery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `delivery_note` int(11) NOT NULL,
+  `wood_domicile` varchar(50) NOT NULL,
+  `wood_resource_id` int(11) NOT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`,`delivery_note`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employee`
+--
+
+
+--
+-- Table structure for table `grade`
+--
+
+CREATE TABLE IF NOT EXISTS `grade` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `grade` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `grade`
+--
+
+INSERT INTO `grade` (`id`, `grade`) VALUES
+(1, 'A'),
+(2, 'B');
+
+-- --------------------------------------------------------
+
+
 --
 -- Indexes for table `chamber`
 --
