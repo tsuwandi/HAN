@@ -3,7 +3,9 @@ package module.sn.vehicletype.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class VehicleType implements Serializable {
+import module.util.ComboBoxProperties;
+
+public class VehicleType implements Serializable, ComboBoxProperties {
 
 	private static final long serialVersionUID = 1L;
 
@@ -163,8 +165,13 @@ public class VehicleType implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "VehicleType(id=" + id + ",vehicleType=" + vehicleType + ",capacity=" + capacity + ",inputDate=" + inputDate
-				+ ",inputBy=" + inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate="
-				+ deletedDate + ",deletedBy=" + deletedBy + ')';
+		return "VehicleType(id=" + id + ",vehicleType=" + vehicleType + ",capacity=" + capacity + ",inputDate="
+				+ inputDate + ",inputBy=" + inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy
+				+ ",deletedDate=" + deletedDate + ",deletedBy=" + deletedBy + ')';
+	}
+
+	@Override
+	public Object getField() {
+		return vehicleType;
 	}
 }

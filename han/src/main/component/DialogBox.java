@@ -15,7 +15,7 @@ public class DialogBox extends JOptionPane {
 	}
 
 	public static void showEdit() {
-		JOptionPane.showMessageDialog(null, "Berhasil Menyimpan", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Berhasil Mengubah", "Informasi", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public static int showDeleteChoice() {

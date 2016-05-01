@@ -3,7 +3,9 @@ package module.sn.currency.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Currency implements Serializable {
+import module.util.ComboBoxProperties;
+
+public class Currency implements Serializable, ComboBoxProperties {
 
 	private static final long serialVersionUID = 1L;
 
@@ -184,5 +186,10 @@ public class Currency implements Serializable {
 		return "Currency(id=" + id + ",currencyAbbr=" + currencyAbbr + ",currencySymbol=" + currencySymbol
 				+ ",currency=" + currency + ",inputDate=" + inputDate + ",inputBy=" + inputBy + ",editDate=" + editDate
 				+ ",editedBy=" + editedBy + ",deletedDate=" + deletedDate + ",deletedBy=" + deletedBy + ')';
+	}
+	
+	@Override
+	public Object getField() {
+		return currencyAbbr + " - " + currency ;
 	}
 }

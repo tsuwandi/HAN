@@ -3,7 +3,9 @@ package module.sn.province.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Province implements Serializable {
+import module.util.ComboBoxProperties;
+
+public class Province implements Serializable, ComboBoxProperties {
 
 	private static final long serialVersionUID = 1L;
 
@@ -154,5 +156,10 @@ public class Province implements Serializable {
 		return "Province(id=" + id + ",province=" + province + ",inputDate=" + inputDate + ",inputBy=" + inputBy
 				+ ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate=" + deletedDate + ",deletedBy="
 				+ deletedBy + ')';
+	}
+
+	@Override
+	public Object getField() {
+		return province;
 	}
 }

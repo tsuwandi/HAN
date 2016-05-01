@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import main.component.DialogBox;
 import module.supplier.model.SuppCp;
 import module.util.EmailValidator;
 import module.util.JTextFieldLimit;
@@ -126,7 +127,12 @@ public class SuppCpDialog extends JDialog {
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doInsert();
+				if (doValidate() == true) {
+					int response = DialogBox.showInsertChoice();
+					if (response == JOptionPane.YES_OPTION) {
+						doInsert();
+					}
+				}
 			}
 		});
 		btnInsert.setBounds(459, 165, 100, 30);
@@ -177,39 +183,34 @@ public class SuppCpDialog extends JDialog {
 	}
 
 	protected void doInsert() {
-		if (doValidate() == true) {
-			//suppCp = new SuppCp();
-			suppCp.setName(txtName.getText());
-			suppCp.setDepartment(txtDepartment.getText());
-			suppCp.setPhone(txtPhone.getText());
-			suppCp.setEmail(txtEmail.getText());
 
-			try {
-				if (isEdit == false) {
-					if (supplierCreate != null)
-						supplierCreate.listOfSuppCp.add(suppCp);
-					else if (supplierEdit != null)
-						supplierEdit.listOfSuppCp.add(suppCp);
-					
-					JOptionPane.showMessageDialog(null, "Data berhasil ditambah", "Informasi",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else {
-					if (supplierCreate != null) {
-						supplierCreate.listOfSuppCp.set(index, suppCp);
-					} else if (supplierEdit != null) {
-						supplierEdit.listOfSuppCp.set(index, suppCp);
-					}
-					JOptionPane.showMessageDialog(null, "Data berhasil diubah", "Informasi",
-							JOptionPane.INFORMATION_MESSAGE);
+		// suppCp = new SuppCp();
+		suppCp.setName(txtName.getText());
+		suppCp.setDepartment(txtDepartment.getText());
+		suppCp.setPhone(txtPhone.getText());
+		suppCp.setEmail(txtEmail.getText());
+
+		try {
+			if (isEdit == false) {
+				if (supplierCreate != null)
+					supplierCreate.listOfSuppCp.add(suppCp);
+				else if (supplierEdit != null)
+					supplierEdit.listOfSuppCp.add(suppCp);
+
+				DialogBox.showInsert();
+			} else {
+				if (supplierCreate != null) {
+					supplierCreate.listOfSuppCp.set(index, suppCp);
+				} else if (supplierEdit != null) {
+					supplierEdit.listOfSuppCp.set(index, suppCp);
 				}
-				closeDialog();
-				
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Data gagal ditambah", "Error", JOptionPane.ERROR_MESSAGE);
+				DialogBox.showInsert();
 			}
-		} else {
-			return;
+			closeDialog();
+
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			DialogBox.showErrorException();
 		}
 	}
 

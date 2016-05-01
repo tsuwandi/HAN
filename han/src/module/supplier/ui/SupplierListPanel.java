@@ -1,6 +1,5 @@
 package module.supplier.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -11,19 +10,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumnModel;
 
 import controller.ServiceFactory;
+import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.supplier.model.Supplier;
 import module.util.JTextFieldLimit;
@@ -136,7 +132,7 @@ public class SupplierListPanel extends JPanel {
 			refreshTableSupplier();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Data gagal diload.", "Error", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 
 	}
@@ -145,9 +141,8 @@ public class SupplierListPanel extends JPanel {
 		try {
 			tblSupplier.setModel(new SupplierTableModel(listOfSupplier));
 		} catch (Exception e1) {
-			e1.getCause();
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, e1.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 	}
 
@@ -158,7 +153,7 @@ public class SupplierListPanel extends JPanel {
 			refreshTableSupplier();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Data gagal diload.", "Error", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 	}
 

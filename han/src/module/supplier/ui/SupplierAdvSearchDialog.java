@@ -3,7 +3,8 @@ package module.supplier.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -14,8 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.ServiceFactory;
+import main.component.ComboBox;
+import main.component.DialogBox;
 import module.sn.supptype.model.SuppType;
-import module.supplier.model.SuppCp;
 import module.supplier.model.Supplier;
 import module.util.JTextFieldLimit;
 
@@ -34,17 +36,16 @@ public class SupplierAdvSearchDialog extends JDialog {
 
 	JTextField txtSuppName;
 	JTextField txtSuppCode;
-	JComboBox<String> cbSuppType;
+	ComboBox<SuppType> cbSuppType;
 	JComboBox<String> cbSuppStatus;
 	JTextField txtPt;
 	JTextField txtNpwp;
 
 	JButton btnSearch;
 
-	private SuppCp suppCp;
 	private SupplierListPanel supplierList;
 
-	HashMap<String, Integer> mapSuppType;
+	List<SuppType> listOfSuppType;
 
 	public SupplierAdvSearchDialog(SupplierListPanel supplierList) {
 		this.supplierList = supplierList;
@@ -93,17 +94,16 @@ public class SupplierAdvSearchDialog extends JDialog {
 		lblSuppType.setBounds(305, 15, 150, 30);
 		getContentPane().add(lblSuppType);
 
-		mapSuppType = new HashMap<String, Integer>();
+		listOfSuppType = new ArrayList<SuppType>();
 		try {
-			mapSuppType = ServiceFactory.getSupplierBL().getAllSuppType();
+			listOfSuppType = ServiceFactory.getSupplierBL().getAllSuppType();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			DialogBox.showErrorException();
 		}
-		cbSuppType = new JComboBox<String>();
+		cbSuppType = new ComboBox<SuppType>();
 		cbSuppType.addItem("-- Pilih Tipe Supplier --");
-		for (String s : mapSuppType.keySet()) {
-			cbSuppType.addItem(s);
-		}
+		cbSuppType.setList(listOfSuppType);
 		cbSuppType.setBounds(410, 15, 150, 30);
 		getContentPane().add(cbSuppType);
 
@@ -148,7 +148,7 @@ public class SupplierAdvSearchDialog extends JDialog {
 			closeDialog();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Data gagal diload.", "Error", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 
 	}

@@ -2,17 +2,23 @@ package module.supplier.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import module.sn.bank.dao.BankDAO;
+import module.sn.bank.model.Bank;
 import module.sn.city.dao.CityDAO;
+import module.sn.city.model.City;
 import module.sn.currency.dao.CurrencyDAO;
+import module.sn.currency.model.Currency;
 import module.sn.province.dao.ProvinceDAO;
+import module.sn.province.model.Province;
 import module.sn.supptype.dao.SuppTypeDAO;
+import module.sn.supptype.model.SuppType;
 import module.sn.vehicletype.dao.VehicleTypeDAO;
+import module.sn.vehicletype.model.VehicleType;
 import module.supplier.dao.SuppAddressDAO;
 import module.supplier.dao.SuppCpDAO;
 import module.supplier.dao.SuppVehicleDAO;
@@ -30,7 +36,7 @@ public class SupplierBL {
 		this.dataSource = dataSource;
 	}
 
-	public HashMap<String, Integer> getAllBank() throws SQLException {
+	public List<Bank> getAllBank() throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -40,7 +46,7 @@ public class SupplierBL {
 		}
 	}
 
-	public HashMap<String, Integer> getAllCityByProvinceId(int provinceId) throws SQLException {
+	public List<City> getAllCityByProvinceId(int provinceId) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -50,7 +56,7 @@ public class SupplierBL {
 		}
 	}
 
-	public HashMap<String, Integer> getAllCurrency() throws SQLException {
+	public List<Currency> getAllCurrency() throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -60,7 +66,7 @@ public class SupplierBL {
 		}
 	}
 
-	public HashMap<String, Integer> getAllProvince() throws SQLException {
+	public List<Province> getAllProvince() throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -70,7 +76,7 @@ public class SupplierBL {
 		}
 	}
 
-	public HashMap<String, Integer> getAllSuppType() throws SQLException {
+	public List<SuppType> getAllSuppType() throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -80,7 +86,7 @@ public class SupplierBL {
 		}
 	}
 
-	public HashMap<String, Integer> getAllVehicleType() throws SQLException {
+	public List<VehicleType> getAllVehicleType() throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -276,7 +282,7 @@ public class SupplierBL {
 			con.close();
 		}
 	}
-	
+
 	public List<Supplier> getAllSupplierBySimpleSearch(String value) throws SQLException {
 		Connection con = null;
 		try {
@@ -286,7 +292,7 @@ public class SupplierBL {
 			con.close();
 		}
 	}
-	
+
 	public List<Supplier> getAllSupplierByAdvancedSearch(Supplier supplier) throws SQLException {
 		Connection con = null;
 		try {

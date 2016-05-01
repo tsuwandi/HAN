@@ -181,7 +181,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 			listOfChamber = ServiceFactory.getDryInBL().getAllChamber();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Terjadi kesalahan pada sistem.", "Error", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 
 		cbChamber = new ComboBox<Chamber>();
@@ -230,7 +230,10 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		btnDeletePicTally = new JButton("Hapus");
 		btnDeletePicTally.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				doDeletePicTally();
+				int response = DialogBox.showDeleteChoice();
+				if (response == JOptionPane.YES_OPTION) {
+					doDeletePicTally();
+				}
 			}
 		});
 		btnDeletePicTally.setBounds(925, 200, 100, 30);
@@ -326,7 +329,10 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		btnInsertDryInPallet = new JButton("Insert");
 		btnInsertDryInPallet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doInsertDryInPallet();
+				int response = DialogBox.showInsertChoice();
+				if (response == JOptionPane.YES_OPTION) {
+					doInsertDryInPallet();
+				}
 			}
 		});
 		btnInsertDryInPallet.setBounds(220, 540, 100, 30);

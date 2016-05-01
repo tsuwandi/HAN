@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
+import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.supplier.model.SuppAddress;
 import module.supplier.model.SuppCp;
@@ -393,7 +394,10 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		btnDelete = new JButton("Hapus");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				doDelete();
+				int response = DialogBox.showInsertChoice();
+				if (response == JOptionPane.YES_OPTION) {
+					doDelete();
+				}
 			}
 		});
 		btnDelete.setBounds(820, 1240, 100, 30);
@@ -453,7 +457,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Data gagal diload.", "Error", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 	}
 
@@ -462,7 +466,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 			tblSuppAddress.setModel(new SuppAddressTableModel(listOfSuppAddress));
 		} catch (Exception e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, e1.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 	}
 
@@ -471,7 +475,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 			tblSuppCp.setModel(new SuppCpTableModel(listOfSuppCp));
 		} catch (Exception e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, e1.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 	}
 
@@ -480,7 +484,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 			tblSuppVehicle.setModel(new SuppVehicleTableModel(listOfSuppVehicle));
 		} catch (Exception e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, e1.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 	}
 
@@ -491,11 +495,11 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 	protected void doDelete() {
 		try {
 			ServiceFactory.getSupplierBL().deleteAll(supplier);
-			JOptionPane.showMessageDialog(null, "Data berhasil dihapus", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+			DialogBox.showDelete();
 			MainPanel.changePanel("module.supplier.ui.SupplierListPanel");
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Data gagal dihapus.", "Error", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 	}
 
