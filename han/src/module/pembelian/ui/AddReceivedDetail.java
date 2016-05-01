@@ -32,15 +32,29 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 	JLabel supplierLbl;
 	JLabel licensePlateLbl;
 	JLabel driverLbl;
-	JLabel itemOriginLbl;
+	JLabel woodDomicileLbl;
+	JLabel docNoLbl;
+	JLabel woodResourceLbl;
+	JLabel woodTypeLbl;
+	JLabel firstCodeSeparator;
+	JLabel secondCodeSeparator;
+	JLabel thirdCodeSeparator;
 	
 	JTextField receivedCodeField;
+	JTextField receivedCodeDateField;
+	JTextField receivedCodeMonthField;
+	JTextField receivedCodeYearField;
+	
 	JTextField ritNumberField;
 	JTextField driverField;
-	JTextField itemOriginField;
-	
+	JTextField woodDomicileField;
 	JTextField supplierTextField;
+	JTextField woodResourceField;
+	
+	
 	ComboBox<SupplierVehicle> licensePlateComboBox;
+	ComboBox<SupplierVehicle> woodTypeComboBox;
+	ComboBox<SupplierVehicle> docNoComboBox;
 	
 	JTable palletTable;
 	JTable dockingPICTable;
@@ -66,6 +80,8 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 	List<SupplierVehicle> suppVehicles;
 	
 	JPanel parent;
+	JScrollPane scrollPane;
+	JPanel containerPnl;
 	
 	public AddReceivedDetail(){
 		setLayout(null);
@@ -112,9 +128,9 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		driverLbl.setBounds(450,120,150,30);
 		add(driverLbl);
 		
-		itemOriginLbl = new JLabel("Asal Barang");
-		itemOriginLbl.setBounds(450,170,150,30);
-		add(itemOriginLbl);
+		woodDomicileLbl = new JLabel("Asal Barang");
+		woodDomicileLbl.setBounds(450,170,150,30);
+		add(woodDomicileLbl);
 		
 		licensePlateComboBox = new ComboBox<SupplierVehicle>();
 		licensePlateComboBox.setBounds(620,70,150,30);
@@ -124,9 +140,9 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		driverField.setBounds(620, 120, 150, 30);
 		add(driverField);
 		
-		itemOriginField = new JTextField();
-		itemOriginField.setBounds(620, 170, 150, 30);
-		add(itemOriginField);
+		woodDomicileField = new JTextField();
+		woodDomicileField.setBounds(620, 170, 150, 30);
+		add(woodDomicileField);
 		
 		pallets = new ArrayList<>();
 		palletTableModel = new PalletTableModel(pallets);

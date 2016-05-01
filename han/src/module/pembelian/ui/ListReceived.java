@@ -14,7 +14,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import main.component.DialogBox;
+import main.panel.MainPanel;
 import model.User;
 import module.pembelian.model.Received;
 
@@ -71,8 +71,8 @@ public class ListReceived extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				Main.changePanel("module.pembelian.ui.AddReceivedDetail");
-				DialogBox.showDeleteChoice();
+				MainPanel.changePanel("module.pembelian.ui.AddReceivedDetail");
+//				DialogBox.showDeleteChoice();
 				
 			}
 		});
