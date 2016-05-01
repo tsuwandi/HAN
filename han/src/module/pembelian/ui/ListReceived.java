@@ -71,7 +71,7 @@ public class ListReceived extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.pembelian.ui.AddReceivedDetail");
+				MainPanel.changePanel("module.pembelian.ui.EditReceivedDetail");
 //				DialogBox.showDeleteChoice();
 				
 			}

@@ -31,7 +31,7 @@ import module.pembelian.model.SupplierVehicle;
 import module.pembelian.model.WoodType;
 import module.util.Bridging;
 
-public class AddReceivedDetail extends JPanel implements Bridging{
+public class EditReceivedDetail extends JPanel implements Bridging{
 	
 	JLabel receivedCodeLbl;
 	JLabel receivedDateLbl;
@@ -78,6 +78,9 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 	JButton deletePicBtn;
 	
 	JButton saveBtn;
+	JButton editBtn;
+	JButton deleteBtn;
+	JButton printBtn;
 	
 	PalletTableModel palletTableModel;
 	PicDockingTableModel picDockingTableModel;
@@ -92,7 +95,7 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 	JScrollPane scrollPane;
 	JPanel containerPnl;
 	
-	public AddReceivedDetail(){
+	public EditReceivedDetail(){
 		setLayout(null);
 		this.parent = this;
 		
@@ -261,6 +264,17 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		saveBtn.setBounds(950,750,100,30);
 		containerPnl.add(saveBtn);
 		
+		editBtn = new JButton("Edit");
+		editBtn.setBounds(950,750,100,30);
+		containerPnl.add(editBtn);
+		
+		deleteBtn = new JButton("Delete");
+		deleteBtn.setBounds(840,750,100,30);
+		containerPnl.add(deleteBtn);
+		
+		printBtn = new JButton("Print");
+		printBtn.setBounds(730,750,100,30);
+		containerPnl.add(printBtn);
 		
 		
 		addPalletBtn.addActionListener(new ActionListener() {
@@ -304,13 +318,18 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		ritNumberField.setEnabled(false);
+		receivedDateChooser.setEnabled(false);
+		receivedCodeField.setEnabled(false);
+		receivedCodeDateField.setEnabled(false);
+		receivedCodeMonthField.setEnabled(false);
+		receivedCodeYearField.setEnabled(false);
 		woodResourceField.setEnabled(false);
 		woodDomicileField.setEnabled(false);
 		supplierTextField.setEnabled(false);
 		receivedCodeDateField.setText(new SimpleDateFormat("dd").format(new Date()));
 		receivedCodeMonthField.setText(new SimpleDateFormat("MM").format(new Date()));
 		receivedCodeYearField.setText(new SimpleDateFormat("yy").format(new Date()));
-	
 	}
 	
 	public void setTablePic(List<Employee> picDockings){
