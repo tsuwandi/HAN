@@ -273,10 +273,10 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		btnDeleteSuppAddress = new JButton("Hapus");
 		btnDeleteSuppAddress.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int response = DialogBox.showDeleteChoice();
-				if (response == JOptionPane.YES_OPTION) {
-					doDeleteSuppAddress();
-				}
+				// int response = DialogBox.showDeleteChoice();
+				// if (response == JOptionPane.YES_OPTION) {
+				doDeleteSuppAddress();
+				// }
 			}
 		});
 		btnDeleteSuppAddress.setBounds(925, 330, 100, 30);
@@ -331,10 +331,10 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		btnDeleteSuppCp = new JButton("Hapus");
 		btnDeleteSuppCp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int response = DialogBox.showDeleteChoice();
-				if (response == JOptionPane.YES_OPTION) {
-					doDeleteSuppCp();
-				}
+				// int response = DialogBox.showDeleteChoice();
+				// if (response == JOptionPane.YES_OPTION) {
+				doDeleteSuppCp();
+				// }
 			}
 		});
 		btnDeleteSuppCp.setBounds(925, 540, 100, 30);
@@ -390,10 +390,10 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		btnDeleteSuppCp = new JButton("Hapus");
 		btnDeleteSuppCp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int response = DialogBox.showDeleteChoice();
-				if (response == JOptionPane.YES_OPTION) {
-					doDeleteSuppVehicle();
-				}
+				// int response = DialogBox.showDeleteChoice();
+				// if (response == JOptionPane.YES_OPTION) {
+				doDeleteSuppVehicle();
+				// }
 			}
 		});
 		btnDeleteSuppCp.setBounds(925, 750, 100, 30);
@@ -519,6 +519,9 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		btnSave = new JButton("Simpan");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (doValidate() == false) {
+					return;
+				}
 				int response = DialogBox.showInsertChoice();
 				if (response == JOptionPane.YES_OPTION) {
 					doSave();
@@ -583,10 +586,6 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 	}
 
 	protected void doSave() {
-		if (doValidate() == false) {
-			return;
-		}
-
 		supplier = new Supplier();
 		supplier.setSuppCode(txtSuppCode.getText());
 		supplier.setSuppName(txtSuppName.getText());
@@ -621,7 +620,8 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		suppAddressDialog.setVisible(true);
 	}
 
-	protected void showEditSuppAddressDialog(SuppAddress suppAddress, SupplierCreatePanel supplierCreate, Integer index) {
+	protected void showEditSuppAddressDialog(SuppAddress suppAddress, SupplierCreatePanel supplierCreate,
+			Integer index) {
 		SuppAddressDialog suppAddressDialog = new SuppAddressDialog(true, suppAddress, supplierCreate, index);
 		suppAddressDialog.setTitle("Alamat");
 		suppAddressDialog.setLocationRelativeTo(null);
@@ -689,7 +689,8 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		suppVehicleDialog.setVisible(true);
 	}
 
-	protected void showEditSuppVehicleDialog(SuppVehicle suppVehicle, SupplierCreatePanel supplierCreate, Integer index) {
+	protected void showEditSuppVehicleDialog(SuppVehicle suppVehicle, SupplierCreatePanel supplierCreate,
+			Integer index) {
 		SuppVehicleDialog suppVehicleDialog = new SuppVehicleDialog(true, suppVehicle, supplierCreate, index);
 		suppVehicleDialog.setTitle("Kendaraan");
 		suppVehicleDialog.setLocationRelativeTo(null);

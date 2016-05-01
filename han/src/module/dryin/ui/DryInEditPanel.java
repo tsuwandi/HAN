@@ -230,10 +230,10 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		btnDeletePicTally = new JButton("Hapus");
 		btnDeletePicTally.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int response = DialogBox.showDeleteChoice();
-				if (response == JOptionPane.YES_OPTION) {
+//				int response = DialogBox.showDeleteChoice();
+//				if (response == JOptionPane.YES_OPTION) {
 					doDeletePicTally();
-				}
+//				}
 			}
 		});
 		btnDeletePicTally.setBounds(925, 200, 100, 30);
@@ -329,10 +329,10 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		btnInsertDryInPallet = new JButton("Insert");
 		btnInsertDryInPallet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int response = DialogBox.showInsertChoice();
-				if (response == JOptionPane.YES_OPTION) {
+//				int response = DialogBox.showInsertChoice();
+//				if (response == JOptionPane.YES_OPTION) {
 					doInsertDryInPallet();
-				}
+//				}
 			}
 		});
 		btnInsertDryInPallet.setBounds(220, 540, 100, 30);
@@ -384,6 +384,10 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		btnSave = new JButton("Simpan");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (doValidate() == false) {
+					return;
+				}
+				
 				int response = DialogBox.showInsertChoice();
 				if (response == JOptionPane.YES_OPTION) {
 					doSave();
@@ -545,9 +549,6 @@ public class DryInEditPanel extends JPanel implements Bridging {
 	}
 
 	public void doSave() {
-		if (doValidate() == false) {
-			return;
-		}
 
 		dryIn.setDryInCode(txtDryInCode.getText());
 		dryIn.setDateIn(

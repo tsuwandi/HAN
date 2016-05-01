@@ -127,12 +127,14 @@ public class SuppCpDialog extends JDialog {
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (doValidate() == true) {
-					int response = DialogBox.showInsertChoice();
-					if (response == JOptionPane.YES_OPTION) {
-						doInsert();
-					}
+				if (doValidate() == false) {
+					return;
 				}
+//					int response = DialogBox.showInsertChoice();
+//					if (response == JOptionPane.YES_OPTION) {
+						doInsert();
+//					}
+//				}
 			}
 		});
 		btnInsert.setBounds(459, 165, 100, 30);

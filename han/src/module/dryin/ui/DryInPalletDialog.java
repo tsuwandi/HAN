@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -119,7 +120,10 @@ public class DryInPalletDialog extends JDialog {
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doInsert();
+//				int response = DialogBox.showInsertChoice();
+//				if (response == JOptionPane.YES_OPTION) {
+					doInsert();
+//				}
 			}
 		});
 		btnInsert.setBounds(480, 250, 95, 30);

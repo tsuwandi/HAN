@@ -175,7 +175,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 			listOfChamber = ServiceFactory.getDryOutBL().getAllChamber();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Terjadi kesalahan pada sistem.", "Error", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 
 		cbChamber = new ComboBox<Chamber>();
@@ -274,7 +274,10 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 		btnInsertDryOutPallet = new JButton("Insert");
 		btnInsertDryOutPallet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// int response = DialogBox.showInsertChoice();
+				// if (response == JOptionPane.YES_OPTION) {
 				doInsertDryOutPallet();
+				// }
 			}
 		});
 		btnInsertDryOutPallet.setBounds(220, 340, 100, 30);
@@ -326,6 +329,10 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 		btnSave = new JButton("Simpan");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (doValidate() == false) {
+					return;
+				}
+				
 				int response = DialogBox.showInsertChoice();
 				if (response == JOptionPane.YES_OPTION) {
 					doSave();
@@ -485,10 +492,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 	}
 
 	public void doSave() {
-		if (doValidate() == false) {
-			return;
-		}
-		
+
 		dryOut.setDryOutCode(txtDryOutCode.getText());
 		dryOut.setDateOut(
 				DateUtil.setTimeStamp(dcDateOut.getDate(), Integer.parseInt(cbDateInHour.getSelectedItem().toString()),
@@ -725,7 +729,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 	public void setListOfDryOutPallet(List<DryOutPallet> listOfDryOutPallet) {
 		this.listOfDryOutPallet = listOfDryOutPallet;
 	}
-	
+
 	protected void loadData(Integer dryOutId) {
 		try {
 			dryOut = ServiceFactory.getDryOutBL().getDryOutById(dryOutId);

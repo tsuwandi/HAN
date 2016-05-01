@@ -181,7 +181,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		lblSuppType = new JLabel("<html>Tipe Supplier <font color=\"red\">*</font></html>");
 		lblSuppType.setBounds(50, 240, 150, 30);
 		panel.add(lblSuppType);
-		
+
 		listOfSuppType = new ArrayList<SuppType>();
 		try {
 			listOfSuppType = ServiceFactory.getSupplierBL().getAllSuppType();
@@ -275,10 +275,10 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		btnDeleteSuppAddress = new JButton("Hapus");
 		btnDeleteSuppAddress.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int response = DialogBox.showInsertChoice();
-				if (response == JOptionPane.YES_OPTION) {
-					doDeleteSuppAddress();
-				}
+				// int response = DialogBox.showDeleteChoice();
+				// if (response == JOptionPane.YES_OPTION) {
+				doDeleteSuppAddress();
+				// }
 			}
 		});
 		btnDeleteSuppAddress.setBounds(925, 330, 100, 30);
@@ -333,10 +333,10 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		btnDeleteSuppCp = new JButton("Hapus");
 		btnDeleteSuppCp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int response = DialogBox.showInsertChoice();
-				if (response == JOptionPane.YES_OPTION) {
-					doDeleteSuppCp();
-				}
+				// int response = DialogBox.showDeleteChoice();
+				// if (response == JOptionPane.YES_OPTION) {
+				doDeleteSuppCp();
+				// }
 			}
 		});
 		btnDeleteSuppCp.setBounds(925, 540, 100, 30);
@@ -391,10 +391,10 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		btnDeleteSuppCp = new JButton("Hapus");
 		btnDeleteSuppCp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int response = DialogBox.showInsertChoice();
-				if (response == JOptionPane.YES_OPTION) {
-					doDeleteSuppVehicle();
-				}
+				// int response = DialogBox.showInsertChoice();
+				// if (response == JOptionPane.YES_OPTION) {
+				doDeleteSuppVehicle();
+				// }
 			}
 		});
 		btnDeleteSuppCp.setBounds(925, 750, 100, 30);
@@ -518,10 +518,15 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		btnSave = new JButton("Simpan");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (doValidate() == false) {
+					return;
+				}
+				
 				int response = DialogBox.showInsertChoice();
 				if (response == JOptionPane.YES_OPTION) {
 					doSave();
 				}
+				
 			}
 		});
 		btnSave.setBounds(925, 1240, 100, 30);
@@ -603,10 +608,6 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	}
 
 	protected void doSave() {
-		if (doValidate() == false) {
-			return;
-		}
-
 		supplier = new Supplier();
 		supplier.setSuppCode(txtSuppCode.getText());
 		supplier.setSuppName(txtSuppName.getText());
