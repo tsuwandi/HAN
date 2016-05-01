@@ -527,7 +527,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			isValid = false;
 		} else {
 			try {
-				if (ServiceFactory.getSupplierBL().isSuppCodeExists(txtDryInCode.getText()) > 0) {
+				if (ServiceFactory.getDryInBL().isDryInCodeExists(txtDryInCode.getText()) > 0) {
 					lblErrorDryInCode.setText("Kode Pemasukan sudah pernah diinput.");
 					isValid = false;
 				}
@@ -725,6 +725,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		makeDefaultDatePalletCardCode();
 		txtOrdinal.setText("");
 		txtTotalVolumePalletCard.setText("");
+		lblErrorPalletCard.setText("");
 		palletCard = null;
 	}
 	

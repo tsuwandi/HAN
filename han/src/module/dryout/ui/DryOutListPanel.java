@@ -1,4 +1,4 @@
-package module.dryin.ui;
+package module.dryout.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -22,14 +22,12 @@ import javax.swing.table.AbstractTableModel;
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.dryin.model.DryIn;
+import module.dryout.model.DryOut;
 import module.util.DateUtil;
-import module.util.JTextFieldLimit;
 
-public class DryInListPanel extends JPanel {
+public class DryOutListPanel extends JPanel {
 
 	JButton btnCreateNew;
-	JButton btnExport;
 	JButton btnAdvancedSearch;
 	JButton btnSearch;
 
@@ -38,19 +36,19 @@ public class DryInListPanel extends JPanel {
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
 
-	JScrollPane scrollPaneDryIn;
+	JScrollPane scrollPaneDryOut;
 
-	private DryInTableModel dryInTableModel;
-	public List<DryIn> listOfDryIn = new ArrayList<DryIn>();
+	private DryOutTableModel dryOutTableModel;
+	public List<DryOut> listOfDryOut = new ArrayList<DryOut>();
 
-	JTable tblDryIn;
+	JTable tblDryOut;
 
-	private DryInListPanel dryInListPanel;
+	private DryOutListPanel dryOutListPanel;
 
 	private static final long serialVersionUID = 1L;
 
-	public DryInListPanel() {
-		dryInListPanel = this;
+	public DryOutListPanel() {
+		dryOutListPanel = this;
 		setLayout(null);
 
 		setPreferredSize(new Dimension(1024, 768));
@@ -60,7 +58,7 @@ public class DryInListPanel extends JPanel {
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		lblHeader = new JLabel("PEMASUKAN");
+		lblHeader = new JLabel("PENGELUARAN");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -68,25 +66,16 @@ public class DryInListPanel extends JPanel {
 		btnCreateNew = new JButton("Create New");
 		btnCreateNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MainPanel.changePanel("module.dryin.ui.DryInCreatePanel");
+				MainPanel.changePanel("module.dryout.ui.DryOutCreatePanel");
 			}
 		});
-		btnCreateNew.setBounds(750, 80, 100, 40);
+		btnCreateNew.setBounds(850, 80, 100, 40);
 		add(btnCreateNew);
-
-		btnExport = new JButton("Eksport");
-		btnExport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		btnExport.setBounds(850, 80, 100, 40);
-		add(btnExport);
 
 		btnAdvancedSearch = new JButton("<html><center>Advanced <br> Search<center></html>");
 		btnAdvancedSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showAdvancedSearchDialog(dryInListPanel);
+				showAdvancedSearchDialog(dryOutListPanel);
 			}
 		});
 		btnAdvancedSearch.setBounds(950, 80, 100, 40);
@@ -105,15 +94,15 @@ public class DryInListPanel extends JPanel {
 		btnSearch.setBounds(950, 130, 100, 40);
 		add(btnSearch);
 
-		scrollPaneDryIn = new JScrollPane();
-		scrollPaneDryIn.setBounds(50, 200, 1000, 200);
-		add(scrollPaneDryIn);
+		scrollPaneDryOut = new JScrollPane();
+		scrollPaneDryOut.setBounds(50, 200, 1000, 200);
+		add(scrollPaneDryOut);
 
-		dryInTableModel = new DryInTableModel(new ArrayList<DryIn>());
-		tblDryIn = new JTable(dryInTableModel);
-		scrollPaneDryIn.setViewportView(tblDryIn);
+		dryOutTableModel = new DryOutTableModel(new ArrayList<DryOut>());
+		tblDryOut = new JTable(dryOutTableModel);
+		scrollPaneDryOut.setViewportView(tblDryOut);
 
-		tblDryIn.addMouseListener(new MouseAdapter() {
+		tblDryOut.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -122,15 +111,15 @@ public class DryInListPanel extends JPanel {
 					int column = target.getSelectedColumn();
 
 					if (column == 4)
-						MainPanel.changePanel("module.dryin.ui.DryInViewPanel", listOfDryIn.get(row));
+						MainPanel.changePanel("module.dryout.ui.DryOutViewPanel", listOfDryOut.get(row));
 				}
 			}
 		});
 
 		try {
-			listOfDryIn = new ArrayList<DryIn>();
-			listOfDryIn = ServiceFactory.getDryInBL().getAllDryIn();
-			refreshTableDryIn();
+			listOfDryOut = new ArrayList<DryOut>();
+			listOfDryOut = ServiceFactory.getDryOutBL().getAllDryOut();
+			refreshTableDryOut();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Data gagal diload.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -138,9 +127,9 @@ public class DryInListPanel extends JPanel {
 
 	}
 
-	public void refreshTableDryIn() {
+	public void refreshTableDryOut() {
 		try {
-			tblDryIn.setModel(new DryInTableModel(listOfDryIn));
+			tblDryOut.setModel(new DryOutTableModel(listOfDryOut));
 		} catch (Exception e1) {
 			DialogBox.showErrorException();
 		}
@@ -148,9 +137,9 @@ public class DryInListPanel extends JPanel {
 
 	public void doSearch(String value) {
 		try {
-			listOfDryIn = new ArrayList<DryIn>();
-			listOfDryIn = ServiceFactory.getDryInBL().getAllDryInBySimpleSearch(value);
-			refreshTableDryIn();
+			listOfDryOut = new ArrayList<DryOut>();
+			listOfDryOut = ServiceFactory.getDryOutBL().getAllDryOutBySimpleSearch(value);
+			refreshTableDryOut();
 		} catch (SQLException e1) {
 			DialogBox.showErrorException();
 		}
@@ -159,11 +148,12 @@ public class DryInListPanel extends JPanel {
 	/**
 	 * Method to display add supp cp dialog
 	 */
-	protected void showAdvancedSearchDialog(DryInListPanel dryInListPanel) {
-//		DryInAdvSearchDialog dryInAdvSearchDialog = new DryInAdvSearchDialog(dryInListPanel);
-//		dryInAdvSearchDialog.setTitle("Advanced Search");
-//		dryInAdvSearchDialog.setLocationRelativeTo(null);
-//		dryInAdvSearchDialog.setVisible(true);
+	protected void showAdvancedSearchDialog(DryOutListPanel dryOutListPanel) {
+		// DryOutAdvSearchDialog dryOutAdvSearchDialog = new
+		// DryOutAdvSearchDialog(dryOutListPanel);
+		// dryOutAdvSearchDialog.setTitle("Advanced Search");
+		// dryOutAdvSearchDialog.setLocationRelativeTo(null);
+		// dryOutAdvSearchDialog.setVisible(true);
 	}
 
 	/**
@@ -172,14 +162,14 @@ public class DryInListPanel extends JPanel {
 	 * @author TSI
 	 *
 	 */
-	class DryInTableModel extends AbstractTableModel {
+	class DryOutTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 1L;
 
-		private List<DryIn> listOfDryIn;
+		private List<DryOut> listOfDryOut;
 
-		public DryInTableModel(List<DryIn> listOfDryIn) {
-			this.listOfDryIn = listOfDryIn;
+		public DryOutTableModel(List<DryOut> listOfDryOut) {
+			this.listOfDryOut = listOfDryOut;
 		}
 
 		/**
@@ -188,7 +178,7 @@ public class DryInListPanel extends JPanel {
 		 * @return int
 		 */
 		public int getRowCount() {
-			return listOfDryIn.size();
+			return listOfDryOut.size();
 		}
 
 		/**
@@ -229,12 +219,12 @@ public class DryInListPanel extends JPanel {
 		 * @return ({@link SupplierAddress}) Object
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			DryIn p = listOfDryIn.get(rowIndex);
+			DryOut p = listOfDryOut.get(rowIndex);
 			switch (columnIndex) {
 			case 0:
-				return p.getDryInCode();
+				return p.getDryOutCode();
 			case 1:
-				return DateUtil.setFormatedDate(DateUtil.toDate(p.getDateIn()));
+				return DateUtil.setFormatedDate(DateUtil.toDate(p.getDateOut()));
 			case 2:
 				return p.getChamber().getChamber();
 			case 3:
@@ -256,9 +246,9 @@ public class DryInListPanel extends JPanel {
 		public String getColumnName(int column) {
 			switch (column) {
 			case 0:
-				return "Kode Pemasukan";
+				return "Kode Pengeluaran";
 			case 1:
-				return "Tanggal Masuk";
+				return "Tanggal Keluar";
 			case 2:
 				return "Chamber";
 			case 3:

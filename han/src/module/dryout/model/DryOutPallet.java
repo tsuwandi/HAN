@@ -3,6 +3,8 @@ package module.dryout.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import module.pembelian.model.Pallet;
+
 public class DryOutPallet implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -166,8 +168,23 @@ public class DryOutPallet implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "DryOutPallet(id=" + id + ",dryOutCode=" + dryOutCode + ",palletCardCode=" + palletCardCode + ",inputDate="
-				+ inputDate + ",inputBy=" + inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy
+		return "DryOutPallet(id=" + id + ",dryOutCode=" + dryOutCode + ",palletCardCode=" + palletCardCode
+				+ ",inputDate=" + inputDate + ",inputBy=" + inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy
 				+ ",deletedDate=" + deletedDate + ",deletedBy=" + deletedBy + ')';
 	}
+
+	private Pallet palletCard;
+
+	public Pallet getPalletCard() {
+		if (palletCard == null)
+			palletCard = new Pallet();
+		return palletCard;
+	}
+
+	public void setPalletCard(Pallet palletCard) {
+		if (palletCard == null)
+			palletCard = new Pallet();
+		this.palletCard = palletCard;
+	}
+
 }

@@ -1,15 +1,17 @@
 package controller;
 
 import module.dryin.bl.DryInBL;
+import module.dryout.bl.DryOutBL;
 import module.employee.bl.EmployeeBL;
 import module.supplier.bl.SupplierBL;
 
 public class ServiceFactory {
-	//private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
+	// private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
 
 	private static SupplierBL supplierBL = null;
 	private static EmployeeBL employeeBL = null;
 	private static DryInBL dryInBL = null;
+	private static DryOutBL dryOutBL = null;
 
 	/**
 	 * Method to init or return {@link SupplierBL}
@@ -22,7 +24,7 @@ public class ServiceFactory {
 		}
 		return supplierBL;
 	}
-	
+
 	/**
 	 * Method to init or return {@link EmployeeBL}
 	 * 
@@ -34,7 +36,7 @@ public class ServiceFactory {
 		}
 		return employeeBL;
 	}
-	
+
 	/**
 	 * Method to init or return {@link DryInBL}
 	 * 
@@ -45,5 +47,17 @@ public class ServiceFactory {
 			dryInBL = new DryInBL(DataSourceFactory.getDataSource());
 		}
 		return dryInBL;
+	}
+
+	/**
+	 * Method to init or return {@link DryOutBL}
+	 * 
+	 * @return {@link DryOutBL}
+	 */
+	public static DryOutBL getDryOutBL() {
+		if (dryOutBL == null) {
+			dryOutBL = new DryOutBL(DataSourceFactory.getDataSource());
+		}
+		return dryOutBL;
 	}
 }

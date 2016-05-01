@@ -66,7 +66,7 @@ public class MenuPanel extends JPanel {
 			}
 		});
 
-		menuBtn4 = new JButton("Pengeringan");
+		menuBtn4 = new JButton("Pemasukan");
 		menuBtn4.setBounds(0, 105, 200, 35);
 		menuBtn4.addActionListener(new ActionListener() {
 
@@ -77,8 +77,16 @@ public class MenuPanel extends JPanel {
 			}
 		});
 
-		menuBtn5 = new JButton("Menu5");
+		menuBtn5 = new JButton("Pengeluaran");
 		menuBtn5.setBounds(0, 140, 200, 35);
+		menuBtn5.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				MainPanel.changePanel("module.dryout.ui.DryOutListPanel");
+			}
+		});
 
 		menuBtn6 = new JButton("Menu6");
 		menuBtn6.setBounds(0, 175, 200, 35);

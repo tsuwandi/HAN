@@ -53,7 +53,7 @@ public class DryInBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PalletDAO(con).getAll();
+			return new PalletDAO(con).getAllForDryInPallet();
 		} finally {
 			con.close();
 		}
@@ -63,7 +63,7 @@ public class DryInBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PalletDAO(con).getAllBySearch(value);
+			return new PalletDAO(con).getAllForDryInPalletBySearch(value);
 		} finally {
 			con.close();
 		}
@@ -83,7 +83,7 @@ public class DryInBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PalletDAO(con).getPalletByPalletCardCode(palletCardCode);
+			return new PalletDAO(con).getPalletForDryInPalletByPalletCardCode(palletCardCode);
 		} finally {
 			con.close();
 		}
@@ -163,7 +163,6 @@ public class DryInBL {
 			}
 
 			for (DryInPallet dip : listOfDryInPallet) {
-				System.out.println(dip);
 				if (dip.getId() == 0) {
 					dip.setDryInCode(dryIn.getDryInCode());
 					new DryInPalletDAO(con).save(dip);

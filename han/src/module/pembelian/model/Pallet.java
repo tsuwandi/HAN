@@ -1,5 +1,7 @@
 package module.pembelian.model;
 
+import java.sql.Timestamp;
+
 public class Pallet {
 	int id;
 	String palletCardCode;
@@ -156,6 +158,7 @@ public class Pallet {
 	private Received received;
 	private boolean isFlag;
 	private int rowNum;
+	private Timestamp dateIn;
 
 	public Received getReceived() {
 		if (received == null)
@@ -183,5 +186,13 @@ public class Pallet {
 
 	public void setRowNum(int rowNum) {
 		this.rowNum = rowNum;
+	}
+
+	public Timestamp getDateIn() {
+		return dateIn;
+	}
+
+	public void setDateIn(Timestamp dateIn) {
+		this.dateIn = dateIn;
 	}
 }
