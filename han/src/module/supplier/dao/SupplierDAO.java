@@ -258,7 +258,7 @@ public class SupplierDAO {
 			insertStatement.setString(4, supplier.getNpwp());
 			insertStatement.setInt(5, supplier.getSuppTypeId());
 			insertStatement.setString(6, supplier.getSuppStatus());
-			insertStatement.setInt(7, supplier.getDefaultTax());
+			insertStatement.setDouble(7, supplier.getDefaultTax());
 			insertStatement.setString(8, supplier.getAccountNo());
 			insertStatement.setInt(9, supplier.getBankId());
 			insertStatement.setString(10, supplier.getAccountName());
@@ -282,7 +282,7 @@ public class SupplierDAO {
 			updateStatement.setString(3, supplier.getNpwp());
 			updateStatement.setInt(4, supplier.getSuppTypeId());
 			updateStatement.setString(5, supplier.getSuppStatus());
-			updateStatement.setInt(6, supplier.getDefaultTax());
+			updateStatement.setDouble(6, supplier.getDefaultTax());
 			updateStatement.setString(7, supplier.getAccountNo());
 			updateStatement.setInt(8, supplier.getBankId());
 			updateStatement.setString(9, supplier.getAccountName());

@@ -4,7 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import module.sn.chamber.model.Chamber;
 
@@ -20,9 +21,9 @@ public class ChamberDAO {
 		this.connection = connection;
 	}
 
-	public HashMap<String, Integer> getAll() throws SQLException {
+	public List<Chamber> getAll() throws SQLException {
 
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		List<Chamber> chambers = new ArrayList<Chamber>();
 
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery);
@@ -32,7 +33,7 @@ public class ChamberDAO {
 				Chamber chamber = new Chamber();
 				chamber.setId(rs.getInt("id"));
 				chamber.setChamber(rs.getString("chamber"));
-				map.put(chamber.getChamber(), chamber.getId());
+				chambers.add(chamber);
 			}
 
 		} catch (SQLException ex) {
@@ -40,7 +41,7 @@ public class ChamberDAO {
 			throw new SQLException(ex.getMessage());
 		}
 
-		return map;
+		return chambers;
 	}
 
 }

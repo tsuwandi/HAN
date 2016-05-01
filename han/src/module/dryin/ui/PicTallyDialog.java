@@ -12,7 +12,6 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -20,8 +19,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
+import main.component.DialogBox;
 import module.dryin.model.PicTally;
 import module.employee.model.Employee;
+import module.util.DateUtil;
 
 public class PicTallyDialog extends JDialog {
 
@@ -39,10 +40,12 @@ public class PicTallyDialog extends JDialog {
 	List<Employee> listOfEmployee;
 
 	private DryInCreatePanel dryInCreatePanel;
+	private DryInEditPanel dryInEditPanel;
 
-	public PicTallyDialog(DryInCreatePanel dryInCreatePanel) {
+	public PicTallyDialog(DryInCreatePanel dryInCreatePanel, DryInEditPanel dryInEditPanel) {
 		this.dryInCreatePanel = dryInCreatePanel;
-	
+		this.dryInEditPanel = dryInEditPanel;
+
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 500, 330);
@@ -73,8 +76,22 @@ public class PicTallyDialog extends JDialog {
 		try {
 			listOfEmployee = new ArrayList<Employee>();
 			listOfEmployee = ServiceFactory.getDryInBL().getAllEmployee();
+			if (dryInCreatePanel != null) {
+				for (PicTally picTally : dryInCreatePanel.getListOfPicTally()) {
+					Integer index = listOfEmployee.indexOf(picTally.getEmployee());
+					listOfEmployee.set(index, picTally.getEmployee());
+				}
+			} else if (dryInEditPanel != null) {
+				for (PicTally picTally : dryInEditPanel.getListOfPicTally()) {
+					picTally.getEmployee().setFlag(true);
+					picTally.getEmployee().setRowNum(picTally.getId());
+					Integer index = listOfEmployee.indexOf(picTally.getEmployee());
+					listOfEmployee.set(index, picTally.getEmployee());
+				}
+			}
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Data gagal diload.", "Error", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+			DialogBox.showErrorException();
 		}
 
 		employeeTableModel = new EmployeeTableModel(listOfEmployee);
@@ -108,21 +125,35 @@ public class PicTallyDialog extends JDialog {
 		List<PicTally> listOfPicTally = new ArrayList<PicTally>();
 
 		for (Employee emp : listOfEmployee) {
+			PicTally picTally = new PicTally();
 			if (emp.isFlag()) {
-				PicTally picTally = new PicTally();
 				picTally.setEmpCode(emp.getEmployeeId());
 				picTally.setEmployee(emp);
+				if (emp.getRowNum() != 0 && dryInEditPanel != null)
+					picTally.setId(emp.getRowNum());
 				listOfPicTally.add(picTally);
+			} else {
+				if (emp.getRowNum() != 0 && dryInEditPanel != null) {
+					picTally.setEmpCode(emp.getEmployeeId());
+					picTally.setEmployee(emp);
+					picTally.setId(emp.getRowNum());
+					dryInEditPanel.listOfDeletedPicTally.add(picTally);
+				}
 			}
 		}
 
-		dryInCreatePanel.setListOfPicTally(listOfPicTally);
+		if (dryInCreatePanel != null)
+			dryInCreatePanel.setListOfPicTally(listOfPicTally);
+		else if (dryInEditPanel != null)
+			dryInEditPanel.setListOfPicTally(listOfPicTally);
 		closeDialog();
 	}
 
 	protected void closeDialog() {
-		dryInCreatePanel.refreshTablePicTally();
-
+		if (dryInCreatePanel != null)
+			dryInCreatePanel.refreshTablePicTally();
+		else if (dryInEditPanel != null)
+			dryInEditPanel.refreshTablePicTally();
 		dispose();
 	}
 
@@ -133,7 +164,7 @@ public class PicTallyDialog extends JDialog {
 			refreshTableEmployee();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Data gagal diload.", "Error", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 	}
 
@@ -142,7 +173,7 @@ public class PicTallyDialog extends JDialog {
 			tblEmployee.setModel(new EmployeeTableModel(listOfEmployee));
 		} catch (Exception e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, e1.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 	}
 

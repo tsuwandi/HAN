@@ -3,7 +3,9 @@ package module.sn.chamber.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Chamber implements Serializable {
+import module.util.ComboBoxProperties;
+
+public class Chamber implements Serializable, ComboBoxProperties {
 
 	private static final long serialVersionUID = 1L;
 
@@ -154,5 +156,10 @@ public class Chamber implements Serializable {
 		return "Chamber(id=" + id + ",chamber=" + chamber + ",inputDate=" + inputDate + ",inputBy="
 				+ inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate=" + deletedDate
 				+ ",deletedBy=" + deletedBy + ')';
+	}
+
+	@Override
+	public Object getField() {
+		return chamber;
 	}
 }

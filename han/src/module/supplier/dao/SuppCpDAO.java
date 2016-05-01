@@ -25,7 +25,7 @@ public class SuppCpDAO {
 			+ "email, input_date, input_by) values (?,?,?,?,?,?,?)";
 
 	private String updateQuery = "update supp_cp set name=?, department=?, phone=?, "
-			+ "email=?, edit_date=?, edited_by=? where supp_code=?";
+			+ "email=?, edit_date=?, edited_by=? where id=? ";
 
 	private String deleteQuery = "update supp_cp set deleted_date=?, deleted_by=? ";
 
@@ -88,7 +88,7 @@ public class SuppCpDAO {
 			updateStatement.setString(4, suppCp.getEmail());
 			updateStatement.setDate(5, DateUtil.getCurrentDate());
 			updateStatement.setString(6, "timotius");
-			updateStatement.setString(7, suppCp.getSuppCode());
+			updateStatement.setInt(7, suppCp.getId());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {

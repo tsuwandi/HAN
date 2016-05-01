@@ -30,7 +30,7 @@ public class SuppAddressDAO {
 			+ "city_id, phone, fax, input_date, input_by) values (?,?,?,?,?,?,?,?,?)";
 
 	private String updateQuery = "update supp_address set address_type=?, address=?, zip_code=?, "
-			+ "city_id=?, phone=?, fax=?, edit_date=?, edited_by=? where supp_code=?";
+			+ "city_id=?, phone=?, fax=?, edit_date=?, edited_by=? where id=?";
 
 	private String deleteQuery = "update supp_address set deleted_date=?, deleted_by=? ";
 
@@ -119,7 +119,7 @@ public class SuppAddressDAO {
 			updateStatement.setString(6, suppAddress.getFax());
 			updateStatement.setDate(7, DateUtil.getCurrentDate());
 			updateStatement.setString(8, "timotius");
-			updateStatement.setString(9, suppAddress.getSuppCode());
+			updateStatement.setInt(9, suppAddress.getId());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {

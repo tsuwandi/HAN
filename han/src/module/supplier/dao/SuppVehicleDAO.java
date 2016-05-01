@@ -33,7 +33,7 @@ public class SuppVehicleDAO {
 			+ "vehicle_type_id, input_date, input_by) values (?,?,?,?,?)";
 	
 	private String updateQuery = "update supp_vehicle set "
-			+ "vehicle_type_id=?, edit_date=?, edited_by=? where supp_code=?";
+			+ "vehicle_type_id=?, edit_date=?, edited_by=? where id=?";
 	
 	private String deleteQuery = "update supp_vehicle set deleted_date=?, deleted_by=? ";
 
@@ -114,7 +114,7 @@ public class SuppVehicleDAO {
 			updateStatement.setInt(1, suppVehicle.getVehicleTypeId());
 			updateStatement.setDate(2, DateUtil.getCurrentDate());
 			updateStatement.setString(3, "timotius");
-			updateStatement.setString(4, suppVehicle.getSuppCode());
+			updateStatement.setInt(4, suppVehicle.getId());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {

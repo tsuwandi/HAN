@@ -18,7 +18,7 @@ public class Supplier implements Serializable {
 	private String npwp;
 	private int suppTypeId;
 	private String suppStatus;
-	private int defaultTax;
+	private double defaultTax;
 	private String accountNo;
 	private int bankId;
 	private String accountName;
@@ -93,11 +93,11 @@ public class Supplier implements Serializable {
 		this.suppStatus = suppStatus;
 	}
 
-	public int getDefaultTax() {
+	public double getDefaultTax() {
 		return defaultTax;
 	}
 
-	public void setDefaultTax(int defaultTax) {
+	public void setDefaultTax(double defaultTax) {
 		this.defaultTax = defaultTax;
 	}
 
@@ -197,7 +197,7 @@ public class Supplier implements Serializable {
 		result = prime * result + ((accountNo == null) ? 0 : accountNo.hashCode());
 		result = prime * result + bankId;
 		result = prime * result + currencyId;
-		result = prime * result + defaultTax;
+		result = (int) (prime * result + defaultTax);
 		result = prime * result + ((deletedBy == null) ? 0 : deletedBy.hashCode());
 		result = prime * result + ((deletedDate == null) ? 0 : deletedDate.hashCode());
 		result = prime * result + ((editDate == null) ? 0 : editDate.hashCode());

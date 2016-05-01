@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -448,6 +450,17 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		panel.add(lblTop);
 
 		txtTop = new JTextField();
+		txtTop.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				char vchar = arg0.getKeyChar();
+				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE) {
+					arg0.consume();
+					return;
+				}
+			}
+		});
+		txtTop.setDocument(new JTextFieldLimit(3));
 		txtTop.setBounds(220, 1140, 150, 30);
 		panel.add(txtTop);
 
@@ -466,6 +479,18 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 
 		txtDefaultTax = new JTextField();
 		txtDefaultTax.setBounds(220, 1180, 150, 30);
+		txtDefaultTax.setDocument(new JTextFieldLimit(3));
+		txtDefaultTax.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				char vchar = arg0.getKeyChar();
+				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE
+						|| vchar == KeyEvent.VK_PERIOD) {
+					arg0.consume();
+					return;
+				}
+			}
+		});
 		panel.add(txtDefaultTax);
 
 		lblDefaultTaxPercentage = new JLabel("%");
@@ -523,7 +548,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Kode Supplier gagal diinput.", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Terjadi kesalahan pada sistem.", "Error", JOptionPane.ERROR_MESSAGE);
 				isValid = false;
 			}
 		}
