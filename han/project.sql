@@ -935,3 +935,28 @@ ALTER TABLE `chamber`
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
+CREATE TABLE thickness(
+id	int(3) PRIMARY KEY ,
+thickness	dec (7,2),
+input_date	date,
+input_by	varchar(25),
+edit_date	date,
+edited_by	varchar(25),
+deleted_date	date,
+deleted_by	varchar(25)
+);
+
+ALTER TABLE  `thickness` CHANGE  `id`  `id` INT( 3 ) NOT NULL AUTO_INCREMENT;
+
+INSERT INTO `project`.`wood_type` (`id`, `wood_type`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES (NULL, 'Balken A', NULL, NULL, NULL, NULL, NULL, NULL), (NULL, 'Balken B', NULL, NULL, NULL, NULL, NULL, NULL);
+
+ALTER TABLE `delivery` CHANGE `delivery_note` `delivery_note` VARCHAR(10) NOT NULL;
+
+
+INSERT INTO `project`.`delivery` (`id`, `delivery_note`, `wood_domicile`, `wood_resource_id`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`, `input_date`) VALUES (NULL, '112131231', 'Hong Kong Forest', '1', NULL, NULL, NULL, NULL, NULL, NULL);
+
+INSERT INTO `project`.`delivery` (`id`, `delivery_note`, `wood_domicile`, `wood_resource_id`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`, `input_date`) VALUES (NULL, '10329293', 'Tian Liu', '1', NULL, NULL, NULL, NULL, NULL, NULL); 
+
+INSERT INTO `project`.`wood_resource` (`id`, `wood_resource`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES (NULL, 'Mangrove', NULL, NULL, NULL, NULL, NULL, NULL);
+
+
