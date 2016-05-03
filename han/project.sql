@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `project`
+-- Database: `projectss`
 --
 
 -- --------------------------------------------------------
@@ -703,6 +703,18 @@ CREATE TABLE IF NOT EXISTS `dry_in_pallet` (
   `deleted_date` date DEFAULT NULL,
   `deleted_by` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `pic_tally` (
+  `id` int(12) NOT NULL,
+  `dry_in_code` varchar(14) NOT NULL,
+  `emp_code` varchar(10) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
