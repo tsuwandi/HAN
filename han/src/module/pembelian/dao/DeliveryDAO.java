@@ -35,9 +35,9 @@ public class DeliveryDAO {
 			while (rs.next()) {
 				Delivery delivery = new Delivery();
 				delivery.setId(rs.getInt("id"));
-				delivery.setDeliveryNote(rs.getInt("delivery_note"));
+				delivery.setDeliveryNote(rs.getString("delivery_note"));
 				delivery.setWoodDomicile(rs.getString("wood_domicile"));
-				delivery.setWoodDomicile(rs.getString("wood_resource"));
+				delivery.setWoodResource(rs.getString("wood_resource"));
 				delivery.setWoodResourceId(rs.getInt("wood_resource_id"));
 				deliveries.add(delivery);
 			}

@@ -65,111 +65,127 @@ public class AddPopUpPalletCard extends JDialog{
 	public AddPopUpPalletCard() {
 		setLayout(null);
 		setTitle("Kartu Pallet");
-		setSize(700, 600);
-		//Field left
+		setSize(700, 700);
+		
+		//Code Pallet
 		palletCardCodeLbl = new JLabel("Kode Kartu Pallet");
-		palletCardCodeLbl.setBounds(30,30,150,30);
+		palletCardCodeLbl.setBounds(30,30,150,20);
 		add(palletCardCodeLbl);
 		
-		graderLbl = new JLabel("Grader");
-		graderLbl.setBounds(30,80,150,30);
-		add(graderLbl);
-		
-		gradeLbl = new JLabel("Grade");
-		gradeLbl.setBounds(30,130,150,30);
-		add(gradeLbl);
-		
-		longLbl = new JLabel("Panjang");
-		longLbl.setBounds(30,180,150,30);
-		add(longLbl);
-		
-		productNameLbl = new JLabel("Nama Produk");
-		productNameLbl.setBounds(30,230,150,30);
-		add(productNameLbl);
-		
 		codePalletCardField = new JTextField();
-		codePalletCardField.setBounds(150, 30, 150, 30);
+		codePalletCardField.setBounds(150, 30, 150, 20);
 		add(codePalletCardField);
 		
+		//Grader 
+		graderLbl = new JLabel("Grader");
+		graderLbl.setBounds(30,70,150,20);
+		add(graderLbl);
+		
 		graderComboBox = new ComboBox<Grade>();
-		graderComboBox.setBounds(150,80,150,30);
+		graderComboBox.setBounds(150,70,150,20);
 		add(graderComboBox);
 		
+		//Grade
+		gradeLbl = new JLabel("Grade");
+		gradeLbl.setBounds(30,100,150,20);
+		add(gradeLbl);
+
 		gradeComboBox = new ComboBox<Grade>();
-		gradeComboBox.setBounds(150, 130, 150, 30);
+		gradeComboBox.setBounds(150, 100, 150, 20);
 		add(gradeComboBox);
 		
+		
+		//Long 
+		longLbl = new JLabel("Panjang");
+		longLbl.setBounds(30,140,150,20);
+		add(longLbl);
+		
 		longField = new JTextField();
-		longField.setBounds(150, 180, 150, 30);
+		longField.setBounds(150, 140, 150, 20);
 		add(longField);
 		
+		//ProductName
+		productNameLbl = new JLabel("Nama Produk");
+		productNameLbl.setBounds(30,180,150,20);
+		add(productNameLbl);
+		
 		productNameField = new JTextField();
-		productNameField.setBounds(150, 230, 150, 30);
+		productNameField.setBounds(150, 180, 150, 20);
 		add(productNameField);
 		
-		//right Field
+		//Wide
 		wideLbl = new JLabel("Lebar");
-		wideLbl.setBounds(390,30,100,30);
+		wideLbl.setBounds(30,220,100,20);
 		add(wideLbl);
 		
-		thickLbl = new JLabel("Tebal");
-		thickLbl.setBounds(390,80,100,30);
-		add(thickLbl);
-		
-		totalLbl = new JLabel("Total");
-		totalLbl.setBounds(390,130,100,30);
-		add(totalLbl);
-		
-		volumeLbl = new JLabel("Volume");
-		volumeLbl.setBounds(390,180,100,30);
-		add(volumeLbl);
-		
 		wideField = new JTextField();
-		wideField.setBounds(490, 30, 150, 30);
+		wideField.setBounds(150, 220, 150, 20);
 		add(wideField);
 		
+		//Thickness
+		thickLbl = new JLabel("Tebal");
+		thickLbl.setBounds(30,260,100,20);
+		add(thickLbl);
+		
 		thickField = new JTextField();
-		thickField.setBounds(490, 80, 150, 30);
+		thickField.setBounds(150, 260, 150, 20);
 		add(thickField);
 		
+		//Total
+		totalLbl = new JLabel("Total");
+		totalLbl.setBounds(30,300,100,20);
+		add(totalLbl);
+	
 		totalField = new JTextField();
-		totalField.setBounds(490, 130, 150, 30);
+		totalField.setBounds(150, 300, 150, 20);
 		add(totalField);
 		
+		//Volume
+		volumeLbl = new JLabel("Volume");
+		volumeLbl.setBounds(30,340,100,20);
+		add(volumeLbl);
+			
 		volumeField = new JTextField();
-		volumeField.setBounds(490, 180, 150, 30);
+		volumeField.setBounds(150, 340, 150, 20);
 		add(volumeField);
 		
-		//Table pc
+		//insert Button
 		insertButton = new JButton("Insert");
-		insertButton.setBounds(200,280,150,30);
+		insertButton.setBounds(300,380,150,30);
+		add(insertButton);
+		
+		//Table pc
 		
 		pcs = new ArrayList<>();
 		pcTableModel = new PCTableModel(pcs);
 		pcTable = new JTable(pcTableModel);
 		
 		pcScrollPane = new JScrollPane(pcTable);
-		pcScrollPane.setBounds(30,330,610,100);
+		pcScrollPane.setBounds(30,420,610,100);
 		add(pcScrollPane);
 		
+		//Total Log
 		totalpcLbl = new JLabel("Total Jumlah Kayu");
-		totalpcLbl.setBounds(30,450,150,30);
+		totalpcLbl.setBounds(30,540,150,20);
 		add(totalpcLbl);
-		
-		totalVolumeLbl = new JLabel("Total Volume");
-		totalVolumeLbl.setBounds(30,490,150,30);
-		add(totalVolumeLbl);
-		
+	
 		totalpcField =  new JTextField();
-		totalpcField.setBounds(350, 450, 150, 30);
+		totalpcField.setBounds(350, 540, 150, 20);
 		add(totalpcField);
 		
+		//total Volume
+		totalVolumeLbl = new JLabel("Total Volume");
+		totalVolumeLbl.setBounds(30,580,150,20);
+		add(totalVolumeLbl);
+
 		totalVolumeField =  new JTextField();
-		totalVolumeField.setBounds(350, 490, 150, 30);
+		totalVolumeField.setBounds(350, 580, 150, 20);
 		add(totalVolumeField);
 
+		//Confirm Btn
+		
 		confirmButton = new JButton("Confirm");
-		confirmButton.setBounds(500,520,150,30);
+		confirmButton.setBounds(500,610,150,30);
 		add(confirmButton);
 		
 		try {

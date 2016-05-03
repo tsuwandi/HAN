@@ -44,14 +44,14 @@ public class LoginPanel extends JPanel {
 		usernameLbl.setBounds(30, 40, 150, 30);
 		usernameLbl.setFont(new Font(null, Font.BOLD, 24));
 		
-		usernameField = new JTextField();
+		usernameField = new JTextField("admin");
 		usernameField.setBounds(200, 40, 230, 30);
 		
 		passwordLbl = new JLabel("Password");
 		passwordLbl.setBounds(30, 120, 150, 30);
 		passwordLbl.setFont(new Font(null, Font.BOLD, 24));
 		
-		passwordField = new JPasswordField();
+		passwordField = new JPasswordField("admin");
 		passwordField.setBounds(200, 120, 230, 30);
 		
 		submitBtn = new JButton("Submit");

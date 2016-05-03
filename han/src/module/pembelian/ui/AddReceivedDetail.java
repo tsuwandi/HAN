@@ -3,6 +3,8 @@ package module.pembelian.ui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import com.toedter.calendar.JDateChooser;
 
 import controller.ReceivedDAOFactory;
 import main.component.ComboBox;
+import main.component.NumberField;
 import model.User;
 import module.pembelian.model.Delivery;
 import module.pembelian.model.Employee;
@@ -47,7 +50,14 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 	JLabel secondCodeSeparator;
 	JLabel thirdCodeSeparator;
 	
-	JTextField receivedCodeField;
+	JLabel errorCodeLbl;
+	JLabel errorRitNumberLbl;
+	JLabel errorLicenseLbl;
+	JLabel errorDocNoLbl;
+	JLabel errorWoodTypeLbl;
+	JLabel errorDriverLbl;
+	
+	NumberField receivedCodeField;
 	JTextField receivedCodeDateField;
 	JTextField receivedCodeMonthField;
 	JTextField receivedCodeYearField;
@@ -124,7 +134,7 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		thirdCodeSeparator.setHorizontalAlignment(SwingConstants.CENTER);
 		containerPnl.add(thirdCodeSeparator);
 		
-		receivedCodeField = new JTextField();
+		receivedCodeField = new NumberField();
 		receivedCodeField.setBounds(220, 70, 100, 20);
 		containerPnl.add(receivedCodeField);
 		
@@ -215,7 +225,7 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		
 		
 		//Wood Type
-		woodTypeLbl = new JLabel("Asal Sumber Bahan Baku");
+		woodTypeLbl = new JLabel("Tipe Kayu");
 		woodTypeLbl.setBounds(50, 430, 150, 20);
 		containerPnl.add(woodTypeLbl);
 		
@@ -261,7 +271,29 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		saveBtn.setBounds(950,750,100,30);
 		containerPnl.add(saveBtn);
 		
+		errorCodeLbl = new JLabel();
+		errorCodeLbl.setBounds(480,70,150,20);
+		containerPnl.add(errorCodeLbl);
 		
+		errorRitNumberLbl = new JLabel();
+		errorRitNumberLbl.setBounds(380,150,150,20);
+		containerPnl.add(errorRitNumberLbl);
+		
+		errorDocNoLbl = new JLabel();
+		errorDocNoLbl.setBounds(380,310,150,20);
+		containerPnl.add(errorDocNoLbl);
+
+		errorLicenseLbl = new JLabel();
+		errorLicenseLbl.setBounds(380,190,150,20);
+		containerPnl.add(errorLicenseLbl);
+		
+		errorDriverLbl = new JLabel();
+		errorDriverLbl.setBounds(380,270,150,20);
+		containerPnl.add(errorDriverLbl);
+		
+		errorWoodTypeLbl = new JLabel();
+		errorWoodTypeLbl.setBounds(380,430,150,20);
+		containerPnl.add(errorWoodTypeLbl);
 		
 		addPalletBtn.addActionListener(new ActionListener() {
 			
@@ -294,12 +326,15 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		
 		try {
 			suppVehicles = ReceivedDAOFactory.getSupplierVehicleDAO().getListSuppVehicle();
+			suppVehicles.add(0,new SupplierVehicle("--Pilih--"));
 			licensePlateComboBox.setList(suppVehicles);
 
 			woodTypes = ReceivedDAOFactory.getWoodTypeDAO().getWoodType();
+			woodTypes.add(0,new WoodType("--Pilih--"));
 			woodTypeComboBox.setList(woodTypes);
 
 			deliveries = ReceivedDAOFactory.getDeliveryDAO().getDeliveryNote();
+			deliveries.add(0,new Delivery("--Pilih--"));
 			docNoComboBox.setList(deliveries);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -310,6 +345,81 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		receivedCodeDateField.setText(new SimpleDateFormat("dd").format(new Date()));
 		receivedCodeMonthField.setText(new SimpleDateFormat("MM").format(new Date()));
 		receivedCodeYearField.setText(new SimpleDateFormat("yy").format(new Date()));
+		
+		
+		licensePlateComboBox.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				if(licensePlateComboBox.getSelectedIndex()!=0){
+					supplierTextField.setText(licensePlateComboBox.getDataIndex().getSupplierName());
+				}else{
+					supplierTextField.setText("");
+				}
+			}
+		});
+		
+		docNoComboBox.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				if(docNoComboBox.getSelectedIndex()!=0){
+					woodDomicileField.setText(docNoComboBox.getDataIndex().getWoodDomicile());
+					woodResourceField.setText(docNoComboBox.getDataIndex().getWoodResource());
+				}else{
+					woodDomicileField.setText("");
+					woodResourceField.setText("");
+				}
+			}
+		});
+		
+		saveBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int error = 0;
+				if(receivedCodeDateField.getText().equals("")||receivedCodeField.getText().equals("")||receivedCodeMonthField.getText().equals("")||receivedCodeYearField.getText().equals("")){
+					errorCodeLbl.setText("<html><font color='red'>Code tidak bole kosong !</font></html>");
+					error++;
+				}else{
+					errorCodeLbl.setText("");
+				}
+				if(ritNumberField.getText().equals("")){
+					errorRitNumberLbl.setText("<html><font color='red'>Nomor RIT tidak bole kosong !</font></html>");
+					error++;
+				}else{
+					errorRitNumberLbl.setText("");
+				}
+				if(driverField.getText().equals("")){
+					errorDriverLbl.setText("<html><font color='red'>Nama Driver tidak bole kosong !</font></html>");
+					error++;
+				}else{
+					errorDriverLbl.setText("");
+				}
+				if(licensePlateComboBox.getSelectedIndex()==0){
+					errorLicenseLbl.setText("<html><font color='red'>Plat Nomor harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorLicenseLbl.setText("");
+				}
+				if(woodTypeComboBox.getSelectedIndex()==0){
+					errorWoodTypeLbl.setText("<html><font color='red'>Tipe Kayu harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorWoodTypeLbl.setText("");
+				}
+				if(docNoComboBox.getSelectedIndex()==0){
+					errorDocNoLbl.setText("<html><font color='red'>Document Number harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorDocNoLbl.setText("");
+				}
+				
+				if(error==0){
+					
+				}
+			}
+		});
 	
 	}
 	

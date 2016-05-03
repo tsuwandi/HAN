@@ -19,7 +19,11 @@ public class SupplierVehicle implements ComboBoxProperties {
 	
 	private boolean isFlag;
 
-	
+	public SupplierVehicle(){	
+	}
+	public SupplierVehicle(String licensePlate){
+		this.licensePlate = licensePlate;
+	}
 	
 	public String getSupplierName() {
 		return supplierName;

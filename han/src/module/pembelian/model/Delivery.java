@@ -4,12 +4,14 @@ import module.util.ComboBoxProperties;
 
 public class Delivery implements ComboBoxProperties {
 	int id;
-	int deliveryNote;
+	String deliveryNote;
 	String woodDomicile;
 	String woodResource;
 	int woodResourceId;
-	
 	public Delivery(){	
+	}
+	public Delivery(String deliveryNote){
+		this.deliveryNote= deliveryNote;
 	}
 
 	public int getId() {
@@ -18,10 +20,11 @@ public class Delivery implements ComboBoxProperties {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getDeliveryNote() {
+	
+	public String getDeliveryNote() {
 		return deliveryNote;
 	}
-	public void setDeliveryNote(int deliveryNote) {
+	public void setDeliveryNote(String deliveryNote) {
 		this.deliveryNote = deliveryNote;
 	}
 	public String getWoodDomicile() {

@@ -5,6 +5,12 @@ import module.util.ComboBoxProperties;
 public class WoodType implements ComboBoxProperties{
 	int id;
 	String woodType;
+	public WoodType(){
+	}
+	
+	public WoodType(String woodType){
+		this.woodType = woodType;
+	}
 	public int getId() {
 		return id;
 	}
