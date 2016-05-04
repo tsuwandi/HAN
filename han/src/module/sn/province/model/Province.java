@@ -162,4 +162,12 @@ public class Province implements Serializable, ComboBoxProperties {
 	public Object getField() {
 		return province;
 	}
+	
+	public Province() {
+		
+	}
+	
+	public Province(String province) {
+		this.province = province;
+	}
 }

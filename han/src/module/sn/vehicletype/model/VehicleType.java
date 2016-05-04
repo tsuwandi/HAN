@@ -174,4 +174,12 @@ public class VehicleType implements Serializable, ComboBoxProperties {
 	public Object getField() {
 		return vehicleType;
 	}
+
+	public VehicleType() {
+
+	}
+
+	public VehicleType(String vehicleType) {
+		this.vehicleType = vehicleType;
+	}
 }

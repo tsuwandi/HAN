@@ -171,6 +171,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		try {
 			listOfChamber = new ArrayList<Chamber>();
 			listOfChamber = ServiceFactory.getDryOutBL().getAllChamber();
+			listOfChamber.add(0, new Chamber("-- Pilih Chamber --"));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();

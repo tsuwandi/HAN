@@ -183,12 +183,12 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		listOfSuppType = new ArrayList<SuppType>();
 		try {
 			listOfSuppType = ServiceFactory.getSupplierBL().getAllSuppType();
+			listOfSuppType.add(0, new SuppType("-- Pilih Tipe Supplier --"));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
 		cbSuppType = new ComboBox<SuppType>();
-		cbSuppType.addItem("-- Pilih Tipe Supplier --");
 		cbSuppType.setList(listOfSuppType);
 		cbSuppType.setBounds(220, 240, 150, 30);
 		panel.add(cbSuppType);
@@ -417,12 +417,12 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		listOfBank = new ArrayList<Bank>();
 		try {
 			listOfBank = ServiceFactory.getSupplierBL().getAllBank();
+			listOfBank.add(0, new Bank("-- Pilih Bank --"));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
 		cbBank = new ComboBox<Bank>();
-		cbBank.addItem("-- Pilih Bank --");
 		cbBank.setList(listOfBank);
 		cbBank.setBounds(220, 1000, 150, 30);
 		panel.add(cbBank);
@@ -443,12 +443,12 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		listOfCurrency = new ArrayList<Currency>();
 		try {
 			listOfCurrency = ServiceFactory.getSupplierBL().getAllCurrency();
+			listOfCurrency.add(0, new Currency("-- Pilih Kurs --"));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
 		cbCurrency = new ComboBox<Currency>();
-		cbCurrency.addItem("-- Pilih Kurs --");
 		cbCurrency.setList(listOfCurrency);
 		cbCurrency.setBounds(220, 1100, 150, 30);
 		panel.add(cbCurrency);

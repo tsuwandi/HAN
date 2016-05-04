@@ -189,4 +189,12 @@ public class City implements Serializable, ComboBoxProperties {
 			province = new Province();
 		this.province = province;
 	}
+	
+	public City() {
+		
+	}
+	
+	public City(String city) {
+		this.city = city;
+	}
 }

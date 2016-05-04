@@ -346,6 +346,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 				cbDateInHour.addItem(String.format("%02d", hours));
 				cbDateInMinute.addItem(String.format("%02d", minutes));
 				
+				cbChamber.addItem("-- Pilih Chamber --");
 				cbChamber.addItem(dryOut.getChamber().getChamber());
 				cbChamber.setSelectedIndex(0);
 				txtTotalVolume.setText(String.valueOf(dryOut.getTotalVolume()));

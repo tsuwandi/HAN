@@ -192,4 +192,12 @@ public class Currency implements Serializable, ComboBoxProperties {
 	public Object getField() {
 		return currencyAbbr + " - " + currency ;
 	}
+	
+	public Currency() {
+		
+	}
+	
+	public Currency(String currency) {
+		this.currency = currency;
+	}
 }

@@ -182,6 +182,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		try {
 			listOfChamber = new ArrayList<Chamber>();
 			listOfChamber = ServiceFactory.getDryInBL().getAllChamber();
+			listOfChamber.add(0, new Chamber("-- Pilih Chamber --"));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
@@ -559,7 +560,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			isValid = false;
 		}
 
-		if (cbChamber.getSelectedItem() == null) {
+		if (cbChamber.getSelectedItem() == null || cbChamber.getSelectedIndex() == 0) {
 			lblErrorChamber.setText("Combobox chamber harus dipilih.");
 			isValid = false;
 		}

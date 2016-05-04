@@ -384,8 +384,9 @@ public class DryInViewPanel extends JPanel implements Bridging {
 				cbDateInHour.addItem(String.format("%02d", hours));
 				cbDateInMinute.addItem(String.format("%02d", minutes));
 				
+				cbChamber.addItem("-- Pilih Chamber --");
 				cbChamber.addItem(dryIn.getChamber().getChamber());
-				cbChamber.setSelectedIndex(0);
+				cbChamber.setSelectedIndex(1);
 				txtTotalVolume.setText(String.valueOf(dryIn.getTotalVolume()));
 
 				refreshTablePicTally();

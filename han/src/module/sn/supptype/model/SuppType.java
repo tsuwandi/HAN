@@ -162,4 +162,12 @@ public class SuppType implements Serializable, ComboBoxProperties {
 	public Object getField() {
 		return suppType;
 	}
+	
+	public SuppType() {
+		
+	}
+	
+	public SuppType(String suppType) {
+		this.suppType = suppType;
+	}
 }
