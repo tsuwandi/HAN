@@ -27,6 +27,7 @@ import javax.swing.table.AbstractTableModel;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
+import main.component.NumberField;
 import main.panel.MainPanel;
 import module.sn.bank.model.Bank;
 import module.sn.currency.model.Currency;
@@ -79,7 +80,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	JTextField txtAccountName;
 	ComboBox<Currency> cbCurrency;
 	JTextField txtTop;
-	JTextField txtDefaultTax;
+	NumberField txtDefaultTax;
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
@@ -485,19 +486,20 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		lblDefaultTax.setBounds(50, 1180, 150, 30);
 		panel.add(lblDefaultTax);
 
-		txtDefaultTax = new JTextField();
+		txtDefaultTax = new NumberField();
 		txtDefaultTax.setBounds(220, 1180, 150, 30);
-		txtDefaultTax.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				char vchar = arg0.getKeyChar();
-				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE
-						|| vchar == KeyEvent.VK_COMMA) {
-					arg0.consume();
-					return;
-				}
-			}
-		});
+		txtDefaultTax.setDocument(new JTextFieldLimit(6));
+//		txtDefaultTax.addKeyListener(new KeyAdapter() {
+//			@Override
+//			public void keyTyped(KeyEvent arg0) {
+//				char vchar = arg0.getKeyChar();
+//				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE
+//						|| vchar == KeyEvent.VK_COMMA) {
+//					arg0.consume();
+//					return;
+//				}
+//			}
+//		});
 		panel.add(txtDefaultTax);
 
 		lblDefaultTaxPercentage = new JLabel("%");
@@ -605,6 +607,13 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 			lblErrorSuppStatus.setText("Combobox Status Supplier harus dipilih.");
 			isValid = false;
 		}
+		
+		if (!"".equals(txtDefaultTax.getText())) {
+			if (Double.valueOf(txtDefaultTax.getText()) > 100.00) {
+				lblErrorDefaultTax.setText("Default Tax tidak lebih dari 100%");
+				isValid = false;
+			}
+		}
 
 		return isValid;
 	}
@@ -621,8 +630,16 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		supplier.setBankId(cbBank.getDataIndex().getId());
 		supplier.setAccountName(txtAccountName.getText());
 		supplier.setCurrencyId(cbCurrency.getDataIndex().getId());
-		supplier.setTop(Integer.valueOf(txtTop.getText()));
-		supplier.setDefaultTax(Double.valueOf(txtDefaultTax.getText()));
+		
+		if(!"".equals(txtTop.getText()))
+			supplier.setTop(Integer.valueOf(txtTop.getText()));
+		else
+			supplier.setTop(0);
+		
+		if(!"".equals(txtDefaultTax.getText()))
+			supplier.setDefaultTax(Double.valueOf(txtDefaultTax.getText()));
+		else
+			supplier.setDefaultTax(0.00);
 
 		try {
 			ServiceFactory.getSupplierBL().update(supplier, listOfSuppAddress, listOfDeletedSuppAddress, listOfSuppCp,
