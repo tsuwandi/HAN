@@ -325,6 +325,8 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(0, 0, 1155, 605);
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 		add(scrollPane);
 
 		btnSave = new JButton("Simpan");

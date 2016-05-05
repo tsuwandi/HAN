@@ -354,7 +354,6 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		suppVehicleTableModel = new SuppVehicleTableModel(new ArrayList<SuppVehicle>());
 		tblSuppVehicle = new JTable(suppVehicleTableModel);
 		tblSuppVehicle.setBorder(new EmptyBorder(5, 5, 5, 5));
-		scrollPaneSuppVehicle.setBorder(BorderFactory.createEmptyBorder());
 		scrollPaneSuppVehicle.setViewportView(tblSuppVehicle);
 
 		tblSuppVehicle.addMouseListener(new MouseAdapter() {
@@ -457,7 +456,8 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		lblTop.setBounds(50, 1140, 150, 30);
 		panel.add(lblTop);
 
-		txtTop = new JTextField();
+		txtTop = new JTextField("0");
+		txtTop.setText("0");
 		txtTop.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
@@ -486,6 +486,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		panel.add(lblDefaultTax);
 
 		txtDefaultTax = new JTextField();
+		txtDefaultTax.setText("0");
 		txtDefaultTax.setBounds(220, 1180, 150, 30);
 		txtDefaultTax.setDocument(new JTextFieldLimit(3));
 		txtDefaultTax.addKeyListener(new KeyAdapter() {
@@ -513,6 +514,8 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBounds(0, 0, 1155, 605);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		add(scrollPane);
 
