@@ -1,31 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src" />
-	<classpathentry kind="con"
-		path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8" />
-	<classpathentry kind="lib" path="lib/com.mysql.jdbc_5.1.5.jar" />
-	<classpathentry kind="lib" path="lib/commons-dbcp-1.4.jar" />
-	<classpathentry kind="lib" path="lib/commons-pool-1.6.jar" />
-	<classpathentry kind="lib" path="lib/fast-md5.jar" />
-	<classpathentry kind="lib" path="lib/log4j-1.2.12.jar" />
-	<classpathentry kind="lib" path="lib/postgresql-9.3-1100.jdbc4.jar" />
-	<<<<<<< HEAD
-	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar" />
-	=======
-	<classpathentry kind="lib" path="lib/jcalendar-1.2.2.jar" />
-	<classpathentry kind="lib" path="lib/jasperreports-4.8.0.jar" />
-	<classpathentry kind="lib"
-		path="lib/jasperreports-chart-themes-4.7.0.jar" />
-	<classpathentry kind="lib" path="lib/jasperreports-fonts-4.5.0.jar" />
-	<classpathentry kind="lib" path="lib/jasperreports-ofc-4.7.0.jar" />
-	<classpathentry kind="lib" path="lib/commons-digester-1.7.jar" />
-	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar" />
-	<classpathentry kind="lib" path="lib/commons-collections-3.1.jar" />
-	<classpathentry kind="lib" path="lib/spring-2.5.6.SEC03.jar" />
-	<classpathentry kind="lib" path="lib/jcommon-1.0.22.jar" />
-	<classpathentry kind="lib" path="lib/joda-time-2.0.jar" />
-	<classpathentry kind="lib" path="lib/iText-2.1.7.jar" />
-	<classpathentry kind="lib" path="lib/commons-beanutils-1.8.2.jar" />
-	>>>>>>> branch 'master' of https://github.com/tsuwandi/han
-	<classpathentry kind="output" path="bin" />
+	<classpathentry excluding="src/|lib/" kind="src" path=""/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="lib"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/com.mysql.jdbc_5.1.5.jar"/>
+	<classpathentry kind="lib" path="lib/commons-dbcp-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/commons-pool-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/fast-md5.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-4.8.0.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-chart-themes-4.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-fonts-4.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-ofc-4.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.12.jar"/>
+	<classpathentry kind="lib" path="lib/postgresql-9.3-1100.jdbc4.jar"/>
+	<classpathentry kind="lib" path="lib/swingx.jar"/>
+	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
