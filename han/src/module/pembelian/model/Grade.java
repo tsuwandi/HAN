@@ -5,6 +5,11 @@ import module.util.ComboBoxProperties;
 public class Grade implements ComboBoxProperties{
 	int id;
 	String grade;
+	
+	public Grade(){}
+	public Grade(String grade){
+		this.grade = grade;
+	}
 	public int getId() {
 		return id;
 	}

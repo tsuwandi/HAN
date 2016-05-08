@@ -47,7 +47,7 @@ public class PopUpPicDocking extends JDialog {
 		add(searchField);
 		
 		try {
-			picDockings = ReceivedDAOFactory.getPICDockingDAO().getAllPICDocking();
+			picDockings = ReceivedDAOFactory.getPICDockingDAO().getEmployeeBasedOnPosition("POS0001");
 			picDockingTableModel = new PicDockingTableModel(picDockings);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -139,9 +139,9 @@ public class PopUpPicDocking extends JDialog {
 	        	case 0 :
 	        		return p.isFlag();
 	            case 1 : 
-	                return p.getEmpCode();
+	                return p.getEmployeeId();
 	            case 2 :
-	                return p.getEmpName();
+	                return p.getEmployeeName();
 	            default :
 	                return "";
 	        }

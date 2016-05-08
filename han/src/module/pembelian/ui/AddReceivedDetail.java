@@ -26,10 +26,13 @@ import com.toedter.calendar.JDateChooser;
 import controller.ReceivedDAOFactory;
 import main.component.ComboBox;
 import main.component.NumberField;
+import main.panel.MainPanel;
 import model.User;
+import module.pembelian.dao.ReceivedDAO;
 import module.pembelian.model.Delivery;
 import module.pembelian.model.Employee;
 import module.pembelian.model.Pallet;
+import module.pembelian.model.Received;
 import module.pembelian.model.SupplierVehicle;
 import module.pembelian.model.WoodType;
 import module.util.Bridging;
@@ -58,9 +61,9 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 	JLabel errorDriverLbl;
 	
 	NumberField receivedCodeField;
-	JTextField receivedCodeDateField;
-	JTextField receivedCodeMonthField;
-	JTextField receivedCodeYearField;
+	NumberField receivedCodeDateField;
+	NumberField receivedCodeMonthField;
+	NumberField receivedCodeYearField;
 	
 	JTextField ritNumberField;
 	JTextField driverField;
@@ -73,7 +76,7 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 	ComboBox<WoodType> woodTypeComboBox;
 	ComboBox<Delivery> docNoComboBox;
 	
-	JTable palletTable;
+	public JTable palletTable;
 	JTable dockingPICTable;
 	
 	JScrollPane palletScrollPane;
@@ -92,13 +95,13 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 	PalletTableModel palletTableModel;
 	PicDockingTableModel picDockingTableModel;
 	
-	List<Pallet> pallets;
+	public List<Pallet> pallets;
 	List<Employee> picDockings;
 	List<SupplierVehicle> suppVehicles;
 	List<Delivery> deliveries;
 	List<WoodType> woodTypes;
 	
-	JPanel parent;
+	AddReceivedDetail parent;
 	JScrollPane scrollPane;
 	JPanel containerPnl;
 	
@@ -138,15 +141,15 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		receivedCodeField.setBounds(220, 70, 100, 20);
 		containerPnl.add(receivedCodeField);
 		
-		receivedCodeDateField = new JTextField();
+		receivedCodeDateField = new NumberField();
 		receivedCodeDateField.setBounds(340, 70, 30, 20);
 		containerPnl.add(receivedCodeDateField);
 		
-		receivedCodeMonthField = new JTextField();
+		receivedCodeMonthField = new NumberField();
 		receivedCodeMonthField.setBounds(380, 70, 30, 20);
 		containerPnl.add(receivedCodeMonthField);
 		
-		receivedCodeYearField = new JTextField();
+		receivedCodeYearField = new NumberField();
 		receivedCodeYearField.setBounds(420, 70, 50, 20);
 		containerPnl.add(receivedCodeYearField);
 		
@@ -299,7 +302,7 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				AddPopUpPalletCard pop = new AddPopUpPalletCard();
+				AddPopUpPalletCard pop = new AddPopUpPalletCard(parent);
 				pop.show();
 				pop.setLocationRelativeTo(null);
 			}
@@ -416,7 +419,24 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 				}
 				
 				if(error==0){
-					
+					Received rec = new Received();
+					String code = receivedCodeField.getText()+firstCodeSeparator.getText()
+							+receivedCodeDateField.getText()+secondCodeSeparator.getText()
+							+receivedCodeMonthField.getText()+thirdCodeSeparator.getText()+receivedCodeYearField.getText();
+					rec.setDeliveryNote(docNoComboBox.getDataIndex().getDeliveryNote());
+					rec.setDriver(driverField.getText());
+					rec.setLicensePlate(licensePlateComboBox.getDataIndex().getLicensePlate());
+					rec.setReceivedCode(code);
+					rec.setRitNo(ritNumberField.getText());
+					rec.setSupplier(supplierTextField.getText());
+					rec.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
+					rec.setReceivedDate(receivedDateChooser.getDate());
+					try {
+						ReceivedDAOFactory.getReceivedDAO().save(rec);
+						MainPanel.changePanel("module.pembelian.ui.ListReceived");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		});
@@ -553,9 +573,9 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		        case 0 :
 		        	return p.isFlag();
 	            case 1 : 
-	                return p.getEmpCode();
+	                return p.getEmployeeId();
 	            case 2 :
-	                return p.getEmpName();
+	                return p.getEmployeeName();
 	            default :
 	                return "";
 	        }

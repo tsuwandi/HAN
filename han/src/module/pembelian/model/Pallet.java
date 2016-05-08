@@ -1,6 +1,7 @@
 package module.pembelian.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Pallet {
 	int id;
@@ -12,6 +13,15 @@ public class Pallet {
 	int gradeID;
 	int totalLog;
 	double totalVolume;
+	List<PalletCardDetail> palletCardDetails;
+
+	public List<PalletCardDetail> getPalletCardDetails() {
+		return palletCardDetails;
+	}
+
+	public void setPalletCardDetails(List<PalletCardDetail> palletCardDetails) {
+		this.palletCardDetails = palletCardDetails;
+	}
 
 	public String getGrade() {
 		return grade;

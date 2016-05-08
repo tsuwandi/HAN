@@ -7,7 +7,14 @@ public class PalletCardDetail {
 	double width;
 	double thickness;
 	int total;
-	int volume;
+	double volume;
+	String productName;
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
 	String productCode;
 	
 	public String getProductCode() {
@@ -52,10 +59,10 @@ public class PalletCardDetail {
 	public void setTotal(int total) {
 		this.total = total;
 	}
-	public int getVolume() {
+	public double getVolume() {
 		return volume;
 	}
-	public void setVolume(int volume) {
+	public void setVolume(double volume) {
 		this.volume = volume;
 	}
 	

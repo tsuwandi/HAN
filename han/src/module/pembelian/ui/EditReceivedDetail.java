@@ -281,9 +281,9 @@ public class EditReceivedDetail extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				AddPopUpPalletCard pop = new AddPopUpPalletCard();
-				pop.show();
-				pop.setLocationRelativeTo(null);
+//				AddPopUpPalletCard pop = new AddPopUpPalletCard();
+	/*			pop.show();
+				pop.setLocationRelativeTo(null);*/
 			}
 		});
 		
@@ -462,9 +462,9 @@ public class EditReceivedDetail extends JPanel implements Bridging{
 		        case 0 :
 		        	return p.isFlag();
 	            case 1 : 
-	                return p.getEmpCode();
+	                return p.getEmployeeType();
 	            case 2 :
-	                return p.getEmpName();
+	                return p.getEmployeeName();
 	            default :
 	                return "";
 	        }

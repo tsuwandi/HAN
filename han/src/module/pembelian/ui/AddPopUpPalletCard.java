@@ -1,22 +1,34 @@
 package module.pembelian.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import controller.ReceivedDAOFactory;
 import main.component.ComboBox;
+import main.component.NumberField;
 import model.User;
+import module.pembelian.model.Employee;
 import module.pembelian.model.Grade;
+import module.pembelian.model.Pallet;
 import module.pembelian.model.PalletCardDetail;
+import module.pembelian.model.Product;
+import module.pembelian.model.Thickness;
+import controller.ReceivedDAOFactory;
 
 public class AddPopUpPalletCard extends JDialog{
 
@@ -28,7 +40,7 @@ public class AddPopUpPalletCard extends JDialog{
 	JLabel thickLbl;
 	JLabel totalLbl;
 	JLabel volumeLbl;
-	JLabel totalpcLbl;
+	JLabel totalLogLbl;
 	JLabel totalVolumeLbl;
 	JLabel productNameLbl;
 	JLabel uomLongLbl;
@@ -36,21 +48,31 @@ public class AddPopUpPalletCard extends JDialog{
 	JLabel uomThickLbl;
 	JLabel uomTotalLbl;
 	JLabel uomVolumeLbl;
-	JLabel uomTotalpcLbl;
+	JLabel uomTotalLogLbl;
 	JLabel uomTotalVolumeLbl;
 	
+	JLabel errorGraderLbl;
+	JLabel errorGradeLbl;
+	JLabel errorLongLbl;
+	JLabel errorWideLbl;
+	JLabel errorThickLbl;
+	JLabel errorTotalLbl;
+	JLabel errorVolumeLbl;
+	JLabel productCode;
+	
 	JTextField codePalletCardField;
-	JTextField longField;
-	JTextField wideField;
-	JTextField thickField;
-	JTextField totalField;
-	JTextField volumeField;
-	JTextField totalpcField;
+	NumberField longField;
+	NumberField wideField;
+	NumberField totalField;
+	NumberField volumeField;
+	JTextField totalLogField;
 	JTextField totalVolumeField;
 	JTextField productNameField;
 	
-	ComboBox<Grade> graderComboBox;
+	ComboBox<Employee> graderComboBox;
 	ComboBox<Grade> gradeComboBox;
+	ComboBox<Thickness> thicknessComboBox;
+	
 	
 	JButton insertButton;
 	JButton confirmButton;
@@ -61,8 +83,13 @@ public class AddPopUpPalletCard extends JDialog{
 	PCTableModel pcTableModel;
 	List<PalletCardDetail> pcs;
 	List<Grade> grades;
-	
-	public AddPopUpPalletCard() {
+	List<Thickness> thicknesses;
+	List<Employee> employees;
+	List<Product> products;
+	Map<Integer, Map<Integer, Product>> productMap;
+	AddReceivedDetail addReceivedDetail;
+	public AddPopUpPalletCard(AddReceivedDetail parent) {
+		addReceivedDetail = parent;
 		setLayout(null);
 		setTitle("Kartu Pallet");
 		setSize(700, 700);
@@ -81,9 +108,13 @@ public class AddPopUpPalletCard extends JDialog{
 		graderLbl.setBounds(30,70,150,20);
 		add(graderLbl);
 		
-		graderComboBox = new ComboBox<Grade>();
+		graderComboBox = new ComboBox<Employee>();
 		graderComboBox.setBounds(150,70,150,20);
 		add(graderComboBox);
+		
+		errorGraderLbl = new JLabel();
+		errorGraderLbl.setBounds(310,70,150,20);
+		add(errorGraderLbl);
 		
 		//Grade
 		gradeLbl = new JLabel("Grade");
@@ -94,15 +125,26 @@ public class AddPopUpPalletCard extends JDialog{
 		gradeComboBox.setBounds(150, 100, 150, 20);
 		add(gradeComboBox);
 		
+		errorGradeLbl = new JLabel();
+		errorGradeLbl.setBounds(310,100,150,20);
+		add(errorGradeLbl);
 		
 		//Long 
 		longLbl = new JLabel("Panjang");
 		longLbl.setBounds(30,140,150,20);
 		add(longLbl);
 		
-		longField = new JTextField();
+		longField = new NumberField();
 		longField.setBounds(150, 140, 150, 20);
 		add(longField);
+		
+		uomLongLbl = new JLabel("/M");
+		uomLongLbl.setBounds(302,140,15,20);
+		add(uomLongLbl);
+		
+		errorLongLbl = new JLabel();
+		errorLongLbl.setBounds(325,140,150,20);
+		add(errorLongLbl);
 		
 		//ProductName
 		productNameLbl = new JLabel("Nama Produk");
@@ -118,36 +160,69 @@ public class AddPopUpPalletCard extends JDialog{
 		wideLbl.setBounds(30,220,100,20);
 		add(wideLbl);
 		
-		wideField = new JTextField();
+		wideField = new NumberField();
 		wideField.setBounds(150, 220, 150, 20);
 		add(wideField);
+		
+		uomWideLbl = new JLabel("/M");
+		uomWideLbl.setBounds(302,220,15,20);
+		add(uomWideLbl);
+		
+		errorWideLbl = new JLabel();
+		errorWideLbl.setBounds(325,220,150,20);
+		add(errorWideLbl);
 		
 		//Thickness
 		thickLbl = new JLabel("Tebal");
 		thickLbl.setBounds(30,260,100,20);
 		add(thickLbl);
 		
-		thickField = new JTextField();
-		thickField.setBounds(150, 260, 150, 20);
-		add(thickField);
+		thicknessComboBox = new ComboBox<Thickness>();
+		thicknessComboBox.setBounds(150, 260, 150, 20);
+		add(thicknessComboBox);
+		
+		uomThickLbl = new JLabel("/M");
+		uomThickLbl.setBounds(302,260,15,20);
+		add(uomThickLbl);
+		
+		errorThickLbl = new JLabel();
+		errorThickLbl.setBounds(325,260,150,20);
+		add(errorThickLbl);
 		
 		//Total
 		totalLbl = new JLabel("Total");
 		totalLbl.setBounds(30,300,100,20);
 		add(totalLbl);
 	
-		totalField = new JTextField();
+		totalField = new NumberField();
 		totalField.setBounds(150, 300, 150, 20);
 		add(totalField);
+		
+		uomTotalLbl = new JLabel("/Batang");
+		uomTotalLbl.setBounds(302,300,40,20);
+		add(uomTotalLbl);
+		
+		errorTotalLbl = new JLabel();
+		errorTotalLbl.setBounds(352,300,150,20);
+		add(errorTotalLbl);
 		
 		//Volume
 		volumeLbl = new JLabel("Volume");
 		volumeLbl.setBounds(30,340,100,20);
 		add(volumeLbl);
 			
-		volumeField = new JTextField();
+		volumeField = new NumberField();
 		volumeField.setBounds(150, 340, 150, 20);
 		add(volumeField);
+		
+		uomVolumeLbl = new JLabel("<html><span>/M&#179;</span></html>");
+		uomVolumeLbl.setBounds(302,340,16,20);
+		add(uomVolumeLbl);
+		
+		errorVolumeLbl = new JLabel();
+		errorVolumeLbl.setBounds(325,340,150,20);
+		add(errorVolumeLbl);
+		
 		
 		//insert Button
 		insertButton = new JButton("Insert");
@@ -165,13 +240,17 @@ public class AddPopUpPalletCard extends JDialog{
 		add(pcScrollPane);
 		
 		//Total Log
-		totalpcLbl = new JLabel("Total Jumlah Kayu");
-		totalpcLbl.setBounds(30,540,150,20);
-		add(totalpcLbl);
+		totalLogLbl = new JLabel("Total Jumlah Kayu");
+		totalLogLbl.setBounds(30,540,150,20);
+		add(totalLogLbl);
 	
-		totalpcField =  new JTextField();
-		totalpcField.setBounds(350, 540, 150, 20);
-		add(totalpcField);
+		totalLogField =  new JTextField();
+		totalLogField.setBounds(350, 540, 150, 20);
+		add(totalLogField);
+		
+		uomTotalLogLbl = new JLabel("/Batang");
+		uomTotalLogLbl.setBounds(502,540,40,20);
+		add(uomTotalLogLbl);
 		
 		//total Volume
 		totalVolumeLbl = new JLabel("Total Volume");
@@ -181,19 +260,191 @@ public class AddPopUpPalletCard extends JDialog{
 		totalVolumeField =  new JTextField();
 		totalVolumeField.setBounds(350, 580, 150, 20);
 		add(totalVolumeField);
+		
+		uomTotalVolumeLbl = new JLabel("<html><span>/M&#179;</span></html>");
+		uomTotalVolumeLbl.setBounds(502,580,16,20);
+		add(uomTotalVolumeLbl);
 
 		//Confirm Btn
-		
 		confirmButton = new JButton("Confirm");
 		confirmButton.setBounds(500,610,150,30);
 		add(confirmButton);
 		
+		totalVolumeField.setEnabled(false);
+		totalLogField.setEnabled(false);
+		productNameField.setEnabled(false);
+		
+		productCode = new JLabel();
+		add(productCode);
+		
+		productMap = new HashMap<Integer, Map<Integer,Product>>();
+		
 		try {
 			grades = ReceivedDAOFactory.getGradeDAO().getAll();
+			grades.add(0,new Grade("--Pilih--"));
 			gradeComboBox.setList(grades);
+			
+			thicknesses = ReceivedDAOFactory.getThicknessDAO().getThickness();
+			thicknesses.add(0,new Thickness("--Pilih--"));
+			thicknessComboBox.setList(thicknesses);
+			
+			employees = ReceivedDAOFactory.getPICDockingDAO().getEmployeeBasedOnPosition("POS0002");
+			employees.add(0,new Employee("--Pilih--"));
+			graderComboBox.setList(employees);
+			
+			products = ReceivedDAOFactory.getProductDAO().getAllProduct();
+			for (Product product : products) {
+				Map<Integer, Product> mapTemp = new HashMap<Integer, Product>();
+				mapTemp.put(product.getGradeId(), product);
+				productMap.put(product.getThicknessId(), mapTemp);
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		thicknessComboBox.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				if(thicknessComboBox.getSelectedIndex()!=0 && gradeComboBox.getSelectedIndex()!=0){
+					if (productMap.get(thicknessComboBox.getDataIndex().getId())!=null) {
+						if(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId())!=null){
+							productNameField.setText(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId()).getProductName());
+							productCode.setText(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId()).getProductCode());
+						}else productNameField.setText("");
+					}else productNameField.setText("");
+				}else productNameField.setText("");
+			}
+		});
+		
+		gradeComboBox.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				if(thicknessComboBox.getSelectedIndex()!=0 && gradeComboBox.getSelectedIndex()!=0){
+					if (productMap.get(thicknessComboBox.getDataIndex().getId())!=null) {
+						if(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId())!=null){
+							productNameField.setText(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId()).getProductName());
+							productCode.setText(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId()).getProductCode());
+						}else productNameField.setText("");
+					}else productNameField.setText("");
+				}else productNameField.setText("");
+			}
+		});
+		
+		insertButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int error=0;
+				if(graderComboBox.getSelectedIndex()==0){
+					errorGraderLbl.setText("<html><font color='red'>Grader harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorGraderLbl.setText("");
+				}
+				
+				if(gradeComboBox.getSelectedIndex()==0){
+					errorGradeLbl.setText("<html><font color='red'>Grade harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorGradeLbl.setText("");
+				}
+				if(thicknessComboBox.getSelectedIndex()==0){
+					errorThickLbl.setText("<html><font color='red'>Tebal harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorThickLbl.setText("");
+				}
+				
+				if(longField.getText().equals("")){
+					errorLongLbl.setText("<html><font color='red'>Panjang harus diisi !</font></html>");
+					error++;
+				}else{
+					errorLongLbl.setText("");
+				}
+				if(wideField.getText().equals("")){
+					errorWideLbl.setText("<html><font color='red'>Lebar harus diisi !</font></html>");
+					error++;
+				}else{
+					errorWideLbl.setText("");
+				}
+				if(totalField.getText().equals("")){
+					errorTotalLbl.setText("<html><font color='red'>Total Kayu harus diisi !</font></html>");
+					error++;
+				}else{
+					errorTotalLbl.setText("");
+				}
+				if(volumeField.getText().equals("")){
+					errorVolumeLbl.setText("<html><font color='red'>Volume Kayu harus diisi !</font></html>");
+					error++;
+				}else{
+					errorVolumeLbl.setText("");
+				}
+				
+				if(error==0){
+					PalletCardDetail pc = new PalletCardDetail();
+					pc.setPalletCardCode(codePalletCardField.getText());
+					pc.setThickness(thicknessComboBox.getDataIndex().getThickness());
+					pc.setTotal(Integer.valueOf(totalField.getText()));
+					pc.setVolume(Double.valueOf(volumeField.getText()));
+					pc.setProductName(productNameField.getText());
+					pc.setLength(Double.valueOf(longField.getText()));
+					pc.setWidth(Double.valueOf(wideField.getText()));
+					pc.setProductCode(productCode.getText());
+					pcs.add(pc);
+					pcTable.updateUI();
+					
+					int total = 0;
+					double volume = 0;
+					for(PalletCardDetail pcd : pcs){
+						total+=pcd.getTotal();
+						volume+=pcd.getVolume();
+					}
+					totalLogField.setText(total+"");
+					totalVolumeField.setText(volume+"");
+				}
+			}
+		});
+		
+		confirmButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int error=0;
+				if(graderComboBox.getSelectedIndex()==0){
+					errorGraderLbl.setText("<html><font color='red'>Grader harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorGraderLbl.setText("");
+				}
+				
+				if(gradeComboBox.getSelectedIndex()==0){
+					errorGradeLbl.setText("<html><font color='red'>Grade harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorGradeLbl.setText("");
+				}
+				
+				if(error==0){
+					Pallet pallet = new Pallet();
+					pallet.setGradeID(gradeComboBox.getDataIndex().getId());
+					pallet.setGrade(gradeComboBox.getDataIndex().getGrade());
+					pallet.setEmpName(graderComboBox.getDataIndex().getEmployeeName());
+					pallet.setEmpCode(graderComboBox.getDataIndex().getEmployeeId());
+					pallet.setPalletCardCode(codePalletCardField.getText());
+					pallet.setTotalLog(Integer.valueOf(totalLogField.getText()));
+					pallet.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
+					pallet.setPalletCardDetails(pcs);
+					
+					addReceivedDetail.pallets.add(pallet);
+					addReceivedDetail.palletTable.updateUI();
+					dispose();
+					
+				}
+			}
+		});
 	
 	}
 	
@@ -216,7 +467,7 @@ public class AddPopUpPalletCard extends JDialog{
 	     * Method to get Column Count
 	     */
 	    public int getColumnCount() {
-	        return 7;
+	        return 8;
 	    }
 	    
 	    /**
@@ -235,12 +486,14 @@ public class AddPopUpPalletCard extends JDialog{
 	            case 2 :
 	                return p.getThickness();
 	            case 3 :
-	                return p.getTotal();
+	            	return p.getProductName();
 	            case 4 :
-	                return p.getVolume();
+	                return p.getTotal();
 	            case 5 :
-	                return "Edit";
+	                return p.getVolume();
 	            case 6 :
+	                return "Edit";
+	            case 7 :
 	                return "Delete";
 	            default :
 	                return "";
@@ -261,12 +514,14 @@ public class AddPopUpPalletCard extends JDialog{
 	            case 2 :
 	                return "Tebal";
 	            case 3 :
-	                return "Jumlah";
+	            	return "Nama Produk";
 	            case 4 :
-	                return "Volume";
+	                return "Jumlah";
 	            case 5 :
-	                return "Action";
+	                return "Volume";
 	            case 6 :
+	                return "Action";
+	            case 7 :
 	                return "Action";
 	            default :
 	                return "";
