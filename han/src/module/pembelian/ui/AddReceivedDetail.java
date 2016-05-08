@@ -52,6 +52,7 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 	JLabel firstCodeSeparator;
 	JLabel secondCodeSeparator;
 	JLabel thirdCodeSeparator;
+	JLabel driverIDLbl;
 	
 	JLabel errorCodeLbl;
 	JLabel errorRitNumberLbl;
@@ -59,6 +60,7 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 	JLabel errorDocNoLbl;
 	JLabel errorWoodTypeLbl;
 	JLabel errorDriverLbl;
+	JLabel errorDriverIDLbl;
 	
 	NumberField receivedCodeField;
 	NumberField receivedCodeDateField;
@@ -70,6 +72,7 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 	JTextField woodDomicileField;
 	JTextField supplierTextField;
 	JTextField woodResourceField;
+	JTextField driverIDField;
 	
 	
 	ComboBox<SupplierVehicle> licensePlateComboBox;
@@ -110,7 +113,7 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		this.parent = this;
 		
 		containerPnl = new JPanel();
-		containerPnl.setPreferredSize(new Dimension(1100, 800));
+		containerPnl.setPreferredSize(new Dimension(1100, 840));
 		containerPnl.setLayout(null);
 		
 		scrollPane = new JScrollPane(containerPnl);
@@ -153,6 +156,10 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		receivedCodeYearField.setBounds(420, 70, 50, 20);
 		containerPnl.add(receivedCodeYearField);
 		
+		errorCodeLbl = new JLabel();
+		errorCodeLbl.setBounds(480,70,180,20);
+		containerPnl.add(errorCodeLbl);
+		
 		
 		//Receive Date
 		receivedDateLbl = new JLabel("Tanggal Penerimaan");
@@ -172,6 +179,10 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		ritNumberField.setBounds(220, 150, 150, 20);
 		containerPnl.add(ritNumberField);
 		
+		errorRitNumberLbl = new JLabel();
+		errorRitNumberLbl.setBounds(380,150,180,20);
+		containerPnl.add(errorRitNumberLbl);
+		
 		//License Plate
 		licensePlateLbl = new JLabel("No Kendaraan");
 		licensePlateLbl.setBounds(50,190,150,20);
@@ -180,6 +191,10 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		licensePlateComboBox = new ComboBox<SupplierVehicle>();
 		licensePlateComboBox.setBounds(220,190,150,20);
 		containerPnl.add(licensePlateComboBox);
+		
+		errorLicenseLbl = new JLabel();
+		errorLicenseLbl.setBounds(380,190,180,20);
+		containerPnl.add(errorLicenseLbl);
 		
 		//Supplier
 		supplierLbl = new JLabel("Supplier");
@@ -198,43 +213,70 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		driverField = new JTextField();
 		driverField.setBounds(220, 270, 150, 20);
 		containerPnl.add(driverField);
+		
+		errorDriverLbl = new JLabel();
+		errorDriverLbl.setBounds(380,270,180,20);
+		containerPnl.add(errorDriverLbl);
+		
+		//Driver Id
+		driverIDLbl =  new JLabel("KTP Supir");
+		driverIDLbl.setBounds(50,310,150,20);
+		containerPnl.add(driverIDLbl);
+		
+		driverIDField = new JTextField();
+		driverIDField.setBounds(220, 310, 150, 20);
+		containerPnl.add(driverIDField);
+		
+		errorDriverIDLbl = new JLabel();
+		errorDriverIDLbl.setBounds(380,310,180,20);
+		containerPnl.add(errorDriverIDLbl);
+		
 	
 		// Document Number
 		docNoLbl =  new JLabel("No Dokumen");
-		docNoLbl.setBounds(50,310,150,20);
+		docNoLbl.setBounds(50,350,150,20);
 		containerPnl.add(docNoLbl);
 		
 		docNoComboBox = new ComboBox<>();
-		docNoComboBox.setBounds(220, 310, 150, 20);
+		docNoComboBox.setBounds(220, 350, 150, 20);
 		containerPnl.add(docNoComboBox);
+		
+		errorDocNoLbl = new JLabel();
+		errorDocNoLbl.setBounds(380,350,180,20);
+		containerPnl.add(errorDocNoLbl);
+
 		
 		//Wood Domicile
 		woodDomicileLbl = new JLabel("Asal Barang");
-		woodDomicileLbl.setBounds(50,350,150,20);
+		woodDomicileLbl.setBounds(50,390,150,20);
 		containerPnl.add(woodDomicileLbl);
 		
 		woodDomicileField = new JTextField();
-		woodDomicileField.setBounds(220, 350, 150, 20);
+		woodDomicileField.setBounds(220, 390, 150, 20);
 		containerPnl.add(woodDomicileField);
 	
 		//Wood Resource
 		woodResourceLbl = new JLabel("Asal Sumber Bahan Baku");
-		woodResourceLbl.setBounds(50, 390, 150, 20);
+		woodResourceLbl.setBounds(50, 430, 150, 20);
 		containerPnl.add(woodResourceLbl);
 		
 		woodResourceField = new JTextField();
-		woodResourceField.setBounds(220, 390, 150, 20);
+		woodResourceField.setBounds(220, 430, 150, 20);
 		containerPnl.add(woodResourceField);
 		
 		
 		//Wood Type
 		woodTypeLbl = new JLabel("Tipe Kayu");
-		woodTypeLbl.setBounds(50, 430, 150, 20);
+		woodTypeLbl.setBounds(50, 470, 150, 20);
 		containerPnl.add(woodTypeLbl);
 		
 		woodTypeComboBox = new ComboBox<>();
-		woodTypeComboBox.setBounds(220, 430, 150, 20);
+		woodTypeComboBox.setBounds(220, 470, 150, 20);
 		containerPnl.add(woodTypeComboBox);
+		
+		errorWoodTypeLbl = new JLabel();
+		errorWoodTypeLbl.setBounds(380,470,150,20);
+		containerPnl.add(errorWoodTypeLbl);
 		
 		//Pallet Card
 		pallets = new ArrayList<>();
@@ -242,15 +284,15 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		palletTable = new JTable(palletTableModel);
 		
 		palletScrollPane = new JScrollPane(palletTable);
-		palletScrollPane.setBounds(50,500,1000,150);
+		palletScrollPane.setBounds(50,540,1000,150);
 		containerPnl.add(palletScrollPane);
 		
 		addPalletBtn = new JButton("Add");
-		addPalletBtn.setBounds(900,450,100,30);
+		addPalletBtn.setBounds(900,490,100,30);
 		containerPnl.add(addPalletBtn);
 		
 		deletePalletBtn = new JButton("Delete");
-		deletePalletBtn.setBounds(800,450,100,30);
+		deletePalletBtn.setBounds(800,490,100,30);
 		containerPnl.add(deletePalletBtn);
 		
 		//Pic Docking
@@ -259,44 +301,20 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 		dockingPICTable = new JTable(picDockingTableModel);
 		
 		dockingPicScrollPane = new JScrollPane(dockingPICTable);
-		dockingPicScrollPane.setBounds(50,670,500,100);
+		dockingPicScrollPane.setBounds(50,710,500,100);
 		containerPnl.add(dockingPicScrollPane);
 		
 		deletePicBtn = new JButton("Delete");
-		deletePicBtn.setBounds(570,710,100,30);
+		deletePicBtn.setBounds(570,750,100,30);
 		containerPnl.add(deletePicBtn);
 		
 		searchPicBtn = new JButton("Search");
-		searchPicBtn.setBounds(570,670,100,30);
+		searchPicBtn.setBounds(570,710,100,30);
 		containerPnl.add(searchPicBtn);
 		
 		saveBtn = new JButton("Save");
-		saveBtn.setBounds(950,750,100,30);
+		saveBtn.setBounds(950,790,100,30);
 		containerPnl.add(saveBtn);
-		
-		errorCodeLbl = new JLabel();
-		errorCodeLbl.setBounds(480,70,150,20);
-		containerPnl.add(errorCodeLbl);
-		
-		errorRitNumberLbl = new JLabel();
-		errorRitNumberLbl.setBounds(380,150,150,20);
-		containerPnl.add(errorRitNumberLbl);
-		
-		errorDocNoLbl = new JLabel();
-		errorDocNoLbl.setBounds(380,310,150,20);
-		containerPnl.add(errorDocNoLbl);
-
-		errorLicenseLbl = new JLabel();
-		errorLicenseLbl.setBounds(380,190,150,20);
-		containerPnl.add(errorLicenseLbl);
-		
-		errorDriverLbl = new JLabel();
-		errorDriverLbl.setBounds(380,270,150,20);
-		containerPnl.add(errorDriverLbl);
-		
-		errorWoodTypeLbl = new JLabel();
-		errorWoodTypeLbl.setBounds(380,430,150,20);
-		containerPnl.add(errorWoodTypeLbl);
 		
 		addPalletBtn.addActionListener(new ActionListener() {
 			
@@ -394,10 +412,16 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 					errorRitNumberLbl.setText("");
 				}
 				if(driverField.getText().equals("")){
-					errorDriverLbl.setText("<html><font color='red'>Nama Driver tidak bole kosong !</font></html>");
+					errorDriverLbl.setText("<html><font color='red'>Nama Supir tidak bole kosong !</font></html>");
 					error++;
 				}else{
 					errorDriverLbl.setText("");
+				}
+				if(driverIDField.getText().equals("")){
+					errorDriverIDLbl.setText("<html><font color='red'>KTP Supir tidak bole kosong !</font></html>");
+					error++;
+				}else{
+					errorDriverIDLbl.setText("");
 				}
 				if(licensePlateComboBox.getSelectedIndex()==0){
 					errorLicenseLbl.setText("<html><font color='red'>Plat Nomor harus dipilih !</font></html>");

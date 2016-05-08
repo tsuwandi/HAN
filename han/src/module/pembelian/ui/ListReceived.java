@@ -1,8 +1,7 @@
 package module.pembelian.ui;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import main.panel.MainPanel;
+import controller.ReceivedDAOFactory;
 import model.User;
 import module.pembelian.model.Received;
 
@@ -58,39 +57,15 @@ public class ListReceived extends JPanel {
 		scrollPane =  new JScrollPane(receivedTable);
 		scrollPane.setBounds(50,150,1000,400);
 		add(scrollPane);
-		
-		createBtn = new JButton("Buat Baru");
-		createBtn.setBounds(920,570,100,30);
-		add(createBtn);
 
-		deleteBtn = new JButton("Delete");
-		deleteBtn.setBounds(800,570,100,30);
-		add(deleteBtn);
-		
-		createBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.pembelian.ui.EditReceivedDetail");
-//				DialogBox.showDeleteChoice();
-				
-			}
-		});
-
-		for (int i = 0; i < 5; i++) {
-			Received pur = new Received();
-			pur.setReceivedCode("123");
-			pur.setReceivedDate(new java.util.Date());
-			pur.setRitNo("12");
-			pur.setLicensePlate("12312312");
-			pur.setDriver("asdas");
-			pur.setSupplier("Alfa");
-			pur.setDeliveryNote("11/20/2016/9210921");
-			receiveds.add(pur);
+	
+		try {
+			receiveds = ReceivedDAOFactory.getReceivedDAO().getAll();
+			receivedTable.setModel(new ReceivedTableModel(receiveds));
+			receivedTable.updateUI();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
-		
-		receivedTable.setModel(new ReceivedTableModel(receiveds));
-		receivedTable.updateUI();
 		
 		
 		
@@ -115,7 +90,7 @@ public class ListReceived extends JPanel {
 	     * Method to get Column Count
 	     */
 	    public int getColumnCount() {
-	        return 7;
+	        return 8;
 	    }
 	    
 	    /**
@@ -140,6 +115,8 @@ public class ListReceived extends JPanel {
 	            case 5 :
 	                return p.getDeliveryNote();
 	            case 6 :
+	                return p.getReceivedStatus();
+	            case 7 :
 	                return "View";
 	            default :
 	                return "";
@@ -170,6 +147,8 @@ public class ListReceived extends JPanel {
 	            case 5 :
 	                return "No Dokumen";
 	            case 6 :
+	                return "Status";
+	            case 7 :
 	                return "Action";
 	            default :
 	                return "";

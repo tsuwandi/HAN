@@ -20,45 +20,22 @@ public class ReceivedDAO {
 	private PreparedStatement getAllStatement;
 
 	 private String insertQuery = "INSERT INTO received (received_code, received_date,"
-	 		+ " rit_no, license_plate, driver, delivery_note, wood_type_id, input_date, input_by) "
-	 		+ " VALUES (?,?,?,?,?,?,?,,?,?)";
+	 		+ " rit_no, license_plate, driver, delivery_note, wood_type_id, driver_id, received_status, input_date, input_by) "
+	 		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 	 private String updateQuery = "UPDATE received set received_date=?, rit_no=?,"
 	 		+ " license_plate=?, driver=?, delivery_note=?, wood_type_id=?, edit_date=?, edited_by=?"
 	 		+ " WHERE id=? AND received_code=?";
 	 private String deleteQuery = "update bank set deleted_date=?,"
 	 		+ "deleted_by=? where id=?";
-	private String getAllQuery = "select id, province from province order by province";
-	
-	private String getLatestID = "SELECT received_code FROM received ORDER BY id DESC LIMIT 1";
+	private String getAllQuery = "select a.id, received_code, received_date, rit_no, a.license_plate, driver, delivery_note, wood_type_id, supp_name, driver_id, received_status FROM received a " +
+			"INNER JOIN supp_vehicle b  ON a.license_plate = b.license_plate INNER JOIN supplier c ON b.supp_code = c.supp_code";
+
 
 	public ReceivedDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
 	}
 	
-	public String getLatestID() throws SQLException{
-		Connection con = null;
-		String receivedCode = null;
-		try {
-			con = dataSource.getConnection();
-			getAllStatement = con.prepareStatement(getAllQuery);
-
-			ResultSet rs = getAllStatement.executeQuery();
-			while (rs.next()) {
-				receivedCode = rs.getString("received_code");
-			}
-
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new SQLException(ex.getMessage());
-		} finally {
-			try {
-				con.close();
-			} catch (SQLException e) {
-			}
-		} 
-		return receivedCode;
-	}
-
+	
 	public List<Received> getAll() throws SQLException {
 		Connection con = null;
 		List<Received> receiveds = new ArrayList<Received>();
@@ -78,7 +55,9 @@ public class ReceivedDAO {
 				received.setDriver(rs.getString("driver"));
 				received.setDeliveryNote(rs.getString("delivery_note"));
 				received.setWoodTypeID(rs.getInt("wood_type_id"));
-				received.setSupplier(rs.getString("supplier"));
+				received.setSupplier(rs.getString("supp_name"));
+				received.setReceivedStatus(rs.getString("received_status"));
+				received.setDriverID(rs.getString("driver_id"));
 				receiveds.add(received);
 			}
 
@@ -108,8 +87,10 @@ public class ReceivedDAO {
     		insertStatement.setString(5, received.getDriver());
     		insertStatement.setString(6, received.getDeliveryNote());
     		insertStatement.setInt(7, received.getWoodTypeID());
-    		insertStatement.setDate(8, new Date(new java.util.Date().getTime()));
-    		insertStatement.setString(9, "Michael");
+    		insertStatement.setString(8, received.getDriverID());
+    		insertStatement.setString(9, "Baru");
+    		insertStatement.setDate(10, new Date(new java.util.Date().getTime()));
+    		insertStatement.setString(11, "Michael");
     		insertStatement.executeUpdate();
             
         } catch (SQLException ex) {
