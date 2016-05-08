@@ -88,11 +88,27 @@ public class MenuPanel extends JPanel {
 			}
 		});
 
-		menuBtn6 = new JButton("Menu6");
+		menuBtn6 = new JButton("Penerimaan dari Truk");
 		menuBtn6.setBounds(0, 175, 200, 35);
+		menuBtn6.addActionListener(new ActionListener() {
 
-		menuBtn7 = new JButton("Menu7");
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
+			}
+		});
+
+		menuBtn7 = new JButton("Penerimaan Balken");
 		menuBtn7.setBounds(0, 210, 200, 35);
+		menuBtn7.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				MainPanel.changePanel("module.pembelian.ui.ListReceived");
+			}
+		});
 
 		add(menuBtn1);
 		add(menuBtn2);

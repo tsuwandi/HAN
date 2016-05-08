@@ -12,7 +12,21 @@ public class Received {
 	String deliveryNote;
 	int woodTypeID;
 	String supplier;
+	String driverID;
+	String receivedStatus;
 	
+	public String getDriverID() {
+		return driverID;
+	}
+	public void setDriverID(String driverID) {
+		this.driverID = driverID;
+	}
+	public String getReceivedStatus() {
+		return receivedStatus;
+	}
+	public void setReceivedStatus(String receivedStatus) {
+		this.receivedStatus = receivedStatus;
+	}
 	public int getId() {
 		return id;
 	}
