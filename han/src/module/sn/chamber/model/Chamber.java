@@ -153,13 +153,21 @@ public class Chamber implements Serializable, ComboBoxProperties {
 	 */
 	@Override
 	public String toString() {
-		return "Chamber(id=" + id + ",chamber=" + chamber + ",inputDate=" + inputDate + ",inputBy="
-				+ inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate=" + deletedDate
-				+ ",deletedBy=" + deletedBy + ')';
+		return "Chamber(id=" + id + ",chamber=" + chamber + ",inputDate=" + inputDate + ",inputBy=" + inputBy
+				+ ",editDate=" + editDate + ",editedBy=" + editedBy + ",deletedDate=" + deletedDate + ",deletedBy="
+				+ deletedBy + ')';
 	}
 
 	@Override
 	public Object getField() {
 		return chamber;
+	}
+
+	public Chamber() {
+
+	}
+
+	public Chamber(String chamber) {
+		this.chamber = chamber;
 	}
 }

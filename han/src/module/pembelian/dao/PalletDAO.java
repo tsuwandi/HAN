@@ -141,10 +141,12 @@ public class PalletDAO {
 					.append("INNER JOIN dry_in di ON di.dry_in_code = dip.dry_in_code ")
 					.append("WHERE pc.pallet_card_code = dip.pallet_card_code ").append("AND di.chamber_id = ")
 					.append(chamberId).append(" ").append("AND di.deleted_date is null AND dip.deleted_date is null) ")
-					.append("AND pc.pallet_card_code NOT IN (SELECT pallet_card_code FROM dry_out_pallet) ")
+					.append("AND pc.pallet_card_code NOT IN (SELECT pallet_card_code FROM dry_out_pallet WHERE deleted_date is null) ")
 					.append("GROUP BY pallet_card_code )a ").append("ORDER BY a.pallet_card_code ").toString();
 
 			getAllForDryOutPalletStatement = connection.prepareStatement(query);
+			
+			System.out.println(getAllForDryOutPalletStatement);
 
 			ResultSet rs = getAllForDryOutPalletStatement.executeQuery();
 			while (rs.next()) {

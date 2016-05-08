@@ -89,6 +89,7 @@ public class SuppAddressDialog extends JDialog {
 
 		try {
 			listOfProvince = ServiceFactory.getSupplierBL().getAllProvince();
+			listOfProvince.add(0, new Province("-- Pilih Provinsi --"));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
@@ -142,7 +143,6 @@ public class SuppAddressDialog extends JDialog {
 		getContentPane().add(lblProvince);
 
 		cbProvince = new ComboBox<Province>();
-		cbProvince.addItem("-- Pilih Provinsi --");
 		cbProvince.setList(listOfProvince);
 		cbProvince.setBounds(150, 170, 150, 30);
 		getContentPane().add(cbProvince);
@@ -152,16 +152,10 @@ public class SuppAddressDialog extends JDialog {
 		getContentPane().add(lblCity);
 
 		cbCity = new ComboBox<City>();
-		cbCity.addItem("-- Pilih Kota --");
 		cbCity.setBounds(150, 205, 150, 30);
 
 		int provinceId = cbProvince.getDataIndex().getId();
-		try {
-			listOfCity = ServiceFactory.getSupplierBL().getAllCityByProvinceId(provinceId);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			DialogBox.showErrorException();
-		}
+		getAllCityByProvinceId(provinceId);
 
 		cbCity.removeAllItems();
 		cbCity.setList(listOfCity);
@@ -172,12 +166,7 @@ public class SuppAddressDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// if (cbProvince.getSelectedIndex() != 0) {
 				int provinceId = cbProvince.getDataIndex().getId();
-				try {
-					listOfCity = ServiceFactory.getSupplierBL().getAllCityByProvinceId(provinceId);
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-					DialogBox.showErrorException();
-				}
+				getAllCityByProvinceId(provinceId);
 
 				cbCity.removeAllItems();
 				cbCity.setList(listOfCity);
@@ -239,6 +228,16 @@ public class SuppAddressDialog extends JDialog {
 			txtFax.setText(suppAddress.getFax());
 		}
 	}
+	
+	public void getAllCityByProvinceId(int provinceId) {
+		try {
+			listOfCity = ServiceFactory.getSupplierBL().getAllCityByProvinceId(provinceId);
+			listOfCity.add(0, new City("-- Pilih Kota --"));
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			DialogBox.showErrorException();
+		}
+	}
 
 	protected boolean doValidate() {
 		boolean isValid = true;
@@ -256,8 +255,8 @@ public class SuppAddressDialog extends JDialog {
 			isValid = false;
 		}
 
-		if (cbProvince.getSelectedItem() == null) {
-			if (cbCity.getSelectedItem() == null) {
+		if (cbProvince.getSelectedItem() == null || cbProvince.getSelectedIndex() != 0) {
+			if (cbCity.getSelectedItem() == null || cbCity.getSelectedIndex() == 0) {
 				lblErrorCity.setText("Combobox Kota harus dipilih.");
 				isValid = false;
 			}

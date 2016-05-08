@@ -27,6 +27,7 @@ import javax.swing.table.AbstractTableModel;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
+import main.component.NumberField;
 import main.panel.MainPanel;
 import module.sn.bank.model.Bank;
 import module.sn.currency.model.Currency;
@@ -79,7 +80,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	JTextField txtAccountName;
 	ComboBox<Currency> cbCurrency;
 	JTextField txtTop;
-	JTextField txtDefaultTax;
+	NumberField txtDefaultTax;
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
@@ -185,12 +186,12 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		listOfSuppType = new ArrayList<SuppType>();
 		try {
 			listOfSuppType = ServiceFactory.getSupplierBL().getAllSuppType();
+			listOfSuppType.add(0, new SuppType("-- Pilih Tipe Supplier --"));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
 		cbSuppType = new ComboBox<SuppType>();
-		cbSuppType.addItem("-- Pilih Tipe Supplier --");
 		cbSuppType.setList(listOfSuppType);
 		cbSuppType.setBounds(220, 240, 150, 30);
 		panel.add(cbSuppType);
@@ -418,12 +419,12 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		listOfBank = new ArrayList<Bank>();
 		try {
 			listOfBank = ServiceFactory.getSupplierBL().getAllBank();
+			listOfBank.add(0, new Bank("-- Pilih Bank --"));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
 		cbBank = new ComboBox<Bank>();
-		cbBank.addItem("-- Pilih Bank --");
 		cbBank.setList(listOfBank);
 		cbBank.setBounds(220, 1000, 150, 30);
 		panel.add(cbBank);
@@ -444,12 +445,12 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		listOfCurrency = new ArrayList<Currency>();
 		try {
 			listOfCurrency = ServiceFactory.getSupplierBL().getAllCurrency();
+			listOfCurrency.add(0, new Currency("-- Pilih Kurs --"));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
 		cbCurrency = new ComboBox<Currency>();
-		cbCurrency.addItem("-- Pilih Kurs --");
 		cbCurrency.setList(listOfCurrency);
 		cbCurrency.setBounds(220, 1100, 150, 30);
 		panel.add(cbCurrency);
@@ -485,19 +486,20 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		lblDefaultTax.setBounds(50, 1180, 150, 30);
 		panel.add(lblDefaultTax);
 
-		txtDefaultTax = new JTextField();
+		txtDefaultTax = new NumberField();
 		txtDefaultTax.setBounds(220, 1180, 150, 30);
-		txtDefaultTax.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				char vchar = arg0.getKeyChar();
-				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE
-						|| vchar == KeyEvent.VK_COMMA) {
-					arg0.consume();
-					return;
-				}
-			}
-		});
+		txtDefaultTax.setDocument(new JTextFieldLimit(6));
+//		txtDefaultTax.addKeyListener(new KeyAdapter() {
+//			@Override
+//			public void keyTyped(KeyEvent arg0) {
+//				char vchar = arg0.getKeyChar();
+//				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE
+//						|| vchar == KeyEvent.VK_COMMA) {
+//					arg0.consume();
+//					return;
+//				}
+//			}
+//		});
 		panel.add(txtDefaultTax);
 
 		lblDefaultTaxPercentage = new JLabel("%");
@@ -513,6 +515,8 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBounds(0, 0, 1155, 605);
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 		add(scrollPane);
 
 		btnSave = new JButton("Simpan");
@@ -594,14 +598,21 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 			isValid = false;
 		}
 
-		if (cbSuppType.getSelectedItem() == null) {
+		if (cbSuppType.getSelectedItem() == null || cbSuppType.getSelectedIndex() == 0) {
 			lblErrorSuppType.setText("Combobox Tipe Supplier harus dipilih.");
 			isValid = false;
 		}
 
-		if (cbSuppStatus.getSelectedItem() == null) {
+		if (cbSuppStatus.getSelectedItem() == null || cbSuppType.getSelectedIndex() == 0) {
 			lblErrorSuppStatus.setText("Combobox Status Supplier harus dipilih.");
 			isValid = false;
+		}
+		
+		if (!"".equals(txtDefaultTax.getText())) {
+			if (Double.valueOf(txtDefaultTax.getText()) > 100.00) {
+				lblErrorDefaultTax.setText("Default Tax tidak lebih dari 100%");
+				isValid = false;
+			}
 		}
 
 		return isValid;
@@ -619,8 +630,16 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		supplier.setBankId(cbBank.getDataIndex().getId());
 		supplier.setAccountName(txtAccountName.getText());
 		supplier.setCurrencyId(cbCurrency.getDataIndex().getId());
-		supplier.setTop(Integer.valueOf(txtTop.getText()));
-		supplier.setDefaultTax(Double.valueOf(txtDefaultTax.getText()));
+		
+		if(!"".equals(txtTop.getText()))
+			supplier.setTop(Integer.valueOf(txtTop.getText()));
+		else
+			supplier.setTop(0);
+		
+		if(!"".equals(txtDefaultTax.getText()))
+			supplier.setDefaultTax(Double.valueOf(txtDefaultTax.getText()));
+		else
+			supplier.setDefaultTax(0.00);
 
 		try {
 			ServiceFactory.getSupplierBL().update(supplier, listOfSuppAddress, listOfDeletedSuppAddress, listOfSuppCp,

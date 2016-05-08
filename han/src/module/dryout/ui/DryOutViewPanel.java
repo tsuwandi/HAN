@@ -285,6 +285,8 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(0, 0, 1155, 605);
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 		add(scrollPane);
 
 		btnPrint = new JButton("Print");
@@ -346,6 +348,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 				cbDateInHour.addItem(String.format("%02d", hours));
 				cbDateInMinute.addItem(String.format("%02d", minutes));
 				
+				cbChamber.addItem("-- Pilih Chamber --");
 				cbChamber.addItem(dryOut.getChamber().getChamber());
 				cbChamber.setSelectedIndex(0);
 				txtTotalVolume.setText(String.valueOf(dryOut.getTotalVolume()));

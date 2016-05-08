@@ -90,6 +90,13 @@ public class Bank implements Serializable, ComboBoxProperties {
 	public void setDeletedBy(String deletedBy) {
 		this.deletedBy = deletedBy;
 	}
+	
+	public Bank() {
+	}
+	
+	public Bank(String bank) {
+		this.bank = bank;
+	}
 
 	@Override
 	public int hashCode() {
@@ -175,6 +182,6 @@ public class Bank implements Serializable, ComboBoxProperties {
 	
 	@Override
 	public Object getField() {
-		return bankAbbr + " - " + bank ;
+		return bank ;
 	}
 }
