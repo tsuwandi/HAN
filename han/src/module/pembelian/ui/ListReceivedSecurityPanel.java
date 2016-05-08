@@ -3,6 +3,8 @@ package module.pembelian.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +71,14 @@ public class ListReceivedSecurityPanel extends JPanel {
 		deleteBtn = new JButton("Delete");
 		deleteBtn.setBounds(800,570,100,30);
 		add(deleteBtn);
+		
+		receivedTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(receivedTable.columnAtPoint(e.getPoint())==7)
+				MainPanel.changePanel("module.pembelian.ui.ViewReceivedDetailSecurityPanel", receiveds.get(receivedTable.getSelectedRow()));
+			}
+		});
 		
 		createBtn.addActionListener(new ActionListener() {
 			

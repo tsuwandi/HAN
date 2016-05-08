@@ -87,8 +87,8 @@ public class AddPopUpPalletCard extends JDialog{
 	List<Employee> employees;
 	List<Product> products;
 	Map<Integer, Map<Integer, Product>> productMap;
-	AddReceivedDetail addReceivedDetail;
-	public AddPopUpPalletCard(AddReceivedDetail parent) {
+	ViewReceivedDetailPanel addReceivedDetail;
+	public AddPopUpPalletCard(ViewReceivedDetailPanel parent) {
 		addReceivedDetail = parent;
 		setLayout(null);
 		setTitle("Kartu Pallet");

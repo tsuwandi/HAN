@@ -14,7 +14,30 @@ public class Received {
 	String supplier;
 	String driverID;
 	String receivedStatus;
+	String woodTypeName;
+	String woodDomicile;
+	String woodResource;
 	
+	
+	
+	public String getWoodDomicile() {
+		return woodDomicile;
+	}
+	public void setWoodDomicile(String woodDomicile) {
+		this.woodDomicile = woodDomicile;
+	}
+	public String getWoodResource() {
+		return woodResource;
+	}
+	public void setWoodResource(String woodResource) {
+		this.woodResource = woodResource;
+	}
+	public String getWoodTypeName() {
+		return woodTypeName;
+	}
+	public void setWoodTypeName(String woodTypeName) {
+		this.woodTypeName = woodTypeName;
+	}
 	public String getDriverID() {
 		return driverID;
 	}

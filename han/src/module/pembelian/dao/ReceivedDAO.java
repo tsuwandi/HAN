@@ -27,8 +27,13 @@ public class ReceivedDAO {
 	 		+ " WHERE id=? AND received_code=?";
 	 private String deleteQuery = "update bank set deleted_date=?,"
 	 		+ "deleted_by=? where id=?";
-	private String getAllQuery = "select a.id, received_code, received_date, rit_no, a.license_plate, driver, delivery_note, wood_type_id, supp_name, driver_id, received_status FROM received a " +
-			"INNER JOIN supp_vehicle b  ON a.license_plate = b.license_plate INNER JOIN supplier c ON b.supp_code = c.supp_code";
+	private String getAllQuery = "select a.id, received_code, received_date, rit_no, a.license_plate, "
+			+ "driver, a.delivery_note, wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource "
+			+ "FROM received a " 
+			+ "INNER JOIN supp_vehicle b  ON a.license_plate = b.license_plate "
+			+ "INNER JOIN supplier c ON b.supp_code = c.supp_code INNER JOIN wood_type d ON a.wood_type_id = d.id "
+			+ "INNER JOIN delivery f ON a.delivery_note = f.delivery_note "
+			+ "INNER JOIN wood_resource e ON f.wood_resource_id = e.id ";
 
 
 	public ReceivedDAO(DataSource dataSource) throws SQLException {
@@ -58,6 +63,9 @@ public class ReceivedDAO {
 				received.setSupplier(rs.getString("supp_name"));
 				received.setReceivedStatus(rs.getString("received_status"));
 				received.setDriverID(rs.getString("driver_id"));
+				received.setWoodTypeName(rs.getString("wood_type"));
+				received.setWoodDomicile(rs.getString("wood_domicile"));
+				received.setWoodResource(rs.getString("wood_resource"));
 				receiveds.add(received);
 			}
 

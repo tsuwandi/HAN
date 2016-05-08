@@ -1,6 +1,8 @@
 package module.pembelian.ui;
 
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +16,13 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import controller.ReceivedDAOFactory;
+import main.panel.MainPanel;
 import model.User;
 import module.pembelian.model.Received;
 
 
 
-public class ListReceived extends JPanel {
+public class ListReceivedPanel extends JPanel {
 	JButton searchBtn;
 	JButton createBtn;
 	JButton deleteBtn;
@@ -31,7 +34,7 @@ public class ListReceived extends JPanel {
 	ReceivedTableModel receivedTableModel;
 	List<Received> receiveds;
 	
-	public ListReceived() {
+	public ListReceivedPanel() {
 		setLayout(null);
 		
 		titleLabel = new JLabel("Penerimaan Balken");
@@ -57,7 +60,14 @@ public class ListReceived extends JPanel {
 		scrollPane =  new JScrollPane(receivedTable);
 		scrollPane.setBounds(50,150,1000,400);
 		add(scrollPane);
-
+		
+		receivedTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(receivedTable.columnAtPoint(e.getPoint())==7)
+				MainPanel.changePanel("module.pembelian.ui.ViewReceivedDetailPanel", receiveds.get(receivedTable.getSelectedRow()));
+			}
+		});
 	
 		try {
 			receiveds = ReceivedDAOFactory.getReceivedDAO().getAll();

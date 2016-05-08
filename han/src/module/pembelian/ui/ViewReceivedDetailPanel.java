@@ -37,7 +37,7 @@ import module.pembelian.model.SupplierVehicle;
 import module.pembelian.model.WoodType;
 import module.util.Bridging;
 
-public class AddReceivedDetail extends JPanel implements Bridging{
+public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	
 	JLabel receivedCodeLbl;
 	JLabel receivedDateLbl;
@@ -104,11 +104,11 @@ public class AddReceivedDetail extends JPanel implements Bridging{
 	List<Delivery> deliveries;
 	List<WoodType> woodTypes;
 	
-	AddReceivedDetail parent;
+	ViewReceivedDetailPanel parent;
 	JScrollPane scrollPane;
 	JPanel containerPnl;
 	
-	public AddReceivedDetail(){
+	public ViewReceivedDetailPanel(){
 		setLayout(null);
 		this.parent = this;
 		
