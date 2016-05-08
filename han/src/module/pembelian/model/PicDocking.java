@@ -1,19 +1,33 @@
 package module.pembelian.model;
 
 public class PicDocking {
-	String nik;
-	String name;
-	public String getNik() {
-		return nik;
+	int id;
+	String receivedCode;
+	String empCode;
+	String empName;
+	public int getId() {
+		return id;
 	}
-	public void setNik(String nik) {
-		this.nik = nik;
+	public void setId(int id) {
+		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getReceivedCode() {
+		return receivedCode;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setReceivedCode(String receivedCode) {
+		this.receivedCode = receivedCode;
+	}
+	public String getEmpCode() {
+		return empCode;
+	}
+	public void setEmpCode(String empCode) {
+		this.empCode = empCode;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 	
 	

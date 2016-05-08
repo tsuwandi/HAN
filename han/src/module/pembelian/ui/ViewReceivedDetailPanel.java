@@ -107,6 +107,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	ViewReceivedDetailPanel parent;
 	JScrollPane scrollPane;
 	JPanel containerPnl;
+	Received received;
 	
 	public ViewReceivedDetailPanel(){
 		setLayout(null);
@@ -357,6 +358,10 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			deliveries = ReceivedDAOFactory.getDeliveryDAO().getDeliveryNote();
 			deliveries.add(0,new Delivery("--Pilih--"));
 			docNoComboBox.setList(deliveries);
+			
+			pallets = ReceivedDAOFactory.getPalletDAO().getAllPallets("001/BL/08/05/16");
+			palletTable.updateUI();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -628,7 +633,40 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 
 	@Override
 	public void invokeObjects(Object... objects) {
-		/*System.out.println(objects[0]);*/
-		
+		received = (Received)objects[0];
+		woodResourceField.setEnabled(false);
+		woodDomicileField.setEnabled(false);
+		supplierTextField.setEnabled(false);
+		receivedCodeField.setEnabled(false);
+		receivedCodeDateField.setEnabled(false);
+		receivedCodeMonthField.setEnabled(false);
+		receivedCodeYearField.setEnabled(false);
+		receivedDateChooser.setEnabled(false);
+		receivedDateChooser.getDateEditor().setEnabled(false);
+		ritNumberField.setEnabled(false);
+		licensePlateComboBox.setEnabled(false);
+		driverField.setEnabled(false);
+		driverIDField.setEnabled(false);
+		docNoComboBox.setEnabled(false);
+		woodTypeComboBox.setEnabled(false);
+
+		String[] codes;
+		codes = received.getReceivedCode().split("/");
+
+		receivedCodeField.setText(codes[0]);
+		receivedCodeDateField.setText(codes[2]);
+		receivedCodeMonthField.setText(codes[3]);
+		receivedCodeYearField.setText(codes[4]);
+		receivedDateChooser.setDate(received.getReceivedDate());
+		ritNumberField.setText(received.getRitNo());
+		licensePlateComboBox.setSelectedItem(received.getLicensePlate());
+		supplierTextField.setText(received.getSupplier());
+		driverField.setText(received.getDriver());
+		driverIDField.setText(received.getDriverID());
+		docNoComboBox.setSelectedItem(received.getDeliveryNote());
+		woodDomicileField.setText(received.getWoodDomicile());
+		woodResourceField.setText(received.getWoodResource());
+		woodTypeComboBox.setSelectedItem(received.getWoodTypeName());
+
 	}
 }

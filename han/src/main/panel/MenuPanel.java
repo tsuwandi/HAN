@@ -106,7 +106,7 @@ public class MenuPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				MainPanel.changePanel("module.pembelian.ui.ListReceived");
+				MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
 			}
 		});
 
