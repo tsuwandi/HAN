@@ -10,6 +10,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import module.pembelian.model.Employee;
+import module.pembelian.model.PicDocking;
 
 public class EmployeeDAO {
 	private DataSource dataSource;
@@ -23,9 +24,40 @@ public class EmployeeDAO {
 
 	}
 
-	public List<Employee> getEmployeeBasedOnPosition(String pos) throws SQLException {
+	public List<PicDocking> getEmployeeBasedOnPosition(String pos) throws SQLException {
 		Connection con = null;
-		ArrayList<Employee> employees = new ArrayList<Employee>();
+		List<PicDocking> employees = new ArrayList<PicDocking>();
+
+		try {
+			con = dataSource.getConnection();
+			getAllStatement = con.prepareStatement(getAllQuery);
+			getAllStatement.setString(1, pos);
+			
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				PicDocking employee = new PicDocking();
+				employee.setEmpCode(rs.getString("employee_id"));
+				employee.setEmpName(rs.getString("employee_name"));
+				employees.add(employee);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return employees;
+	}
+	
+	public List<Employee> getEmployeeGrader(String pos) throws SQLException {
+		Connection con = null;
+		List<Employee> employees = new ArrayList<Employee>();
 
 		try {
 			con = dataSource.getConnection();

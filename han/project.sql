@@ -980,3 +980,23 @@ INSERT INTO `project`.`employee` (`employee_id`, `employee_name`, `employee_type
 ALTER TABLE  `received` ADD  `driver_id` VARCHAR( 50 ) NOT NULL AFTER  `driver`;
 
 ALTER TABLE  `received` ADD  `received_status` VARCHAR( 50 ) NOT NULL AFTER  `wood_type_id`;
+
+
+CREATE TABLE pallet_card_dtl(
+id	int(12) primary key,
+pallet_card_code	varchar(21),
+length	dec (7,2),
+width	dec (7,2),
+thickness	dec (7,2),
+total	int (5),
+volume	dec (10,2),
+product_code	varchar(20),
+input_date	date,
+input_by	varchar(25),
+edit_date	date,
+edited_by	varchar(25),
+deleted_date	date,
+deleted_by	varchar(25)
+);
+
+ALTER TABLE  `pallet_card_dtl` CHANGE  `id`  `id` INT( 12 ) NOT NULL AUTO_INCREMENT;

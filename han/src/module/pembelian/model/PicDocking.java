@@ -5,6 +5,14 @@ public class PicDocking {
 	String receivedCode;
 	String empCode;
 	String empName;
+	boolean flag;
+	
+	public boolean isFlag() {
+		return flag;
+	}
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
 	public int getId() {
 		return id;
 	}

@@ -11,8 +11,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import module.pembelian.model.Pallet;
-import module.pembelian.model.PalletCardDetail;
 import module.pembelian.model.Received;
+import module.pembelian.model.PalletCardDetail;
 
 public class PalletDAO {
 
@@ -23,6 +23,7 @@ public class PalletDAO {
 	private PreparedStatement getAllForDryOutPalletStatement;
 	private PreparedStatement getAllPallets;
 	private PreparedStatement insertStatement;
+	private PreparedStatement detailPalletStatement;
 	
 	private String getAllForDryInPalletQuery = "SELECT pc.id, r.received_date, r.rit_no, pc.pallet_card_code, pc.total_volume "
 			+ "FROM pallet_card pc INNER JOIN received r ON r.received_code = pc.received_code ";
@@ -37,6 +38,9 @@ public class PalletDAO {
 	private String insertQuery = "INSERT INTO pallet_card (pallet_card_code, received_code,"
 		 		+ " emp_code, grade_id, total_volume, total_log, input_date, input_by) "
 		 		+ " VALUES (?,?,?,?,?,?,?,?)";
+	
+	private String detailPalletQuery = "SELECT id, pallet_card_code, length, width, thickness, total, volume, product_code, product_name FROM "
+			+ "pallet_card_dtl a INNER JOIN product b ON a.product_code = b.product_code WHERE pallet_card_code = ?";
 	 
 	public PalletDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -68,6 +72,24 @@ public class PalletDAO {
 				palletCard.setGrade(rs.getString("grade"));
 				palletCard.setTotalLog(rs.getInt("total_log"));
 				palletCard.setTotalVolume(rs.getDouble("total_volume"));
+				List<PalletCardDetail> pcds = new ArrayList<>();
+				detailPalletStatement = con.prepareStatement(detailPalletQuery);
+				detailPalletStatement.setString(1, rs.getString("pallet_card_code"));
+				ResultSet rsDetail = detailPalletStatement.executeQuery();
+				while (rsDetail.next()) {
+					PalletCardDetail pcd = new PalletCardDetail();
+					pcd.setId(rsDetail.getInt("id"));
+					pcd.setLength(rsDetail.getDouble("length"));
+					pcd.setWidth(rsDetail.getDouble("width"));
+					pcd.setPalletCardCode(rsDetail.getString("pallet_card_code"));
+					pcd.setProductCode(rsDetail.getString("product_code"));
+					pcd.setProductName(rsDetail.getString("product_name"));
+					pcd.setThickness(rsDetail.getDouble("thickness"));
+					pcd.setTotal(rsDetail.getInt("total"));
+					pcd.setVolume(rsDetail.getDouble("volume"));
+					pcds.add(pcd);
+				}
+				palletCard.setPalletCardDetails(pcds);
 				palletCards.add(palletCard);
 			}
 		} catch (Exception e) {

@@ -19,11 +19,12 @@ import javax.swing.table.AbstractTableModel;
 import controller.ReceivedDAOFactory;
 import model.User;
 import module.pembelian.model.Employee;
+import module.pembelian.model.PicDocking;
 
 public class PopUpPicDocking extends JDialog {
 	JTable picTable;
 	PicDockingTableModel picDockingTableModel;
-	List<Employee> picDockings;
+	List<PicDocking> picDockings;
 	JScrollPane picScrollPane;
 	
 	JButton addBtn;
@@ -78,7 +79,7 @@ public class PopUpPicDocking extends JDialog {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				Iterator<Employee> i = picDockings.iterator();
+				Iterator<PicDocking> i = picDockings.iterator();
 				while (i.hasNext()) {
 				   if(i.next().isFlag()==false)i.remove();
 				}
@@ -92,9 +93,9 @@ public class PopUpPicDocking extends JDialog {
 	
 
 	class PicDockingTableModel extends AbstractTableModel {
-	    private List<Employee> picDockings;
+	    private List<PicDocking> picDockings;
 	    
-	    public PicDockingTableModel(List<Employee> picDockings) {
+	    public PicDockingTableModel(List<PicDocking> picDockings) {
 	        this.picDockings = picDockings;
 	    }
 	    
@@ -134,14 +135,14 @@ public class PopUpPicDocking extends JDialog {
 	     * @return ({@link User}) Object 
 	     */
 	    public Object getValueAt(int rowIndex, int columnIndex) {
-	    	Employee p = picDockings.get(rowIndex);
+	    	PicDocking p = picDockings.get(rowIndex);
 	        switch(columnIndex){
 	        	case 0 :
 	        		return p.isFlag();
 	            case 1 : 
-	                return p.getEmployeeId();
+	                return p.getEmpCode();
 	            case 2 :
-	                return p.getEmployeeName();
+	                return p.getEmpName();
 	            default :
 	                return "";
 	        }

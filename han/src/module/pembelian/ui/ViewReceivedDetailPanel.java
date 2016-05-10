@@ -32,6 +32,7 @@ import module.pembelian.dao.ReceivedDAO;
 import module.pembelian.model.Delivery;
 import module.pembelian.model.Employee;
 import module.pembelian.model.Pallet;
+import module.pembelian.model.PicDocking;
 import module.pembelian.model.Received;
 import module.pembelian.model.SupplierVehicle;
 import module.pembelian.model.WoodType;
@@ -99,7 +100,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	PicDockingTableModel picDockingTableModel;
 	
 	public List<Pallet> pallets;
-	List<Employee> picDockings;
+	List<PicDocking> picDockings;
 	List<SupplierVehicle> suppVehicles;
 	List<Delivery> deliveries;
 	List<WoodType> woodTypes;
@@ -471,7 +472,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	
 	}
 	
-	public void setTablePic(List<Employee> picDockings){
+	public void setTablePic(List<PicDocking> picDockings){
 		this.picDockings = new ArrayList<>();
 		this.picDockings = picDockings;
 		dockingPICTable.setModel(new PicDockingTableModel(this.picDockings));
@@ -501,6 +502,20 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	        return 7;
 	    }
 	    
+	    public Class<?> getColumnClass(int col) {
+	    	switch(col){
+	    	case 0 : 
+	    		return Boolean.class;
+	    	 default :
+	                return String.class;
+	    		
+	    	}
+      }
+	    
+	    public boolean isCellEditable(int row, int column) {
+	        return false;
+	    }
+	    
 	    /**
 	     * Method to get selected value
 	     * @param rowIndex rowIndex of selected table
@@ -510,6 +525,8 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	    public Object getValueAt(int rowIndex, int columnIndex) {
 	        Pallet p = pallets.get(rowIndex);
 	        switch(columnIndex){
+	        	case 0 :
+	        		return p.isFlag();
 	            case 1 : 
 	                return p.getPalletCardCode();
 	            case 2 :
@@ -533,7 +550,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	    public String getColumnName(int column) {
 	        switch(column){
 	            case 0 : 
-	                return "";
+	                return "Check";
 	            case 1 :
 	                return "Kode Kartu Pallet";
 	            case 2 :
@@ -555,9 +572,9 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	
 	
 	class PicDockingTableModel extends AbstractTableModel {
-	    private List<Employee> picDockings;
+	    private List<PicDocking> picDockings;
 	    
-	    public PicDockingTableModel(List<Employee> picDockings) {
+	    public PicDockingTableModel(List<PicDocking> picDockings) {
 	        this.picDockings = picDockings;
 	    }
 	    
@@ -596,14 +613,14 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	     * @return ({@link User}) Object 
 	     */
 	    public Object getValueAt(int rowIndex, int columnIndex) {
-	    	Employee p = picDockings.get(rowIndex);
+	    	PicDocking p = picDockings.get(rowIndex);
 	        switch(columnIndex){
 		        case 0 :
 		        	return p.isFlag();
 	            case 1 : 
-	                return p.getEmployeeId();
+	                return p.getEmpCode();
 	            case 2 :
-	                return p.getEmployeeName();
+	                return p.getEmpName();
 	            default :
 	                return "";
 	        }
@@ -669,9 +686,10 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		
 		try {
 			pallets = ReceivedDAOFactory.getPalletDAO().getAllPallets(received.getReceivedCode());
+			palletTable.setModel(new PalletTableModel(pallets));
+			System.out.println(" Size :"+ pallets.size());
 			palletTable.updateUI();
 		} catch (SQLException e) {
-		
 			e.printStackTrace();
 		}
 	

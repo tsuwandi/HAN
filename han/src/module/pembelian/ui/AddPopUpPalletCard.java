@@ -288,7 +288,7 @@ public class AddPopUpPalletCard extends JDialog{
 			thicknesses.add(0,new Thickness("--Pilih--"));
 			thicknessComboBox.setList(thicknesses);
 			
-			employees = ReceivedDAOFactory.getPICDockingDAO().getEmployeeBasedOnPosition("POS0002");
+			employees = ReceivedDAOFactory.getPICDockingDAO().getEmployeeGrader("POS0002");
 			employees.add(0,new Employee("--Pilih--"));
 			graderComboBox.setList(employees);
 			
