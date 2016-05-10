@@ -5,12 +5,12 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class CreateProductPanel extends JPanel {
+public class ProductViewPanel extends JPanel {
 
 	/**
 	 * Create the panel.
 	 */
-	private JLabel titleLbl;
+private JLabel titleLbl;
 	
 	private JLabel idLbl;
 	private JLabel nameLbl;
@@ -64,7 +64,7 @@ public class CreateProductPanel extends JPanel {
 	private JLabel customerListLbl;
 	
 	private JLabel taxLbl;
-	public CreateProductPanel() {
+	public ProductViewPanel() {
 		setLayout(null);
 		setPreferredSize(new Dimension(1166, 2000));
 		
@@ -72,7 +72,7 @@ public class CreateProductPanel extends JPanel {
 		titleLbl.setBounds(20, 20, 200, 50);
 		
 		idLbl = new JLabel("Kode Produk");
-		idLbl.setBounds(20, 80, 100, 30);
+		idLbl.setBounds(20, 20, 200, 50);
 		nameLbl = new JLabel("Nama Produk");
 		nameLbl.setBounds(20, 20, 200, 50);
 		catLbl = new JLabel("Kategori Produk");
@@ -163,10 +163,6 @@ public class CreateProductPanel extends JPanel {
 		
 		taxLbl = new JLabel("Pajak");
 		taxLbl.setBounds(20, 20, 200, 50);
-		
-		add(titleLbl);
-		add(idLbl);
-		
 	}
 
 }
