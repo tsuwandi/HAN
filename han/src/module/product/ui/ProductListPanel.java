@@ -56,7 +56,7 @@ public class ProductListPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				MainPanel.changePanel("module.product.ui.CreateEmployeePanel");
+				MainPanel.changePanel("module.product.ui.CreateProductPanel");
 			}
 		});
 
@@ -70,7 +70,7 @@ public class ProductListPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				MainPanel.changePanel("module.product.ui.EmployeeSearchPanel");
+				//MainPanel.changePanel("module.product.ui.EmployeeSearchPanel");
 
 			}
 		});
@@ -103,14 +103,6 @@ public class ProductListPanel extends JPanel {
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
 		productTable.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 
-		//		JLabel headerLbl = new JLabel();
-		//		headerLbl.setBorder(new LineBorder(Color.black, 1));
-		//		headerLbl.setBackground(Color.gray);
-		//		headerLbl.setOpaque(false);
-		//		DefaultTableCellRenderer centerHeaderRenderer = new DefaultTableCellRenderer();
-		//		centerHeaderRenderer.setHorizontalAlignment( headerLbl.CENTER );
-		//		productTable.getTableHeader().setDefaultRenderer(centerHeaderRenderer);
-
 		productTable.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -136,7 +128,7 @@ public class ProductListPanel extends JPanel {
 //							e1.printStackTrace();
 //						}
 
-						MainPanel.changePanel("module.product.ui.EmployeeDisplayPanel", product);
+						MainPanel.changePanel("module.product.ui.ProductViewPanel", product);
 					}
 				}
 			}
