@@ -62,7 +62,7 @@ public class PalletDAO {
 				palletCard.setId(rs.getInt("id"));
 				palletCard.setPalletCardCode(rs.getString("pallet_card_code"));
 				palletCard.setTotalVolume(rs.getDouble("total_volume"));
-				palletCard.setEmpCode(rs.getString("employee_id"));
+				palletCard.setEmpCode(rs.getString("emp_code"));
 				palletCard.setEmpName(rs.getString("employee_name"));
 				palletCard.setGradeID(rs.getInt("grade_id"));
 				palletCard.setGrade(rs.getString("grade"));

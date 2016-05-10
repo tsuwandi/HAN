@@ -359,8 +359,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			deliveries.add(0,new Delivery("--Pilih--"));
 			docNoComboBox.setList(deliveries);
 			
-			pallets = ReceivedDAOFactory.getPalletDAO().getAllPallets("001/BL/08/05/16");
-			palletTable.updateUI();
+			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -667,6 +666,15 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		woodDomicileField.setText(received.getWoodDomicile());
 		woodResourceField.setText(received.getWoodResource());
 		woodTypeComboBox.setSelectedItem(received.getWoodTypeName());
+		
+		try {
+			pallets = ReceivedDAOFactory.getPalletDAO().getAllPallets(received.getReceivedCode());
+			palletTable.updateUI();
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
+	
 
 	}
 }
