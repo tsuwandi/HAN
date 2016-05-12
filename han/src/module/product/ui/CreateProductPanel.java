@@ -145,274 +145,365 @@ public class CreateProductPanel extends JPanel {
 	
 	public CreateProductPanel() {
 		setLayout(null);
-		setPreferredSize(new Dimension(1166, 2000));
+		setPreferredSize(new Dimension(1166, 1000));
 		
 		titleLbl = new JLabel("CREATE NEW");
-		titleLbl.setBounds(20, 20, 200, 50);
+		titleLbl.setBounds(20, 20, 100, 50);
 		
 		idLbl = new JLabel("Kode Produk");
 		idLbl.setBounds(20, 80, 100, 30);
 		nameLbl = new JLabel("Nama Produk");
-		nameLbl.setBounds(20, 20, 200, 50);
+		nameLbl.setBounds(20, 110, 100, 50);
 		catLbl = new JLabel("Kategori Produk");
-		catLbl.setBounds(20, 20, 200, 50);
+		catLbl.setBounds(20, 140, 100, 50);
 		statLbl = new JLabel("Status Produk");
-		statLbl.setBounds(20, 20, 200, 50);
+		statLbl.setBounds(20, 170, 100, 50);
 		unitLbl = new JLabel("Satuan Produk");
-		unitLbl.setBounds(20, 20, 200, 50);
+		unitLbl.setBounds(20, 100, 100, 50);
 		maintainLbl = new JLabel("Maintain Stock");
-		maintainLbl.setBounds(20, 20, 200, 50);
+		maintainLbl.setBounds(20, 230, 100, 50);
 		picLbl = new JLabel("Gambar");
-		picLbl.setBounds(20, 20, 200, 50);
+		picLbl.setBounds(20, 260, 100, 50);
 		
 		descTitleLbl = new JLabel("Description");
-		descTitleLbl.setBounds(20, 20, 200, 50);
+		descTitleLbl.setBounds(20, 290, 100, 50);
 		brandLbl = new JLabel("Brand");
-		brandLbl.setBounds(20, 20, 200, 50);
+		brandLbl.setBounds(20, 20, 100, 50);
 		barcodeLbl = new JLabel("Barcode");
-		barcodeLbl.setBounds(20, 20, 200, 50);
+		barcodeLbl.setBounds(20, 20, 100, 50);
 		descLbl = new JLabel("Deskripsi");
-		descLbl.setBounds(20, 20, 200, 50);
+		descLbl.setBounds(20, 20, 100, 50);
 		
 		attLbl = new JLabel("Atribut Produk");
-		attLbl.setBounds(20, 20, 200, 50);
+		attLbl.setBounds(20, 20, 100, 50);
 		typeLbl = new JLabel("Jenis Kayu");
-		typeLbl.setBounds(20, 20, 200, 50);
+		typeLbl.setBounds(20, 20, 100, 50);
 		gradeLbl = new JLabel("Grade");
-		gradeLbl.setBounds(20, 20, 200, 50);
+		gradeLbl.setBounds(20, 20, 100, 50);
 		thickLbl = new JLabel("Tebal");
-		thickLbl.setBounds(20, 20, 200, 50);
+		thickLbl.setBounds(20, 20, 100, 50);
 		conditionLbl = new JLabel("Kondisi");
-		conditionLbl.setBounds(20, 20, 200, 50);
+		conditionLbl.setBounds(20, 20, 100, 50);
 		
 		inventLbl = new JLabel("Inventory");
-		inventLbl.setBounds(20, 20, 200, 50);
+		inventLbl.setBounds(20, 20, 100, 50);
 		flagSerialLbl = new JLabel("Flag Serial No");
-		flagSerialLbl.setBounds(20, 20, 200, 50);
+		flagSerialLbl.setBounds(20, 20, 100, 50);
 		flagAssetLbl = new JLabel("Flag Aktiva Tetap");
-		flagAssetLbl.setBounds(20, 20, 200, 50);
+		flagAssetLbl.setBounds(20, 20, 100, 50);
 		warrantLbl = new JLabel("Garansi");
-		warrantLbl.setBounds(20, 20, 200, 50);
+		warrantLbl.setBounds(20, 20, 100, 50);
 		weightLbl = new JLabel("Berat Netto");
-		weightLbl.setBounds(20, 20, 200, 50);
+		weightLbl.setBounds(20, 20, 100, 50);
 		
 		purchaseInfoLbl = new JLabel("Purchase Information");
-		purchaseInfoLbl.setBounds(20, 20, 200, 50);
+		purchaseInfoLbl.setBounds(20, 20, 100, 50);
 		flagPurchaseLbl = new JLabel("Flag Purchase Item");
-		flagPurchaseLbl.setBounds(20, 20, 200, 50);
+		flagPurchaseLbl.setBounds(20, 20, 100, 50);
 		minOrderLbl = new JLabel("Minimum Order");
-		minOrderLbl.setBounds(20, 20, 200, 50);
+		minOrderLbl.setBounds(20, 20, 100, 50);
 		leadTimeLbl = new JLabel("Lead Time");
-		leadTimeLbl.setBounds(20, 20, 200, 50);
+		leadTimeLbl.setBounds(20, 20, 100, 50);
 		
 		defCostLbl = new JLabel("Default Buying Cost Center");
-		defCostLbl.setBounds(20, 20, 200, 50);
+		defCostLbl.setBounds(20, 20, 100, 50);
 		defExpense = new JLabel("Default Expense Account");
-		defExpense.setBounds(20, 20, 200, 50);
+		defExpense.setBounds(20, 20, 100, 50);
 		
 		conversionLbl = new JLabel("Konversi Unit of Measurement");
-		titleLbl.setBounds(20, 20, 200, 50);
+		titleLbl.setBounds(20, 20, 100, 50);
 		
 		suppInfoLbl = new JLabel("Informasi Supplier");
-		suppInfoLbl.setBounds(20, 20, 200, 50);
+		suppInfoLbl.setBounds(20, 20, 100, 50);
 		suppLbl = new JLabel("Supplier");
-		suppLbl.setBounds(20, 20, 200, 50);
+		suppLbl.setBounds(20, 20, 100, 50);
 		manufacturerLbl = new JLabel("Manufacturer");
-		manufacturerLbl.setBounds(20, 20, 200, 50);
+		manufacturerLbl.setBounds(20, 20, 100, 50);
 		
 		reservedSuppLbl = new JLabel("Supplier Cadangan");
-		reservedSuppLbl.setBounds(20, 20, 200, 50);
+		reservedSuppLbl.setBounds(20, 20, 100, 50);
 		
 		salesInfoLbl = new JLabel("Sales Information");
-		salesInfoLbl.setBounds(20, 20, 200, 50);
+		salesInfoLbl.setBounds(20, 20, 100, 50);
 		flagSalesLbl = new JLabel("Flag Sales Item");
-		flagSalesLbl.setBounds(20, 20, 200, 50);
+		flagSalesLbl.setBounds(20, 20, 100, 50);
 		flagProductLbl = new JLabel("Flag Produk Jasa");
-		flagProductLbl.setBounds(20, 20, 200, 50);
+		flagProductLbl.setBounds(20, 20, 100, 50);
 		
 		defSellCostLbl = new JLabel("Default Selling Cost Center");
-		defSellCostLbl.setBounds(20, 20, 200, 50);
+		defSellCostLbl.setBounds(20, 20, 100, 50);
 		defIncomeLbl = new JLabel("Default Income Account");
-		defIncomeLbl.setBounds(20, 20, 200, 50);
+		defIncomeLbl.setBounds(20, 20, 100, 50);
 		maxDiscountLbl = new JLabel("Diskon Maksimum");
-		maxDiscountLbl.setBounds(20, 20, 200, 50);
+		maxDiscountLbl.setBounds(20, 20, 100, 50);
 		
 		customerListLbl = new JLabel("List Customer");
-		customerListLbl.setBounds(20, 20, 200, 50);
+		customerListLbl.setBounds(20, 20, 100, 50);
 		
 		taxLbl = new JLabel("Pajak");
-		taxLbl.setBounds(20, 20, 200, 50);
+		taxLbl.setBounds(20, 20, 100, 50);
 		
 		idField = new JTextField();
-		idField.setBounds(20, 20, 200, 50);
+		idField.setBounds(145, 20, 100, 50);
 		
 		nameField = new JTextField();
-		nameField.setBounds(20, 20, 200, 50);
+		nameField.setBounds(145, 20, 150, 50);
 		
 		catField = new JComboBox<>();
-		catField.setBounds(20, 20, 200, 50);
+		catField.setBounds(145, 20, 150, 50);
 		
 		statField = new JComboBox<>();
-		statField.setBounds(20, 20, 200, 50);
+		statField.setBounds(145, 20, 150, 50);
 		
 		uomField = new JComboBox<>();
-		uomField.setBounds(20, 20, 200, 50);
+		uomField.setBounds(145, 20, 150, 50);
 		
 		maintain = new ButtonGroup();
 		
 		maintainYesField = new JRadioButton("Ya");
-		maintainYesField.setBounds(20, 20, 200, 50);
+		maintainYesField.setBounds(145, 20, 150, 50);
 		
 		maintainNoField = new JRadioButton("Tidak");
-		maintainNoField.setBounds(20, 20, 200, 50);
+		maintainNoField.setBounds(145, 20, 150, 50);
 		
 		picField = new JFileChooser();
-		picField.setBounds(20, 20, 200, 50);
+		picField.setBounds(145, 20, 150, 50);
 		
 		imageField = new JPanel();
-		imageField.setBounds(20, 20, 200, 50);
+		imageField.setBounds(145, 20, 150, 50);
 		
 		brandField = new JTextField();
-		brandField.setBounds(20, 20, 200, 50);
+		brandField.setBounds(145, 20, 150, 50);
 		
 		barcodeField = new JTextField();
-		barcodeField.setBounds(20, 20, 200, 50);
+		barcodeField.setBounds(145, 20, 150, 50);
 		
 		descField = new JTextArea();
-		descField.setBounds(20, 20, 200, 50);
+		descField.setBounds(145, 20, 150, 50);
 		
 		typeField = new JComboBox<>();
-		typeField.setBounds(20, 20, 200, 50);
+		typeField.setBounds(145, 20, 150, 50);
 		
 		gradeField = new JComboBox<>();
-		gradeField.setBounds(20, 20, 200, 50);
+		gradeField.setBounds(145, 20, 150, 50);
 		
 		thickField = new JComboBox<>();
-		thickField.setBounds(20, 20, 200, 50);
+		thickField.setBounds(145, 20, 150, 50);
 		
 		conField = new JComboBox<>();
-		conField.setBounds(20, 20, 200, 50);
+		conField.setBounds(145, 20, 150, 50);
 		
 		flagSerial = new ButtonGroup();
 		
 		flagAsset = new ButtonGroup();
 		
 		serialYesField = new JRadioButton("Ya");
-		serialYesField.setBounds(20, 20, 200, 50);
+		serialYesField.setBounds(145, 20, 150, 50);
 		
 		serialNoField = new JRadioButton("Tidak");
-		serialNoField.setBounds(20, 20, 200, 50);
+		serialNoField.setBounds(145, 20, 150, 50);
 		
 		assetYesField = new JRadioButton("Ya");
-		assetYesField.setBounds(20, 20, 200, 50);
+		assetYesField.setBounds(145, 20, 150, 50);
 		
 		assetNoField = new JRadioButton("Tidak");
-		assetNoField.setBounds(20, 20, 200, 50);
+		assetNoField.setBounds(145, 20, 150, 50);
 		
 		warrantField = new JTextField();
-		warrantField.setBounds(20, 20, 200, 50);
+		warrantField.setBounds(145, 20, 150, 50);
 		
 		nettoField = new JTextField();
-		nettoField.setBounds(20, 20, 200, 50);
+		nettoField.setBounds(145, 20, 150, 50);
 		
 		nettoUnitField = new JComboBox<>();
-		nettoUnitField.setBounds(20, 20, 200, 50);
+		nettoUnitField.setBounds(145, 20, 150, 50);
 		
 		purchase = new ButtonGroup();
 		
 		purchaseYesField = new JRadioButton("Ya");
-		purchaseYesField.setBounds(20, 20, 200, 50);
+		purchaseYesField.setBounds(145, 20, 150, 50);
 		
 		purchaseNoField = new JRadioButton("Tidak");
-		purchaseNoField.setBounds(20, 20, 200, 50);
+		purchaseNoField.setBounds(145, 20, 150, 50);
 		
 		minOrderField = new JTextField();
-		minOrderField.setBounds(20, 20, 200, 50);
+		minOrderField.setBounds(145, 20, 150, 50);
 		
 		minOrderUnitField = new JComboBox<>();
-		minOrderUnitField.setBounds(20, 20, 200, 50);
+		minOrderUnitField.setBounds(145, 20, 150, 50);
 		
 		leadTimeField = new JTextField();
-		leadTimeField.setBounds(20, 20, 200, 50);
+		leadTimeField.setBounds(145, 20, 150, 50);
 		
 		buyCostField = new JComboBox<>();
-		buyCostField.setBounds(20, 20, 200, 50);
+		buyCostField.setBounds(145, 20, 150, 50);
 		
 		expenseField = new JComboBox<>();
-		expenseField.setBounds(20, 20, 200, 50);
+		expenseField.setBounds(145, 20, 150, 50);
 		
 		uomAddBtn = new JButton("Add");
-		uomAddBtn.setBounds(20, 20, 200, 50);
+		uomAddBtn.setBounds(145, 20, 150, 50);
 		
 		uomDeleteBtn = new JButton("Delete");
-		uomDeleteBtn.setBounds(20, 20, 200, 50);
+		uomDeleteBtn.setBounds(145, 20, 150, 50);
 		
 		uomTable = new JTable();
-		uomTable.setBounds(20, 20, 200, 50);
+		uomTable.setBounds(145, 20, 150, 50);
 		
 		supplierField = new JComboBox<>();
-		supplierField.setBounds(20, 20, 200, 50);
+		supplierField.setBounds(145, 20, 150, 50);
 		
 		manufacturerField = new JTextField();
-		manufacturerField.setBounds(20, 20, 200, 50);
+		manufacturerField.setBounds(145, 20, 150, 50);
 		
 		resSupSearchBtn = new JButton("Search");
-		resSupSearchBtn.setBounds(20, 20, 200, 50);
+		resSupSearchBtn.setBounds(145, 20, 150, 50);
 		
 		resSupDeleteBtn = new JButton("Delete");
-		resSupDeleteBtn.setBounds(20, 20, 200, 50);
+		resSupDeleteBtn.setBounds(145, 20, 150, 50);
 		
 		resSupTable = new JTable();
-		resSupTable.setBounds(20, 20, 200, 50);
+		resSupTable.setBounds(145, 20, 150, 50);
 		
 		sales = new ButtonGroup();
 		
 		service = new ButtonGroup();
 		
 		salesYesField = new JRadioButton("Ya");
-		salesYesField.setBounds(20, 20, 200, 50);
+		salesYesField.setBounds(145, 20, 150, 50);
 		
 		salesNoField = new JRadioButton("Tidak");
-		salesNoField.setBounds(20, 20, 200, 50);
+		salesNoField.setBounds(145, 20, 150, 50);
 		
 		serviceYesField = new JRadioButton("Ya");
-		serviceYesField.setBounds(20, 20, 200, 50);
+		serviceYesField.setBounds(145, 20, 150, 50);
 		
 		serviceNoField = new JRadioButton("Tidak");
-		serviceNoField.setBounds(20, 20, 200, 50);
+		serviceNoField.setBounds(145, 20, 150, 50);
 		
 		sellCostField = new JComboBox<>();
-		sellCostField.setBounds(20, 20, 200, 50);
+		sellCostField.setBounds(145, 20, 150, 50);
 		
 		incomeField = new JComboBox<>();
-		incomeField.setBounds(20, 20, 200, 50);
+		incomeField.setBounds(145, 20, 150, 50);
 		
 		discountField = new JTextField();
-		discountField.setBounds(20, 20, 200, 50);
+		discountField.setBounds(145, 20, 150, 50);
 		
 		custSearchBtn = new JButton("Search");
-		custSearchBtn.setBounds(20, 20, 200, 50);
+		custSearchBtn.setBounds(145, 20, 150, 50);
 		
 		custDeleteBtn = new JButton("Delete");
-		custDeleteBtn.setBounds(20, 20, 200, 50);
+		custDeleteBtn.setBounds(145, 20, 150, 50);
 		
 		custTable = new JTable();
-		custTable.setBounds(20, 20, 200, 50);
+		custTable.setBounds(145, 20, 150, 50);
 		
 		taxAddBtn = new JButton("Add");
-		taxAddBtn.setBounds(20, 20, 200, 50);
+		taxAddBtn.setBounds(145, 20, 150, 50);
 		
 		taxDeleteBtn = new JButton("Delete");
-		taxDeleteBtn.setBounds(20, 20, 200, 50);
+		taxDeleteBtn.setBounds(145, 20, 150, 50);
 		
 		taxTable = new JTable();
-		taxTable.setBounds(20, 20, 200, 50);
+		taxTable.setBounds(145, 20, 150, 50);
 		
 		saveBtn = new JButton("Save");
-		saveBtn.setBounds(20, 20, 200, 50);
+		saveBtn.setBounds(145, 20, 150, 50);
 		
 		add(titleLbl);
 		add(idLbl);
+	    add(nameLbl);
+	    add(catLbl);
+	    add(statLbl);
+	    add(unitLbl);
+	    add(maintainLbl);
+	    add(picLbl);
+	    add(descTitleLbl);
+	    add(brandLbl);
+	    add(barcodeLbl);
+	    add(descLbl);
+	    add(attLbl);
+	    add(typeLbl);
+	    add(gradeLbl);
+	    add(thickLbl);
+	    add(conditionLbl);
+	    add(inventLbl);
+	    add(flagSerialLbl);
+	    add(flagAssetLbl);
+	    add(warrantLbl);
+	    add(weightLbl);
+	    add(purchaseInfoLbl);
+	    add(flagPurchaseLbl);
+	    add(minOrderLbl);
+	    add(leadTimeLbl);
+	    add(defCostLbl);
+	    add(defExpense);
+	    add(conversionLbl);
+	    add(suppInfoLbl);
+	    add(suppLbl);
+	    add(manufacturerLbl);
+	    add(reservedSuppLbl);
+	    add(salesInfoLbl);
+	    add(flagSalesLbl);
+	    add(flagProductLbl);
+	    add(defSellCostLbl);
+	    add(defIncomeLbl);
+	    add(maxDiscountLbl);
+	    add(customerListLbl);
+	    add(taxLbl);
+	    add(idField);
+	    add(nameField);
+	    add(catField);
+	    add(statField);
+	    add(uomField);
+	    add(maintainYesField);
+	    add(maintainNoField);
+	    add(picField);
+	    add(imageField);
+	    add(brandField);
+	    add(barcodeField);
+	    add(descField);
+	    add(typeField);
+	    add(gradeField);
+	    add(thickField);
+	    add(conField);
+	    add(serialYesField);
+	    add(serialNoField);
+	    add(assetYesField);
+	    add(assetNoField);
+	    add(warrantField);
+	    add(nettoField);
+	    add(nettoUnitField);
+	    add(purchaseYesField);
+	    add(purchaseNoField);
+	    add(minOrderField);
+	    add(minOrderUnitField);
+	    add(leadTimeField);
+	    add(buyCostField);
+	    add(expenseField);
+	    add(uomAddBtn);
+	    add(uomDeleteBtn);
+	    add(uomTable);
+	    add(supplierField);
+	    add(manufacturerField);
+	    add(resSupSearchBtn);
+	    add(resSupDeleteBtn);
+	    add(resSupTable);
+	    add(salesYesField);
+	    add(salesNoField);
+	    add(serviceYesField);
+	    add(serviceNoField);
+	    add(sellCostField);
+	    add(incomeField);
+	    add(discountField);
+	    add(custSearchBtn);
+	    add(custDeleteBtn);
+	    add(custTable);
+	    add(taxAddBtn);
+	    add(taxDeleteBtn);
+	    add(taxTable);
+	    add(saveBtn);
 		
 	}
 
