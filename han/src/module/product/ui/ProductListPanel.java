@@ -163,7 +163,7 @@ public class ProductListPanel extends JPanel {
 		 * @return int
 		 */
 		public int getRowCount() {
-			return products.size();
+			return 0;
 		}
 
 		/**

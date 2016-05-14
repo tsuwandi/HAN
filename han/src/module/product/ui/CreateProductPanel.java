@@ -1,17 +1,37 @@
 package module.product.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.table.AbstractTableModel;
+
+import com.sun.accessibility.internal.resources.accessibility;
+
+import module.product.model.Product;
 
 public class CreateProductPanel extends JPanel {
 
@@ -81,8 +101,9 @@ public class CreateProductPanel extends JPanel {
 	public ButtonGroup maintain;
 	public JRadioButton maintainYesField;
 	public JRadioButton maintainNoField;
-	public JFileChooser picField;
-	public JPanel imageField;
+	public JTextField pathField;
+	public JButton browseBtn;
+	public JLabel imageField;
 	
 	public JTextField brandField;
 	public JTextField barcodeField;
@@ -143,368 +164,776 @@ public class CreateProductPanel extends JPanel {
 	
 	public JButton saveBtn;
 	
+	JScrollPane scrollPane;
+	JPanel parent;
+	JPanel containerPnl;
+	
+	UOMTableModel uomTableModel;
+	ReserveSupplierTableModel reserveSupplierTableModel;
+	CustomerListTableModel customerListTableModel;
+	TaxTableModel taxTableModel;
+	public List<Product> products;
+	private JScrollPane uomScroll;
+	private JScrollPane resSupScroll;
+	private JScrollPane custScroll;
+	private JScrollPane taxScroll;
+	
 	public CreateProductPanel() {
 		setLayout(null);
-		setPreferredSize(new Dimension(1166, 1000));
+		this.parent = this;
+		//setPreferredSize(new Dimension(1166, 1300));
+		
+		containerPnl = new JPanel();
+		containerPnl.setPreferredSize(new Dimension(1166, 1950));
+		containerPnl.setLayout(null);
+		
+		scrollPane = new JScrollPane(containerPnl);
+		scrollPane.setBounds(0,0,1166,630);
+		add(scrollPane);
 		
 		titleLbl = new JLabel("CREATE NEW");
-		titleLbl.setBounds(20, 20, 100, 50);
+		titleLbl.setBounds(20, 20, 300, 50);
+		titleLbl.setFont(new Font(null, Font.BOLD, 24));
 		
 		idLbl = new JLabel("Kode Produk");
 		idLbl.setBounds(20, 80, 100, 30);
 		nameLbl = new JLabel("Nama Produk");
-		nameLbl.setBounds(20, 110, 100, 50);
+		nameLbl.setBounds(20, 110, 100, 30);
 		catLbl = new JLabel("Kategori Produk");
-		catLbl.setBounds(20, 140, 100, 50);
+		catLbl.setBounds(20, 140, 100, 30);
 		statLbl = new JLabel("Status Produk");
-		statLbl.setBounds(20, 170, 100, 50);
+		statLbl.setBounds(20, 170, 100, 30);
 		unitLbl = new JLabel("Satuan Produk");
-		unitLbl.setBounds(20, 100, 100, 50);
+		unitLbl.setBounds(20, 200, 100, 30);
 		maintainLbl = new JLabel("Maintain Stock");
-		maintainLbl.setBounds(20, 230, 100, 50);
+		maintainLbl.setBounds(20, 230, 100, 30);
 		picLbl = new JLabel("Gambar");
-		picLbl.setBounds(20, 260, 100, 50);
+		picLbl.setBounds(20, 260, 100, 30);
 		
-		descTitleLbl = new JLabel("Description");
-		descTitleLbl.setBounds(20, 290, 100, 50);
+		descTitleLbl = new JLabel("<html><u>Description</u></html>");
+		descTitleLbl.setBounds(20, 420, 100, 30);
+		descTitleLbl.setFont(new Font(null, Font.BOLD,  12));
 		brandLbl = new JLabel("Brand");
-		brandLbl.setBounds(20, 20, 100, 50);
+		brandLbl.setBounds(20, 450, 100, 30);
 		barcodeLbl = new JLabel("Barcode");
-		barcodeLbl.setBounds(20, 20, 100, 50);
+		barcodeLbl.setBounds(20, 480, 100, 30);
 		descLbl = new JLabel("Deskripsi");
-		descLbl.setBounds(20, 20, 100, 50);
+		descLbl.setBounds(20, 510, 100, 30);
 		
-		attLbl = new JLabel("Atribut Produk");
-		attLbl.setBounds(20, 20, 100, 50);
+		attLbl = new JLabel("<html><u>Atribut Produk</u></html>");
+		attLbl.setBounds(20, 570, 100, 30);
+		attLbl.setFont(new Font(null, Font.BOLD, 12));
 		typeLbl = new JLabel("Jenis Kayu");
-		typeLbl.setBounds(20, 20, 100, 50);
+		typeLbl.setBounds(20, 600, 100, 30);
 		gradeLbl = new JLabel("Grade");
-		gradeLbl.setBounds(20, 20, 100, 50);
+		gradeLbl.setBounds(20, 630, 100, 30);
 		thickLbl = new JLabel("Tebal");
-		thickLbl.setBounds(20, 20, 100, 50);
+		thickLbl.setBounds(20, 660, 100, 30);
 		conditionLbl = new JLabel("Kondisi");
-		conditionLbl.setBounds(20, 20, 100, 50);
+		conditionLbl.setBounds(20, 690, 100, 30);
 		
-		inventLbl = new JLabel("Inventory");
-		inventLbl.setBounds(20, 20, 100, 50);
+		inventLbl = new JLabel("<html><u>Inventory</u></html>");
+		inventLbl.setBounds(20, 720, 100, 30);
+		inventLbl.setFont(new Font(null, Font.BOLD, 12));
 		flagSerialLbl = new JLabel("Flag Serial No");
-		flagSerialLbl.setBounds(20, 20, 100, 50);
+		flagSerialLbl.setBounds(20, 750, 100, 30);
 		flagAssetLbl = new JLabel("Flag Aktiva Tetap");
-		flagAssetLbl.setBounds(20, 20, 100, 50);
+		flagAssetLbl.setBounds(20, 780, 100, 30);
 		warrantLbl = new JLabel("Garansi");
-		warrantLbl.setBounds(20, 20, 100, 50);
+		warrantLbl.setBounds(20, 810, 100, 30);
 		weightLbl = new JLabel("Berat Netto");
-		weightLbl.setBounds(20, 20, 100, 50);
+		weightLbl.setBounds(20, 840, 100, 30);
 		
-		purchaseInfoLbl = new JLabel("Purchase Information");
-		purchaseInfoLbl.setBounds(20, 20, 100, 50);
+		purchaseInfoLbl = new JLabel("<html><u>Purchase Information</u></html>");
+		purchaseInfoLbl.setBounds(20, 870, 150, 30);
+		purchaseInfoLbl.setFont(new Font(null, Font.BOLD, 12));
 		flagPurchaseLbl = new JLabel("Flag Purchase Item");
-		flagPurchaseLbl.setBounds(20, 20, 100, 50);
+		flagPurchaseLbl.setBounds(20, 900, 100, 30);
 		minOrderLbl = new JLabel("Minimum Order");
-		minOrderLbl.setBounds(20, 20, 100, 50);
+		minOrderLbl.setBounds(20, 930, 100, 30);
 		leadTimeLbl = new JLabel("Lead Time");
-		leadTimeLbl.setBounds(20, 20, 100, 50);
+		leadTimeLbl.setBounds(20, 960, 100, 30);
 		
 		defCostLbl = new JLabel("Default Buying Cost Center");
-		defCostLbl.setBounds(20, 20, 100, 50);
+		defCostLbl.setBounds(20, 990, 140, 30);
 		defExpense = new JLabel("Default Expense Account");
-		defExpense.setBounds(20, 20, 100, 50);
+		defExpense.setBounds(20, 1020, 130, 30);
 		
 		conversionLbl = new JLabel("Konversi Unit of Measurement");
-		titleLbl.setBounds(20, 20, 100, 50);
+		conversionLbl.setFont(new Font(null, Font.BOLD, 12));
+		conversionLbl.setBounds(20, 1050, 200, 30);
 		
-		suppInfoLbl = new JLabel("Informasi Supplier");
-		suppInfoLbl.setBounds(20, 20, 100, 50);
+		suppInfoLbl = new JLabel("<html><u>Informasi Supplier</u></html>");
+		suppInfoLbl.setBounds(20, 1190, 150, 30);
+		suppInfoLbl.setFont(new Font(null, Font.BOLD, 12));
 		suppLbl = new JLabel("Supplier");
-		suppLbl.setBounds(20, 20, 100, 50);
+		suppLbl.setBounds(20, 1220, 100, 30);
 		manufacturerLbl = new JLabel("Manufacturer");
-		manufacturerLbl.setBounds(20, 20, 100, 50);
+		manufacturerLbl.setBounds(20, 1250, 100, 30);
 		
 		reservedSuppLbl = new JLabel("Supplier Cadangan");
-		reservedSuppLbl.setBounds(20, 20, 100, 50);
+		reservedSuppLbl.setFont(new Font(null, Font.BOLD, 12));
+		reservedSuppLbl.setBounds(20, 1280, 150, 30);
 		
-		salesInfoLbl = new JLabel("Sales Information");
-		salesInfoLbl.setBounds(20, 20, 100, 50);
+		salesInfoLbl = new JLabel("<html><u>Sales Information</u></html>");
+		salesInfoLbl.setFont(new Font(null, Font.BOLD, 12));
+		salesInfoLbl.setBounds(20, 1420, 100, 30);
 		flagSalesLbl = new JLabel("Flag Sales Item");
-		flagSalesLbl.setBounds(20, 20, 100, 50);
+		flagSalesLbl.setBounds(20, 1450, 100, 30);
 		flagProductLbl = new JLabel("Flag Produk Jasa");
-		flagProductLbl.setBounds(20, 20, 100, 50);
+		flagProductLbl.setBounds(20, 1480, 100, 30);
 		
 		defSellCostLbl = new JLabel("Default Selling Cost Center");
-		defSellCostLbl.setBounds(20, 20, 100, 50);
+		defSellCostLbl.setBounds(20, 1510, 130, 30);
 		defIncomeLbl = new JLabel("Default Income Account");
-		defIncomeLbl.setBounds(20, 20, 100, 50);
+		defIncomeLbl.setBounds(20, 1540, 120, 30);
 		maxDiscountLbl = new JLabel("Diskon Maksimum");
-		maxDiscountLbl.setBounds(20, 20, 100, 50);
+		maxDiscountLbl.setBounds(20, 1570, 100, 30);
 		
 		customerListLbl = new JLabel("List Customer");
-		customerListLbl.setBounds(20, 20, 100, 50);
+		customerListLbl.setFont(new Font(null, Font.BOLD, 12));
+		customerListLbl.setBounds(20, 1600, 100, 30);
 		
 		taxLbl = new JLabel("Pajak");
-		taxLbl.setBounds(20, 20, 100, 50);
+		taxLbl.setFont(new Font(null, Font.BOLD, 12));
+		taxLbl.setBounds(20, 1740, 100, 30);
 		
 		idField = new JTextField();
-		idField.setBounds(145, 20, 100, 50);
+		idField.setBounds(195, 80, 100, 25);
 		
 		nameField = new JTextField();
-		nameField.setBounds(145, 20, 150, 50);
+		nameField.setBounds(195, 110, 150, 25);
 		
 		catField = new JComboBox<>();
-		catField.setBounds(145, 20, 150, 50);
+		catField.setBounds(195, 140, 150, 25);
 		
 		statField = new JComboBox<>();
-		statField.setBounds(145, 20, 150, 50);
+		statField.setBounds(195, 170, 150, 25);
 		
 		uomField = new JComboBox<>();
-		uomField.setBounds(145, 20, 150, 50);
+		uomField.setBounds(195, 200, 150, 25);
 		
 		maintain = new ButtonGroup();
 		
 		maintainYesField = new JRadioButton("Ya");
-		maintainYesField.setBounds(145, 20, 150, 50);
+		maintainYesField.setBounds(195, 230, 50, 25);
 		
 		maintainNoField = new JRadioButton("Tidak");
-		maintainNoField.setBounds(145, 20, 150, 50);
+		maintainNoField.setBounds(250, 230, 50, 25);
 		
-		picField = new JFileChooser();
-		picField.setBounds(145, 20, 150, 50);
+		pathField = new JTextField();
+		pathField.setBounds(195, 260, 150, 25);
 		
-		imageField = new JPanel();
-		imageField.setBounds(145, 20, 150, 50);
+		browseBtn = new JButton("Browse");
+		browseBtn.setBounds(345, 260, 75, 25);
+		browseBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JFileChooser fc = new JFileChooser();
+				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                int result = fc.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
+                    try {
+                        imageField.setIcon(new ImageIcon(ImageIO.read(file).getScaledInstance(imageField.getWidth(), imageField.getHeight(), Image.SCALE_SMOOTH)));
+                        pathField.setText(file.getAbsolutePath());
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
+			}
+		});
+		
+		imageField = new JLabel();
+		imageField.setBounds(20, 290, 300, 100);
+		imageField.setBorder(new LineBorder(Color.black));
 		
 		brandField = new JTextField();
-		brandField.setBounds(145, 20, 150, 50);
+		brandField.setBounds(195, 450, 150, 25);
 		
 		barcodeField = new JTextField();
-		barcodeField.setBounds(145, 20, 150, 50);
+		barcodeField.setBounds(195, 480, 150, 25);
 		
 		descField = new JTextArea();
-		descField.setBounds(145, 20, 150, 50);
+		descField.setBounds(195, 510, 250, 55);
 		
 		typeField = new JComboBox<>();
-		typeField.setBounds(145, 20, 150, 50);
+		typeField.setBounds(195, 600, 150, 25);
 		
 		gradeField = new JComboBox<>();
-		gradeField.setBounds(145, 20, 150, 50);
+		gradeField.setBounds(195, 630, 150, 25);
 		
 		thickField = new JComboBox<>();
-		thickField.setBounds(145, 20, 150, 50);
+		thickField.setBounds(195, 660, 150, 25);
 		
 		conField = new JComboBox<>();
-		conField.setBounds(145, 20, 150, 50);
+		conField.setBounds(195, 690, 150, 25);
 		
 		flagSerial = new ButtonGroup();
 		
 		flagAsset = new ButtonGroup();
 		
 		serialYesField = new JRadioButton("Ya");
-		serialYesField.setBounds(145, 20, 150, 50);
+		serialYesField.setBounds(195, 750, 50, 25);
 		
 		serialNoField = new JRadioButton("Tidak");
-		serialNoField.setBounds(145, 20, 150, 50);
+		serialNoField.setBounds(250, 750, 50, 25);
 		
 		assetYesField = new JRadioButton("Ya");
-		assetYesField.setBounds(145, 20, 150, 50);
+		assetYesField.setBounds(195, 780, 50, 25);
 		
 		assetNoField = new JRadioButton("Tidak");
-		assetNoField.setBounds(145, 20, 150, 50);
+		assetNoField.setBounds(250, 780, 50, 25);
 		
 		warrantField = new JTextField();
-		warrantField.setBounds(145, 20, 150, 50);
+		warrantField.setBounds(195, 810, 150, 25);
 		
 		nettoField = new JTextField();
-		nettoField.setBounds(145, 20, 150, 50);
+		nettoField.setBounds(195, 840, 150, 25);
 		
 		nettoUnitField = new JComboBox<>();
-		nettoUnitField.setBounds(145, 20, 150, 50);
+		nettoUnitField.setBounds(350, 840, 100, 25);
 		
 		purchase = new ButtonGroup();
 		
 		purchaseYesField = new JRadioButton("Ya");
-		purchaseYesField.setBounds(145, 20, 150, 50);
+		purchaseYesField.setBounds(195, 900, 50, 25);
 		
 		purchaseNoField = new JRadioButton("Tidak");
-		purchaseNoField.setBounds(145, 20, 150, 50);
+		purchaseNoField.setBounds(250, 900, 50, 25);
 		
 		minOrderField = new JTextField();
-		minOrderField.setBounds(145, 20, 150, 50);
+		minOrderField.setBounds(195, 930, 150, 25);
 		
 		minOrderUnitField = new JComboBox<>();
-		minOrderUnitField.setBounds(145, 20, 150, 50);
+		minOrderUnitField.setBounds(350, 930, 100, 25);
 		
 		leadTimeField = new JTextField();
-		leadTimeField.setBounds(145, 20, 150, 50);
+		leadTimeField.setBounds(195, 960, 150, 25);
 		
 		buyCostField = new JComboBox<>();
-		buyCostField.setBounds(145, 20, 150, 50);
+		buyCostField.setBounds(195, 990, 150, 25);
 		
 		expenseField = new JComboBox<>();
-		expenseField.setBounds(145, 20, 150, 50);
+		expenseField.setBounds(195, 1020, 150, 25);
 		
 		uomAddBtn = new JButton("Add");
-		uomAddBtn.setBounds(145, 20, 150, 50);
+		uomAddBtn.setBounds(395, 1050, 75, 25);
 		
 		uomDeleteBtn = new JButton("Delete");
-		uomDeleteBtn.setBounds(145, 20, 150, 50);
+		uomDeleteBtn.setBounds(475, 1050, 75, 25);
 		
-		uomTable = new JTable();
-		uomTable.setBounds(145, 20, 150, 50);
+		uomTableModel = new UOMTableModel(products);
+		uomTable = new JTable(uomTableModel);
+		uomTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		uomTable.getTableHeader().setReorderingAllowed(false);
+		uomTable.getTableHeader().setResizingAllowed(false);
+		uomTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+		uomTable.getColumnModel().getColumn(1).setPreferredWidth(70);
+		uomTable.getColumnModel().getColumn(2).setPreferredWidth(120);
+		uomTable.getColumnModel().getColumn(3).setPreferredWidth(120);
+		uomTable.getColumnModel().getColumn(4).setPreferredWidth(80);
+		uomScroll= new JScrollPane(uomTable);
+		uomScroll.setBounds(20, 1080, 1130, 75);
+		uomScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
 		supplierField = new JComboBox<>();
-		supplierField.setBounds(145, 20, 150, 50);
+		supplierField.setBounds(195, 1220, 150, 25);
 		
 		manufacturerField = new JTextField();
-		manufacturerField.setBounds(145, 20, 150, 50);
+		manufacturerField.setBounds(195, 1250, 150, 25);
 		
 		resSupSearchBtn = new JButton("Search");
-		resSupSearchBtn.setBounds(145, 20, 150, 50);
+		resSupSearchBtn.setBounds(395, 1280, 75, 25);
 		
 		resSupDeleteBtn = new JButton("Delete");
-		resSupDeleteBtn.setBounds(145, 20, 150, 50);
+		resSupDeleteBtn.setBounds(475, 1280, 75, 25);
 		
-		resSupTable = new JTable();
-		resSupTable.setBounds(145, 20, 150, 50);
+		reserveSupplierTableModel = new ReserveSupplierTableModel(products);
+		resSupTable = new JTable(reserveSupplierTableModel);
+		resSupTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		resSupTable.getTableHeader().setReorderingAllowed(false);
+		resSupTable.getTableHeader().setResizingAllowed(false);
+		resSupTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+		resSupTable.getColumnModel().getColumn(1).setPreferredWidth(120);
+		resSupTable.getColumnModel().getColumn(2).setPreferredWidth(120);
+		resSupScroll= new JScrollPane(resSupTable);
+		resSupScroll.setBounds(20, 1310, 1130, 75);
+		resSupScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
 		sales = new ButtonGroup();
 		
 		service = new ButtonGroup();
 		
 		salesYesField = new JRadioButton("Ya");
-		salesYesField.setBounds(145, 20, 150, 50);
+		salesYesField.setBounds(195, 1450, 50, 25);
 		
 		salesNoField = new JRadioButton("Tidak");
-		salesNoField.setBounds(145, 20, 150, 50);
+		salesNoField.setBounds(250, 1450, 50, 25);
 		
 		serviceYesField = new JRadioButton("Ya");
-		serviceYesField.setBounds(145, 20, 150, 50);
+		serviceYesField.setBounds(195, 1480, 50, 25);
 		
 		serviceNoField = new JRadioButton("Tidak");
-		serviceNoField.setBounds(145, 20, 150, 50);
+		serviceNoField.setBounds(250, 1480, 50, 25);
 		
 		sellCostField = new JComboBox<>();
-		sellCostField.setBounds(145, 20, 150, 50);
+		sellCostField.setBounds(195, 1510, 150, 25);
 		
 		incomeField = new JComboBox<>();
-		incomeField.setBounds(145, 20, 150, 50);
+		incomeField.setBounds(195, 1540, 150, 25);
 		
 		discountField = new JTextField();
-		discountField.setBounds(145, 20, 150, 50);
+		discountField.setBounds(195, 1570, 150, 25);
 		
 		custSearchBtn = new JButton("Search");
-		custSearchBtn.setBounds(145, 20, 150, 50);
+		custSearchBtn.setBounds(395, 1600, 75, 25);
 		
 		custDeleteBtn = new JButton("Delete");
-		custDeleteBtn.setBounds(145, 20, 150, 50);
+		custDeleteBtn.setBounds(475, 1600, 75, 25);
 		
-		custTable = new JTable();
-		custTable.setBounds(145, 20, 150, 50);
+		customerListTableModel = new CustomerListTableModel(products);
+		custTable = new JTable(customerListTableModel);
+		custTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		custTable.getTableHeader().setReorderingAllowed(false);
+		custTable.getTableHeader().setResizingAllowed(false);
+		custTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+		custTable.getColumnModel().getColumn(1).setPreferredWidth(120);
+		custTable.getColumnModel().getColumn(2).setPreferredWidth(120);
+		custScroll= new JScrollPane(custTable);
+		custScroll.setBounds(20, 1630, 1130, 75);
+		custScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
 		taxAddBtn = new JButton("Add");
-		taxAddBtn.setBounds(145, 20, 150, 50);
+		taxAddBtn.setBounds(395, 1740, 75, 25);
 		
 		taxDeleteBtn = new JButton("Delete");
-		taxDeleteBtn.setBounds(145, 20, 150, 50);
+		taxDeleteBtn.setBounds(475, 1740, 75, 25);
 		
-		taxTable = new JTable();
-		taxTable.setBounds(145, 20, 150, 50);
+		taxTableModel = new TaxTableModel(products);
+		taxTable = new JTable(taxTableModel);
+		taxTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		taxTable.getTableHeader().setReorderingAllowed(false);
+		taxTable.getTableHeader().setResizingAllowed(false);
+		taxTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+		taxTable.getColumnModel().getColumn(1).setPreferredWidth(70);
+		taxTable.getColumnModel().getColumn(2).setPreferredWidth(120);
+		taxScroll= new JScrollPane(taxTable);
+		taxScroll.setBounds(20, 1770, 1130, 75);
+		taxScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
 		saveBtn = new JButton("Save");
-		saveBtn.setBounds(145, 20, 150, 50);
+		saveBtn.setBounds(745, 1880, 75, 25);
 		
-		add(titleLbl);
-		add(idLbl);
-	    add(nameLbl);
-	    add(catLbl);
-	    add(statLbl);
-	    add(unitLbl);
-	    add(maintainLbl);
-	    add(picLbl);
-	    add(descTitleLbl);
-	    add(brandLbl);
-	    add(barcodeLbl);
-	    add(descLbl);
-	    add(attLbl);
-	    add(typeLbl);
-	    add(gradeLbl);
-	    add(thickLbl);
-	    add(conditionLbl);
-	    add(inventLbl);
-	    add(flagSerialLbl);
-	    add(flagAssetLbl);
-	    add(warrantLbl);
-	    add(weightLbl);
-	    add(purchaseInfoLbl);
-	    add(flagPurchaseLbl);
-	    add(minOrderLbl);
-	    add(leadTimeLbl);
-	    add(defCostLbl);
-	    add(defExpense);
-	    add(conversionLbl);
-	    add(suppInfoLbl);
-	    add(suppLbl);
-	    add(manufacturerLbl);
-	    add(reservedSuppLbl);
-	    add(salesInfoLbl);
-	    add(flagSalesLbl);
-	    add(flagProductLbl);
-	    add(defSellCostLbl);
-	    add(defIncomeLbl);
-	    add(maxDiscountLbl);
-	    add(customerListLbl);
-	    add(taxLbl);
-	    add(idField);
-	    add(nameField);
-	    add(catField);
-	    add(statField);
-	    add(uomField);
-	    add(maintainYesField);
-	    add(maintainNoField);
-	    add(picField);
-	    add(imageField);
-	    add(brandField);
-	    add(barcodeField);
-	    add(descField);
-	    add(typeField);
-	    add(gradeField);
-	    add(thickField);
-	    add(conField);
-	    add(serialYesField);
-	    add(serialNoField);
-	    add(assetYesField);
-	    add(assetNoField);
-	    add(warrantField);
-	    add(nettoField);
-	    add(nettoUnitField);
-	    add(purchaseYesField);
-	    add(purchaseNoField);
-	    add(minOrderField);
-	    add(minOrderUnitField);
-	    add(leadTimeField);
-	    add(buyCostField);
-	    add(expenseField);
-	    add(uomAddBtn);
-	    add(uomDeleteBtn);
-	    add(uomTable);
-	    add(supplierField);
-	    add(manufacturerField);
-	    add(resSupSearchBtn);
-	    add(resSupDeleteBtn);
-	    add(resSupTable);
-	    add(salesYesField);
-	    add(salesNoField);
-	    add(serviceYesField);
-	    add(serviceNoField);
-	    add(sellCostField);
-	    add(incomeField);
-	    add(discountField);
-	    add(custSearchBtn);
-	    add(custDeleteBtn);
-	    add(custTable);
-	    add(taxAddBtn);
-	    add(taxDeleteBtn);
-	    add(taxTable);
-	    add(saveBtn);
+		containerPnl.add(titleLbl);
+		containerPnl.add(idLbl);
+		containerPnl.add(nameLbl);
+		containerPnl.add(catLbl);
+		containerPnl.add(statLbl);
+		containerPnl.add(unitLbl);
+		containerPnl.add(maintainLbl);
+		containerPnl.add(picLbl);
+	    containerPnl.add(descTitleLbl);
+	    containerPnl.add(brandLbl);
+	    containerPnl.add(barcodeLbl);
+	    containerPnl.add(descLbl);
+	    containerPnl.add(attLbl);
+	    containerPnl.add(typeLbl);
+	    containerPnl.add(gradeLbl);
+	    containerPnl.add(thickLbl);
+	    containerPnl.add(conditionLbl);
+	    containerPnl.add(inventLbl);
+	    containerPnl.add(flagSerialLbl);
+	    containerPnl.add(flagAssetLbl);
+	    containerPnl.add(warrantLbl);
+	    containerPnl.add(weightLbl);
+	    containerPnl.add(purchaseInfoLbl);
+	    containerPnl.add(flagPurchaseLbl);
+	    containerPnl.add(minOrderLbl);
+	    containerPnl.add(leadTimeLbl);
+	    containerPnl.add(defCostLbl);
+	    containerPnl.add(defExpense);
+	    containerPnl.add(conversionLbl);
+	    containerPnl.add(suppInfoLbl);
+	    containerPnl.add(suppLbl);
+	    containerPnl.add(manufacturerLbl);
+	    containerPnl.add(reservedSuppLbl);
+	    containerPnl.add(salesInfoLbl);
+	    containerPnl.add(flagSalesLbl);
+	    containerPnl.add(flagProductLbl);
+	    containerPnl.add(defSellCostLbl);
+	    containerPnl.add(defIncomeLbl);
+	    containerPnl.add(maxDiscountLbl);
+	    containerPnl.add(customerListLbl);
+	    containerPnl.add(taxLbl);
+	    containerPnl.add(idField);
+	    containerPnl.add(nameField);
+	    containerPnl.add(catField);
+	    containerPnl.add(statField);
+	    containerPnl.add(uomField);
+	    containerPnl.add(maintainYesField);
+	    containerPnl.add(maintainNoField);
+	    containerPnl.add(pathField);
+	    containerPnl.add(browseBtn);
+	    containerPnl.add(imageField);
+	    containerPnl.add(brandField);
+	    containerPnl.add(barcodeField);
+	    containerPnl.add(descField);
+	    containerPnl.add(typeField);
+	    containerPnl.add(gradeField);
+	    containerPnl.add(thickField);
+	    containerPnl.add(conField);
+	    containerPnl.add(serialYesField);
+	    containerPnl.add(serialNoField);
+	    containerPnl.add(assetYesField);
+	    containerPnl.add(assetNoField);
+	    containerPnl.add(warrantField);
+	    containerPnl.add(nettoField);
+	    containerPnl.add(nettoUnitField);
+	    containerPnl.add(purchaseYesField);
+	    containerPnl.add(purchaseNoField);
+	    containerPnl.add(minOrderField);
+	    containerPnl.add(minOrderUnitField);
+	    containerPnl.add(leadTimeField);
+	    containerPnl.add(buyCostField);
+	    containerPnl.add(expenseField);
+	    containerPnl.add(uomAddBtn);
+	    containerPnl.add(uomDeleteBtn);
+	    containerPnl.add(uomScroll);
+	    containerPnl.add(supplierField);
+	    containerPnl.add(manufacturerField);
+	    containerPnl.add(resSupSearchBtn);
+	    containerPnl.add(resSupDeleteBtn);
+	    containerPnl.add(resSupScroll);
+	    containerPnl.add(salesYesField);
+	    containerPnl.add(salesNoField);
+	    containerPnl.add(serviceYesField);
+	    containerPnl.add(serviceNoField);
+	    containerPnl.add(sellCostField);
+	    containerPnl.add(incomeField);
+	    containerPnl.add(discountField);
+	    containerPnl.add(custSearchBtn);
+	    containerPnl.add(custDeleteBtn);
+	    containerPnl.add(custScroll);
+	    containerPnl.add(taxAddBtn);
+	    containerPnl.add(taxDeleteBtn);
+	    containerPnl.add(taxScroll);
+	    containerPnl.add(saveBtn);
 		
+	}
+	
+	class UOMTableModel extends AbstractTableModel {
+		private static final long serialVersionUID = 1L;
+
+		private List<Product> products;
+		int seq=0;
+
+		public UOMTableModel(List<Product> products) {
+			this.products = products;
+		}
+
+		/**
+		 * Method to get row count
+		 * 
+		 * @return int
+		 */
+		public int getRowCount() {
+			return 0;
+		}
+
+		/**
+		 * Method to get Column Count
+		 */
+		public int getColumnCount() {
+			return 5;
+		}
+
+		/**
+		 * Method to get selected value
+		 * 
+		 * @param rowIndex
+		 *            rowIndex of selected table
+		 * @param columnIndex
+		 *            columnIndex of selected table
+		 * @return ({@link Supplier}) Object
+		 */
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			Product p = products.get(rowIndex);
+			switch (columnIndex) {
+			case 0:
+				return seq = rowIndex+1;
+			case 1:
+				return p.getProductId();
+			case 2:
+				return p.getProductName();
+			case 3:
+				return p.getProductCat();
+			case 4: 
+				return "<html><u>Edit</u></html>";
+			default:
+				return "";
+			}
+		}
+
+		/**
+		 * Method to getColumnName
+		 * 
+		 * @param column
+		 *            columnIndex
+		 * @return String column name
+		 */		
+		public String getColumnName(int column) {
+			switch (column) {
+			case 0:
+				return " ";
+			case 1:
+				return "Uom Acuan";
+			case 2:
+				return "Jumlah";
+			case 3:
+				return "Uom Tujuan";
+			case 4:
+				return "Action";
+			default:
+				return "";
+			}
+		}
+		@Override
+		public boolean isCellEditable(int row, int column) {
+			//all cells false
+			return false;
+		}
+
+	}
+	
+	class ReserveSupplierTableModel extends AbstractTableModel {
+		private static final long serialVersionUID = 1L;
+
+		private List<Product> products;
+		int seq=0;
+
+		public ReserveSupplierTableModel(List<Product> products) {
+			this.products = products;
+		}
+
+		/**
+		 * Method to get row count
+		 * 
+		 * @return int
+		 */
+		public int getRowCount() {
+			return 0;
+		}
+
+		/**
+		 * Method to get Column Count
+		 */
+		public int getColumnCount() {
+			return 3;
+		}
+
+		/**
+		 * Method to get selected value
+		 * 
+		 * @param rowIndex
+		 *            rowIndex of selected table
+		 * @param columnIndex
+		 *            columnIndex of selected table
+		 * @return ({@link Supplier}) Object
+		 */
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			Product p = products.get(rowIndex);
+			switch (columnIndex) {
+			case 0:
+				return seq = rowIndex+1;
+			case 1:
+				return p.getProductId();
+			case 2:
+				return p.getProductName();
+			default:
+				return "";
+			}
+		}
+
+		/**
+		 * Method to getColumnName
+		 * 
+		 * @param column
+		 *            columnIndex
+		 * @return String column name
+		 */		
+		public String getColumnName(int column) {
+			switch (column) {
+			case 0:
+				return " ";
+			case 1:
+				return "Kode Supplier";
+			case 2:
+				return "Nama Supplier";
+			default:
+				return "";
+			}
+		}
+		@Override
+		public boolean isCellEditable(int row, int column) {
+			//all cells false
+			return false;
+		}
+
+	}
+	
+	class CustomerListTableModel extends AbstractTableModel {
+		private static final long serialVersionUID = 1L;
+
+		private List<Product> products;
+		int seq=0;
+
+		public CustomerListTableModel(List<Product> products) {
+			this.products = products;
+		}
+
+		/**
+		 * Method to get row count
+		 * 
+		 * @return int
+		 */
+		public int getRowCount() {
+			return 0;
+		}
+
+		/**
+		 * Method to get Column Count
+		 */
+		public int getColumnCount() {
+			return 3;
+		}
+
+		/**
+		 * Method to get selected value
+		 * 
+		 * @param rowIndex
+		 *            rowIndex of selected table
+		 * @param columnIndex
+		 *            columnIndex of selected table
+		 * @return ({@link Supplier}) Object
+		 */
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			Product p = products.get(rowIndex);
+			switch (columnIndex) {
+			case 0:
+				return seq = rowIndex+1;
+			case 1:
+				return p.getProductId();
+			case 2:
+				return p.getProductName();
+			default:
+				return "";
+			}
+		}
+
+		/**
+		 * Method to getColumnName
+		 * 
+		 * @param column
+		 *            columnIndex
+		 * @return String column name
+		 */		
+		public String getColumnName(int column) {
+			switch (column) {
+			case 0:
+				return " ";
+			case 1:
+				return "Kode Customer";
+			case 2:
+				return "Nama Customer";
+			default:
+				return "";
+			}
+		}
+		@Override
+		public boolean isCellEditable(int row, int column) {
+			//all cells false
+			return false;
+		}
+
+	}
+	
+	class TaxTableModel extends AbstractTableModel {
+		private static final long serialVersionUID = 1L;
+
+		private List<Product> products;
+		int seq=0;
+
+		public TaxTableModel(List<Product> products) {
+			this.products = products;
+		}
+
+		/**
+		 * Method to get row count
+		 * 
+		 * @return int
+		 */
+		public int getRowCount() {
+			return 0;
+		}
+
+		/**
+		 * Method to get Column Count
+		 */
+		public int getColumnCount() {
+			return 3;
+		}
+
+		/**
+		 * Method to get selected value
+		 * 
+		 * @param rowIndex
+		 *            rowIndex of selected table
+		 * @param columnIndex
+		 *            columnIndex of selected table
+		 * @return ({@link Supplier}) Object
+		 */
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			Product p = products.get(rowIndex);
+			switch (columnIndex) {
+			case 0:
+				return seq = rowIndex+1;
+			case 1:
+				return p.getProductId();
+			case 2:
+				return p.getProductName();
+			default:
+				return "";
+			}
+		}
+
+		/**
+		 * Method to getColumnName
+		 * 
+		 * @param column
+		 *            columnIndex
+		 * @return String column name
+		 */		
+		public String getColumnName(int column) {
+			switch (column) {
+			case 0:
+				return " ";
+			case 1:
+				return "Pajak";
+			case 2:
+				return "Nilai Pajak";
+			default:
+				return "";
+			}
+		}
+		@Override
+		public boolean isCellEditable(int row, int column) {
+			//all cells false
+			return false;
+		}
+
 	}
 
 }
