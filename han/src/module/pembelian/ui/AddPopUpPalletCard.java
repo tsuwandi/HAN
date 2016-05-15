@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +19,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.Position;
+import javax.swing.text.Segment;
 
 import main.component.ComboBox;
 import main.component.NumberField;
@@ -65,7 +76,7 @@ public class AddPopUpPalletCard extends JDialog{
 	NumberField longField;
 	NumberField wideField;
 	NumberField totalField;
-	NumberField volumeField;
+	JTextField volumeField;
 	JTextField totalLogField;
 	JTextField totalVolumeField;
 	JTextField productNameField;
@@ -89,6 +100,8 @@ public class AddPopUpPalletCard extends JDialog{
 	List<Product> products;
 	Map<Integer, Map<Integer, Product>> productMap;
 	AddReceivedDetailPanel addReceivedDetail;
+	boolean editMode = false;
+	int indexEdit = 0;
 	public AddPopUpPalletCard(AddReceivedDetailPanel parent) {
 		addReceivedDetail = parent;
 		setLayout(null);
@@ -216,7 +229,7 @@ public class AddPopUpPalletCard extends JDialog{
 		volumeLbl.setBounds(30,340,100,20);
 		add(volumeLbl);
 			
-		volumeField = new NumberField();
+		volumeField = new JTextField();
 		volumeField.setBounds(150, 340, 150, 20);
 		add(volumeField);
 		
@@ -278,6 +291,7 @@ public class AddPopUpPalletCard extends JDialog{
 		totalVolumeField.setEnabled(false);
 		totalLogField.setEnabled(false);
 		productNameField.setEnabled(false);
+		volumeField.setEnabled(false);
 		
 		productCode = new JLabel();
 		add(productCode);
@@ -307,12 +321,48 @@ public class AddPopUpPalletCard extends JDialog{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		longField.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				calculateVolume();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				calculateVolume();	
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				calculateVolume();
+			}
+		});
+		
+		wideField.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				calculateVolume();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				calculateVolume();	
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				calculateVolume();
+			}
+		});
 		
 		thicknessComboBox.addItemListener(new ItemListener() {
 			
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				getProductName();
+				calculateVolume();
 			}
 		});
 		
@@ -324,6 +374,36 @@ public class AddPopUpPalletCard extends JDialog{
 			}
 		});
 		
+		pcTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(pcTable.columnAtPoint(e.getPoint())==6){
+					editMode=true;
+					indexEdit=pcTable.getSelectedRow();
+					PalletCardDetail pc = pcs.get(pcTable.getSelectedRow());
+					longField.setText(pc.getLength()+"");
+					wideField.setText(pc.getWidth()+"");
+					thicknessComboBox.setSelectedItem(String.valueOf(pc.getThickness())+"0");
+					productNameField.setText(pc.getProductName());
+					productCode.setText(pc.getProductCode());
+					totalField.setText(pc.getTotal()+"");
+					volumeField.setText(pc.getVolume()+"");
+				}
+				if(pcTable.columnAtPoint(e.getPoint())==7){
+					pcs.remove(pcTable.getSelectedRow());
+					pcTable.updateUI();
+					int total = 0;
+					double volume = 0;
+					for(PalletCardDetail pcd : pcs){
+						total+=pcd.getTotal();
+						volume+=pcd.getVolume();
+					}
+					totalLogField.setText(total+"");
+					totalVolumeField.setText(volume+"");
+					
+				}
+			}
+		});
 	
 		insertButton.addActionListener(new ActionListener() {
 			
@@ -376,26 +456,51 @@ public class AddPopUpPalletCard extends JDialog{
 				}
 				
 				if(error==0){
-					PalletCardDetail pc = new PalletCardDetail();
-					pc.setPalletCardCode(codePalletCardField.getText());
-					pc.setThickness(thicknessComboBox.getDataIndex().getThickness());
-					pc.setTotal(Integer.valueOf(totalField.getText()));
-					pc.setVolume(Double.valueOf(volumeField.getText()));
-					pc.setProductName(productNameField.getText());
-					pc.setLength(Double.valueOf(longField.getText()));
-					pc.setWidth(Double.valueOf(wideField.getText()));
-					pc.setProductCode(productCode.getText());
-					pcs.add(pc);
-					pcTable.updateUI();
-					
-					int total = 0;
-					double volume = 0;
-					for(PalletCardDetail pcd : pcs){
-						total+=pcd.getTotal();
-						volume+=pcd.getVolume();
+					if(!editMode){
+						PalletCardDetail pc = new PalletCardDetail();
+						pc.setPalletCardCode(codePalletCardField.getText());
+						pc.setThickness(thicknessComboBox.getDataIndex().getThickness());
+						pc.setTotal(Integer.valueOf(totalField.getText()));
+						pc.setVolume(Double.valueOf(volumeField.getText()));
+						pc.setProductName(productNameField.getText());
+						pc.setLength(Double.valueOf(longField.getText()));
+						pc.setWidth(Double.valueOf(wideField.getText()));
+						pc.setProductCode(productCode.getText());
+						pcs.add(pc);
+						pcTable.updateUI();
+						
+						int total = 0;
+						double volume = 0;
+						for(PalletCardDetail pcd : pcs){
+							total+=pcd.getTotal();
+							volume+=pcd.getVolume();
+						}
+						totalLogField.setText(total+"");
+						totalVolumeField.setText(volume+"");
+						clear();
+					}else{
+						PalletCardDetail pc = pcs.get(indexEdit);
+						pc.setPalletCardCode(codePalletCardField.getText());
+						pc.setThickness(thicknessComboBox.getDataIndex().getThickness());
+						pc.setTotal(Integer.valueOf(totalField.getText()));
+						pc.setVolume(Double.valueOf(volumeField.getText()));
+						pc.setProductName(productNameField.getText());
+						pc.setLength(Double.valueOf(longField.getText()));
+						pc.setWidth(Double.valueOf(wideField.getText()));
+						pc.setProductCode(productCode.getText());
+						pcTable.updateUI();
+						int total = 0;
+						double volume = 0;
+						for(PalletCardDetail pcd : pcs){
+							total+=pcd.getTotal();
+							volume+=pcd.getVolume();
+						}
+						totalLogField.setText(total+"");
+						totalVolumeField.setText(volume+"");
+						clear();
+						editMode=false;
+						indexEdit=0;
 					}
-					totalLogField.setText(total+"");
-					totalVolumeField.setText(volume+"");
 				}
 			}
 		});
@@ -452,6 +557,16 @@ public class AddPopUpPalletCard extends JDialog{
 	
 	}
 	
+	public void clear(){
+		longField.setText("");
+		wideField.setText("");
+		thicknessComboBox.setSelectedIndex(0);
+		productCode.setText("");
+		productNameField.setText("");
+		totalField.setText("");
+		volumeField.setText("");
+	}
+	
 	public void getProductName(){
 		if(thicknessComboBox.getSelectedIndex()!=0 && gradeComboBox.getSelectedIndex()!=0){
 			if (productMap.get(thicknessComboBox.getDataIndex().getId())!=null) {
@@ -461,6 +576,13 @@ public class AddPopUpPalletCard extends JDialog{
 				}else productNameField.setText("");
 			}else productNameField.setText("");
 		}else productNameField.setText("");
+	}
+	
+	public void calculateVolume(){
+		if(!longField.getText().equals("")&&!wideField.getText().equals("")&&thicknessComboBox.getSelectedIndex()!=0){
+			double volume = Double.valueOf(longField.getText())*Double.valueOf(wideField.getText())*thicknessComboBox.getDataIndex().getThickness();
+			volumeField.setText(volume+"");
+		}
 	}
 	
 	private class PCTableModel extends AbstractTableModel {
