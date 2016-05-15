@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -332,32 +334,14 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		printBtn.setBounds(710,790,100,30);
 		containerPnl.add(printBtn);
 		
-		addPalletBtn.addActionListener(new ActionListener() {
-			
+		palletTable.addMouseListener(new MouseAdapter() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				ViewPopUpPalletCard pop = new ViewPopUpPalletCard(parent);
-				pop.show();
-				pop.setLocationRelativeTo(null);
-			}
-		});
-		
-		searchPicBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				PopUpPicDocking pop = new PopUpPicDocking(parent);
-				pop.show();
-				pop.setLocationRelativeTo(null);
-				
-			}
-		});
-		
-		deletePicBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
+			public void mouseClicked(MouseEvent e) {
+				if(palletTable.columnAtPoint(e.getPoint())==6){
+					ViewPopUpPalletCard pop = new ViewPopUpPalletCard(parent, pallets.get(palletTable.getSelectedRow()));
+					pop.show();
+					pop.setLocationRelativeTo(null);
+				}
 			}
 		});
 		
@@ -373,7 +357,6 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			deliveries = ReceivedDAOFactory.getDeliveryDAO().getDeliveryNote();
 			deliveries.add(0,new Delivery("--Pilih--"));
 			docNoComboBox.setList(deliveries);
-			
 			
 			
 		} catch (SQLException e) {

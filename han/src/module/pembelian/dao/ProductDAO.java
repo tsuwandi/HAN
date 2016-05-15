@@ -16,7 +16,7 @@ public class ProductDAO {
 
 	private PreparedStatement getAllStatement;
 
-	private String getAllQuery = "SELECT id, product_name, grade_id, thickness_id, wood_type_id FROM product WHERE 1 = 1 AND wood_type_id = ? AND condition_id = 1";
+	private String getAllQuery = "SELECT id, product_name, product_code, grade_id, thickness_id, wood_type_id FROM product WHERE 1 = 1 AND wood_type_id = ? AND condition_id = 1";
 
 	public ProductDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
@@ -40,6 +40,7 @@ public class ProductDAO {
 				product.setGradeId(rs.getInt("grade_id"));
 				product.setThicknessId(rs.getInt("thickness_id"));
 				product.setWoodTypeId(rs.getInt("wood_type_id"));
+				product.setProductCode(rs.getString("product_code"));
 				products.add(product);
 			}
 

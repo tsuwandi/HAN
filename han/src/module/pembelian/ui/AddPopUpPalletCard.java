@@ -294,6 +294,8 @@ public class AddPopUpPalletCard extends JDialog{
 		volumeField.setEnabled(false);
 		
 		productCode = new JLabel();
+		productCode.setBounds(800, 100, 150, 30);
+		productCode.setVisible(false);
 		add(productCode);
 		
 		productMap = new HashMap<Integer, Map<Integer,Product>>();
@@ -458,7 +460,7 @@ public class AddPopUpPalletCard extends JDialog{
 				if(error==0){
 					if(!editMode){
 						PalletCardDetail pc = new PalletCardDetail();
-						pc.setPalletCardCode(codePalletCardField.getText());
+						pc.setPalletCardCode(codePalletCardField.getText()+"/"+addReceivedDetail.received.getReceivedCode());
 						pc.setThickness(thicknessComboBox.getDataIndex().getThickness());
 						pc.setTotal(Integer.valueOf(totalField.getText()));
 						pc.setVolume(Double.valueOf(volumeField.getText()));
@@ -480,7 +482,7 @@ public class AddPopUpPalletCard extends JDialog{
 						clear();
 					}else{
 						PalletCardDetail pc = pcs.get(indexEdit);
-						pc.setPalletCardCode(codePalletCardField.getText());
+						pc.setPalletCardCode(codePalletCardField.getText()+"/"+addReceivedDetail.received.getReceivedCode());
 						pc.setThickness(thicknessComboBox.getDataIndex().getThickness());
 						pc.setTotal(Integer.valueOf(totalField.getText()));
 						pc.setVolume(Double.valueOf(volumeField.getText()));

@@ -24,6 +24,7 @@ public class PalletDAO {
 	private PreparedStatement getAllPallets;
 	private PreparedStatement insertStatement;
 	private PreparedStatement detailPalletStatement;
+	private PreparedStatement deleteStatement;
 	
 	private String getAllForDryInPalletQuery = "SELECT pc.id, r.received_date, r.rit_no, pc.pallet_card_code, pc.total_volume "
 			+ "FROM pallet_card pc INNER JOIN received r ON r.received_code = pc.received_code ";
@@ -41,7 +42,10 @@ public class PalletDAO {
 	
 	private String detailPalletQuery = "SELECT a.id, pallet_card_code, length, width, thickness, total, volume, a.product_code, product_name FROM "
 			+ "pallet_card_dtl a INNER JOIN product b ON a.product_code = b.product_code WHERE pallet_card_code = ?";
-	 
+	
+	private String deletePalletQuery = "DELETE FROM pallet_card WHERE received_code = ?";
+	
+	
 	public PalletDAO(Connection connection) throws SQLException {
 		this.connection = connection;
 	}
@@ -357,5 +361,25 @@ public class PalletDAO {
 		}
 
 		return palletCard;
+	}
+	
+	public void delete(String receivedCode) throws SQLException {
+		  Connection con = null;
+	    	try {
+	    		con = dataSource.getConnection();
+	    		
+	    		deleteStatement = con.prepareStatement(deletePalletQuery);
+	    		deleteStatement.setString(1, receivedCode);
+	    		deleteStatement.executeUpdate();
+	            
+	        } catch (SQLException ex) {
+	        	ex.printStackTrace();
+	        	throw new SQLException(ex.getMessage());
+	        } finally {
+	        	try {
+					con.close();
+				} catch (SQLException e) {
+				}
+	        }
 	}
 }

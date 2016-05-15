@@ -14,6 +14,7 @@ import module.pembelian.dao.ReceivedDAO;
 import module.pembelian.dao.SupplierVehicleDAO;
 import module.pembelian.dao.ThicknessDAO;
 import module.pembelian.dao.WoodTypeDAO;
+import module.pembelian.dao.PalletCardDetailDAO;
 
 public class ReceivedDAOFactory {
 	private static final Logger LOGGER = Logger.getLogger(ReceivedDAOFactory.class);
@@ -106,4 +107,15 @@ public class ReceivedDAOFactory {
 			return null;
 		}
 	}
+	
+	public static PalletCardDetailDAO getPalletCardDetailDAO() {
+		try {
+			return new PalletCardDetailDAO(DataSourceFactory.getDataSource());
+		} catch (SQLException e) {
+			LOGGER.error("SQL Exception " + e);
+			return null;
+		}
+	}
+	
+	
 }

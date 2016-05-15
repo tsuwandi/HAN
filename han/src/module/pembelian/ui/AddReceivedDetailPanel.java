@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import main.component.ComboBox;
 import main.component.NumberField;
 import main.panel.MainPanel;
 import model.User;
+import module.pembelian.dao.PalletCardDetailDAO;
 import module.pembelian.dao.ReceivedDAO;
 import module.pembelian.model.Delivery;
 import module.pembelian.model.Employee;
@@ -317,7 +320,6 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		
 		searchPicBtn = new JButton("Search");
 		searchPicBtn.setBounds(570,710,100,30);
-		searchPicBtn.setEnabled(false);
 		containerPnl.add(searchPicBtn);
 		
 		saveBtn = new JButton("Save");
@@ -331,6 +333,41 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 				AddPopUpPalletCard pop = new AddPopUpPalletCard(parent);
 				pop.show();
 				pop.setLocationRelativeTo(null);
+			}
+		});
+
+		dockingPICTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(dockingPICTable.columnAtPoint(e.getPoint())==0){
+					if(picDockings.get(dockingPICTable.getSelectedRow()).isFlag()){
+						picDockings.get(dockingPICTable.getSelectedRow()).setFlag(false);
+						dockingPICTable.updateUI();
+					}else{
+						picDockings.get(dockingPICTable.getSelectedRow()).setFlag(true);
+						dockingPICTable.updateUI();
+					}
+				}
+			}
+		});
+		
+		palletTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(palletTable.columnAtPoint(e.getPoint())==6){
+					EditPopUpPalletCard pop = new EditPopUpPalletCard(parent, pallets.get(palletTable.getSelectedRow()),palletTable.getSelectedRow());
+					pop.show();
+					pop.setLocationRelativeTo(null);
+				}
+				if(palletTable.columnAtPoint(e.getPoint())==0){
+					if(pallets.get(palletTable.getSelectedRow()).isFlag()){
+						pallets.get(palletTable.getSelectedRow()).setFlag(false);
+						palletTable.updateUI();
+					}else{
+						pallets.get(palletTable.getSelectedRow()).setFlag(true);
+						palletTable.updateUI();
+					}
+				}
 			}
 		});
 		
@@ -454,21 +491,22 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 				}
 				
 				if(error==0){
-					Received rec = new Received();
-					String code = receivedCodeField.getText()+firstCodeSeparator.getText()
-							+receivedCodeDateField.getText()+secondCodeSeparator.getText()
-							+receivedCodeMonthField.getText()+thirdCodeSeparator.getText()+receivedCodeYearField.getText();
-					rec.setDeliveryNote(docNoComboBox.getDataIndex().getDeliveryNote());
-					rec.setDriver(driverField.getText());
-					rec.setLicensePlate(licensePlateComboBox.getDataIndex().getLicensePlate());
-					rec.setReceivedCode(code);
-					rec.setRitNo(ritNumberField.getText());
-					rec.setSupplier(supplierTextField.getText());
-					rec.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
-					rec.setReceivedDate(receivedDateChooser.getDate());
 					try {
-						ReceivedDAOFactory.getReceivedDAO().save(rec);
-						MainPanel.changePanel("module.pembelian.ui.ListReceived");
+						ReceivedDAOFactory.getPicDockingDAO().delete(received.getReceivedCode());
+						ReceivedDAOFactory.getPalletDAO().delete(received.getReceivedCode());
+						for(Pallet pallet : pallets){
+							pallet.setReceivedCode(received.getReceivedCode());
+							ReceivedDAOFactory.getPalletDAO().save(pallet);
+							ReceivedDAOFactory.getPalletCardDetailDAO().delete(pallet.getPalletCardCode());
+							for(PalletCardDetail palletCardDetail : pallet.getPalletCardDetails()){
+								ReceivedDAOFactory.getPalletCardDetailDAO().save(palletCardDetail);
+							}
+						}
+						for(PicDocking picDocking : picDockings){
+							picDocking.setReceivedCode(received.getReceivedCode());
+							ReceivedDAOFactory.getPicDockingDAO().save(picDocking);
+						}
+						System.out.println("Success");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

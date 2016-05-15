@@ -30,14 +30,14 @@ public class PopUpPicDocking extends JDialog {
 	JButton addBtn;
 	JButton searchBtn;
 	JTextField searchField;
-	ViewReceivedDetailPanel addReceivedDetail;
+	AddReceivedDetailPanel addReceivedDetail;
 	JDialog dialog;
 	
 	public PopUpPicDocking(JPanel parentPanel) {
 		setLayout(null);
 		setSize(400,400);
 		this.dialog = this;
-		addReceivedDetail = (ViewReceivedDetailPanel)parentPanel;
+		addReceivedDetail = (AddReceivedDetailPanel)parentPanel;
 		
 		searchBtn = new JButton("Search");
 		searchBtn.setBounds(270,20,100,30);

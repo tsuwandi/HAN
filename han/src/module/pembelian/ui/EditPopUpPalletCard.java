@@ -1,7 +1,11 @@
 package module.pembelian.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,14 +15,21 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.Position;
+import javax.swing.text.Segment;
 
-import controller.ReceivedDAOFactory;
 import main.component.ComboBox;
 import main.component.NumberField;
 import model.User;
@@ -28,8 +39,9 @@ import module.pembelian.model.Pallet;
 import module.pembelian.model.PalletCardDetail;
 import module.pembelian.model.Product;
 import module.pembelian.model.Thickness;
+import controller.ReceivedDAOFactory;
 
-public class ViewPopUpPalletCard extends JDialog{
+public class EditPopUpPalletCard extends JDialog{
 
 	JLabel palletCardCodeLbl;
 	JLabel graderLbl;
@@ -87,11 +99,12 @@ public class ViewPopUpPalletCard extends JDialog{
 	List<Employee> employees;
 	List<Product> products;
 	Map<Integer, Map<Integer, Product>> productMap;
-	ViewReceivedDetailPanel addReceivedDetail;
+	AddReceivedDetailPanel addReceivedDetail;
 	boolean editMode = false;
 	int indexEdit = 0;
+	int index;
 	Pallet pallet;
-	public ViewPopUpPalletCard(ViewReceivedDetailPanel parent, Pallet pallet) {
+	public EditPopUpPalletCard(AddReceivedDetailPanel parent, Pallet pallet, int index) {
 		addReceivedDetail = parent;
 		setLayout(null);
 		setTitle("Kartu Pallet");
@@ -307,24 +320,17 @@ public class ViewPopUpPalletCard extends JDialog{
 				mapTemp.put(product.getGradeId(), product);
 				productMap.put(product.getThicknessId(), mapTemp);
 			}
+			this.pallet = pallet;
+			this.index = index;
 			codePalletCardField.setEnabled(false);
 			String [] splittedCode = pallet.getPalletCardCode().split("/");
 			codePalletCardField.setText(splittedCode[0]);
 			graderComboBox.setSelectedItem(pallet.getEmpName());
 			gradeComboBox.setSelectedItem(pallet.getGrade());
-			System.out.println(pallet.getPalletCardDetails().size());
 			pcs = pallet.getPalletCardDetails();
 			pcTable.setModel(new PCTableModel(pcs));
 			pcTable.updateUI();
-			graderComboBox.setEnabled(false);
-			gradeComboBox.setEnabled(false);
-			longField.setEnabled(false);
-			wideField.setEnabled(false);
-			thicknessComboBox.setEnabled(false);
-			totalField.setEnabled(false);
-			confirmButton.setEnabled(false);
-			insertButton.setEnabled(false);
-			
+		
 			int total = 0;
 			double volume = 0;
 			for(PalletCardDetail pcd : pcs){
@@ -388,6 +394,183 @@ public class ViewPopUpPalletCard extends JDialog{
 				getProductName();
 			}
 		});
+		
+		pcTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(pcTable.columnAtPoint(e.getPoint())==6){
+					editMode=true;
+					indexEdit=pcTable.getSelectedRow();
+					PalletCardDetail pc = pcs.get(pcTable.getSelectedRow());
+					longField.setText(pc.getLength()+"");
+					wideField.setText(pc.getWidth()+"");
+					thicknessComboBox.setSelectedItem(String.valueOf(pc.getThickness())+"0");
+					productNameField.setText(pc.getProductName());
+					productCode.setText(pc.getProductCode());
+					totalField.setText(pc.getTotal()+"");
+					volumeField.setText(pc.getVolume()+"");
+				}
+				if(pcTable.columnAtPoint(e.getPoint())==7){
+					pcs.remove(pcTable.getSelectedRow());
+					pcTable.updateUI();
+					int total = 0;
+					double volume = 0;
+					for(PalletCardDetail pcd : pcs){
+						total+=pcd.getTotal();
+						volume+=pcd.getVolume();
+					}
+					totalLogField.setText(total+"");
+					totalVolumeField.setText(volume+"");
+					
+				}
+			}
+		});
+	
+		insertButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int error=0;
+				if(graderComboBox.getSelectedIndex()==0){
+					errorGraderLbl.setText("<html><font color='red'>Grader harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorGraderLbl.setText("");
+				}
+				
+				if(gradeComboBox.getSelectedIndex()==0){
+					errorGradeLbl.setText("<html><font color='red'>Grade harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorGradeLbl.setText("");
+				}
+				if(thicknessComboBox.getSelectedIndex()==0){
+					errorThickLbl.setText("<html><font color='red'>Tebal harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorThickLbl.setText("");
+				}
+				
+				if(longField.getText().equals("")){
+					errorLongLbl.setText("<html><font color='red'>Panjang harus diisi !</font></html>");
+					error++;
+				}else{
+					errorLongLbl.setText("");
+				}
+				if(wideField.getText().equals("")){
+					errorWideLbl.setText("<html><font color='red'>Lebar harus diisi !</font></html>");
+					error++;
+				}else{
+					errorWideLbl.setText("");
+				}
+				if(totalField.getText().equals("")){
+					errorTotalLbl.setText("<html><font color='red'>Total Kayu harus diisi !</font></html>");
+					error++;
+				}else{
+					errorTotalLbl.setText("");
+				}
+				if(volumeField.getText().equals("")){
+					errorVolumeLbl.setText("<html><font color='red'>Volume Kayu harus diisi !</font></html>");
+					error++;
+				}else{
+					errorVolumeLbl.setText("");
+				}
+				
+				if(error==0){
+					if(!editMode){
+						PalletCardDetail pc = new PalletCardDetail();
+						pc.setPalletCardCode(codePalletCardField.getText());
+						pc.setThickness(thicknessComboBox.getDataIndex().getThickness());
+						pc.setTotal(Integer.valueOf(totalField.getText()));
+						pc.setVolume(Double.valueOf(volumeField.getText()));
+						pc.setProductName(productNameField.getText());
+						pc.setLength(Double.valueOf(longField.getText()));
+						pc.setWidth(Double.valueOf(wideField.getText()));
+						pc.setProductCode(productCode.getText());
+						pcs.add(pc);
+						pcTable.updateUI();
+						
+						int total = 0;
+						double volume = 0;
+						for(PalletCardDetail pcd : pcs){
+							total+=pcd.getTotal();
+							volume+=pcd.getVolume();
+						}
+						totalLogField.setText(total+"");
+						totalVolumeField.setText(volume+"");
+						clear();
+					}else{
+						PalletCardDetail pc = pcs.get(indexEdit);
+						pc.setPalletCardCode(codePalletCardField.getText());
+						pc.setThickness(thicknessComboBox.getDataIndex().getThickness());
+						pc.setTotal(Integer.valueOf(totalField.getText()));
+						pc.setVolume(Double.valueOf(volumeField.getText()));
+						pc.setProductName(productNameField.getText());
+						pc.setLength(Double.valueOf(longField.getText()));
+						pc.setWidth(Double.valueOf(wideField.getText()));
+						pc.setProductCode(productCode.getText());
+						pcTable.updateUI();
+						int total = 0;
+						double volume = 0;
+						for(PalletCardDetail pcd : pcs){
+							total+=pcd.getTotal();
+							volume+=pcd.getVolume();
+						}
+						totalLogField.setText(total+"");
+						totalVolumeField.setText(volume+"");
+						clear();
+						editMode=false;
+						indexEdit=0;
+					}
+				}
+			}
+		});
+		
+	
+		
+		
+		confirmButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int error=0;
+				if(graderComboBox.getSelectedIndex()==0){
+					errorGraderLbl.setText("<html><font color='red'>Grader harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorGraderLbl.setText("");
+				}
+				
+				if(gradeComboBox.getSelectedIndex()==0){
+					errorGradeLbl.setText("<html><font color='red'>Grade harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorGradeLbl.setText("");
+				}
+				if(codePalletCardField.getText().equals("")){
+					errorCodePallet.setText("<html><font color='red'>Code Pallet harus diisi !</font></html>");
+					error++;
+				}else{
+					errorCodePallet.setText("");
+				}
+				
+				if(error==0){
+					Pallet pallet = addReceivedDetail.pallets.get(index);
+					pallet.setGradeID(gradeComboBox.getDataIndex().getId());
+					pallet.setGrade(gradeComboBox.getDataIndex().getGrade());
+					pallet.setEmpName(graderComboBox.getDataIndex().getEmployeeName());
+					pallet.setEmpCode(graderComboBox.getDataIndex().getEmployeeId());
+					pallet.setPalletCardCode(codePalletCardField.getText()+"/"+addReceivedDetail.received.getReceivedCode());
+					pallet.setTotalLog(Integer.valueOf(totalLogField.getText()));
+					pallet.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
+					pallet.setPalletCardDetails(pcs);
+					
+					addReceivedDetail.palletTable.updateUI();
+					dispose();
+					
+				}
+			}
+		});
 	
 	}
 	
@@ -438,7 +621,7 @@ public class ViewPopUpPalletCard extends JDialog{
 	     * Method to get Column Count
 	     */
 	    public int getColumnCount() {
-	        return 6;
+	        return 8;
 	    }
 	    
 	    /**
@@ -462,6 +645,10 @@ public class ViewPopUpPalletCard extends JDialog{
 	                return p.getTotal();
 	            case 5 :
 	                return p.getVolume();
+	            case 6 :
+	                return "Edit";
+	            case 7 :
+	                return "Delete";
 	            default :
 	                return "";
 	        }
@@ -486,6 +673,10 @@ public class ViewPopUpPalletCard extends JDialog{
 	                return "Jumlah";
 	            case 5 :
 	                return "Volume";
+	            case 6 :
+	                return "Action";
+	            case 7 :
+	                return "Action";
 	            default :
 	                return "";
 	        }
