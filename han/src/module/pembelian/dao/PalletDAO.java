@@ -39,7 +39,7 @@ public class PalletDAO {
 		 		+ " emp_code, grade_id, total_volume, total_log, input_date, input_by) "
 		 		+ " VALUES (?,?,?,?,?,?,?,?)";
 	
-	private String detailPalletQuery = "SELECT id, pallet_card_code, length, width, thickness, total, volume, product_code, product_name FROM "
+	private String detailPalletQuery = "SELECT a.id, pallet_card_code, length, width, thickness, total, volume, a.product_code, product_name FROM "
 			+ "pallet_card_dtl a INNER JOIN product b ON a.product_code = b.product_code WHERE pallet_card_code = ?";
 	 
 	public PalletDAO(Connection connection) throws SQLException {

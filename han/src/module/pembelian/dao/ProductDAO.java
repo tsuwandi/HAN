@@ -16,20 +16,21 @@ public class ProductDAO {
 
 	private PreparedStatement getAllStatement;
 
-	private String getAllQuery = "SELECT id, product_name, grade_id, thickness_id, wood_type_id FROM product WHERE 1 = 1 ";
+	private String getAllQuery = "SELECT id, product_name, grade_id, thickness_id, wood_type_id FROM product WHERE 1 = 1 AND wood_type_id = ? AND condition_id = 1";
 
 	public ProductDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
 
 	}
 
-	public List<Product> getAllProduct() throws SQLException {
+	public List<Product> getAllProduct(int woodTypeId) throws SQLException {
 		Connection con = null;
 		ArrayList<Product> products = new ArrayList<Product>();
 
 		try {
 			con = dataSource.getConnection();
 			getAllStatement = con.prepareStatement(getAllQuery);
+			getAllStatement.setInt(1, woodTypeId);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {

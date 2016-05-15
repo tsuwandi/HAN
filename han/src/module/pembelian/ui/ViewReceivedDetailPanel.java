@@ -94,7 +94,9 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	JButton searchPicBtn;
 	JButton deletePicBtn;
 	
-	JButton saveBtn;
+	JButton inputBtn;
+	JButton deleteBtn;
+	JButton printBtn;
 	
 	PalletTableModel palletTableModel;
 	PicDockingTableModel picDockingTableModel;
@@ -291,10 +293,12 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		
 		addPalletBtn = new JButton("Add");
 		addPalletBtn.setBounds(900,490,100,30);
+		addPalletBtn.setEnabled(false);
 		containerPnl.add(addPalletBtn);
 		
 		deletePalletBtn = new JButton("Delete");
 		deletePalletBtn.setBounds(800,490,100,30);
+		deletePalletBtn.setEnabled(false);
 		containerPnl.add(deletePalletBtn);
 		
 		//Pic Docking
@@ -308,21 +312,31 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		
 		deletePicBtn = new JButton("Delete");
 		deletePicBtn.setBounds(570,750,100,30);
+		deletePicBtn.setEnabled(false);
 		containerPnl.add(deletePicBtn);
 		
 		searchPicBtn = new JButton("Search");
 		searchPicBtn.setBounds(570,710,100,30);
+		searchPicBtn.setEnabled(false);
 		containerPnl.add(searchPicBtn);
 		
-		saveBtn = new JButton("Save");
-		saveBtn.setBounds(950,790,100,30);
-		containerPnl.add(saveBtn);
+		inputBtn = new JButton("Input");
+		inputBtn.setBounds(950,790,100,30);
+		containerPnl.add(inputBtn);
+		
+		deleteBtn = new JButton("Delete");
+		deleteBtn.setBounds(830,790,100,30);
+		containerPnl.add(deleteBtn);
+		
+		printBtn = new JButton("Print");
+		printBtn.setBounds(710,790,100,30);
+		containerPnl.add(printBtn);
 		
 		addPalletBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				AddPopUpPalletCard pop = new AddPopUpPalletCard(parent);
+				ViewPopUpPalletCard pop = new ViewPopUpPalletCard(parent);
 				pop.show();
 				pop.setLocationRelativeTo(null);
 			}
@@ -399,78 +413,16 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			}
 		});
 		
-		saveBtn.addActionListener(new ActionListener() {
+		inputBtn.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				int error = 0;
-				if(receivedCodeDateField.getText().equals("")||receivedCodeField.getText().equals("")||receivedCodeMonthField.getText().equals("")||receivedCodeYearField.getText().equals("")){
-					errorCodeLbl.setText("<html><font color='red'>Code tidak bole kosong !</font></html>");
-					error++;
-				}else{
-					errorCodeLbl.setText("");
-				}
-				if(ritNumberField.getText().equals("")){
-					errorRitNumberLbl.setText("<html><font color='red'>Nomor RIT tidak bole kosong !</font></html>");
-					error++;
-				}else{
-					errorRitNumberLbl.setText("");
-				}
-				if(driverField.getText().equals("")){
-					errorDriverLbl.setText("<html><font color='red'>Nama Supir tidak bole kosong !</font></html>");
-					error++;
-				}else{
-					errorDriverLbl.setText("");
-				}
-				if(driverIDField.getText().equals("")){
-					errorDriverIDLbl.setText("<html><font color='red'>KTP Supir tidak bole kosong !</font></html>");
-					error++;
-				}else{
-					errorDriverIDLbl.setText("");
-				}
-				if(licensePlateComboBox.getSelectedIndex()==0){
-					errorLicenseLbl.setText("<html><font color='red'>Plat Nomor harus dipilih !</font></html>");
-					error++;
-				}else{
-					errorLicenseLbl.setText("");
-				}
-				if(woodTypeComboBox.getSelectedIndex()==0){
-					errorWoodTypeLbl.setText("<html><font color='red'>Tipe Kayu harus dipilih !</font></html>");
-					error++;
-				}else{
-					errorWoodTypeLbl.setText("");
-				}
-				if(docNoComboBox.getSelectedIndex()==0){
-					errorDocNoLbl.setText("<html><font color='red'>Document Number harus dipilih !</font></html>");
-					error++;
-				}else{
-					errorDocNoLbl.setText("");
-				}
-				
-				if(error==0){
-					Received rec = new Received();
-					String code = receivedCodeField.getText()+firstCodeSeparator.getText()
-							+receivedCodeDateField.getText()+secondCodeSeparator.getText()
-							+receivedCodeMonthField.getText()+thirdCodeSeparator.getText()+receivedCodeYearField.getText();
-					rec.setDeliveryNote(docNoComboBox.getDataIndex().getDeliveryNote());
-					rec.setDriver(driverField.getText());
-					rec.setLicensePlate(licensePlateComboBox.getDataIndex().getLicensePlate());
-					rec.setReceivedCode(code);
-					rec.setRitNo(ritNumberField.getText());
-					rec.setSupplier(supplierTextField.getText());
-					rec.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
-					rec.setReceivedDate(receivedDateChooser.getDate());
-					try {
-						ReceivedDAOFactory.getReceivedDAO().save(rec);
-						MainPanel.changePanel("module.pembelian.ui.ListReceived");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.pembelian.ui.AddReceivedDetailPanel",received);
 			}
 		});
-	
 	}
+		
+	
 	
 	public void setTablePic(List<PicDocking> picDockings){
 		this.picDockings = new ArrayList<>();
@@ -537,6 +489,8 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	                return p.getGrade();
 	            case 5 :
 	                return p.getEmpName();
+	            case 6 :
+	                return "View";
 	            default :
 	                return "";
 	        }

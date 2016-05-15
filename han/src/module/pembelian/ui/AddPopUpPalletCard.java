@@ -51,6 +51,7 @@ public class AddPopUpPalletCard extends JDialog{
 	JLabel uomTotalLogLbl;
 	JLabel uomTotalVolumeLbl;
 	
+	JLabel errorCodePallet;
 	JLabel errorGraderLbl;
 	JLabel errorGradeLbl;
 	JLabel errorLongLbl;
@@ -60,7 +61,7 @@ public class AddPopUpPalletCard extends JDialog{
 	JLabel errorVolumeLbl;
 	JLabel productCode;
 	
-	JTextField codePalletCardField;
+	NumberField codePalletCardField;
 	NumberField longField;
 	NumberField wideField;
 	NumberField totalField;
@@ -87,8 +88,8 @@ public class AddPopUpPalletCard extends JDialog{
 	List<Employee> employees;
 	List<Product> products;
 	Map<Integer, Map<Integer, Product>> productMap;
-	ViewReceivedDetailPanel addReceivedDetail;
-	public AddPopUpPalletCard(ViewReceivedDetailPanel parent) {
+	AddReceivedDetailPanel addReceivedDetail;
+	public AddPopUpPalletCard(AddReceivedDetailPanel parent) {
 		addReceivedDetail = parent;
 		setLayout(null);
 		setTitle("Kartu Pallet");
@@ -99,9 +100,13 @@ public class AddPopUpPalletCard extends JDialog{
 		palletCardCodeLbl.setBounds(30,30,150,20);
 		add(palletCardCodeLbl);
 		
-		codePalletCardField = new JTextField();
+		codePalletCardField = new NumberField();
 		codePalletCardField.setBounds(150, 30, 150, 20);
 		add(codePalletCardField);
+		
+		errorCodePallet = new JLabel();
+		errorCodePallet.setBounds(320, 30, 180, 20);
+		add(errorCodePallet);
 		
 		//Grader 
 		graderLbl = new JLabel("Grader");
@@ -292,7 +297,7 @@ public class AddPopUpPalletCard extends JDialog{
 			employees.add(0,new Employee("--Pilih--"));
 			graderComboBox.setList(employees);
 			
-			products = ReceivedDAOFactory.getProductDAO().getAllProduct();
+			products = ReceivedDAOFactory.getProductDAO().getAllProduct(addReceivedDetail.received.getWoodTypeID());
 			for (Product product : products) {
 				Map<Integer, Product> mapTemp = new HashMap<Integer, Product>();
 				mapTemp.put(product.getGradeId(), product);
@@ -307,14 +312,7 @@ public class AddPopUpPalletCard extends JDialog{
 			
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				if(thicknessComboBox.getSelectedIndex()!=0 && gradeComboBox.getSelectedIndex()!=0){
-					if (productMap.get(thicknessComboBox.getDataIndex().getId())!=null) {
-						if(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId())!=null){
-							productNameField.setText(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId()).getProductName());
-							productCode.setText(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId()).getProductCode());
-						}else productNameField.setText("");
-					}else productNameField.setText("");
-				}else productNameField.setText("");
+				getProductName();
 			}
 		});
 		
@@ -322,17 +320,11 @@ public class AddPopUpPalletCard extends JDialog{
 			
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				if(thicknessComboBox.getSelectedIndex()!=0 && gradeComboBox.getSelectedIndex()!=0){
-					if (productMap.get(thicknessComboBox.getDataIndex().getId())!=null) {
-						if(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId())!=null){
-							productNameField.setText(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId()).getProductName());
-							productCode.setText(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId()).getProductCode());
-						}else productNameField.setText("");
-					}else productNameField.setText("");
-				}else productNameField.setText("");
+				getProductName();
 			}
 		});
 		
+	
 		insertButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -408,6 +400,9 @@ public class AddPopUpPalletCard extends JDialog{
 			}
 		});
 		
+	
+		
+		
 		confirmButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -426,6 +421,15 @@ public class AddPopUpPalletCard extends JDialog{
 				}else{
 					errorGradeLbl.setText("");
 				}
+				if(codePalletCardField.getText().equals("")){
+					errorCodePallet.setText("<html><font color='red'>Code Pallet harus diisi !</font></html>");
+					error++;
+				}else if(addReceivedDetail.palletMaps.get(codePalletCardField.getText()+"/"+addReceivedDetail.received.getReceivedCode())!=null){
+					errorCodePallet.setText("<html><font color='red'>Code Pallet sudah ada !</font></html>");
+					error++;
+				}else{
+					errorCodePallet.setText("");
+				}
 				
 				if(error==0){
 					Pallet pallet = new Pallet();
@@ -433,7 +437,7 @@ public class AddPopUpPalletCard extends JDialog{
 					pallet.setGrade(gradeComboBox.getDataIndex().getGrade());
 					pallet.setEmpName(graderComboBox.getDataIndex().getEmployeeName());
 					pallet.setEmpCode(graderComboBox.getDataIndex().getEmployeeId());
-					pallet.setPalletCardCode(codePalletCardField.getText());
+					pallet.setPalletCardCode(codePalletCardField.getText()+"/"+addReceivedDetail.received.getReceivedCode());
 					pallet.setTotalLog(Integer.valueOf(totalLogField.getText()));
 					pallet.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
 					pallet.setPalletCardDetails(pcs);
@@ -446,6 +450,17 @@ public class AddPopUpPalletCard extends JDialog{
 			}
 		});
 	
+	}
+	
+	public void getProductName(){
+		if(thicknessComboBox.getSelectedIndex()!=0 && gradeComboBox.getSelectedIndex()!=0){
+			if (productMap.get(thicknessComboBox.getDataIndex().getId())!=null) {
+				if(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId())!=null){
+					productNameField.setText(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId()).getProductName());
+					productCode.setText(productMap.get(thicknessComboBox.getDataIndex().getId()).get(gradeComboBox.getDataIndex().getId()).getProductCode());
+				}else productNameField.setText("");
+			}else productNameField.setText("");
+		}else productNameField.setText("");
 	}
 	
 	private class PCTableModel extends AbstractTableModel {
