@@ -6,13 +6,11 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,12 +23,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
 
-import com.sun.accessibility.internal.resources.accessibility;
-
+import main.panel.MainPanel;
 import module.product.model.Product;
 
 public class CreateProductPanel extends JPanel {
@@ -38,6 +36,8 @@ public class CreateProductPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	private JLabel breadcrumb;
+	private JButton backBtn;
 	private JLabel titleLbl;
 	
 	private JLabel idLbl;
@@ -178,6 +178,11 @@ public class CreateProductPanel extends JPanel {
 	private JScrollPane custScroll;
 	private JScrollPane taxScroll;
 	
+	public UOMConversionPanel uomConversionPanel;
+	public SearchSupplierPanel searchSupplierPanel;
+	public SearchCustomerPanel searchCustomerPanel;
+	public TaxPanel taxPanel;
+	
 	public CreateProductPanel() {
 		setLayout(null);
 		this.parent = this;
@@ -190,6 +195,21 @@ public class CreateProductPanel extends JPanel {
 		scrollPane = new JScrollPane(containerPnl);
 		scrollPane.setBounds(0,0,1166,630);
 		add(scrollPane);
+		
+		breadcrumb = new JLabel("ERP > Pembelian > Produk");
+		breadcrumb.setBounds(20, 5, 200, 25);
+		
+		backBtn = new JButton("X");
+		backBtn.setBounds(1100, 5, 40, 25);
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				MainPanel.changePanel("module.product.ui.ProductListPanel");
+			}
+		});
+		backBtn.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		titleLbl = new JLabel("CREATE NEW");
 		titleLbl.setBounds(20, 20, 300, 50);
@@ -321,6 +341,9 @@ public class CreateProductPanel extends JPanel {
 		maintainNoField = new JRadioButton("Tidak");
 		maintainNoField.setBounds(250, 230, 50, 25);
 		
+		maintain.add(maintainYesField);
+		maintain.add(maintainNoField);
+		
 		pathField = new JTextField();
 		pathField.setBounds(195, 260, 150, 25);
 		
@@ -381,11 +404,17 @@ public class CreateProductPanel extends JPanel {
 		serialNoField = new JRadioButton("Tidak");
 		serialNoField.setBounds(250, 750, 50, 25);
 		
+		flagSerial.add(serialYesField);
+		flagSerial.add(serialNoField);
+		
 		assetYesField = new JRadioButton("Ya");
 		assetYesField.setBounds(195, 780, 50, 25);
 		
 		assetNoField = new JRadioButton("Tidak");
 		assetNoField.setBounds(250, 780, 50, 25);
+		
+		flagAsset.add(assetYesField);
+		flagAsset.add(assetNoField);
 		
 		warrantField = new JTextField();
 		warrantField.setBounds(195, 810, 150, 25);
@@ -404,6 +433,9 @@ public class CreateProductPanel extends JPanel {
 		purchaseNoField = new JRadioButton("Tidak");
 		purchaseNoField.setBounds(250, 900, 50, 25);
 		
+		purchase.add(purchaseYesField);
+		purchase.add(purchaseNoField);
+		
 		minOrderField = new JTextField();
 		minOrderField.setBounds(195, 930, 150, 25);
 		
@@ -421,6 +453,17 @@ public class CreateProductPanel extends JPanel {
 		
 		uomAddBtn = new JButton("Add");
 		uomAddBtn.setBounds(395, 1050, 75, 25);
+		uomAddBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				uomConversionPanel = new UOMConversionPanel();
+				uomConversionPanel.setVisible(true);
+				//uomConversionPanel.setBounds(0, 0, 700, 600);
+				MainPanel.glassPane.setVisible(true);
+			}
+		});
 		
 		uomDeleteBtn = new JButton("Delete");
 		uomDeleteBtn.setBounds(475, 1050, 75, 25);
@@ -447,6 +490,16 @@ public class CreateProductPanel extends JPanel {
 		
 		resSupSearchBtn = new JButton("Search");
 		resSupSearchBtn.setBounds(395, 1280, 75, 25);
+		resSupSearchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				searchSupplierPanel = new SearchSupplierPanel();
+				searchSupplierPanel.setVisible(true);
+				MainPanel.glassPane.setVisible(true);
+			}
+		});
 		
 		resSupDeleteBtn = new JButton("Delete");
 		resSupDeleteBtn.setBounds(475, 1280, 75, 25);
@@ -473,11 +526,17 @@ public class CreateProductPanel extends JPanel {
 		salesNoField = new JRadioButton("Tidak");
 		salesNoField.setBounds(250, 1450, 50, 25);
 		
+		sales.add(salesYesField);
+		sales.add(salesNoField);
+		
 		serviceYesField = new JRadioButton("Ya");
 		serviceYesField.setBounds(195, 1480, 50, 25);
 		
 		serviceNoField = new JRadioButton("Tidak");
 		serviceNoField.setBounds(250, 1480, 50, 25);
+		
+		service.add(serviceYesField);
+		service.add(serviceNoField);
 		
 		sellCostField = new JComboBox<>();
 		sellCostField.setBounds(195, 1510, 150, 25);
@@ -490,6 +549,17 @@ public class CreateProductPanel extends JPanel {
 		
 		custSearchBtn = new JButton("Search");
 		custSearchBtn.setBounds(395, 1600, 75, 25);
+		custSearchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				searchCustomerPanel = new SearchCustomerPanel();
+				searchCustomerPanel.setVisible(true);
+				//uomConversionPanel.setBounds(0, 0, 700, 600);
+				MainPanel.glassPane.setVisible(true);
+			}
+		});
 		
 		custDeleteBtn = new JButton("Delete");
 		custDeleteBtn.setBounds(475, 1600, 75, 25);
@@ -508,6 +578,16 @@ public class CreateProductPanel extends JPanel {
 		
 		taxAddBtn = new JButton("Add");
 		taxAddBtn.setBounds(395, 1740, 75, 25);
+		taxAddBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				taxPanel = new TaxPanel();
+				taxPanel.setVisible(true);
+				MainPanel.glassPane.setVisible(true);
+			}
+		});
 		
 		taxDeleteBtn = new JButton("Delete");
 		taxDeleteBtn.setBounds(475, 1740, 75, 25);
@@ -527,6 +607,8 @@ public class CreateProductPanel extends JPanel {
 		saveBtn = new JButton("Save");
 		saveBtn.setBounds(745, 1880, 75, 25);
 		
+		containerPnl.add(breadcrumb);
+		containerPnl.add(backBtn);
 		containerPnl.add(titleLbl);
 		containerPnl.add(idLbl);
 		containerPnl.add(nameLbl);
@@ -705,6 +787,24 @@ public class CreateProductPanel extends JPanel {
 			//all cells false
 			return false;
 		}
+		
+		@Override
+        public Class getColumnClass(int column) {
+            switch (column) {
+                case 0:
+                    return Boolean.class;
+                case 1:
+                    return String.class;
+                case 2:
+                    return Integer.class;
+                case 3:
+                    return String.class;
+                case 4:
+                	return String.class;
+                default:
+                    return String.class;
+            }
+        }
 
 	}
 	
