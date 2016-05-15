@@ -18,11 +18,12 @@ public class PICDockingDAO {
 
 	private PreparedStatement getAllStatement;
 	private PreparedStatement insertStatement;
+	private PreparedStatement deleteStatement;
 
 	private String getAllQuery = "SELECT a.id , a.received_code, a.emp_code, b.employee_name FROM pic_docking a INNER JOIN employee b  ON a.emp_code = b.employee_id WHERE a.received_code = ?";
 	private String insertQuery = "INSERT INTO pic_docking (received_code, emp_code, input_date, input_by) "
 		 		+ " VALUES (?,?,?,?)";
-
+	private String deleteQuery = "DELETE FROM pic_docking WHERE received_code = ?";
 	
 	public PICDockingDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
@@ -83,5 +84,25 @@ public class PICDockingDAO {
 			} catch (SQLException e) {
 			}
         }
+	}
+	
+	public void delete(String receivedCode) throws SQLException{
+		  Connection con = null;
+	    	try {
+	    		con = dataSource.getConnection();
+	    		
+	    		deleteStatement = con.prepareStatement(deleteQuery);
+	    		deleteStatement.setString(1, receivedCode);
+	    		deleteStatement.executeUpdate();
+	            
+	        } catch (SQLException ex) {
+	        	ex.printStackTrace();
+	        	throw new SQLException(ex.getMessage());
+	        } finally {
+	        	try {
+					con.close();
+				} catch (SQLException e) {
+				}
+	        }
 	}
 }
