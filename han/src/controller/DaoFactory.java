@@ -3,7 +3,7 @@ package controller;
 import java.sql.SQLException;
 
 import dao.UserDao;
-import module.product.dao.ProductDao;
+import module.product.dao.ProductDAO;
 
 
 /**
@@ -56,14 +56,14 @@ public class DaoFactory {
 		}
 	}
 	
-	public static ProductDao getProductDao() {
-		try {
-			return new ProductDao(DataSourceFactory.getDataSource());
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+//	public static ProductDAO getProductDao() {
+//		try {
+//			return new ProductDAO(DataSourceFactory.getDataSource());
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//	}
 
 	/**
 	 * Method to init or return {@link SupplierService}

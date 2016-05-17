@@ -121,6 +121,7 @@ public class CreateProductPanel extends JPanel {
 	public JRadioButton assetYesField;
 	public JRadioButton assetNoField;
 	public JTextField warrantField;
+	private JLabel dayLbl;
 	public JTextField nettoField;
 	public JComboBox<String> nettoUnitField;
 	
@@ -130,6 +131,7 @@ public class CreateProductPanel extends JPanel {
 	public JTextField minOrderField;
 	public JComboBox<String> minOrderUnitField;
 	public JTextField leadTimeField;
+	private JLabel day2Lbl;
 	public JComboBox<String> buyCostField;
 	public JComboBox<String> expenseField;
 	
@@ -153,6 +155,7 @@ public class CreateProductPanel extends JPanel {
 	public JComboBox<String> sellCostField;
 	public JComboBox<String> incomeField;
 	public JTextField discountField;
+	private JLabel percentLbl;
 	
 	public JButton custSearchBtn;
 	public JButton custDeleteBtn;
@@ -419,6 +422,9 @@ public class CreateProductPanel extends JPanel {
 		warrantField = new JTextField();
 		warrantField.setBounds(195, 810, 150, 25);
 		
+		dayLbl = new JLabel("Hari");
+		dayLbl.setBounds(350, 810, 50, 30);
+		
 		nettoField = new JTextField();
 		nettoField.setBounds(195, 840, 150, 25);
 		
@@ -444,6 +450,9 @@ public class CreateProductPanel extends JPanel {
 		
 		leadTimeField = new JTextField();
 		leadTimeField.setBounds(195, 960, 150, 25);
+		
+		day2Lbl = new JLabel("Hari");
+		day2Lbl.setBounds(350, 960, 50, 30);
 		
 		buyCostField = new JComboBox<>();
 		buyCostField.setBounds(195, 990, 150, 25);
@@ -546,6 +555,9 @@ public class CreateProductPanel extends JPanel {
 		
 		discountField = new JTextField();
 		discountField.setBounds(195, 1570, 150, 25);
+		
+		percentLbl = new JLabel("%");
+		percentLbl.setBounds(350, 1570, 50, 30);
 		
 		custSearchBtn = new JButton("Search");
 		custSearchBtn.setBounds(395, 1600, 75, 25);
@@ -672,6 +684,7 @@ public class CreateProductPanel extends JPanel {
 	    containerPnl.add(assetYesField);
 	    containerPnl.add(assetNoField);
 	    containerPnl.add(warrantField);
+	    containerPnl.add(dayLbl);
 	    containerPnl.add(nettoField);
 	    containerPnl.add(nettoUnitField);
 	    containerPnl.add(purchaseYesField);
@@ -679,6 +692,7 @@ public class CreateProductPanel extends JPanel {
 	    containerPnl.add(minOrderField);
 	    containerPnl.add(minOrderUnitField);
 	    containerPnl.add(leadTimeField);
+	    containerPnl.add(day2Lbl);
 	    containerPnl.add(buyCostField);
 	    containerPnl.add(expenseField);
 	    containerPnl.add(uomAddBtn);
@@ -696,6 +710,7 @@ public class CreateProductPanel extends JPanel {
 	    containerPnl.add(sellCostField);
 	    containerPnl.add(incomeField);
 	    containerPnl.add(discountField);
+	    containerPnl.add(percentLbl);
 	    containerPnl.add(custSearchBtn);
 	    containerPnl.add(custDeleteBtn);
 	    containerPnl.add(custScroll);

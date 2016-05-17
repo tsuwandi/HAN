@@ -21,6 +21,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import controller.DaoFactory;
+import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.product.model.Product;
 
@@ -81,12 +82,12 @@ public class ProductListPanel extends JPanel {
 		searchField = new JTextField();
 		searchField.setBounds(900, 100, 150, 25);
 
-//		try{
-//			products = DaoFactory.getEmployeeDao().getAll();
-//		}catch(SQLException e1){
-//			e1.printStackTrace();
-//		}
-
+		try{
+			products = ServiceFactory.getProductBL().getAll();
+		}catch(SQLException e1){
+			e1.printStackTrace();
+		}
+		
 		productTableModel = new ProductTableModel(products);
 		productTable = new JTable(productTableModel);
 		productTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -163,7 +164,7 @@ public class ProductListPanel extends JPanel {
 		 * @return int
 		 */
 		public int getRowCount() {
-			return 0;
+			return products.size();
 		}
 
 		/**
@@ -188,7 +189,7 @@ public class ProductListPanel extends JPanel {
 			case 0:
 				return seq = rowIndex+1;
 			case 1:
-				return p.getProductId();
+				return p.getProductCode();
 			case 2:
 				return p.getProductName();
 			case 3:
