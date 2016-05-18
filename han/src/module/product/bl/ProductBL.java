@@ -42,6 +42,16 @@ public class ProductBL {
 			con.close();
 		}
 	}
+	
+	public List<Product> getSearchProduct(String value) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductDAO(con).getAllBySimpleSearch(value);
+		} finally {
+			con.close();
+		}
+	}
 
 	public List<Employee> getAllGender() throws SQLException {
 		Connection con = null;

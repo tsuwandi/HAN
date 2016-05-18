@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import controller.DaoFactory;
 import controller.ServiceFactory;
+import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.product.model.Product;
 
@@ -146,6 +148,26 @@ public class ProductListPanel extends JPanel {
 		add(searchField);
 		add(searchBtn);
 		add(scrollPane);
+	}
+	
+	public void refreshTable() {
+		try {
+			productTable.setModel(new ProductTableModel(products));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			DialogBox.showErrorException();
+		}
+	}
+	
+	public void doSearch(String value) {
+		try {
+			products = new ArrayList<Product>();
+			products = ServiceFactory.getProductBL().getSearchProduct(value);
+			refreshTable();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			DialogBox.showErrorException();
+		}
 	}
 
 	class ProductTableModel extends AbstractTableModel {

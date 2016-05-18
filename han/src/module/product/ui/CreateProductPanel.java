@@ -8,6 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -15,8 +19,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -103,6 +109,7 @@ public class CreateProductPanel extends JPanel {
 	public JRadioButton maintainNoField;
 	public JTextField pathField;
 	public JButton browseBtn;
+	public JButton uploadBtn;
 	public JLabel imageField;
 	
 	public JTextField brandField;
@@ -170,6 +177,8 @@ public class CreateProductPanel extends JPanel {
 	JScrollPane scrollPane;
 	JPanel parent;
 	JPanel containerPnl;
+	
+	String filename;
 	
 	UOMTableModel uomTableModel;
 	ReserveSupplierTableModel reserveSupplierTableModel;
@@ -328,6 +337,20 @@ public class CreateProductPanel extends JPanel {
 		nameField.setBounds(195, 110, 150, 25);
 		
 		catField = new JComboBox<>();
+		catField.addItem("Pilih");
+		catField.addItem("Kayu");
+		catField.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(catField.getSelectedItem().toString().equals("Kayu")){
+					typeField.setEnabled(true);
+					gradeField.setEnabled(true);
+					thickField.setEnabled(true);
+				}
+			}
+		});
 		catField.setBounds(195, 140, 150, 25);
 		
 		statField = new JComboBox<>();
@@ -342,6 +365,7 @@ public class CreateProductPanel extends JPanel {
 		maintainYesField.setBounds(195, 230, 50, 25);
 		
 		maintainNoField = new JRadioButton("Tidak");
+		maintainNoField.setSelected(true);
 		maintainNoField.setBounds(250, 230, 50, 25);
 		
 		maintain.add(maintainYesField);
@@ -365,6 +389,7 @@ public class CreateProductPanel extends JPanel {
                     try {
                         imageField.setIcon(new ImageIcon(ImageIO.read(file).getScaledInstance(imageField.getWidth(), imageField.getHeight(), Image.SCALE_SMOOTH)));
                         pathField.setText(file.getAbsolutePath());
+                        filename = file.getName();
                     } catch (IOException ioe) {
                         ioe.printStackTrace();
                     }
@@ -372,8 +397,31 @@ public class CreateProductPanel extends JPanel {
 			}
 		});
 		
+		uploadBtn = new JButton("Upload");
+		uploadBtn.setBounds(425, 260, 75, 25);
+		uploadBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Path source = Paths.get(pathField.getText());
+				Path destination = Paths.get("C:/test/");
+				
+				try {
+					Path target = destination.resolve(filename);
+					Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+					
+					JOptionPane.showMessageDialog(null, "Upload Berhasil");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Upload Gagal");
+				}
+			}
+		});
+		
 		imageField = new JLabel();
-		imageField.setBounds(20, 290, 300, 100);
+		imageField.setBounds(20, 290, 300, 125);
 		imageField.setBorder(new LineBorder(Color.black));
 		
 		brandField = new JTextField();
@@ -386,12 +434,15 @@ public class CreateProductPanel extends JPanel {
 		descField.setBounds(195, 510, 250, 55);
 		
 		typeField = new JComboBox<>();
+		typeField.setEnabled(false);
 		typeField.setBounds(195, 600, 150, 25);
 		
 		gradeField = new JComboBox<>();
+		gradeField.setEnabled(false);
 		gradeField.setBounds(195, 630, 150, 25);
 		
 		thickField = new JComboBox<>();
+		thickField.setEnabled(false);
 		thickField.setBounds(195, 660, 150, 25);
 		
 		conField = new JComboBox<>();
@@ -405,6 +456,7 @@ public class CreateProductPanel extends JPanel {
 		serialYesField.setBounds(195, 750, 50, 25);
 		
 		serialNoField = new JRadioButton("Tidak");
+		serialNoField.setSelected(true);
 		serialNoField.setBounds(250, 750, 50, 25);
 		
 		flagSerial.add(serialYesField);
@@ -414,6 +466,7 @@ public class CreateProductPanel extends JPanel {
 		assetYesField.setBounds(195, 780, 50, 25);
 		
 		assetNoField = new JRadioButton("Tidak");
+		assetNoField.setSelected(true);
 		assetNoField.setBounds(250, 780, 50, 25);
 		
 		flagAsset.add(assetYesField);
@@ -434,30 +487,60 @@ public class CreateProductPanel extends JPanel {
 		purchase = new ButtonGroup();
 		
 		purchaseYesField = new JRadioButton("Ya");
+		purchaseYesField.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				minOrderField.setEnabled(true);
+				minOrderUnitField.setEnabled(true);
+				leadTimeField.setEnabled(true);
+				buyCostField.setEnabled(true);
+				expenseField.setEnabled(true);
+			}
+		});
 		purchaseYesField.setBounds(195, 900, 50, 25);
 		
 		purchaseNoField = new JRadioButton("Tidak");
+		purchaseNoField.setSelected(true);
+		purchaseNoField.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				minOrderField.setEnabled(false);
+				minOrderUnitField.setEnabled(false);
+				leadTimeField.setEnabled(false);
+				buyCostField.setEnabled(false);
+				expenseField.setEnabled(false);
+			}
+		});
 		purchaseNoField.setBounds(250, 900, 50, 25);
 		
 		purchase.add(purchaseYesField);
 		purchase.add(purchaseNoField);
 		
 		minOrderField = new JTextField();
+		minOrderField.setEnabled(false);
 		minOrderField.setBounds(195, 930, 150, 25);
 		
 		minOrderUnitField = new JComboBox<>();
+		minOrderUnitField.setEnabled(false);
 		minOrderUnitField.setBounds(350, 930, 100, 25);
 		
 		leadTimeField = new JTextField();
+		leadTimeField.setEnabled(false);
 		leadTimeField.setBounds(195, 960, 150, 25);
 		
 		day2Lbl = new JLabel("Hari");
 		day2Lbl.setBounds(350, 960, 50, 30);
 		
 		buyCostField = new JComboBox<>();
+		buyCostField.setEnabled(false);
 		buyCostField.setBounds(195, 990, 150, 25);
 		
 		expenseField = new JComboBox<>();
+		expenseField.setEnabled(false);
 		expenseField.setBounds(195, 1020, 150, 25);
 		
 		uomAddBtn = new JButton("Add");
@@ -530,30 +613,61 @@ public class CreateProductPanel extends JPanel {
 		service = new ButtonGroup();
 		
 		salesYesField = new JRadioButton("Ya");
+		salesYesField.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				serviceYesField.setEnabled(true);
+				serviceNoField.setEnabled(true);
+				sellCostField.setEnabled(true);
+				incomeField.setEnabled(true);
+				discountField.setEnabled(true);
+			}
+		});
 		salesYesField.setBounds(195, 1450, 50, 25);
 		
 		salesNoField = new JRadioButton("Tidak");
+		salesNoField.setSelected(true);
+		salesNoField.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				serviceYesField.setEnabled(false);
+				serviceNoField.setEnabled(false);
+				sellCostField.setEnabled(false);
+				incomeField.setEnabled(false);
+				discountField.setEnabled(false);
+			}
+		});
 		salesNoField.setBounds(250, 1450, 50, 25);
 		
 		sales.add(salesYesField);
 		sales.add(salesNoField);
 		
 		serviceYesField = new JRadioButton("Ya");
+		serviceYesField.setEnabled(false);
 		serviceYesField.setBounds(195, 1480, 50, 25);
 		
 		serviceNoField = new JRadioButton("Tidak");
+		serviceNoField.setSelected(true);
+		serviceNoField.setEnabled(false);
 		serviceNoField.setBounds(250, 1480, 50, 25);
 		
 		service.add(serviceYesField);
 		service.add(serviceNoField);
 		
 		sellCostField = new JComboBox<>();
+		sellCostField.setEnabled(false);
 		sellCostField.setBounds(195, 1510, 150, 25);
 		
 		incomeField = new JComboBox<>();
+		incomeField.setEnabled(false);
 		incomeField.setBounds(195, 1540, 150, 25);
 		
 		discountField = new JTextField();
+		discountField.setEnabled(false);
 		discountField.setBounds(195, 1570, 150, 25);
 		
 		percentLbl = new JLabel("%");
@@ -671,6 +785,7 @@ public class CreateProductPanel extends JPanel {
 	    containerPnl.add(maintainNoField);
 	    containerPnl.add(pathField);
 	    containerPnl.add(browseBtn);
+	    containerPnl.add(uploadBtn);
 	    containerPnl.add(imageField);
 	    containerPnl.add(brandField);
 	    containerPnl.add(barcodeField);
