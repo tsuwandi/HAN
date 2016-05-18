@@ -19,6 +19,7 @@ import controller.DaoFactory;
 import controller.DataSourceFactory;
 import controller.ServiceFactory;
 import dao.UserDao;
+import main.component.DialogBox;
 import model.User;
 
 import java.awt.BorderLayout;
@@ -31,7 +32,7 @@ public class LoginPanel extends JPanel {
 	public JLabel passwordLbl;
 	public JPasswordField passwordField;
 	public JButton submitBtn;
-	public User user;
+	private User user;
 	/**
 	 * Create the panel.
 	 */
@@ -74,8 +75,9 @@ public class LoginPanel extends JPanel {
 		add(submitBtn);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void doLogin(){
-		user = new User();
+		setUser(new User());
 		boolean test;
 		Connection con;
 		try {
@@ -92,17 +94,24 @@ public class LoginPanel extends JPanel {
 		
 //		try {
 //			user = DaoFactory.getUserDao().getUserByIdAndPassword(usernameField.getText(), passwordField.getText());
+//			if(user != null){
+//				setVisible(false);
+//				MainPanel.glassPane.setVisible(false);
+//			}
 //		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
+//			DialogBox.showErrorException();
 //			e.printStackTrace();
 //		}
-//		if(user != null){
-			//System.out.println("Sukses");
-			
-//		}else{
-//			JOptionPane.showMessageDialog(null, "Username atau password salah");
-//			System.out.println("gagal");
-//		}
+//		
+		
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }
