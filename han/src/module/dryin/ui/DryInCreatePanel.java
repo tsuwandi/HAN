@@ -128,6 +128,11 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		panel.add(lblHeader);
 
 		lblDryInCode = new JLabel("<html>Kode Pemasukan <font color=\"red\">*</font></html>");
+		lblDryInCode.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			}
+		});
 		lblDryInCode.setBounds(50, 80, 150, 30);
 		panel.add(lblDryInCode);
 
