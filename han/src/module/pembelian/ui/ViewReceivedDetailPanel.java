@@ -11,11 +11,14 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -25,6 +28,7 @@ import javax.swing.table.AbstractTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
+import controller.DataSourceFactory;
 import controller.ReceivedDAOFactory;
 import main.component.ComboBox;
 import main.component.NumberField;
@@ -39,6 +43,14 @@ import module.pembelian.model.Received;
 import module.pembelian.model.SupplierVehicle;
 import module.pembelian.model.WoodType;
 import module.util.Bridging;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	
@@ -403,6 +415,43 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 				MainPanel.changePanel("module.pembelian.ui.AddReceivedDetailPanel",received);
 			}
 		});
+		
+		printBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					java.sql.Connection conn = DataSourceFactory.getDataSource().getConnection();
+					JasperDesign jDesign = JRXmlLoader.load("src/module/pembelian/report/ReceivedReport.jrxml");
+					String sql = "SELECT length,thickness,width,grade,total,volume FROM pallet_card a INNER JOIN pallet_card_dtl b ON a.pallet_card_code = b.pallet_card_code INNER JOIN grade c ON  a.grade_id = c.id WHERE a.received_code = '"+received.getReceivedCode()+"'";
+					JRDesignQuery jDesignQuery = new JRDesignQuery();		
+					jDesignQuery.setText(sql);
+					jDesign.setQuery(jDesignQuery);
+					JasperReport jreprt = JasperCompileManager.compileReport(jDesign);
+					Map<String, Object> maps = new HashMap<>();
+					maps.put("received_code",received.getReceivedCode());
+					maps.put("driver_name", received.getDriver());
+					maps.put("license_plate", received.getLicensePlate());
+					maps.put("date", new SimpleDateFormat("dd/MM/yy").format(received.getReceivedDate()));
+					maps.put("delivery_note", received.getDeliveryNote());
+					maps.put("wood_domicile", received.getWoodDomicile());
+					JasperPrint jprintt = JasperFillManager.fillReport(jreprt, maps, conn);
+					JasperViewer.viewReport(jprintt, false);
+
+//					 String namafile= "src/module/pembelian/report/PurchaseReport.jasper"; 
+//					    File report = new File(namafile);
+//					    JasperReport jreprt = (JasperReport)JRLoader.loadObject(report.getPath());
+//					    JasperPrint jprintt = JasperFillManager.fillReport(jreprt,null,conn);
+//					    JasperViewer.viewReport(jprintt,false);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Gagal Membuka Laporan", "Cetak Laporan",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
+			}
+		});
+		
 	}
 		
 	
