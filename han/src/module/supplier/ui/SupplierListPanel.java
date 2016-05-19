@@ -102,35 +102,35 @@ public class SupplierListPanel extends JPanel {
 		btnAdvancedSearch.setBounds(950, 80, 100, 40);
 		add(btnAdvancedSearch);
 		
-		JButton btnPrint = new JButton("Print");
-		btnPrint.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					java.sql.Connection conn = DataSourceFactory.getDataSource().getConnection();
-					JasperDesign jDesign = JRXmlLoader.load("src/module/pembelian/report/PurchaseReport.jrxml");
-					String sql = "SELECT received_code, received_date, rit_no, license_plate, driver, delivery_note FROM received order by id desc";
-					JRDesignQuery jDesignQuery = new JRDesignQuery();		
-					jDesignQuery.setText(sql);
-					jDesign.setQuery(jDesignQuery);
-					JasperReport jreprt = JasperCompileManager.compileReport(jDesign);
-					JasperPrint jprintt = JasperFillManager.fillReport(jreprt, null, conn);
-					JasperViewer.viewReport(jprintt, false);
-
-//					 String namafile= "src/module/pembelian/report/PurchaseReport.jasper"; 
-//					    File report = new File(namafile);
-//					    JasperReport jreprt = (JasperReport)JRLoader.loadObject(report.getPath());
-//					    JasperPrint jprintt = JasperFillManager.fillReport(jreprt,null,conn);
-//					    JasperViewer.viewReport(jprintt,false);
-				} catch (Exception e) {
-					e.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Gagal Membuka Laporan", "Cetak Laporan",
-							JOptionPane.ERROR_MESSAGE);
-				}
-
-			}
-		});
-		btnPrint.setBounds(50, 104, 89, 23);
-		add(btnPrint);
+//		JButton btnPrint = new JButton("Print");
+//		btnPrint.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				try {
+//					java.sql.Connection conn = DataSourceFactory.getDataSource().getConnection();
+//					JasperDesign jDesign = JRXmlLoader.load("src/module/pembelian/report/PurchaseReport.jrxml");
+//					String sql = "SELECT received_code, received_date, rit_no, license_plate, driver, delivery_note FROM received order by id desc";
+//					JRDesignQuery jDesignQuery = new JRDesignQuery();		
+//					jDesignQuery.setText(sql);
+//					jDesign.setQuery(jDesignQuery);
+//					JasperReport jreprt = JasperCompileManager.compileReport(jDesign);
+//					JasperPrint jprintt = JasperFillManager.fillReport(jreprt, null, conn);
+//					JasperViewer.viewReport(jprintt, false);
+//
+////					 String namafile= "src/module/pembelian/report/PurchaseReport.jasper"; 
+////					    File report = new File(namafile);
+////					    JasperReport jreprt = (JasperReport)JRLoader.loadObject(report.getPath());
+////					    JasperPrint jprintt = JasperFillManager.fillReport(jreprt,null,conn);
+////					    JasperViewer.viewReport(jprintt,false);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//					JOptionPane.showMessageDialog(null, "Gagal Membuka Laporan", "Cetak Laporan",
+//							JOptionPane.ERROR_MESSAGE);
+//				}
+//
+//			}
+//		});
+//		btnPrint.setBounds(50, 104, 89, 23);
+//		add(btnPrint);
 
 		txtSearch = new JTextField();
 		txtSearch.setBounds(775, 130, 150, 30);

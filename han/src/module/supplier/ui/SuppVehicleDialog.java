@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
+import module.sn.chamber.model.Chamber;
 import module.sn.vehicletype.model.VehicleType;
 import module.supplier.model.SuppVehicle;
 import module.util.JTextFieldLimit;
@@ -92,13 +93,13 @@ public class SuppVehicleDialog extends JDialog {
 		listOfVehicleType = new ArrayList<VehicleType>();
 		try {
 			listOfVehicleType = ServiceFactory.getSupplierBL().getAllVehicleType();
+			listOfVehicleType.add(0, new VehicleType("-- Pilih Tipe Kendaraan --"));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
 
 		cbVehicleType = new ComboBox<VehicleType>();
-		cbVehicleType.addItem("-- Pilih Tipe Kendaraan --");
 		cbVehicleType.setBounds(150, 50, 150, 30);
 		cbVehicleType.setList(listOfVehicleType);
 		getContentPane().add(cbVehicleType);
@@ -141,7 +142,7 @@ public class SuppVehicleDialog extends JDialog {
 			isValid = false;
 		}
 
-		if (cbVehicleType.getSelectedItem() == null) {
+		if (cbVehicleType.getSelectedItem() == null || cbVehicleType.getSelectedIndex() == 0) {
 			lblErrorVehicleType.setText("Combobox Tipe Kendaraan harus dipilih.");
 			isValid = false;
 		} else {

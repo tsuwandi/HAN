@@ -190,7 +190,7 @@ public class Currency implements Serializable, ComboBoxProperties {
 	
 	@Override
 	public Object getField() {
-		return currencyAbbr + " - " + currency ;
+		return currency ;
 	}
 	
 	public Currency() {

@@ -222,17 +222,17 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		tblSuppAddress.setBorder(new EmptyBorder(5, 5, 5, 5));
 		scrollPaneSuppAddress.setViewportView(tblSuppAddress);
 
-		tblSuppAddress.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (tblSuppAddress.getValueAt(tblSuppAddress.getSelectedRow(), 0).equals(true))
-					listOfSuppAddress.get(tblSuppAddress.getSelectedRow()).setFlag(false);
-				else
-					listOfSuppAddress.get(tblSuppAddress.getSelectedRow()).setFlag(true);
-
-				tblSuppAddress.updateUI();
-			}
-		});
+//		tblSuppAddress.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				if (tblSuppAddress.getValueAt(tblSuppAddress.getSelectedRow(), 0).equals(true))
+//					listOfSuppAddress.get(tblSuppAddress.getSelectedRow()).setFlag(false);
+//				else
+//					listOfSuppAddress.get(tblSuppAddress.getSelectedRow()).setFlag(true);
+//
+//				tblSuppAddress.updateUI();
+//			}
+//		});
 
 		btnAddSuppAddress = new JButton("Tambah");
 		btnAddSuppAddress.setEnabled(false);

@@ -133,7 +133,7 @@ public class DryInListPanel extends JPanel {
 			refreshTableDryIn();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Data gagal diload.", "Error", JOptionPane.ERROR_MESSAGE);
+			DialogBox.showErrorException();
 		}
 
 	}

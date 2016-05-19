@@ -486,7 +486,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 			isValid = false;
 		}
 
-		if (cbChamber.getSelectedItem() == null) {
+		if (cbChamber.getSelectedItem() == null || cbChamber.getSelectedIndex() == 0) {
 			lblErrorChamber.setText("Combobox chamber harus dipilih.");
 			isValid = false;
 		}

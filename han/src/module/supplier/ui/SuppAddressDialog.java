@@ -154,38 +154,46 @@ public class SuppAddressDialog extends JDialog {
 		cbCity = new ComboBox<City>();
 		cbCity.setBounds(150, 205, 150, 30);
 
-		int provinceId = cbProvince.getDataIndex().getId();
-		getAllCityByProvinceId(provinceId);
-
-		cbCity.removeAllItems();
-		cbCity.setList(listOfCity);
-		cbCity.updateUI();
-		lblCity.setText("<html>Kota <font color=\"red\">*</font></html>");
-
-		cbProvince.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// if (cbProvince.getSelectedIndex() != 0) {
-				int provinceId = cbProvince.getDataIndex().getId();
-				getAllCityByProvinceId(provinceId);
-
-				cbCity.removeAllItems();
-				cbCity.setList(listOfCity);
-				cbCity.updateUI();
-				lblCity.setText("<html>Kota <font color=\"red\">*</font></html>");
-				// } else {
-				// cbCity.removeAllItems();
-				// lblCity.setText("Kota");
-				// lblErrorCity.setText("");
-				// }
-			}
-		});
-
-		getContentPane().add(cbCity);
-
 		lblErrorCity = new JLabel();
 		lblErrorCity.setForeground(Color.RED);
 		lblErrorCity.setBounds(335, 205, 200, 30);
 		getContentPane().add(lblErrorCity);
+
+		if (cbProvince.getSelectedIndex() != 0) {
+			int provinceId = cbProvince.getDataIndex().getId();
+			getAllCityByProvinceId(provinceId);
+
+			cbCity.removeAllItems();
+			cbCity.setList(listOfCity);
+			cbCity.updateUI();
+			lblCity.setText("<html>Kota <font color=\"red\">*</font></html>");
+		} else {
+			cbCity.removeAllItems();
+			getAllCityByProvinceId(0);
+			lblCity.setText("Kota");
+			lblErrorCity.setText("");
+		}
+
+		cbProvince.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (cbProvince.getSelectedIndex() != 0) {
+					int provinceId = cbProvince.getDataIndex().getId();
+					getAllCityByProvinceId(provinceId);
+
+					cbCity.removeAllItems();
+					cbCity.setList(listOfCity);
+					cbCity.updateUI();
+					lblCity.setText("<html>Kota <font color=\"red\">*</font></html>");
+				} else {
+					cbCity.removeAllItems();
+					getAllCityByProvinceId(0);
+					lblCity.setText("Kota");
+					lblErrorCity.setText("");
+				}
+			}
+		});
+
+		getContentPane().add(cbCity);
 
 		lblPhone = new JLabel("Telepon");
 		lblPhone.setBounds(25, 240, 150, 30);
@@ -211,10 +219,7 @@ public class SuppAddressDialog extends JDialog {
 				if (doValidate() == false) {
 					return;
 				}
-//					int response = DialogBox.showInsertChoice();
-//					if (response == JOptionPane.YES_OPTION) {
-						doInsert();
-//					}
+				doInsert();
 			}
 		});
 		btnInsert.setBounds(460, 315, 100, 30);
@@ -226,9 +231,16 @@ public class SuppAddressDialog extends JDialog {
 			txtZipCode.setText(suppAddress.getZipCode());
 			txtPhone.setText(suppAddress.getPhone());
 			txtFax.setText(suppAddress.getFax());
+		
+			if (suppAddress.getCityId() != 0) {
+				getAllCityByProvinceId(suppAddress.getCity().getProvinceId());
+				cbProvince.setSelectedItem(suppAddress.getCity().getProvince().getProvince());
+				
+				cbCity.setSelectedItem(suppAddress.getCity().getCity());
+			}
 		}
 	}
-	
+
 	public void getAllCityByProvinceId(int provinceId) {
 		try {
 			listOfCity = ServiceFactory.getSupplierBL().getAllCityByProvinceId(provinceId);
@@ -272,8 +284,21 @@ public class SuppAddressDialog extends JDialog {
 		suppAddress.setAddress(txtAddress.getText());
 		suppAddress.setZipCode(txtZipCode.getText());
 
-		if (cbProvince.getSelectedIndex() != 0 && cbCity.getSelectedIndex() != 0)
+		if (cbProvince.getSelectedIndex() != 0 && cbCity.getSelectedIndex() != 0) {
 			suppAddress.setCityId(cbCity.getDataIndex().getId());
+			
+			Province province = new Province();
+			province.setId(cbProvince.getDataIndex().getId());
+			province.setProvince(cbProvince.getDataIndex().getProvince());
+			
+			City city = new City();
+			city.setId(cbCity.getDataIndex().getId());
+			city.setCity(cbCity.getDataIndex().getCity());
+			city.setProvinceId(cbProvince.getDataIndex().getId());
+			city.setProvince(province);
+			suppAddress.setCity(city);
+		}
+			
 
 		suppAddress.setPhone(txtPhone.getText());
 		suppAddress.setFax(txtFax.getText());

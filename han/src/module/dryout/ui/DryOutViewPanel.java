@@ -350,7 +350,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 				
 				cbChamber.addItem("-- Pilih Chamber --");
 				cbChamber.addItem(dryOut.getChamber().getChamber());
-				cbChamber.setSelectedIndex(0);
+				cbChamber.setSelectedItem(dryOut.getChamber().getChamber());
 				txtTotalVolume.setText(String.valueOf(dryOut.getTotalVolume()));
 
 				refreshTableDryOutPallet();

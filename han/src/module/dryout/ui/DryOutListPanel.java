@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,6 +27,7 @@ import module.util.DateUtil;
 public class DryOutListPanel extends JPanel {
 
 	JButton btnCreateNew;
+	JButton btnExport;
 	JButton btnAdvancedSearch;
 	JButton btnSearch;
 
@@ -69,8 +69,17 @@ public class DryOutListPanel extends JPanel {
 				MainPanel.changePanel("module.dryout.ui.DryOutCreatePanel");
 			}
 		});
-		btnCreateNew.setBounds(850, 80, 100, 40);
+		btnCreateNew.setBounds(750, 80, 100, 40);
 		add(btnCreateNew);
+
+		btnExport = new JButton("Eksport");
+		btnExport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
+		btnExport.setBounds(850, 80, 100, 40);
+		add(btnExport);
 
 		btnAdvancedSearch = new JButton("<html><center>Advanced <br> Search<center></html>");
 		btnAdvancedSearch.addActionListener(new ActionListener() {
