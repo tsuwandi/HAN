@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.2.final using JasperReports Library version 6.2.2  -->
+<!-- 2016-05-19T22:11:15 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StockBalkenBasahReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9fb4f571-6341-4263-b55b-52586fbcfbbb">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="55" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20" uuid="117c8fe1-22c0-4a10-b07e-14473f392fe0"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Black" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LAPORAN STOCK BALKEN BASAH DALAM CHAMBER]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30" uuid="a2dfa664-04b8-4152-8f12-555b53394317"/>
+				<text><![CDATA[Periode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="0" width="100" height="30" uuid="bf5bcabd-113a-4549-a16d-755a02de80dd"/>
+				<text><![CDATA[User]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="0" width="100" height="30" uuid="bf3cb86a-7cea-4590-b5f8-830a27a14842"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="30" width="101" height="30" uuid="3adae97a-34cb-41a5-81e6-4402d1b5dbfd"/>
+				<text><![CDATA[Tgl Cetak]]></text>
+			</staticText>
+			<textField pattern="dd - MMMMM - yyyy">
+				<reportElement x="418" y="29" width="104" height="29" uuid="39998186-4c6f-4b0b-867c-e951d9fa55e7"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="100" y="0" width="170" height="30" uuid="06c5e185-65b4-486a-93e5-27fdfe6545e2"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="100" height="30" uuid="3bc87ba3-06bb-4a47-9380-7549d1a33b73"/>
+				<text><![CDATA[Chamber]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="49" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="40" width="555" height="1" uuid="81a6ce1d-82b6-4dd6-80c3-b782f06e41d3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Double"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="1" y="20" width="99" height="20" uuid="bd4fe335-4686-4c9d-a798-308ee9971b15"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Produk]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="20" width="99" height="20" uuid="62a1c9d3-0f23-433b-b5be-f25148e48be1"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jenis Kayu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="20" width="99" height="20" uuid="6bf20b0e-e20c-4b86-8fc0-93490d27db43"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="20" width="99" height="20" uuid="eeddea00-73e2-4214-9101-1519a67c3b56"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Panjang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="20" width="99" height="20" uuid="d211f0d3-af27-4b0e-8f91-24ba58917230"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lebar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="20" width="99" height="20" uuid="84859c9e-cda3-4d68-8952-99a445750eb5"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tebal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="369" y="20" width="99" height="20" uuid="b43b64b4-3935-4ac0-9eb1-6b3395e546e9"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Stock (Batang)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="20" width="99" height="20" uuid="323186d4-8ea5-4709-b791-1099112e9466"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Stock (Volume)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="10" width="555" height="1" uuid="b1516ee8-2360-45da-bedf-e52777832994">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="56" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="68" splitType="Stretch">
+			<textField>
+				<reportElement x="455" y="29" width="100" height="30" uuid="d4b390e3-8ad5-4487-ae7a-9db411e6f926"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="420" y="29" width="101" height="31" uuid="4ca5402a-41c3-45a1-8405-f88bf2c59b5b"/>
+				<text><![CDATA[Page]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="29" width="101" height="31" uuid="bbeacefa-2398-4ef7-840e-492dfebe6de6"/>
+				<text><![CDATA[Of]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="490" y="29" width="100" height="30" uuid="c5d871a3-26ad-46a3-a75d-61af941a0301"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

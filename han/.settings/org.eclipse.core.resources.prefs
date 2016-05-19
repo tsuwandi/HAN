@@ -1,2 +1,7 @@
 eclipse.preferences.version=1
-encoding//src/module/pembelian/report/PurchaseReport.jrxml=UTF-8
+encoding//src/module/pembelian/report/ReceivedReport.jrxml=UTF-8
+encoding//src/module/report/InventoryMovementBalkenBasahInChamberReport.jrxml=UTF-8
+encoding//src/module/report/InventoryMovementBalkenBasahReport.jrxml=UTF-8
+encoding//src/module/report/StockBalkenBasahInChamberReport.jrxml=UTF-8
+encoding//src/module/report/StockBalkenBasahReport.jrxml=UTF-8
+encoding//src/module/report/StockBalkenKeringReport.jrxml=UTF-8
