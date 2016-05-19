@@ -18,6 +18,7 @@ public class ReceivedDAO {
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 	private PreparedStatement getAllStatement;
+	private PreparedStatement lastIdStatement;
 
 	 private String insertQuery = "INSERT INTO received (received_code, received_date,"
 	 		+ " rit_no, license_plate, driver, delivery_note, wood_type_id, driver_id, received_status, input_date, input_by) "
@@ -26,7 +27,7 @@ public class ReceivedDAO {
 	 		+ " license_plate=?, driver=?, delivery_note=?, wood_type_id=?, edit_date=?, edited_by=?"
 	 		+ " WHERE id=? AND received_code=?";
 	 private String deleteQuery = "update bank set deleted_date=?,"
-	 		+ "deleted_by=? where id=?";
+	 		+ "deleted_by=? where received_code=?";
 	private String getAllQuery = "select a.id, received_code, received_date, rit_no, a.license_plate, "
 			+ "driver, a.delivery_note, wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource "
 			+ "FROM received a " 
@@ -35,11 +36,35 @@ public class ReceivedDAO {
 			+ "INNER JOIN delivery f ON a.delivery_note = f.delivery_note "
 			+ "INNER JOIN wood_resource e ON f.wood_resource_id = e.id ";
 
-
+	private String lastID = "SELECT received_code FROM received ORDER BY ID DESC LIMIT 1";
+	
+	
 	public ReceivedDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
 	}
 	
+	public String getLastCode() throws SQLException{
+		Connection con = null;
+		String code;
+		try {
+			con = dataSource.getConnection();
+			lastIdStatement = con.prepareStatement(lastID);
+
+			ResultSet rs = lastIdStatement.executeQuery();
+			rs.next();
+			code = rs.getString("received_code");
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+		}
+		}
+		return code;
+	}
 	
 	public List<Received> getAll() throws SQLException {
 		Connection con = null;

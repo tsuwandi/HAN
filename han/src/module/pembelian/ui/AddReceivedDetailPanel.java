@@ -29,6 +29,7 @@ import com.toedter.calendar.JDateChooser;
 
 import controller.ReceivedDAOFactory;
 import main.component.ComboBox;
+import main.component.DialogBox;
 import main.component.NumberField;
 import main.panel.MainPanel;
 import model.User;
@@ -500,7 +501,6 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 							ReceivedDAOFactory.getPalletDAO().save(pallet);
 							ReceivedDAOFactory.getPalletCardDetailDAO().delete(pallet.getPalletCardCode());
 							for(PalletCardDetail palletCardDetail : pallet.getPalletCardDetails()){
-								System.out.println("Pallet Detail :" +pallet.getPalletCardCode()+" - "+ palletCardDetail.getProductCode()+" - "+palletCardDetail.getPalletCardCode());
 								ReceivedDAOFactory.getPalletCardDetailDAO().save(palletCardDetail);
 							}
 						}
@@ -508,7 +508,8 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 							picDocking.setReceivedCode(received.getReceivedCode());
 							ReceivedDAOFactory.getPicDockingReceivedDAO().save(picDocking);
 						}
-						System.out.println("Success");
+						DialogBox.showInsert();
+						MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

@@ -1,6 +1,5 @@
 package module.pembelian.ui;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -9,19 +8,15 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.table.AbstractTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -30,11 +25,7 @@ import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
 import main.panel.MainPanel;
-import model.User;
-import module.pembelian.dao.ReceivedDAO;
 import module.pembelian.model.Delivery;
-import module.pembelian.model.Employee;
-import module.pembelian.model.Pallet;
 import module.pembelian.model.Received;
 import module.pembelian.model.SupplierVehicle;
 import module.pembelian.model.WoodType;
@@ -268,6 +259,10 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		saveBtn = new JButton("Save");
 		saveBtn.setBounds(450,540,100,30);
 		containerPnl.add(saveBtn);
+		
+		getLastCode();
+		ritNumberField.setText(receivedCodeField.getText());
+		ritNumberField.setEnabled(false);
 
 		try {
 			suppVehicles = ReceivedDAOFactory.getSupplierVehicleDAO().getListSuppVehicle();
@@ -398,7 +393,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 					rec.setDriverID(driverIDField.getText());
 					try {
 						ReceivedDAOFactory.getReceivedDAO().save(rec);
-						DialogBox.showEdit();
+						DialogBox.showInsert();
 						MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -409,9 +404,34 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	
 	}
 	
+	public void getLastCode(){
+		try {
+			Date date = new Date();
+			if(date.getDate()==1){
+				receivedCodeField.setText("001");
+			}else{
+				String codeTemp = ReceivedDAOFactory.getReceivedDAO().getLastCode();
+				String [] splittedCode = codeTemp.split("/");
+				int tempIntCode = Integer.valueOf(splittedCode[0])+1;
+				String textTemp = String.valueOf(tempIntCode);
+				if(textTemp.length()==1){
+					receivedCodeField.setText("000"+textTemp);
+				}else if(textTemp.length()==2){
+					receivedCodeField.setText("00"+textTemp);
+				}else if(textTemp.length()==3){
+					receivedCodeField.setText("0"+textTemp);
+				}else{
+					receivedCodeField.setText(textTemp);
+				}
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void invokeObjects(Object... objects) {
-		/*System.out.println(objects[0]);*/
-		
+	
 	}
 }
