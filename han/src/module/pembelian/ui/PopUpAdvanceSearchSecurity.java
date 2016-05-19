@@ -18,7 +18,7 @@ import controller.ReceivedDAOFactory;
 import model.User;
 import module.pembelian.model.Received;
 
-public class PopUpAdvanceSearch extends JDialog{
+public class PopUpAdvanceSearchSecurity extends JDialog{
 	JLabel receivedCodeLbl;
 	JLabel receivedDateLbl;
 	JLabel licensePlateLbl;
@@ -34,9 +34,9 @@ public class PopUpAdvanceSearch extends JDialog{
 	
 	JButton searchBtn;
 	
-	ListReceivedPanel parent;
+	ListReceivedSecurityPanel parent;
 	
-	public PopUpAdvanceSearch(ListReceivedPanel parent) {
+	public PopUpAdvanceSearchSecurity(ListReceivedSecurityPanel parent) {
 		this.parent =parent;
 		setLayout(null);
 		setTitle("Advance Search");

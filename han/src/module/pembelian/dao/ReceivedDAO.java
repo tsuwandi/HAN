@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.sun.jmx.snmp.Timestamp;
+
 import module.pembelian.model.Received;
 
 public class ReceivedDAO {
@@ -19,6 +21,7 @@ public class ReceivedDAO {
 	private PreparedStatement deleteStatement;
 	private PreparedStatement getAllStatement;
 	private PreparedStatement lastIdStatement;
+	private PreparedStatement advancedSearchStatement;
 
 	 private String insertQuery = "INSERT INTO received (received_code, received_date,"
 	 		+ " rit_no, license_plate, driver, delivery_note, wood_type_id, driver_id, received_status, input_date, input_by) "
@@ -34,7 +37,7 @@ public class ReceivedDAO {
 			+ "INNER JOIN supp_vehicle b  ON a.license_plate = b.license_plate "
 			+ "INNER JOIN supplier c ON b.supp_code = c.supp_code INNER JOIN wood_type d ON a.wood_type_id = d.id "
 			+ "INNER JOIN delivery f ON a.delivery_note = f.delivery_note "
-			+ "INNER JOIN wood_resource e ON f.wood_resource_id = e.id ";
+			+ "INNER JOIN wood_resource e ON f.wood_resource_id = e.id WHERE 1=1";
 
 	private String lastID = "SELECT received_code FROM received ORDER BY ID DESC LIMIT 1";
 	
@@ -94,6 +97,63 @@ public class ReceivedDAO {
 				receiveds.add(received);
 			}
 
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+			}
+		}
+
+		return receiveds;
+	}
+	
+	public List<Received> getAdvancedSearchData(String sql, List<Object> objs) throws SQLException {
+		Connection con = null;
+		List<Received> receiveds = new ArrayList<Received>();
+
+		try {
+			con = dataSource.getConnection();
+			advancedSearchStatement = con.prepareStatement(getAllQuery+sql);
+
+			
+			int i = 1;
+			for(int j = 0; j<objs.size();j++){
+				Object obj = objs.get(j);
+				if(obj instanceof String){
+					if(obj!=null){
+						advancedSearchStatement.setString(i, (String)"%"+obj+"%");
+						i++;
+					}
+				}else{
+					if(obj!=null){
+						advancedSearchStatement.setDate(i,new Date(((java.util.Date)obj).getTime()));
+						i++;
+					}
+				}
+			}
+			
+			ResultSet rs = advancedSearchStatement.executeQuery();
+			while (rs.next()) {
+				Received received = new Received();
+				received.setId(rs.getInt("id"));
+				received.setReceivedCode(rs.getString("received_code"));
+				received.setReceivedDate(rs.getDate("received_date"));
+				received.setRitNo(rs.getString("rit_no"));
+				received.setLicensePlate(rs.getString("license_plate"));
+				received.setDriver(rs.getString("driver"));
+				received.setDeliveryNote(rs.getString("delivery_note"));
+				received.setWoodTypeID(rs.getInt("wood_type_id"));
+				received.setSupplier(rs.getString("supp_name"));
+				received.setReceivedStatus(rs.getString("received_status"));
+				received.setDriverID(rs.getString("driver_id"));
+				received.setWoodTypeName(rs.getString("wood_type"));
+				received.setWoodDomicile(rs.getString("wood_domicile"));
+				received.setWoodResource(rs.getString("wood_resource"));
+				receiveds.add(received);
+			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());

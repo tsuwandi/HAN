@@ -1,6 +1,8 @@
 package module.pembelian.ui;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -14,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
 
 import controller.ReceivedDAOFactory;
 import main.panel.MainPanel;
@@ -23,20 +26,19 @@ import module.pembelian.model.Received;
 
 
 public class ListReceivedPanel extends JPanel {
-	JButton searchBtn;
-	JButton createBtn;
-	JButton deleteBtn;
-	JTextField searchField;
+	private JButton searchBtn;
+	private JTextField searchField;
 	JTable receivedTable;
-	JScrollPane scrollPane;
-	JLabel titleLabel;
+	private JScrollPane scrollPane;
+	private JLabel titleLabel;
+	private JButton advancedSearchBtn;
 	
 	ReceivedTableModel receivedTableModel;
 	List<Received> receiveds;
-	
+	ListReceivedPanel listReceivedPanel;
 	public ListReceivedPanel() {
 		setLayout(null);
-		
+		listReceivedPanel = this;
 		titleLabel = new JLabel("Penerimaan Balken");
 		titleLabel.setBounds(400,30,300,80);
 		titleLabel.setFont(new Font("Arial", 1, 30));
@@ -49,13 +51,14 @@ public class ListReceivedPanel extends JPanel {
 		searchField = new JTextField();
 		searchField.setBounds(900, 100, 100, 30);
 		add(searchField);
+		
+		advancedSearchBtn = new JButton("Advance Search");
+		advancedSearchBtn.setBounds(900,50,150,30);
+		add(advancedSearchBtn);
 	
 		receiveds = new ArrayList<>();
 		receivedTableModel = new ReceivedTableModel(receiveds);
 		receivedTable = new JTable(receivedTableModel);
-		receivedTable.getTableHeader().setResizingAllowed(false);
-		receivedTable.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(30);
-		receivedTable.getColumnModel().getColumn(0).setMaxWidth(30);
 		
 		scrollPane =  new JScrollPane(receivedTable);
 		scrollPane.setBounds(50,150,1000,400);
@@ -73,15 +76,66 @@ public class ListReceivedPanel extends JPanel {
 			receiveds = ReceivedDAOFactory.getReceivedDAO().getAll();
 			receivedTable.setModel(new ReceivedTableModel(receiveds));
 			receivedTable.updateUI();
+			setTableSize();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 		
-		
+		advancedSearchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PopUpAdvanceSearch pop = new PopUpAdvanceSearch(listReceivedPanel);
+				pop.show();
+				pop.setLocationRelativeTo(null);
+			}
+		});
 		
 	}
 	
-	class ReceivedTableModel extends AbstractTableModel {
+	public void setTableSize(){
+		receivedTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		receivedTable.getTableHeader().setResizingAllowed(false);
+		TableColumn column1 = receivedTable.getColumnModel().getColumn(0);
+		TableColumn column2 = receivedTable.getColumnModel().getColumn(1);
+		TableColumn column3 = receivedTable.getColumnModel().getColumn(2);
+		TableColumn column4 = receivedTable.getColumnModel().getColumn(3);
+		TableColumn column5 = receivedTable.getColumnModel().getColumn(4);
+		TableColumn column6 = receivedTable.getColumnModel().getColumn(6);
+		TableColumn column7 = receivedTable.getColumnModel().getColumn(7);
+		
+		
+		column1.setPreferredWidth(0);
+		column1.setMinWidth(0);
+		column1.setMaxWidth(0);
+		
+		column2.setPreferredWidth(200);
+		column2.setMinWidth(200);
+		column2.setMaxWidth(200);
+		
+		column3.setPreferredWidth(150);
+		column3.setMinWidth(150);
+		column3.setMaxWidth(150);
+		
+		column4.setPreferredWidth(150);
+		column4.setMinWidth(150);
+		column4.setMaxWidth(150);
+		
+		column5.setPreferredWidth(150);
+		column5.setMinWidth(150);
+		column5.setMaxWidth(150);
+		
+		column6.setPreferredWidth(150);
+		column6.setMinWidth(150);
+		column6.setMaxWidth(150);
+		
+		column7.setPreferredWidth(150);
+		column7.setMinWidth(150);
+		column7.setMaxWidth(150);
+
+	}
+	
+	public class ReceivedTableModel extends AbstractTableModel {
 	    private List<Received> receiveds;
 	    
 	    public ReceivedTableModel(List<Received> receiveds) {
