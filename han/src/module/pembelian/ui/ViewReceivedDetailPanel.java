@@ -624,8 +624,11 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		try {
 			pallets = ReceivedDAOFactory.getPalletDAO().getAllPallets(received.getReceivedCode());
 			palletTable.setModel(new PalletTableModel(pallets));
-			System.out.println(" Size :"+ pallets.size());
 			palletTable.updateUI();
+			
+			picDockings = ReceivedDAOFactory.getPicDockingReceivedDAO().getPICDocking(received.getReceivedCode());
+			dockingPICTable.setModel(new PicDockingTableModel(picDockings));
+			dockingPICTable.updateUI();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

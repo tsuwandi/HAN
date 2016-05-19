@@ -479,7 +479,7 @@ public class EditPopUpPalletCard extends JDialog{
 				if(error==0){
 					if(!editMode){
 						PalletCardDetail pc = new PalletCardDetail();
-						pc.setPalletCardCode(codePalletCardField.getText());
+						pc.setPalletCardCode(codePalletCardField.getText()+"/"+addReceivedDetail.received.getReceivedCode());
 						pc.setThickness(thicknessComboBox.getDataIndex().getThickness());
 						pc.setTotal(Integer.valueOf(totalField.getText()));
 						pc.setVolume(Double.valueOf(volumeField.getText()));
@@ -501,7 +501,7 @@ public class EditPopUpPalletCard extends JDialog{
 						clear();
 					}else{
 						PalletCardDetail pc = pcs.get(indexEdit);
-						pc.setPalletCardCode(codePalletCardField.getText());
+						pc.setPalletCardCode(codePalletCardField.getText()+"/"+addReceivedDetail.received.getReceivedCode());
 						pc.setThickness(thicknessComboBox.getDataIndex().getThickness());
 						pc.setTotal(Integer.valueOf(totalField.getText()));
 						pc.setVolume(Double.valueOf(volumeField.getText()));

@@ -99,7 +99,7 @@ public class ReceivedDAOFactory {
 		}
 	}
 	
-	public static PICDockingDAO getPicDockingDAO() {
+	public static PICDockingDAO getPicDockingReceivedDAO() {
 		try {
 			return new PICDockingDAO(DataSourceFactory.getDataSource());
 		} catch (SQLException e) {

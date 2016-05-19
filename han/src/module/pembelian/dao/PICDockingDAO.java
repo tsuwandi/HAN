@@ -37,7 +37,7 @@ public class PICDockingDAO {
 		try {
 			con = dataSource.getConnection();
 			getAllStatement = con.prepareStatement(getAllQuery);
-			getAllStatement.setString(0, receivedCode);
+			getAllStatement.setString(1, receivedCode);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {

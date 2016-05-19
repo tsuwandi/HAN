@@ -42,6 +42,7 @@ import module.pembelian.model.PicDocking;
 import module.pembelian.model.Received;
 import module.pembelian.model.SupplierVehicle;
 import module.pembelian.model.WoodType;
+import module.pembelian.ui.ViewReceivedDetailPanel.PicDockingTableModel;
 import module.util.Bridging;
 
 public class AddReceivedDetailPanel extends JPanel implements Bridging{
@@ -492,19 +493,20 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 				
 				if(error==0){
 					try {
-						ReceivedDAOFactory.getPicDockingDAO().delete(received.getReceivedCode());
+						ReceivedDAOFactory.getPicDockingReceivedDAO().delete(received.getReceivedCode());
 						ReceivedDAOFactory.getPalletDAO().delete(received.getReceivedCode());
 						for(Pallet pallet : pallets){
 							pallet.setReceivedCode(received.getReceivedCode());
 							ReceivedDAOFactory.getPalletDAO().save(pallet);
 							ReceivedDAOFactory.getPalletCardDetailDAO().delete(pallet.getPalletCardCode());
 							for(PalletCardDetail palletCardDetail : pallet.getPalletCardDetails()){
+								System.out.println("Pallet Detail :" +pallet.getPalletCardCode()+" - "+ palletCardDetail.getProductCode()+" - "+palletCardDetail.getPalletCardCode());
 								ReceivedDAOFactory.getPalletCardDetailDAO().save(palletCardDetail);
 							}
 						}
 						for(PicDocking picDocking : picDockings){
 							picDocking.setReceivedCode(received.getReceivedCode());
-							ReceivedDAOFactory.getPicDockingDAO().save(picDocking);
+							ReceivedDAOFactory.getPicDockingReceivedDAO().save(picDocking);
 						}
 						System.out.println("Success");
 					} catch (Exception e) {
@@ -739,6 +741,10 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 			}
 			palletTable.setModel(new PalletTableModel(pallets));
 			palletTable.updateUI();
+			
+			picDockings = ReceivedDAOFactory.getPicDockingReceivedDAO().getPICDocking(received.getReceivedCode());
+			dockingPICTable.setModel(new PicDockingTableModel(picDockings));
+			dockingPICTable.updateUI();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
