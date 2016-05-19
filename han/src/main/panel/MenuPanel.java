@@ -1,35 +1,15 @@
 package main.panel;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.LayoutManager;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.SQLException;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 
-import controller.DataSourceFactory;
 import imcacat.jaccordion.JAccordion;
 import menu.panel.Menu1Panel;
-import javax.swing.SpringLayout;
+import module.report.ui.ReportDialog;
 
 public class MenuPanel extends JPanel {
 
@@ -109,6 +89,18 @@ public class MenuPanel extends JPanel {
 			}
 		});
 		
+		menuBtn7 = new JLabel("<html><p style=padding:5px;>Laporan</p><html>");
+		menuBtn7.setBounds(0, 35, 195, 35);
+		menuBtn7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ReportDialog reportDialog = new ReportDialog();
+				reportDialog.setTitle("Laporan");
+				reportDialog.setLocationRelativeTo(null);
+				reportDialog.setVisible(true);
+			}
+		});
+		
 		
 		JAccordion menu = new JAccordion();
 		menu.setBounds(1, 0, 199, 200);
@@ -116,13 +108,14 @@ public class MenuPanel extends JPanel {
 		
 		JAccordion subMenu = new JAccordion();
 		Dimension menuSize = menu.getPreferredSize();
-		Dimension subMenuSize = new Dimension(198, 209);
+		Dimension subMenuSize = new Dimension(198, 235);
 		subMenu.addSection("Supplier", menuBtn1);
 		subMenu.addSection("Produk", menuBtn2);
 		subMenu.addSection("Penerimaan", menuBtn3);
 		subMenu.addSection("STTK", menuBtn4);
 		subMenu.addSection("Pengeringan In", menuBtn5);
 		subMenu.addSection("Pengeringan Out", menuBtn6);
+		subMenu.addSection("Laporan", menuBtn7);
 		subMenu.setPreferredSize(subMenuSize);
 		subMenu.enableMaxOneSectionOpen();
 		
