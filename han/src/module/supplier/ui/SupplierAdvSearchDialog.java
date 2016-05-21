@@ -119,7 +119,7 @@ public class SupplierAdvSearchDialog extends JDialog {
 		cbSuppStatus.setBounds(410, 50, 150, 30);
 		getContentPane().add(cbSuppStatus);
 
-		btnSearch = new JButton("Search");
+		btnSearch = new JButton("Cari");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doAdvancedSearch();

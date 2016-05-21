@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
@@ -99,11 +100,12 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 	public DryOutCreatePanel() {
 		dryOutCreatePanel = this;
 
-		setPreferredSize(new Dimension(1080, 600));
+
+		setPreferredSize(new Dimension(1366, 650));
 		setLayout(null);
 
 		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(1080, 650));
+		panel.setPreferredSize(getPreferredSize());
 		panel.setLayout(null);
 
 		lblBreadcrumb = new JLabel("ERP > Pengeringan > Pengeluaran");
@@ -111,7 +113,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		panel.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("CREATE NEW");
+		lblHeader = new JLabel("BUAT BARU");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		panel.add(lblHeader);
@@ -369,7 +371,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (txtRitNo.getText().length() > 3)
+				if (txtRitNo.getText().length() > 2)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
 							txtOrdinal.getText());
 			}
@@ -457,7 +459,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (txtOrdinal.getText().length() > 3)
+				if (txtOrdinal.getText().length() > 2)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
 							txtOrdinal.getText());
 				else {
@@ -469,6 +471,13 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 
 		makeDefaultDatePalletCardCode();
 		makeCodeNumber();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+		    @Override
+		    public void run() {
+		        dcDateOut.requestFocusInWindow();
+		    }
+		});
 	}
 
 	public boolean doValidate() {
@@ -504,7 +513,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			isValid = false;
 		}
 
-		if (cbChamber.getSelectedItem() == null) {
+		if (cbChamber.getSelectedItem() == null || cbChamber.getSelectedIndex() == 0) {
 			lblErrorChamber.setText("Combobox chamber harus dipilih.");
 			isValid = false;
 		}

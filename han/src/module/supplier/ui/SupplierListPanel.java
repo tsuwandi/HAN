@@ -75,7 +75,7 @@ public class SupplierListPanel extends JPanel {
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
 
-		btnCreateNew = new JButton("Create New");
+		btnCreateNew = new JButton("Buat Baru");
 		btnCreateNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				MainPanel.changePanel("module.supplier.ui.SupplierCreatePanel");
@@ -84,7 +84,7 @@ public class SupplierListPanel extends JPanel {
 		btnCreateNew.setBounds(750, 80, 100, 40);
 		add(btnCreateNew);
 
-		btnExport = new JButton("Eksport");
+		btnExport = new JButton("Export");
 		btnExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -93,7 +93,7 @@ public class SupplierListPanel extends JPanel {
 		btnExport.setBounds(850, 80, 100, 40);
 		add(btnExport);
 
-		btnAdvancedSearch = new JButton("<html><center>Advanced <br> Search<center></html>");
+		btnAdvancedSearch = new JButton("<html><center>Pencarian <br> Lanjut<center></html>");
 		btnAdvancedSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				showAdvancedSearchDialog(supplierListPanel);
@@ -137,7 +137,7 @@ public class SupplierListPanel extends JPanel {
 		txtSearch.setDocument(new JTextFieldLimit(9));
 		add(txtSearch);
 
-		btnSearch = new JButton("Search");
+		btnSearch = new JButton("Cari");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				doSearch(txtSearch.getText());

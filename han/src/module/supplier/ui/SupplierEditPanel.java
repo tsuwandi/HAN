@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
@@ -223,7 +224,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		panel.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("EDIT");
+		lblHeader = new JLabel("Ubah");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		panel.add(lblHeader);
@@ -544,6 +545,13 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		});
 		btnCancel.setBounds(50, 1240, 100, 30);
 		panel.add(btnCancel);
+		
+		SwingUtilities.invokeLater(new Runnable() {
+		    @Override
+		    public void run() {
+		        txtSuppCode.requestFocusInWindow();
+		    }
+		});
 	}
 
 	protected void loadData(Integer supplierId) {
@@ -562,10 +570,9 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 				cbSuppStatus.setSelectedItem(supplier.getSuppStatus());
 				txtDefaultTax.setText(String.valueOf(supplier.getDefaultTax()));
 				txtAccountNo.setText(supplier.getAccountNo());
-				cbBank.setSelectedItem(supplier.getBank().getBankAbbr() + " - " + supplier.getBank().getBank());
+				cbBank.setSelectedItem(supplier.getBank().getBank());
 				txtAccountName.setText(supplier.getAccountName());
-				cbCurrency.setSelectedItem(
-						supplier.getCurrency().getCurrencyAbbr() + " - " + supplier.getCurrency().getCurrency());
+				cbCurrency.setSelectedItem(supplier.getCurrency().getCurrency());
 				txtTop.setText(String.valueOf(supplier.getTop()));
 
 				refreshTableSuppAddress();

@@ -384,7 +384,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 		add(scrollPane);
 
-		btnPrint = new JButton("Print");
+		btnPrint = new JButton("Cetak");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				doPrint();
@@ -445,11 +445,10 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 				cbSuppStatus.setSelectedIndex(1);
 				txtDefaultTax.setText(String.valueOf(supplier.getDefaultTax()));
 				txtAccountNo.setText(supplier.getAccountNo());
-				cbBank.addItem(supplier.getBank().getBankAbbr() + " - " + supplier.getBank().getBank());
+				cbBank.addItem(supplier.getBank().getBank());
 				cbBank.setSelectedIndex(1);
 				txtAccountName.setText(supplier.getAccountName());
-				cbCurrency.addItem(
-						supplier.getCurrency().getCurrencyAbbr() + " - " + supplier.getCurrency().getCurrency());
+				cbCurrency.addItem(supplier.getCurrency().getCurrency());
 				cbCurrency.setSelectedIndex(1);
 				txtTop.setText(String.valueOf(supplier.getTop()));
 

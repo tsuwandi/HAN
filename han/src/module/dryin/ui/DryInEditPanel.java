@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
@@ -113,11 +114,11 @@ public class DryInEditPanel extends JPanel implements Bridging {
 	public DryInEditPanel() {
 		dryInCreatePanel = this;
 
-		setPreferredSize(new Dimension(1080, 600));
+		setPreferredSize(new Dimension(1366, 850));
 		setLayout(null);
 
 		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(1080, 850));
+		panel.setPreferredSize(getPreferredSize());
 		panel.setLayout(null);
 
 		lblBreadcrumb = new JLabel("ERP > Pengeringan > Pemasukan");
@@ -125,7 +126,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		panel.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("EDIT");
+		lblHeader = new JLabel("UBAH");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		panel.add(lblHeader);
@@ -422,7 +423,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (txtRitNo.getText().length() > 3)
+				if (txtRitNo.getText().length() > 2)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
 							txtOrdinal.getText());
 			}
@@ -510,7 +511,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (txtOrdinal.getText().length() > 3)
+				if (txtOrdinal.getText().length() > 2)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
 							txtOrdinal.getText());
 				else {
@@ -524,6 +525,13 @@ public class DryInEditPanel extends JPanel implements Bridging {
 
 		listOfDeletedPicTally = new ArrayList<PicTally>();
 		listOfDeletedDryInPallet = new ArrayList<DryInPallet>();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+		    @Override
+		    public void run() {
+		    	dcDateIn.requestFocusInWindow();
+		    }
+		});
 	}
 
 	public boolean doValidate() {

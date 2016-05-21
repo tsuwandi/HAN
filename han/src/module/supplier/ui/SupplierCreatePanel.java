@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
@@ -220,7 +221,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		panel.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("CREATE NEW");
+		lblHeader = new JLabel("Buat Baru");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		panel.add(lblHeader);
@@ -541,6 +542,13 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		});
 		btnCancel.setBounds(50, 1240, 100, 30);
 		panel.add(btnCancel);
+		
+		SwingUtilities.invokeLater(new Runnable() {
+		    @Override
+		    public void run() {
+		        txtSuppCode.requestFocusInWindow();
+		    }
+		});
 	}
 
 	protected boolean doValidate() {

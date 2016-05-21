@@ -101,11 +101,11 @@ public class DryInViewPanel extends JPanel implements Bridging {
 	private DryIn dryIn;
 
 	public DryInViewPanel() {
-		setPreferredSize(new Dimension(1080, 600));
+		setPreferredSize(new Dimension(1366, 850));
 		setLayout(null);
 
 		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(1080, 850));
+		panel.setPreferredSize(getPreferredSize());
 		panel.setLayout(null);
 
 		lblBreadcrumb = new JLabel("ERP > Pengeringan > Pemasukan");
@@ -326,7 +326,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 		add(scrollPane);
 
-		btnPrint = new JButton("Print");
+		btnPrint = new JButton("Cetak");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				doPrint();

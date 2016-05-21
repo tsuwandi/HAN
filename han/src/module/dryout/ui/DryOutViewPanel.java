@@ -91,11 +91,11 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 	private DryOut dryOut;
 	
 	public DryOutViewPanel() {
-		setPreferredSize(new Dimension(1080, 600));
+		setPreferredSize(new Dimension(1366, 650));
 		setLayout(null);
 
 		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(1080, 650));
+		panel.setPreferredSize(getPreferredSize());
 		panel.setLayout(null);
 
 		lblBreadcrumb = new JLabel("ERP > Pengeringan > Pengeluaran");
@@ -289,7 +289,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 		add(scrollPane);
 
-		btnPrint = new JButton("Print");
+		btnPrint = new JButton("Cetak");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				doPrint();

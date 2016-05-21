@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
@@ -101,11 +102,11 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 	public DryOutEditPanel() {
 		dryOutEditPanel = this;
 
-		setPreferredSize(new Dimension(1080, 600));
+		setPreferredSize(new Dimension(1366, 650));
 		setLayout(null);
 
 		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(1080, 650));
+		panel.setPreferredSize(getPreferredSize());
 		panel.setLayout(null);
 
 		lblBreadcrumb = new JLabel("ERP > Pengeringan > Pengeluaran");
@@ -113,7 +114,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		panel.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("EDIT");
+		lblHeader = new JLabel("UBAH");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		panel.add(lblHeader);
@@ -467,6 +468,13 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 
 		makeDefaultDatePalletCardCode();
 		listOfDeletedDryOutPallet = new ArrayList<DryOutPallet>();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+		    @Override
+		    public void run() {
+		        dcDateOut.requestFocusInWindow();
+		    }
+		});
 	}
 
 	public boolean doValidate() {

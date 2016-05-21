@@ -65,7 +65,7 @@ public class DryInListPanel extends JPanel {
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
 
-		btnCreateNew = new JButton("Create New");
+		btnCreateNew = new JButton("Buat Baru");
 		btnCreateNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				MainPanel.changePanel("module.dryin.ui.DryInCreatePanel");
@@ -74,7 +74,7 @@ public class DryInListPanel extends JPanel {
 		btnCreateNew.setBounds(750, 80, 100, 40);
 		add(btnCreateNew);
 
-		btnExport = new JButton("Eksport");
+		btnExport = new JButton("Export");
 		btnExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -83,7 +83,7 @@ public class DryInListPanel extends JPanel {
 		btnExport.setBounds(850, 80, 100, 40);
 		add(btnExport);
 
-		btnAdvancedSearch = new JButton("<html><center>Advanced <br> Search<center></html>");
+		btnAdvancedSearch = new JButton("<html><center>Pencarian <br> Lanjut<center></html>");
 		btnAdvancedSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				showAdvancedSearchDialog(dryInListPanel);
@@ -96,7 +96,7 @@ public class DryInListPanel extends JPanel {
 		txtSearch.setBounds(775, 130, 150, 30);
 		add(txtSearch);
 
-		btnSearch = new JButton("Search");
+		btnSearch = new JButton("Cari");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				doSearch(txtSearch.getText());

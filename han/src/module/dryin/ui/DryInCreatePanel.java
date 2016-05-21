@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -22,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
@@ -110,11 +113,11 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 	public DryInCreatePanel() {
 		dryInCreatePanel = this;
 
-		setPreferredSize(new Dimension(1080, 600));
+		setPreferredSize(new Dimension(1366, 850));
 		setLayout(null);
 
 		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(1080, 850));
+		panel.setPreferredSize(getPreferredSize());
 		panel.setLayout(null);
 
 		lblBreadcrumb = new JLabel("ERP > Pengeringan > Pemasukan");
@@ -122,7 +125,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		panel.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("CREATE NEW");
+		lblHeader = new JLabel("BUAT BARU");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		panel.add(lblHeader);
@@ -150,7 +153,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		lblDateIn.setBounds(50, 120, 150, 30);
 		panel.add(lblDateIn);
 
-		dcDateIn = new JDateChooser();
+		dcDateIn = new JDateChooser(new Date());
 		dcDateIn.setBounds(220, 120, 150, 30);
 		panel.add(dcDateIn);
 
@@ -432,7 +435,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (txtRitNo.getText().length() > 3)
+				if (txtRitNo.getText().length() > 2)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
 							txtOrdinal.getText());
 			}
@@ -520,7 +523,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (txtOrdinal.getText().length() > 3)
+				if (txtOrdinal.getText().length() > 2)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
 							txtOrdinal.getText());
 				else {
@@ -532,6 +535,13 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 
 		makeDefaultDatePalletCardCode();
 		makeCodeNumber();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+		    @Override
+		    public void run() {
+		    	dcDateIn.requestFocusInWindow();
+		    }
+		});
 	}
 
 	public boolean doValidate() {
@@ -621,7 +631,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			DialogBox.showErrorException();
 		}
 		String year = String.valueOf(cal.get(Calendar.YEAR));
-		String month = String.format("%02d", cal.get(Calendar.MONTH));
+		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
 
 		txtDryInCode.setText(new StringBuilder().append(constant).append("/").append(year).append("/").append(month)
 				.append("/").append(ordinal).toString());
