@@ -45,6 +45,7 @@ public class Product {
 	private String deletedBy;
 	private String woodTypeName;
 	private String gradeName;
+	private String productCatName;
 	
 	public int getProductId() {
 		return productId;
@@ -291,6 +292,12 @@ public class Product {
 	}
 	public void setGradeName(String gradeName) {
 		this.gradeName = gradeName;
+	}
+	public String getProductCatName() {
+		return productCatName;
+	}
+	public void setProductCatName(String productCatName) {
+		this.productCatName = productCatName;
 	}
 	
 	

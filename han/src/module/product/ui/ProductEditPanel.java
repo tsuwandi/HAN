@@ -42,9 +42,10 @@ import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
+import module.util.Bridging;
 import sun.net.www.content.text.plain;
 
-public class CreateProductPanel extends JPanel {
+public class ProductEditPanel extends JPanel implements Bridging {
 
 	/**
 	 * Create the panel.
@@ -209,7 +210,7 @@ public class CreateProductPanel extends JPanel {
 	Date todayDate;
 	//SimpleDateFormat dateFormat = new SimpleDateFormat(yyyy-MM-dd);
 	
-	public CreateProductPanel() {
+	public ProductEditPanel() {
 		setLayout(null);
 		this.parent = this;
 		//setPreferredSize(new Dimension(1166, 1300));
@@ -348,36 +349,14 @@ public class CreateProductPanel extends JPanel {
 		taxLbl.setBounds(20, 1740, 100, 30);
 		
 		idField = new JTextField();
-		idField.setText(generateCode());
 		idField.setEnabled(false);
 		idField.setBounds(195, 80, 100, 25);
 		
 		nameField = new JTextField();
 		nameField.setBounds(195, 110, 150, 25);
 		
-		try {
-			categories = ServiceFactory.getProductBL().getAllProductCategory();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		catField = new JComboBox<>();
-		catField.addItem("Pilih");
-		for(int i=0; i<categories.size(); i++){
-			catField.addItem(categories.get(i).getProductCategory());
-		}
-		catField.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				if(catField.getSelectedItem().toString().equals("Kayu")){
-					typeField.setEnabled(true);
-					gradeField.setEnabled(true);
-					thickField.setEnabled(true);
-				}
-			}
-		});
+		catField.setEnabled(false);
 		catField.setBounds(195, 140, 150, 25);
 		
 		statField = new JComboBox<>();
@@ -385,7 +364,7 @@ public class CreateProductPanel extends JPanel {
 		statField.setBounds(195, 170, 150, 25);
 		
 		uomField = new JComboBox<>();
-		uomField.addItem("Pilih");
+		uomField.setEnabled(false);
 		uomField.setBounds(195, 200, 150, 25);
 		
 		maintain = new ButtonGroup();
@@ -401,6 +380,7 @@ public class CreateProductPanel extends JPanel {
 		maintain.add(maintainNoField);
 		
 		pathField = new JTextField();
+		pathField.setEnabled(false);
 		pathField.setBounds(195, 260, 150, 25);
 		
 		browseBtn = new JButton("Browse");
@@ -780,7 +760,7 @@ public class CreateProductPanel extends JPanel {
 				int dialogResult = JOptionPane.showConfirmDialog (null, "Apakah Anda ingin menyimpan data?","Warning",JOptionPane.YES_NO_OPTION);
 				if(dialogResult == JOptionPane.YES_OPTION){
 					validation();
-					doInsert();
+					doEdit();
 				}
 				
 			}
@@ -889,53 +869,45 @@ public class CreateProductPanel extends JPanel {
 		
 	}
 	
-	public void doInsert(){
-		Product insertProduct = new Product();
-		try {
-			products = ServiceFactory.getProductBL().getProductId();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		int productId = products.size()+1;
-		insertProduct.setProductId(productId);
-		insertProduct.setProductCode(idField.getText());
-		insertProduct.setProductName(nameField.getText());
-		insertProduct.setProductCat(catField.getSelectedIndex());
-		insertProduct.setProductStat(statField.getSelectedItem().toString());
-		insertProduct.setProductUom(uomField.getSelectedIndex());
-		insertProduct.setIsMaintain(1);
-		insertProduct.setImagePath(pathField.getText()+filename);
-		insertProduct.setBrand(brandField.getText());
-		insertProduct.setBarcode(barcodeField.getText());
-		insertProduct.setDescription(descField.getText());
-		insertProduct.setWoodType(typeField.getSelectedIndex());
-		insertProduct.setGrade(gradeField.getSelectedIndex());
-		insertProduct.setThickness(thickField.getSelectedIndex());
-		insertProduct.setCondition(conField.getSelectedIndex());
-		insertProduct.setIsAsset(1);
-		insertProduct.setWarranty(Integer.parseInt(warrantField.getText()));
-		insertProduct.setNetto(Double.parseDouble(nettoField.getText()));
-		insertProduct.setNettoUom(nettoUnitField.getSelectedIndex());
-		insertProduct.setIsPurchase(1);
-		insertProduct.setMinor(Integer.parseInt(minOrderField.getText()));
-		insertProduct.setMinorUom(minOrderUnitField.getSelectedIndex());
-		insertProduct.setLeadTime(Integer.parseInt(leadTimeField.getText()));
-		insertProduct.setBuyCost(buyCostField.getSelectedIndex());
-		insertProduct.setExpense(expenseField.getSelectedIndex());
-		insertProduct.setMainSuppCode(supplierField.getSelectedItem().toString());
-		insertProduct.setManufacturer(manufacturerField.getText());
-		insertProduct.setIsSales(1);
-		insertProduct.setIsService(1);
-		insertProduct.setSellCost(sellCostField.getSelectedIndex());
-		insertProduct.setIncome(incomeField.getSelectedIndex());
-		insertProduct.setMaxDisc(Double.parseDouble(discountField.getText()));
-		insertProduct.setInputDate(todayDate);
-		insertProduct.setInputBy("Irvan");
+	public void doEdit(){
+		Product editProduct = new Product();
+		
+		editProduct.setProductCode(idField.getText());
+		editProduct.setProductName(nameField.getText());
+		editProduct.setProductStat(statField.getSelectedItem().toString());
+		editProduct.setProductUom(uomField.getSelectedIndex());
+		editProduct.setIsMaintain(1);
+		editProduct.setImagePath(pathField.getText()+filename);
+		editProduct.setBrand(brandField.getText());
+		editProduct.setBarcode(barcodeField.getText());
+		editProduct.setDescription(descField.getText());
+		editProduct.setWoodType(typeField.getSelectedIndex());
+		editProduct.setGrade(gradeField.getSelectedIndex());
+		editProduct.setThickness(thickField.getSelectedIndex());
+		editProduct.setCondition(conField.getSelectedIndex());
+		editProduct.setIsAsset(1);
+		editProduct.setWarranty(Integer.parseInt(warrantField.getText()));
+		editProduct.setNetto(Double.parseDouble(nettoField.getText()));
+		editProduct.setNettoUom(nettoUnitField.getSelectedIndex());
+		editProduct.setIsPurchase(1);
+		editProduct.setMinor(Integer.parseInt(minOrderField.getText()));
+		editProduct.setMinorUom(minOrderUnitField.getSelectedIndex());
+		editProduct.setLeadTime(Integer.parseInt(leadTimeField.getText()));
+		editProduct.setBuyCost(buyCostField.getSelectedIndex());
+		editProduct.setExpense(expenseField.getSelectedIndex());
+		editProduct.setMainSuppCode(supplierField.getSelectedItem().toString());
+		editProduct.setManufacturer(manufacturerField.getText());
+		editProduct.setIsSales(1);
+		editProduct.setIsService(1);
+		editProduct.setSellCost(sellCostField.getSelectedIndex());
+		editProduct.setIncome(incomeField.getSelectedIndex());
+		editProduct.setMaxDisc(Double.parseDouble(discountField.getText()));
+		editProduct.setEditDate(todayDate);
+		editProduct.setEditBy("Irvan");
 		
 		try {
-			ServiceFactory.getProductBL().save(insertProduct);
-			DialogBox.showInsert();
+			ServiceFactory.getProductBL().update(editProduct);
+			DialogBox.showEdit();
 			MainPanel.changePanel("module.product.ui.ProductListPanel");
 		} catch (SQLException e) {
 			DialogBox.showErrorException();
@@ -944,14 +916,8 @@ public class CreateProductPanel extends JPanel {
 	}
 	
 	public void validation(){
-		if(idField.getText() == null || idField.getText().equals("")){
-			JOptionPane.showMessageDialog(null, "Kode Produk harus diisi", "Pesan", JOptionPane.ERROR_MESSAGE);
-		}
-		else if(nameField.getText() == null || nameField.getText().equals("")){
+		if(nameField.getText() == null || nameField.getText().equals("")){
 			JOptionPane.showMessageDialog(null, "Nama Produk harus diisi", "Pesan", JOptionPane.ERROR_MESSAGE);
-		}
-		else if(catField.getSelectedItem().toString() == "Pilih" || catField.getSelectedIndex() == 0){
-			JOptionPane.showMessageDialog(null, "Kategori Produk harus dipilih", "Pesan", JOptionPane.ERROR_MESSAGE);
 		}
 //		else if(statField.getSelectedItem().toString() == "Pilih" || statField.getSelectedIndex() == 0){
 //			JOptionPane.showMessageDialog(null, "Status Produk harus dipilih", "Pesan", JOptionPane.ERROR_MESSAGE);
@@ -1291,27 +1257,51 @@ public class CreateProductPanel extends JPanel {
 
 	}
 	
-	public String generateCode(){
-		String productCode = null;
-		int code;
-		
+	protected void loadData(String productCode) {
 		try {
-			products = ServiceFactory.getProductBL().getAll();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			product = ServiceFactory.getProductBL().getProductByCode(productCode);
+
+			if (product != null) {
+				idField.setText(product.getProductCode());
+				nameField.setText(product.getProductName());
+				catField.addItem(product.getProductCatName());
+				statField.addItem(String.valueOf(product.getProductStat()));
+				uomField.addItem(String.valueOf(product.getProductUom()));
+				pathField.setText(product.getImagePath());
+				brandField.setText(product.getBrand());
+				barcodeField.setText(product.getBarcode());
+				descField.setText(product.getDescription());
+				typeField.addItem(product.getWoodTypeName());
+				gradeField.addItem(product.getGradeName());
+				thickField.addItem(String.valueOf(product.getThickness()));
+				conField.addItem(String.valueOf(product.getCondition()));
+				warrantField.setText(String.valueOf(product.getWarranty()));
+				nettoField.setText(String.valueOf(product.getNetto()));
+				nettoUnitField.addItem(String.valueOf(product.getNettoUom()));
+				minOrderField.setText(String.valueOf(product.getMinor()));
+				minOrderUnitField.addItem(String.valueOf(product.getMinorUom()));
+				leadTimeField.setText(String.valueOf(product.getLeadTime()));
+				buyCostField.addItem(String.valueOf(product.getBuyCost()));
+				expenseField.addItem(String.valueOf(product.getExpense()));
+				supplierField.addItem(product.getMainSuppCode());
+				manufacturerField.setText(product.getManufacturer());
+				sellCostField.addItem(String.valueOf(product.getSellCost()));
+				incomeField.addItem(String.valueOf(product.getIncome()));
+				discountField.setText(String.valueOf(product.getMaxDisc()));
+				
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			DialogBox.showErrorException();
 		}
-		if(products.size() == 0){
-			productCode = "PRD001";
-		}else if(products.size() > 0 && products.size() < 10){
-			productCode = "PRD00"+String.valueOf(products.size()+1);
-		}else if(products.size() > 10 && products.size() < 100){
-			productCode = "PRD0"+String.valueOf(products.size()+1);
-		}else if(products.size() > 100 && products.size() < 1000){
-			productCode = "PRD"+String.valueOf(products.size()+1);
-		}
-		System.out.println(products.size());
-		return productCode;
+	}
+	
+	@Override
+	public void invokeObjects(Object... objects) {
+		this.product = (Product) objects[0];
+
+		loadData(product.getProductCode());
+		System.out.println(product.getProductCode());
 	}
 
 }

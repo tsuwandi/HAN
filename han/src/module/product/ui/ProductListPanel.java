@@ -26,6 +26,7 @@ import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.product.model.Product;
+import module.supplier.model.Supplier;
 
 public class ProductListPanel extends JPanel {
 
@@ -43,11 +44,15 @@ public class ProductListPanel extends JPanel {
 	
 	private ProductTableModel productTableModel;
 	private JScrollPane scrollPane;
-	public List<Product> products;
+	public List<Product> products = null;
 	
 	public ProductListPanel() {
 		setLayout(null);
-
+		
+		if(products!=null){
+			refreshTable();
+		}
+		
 		titleLbl = new JLabel("PRODUK");
 		titleLbl.setFont(new Font("", Font.BOLD, 24));
 		titleLbl.setBounds(20, 20, 200, 50);
@@ -80,6 +85,14 @@ public class ProductListPanel extends JPanel {
 
 		searchBtn = new JButton("Cari");
 		searchBtn.setBounds(1060, 100, 80, 25);
+		searchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				doSearch(searchField.getText());
+			}
+		});
 
 		searchField = new JTextField();
 		searchField.setBounds(900, 100, 150, 25);
@@ -90,17 +103,18 @@ public class ProductListPanel extends JPanel {
 			e1.printStackTrace();
 		}
 		
+		System.out.println(products.size());
 		productTableModel = new ProductTableModel(products);
 		productTable = new JTable(productTableModel);
 		productTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		productTable.getTableHeader().setReorderingAllowed(false);
 		productTable.getTableHeader().setResizingAllowed(false);
 		productTable.getColumnModel().getColumn(0).setPreferredWidth(30);
-		productTable.getColumnModel().getColumn(1).setPreferredWidth(70);
-		productTable.getColumnModel().getColumn(2).setPreferredWidth(120);
-		productTable.getColumnModel().getColumn(3).setPreferredWidth(120);
-		productTable.getColumnModel().getColumn(4).setPreferredWidth(80);
-		productTable.getColumnModel().getColumn(5).setPreferredWidth(90);
+		productTable.getColumnModel().getColumn(1).setPreferredWidth(120);
+		productTable.getColumnModel().getColumn(2).setPreferredWidth(170);
+		productTable.getColumnModel().getColumn(3).setPreferredWidth(170);
+		productTable.getColumnModel().getColumn(4).setPreferredWidth(130);
+		productTable.getColumnModel().getColumn(5).setPreferredWidth(140);
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
@@ -114,22 +128,10 @@ public class ProductListPanel extends JPanel {
 					int column = target.getSelectedColumn();
 					Product product;
 					// do some action if appropriate column
-					if(column == 12){
+					if(column == 5){
 						product = new Product();
-						Date startDate = null;
-//						try {
-//							startDate = dateFormat.parse(productTable.getValueAt(row, 7).toString());
-//						} catch (ParseException e1) {
-//							// TODO Auto-generated catch block
-//							e1.printStackTrace();
-//						}
-//						Date dob = null;
-//						try {
-//							dob = dateFormat.parse(productTable.getValueAt(row, 9).toString());
-//						} catch (ParseException e1) {
-//							// TODO Auto-generated catch block
-//							e1.printStackTrace();
-//						}
+						
+						product.setProductCode(productTable.getValueAt(row, 1).toString());
 
 						MainPanel.changePanel("module.product.ui.ProductViewPanel", product);
 					}
@@ -164,6 +166,15 @@ public class ProductListPanel extends JPanel {
 			products = new ArrayList<Product>();
 			products = ServiceFactory.getProductBL().getSearchProduct(value);
 			refreshTable();
+			productTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			productTable.getTableHeader().setReorderingAllowed(false);
+			productTable.getTableHeader().setResizingAllowed(false);
+			productTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+			productTable.getColumnModel().getColumn(1).setPreferredWidth(120);
+			productTable.getColumnModel().getColumn(2).setPreferredWidth(170);
+			productTable.getColumnModel().getColumn(3).setPreferredWidth(170);
+			productTable.getColumnModel().getColumn(4).setPreferredWidth(130);
+			productTable.getColumnModel().getColumn(5).setPreferredWidth(140);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();

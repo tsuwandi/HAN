@@ -10,6 +10,15 @@ import module.employee.dao.EmployeeDAO;
 import module.employee.model.Employee;
 import module.product.dao.ProductDAO;
 import module.product.model.Product;
+import module.product.model.ProductCategory;
+import module.supplier.dao.SuppAddressDAO;
+import module.supplier.dao.SuppCpDAO;
+import module.supplier.dao.SuppVehicleDAO;
+import module.supplier.dao.SupplierDAO;
+import module.supplier.model.SuppAddress;
+import module.supplier.model.SuppCp;
+import module.supplier.model.SuppVehicle;
+import module.supplier.model.Supplier;
 
 public class ProductBL {
 	private DataSource dataSource;
@@ -18,26 +27,21 @@ public class ProductBL {
 		this.dataSource = dataSource;
 	}
 	
-	public void save(Employee employee) throws SQLException {
-		Connection con = null;
-		try {
-			con = dataSource.getConnection();
-			con.setAutoCommit(false);
-			new EmployeeDAO(con).save(employee);
-		} catch (SQLException e) {
-			con.rollback();
-			e.printStackTrace();
-			throw new SQLException(e.getMessage());
-		} finally {
-			con.close();
-		}
-	}
-	
 	public List<Product> getAll() throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			return new ProductDAO(con).getAll();
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<Product> getProductId() throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductDAO(con).getProductId();
 		} finally {
 			con.close();
 		}
@@ -52,62 +56,52 @@ public class ProductBL {
 			con.close();
 		}
 	}
-
-	public List<Employee> getAllGender() throws SQLException {
+	
+	public void save(Product product) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new EmployeeDAO(con).getAllGender();
+			con.setAutoCommit(false);
+			new ProductDAO(con).save(product);
+		} catch (SQLException e) {
+			con.rollback();
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();
 		}
 	}
-
-	public List<Employee> getAllMarital() throws SQLException {
+	
+	public void update(Product product) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new EmployeeDAO(con).getAllMarital();
+			con.setAutoCommit(false);
+			new ProductDAO(con).update(product);
+		} catch (SQLException e) {
+			con.rollback();
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();
 		}
 	}
-
-	public List<Employee> getAllPosition() throws SQLException {
+	
+	public Product getProductByCode(String productCode) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new EmployeeDAO(con).getAllPosition();
+			return new ProductDAO(con).getById(productCode);
 		} finally {
 			con.close();
 		}
 	}
-
-	public List<Employee> getAllDepartment() throws SQLException {
+	
+	public List<ProductCategory> getAllProductCategory() throws SQLException {
 		Connection con = null;
-		try {
+		try{
 			con = dataSource.getConnection();
-			return new EmployeeDAO(con).getAllDepartment();
-		} finally {
-			con.close();
-		}
-	}
-
-//	public List<Product> getAllDivision() throws SQLException {
-//		Connection con = null;
-//		try {
-//			con = dataSource.getConnection();
-//			return new ProductDAO(con).getAllDivision();
-//		} finally {
-//			con.close();
-//		}
-//	}
-
-	public List<Employee> getAllEmployeeType() throws SQLException {
-		Connection con = null;
-		try {
-			con = dataSource.getConnection();
-			return new EmployeeDAO(con).getAllEmployeeType();
+			return new ProductDAO(con).getAllProductCategory();
 		} finally {
 			con.close();
 		}
