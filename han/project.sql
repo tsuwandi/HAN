@@ -1000,3 +1000,22 @@ deleted_by	varchar(25)
 );
 
 ALTER TABLE  `pallet_card_dtl` CHANGE  `id`  `id` INT( 12 ) NOT NULL AUTO_INCREMENT;
+
+
+CREATE TABLE document_type(
+id	int(3) PRIMARY KEY,
+document_type	varchar(50),
+input_date	date,
+input_by	varchar(25),
+edit_date	date,
+edited_by	varchar(25),
+deleted_date	date,
+deleted_by	varchar(25)
+);
+
+ALTER TABLE  `document_type` CHANGE  `id`  `id` INT( 3 ) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE  `delivery` ADD  `document_type_id` INT( 3 ) NOT NULL AFTER  `delivery_note`;
+ALTER TABLE  `delivery` ADD  `wood_type_id` INT( 3 ) NOT NULL AFTER  `wood_resource_id` ,
+ADD  `total_log` INT( 5 ) NOT NULL AFTER  `wood_type_id` ,
+ADD  `total_volume` DECIMAL( 7, 2 ) NOT NULL AFTER  `total_log`;
