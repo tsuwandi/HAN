@@ -69,7 +69,7 @@ public class DryOutListPanel extends JPanel {
 				MainPanel.changePanel("module.dryout.ui.DryOutCreatePanel");
 			}
 		});
-		btnCreateNew.setBounds(750, 80, 100, 40);
+		btnCreateNew.setBounds(700, 80, 100, 30);
 		add(btnCreateNew);
 
 		btnExport = new JButton("Export");
@@ -78,20 +78,20 @@ public class DryOutListPanel extends JPanel {
 
 			}
 		});
-		btnExport.setBounds(850, 80, 100, 40);
+		btnExport.setBounds(800, 80, 100, 30);
 		add(btnExport);
 
-		btnAdvancedSearch = new JButton("<html><center>Pencarian <br> Lanjut<center></html>");
+		btnAdvancedSearch = new JButton("Pencarian Lanjut");
 		btnAdvancedSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				showAdvancedSearchDialog(dryOutListPanel);
 			}
 		});
-		btnAdvancedSearch.setBounds(950, 80, 100, 40);
+		btnAdvancedSearch.setBounds(900, 80, 150, 30);
 		add(btnAdvancedSearch);
 
 		txtSearch = new JTextField();
-		txtSearch.setBounds(775, 130, 150, 30);
+		txtSearch.setBounds(800, 131, 150, 28);
 		add(txtSearch);
 
 		btnSearch = new JButton("Cari");
@@ -100,11 +100,11 @@ public class DryOutListPanel extends JPanel {
 				doSearch(txtSearch.getText());
 			}
 		});
-		btnSearch.setBounds(950, 130, 100, 40);
+		btnSearch.setBounds(950, 130, 100, 30);
 		add(btnSearch);
 
 		scrollPaneDryOut = new JScrollPane();
-		scrollPaneDryOut.setBounds(50, 200, 1000, 200);
+		scrollPaneDryOut.setBounds(50, 200, 1000, 300);
 		add(scrollPaneDryOut);
 
 		dryOutTableModel = new DryOutTableModel(new ArrayList<DryOut>());

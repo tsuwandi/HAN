@@ -53,12 +53,22 @@ public class ProductListPanel extends JPanel {
 			refreshTable();
 		}
 		
-		titleLbl = new JLabel("PRODUK");
-		titleLbl.setFont(new Font("", Font.BOLD, 24));
-		titleLbl.setBounds(20, 20, 200, 50);
+//		titleLbl = new JLabel("PRODUK");
+//		titleLbl.setFont(new Font("", Font.BOLD, 24));
+//		titleLbl.setBounds(20, 20, 200, 50);
+		
+		JLabel lblBreadcrumb = new JLabel("ERP > Produk");
+		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblBreadcrumb.setBounds(50, 10, 320, 30);
+		add(lblBreadcrumb);
+
+		JLabel lblHeader = new JLabel("PRODUK");
+		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblHeader.setBounds(50, 45, 320, 30);
+		add(lblHeader);
 
 		createNewBtn = new JButton("Buat Baru");
-		createNewBtn.setBounds(760, 30, 120, 50);
+		createNewBtn.setBounds(700, 80, 100, 30);
 		createNewBtn.addActionListener(new ActionListener() {
 
 			@Override
@@ -69,10 +79,10 @@ public class ProductListPanel extends JPanel {
 		});
 
 		exportBtn = new JButton("Export");
-		exportBtn.setBounds(890, 30, 120, 50);
+		exportBtn.setBounds(800, 80, 100, 30);
 
-		advanceSearchBtn = new JButton("<html><p>Pencarian Lanjut</p></html>");
-		advanceSearchBtn.setBounds(1020, 30, 120, 50);
+		advanceSearchBtn = new JButton("Pencarian Lanjut");
+		advanceSearchBtn.setBounds(900, 80, 150, 30);
 		advanceSearchBtn.addActionListener(new ActionListener() {
 
 			@Override
@@ -84,7 +94,7 @@ public class ProductListPanel extends JPanel {
 		});
 
 		searchBtn = new JButton("Cari");
-		searchBtn.setBounds(1060, 100, 80, 25);
+		searchBtn.setBounds(950, 130, 100, 30);
 		searchBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -95,7 +105,7 @@ public class ProductListPanel extends JPanel {
 		});
 
 		searchField = new JTextField();
-		searchField.setBounds(900, 100, 150, 25);
+		searchField.setBounds(800, 131, 150, 28);
 
 		try{
 			products = ServiceFactory.getProductBL().getAll();
@@ -140,10 +150,11 @@ public class ProductListPanel extends JPanel {
 		});
 
 		scrollPane = new JScrollPane(productTable);
-		scrollPane.setBounds(20, 200, 1130, 265);
-		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		//scrollPane.setBounds(20, 200, 1130, 265);
+		scrollPane.setBounds(50, 200, 1000, 300);
+		//scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-		add(titleLbl);
+		//add(titleLbl);
 		add(createNewBtn);
 		add(exportBtn);
 		add(advanceSearchBtn);
