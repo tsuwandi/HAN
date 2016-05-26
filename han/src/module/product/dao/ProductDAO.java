@@ -25,6 +25,7 @@ public class ProductDAO {
 	private PreparedStatement getProductIdStatement;
 	private PreparedStatement getAllProductCategory;
 	private PreparedStatement updateProductStatement;
+	private PreparedStatement deleteProductStatement;
 	private PreparedStatement insertProductStatement;
 
 	private String selectAllQuery = "select a.id, product_code, product_name, product_category_id, "
@@ -79,8 +80,23 @@ public class ProductDAO {
 	
 	private String getProductIdQuery = "select id from product";
 	
+	private String deleteQuery = "update product set deleted_date=?, deleted_by=? where product_code=?";
+	
 	public ProductDAO(Connection connection) throws SQLException {
 		this.connection = connection;
+	}
+	
+	public void delete(String productCode) throws SQLException {
+		try {
+			deleteProductStatement = connection.prepareStatement(deleteQuery);
+			deleteProductStatement.setDate(1, DateUtil.getCurrentDate());
+			deleteProductStatement.setString(2, "Irvan");
+			deleteProductStatement.setString(3, productCode);
+			deleteProductStatement.executeUpdate();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
 	}
 	
 	public void save(Product product) throws SQLException {
@@ -180,6 +196,8 @@ public class ProductDAO {
 				product.setGradeName(rs.getString("c.grade"));
 
 				products.add(product);
+				
+				System.out.println(getAllProductStatement);
 			}
 
 		} catch (SQLException ex) {
@@ -265,6 +283,8 @@ public class ProductDAO {
 				product.setEditBy(rs.getString("a.edited_by"));
 				product.setWoodTypeName(rs.getString("b.wood_type"));
 				product.setGradeName(rs.getString("c.grade"));
+				
+				System.out.println(getAllProductStatement);
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();

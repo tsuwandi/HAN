@@ -656,7 +656,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 				// TODO Auto-generated method stub
 				int dialogResult = JOptionPane.showConfirmDialog (null, "Apakah Anda ingin menghapus data?","Warning",JOptionPane.YES_NO_OPTION);
 				if(dialogResult == JOptionPane.YES_OPTION){
-					
+					doDelete();
 				}
 			}
 		});
@@ -778,6 +778,17 @@ public class ProductViewPanel extends JPanel implements Bridging {
 	    containerPnl.add(deleteBtn);
 	    containerPnl.add(editBtn);
 		
+	}
+	
+	protected void doDelete() {
+		try {
+			ServiceFactory.getProductBL().deleteAll(product);
+			DialogBox.showDelete();
+			MainPanel.changePanel("module.product.ui.ProductListPanel");
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			DialogBox.showErrorException();
+		}
 	}
 	
 	protected void loadData(String productCode) {

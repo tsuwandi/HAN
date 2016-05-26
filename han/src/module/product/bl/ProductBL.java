@@ -63,6 +63,8 @@ public class ProductBL {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 			new ProductDAO(con).save(product);
+			
+			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
 			e.printStackTrace();
@@ -78,6 +80,8 @@ public class ProductBL {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 			new ProductDAO(con).update(product);
+			
+			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
 			e.printStackTrace();
@@ -102,6 +106,24 @@ public class ProductBL {
 		try{
 			con = dataSource.getConnection();
 			return new ProductDAO(con).getAllProductCategory();
+		} finally {
+			con.close();
+		}
+	}
+	
+	public void deleteAll(Product product) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			con.setAutoCommit(false);
+
+			new SupplierDAO(con).delete(product.getProductId());
+
+			con.commit();
+		} catch (SQLException e) {
+			con.rollback();
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();
 		}
