@@ -124,7 +124,8 @@ public class ProductDAO {
 			insertProductStatement.setDate(34, sqlInputDate);
 			insertProductStatement.setString(35, product.getInputBy());
 			insertProductStatement.executeUpdate();
-
+			
+			System.out.println(insertProductStatement);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
