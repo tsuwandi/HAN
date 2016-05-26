@@ -22,6 +22,7 @@ public class ReceivedDAO {
 	private PreparedStatement getAllStatement;
 	private PreparedStatement lastIdStatement;
 	private PreparedStatement advancedSearchStatement;
+	private PreparedStatement updateStatusStatement;
 
 	 private String insertQuery = "INSERT INTO received (received_code, received_date,"
 	 		+ " rit_no, license_plate, driver, delivery_note, wood_type_id, driver_id, received_status, input_date, input_by) "
@@ -41,6 +42,7 @@ public class ReceivedDAO {
 
 	private String lastID = "SELECT received_code FROM received ORDER BY ID DESC LIMIT 1";
 	
+	private String updateStatusQuery = "UPDATE received SET received_status = 'Diproses' WHERE received_code = ?";
 	
 	public ReceivedDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
@@ -67,6 +69,25 @@ public class ReceivedDAO {
 		}
 		}
 		return code;
+	}
+	
+	public void updateStatus(String receivedCode) throws SQLException{
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			updateStatusStatement = con.prepareStatement(updateStatusQuery);
+			updateStatusStatement.setString(1, receivedCode);
+			updateStatusStatement.executeUpdate();
+			
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+			}
+		}
 	}
 	
 	public List<Received> getAllBySearch(String receivedCode) throws SQLException {
@@ -96,6 +117,7 @@ public class ReceivedDAO {
 				received.setWoodDomicile(rs.getString("wood_domicile"));
 				received.setWoodResource(rs.getString("wood_resource"));
 				receiveds.add(received);
+				
 			}
 
 		} catch (SQLException ex) {

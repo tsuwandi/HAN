@@ -508,6 +508,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 							picDocking.setReceivedCode(received.getReceivedCode());
 							ReceivedDAOFactory.getPicDockingReceivedDAO().save(picDocking);
 						}
+						ReceivedDAOFactory.getReceivedDAO().updateStatus(received.getReceivedCode());
 						DialogBox.showInsert();
 						MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
 					} catch (Exception e) {
