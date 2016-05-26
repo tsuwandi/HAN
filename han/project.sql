@@ -1019,3 +1019,6 @@ ALTER TABLE  `delivery` ADD  `document_type_id` INT( 3 ) NOT NULL AFTER  `delive
 ALTER TABLE  `delivery` ADD  `wood_type_id` INT( 3 ) NOT NULL AFTER  `wood_resource_id` ,
 ADD  `total_log` INT( 5 ) NOT NULL AFTER  `wood_type_id` ,
 ADD  `total_volume` DECIMAL( 7, 2 ) NOT NULL AFTER  `total_log`;
+
+
+INSERT INTO `project`.`document_type` (`id`, `document_type`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES (NULL, 'Penerimaan', NULL, NULL, NULL, NULL, NULL, NULL), (NULL, 'Pengeluaran', NULL, NULL, NULL, NULL, NULL, NULL);

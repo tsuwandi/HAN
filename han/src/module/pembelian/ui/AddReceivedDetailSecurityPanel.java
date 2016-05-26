@@ -26,6 +26,7 @@ import main.component.DialogBox;
 import main.component.NumberField;
 import main.panel.MainPanel;
 import module.pembelian.model.Delivery;
+import module.pembelian.model.DocumentType;
 import module.pembelian.model.Received;
 import module.pembelian.model.SupplierVehicle;
 import module.pembelian.model.WoodResource;
@@ -61,24 +62,30 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	JLabel errorWoodTypeLbl;
 	JLabel errorDriverLbl;
 	JLabel errorDriverIDLbl;
+	JLabel errorDocTypeLbl;
+	JLabel errorWoodResourceLbl;
+	JLabel errorTotalLogLbl;
+	JLabel errorTotalVolumeLbl;
+	JLabel errorWoodDomicileLbl;
 	
 	NumberField receivedCodeField;
 	NumberField receivedCodeDateField;
 	NumberField receivedCodeMonthField;
 	NumberField receivedCodeYearField;
 	NumberField ritNumberField;
+	NumberField totalLogField;
+	NumberField totalVolumeField;
 	
 	JTextField driverField;
 	JTextField woodDomicileField;
 	JTextField supplierTextField;
-	JTextField woodResourceField;
 	JTextField driverIDField;
 	JTextField docNoField;
 	
 	
 	ComboBox<SupplierVehicle> licensePlateComboBox;
 	ComboBox<WoodType> woodTypeComboBox;
-	ComboBox<Delivery> docTypeComboBox;
+	ComboBox<DocumentType> docTypeComboBox;
 	ComboBox<WoodResource> woodResourceComboBox;
 
 	JScrollPane palletScrollPane;
@@ -89,7 +96,8 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	JButton saveBtn;
 
 	List<SupplierVehicle> suppVehicles;
-	List<Delivery> deliveries;
+	List<WoodResource> woodResources;
+	List<DocumentType> documentTypes;
 	List<WoodType> woodTypes;
 	
 	AddReceivedDetailSecurityPanel parent;
@@ -154,6 +162,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		
 		receivedDateChooser = new JDateChooser();
 		receivedDateChooser.setBounds(220,110,150,20);
+		receivedDateChooser.setDate(new Date());
 		containerPnl.add(receivedDateChooser);
 		
 		//Rit Number
@@ -220,62 +229,107 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	
 		// Document Number
 		docNoLbl =  new JLabel("No Dokumen");
-		docNoLbl.setBounds(50,350,150,20);
+		docNoLbl.setBounds(550,70,150,20);
 		containerPnl.add(docNoLbl);
 		
 		docNoField = new JTextField();
-		docNoField.setBounds(220, 350, 150, 20);
+		docNoField.setBounds(720, 70, 150, 20);
 		containerPnl.add(docNoField);
 		
 		errorDocNoLbl = new JLabel();
-		errorDocNoLbl.setBounds(380,350,180,20);
+		errorDocNoLbl.setBounds(890,70,180,20);
 		containerPnl.add(errorDocNoLbl);
 		
 		
 		// Document Type
 		documentTypeLbl =  new JLabel("Tipe Dokumen");
-		documentTypeLbl.setBounds(50,350,150,20);
+		documentTypeLbl.setBounds(550,110,150,20);
 		containerPnl.add(documentTypeLbl);
 		
 		docTypeComboBox = new ComboBox<>();
-		docTypeComboBox.setBounds(220, 350, 150, 20);
+		docTypeComboBox.setBounds(720, 110, 150, 20);
 		containerPnl.add(docTypeComboBox);
+		
+		errorDocTypeLbl = new JLabel();
+		errorDocTypeLbl.setBounds(890,110,180,20);
+		containerPnl.add(errorDocTypeLbl);
 
 		
 		//Wood Domicile
 		woodDomicileLbl = new JLabel("Asal Barang");
-		woodDomicileLbl.setBounds(50,390,150,20);
+		woodDomicileLbl.setBounds(550,150,150,20);
 		containerPnl.add(woodDomicileLbl);
 		
 		woodDomicileField = new JTextField();
-		woodDomicileField.setBounds(220, 390, 150, 20);
+		woodDomicileField.setBounds(720, 150, 150, 20);
 		containerPnl.add(woodDomicileField);
+		
+		errorWoodDomicileLbl = new JLabel();
+		errorWoodDomicileLbl.setBounds(890,150,150,20);
+		containerPnl.add(errorWoodDomicileLbl);
 	
 		//Wood Resource
 		woodResourceLbl = new JLabel("Asal Sumber Bahan Baku");
-		woodResourceLbl.setBounds(50, 430, 150, 20);
+		woodResourceLbl.setBounds(550, 190, 150, 20);
 		containerPnl.add(woodResourceLbl);
 		
-		woodResourceField = new JTextField();
-		woodResourceField.setBounds(220, 430, 150, 20);
-		containerPnl.add(woodResourceField);
+		woodResourceComboBox = new ComboBox<WoodResource>();
+		woodResourceComboBox.setBounds(720, 190, 150, 20);
+		containerPnl.add(woodResourceComboBox);
 		
+		errorWoodResourceLbl = new JLabel();
+		errorWoodResourceLbl.setBounds(890, 190, 150, 20);
+		containerPnl.add(errorWoodResourceLbl);
 		
 		//Wood Type
 		woodTypeLbl = new JLabel("Tipe Kayu");
-		woodTypeLbl.setBounds(50, 470, 150, 20);
+		woodTypeLbl.setBounds(550, 230, 150, 20);
 		containerPnl.add(woodTypeLbl);
 		
 		woodTypeComboBox = new ComboBox<>();
-		woodTypeComboBox.setBounds(220, 470, 150, 20);
+		woodTypeComboBox.setBounds(720, 230, 150, 20);
 		containerPnl.add(woodTypeComboBox);
 		
 		errorWoodTypeLbl = new JLabel();
-		errorWoodTypeLbl.setBounds(380,470,150,20);
+		errorWoodTypeLbl.setBounds(890,230,150,20);
 		containerPnl.add(errorWoodTypeLbl);
+		
+		//Total Log
+		totalLogLbl = new JLabel("Total Log");
+		totalLogLbl.setBounds(550,270,150,20);
+		containerPnl.add(totalLogLbl);
+		
+		totalLogField = new NumberField();
+		totalLogField.setBounds(720, 270, 150, 20);
+		containerPnl.add(totalLogField);
+		
+		uomTotalLogLbl = new JLabel("Batang");
+		uomTotalLogLbl.setBounds(880,270,40,20);
+		containerPnl.add(uomTotalLogLbl);
+		
+		errorTotalLogLbl = new JLabel();
+		errorTotalLogLbl.setBounds(930,270,150,20);
+		containerPnl.add(errorTotalLogLbl);
+		
+		//Total Volume
+		totalVolumeLbl = new JLabel("Total Log");
+		totalVolumeLbl.setBounds(550,310,150,20);
+		containerPnl.add(totalVolumeLbl);
+		
+		totalVolumeField = new NumberField();
+		totalVolumeField.setBounds(720, 310, 150, 20);
+		containerPnl.add(totalVolumeField);
+		
+		uomTotalVolumeLbl = new JLabel("M3");
+		uomTotalVolumeLbl.setBounds(880,310,50,20);
+		containerPnl.add(uomTotalVolumeLbl);
+		
+		errorTotalVolumeLbl = new JLabel();
+		errorTotalVolumeLbl.setBounds(930,310,150,20);
+		containerPnl.add(errorTotalVolumeLbl);
 
 		saveBtn = new JButton("Save");
-		saveBtn.setBounds(450,540,100,30);
+		saveBtn.setBounds(480,540,100,30);
 		containerPnl.add(saveBtn);
 		
 		getLastCode();
@@ -290,15 +344,19 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 			woodTypes = ReceivedDAOFactory.getWoodTypeDAO().getWoodType();
 			woodTypes.add(0,new WoodType("--Pilih--"));
 			woodTypeComboBox.setList(woodTypes);
-
-//			deliveries = ReceivedDAOFactory.getDeliveryDAO().getDeliveryNote();
-//			deliveries.add(0,new Delivery("--Pilih--"));
-//			docNoComboBox.setList(deliveries);
+			
+			documentTypes = ReceivedDAOFactory.getDocumentTypeDAO().getDocumentType();
+			documentTypes.add(0,new DocumentType("--Pilih--"));
+			docTypeComboBox.setList(documentTypes);
+			
+			woodResources = ReceivedDAOFactory.getWoodResourceDAO().getWoodResource();
+			woodResources.add(0,new WoodResource("--Pilih--"));
+			woodResourceComboBox.setList(woodResources);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		woodResourceField.setEnabled(false);
-		woodDomicileField.setEnabled(false);
+		
 		supplierTextField.setEnabled(false);
 		receivedCodeField.setEnabled(false);
 		receivedCodeDateField.setEnabled(false);
@@ -377,10 +435,44 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 					errorWoodTypeLbl.setText("");
 				}
 				if(docTypeComboBox.getSelectedIndex()==0){
-					//errorDocNoLbl.setText("<html><font color='red'>Document Number harus dipilih !</font></html>");
+					errorDocTypeLbl.setText("<html><font color='red'>Tipe Dokumen harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorDocTypeLbl.setText("");
+				}
+				
+				if(docNoField.getText().equals("")){
+					errorDocNoLbl.setText("<html><font color='red'>Nomor Dokumen harus diisi !</font></html>");
 					error++;
 				}else{
 					errorDocNoLbl.setText("");
+				}
+				if(woodResourceComboBox.getSelectedIndex()==0){
+					errorWoodResourceLbl.setText("<html><font color='red'>Asal Sumber harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorWoodResourceLbl.setText("");
+				}
+				
+				if(woodDomicileField.getText().equals("")){
+					errorWoodDomicileLbl.setText("<html><font color='red'>Asal Barang harus diisi !</font></html>");
+					error++;
+				}else{
+					errorWoodDomicileLbl.setText("");
+				}
+				
+				if(totalLogField.getText().equals("")){
+					errorTotalLogLbl.setText("<html><font color='red'>Total Kayu harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorTotalLogLbl.setText("");
+				}
+				
+				if(totalVolumeField.getText().equals("")){
+					errorTotalVolumeLbl.setText("<html><font color='red'>Total Volume harus diisi !</font></html>");
+					error++;
+				}else{
+					errorTotalVolumeLbl.setText("");
 				}
 				
 				if(error==0){
@@ -397,8 +489,18 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 					rec.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
 					rec.setReceivedDate(receivedDateChooser.getDate());
 					rec.setDriverID(driverIDField.getText());
+					
+					Delivery del = new Delivery();
+					del.setDeliveryNote(docNoField.getText());
+					del.setDocumentTypeID(docTypeComboBox.getDataIndex().getId());
+					del.setWoodDomicile(woodDomicileField.getText());
+					del.setWoodResourceId(woodResourceComboBox.getDataIndex().getId());
+					del.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
+					del.setTotalLog(Integer.valueOf(totalLogField.getText()));
+					del.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
 					try {
 						ReceivedDAOFactory.getReceivedDAO().save(rec);
+						ReceivedDAOFactory.getDeliveryDAO().save(del);
 						DialogBox.showInsert();
 						MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
 					} catch (Exception e) {
@@ -414,22 +516,25 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		try {
 			Date date = new Date();
 			if(date.getDate()==1){
-				receivedCodeField.setText("001");
+				receivedCodeField.setText("0001");
 			}else{
 				String codeTemp = ReceivedDAOFactory.getReceivedDAO().getLastCode();
-				String [] splittedCode = codeTemp.split("/");
-				int tempIntCode = Integer.valueOf(splittedCode[0])+1;
-				String textTemp = String.valueOf(tempIntCode);
-				if(textTemp.length()==1){
-					receivedCodeField.setText("000"+textTemp);
-				}else if(textTemp.length()==2){
-					receivedCodeField.setText("00"+textTemp);
-				}else if(textTemp.length()==3){
-					receivedCodeField.setText("0"+textTemp);
+				if(codeTemp==null){
+					receivedCodeField.setText("0001");
 				}else{
-					receivedCodeField.setText(textTemp);
+					String [] splittedCode = codeTemp.split("/");
+					int tempIntCode = Integer.valueOf(splittedCode[0])+1;
+					String textTemp = String.valueOf(tempIntCode);
+					if(textTemp.length()==1){
+						receivedCodeField.setText("000"+textTemp);
+					}else if(textTemp.length()==2){
+						receivedCodeField.setText("00"+textTemp);
+					}else if(textTemp.length()==3){
+						receivedCodeField.setText("0"+textTemp);
+					}else{
+						receivedCodeField.setText(textTemp);
+					}
 				}
-				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

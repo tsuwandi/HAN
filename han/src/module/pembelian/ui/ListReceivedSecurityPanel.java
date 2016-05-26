@@ -119,6 +119,22 @@ public class ListReceivedSecurityPanel extends JPanel {
 			}
 		});
 		
+		searchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					receiveds = ReceivedDAOFactory.getReceivedDAO().getAllBySearch(searchField.getText());
+					receivedTable.setModel(new ReceivedTableModel(receiveds));
+					receivedTable.updateUI();
+					setTableSize();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		
 		
 		
 	}

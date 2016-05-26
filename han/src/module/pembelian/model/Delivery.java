@@ -8,11 +8,59 @@ public class Delivery implements ComboBoxProperties {
 	String woodDomicile;
 	String woodResource;
 	int woodResourceId;
+	int documentTypeID;
+	int woodTypeID;
+	String documentType;
+	String woodType;
+	int totalLog;
+	double totalVolume;
+	
+	
+	
+	public String getDocumentType() {
+		return documentType;
+	}
+	public void setDocumentType(String documentType) {
+		this.documentType = documentType;
+	}
+	
+	public String getWoodType() {
+		return woodType;
+	}
+	public void setWoodType(String woodType) {
+		this.woodType = woodType;
+	}
+	public int getDocumentTypeID() {
+		return documentTypeID;
+	}
+	public void setDocumentTypeID(int documentTypeID) {
+		this.documentTypeID = documentTypeID;
+	}
+	public int getWoodTypeID() {
+		return woodTypeID;
+	}
+	public void setWoodTypeID(int woodTypeID) {
+		this.woodTypeID = woodTypeID;
+	}
+	public int getTotalLog() {
+		return totalLog;
+	}
+	public void setTotalLog(int totalLog) {
+		this.totalLog = totalLog;
+	}
+	public double getTotalVolume() {
+		return totalVolume;
+	}
+	public void setTotalVolume(double totalVolume) {
+		this.totalVolume = totalVolume;
+	}
 	public Delivery(){	
 	}
 	public Delivery(String deliveryNote){
 		this.deliveryNote= deliveryNote;
 	}
+	
+	
 
 	public int getId() {
 		return id;

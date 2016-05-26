@@ -22,6 +22,7 @@ import controller.ReceivedDAOFactory;
 import main.panel.MainPanel;
 import model.User;
 import module.pembelian.model.Received;
+import module.pembelian.ui.ListReceivedSecurityPanel.ReceivedTableModel;
 
 
 
@@ -98,6 +99,22 @@ public class ListReceivedPanel extends JPanel {
 				PopUpAdvanceSearch pop = new PopUpAdvanceSearch(listReceivedPanel);
 				pop.show();
 				pop.setLocationRelativeTo(null);
+			}
+		});
+		
+		searchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					receiveds = ReceivedDAOFactory.getReceivedDAO().getAllBySearch(searchField.getText());
+					receivedTable.setModel(new ReceivedTableModel(receiveds));
+					receivedTable.updateUI();
+					setTableSize();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				
 			}
 		});
 		

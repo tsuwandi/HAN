@@ -32,7 +32,7 @@ public class ReceivedDAO {
 	 private String deleteQuery = "update bank set deleted_date=?,"
 	 		+ "deleted_by=? where received_code=?";
 	private String getAllQuery = "select a.id, received_code, received_date, rit_no, a.license_plate, "
-			+ "driver, a.delivery_note, wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource "
+			+ "driver, a.delivery_note, a.wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource "
 			+ "FROM received a " 
 			+ "INNER JOIN supp_vehicle b  ON a.license_plate = b.license_plate "
 			+ "INNER JOIN supplier c ON b.supp_code = c.supp_code INNER JOIN wood_type d ON a.wood_type_id = d.id "
@@ -67,6 +67,48 @@ public class ReceivedDAO {
 		}
 		}
 		return code;
+	}
+	
+	public List<Received> getAllBySearch(String receivedCode) throws SQLException {
+		Connection con = null;
+		List<Received> receiveds = new ArrayList<Received>();
+
+		try {
+			con = dataSource.getConnection();
+			getAllStatement = con.prepareStatement(getAllQuery+" AND received_code LIKE ?");
+			getAllStatement.setString(1, "%"+receivedCode+"%");
+			
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				Received received = new Received();
+				received.setId(rs.getInt("id"));
+				received.setReceivedCode(rs.getString("received_code"));
+				received.setReceivedDate(rs.getDate("received_date"));
+				received.setRitNo(rs.getString("rit_no"));
+				received.setLicensePlate(rs.getString("license_plate"));
+				received.setDriver(rs.getString("driver"));
+				received.setDeliveryNote(rs.getString("delivery_note"));
+				received.setWoodTypeID(rs.getInt("wood_type_id"));
+				received.setSupplier(rs.getString("supp_name"));
+				received.setReceivedStatus(rs.getString("received_status"));
+				received.setDriverID(rs.getString("driver_id"));
+				received.setWoodTypeName(rs.getString("wood_type"));
+				received.setWoodDomicile(rs.getString("wood_domicile"));
+				received.setWoodResource(rs.getString("wood_resource"));
+				receiveds.add(received);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+			}
+		}
+
+		return receiveds;
 	}
 	
 	public List<Received> getAll() throws SQLException {
