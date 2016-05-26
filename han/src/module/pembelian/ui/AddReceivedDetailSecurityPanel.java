@@ -28,6 +28,7 @@ import main.panel.MainPanel;
 import module.pembelian.model.Delivery;
 import module.pembelian.model.Received;
 import module.pembelian.model.SupplierVehicle;
+import module.pembelian.model.WoodResource;
 import module.pembelian.model.WoodType;
 import module.util.Bridging;
 
@@ -47,6 +48,11 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	JLabel secondCodeSeparator;
 	JLabel thirdCodeSeparator;
 	JLabel driverIDLbl;
+	JLabel documentTypeLbl;
+	JLabel totalLogLbl;
+	JLabel totalVolumeLbl;
+	JLabel uomTotalLogLbl;
+	JLabel uomTotalVolumeLbl;
 	
 	JLabel errorCodeLbl;
 	JLabel errorRitNumberLbl;
@@ -67,11 +73,13 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	JTextField supplierTextField;
 	JTextField woodResourceField;
 	JTextField driverIDField;
+	JTextField docNoField;
 	
 	
 	ComboBox<SupplierVehicle> licensePlateComboBox;
 	ComboBox<WoodType> woodTypeComboBox;
-	ComboBox<Delivery> docNoComboBox;
+	ComboBox<Delivery> docTypeComboBox;
+	ComboBox<WoodResource> woodResourceComboBox;
 
 	JScrollPane palletScrollPane;
 	JScrollPane dockingPicScrollPane;
@@ -215,13 +223,23 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		docNoLbl.setBounds(50,350,150,20);
 		containerPnl.add(docNoLbl);
 		
-		docNoComboBox = new ComboBox<>();
-		docNoComboBox.setBounds(220, 350, 150, 20);
-		containerPnl.add(docNoComboBox);
+		docNoField = new JTextField();
+		docNoField.setBounds(220, 350, 150, 20);
+		containerPnl.add(docNoField);
 		
 		errorDocNoLbl = new JLabel();
 		errorDocNoLbl.setBounds(380,350,180,20);
 		containerPnl.add(errorDocNoLbl);
+		
+		
+		// Document Type
+		documentTypeLbl =  new JLabel("Tipe Dokumen");
+		documentTypeLbl.setBounds(50,350,150,20);
+		containerPnl.add(documentTypeLbl);
+		
+		docTypeComboBox = new ComboBox<>();
+		docTypeComboBox.setBounds(220, 350, 150, 20);
+		containerPnl.add(docTypeComboBox);
 
 		
 		//Wood Domicile
@@ -273,9 +291,9 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 			woodTypes.add(0,new WoodType("--Pilih--"));
 			woodTypeComboBox.setList(woodTypes);
 
-			deliveries = ReceivedDAOFactory.getDeliveryDAO().getDeliveryNote();
-			deliveries.add(0,new Delivery("--Pilih--"));
-			docNoComboBox.setList(deliveries);
+//			deliveries = ReceivedDAOFactory.getDeliveryDAO().getDeliveryNote();
+//			deliveries.add(0,new Delivery("--Pilih--"));
+//			docNoComboBox.setList(deliveries);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -315,19 +333,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 			}
 		});
 		
-		docNoComboBox.addItemListener(new ItemListener() {
-			
-			@Override
-			public void itemStateChanged(ItemEvent arg0) {
-				if(docNoComboBox.getSelectedIndex()!=0){
-					woodDomicileField.setText(docNoComboBox.getDataIndex().getWoodDomicile());
-					woodResourceField.setText(docNoComboBox.getDataIndex().getWoodResource());
-				}else{
-					woodDomicileField.setText("");
-					woodResourceField.setText("");
-				}
-			}
-		});
+	
 		
 		saveBtn.addActionListener(new ActionListener() {
 			
@@ -370,8 +376,8 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 				}else{
 					errorWoodTypeLbl.setText("");
 				}
-				if(docNoComboBox.getSelectedIndex()==0){
-					errorDocNoLbl.setText("<html><font color='red'>Document Number harus dipilih !</font></html>");
+				if(docTypeComboBox.getSelectedIndex()==0){
+					//errorDocNoLbl.setText("<html><font color='red'>Document Number harus dipilih !</font></html>");
 					error++;
 				}else{
 					errorDocNoLbl.setText("");
@@ -382,7 +388,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 					String code = receivedCodeField.getText()+firstCodeSeparator.getText()
 							+receivedCodeDateField.getText()+secondCodeSeparator.getText()
 							+receivedCodeMonthField.getText()+thirdCodeSeparator.getText()+receivedCodeYearField.getText();
-					rec.setDeliveryNote(docNoComboBox.getDataIndex().getDeliveryNote());
+					rec.setDeliveryNote(docNoField.getText());
 					rec.setDriver(driverField.getText());
 					rec.setLicensePlate(licensePlateComboBox.getDataIndex().getLicensePlate());
 					rec.setReceivedCode(code);

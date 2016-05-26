@@ -41,21 +41,31 @@ public class ListReceivedSecurityPanel extends JPanel {
 	public ListReceivedSecurityPanel() {
 		setLayout(null);
 		parent = this;
-		titleLabel = new JLabel("Penerimaan Balken");
-		titleLabel.setBounds(400,30,300,80);
-		titleLabel.setFont(new Font("Arial", 1, 30));
-		add(titleLabel);
+//		titleLabel = new JLabel("Penerimaan Balken");
+//		titleLabel.setBounds(400,30,300,80);
+//		titleLabel.setFont(new Font("Arial", 1, 30));
+//		add(titleLabel);
+		
+		JLabel lblBreadcrumb = new JLabel("ERP > Penerimaan Balken");
+		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblBreadcrumb.setBounds(50, 10, 320, 30);
+		add(lblBreadcrumb);
+
+		JLabel lblHeader = new JLabel("PENERIMAAN BALKEN");
+		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblHeader.setBounds(50, 45, 320, 30);
+		add(lblHeader);
 		
 		searchBtn = new JButton("Cari");
-		searchBtn.setBounds(1000,100,70,30);
+		searchBtn.setBounds(950,130,100,30);
 		add(searchBtn);
 		
 		searchField = new JTextField();
-		searchField.setBounds(900, 100, 100, 30);
+		searchField.setBounds(800, 131, 150, 28);
 		add(searchField);
 		
-		advancedSearchBtn = new JButton("Advance Search");
-		advancedSearchBtn.setBounds(900,50,150,30);
+		advancedSearchBtn = new JButton("Pencarian Lanjut");
+		advancedSearchBtn.setBounds(900,80,150,30);
 		add(advancedSearchBtn);
 	
 		receiveds = new ArrayList<>();
@@ -66,11 +76,11 @@ public class ListReceivedSecurityPanel extends JPanel {
 		receivedTable.getColumnModel().getColumn(0).setMaxWidth(30);
 		
 		scrollPane =  new JScrollPane(receivedTable);
-		scrollPane.setBounds(50,150,1000,400);
+		scrollPane.setBounds(50,200,1000,300);
 		add(scrollPane);
 		
 		createBtn = new JButton("Buat Baru");
-		createBtn.setBounds(1050,50,100,30);
+		createBtn.setBounds(800,80,100,30);
 		add(createBtn);
 
 		
