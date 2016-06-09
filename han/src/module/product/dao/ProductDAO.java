@@ -10,8 +10,11 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import module.employee.model.Employee;
+import module.pembelian.model.WoodType;
+import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
+import module.product.model.Uom;
 import module.sn.bank.model.Bank;
 import module.sn.currency.model.Currency;
 import module.sn.supptype.model.SuppType;
@@ -24,6 +27,9 @@ public class ProductDAO {
 	private PreparedStatement getAllProductStatement;
 	private PreparedStatement getProductIdStatement;
 	private PreparedStatement getAllProductCategory;
+	private PreparedStatement getAllGrade;
+	private PreparedStatement getAllWoodType;
+	private PreparedStatement getAllUom;
 	private PreparedStatement updateProductStatement;
 	private PreparedStatement deleteProductStatement;
 	private PreparedStatement insertProductStatement;
@@ -63,6 +69,12 @@ public class ProductDAO {
 			+ "where 1=1 ";
 	
 	private String productCatQuery = "select * from product_category order by id asc";
+	
+	private String woodTypeQuery = "select * from wood_type order by id asc";
+	
+	private String gradeQuery = "select * from grade order by id asc";
+	
+	private String uomQuery = "select * from uom order by id asc";
 	
 	private String insertProductQuery = "insert into product(id, product_code, product_name, product_category_id, "
 			+ "product_status, product_uom_id, is_maintain_stock, image_path, brand, barcode, description, "
@@ -111,34 +123,34 @@ public class ProductDAO {
 			insertProductStatement.setString(5, product.getProductStat());
 			insertProductStatement.setInt(6, product.getProductUom());
 			insertProductStatement.setInt(7, product.getIsMaintain());
-			insertProductStatement.setString(8, product.getImagePath());
-			insertProductStatement.setString(9, product.getBrand());
-			insertProductStatement.setString(10, product.getBarcode());
-			insertProductStatement.setString(11, product.getDescription());
-			insertProductStatement.setInt(12, product.getWoodType());
-			insertProductStatement.setInt(13, product.getGrade());
-			insertProductStatement.setInt(14, product.getThickness());
-			insertProductStatement.setInt(15, product.getCondition());
-			insertProductStatement.setInt(16, product.getIsSerial());
-			insertProductStatement.setInt(17, product.getIsAsset());
-			insertProductStatement.setInt(18, product.getWarranty());
-			insertProductStatement.setDouble(19, product.getNetto());
-			insertProductStatement.setInt(20, product.getNettoUom());
-			insertProductStatement.setInt(21, product.getIsPurchase());
-			insertProductStatement.setInt(22, product.getMinor());
-			insertProductStatement.setInt(23, product.getMinorUom());
-			insertProductStatement.setInt(24, product.getLeadTime());
-			insertProductStatement.setInt(25, product.getBuyCost());
-			insertProductStatement.setInt(26, product.getExpense());
-			insertProductStatement.setString(27, product.getMainSuppCode());
-			insertProductStatement.setString(28, product.getManufacturer());
-			insertProductStatement.setInt(29, product.getIsSales());
-			insertProductStatement.setInt(30, product.getIsService());
-			insertProductStatement.setInt(31, product.getSellCost());
-			insertProductStatement.setInt(32, product.getIncome());
-			insertProductStatement.setDouble(33, product.getMaxDisc());
-			insertProductStatement.setDate(34, sqlInputDate);
-			insertProductStatement.setString(35, product.getInputBy());
+//			insertProductStatement.setString(8, product.getImagePath());
+//			insertProductStatement.setString(9, product.getBrand());
+//			insertProductStatement.setString(10, product.getBarcode());
+//			insertProductStatement.setString(11, product.getDescription());
+			insertProductStatement.setInt(8, product.getWoodType());
+			insertProductStatement.setInt(9, product.getGrade());
+			insertProductStatement.setInt(10, product.getThickness());
+			insertProductStatement.setInt(11, product.getCondition());
+//			insertProductStatement.setInt(16, product.getIsSerial());
+//			insertProductStatement.setInt(17, product.getIsAsset());
+//			insertProductStatement.setInt(18, product.getWarranty());
+//			insertProductStatement.setDouble(19, product.getNetto());
+//			insertProductStatement.setInt(20, product.getNettoUom());
+//			insertProductStatement.setInt(21, product.getIsPurchase());
+//			insertProductStatement.setInt(22, product.getMinor());
+//			insertProductStatement.setInt(23, product.getMinorUom());
+//			insertProductStatement.setInt(24, product.getLeadTime());
+//			insertProductStatement.setInt(25, product.getBuyCost());
+//			insertProductStatement.setInt(26, product.getExpense());
+//			insertProductStatement.setString(27, product.getMainSuppCode());
+//			insertProductStatement.setString(28, product.getManufacturer());
+//			insertProductStatement.setInt(29, product.getIsSales());
+//			insertProductStatement.setInt(30, product.getIsService());
+//			insertProductStatement.setInt(31, product.getSellCost());
+//			insertProductStatement.setInt(32, product.getIncome());
+//			insertProductStatement.setDouble(33, product.getMaxDisc());
+			insertProductStatement.setDate(12, sqlInputDate);
+			insertProductStatement.setString(13, product.getInputBy());
 			insertProductStatement.executeUpdate();
 			
 			System.out.println(insertProductStatement);
@@ -313,6 +325,69 @@ public class ProductDAO {
 		}
 
 		return categories;
+	}
+	
+	public List<WoodType> getAllWoodType() throws SQLException {
+		List<WoodType> woodTypes = new ArrayList<WoodType>();
+
+		try {
+			getAllWoodType = connection.prepareStatement(woodTypeQuery);
+			ResultSet rs = getAllWoodType.executeQuery();
+			while (rs.next()) {
+				WoodType woodType = new WoodType();
+				woodType.setId(rs.getInt("id"));
+				woodType.setWoodType(rs.getString("wood_type"));
+				woodTypes.add(woodType);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return woodTypes;
+	}
+	
+	public List<Grade> getAllGrade() throws SQLException {
+		List<Grade> grades = new ArrayList<Grade>();
+
+		try {
+			getAllGrade = connection.prepareStatement(gradeQuery);
+			ResultSet rs = getAllGrade.executeQuery();
+			while (rs.next()) {
+				Grade grade = new Grade();
+				grade.setId(rs.getInt("id"));
+				grade.setGrade(rs.getString("grade"));
+				grades.add(grade);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return grades;
+	}
+	
+	public List<Uom> getAllUom() throws SQLException {
+		List<Uom> units = new ArrayList<Uom>();
+
+		try {
+			getAllUom = connection.prepareStatement(uomQuery);
+			ResultSet rs = getAllUom.executeQuery();
+			while (rs.next()) {
+				Uom uom = new Uom();
+				uom.setId(rs.getInt("id"));
+				uom.setUom(rs.getString("uom"));
+				units.add(uom);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return units;
 	}
 	
 	public void update(Product product) throws SQLException {

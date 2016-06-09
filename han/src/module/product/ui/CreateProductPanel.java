@@ -40,8 +40,11 @@ import javax.swing.table.AbstractTableModel;
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
+import module.pembelian.model.WoodType;
+import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
+import module.product.model.Uom;
 import sun.net.www.content.text.plain;
 
 public class CreateProductPanel extends JPanel {
@@ -59,7 +62,7 @@ public class CreateProductPanel extends JPanel {
 	private JLabel statLbl;
 	private JLabel unitLbl;
 	private JLabel maintainLbl;
-	private JLabel picLbl;
+	//private JLabel picLbl;
 	
 	private JLabel descTitleLbl;
 	private JLabel brandLbl;
@@ -70,7 +73,10 @@ public class CreateProductPanel extends JPanel {
 	private JLabel typeLbl;
 	private JLabel gradeLbl;
 	private JLabel thickLbl;
+	private JLabel longLbl;
+	private JLabel wideLbl;
 	private JLabel conditionLbl;
+	private JLabel minQtyLbl;
 	
 	private JLabel inventLbl;
 	private JLabel flagSerialLbl;
@@ -114,10 +120,10 @@ public class CreateProductPanel extends JPanel {
 	public ButtonGroup maintain;
 	public JRadioButton maintainYesField;
 	public JRadioButton maintainNoField;
-	public JTextField pathField;
-	public JButton browseBtn;
-	public JButton uploadBtn;
-	public JLabel imageField;
+//	public JTextField pathField;
+//	public JButton browseBtn;
+//	public JButton uploadBtn;
+//	public JLabel imageField;
 	
 	public JTextField brandField;
 	public JTextField barcodeField;
@@ -125,8 +131,11 @@ public class CreateProductPanel extends JPanel {
 	
 	public JComboBox<String> typeField;
 	public JComboBox<String> gradeField;
-	public JComboBox<String> thickField;
+	public JTextField thickField;
+	public JTextField longField;
+	public JTextField wideField;
 	public JComboBox<String> conField;
+	public JTextField minQtyField;
 	
 	public ButtonGroup flagSerial;
 	public ButtonGroup flagAsset;
@@ -205,25 +214,28 @@ public class CreateProductPanel extends JPanel {
 	public Product product;
 	public ProductCategory productCategory;
 	public List<ProductCategory> categories = null;
+	public List<WoodType> woodTypes = null;
+	public List<Grade> grades = null;
+	public List<Uom> units = null;
 	
 	Date todayDate;
 	//SimpleDateFormat dateFormat = new SimpleDateFormat(yyyy-MM-dd);
 	
 	public CreateProductPanel() {
 		setLayout(null);
-		this.parent = this;
-		//setPreferredSize(new Dimension(1166, 1300));
+		//this.parent = this;
+		setPreferredSize(new Dimension(1166, 620));
 		
 		todayDate = new Date();
 		todayDate.getTime();
 		
-		containerPnl = new JPanel();
-		containerPnl.setPreferredSize(new Dimension(1166, 1950));
-		containerPnl.setLayout(null);
+//		containerPnl = new JPanel();
+//		containerPnl.setPreferredSize(new Dimension(1166, 620));
+//		containerPnl.setLayout(null);
 		
-		scrollPane = new JScrollPane(containerPnl);
-		scrollPane.setBounds(0,0,1166,630);
-		add(scrollPane);
+//		scrollPane = new JScrollPane(containerPnl);
+//		scrollPane.setBounds(0,0,1166,630);
+//		add(scrollPane);
 		
 		breadcrumb = new JLabel("ERP > Pembelian > Produk");
 		breadcrumb.setBounds(20, 5, 200, 25);
@@ -256,8 +268,8 @@ public class CreateProductPanel extends JPanel {
 		unitLbl.setBounds(20, 200, 100, 30);
 		maintainLbl = new JLabel("Maintain Stock");
 		maintainLbl.setBounds(20, 230, 100, 30);
-		picLbl = new JLabel("Gambar");
-		picLbl.setBounds(20, 260, 100, 30);
+//		picLbl = new JLabel("Gambar");
+//		picLbl.setBounds(20, 260, 100, 30);
 		
 		descTitleLbl = new JLabel("<html><u>Description</u></html>");
 		descTitleLbl.setBounds(20, 420, 100, 30);
@@ -270,19 +282,25 @@ public class CreateProductPanel extends JPanel {
 		descLbl.setBounds(20, 510, 100, 30);
 		
 		attLbl = new JLabel("<html><u>Atribut Produk</u></html>");
-		attLbl.setBounds(20, 570, 100, 30);
+		attLbl.setBounds(20, 260, 100, 30);
 		attLbl.setFont(new Font(null, Font.BOLD, 12));
 		typeLbl = new JLabel("Jenis Kayu");
-		typeLbl.setBounds(20, 600, 100, 30);
+		typeLbl.setBounds(20, 290, 100, 30);
 		gradeLbl = new JLabel("Grade");
-		gradeLbl.setBounds(20, 630, 100, 30);
+		gradeLbl.setBounds(20, 320, 100, 30);
 		thickLbl = new JLabel("Tebal");
-		thickLbl.setBounds(20, 660, 100, 30);
+		thickLbl.setBounds(20, 350, 100, 30);
+		longLbl = new JLabel("Panjang");
+		longLbl.setBounds(20, 380, 100, 30);
+		wideLbl = new JLabel("Lebar");
+		wideLbl.setBounds(20, 410, 100, 30);
 		conditionLbl = new JLabel("Kondisi");
-		conditionLbl.setBounds(20, 690, 100, 30);
+		conditionLbl.setBounds(20, 440, 100, 30);
+		minQtyLbl = new JLabel("Minimum Qty");
+		minQtyLbl.setBounds(20, 470, 100, 30);
 		
 		inventLbl = new JLabel("<html><u>Inventory</u></html>");
-		inventLbl.setBounds(20, 720, 100, 30);
+		inventLbl.setBounds(20, 780, 100, 30);
 		inventLbl.setFont(new Font(null, Font.BOLD, 12));
 		flagSerialLbl = new JLabel("Flag Serial No");
 		flagSerialLbl.setBounds(20, 750, 100, 30);
@@ -348,8 +366,8 @@ public class CreateProductPanel extends JPanel {
 		taxLbl.setBounds(20, 1740, 100, 30);
 		
 		idField = new JTextField();
-		idField.setText(generateCode());
-		idField.setEnabled(false);
+//		idField.setText(generateCode());
+//		idField.setEnabled(false);
 		idField.setBounds(195, 80, 100, 25);
 		
 		nameField = new JTextField();
@@ -384,74 +402,84 @@ public class CreateProductPanel extends JPanel {
 		statField.addItem("Pilih");
 		statField.setBounds(195, 170, 150, 25);
 		
+		try {
+			units = ServiceFactory.getProductBL().getAllUom();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		uomField = new JComboBox<>();
 		uomField.addItem("Pilih");
+		for(int i=0; i<units.size(); i++){
+			uomField.addItem(units.get(i).getUom());
+		}
 		uomField.setBounds(195, 200, 150, 25);
 		
 		maintain = new ButtonGroup();
 		
 		maintainYesField = new JRadioButton("Ya");
+		maintainYesField.setSelected(true);
 		maintainYesField.setBounds(195, 230, 50, 25);
 		
 		maintainNoField = new JRadioButton("Tidak");
-		maintainNoField.setSelected(true);
+		maintainNoField.setSelected(false);
 		maintainNoField.setBounds(250, 230, 50, 25);
 		
 		maintain.add(maintainYesField);
 		maintain.add(maintainNoField);
 		
-		pathField = new JTextField();
-		pathField.setBounds(195, 260, 150, 25);
-		
-		browseBtn = new JButton("Browse");
-		browseBtn.setBounds(345, 260, 75, 25);
-		browseBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				JFileChooser fc = new JFileChooser();
-				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                int result = fc.showOpenDialog(null);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    try {
-                        imageField.setIcon(new ImageIcon(ImageIO.read(file).getScaledInstance(imageField.getWidth(), imageField.getHeight(), Image.SCALE_SMOOTH)));
-                        pathField.setText(file.getAbsolutePath());
-                        filename = file.getName();
-                    } catch (IOException ioe) {
-                        ioe.printStackTrace();
-                    }
-                }
-			}
-		});
-		
-		uploadBtn = new JButton("Upload");
-		uploadBtn.setBounds(425, 260, 75, 25);
-		uploadBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				Path source = Paths.get(pathField.getText());
-				Path destination = Paths.get("C:/test/");
-				
-				try {
-					Path target = destination.resolve(filename);
-					Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
-					
-					JOptionPane.showMessageDialog(null, "Upload Berhasil");
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Upload Gagal");
-				}
-			}
-		});
-		
-		imageField = new JLabel();
-		imageField.setBounds(20, 290, 300, 125);
-		imageField.setBorder(new LineBorder(Color.black));
+//		pathField = new JTextField();
+//		pathField.setBounds(195, 260, 150, 25);
+//		
+//		browseBtn = new JButton("Browse");
+//		browseBtn.setBounds(345, 260, 75, 25);
+//		browseBtn.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// TODO Auto-generated method stub
+//				JFileChooser fc = new JFileChooser();
+//				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+//                int result = fc.showOpenDialog(null);
+//                if (result == JFileChooser.APPROVE_OPTION) {
+//                    File file = fc.getSelectedFile();
+//                    try {
+//                        imageField.setIcon(new ImageIcon(ImageIO.read(file).getScaledInstance(imageField.getWidth(), imageField.getHeight(), Image.SCALE_SMOOTH)));
+//                        pathField.setText(file.getAbsolutePath());
+//                        filename = file.getName();
+//                    } catch (IOException ioe) {
+//                        ioe.printStackTrace();
+//                    }
+//                }
+//			}
+//		});
+//		
+//		uploadBtn = new JButton("Upload");
+//		uploadBtn.setBounds(425, 260, 75, 25);
+//		uploadBtn.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// TODO Auto-generated method stub
+//				Path source = Paths.get(pathField.getText());
+//				Path destination = Paths.get("C:/test/");
+//				
+//				try {
+//					Path target = destination.resolve(filename);
+//					Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+//					
+//					JOptionPane.showMessageDialog(null, "Upload Berhasil");
+//				} catch (IOException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//					JOptionPane.showMessageDialog(null, "Upload Gagal");
+//				}
+//			}
+//		});
+//		
+//		imageField = new JLabel();
+//		imageField.setBounds(20, 290, 300, 125);
+//		imageField.setBorder(new LineBorder(Color.black));
 		
 		brandField = new JTextField();
 		brandField.setBounds(195, 450, 150, 25);
@@ -462,24 +490,49 @@ public class CreateProductPanel extends JPanel {
 		descField = new JTextArea();
 		descField.setBounds(195, 510, 250, 55);
 		
+		try {
+			woodTypes = ServiceFactory.getProductBL().getAllWoodType();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		typeField = new JComboBox<>();
 		typeField.addItem("Pilih");
-		typeField.setEnabled(false);
-		typeField.setBounds(195, 600, 150, 25);
+		for(int i=0; i<woodTypes.size(); i++){
+			typeField.addItem(woodTypes.get(i).getWoodType());
+		}
+		//typeField.setEnabled(false);
+		typeField.setBounds(195, 290, 150, 25);
 		
+		try {
+			grades = ServiceFactory.getProductBL().getAllGrade();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		gradeField = new JComboBox<>();
 		gradeField.addItem("Pilih");
-		gradeField.setEnabled(false);
-		gradeField.setBounds(195, 630, 150, 25);
+		for(int i=0; i<grades.size(); i++){
+			gradeField.addItem(grades.get(i).getGrade());
+		}
+		//gradeField.setEnabled(false);
+		gradeField.setBounds(195, 320, 150, 25);
 		
-		thickField = new JComboBox<>();
-		thickField.addItem("Pilih");
-		thickField.setEnabled(false);
-		thickField.setBounds(195, 660, 150, 25);
+		thickField = new JTextField();
+		thickField.setBounds(195, 350, 150, 25);
+		
+		longField = new JTextField();
+		longField.setBounds(195, 380, 150, 25);
+		
+		wideField = new JTextField();
+		wideField.setBounds(195, 410, 150, 25);
 		
 		conField = new JComboBox<>();
 		conField.addItem("Pilih");
-		conField.setBounds(195, 690, 150, 25);
+		conField.setBounds(195, 440, 150, 25);
+		
+		minQtyField = new JTextField();
+		minQtyField.setBounds(195, 470, 150, 25);
 		
 		flagSerial = new ButtonGroup();
 		
@@ -771,7 +824,7 @@ public class CreateProductPanel extends JPanel {
 		taxScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
 		saveBtn = new JButton("Save");
-		saveBtn.setBounds(745, 1880, 75, 25);
+		saveBtn.setBounds(745, 550, 75, 25);
 		saveBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -786,106 +839,112 @@ public class CreateProductPanel extends JPanel {
 			}
 		});
 		
-		containerPnl.add(breadcrumb);
-		containerPnl.add(backBtn);
-		containerPnl.add(titleLbl);
-		containerPnl.add(idLbl);
-		containerPnl.add(nameLbl);
-		containerPnl.add(catLbl);
-		containerPnl.add(statLbl);
-		containerPnl.add(unitLbl);
-		containerPnl.add(maintainLbl);
-		containerPnl.add(picLbl);
-	    containerPnl.add(descTitleLbl);
-	    containerPnl.add(brandLbl);
-	    containerPnl.add(barcodeLbl);
-	    containerPnl.add(descLbl);
-	    containerPnl.add(attLbl);
-	    containerPnl.add(typeLbl);
-	    containerPnl.add(gradeLbl);
-	    containerPnl.add(thickLbl);
-	    containerPnl.add(conditionLbl);
-	    containerPnl.add(inventLbl);
-	    containerPnl.add(flagSerialLbl);
-	    containerPnl.add(flagAssetLbl);
-	    containerPnl.add(warrantLbl);
-	    containerPnl.add(weightLbl);
-	    containerPnl.add(purchaseInfoLbl);
-	    containerPnl.add(flagPurchaseLbl);
-	    containerPnl.add(minOrderLbl);
-	    containerPnl.add(leadTimeLbl);
-	    containerPnl.add(defCostLbl);
-	    containerPnl.add(defExpense);
-	    containerPnl.add(conversionLbl);
-	    containerPnl.add(suppInfoLbl);
-	    containerPnl.add(suppLbl);
-	    containerPnl.add(manufacturerLbl);
-	    containerPnl.add(reservedSuppLbl);
-	    containerPnl.add(salesInfoLbl);
-	    containerPnl.add(flagSalesLbl);
-	    containerPnl.add(flagProductLbl);
-	    containerPnl.add(defSellCostLbl);
-	    containerPnl.add(defIncomeLbl);
-	    containerPnl.add(maxDiscountLbl);
-	    containerPnl.add(customerListLbl);
-	    containerPnl.add(taxLbl);
-	    containerPnl.add(idField);
-	    containerPnl.add(nameField);
-	    containerPnl.add(catField);
-	    containerPnl.add(statField);
-	    containerPnl.add(uomField);
-	    containerPnl.add(maintainYesField);
-	    containerPnl.add(maintainNoField);
-	    containerPnl.add(pathField);
-	    containerPnl.add(browseBtn);
-	    containerPnl.add(uploadBtn);
-	    containerPnl.add(imageField);
-	    containerPnl.add(brandField);
-	    containerPnl.add(barcodeField);
-	    containerPnl.add(descField);
-	    containerPnl.add(typeField);
-	    containerPnl.add(gradeField);
-	    containerPnl.add(thickField);
-	    containerPnl.add(conField);
-	    containerPnl.add(serialYesField);
-	    containerPnl.add(serialNoField);
-	    containerPnl.add(assetYesField);
-	    containerPnl.add(assetNoField);
-	    containerPnl.add(warrantField);
-	    containerPnl.add(dayLbl);
-	    containerPnl.add(nettoField);
-	    containerPnl.add(nettoUnitField);
-	    containerPnl.add(purchaseYesField);
-	    containerPnl.add(purchaseNoField);
-	    containerPnl.add(minOrderField);
-	    containerPnl.add(minOrderUnitField);
-	    containerPnl.add(leadTimeField);
-	    containerPnl.add(day2Lbl);
-	    containerPnl.add(buyCostField);
-	    containerPnl.add(expenseField);
-	    containerPnl.add(uomAddBtn);
-	    containerPnl.add(uomDeleteBtn);
-	    containerPnl.add(uomScroll);
-	    containerPnl.add(supplierField);
-	    containerPnl.add(manufacturerField);
-	    containerPnl.add(resSupSearchBtn);
-	    containerPnl.add(resSupDeleteBtn);
-	    containerPnl.add(resSupScroll);
-	    containerPnl.add(salesYesField);
-	    containerPnl.add(salesNoField);
-	    containerPnl.add(serviceYesField);
-	    containerPnl.add(serviceNoField);
-	    containerPnl.add(sellCostField);
-	    containerPnl.add(incomeField);
-	    containerPnl.add(discountField);
-	    containerPnl.add(percentLbl);
-	    containerPnl.add(custSearchBtn);
-	    containerPnl.add(custDeleteBtn);
-	    containerPnl.add(custScroll);
-	    containerPnl.add(taxAddBtn);
-	    containerPnl.add(taxDeleteBtn);
-	    containerPnl.add(taxScroll);
-	    containerPnl.add(saveBtn);
+		add(breadcrumb);
+		add(backBtn);
+		add(titleLbl);
+		add(idLbl);
+		add(nameLbl);
+		add(catLbl);
+		add(statLbl);
+		add(unitLbl);
+		add(maintainLbl);
+		//containerPnl.add(picLbl);
+	    //containerPnl.add(descTitleLbl);
+	    //containerPnl.add(brandLbl);
+	    //containerPnl.add(barcodeLbl);
+	    //containerPnl.add(descLbl);
+	    add(attLbl);
+	    add(typeLbl);
+	    add(gradeLbl);
+	    add(thickLbl);
+	    add(longLbl);
+	    add(wideLbl);
+	    add(conditionLbl);
+	    add(minQtyLbl);
+	    //containerPnl.add(inventLbl);
+	    //containerPnl.add(flagSerialLbl);
+	    //containerPnl.add(flagAssetLbl);
+//	    containerPnl.add(warrantLbl);
+//	    containerPnl.add(weightLbl);
+//	    containerPnl.add(purchaseInfoLbl);
+//	    containerPnl.add(flagPurchaseLbl);
+//	    containerPnl.add(minOrderLbl);
+//	    containerPnl.add(leadTimeLbl);
+//	    containerPnl.add(defCostLbl);
+//	    containerPnl.add(defExpense);
+//	    containerPnl.add(conversionLbl);
+//	    containerPnl.add(suppInfoLbl);
+//	    containerPnl.add(suppLbl);
+//	    containerPnl.add(manufacturerLbl);
+//	    containerPnl.add(reservedSuppLbl);
+//	    containerPnl.add(salesInfoLbl);
+//	    containerPnl.add(flagSalesLbl);
+//	    containerPnl.add(flagProductLbl);
+//	    containerPnl.add(defSellCostLbl);
+//	    containerPnl.add(defIncomeLbl);
+//	    containerPnl.add(maxDiscountLbl);
+//	    containerPnl.add(customerListLbl);
+//	    containerPnl.add(taxLbl);
+	    add(idField);
+	    add(nameField);
+	    add(catField);
+	    add(statField);
+	    add(uomField);
+	    add(maintainYesField);
+	    add(maintainNoField);
+//	    containerPnl.add(pathField);
+//	    containerPnl.add(browseBtn);
+//	    containerPnl.add(uploadBtn);
+//	    containerPnl.add(imageField);
+	    //containerPnl.add(brandField);
+	    //containerPnl.add(barcodeField);
+	    //containerPnl.add(descField);
+	    add(typeField);
+	    add(gradeField);
+	    add(thickField);
+	    add(longField);
+	    add(wideField);
+	    add(conField);
+	    add(minQtyField);
+	   // containerPnl.add(serialYesField);
+	    //containerPnl.add(serialNoField);
+	    //containerPnl.add(assetYesField);
+	    //containerPnl.add(assetNoField);
+	    //containerPnl.add(warrantField);
+	    //containerPnl.add(dayLbl);
+	    //containerPnl.add(nettoField);
+	    //containerPnl.add(nettoUnitField);
+	    //containerPnl.add(purchaseYesField);
+	    //containerPnl.add(purchaseNoField);
+//	    containerPnl.add(minOrderField);
+//	    containerPnl.add(minOrderUnitField);
+//	    containerPnl.add(leadTimeField);
+//	    containerPnl.add(day2Lbl);
+//	    containerPnl.add(buyCostField);
+//	    containerPnl.add(expenseField);
+//	    containerPnl.add(uomAddBtn);
+//	    containerPnl.add(uomDeleteBtn);
+//	    containerPnl.add(uomScroll);
+//	    containerPnl.add(supplierField);
+//	    containerPnl.add(manufacturerField);
+//	    containerPnl.add(resSupSearchBtn);
+//	    containerPnl.add(resSupDeleteBtn);
+//	    containerPnl.add(resSupScroll);
+//	    containerPnl.add(salesYesField);
+//	    containerPnl.add(salesNoField);
+//	    containerPnl.add(serviceYesField);
+//	    containerPnl.add(serviceNoField);
+//	    containerPnl.add(sellCostField);
+//	    containerPnl.add(incomeField);
+//	    containerPnl.add(discountField);
+//	    containerPnl.add(percentLbl);
+//	    containerPnl.add(custSearchBtn);
+//	    containerPnl.add(custDeleteBtn);
+//	    containerPnl.add(custScroll);
+//	    containerPnl.add(taxAddBtn);
+//	    containerPnl.add(taxDeleteBtn);
+//	    containerPnl.add(taxScroll);
+	    add(saveBtn);
 		
 	}
 	
@@ -905,31 +964,31 @@ public class CreateProductPanel extends JPanel {
 		insertProduct.setProductStat(statField.getSelectedItem().toString());
 		insertProduct.setProductUom(uomField.getSelectedIndex());
 		insertProduct.setIsMaintain(1);
-		insertProduct.setImagePath(pathField.getText()+filename);
-		insertProduct.setBrand(brandField.getText());
-		insertProduct.setBarcode(barcodeField.getText());
-		insertProduct.setDescription(descField.getText());
+		//insertProduct.setImagePath(pathField.getText()+filename);
+//		insertProduct.setBrand(brandField.getText());
+//		insertProduct.setBarcode(barcodeField.getText());
+//		insertProduct.setDescription(descField.getText());
 		insertProduct.setWoodType(typeField.getSelectedIndex());
 		insertProduct.setGrade(gradeField.getSelectedIndex());
-		insertProduct.setThickness(thickField.getSelectedIndex());
+		insertProduct.setThickness(Integer.parseInt(thickField.getText()));
 		insertProduct.setCondition(conField.getSelectedIndex());
-		insertProduct.setIsAsset(1);
-		insertProduct.setWarranty(Integer.parseInt(warrantField.getText()));
-		insertProduct.setNetto(Double.parseDouble(nettoField.getText()));
-		insertProduct.setNettoUom(nettoUnitField.getSelectedIndex());
-		insertProduct.setIsPurchase(1);
-		insertProduct.setMinor(Integer.parseInt(minOrderField.getText()));
-		insertProduct.setMinorUom(minOrderUnitField.getSelectedIndex());
-		insertProduct.setLeadTime(Integer.parseInt(leadTimeField.getText()));
-		insertProduct.setBuyCost(buyCostField.getSelectedIndex());
-		insertProduct.setExpense(expenseField.getSelectedIndex());
-		insertProduct.setMainSuppCode(supplierField.getSelectedItem().toString());
-		insertProduct.setManufacturer(manufacturerField.getText());
-		insertProduct.setIsSales(1);
-		insertProduct.setIsService(1);
-		insertProduct.setSellCost(sellCostField.getSelectedIndex());
-		insertProduct.setIncome(incomeField.getSelectedIndex());
-		insertProduct.setMaxDisc(Double.parseDouble(discountField.getText()));
+//		insertProduct.setIsAsset(1);
+//		insertProduct.setWarranty(Integer.parseInt(warrantField.getText()));
+//		insertProduct.setNetto(Double.parseDouble(nettoField.getText()));
+//		insertProduct.setNettoUom(nettoUnitField.getSelectedIndex());
+//		insertProduct.setIsPurchase(1);
+//		insertProduct.setMinor(Integer.parseInt(minOrderField.getText()));
+//		insertProduct.setMinorUom(minOrderUnitField.getSelectedIndex());
+//		insertProduct.setLeadTime(Integer.parseInt(leadTimeField.getText()));
+//		insertProduct.setBuyCost(buyCostField.getSelectedIndex());
+//		insertProduct.setExpense(expenseField.getSelectedIndex());
+//		insertProduct.setMainSuppCode(supplierField.getSelectedItem().toString());
+//		insertProduct.setManufacturer(manufacturerField.getText());
+//		insertProduct.setIsSales(1);
+//		insertProduct.setIsService(1);
+//		insertProduct.setSellCost(sellCostField.getSelectedIndex());
+//		insertProduct.setIncome(incomeField.getSelectedIndex());
+//		insertProduct.setMaxDisc(Double.parseDouble(discountField.getText()));
 		insertProduct.setInputDate(todayDate);
 		insertProduct.setInputBy("Irvan");
 		

@@ -71,7 +71,10 @@ public class ProductEditPanel extends JPanel implements Bridging {
 	private JLabel typeLbl;
 	private JLabel gradeLbl;
 	private JLabel thickLbl;
+	private JLabel longLbl;
+	private JLabel wideLbl;
 	private JLabel conditionLbl;
+	private JLabel minQtyLbl;
 	
 	private JLabel inventLbl;
 	private JLabel flagSerialLbl;
@@ -126,8 +129,11 @@ public class ProductEditPanel extends JPanel implements Bridging {
 	
 	public JComboBox<String> typeField;
 	public JComboBox<String> gradeField;
-	public JComboBox<String> thickField;
+	public JTextField thickField;
+	public JTextField longField;
+	public JTextField wideField;
 	public JComboBox<String> conField;
+	public JTextField minQtyField;
 	
 	public ButtonGroup flagSerial;
 	public ButtonGroup flagAsset;
@@ -212,19 +218,19 @@ public class ProductEditPanel extends JPanel implements Bridging {
 	
 	public ProductEditPanel() {
 		setLayout(null);
-		this.parent = this;
-		//setPreferredSize(new Dimension(1166, 1300));
+		//this.parent = this;
+		setPreferredSize(new Dimension(1166, 620));
 		
 		todayDate = new Date();
 		todayDate.getTime();
 		
-		containerPnl = new JPanel();
-		containerPnl.setPreferredSize(new Dimension(1166, 1950));
-		containerPnl.setLayout(null);
-		
-		scrollPane = new JScrollPane(containerPnl);
-		scrollPane.setBounds(0,0,1166,630);
-		add(scrollPane);
+//		containerPnl = new JPanel();
+//		containerPnl.setPreferredSize(new Dimension(1166, 1950));
+//		containerPnl.setLayout(null);
+//		
+//		scrollPane = new JScrollPane(containerPnl);
+//		scrollPane.setBounds(0,0,1166,630);
+//		add(scrollPane);
 		
 		breadcrumb = new JLabel("ERP > Pembelian > Produk");
 		breadcrumb.setBounds(20, 5, 200, 25);
@@ -271,16 +277,22 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		descLbl.setBounds(20, 510, 100, 30);
 		
 		attLbl = new JLabel("<html><u>Atribut Produk</u></html>");
-		attLbl.setBounds(20, 570, 100, 30);
+		attLbl.setBounds(20, 260, 100, 30);
 		attLbl.setFont(new Font(null, Font.BOLD, 12));
 		typeLbl = new JLabel("Jenis Kayu");
-		typeLbl.setBounds(20, 600, 100, 30);
+		typeLbl.setBounds(20, 290, 100, 30);
 		gradeLbl = new JLabel("Grade");
-		gradeLbl.setBounds(20, 630, 100, 30);
+		gradeLbl.setBounds(20, 320, 100, 30);
 		thickLbl = new JLabel("Tebal");
-		thickLbl.setBounds(20, 660, 100, 30);
+		thickLbl.setBounds(20, 350, 100, 30);
+		longLbl = new JLabel("Panjang");
+		longLbl.setBounds(20, 380, 100, 30);
+		wideLbl = new JLabel("Lebar");
+		wideLbl.setBounds(20, 410, 100, 30);
 		conditionLbl = new JLabel("Kondisi");
-		conditionLbl.setBounds(20, 690, 100, 30);
+		conditionLbl.setBounds(20, 440, 100, 30);
+		minQtyLbl = new JLabel("Minimum Qty");
+		minQtyLbl.setBounds(20, 470, 100, 30);
 		
 		inventLbl = new JLabel("<html><u>Inventory</u></html>");
 		inventLbl.setBounds(20, 720, 100, 30);
@@ -439,27 +451,34 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		barcodeField = new JTextField();
 		barcodeField.setBounds(195, 480, 150, 25);
 		
-		descField = new JTextArea();
-		descField.setBounds(195, 510, 250, 55);
+//		descField = new JTextArea();
+//		descField.setBounds(195, 260, 250, 55);
 		
 		typeField = new JComboBox<>();
 		typeField.addItem("Pilih");
 		typeField.setEnabled(false);
-		typeField.setBounds(195, 600, 150, 25);
+		typeField.setBounds(195, 290, 150, 25);
 		
 		gradeField = new JComboBox<>();
 		gradeField.addItem("Pilih");
 		gradeField.setEnabled(false);
-		gradeField.setBounds(195, 630, 150, 25);
+		gradeField.setBounds(195, 320, 150, 25);
 		
-		thickField = new JComboBox<>();
-		thickField.addItem("Pilih");
-		thickField.setEnabled(false);
-		thickField.setBounds(195, 660, 150, 25);
+		thickField = new JTextField();
+		thickField.setBounds(195, 350, 150, 25);
+		
+		longField = new JTextField();
+		longField.setBounds(195, 380, 150, 25);
+		
+		wideField = new JTextField();
+		wideField.setBounds(195, 410, 150, 25);
 		
 		conField = new JComboBox<>();
 		conField.addItem("Pilih");
-		conField.setBounds(195, 690, 150, 25);
+		conField.setBounds(195, 440, 150, 25);
+		
+		minQtyField = new JTextField();
+		minQtyField.setBounds(195, 470, 150, 25);
 		
 		flagSerial = new ButtonGroup();
 		
@@ -751,7 +770,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		taxScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
 		saveBtn = new JButton("Save");
-		saveBtn.setBounds(745, 1880, 75, 25);
+		saveBtn.setBounds(745, 550, 75, 25);
 		saveBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -766,106 +785,112 @@ public class ProductEditPanel extends JPanel implements Bridging {
 			}
 		});
 		
-		containerPnl.add(breadcrumb);
-		containerPnl.add(backBtn);
-		containerPnl.add(titleLbl);
-		containerPnl.add(idLbl);
-		containerPnl.add(nameLbl);
-		containerPnl.add(catLbl);
-		containerPnl.add(statLbl);
-		containerPnl.add(unitLbl);
-		containerPnl.add(maintainLbl);
-		containerPnl.add(picLbl);
-	    containerPnl.add(descTitleLbl);
-	    containerPnl.add(brandLbl);
-	    containerPnl.add(barcodeLbl);
-	    containerPnl.add(descLbl);
-	    containerPnl.add(attLbl);
-	    containerPnl.add(typeLbl);
-	    containerPnl.add(gradeLbl);
-	    containerPnl.add(thickLbl);
-	    containerPnl.add(conditionLbl);
-	    containerPnl.add(inventLbl);
-	    containerPnl.add(flagSerialLbl);
-	    containerPnl.add(flagAssetLbl);
-	    containerPnl.add(warrantLbl);
-	    containerPnl.add(weightLbl);
-	    containerPnl.add(purchaseInfoLbl);
-	    containerPnl.add(flagPurchaseLbl);
-	    containerPnl.add(minOrderLbl);
-	    containerPnl.add(leadTimeLbl);
-	    containerPnl.add(defCostLbl);
-	    containerPnl.add(defExpense);
-	    containerPnl.add(conversionLbl);
-	    containerPnl.add(suppInfoLbl);
-	    containerPnl.add(suppLbl);
-	    containerPnl.add(manufacturerLbl);
-	    containerPnl.add(reservedSuppLbl);
-	    containerPnl.add(salesInfoLbl);
-	    containerPnl.add(flagSalesLbl);
-	    containerPnl.add(flagProductLbl);
-	    containerPnl.add(defSellCostLbl);
-	    containerPnl.add(defIncomeLbl);
-	    containerPnl.add(maxDiscountLbl);
-	    containerPnl.add(customerListLbl);
-	    containerPnl.add(taxLbl);
-	    containerPnl.add(idField);
-	    containerPnl.add(nameField);
-	    containerPnl.add(catField);
-	    containerPnl.add(statField);
-	    containerPnl.add(uomField);
-	    containerPnl.add(maintainYesField);
-	    containerPnl.add(maintainNoField);
-	    containerPnl.add(pathField);
-	    containerPnl.add(browseBtn);
-	    containerPnl.add(uploadBtn);
-	    containerPnl.add(imageField);
-	    containerPnl.add(brandField);
-	    containerPnl.add(barcodeField);
-	    containerPnl.add(descField);
-	    containerPnl.add(typeField);
-	    containerPnl.add(gradeField);
-	    containerPnl.add(thickField);
-	    containerPnl.add(conField);
-	    containerPnl.add(serialYesField);
-	    containerPnl.add(serialNoField);
-	    containerPnl.add(assetYesField);
-	    containerPnl.add(assetNoField);
-	    containerPnl.add(warrantField);
-	    containerPnl.add(dayLbl);
-	    containerPnl.add(nettoField);
-	    containerPnl.add(nettoUnitField);
-	    containerPnl.add(purchaseYesField);
-	    containerPnl.add(purchaseNoField);
-	    containerPnl.add(minOrderField);
-	    containerPnl.add(minOrderUnitField);
-	    containerPnl.add(leadTimeField);
-	    containerPnl.add(day2Lbl);
-	    containerPnl.add(buyCostField);
-	    containerPnl.add(expenseField);
-	    containerPnl.add(uomAddBtn);
-	    containerPnl.add(uomDeleteBtn);
-	    containerPnl.add(uomScroll);
-	    containerPnl.add(supplierField);
-	    containerPnl.add(manufacturerField);
-	    containerPnl.add(resSupSearchBtn);
-	    containerPnl.add(resSupDeleteBtn);
-	    containerPnl.add(resSupScroll);
-	    containerPnl.add(salesYesField);
-	    containerPnl.add(salesNoField);
-	    containerPnl.add(serviceYesField);
-	    containerPnl.add(serviceNoField);
-	    containerPnl.add(sellCostField);
-	    containerPnl.add(incomeField);
-	    containerPnl.add(discountField);
-	    containerPnl.add(percentLbl);
-	    containerPnl.add(custSearchBtn);
-	    containerPnl.add(custDeleteBtn);
-	    containerPnl.add(custScroll);
-	    containerPnl.add(taxAddBtn);
-	    containerPnl.add(taxDeleteBtn);
-	    containerPnl.add(taxScroll);
-	    containerPnl.add(saveBtn);
+		add(breadcrumb);
+		add(backBtn);
+		add(titleLbl);
+		add(idLbl);
+		add(nameLbl);
+		add(catLbl);
+		add(statLbl);
+		add(unitLbl);
+		add(maintainLbl);
+		//containerPnl.add(picLbl);
+//	    containerPnl.add(descTitleLbl);
+//	    containerPnl.add(brandLbl);
+//	    containerPnl.add(barcodeLbl);
+//	    containerPnl.add(descLbl);
+	    add(attLbl);
+	    add(typeLbl);
+	    add(gradeLbl);
+	    add(thickLbl);
+	    add(longLbl);
+	    add(wideLbl);
+	    add(conditionLbl);
+	    add(minQtyLbl);
+//	    containerPnl.add(inventLbl);
+//	    containerPnl.add(flagSerialLbl);
+//	    containerPnl.add(flagAssetLbl);
+//	    containerPnl.add(warrantLbl);
+//	    containerPnl.add(weightLbl);
+//	    containerPnl.add(purchaseInfoLbl);
+//	    containerPnl.add(flagPurchaseLbl);
+//	    containerPnl.add(minOrderLbl);
+//	    containerPnl.add(leadTimeLbl);
+//	    containerPnl.add(defCostLbl);
+//	    containerPnl.add(defExpense);
+//	    containerPnl.add(conversionLbl);
+//	    containerPnl.add(suppInfoLbl);
+//	    containerPnl.add(suppLbl);
+//	    containerPnl.add(manufacturerLbl);
+//	    containerPnl.add(reservedSuppLbl);
+//	    containerPnl.add(salesInfoLbl);
+//	    containerPnl.add(flagSalesLbl);
+//	    containerPnl.add(flagProductLbl);
+//	    containerPnl.add(defSellCostLbl);
+//	    containerPnl.add(defIncomeLbl);
+//	    containerPnl.add(maxDiscountLbl);
+//	    containerPnl.add(customerListLbl);
+//	    containerPnl.add(taxLbl);
+	    add(idField);
+	    add(nameField);
+	    add(catField);
+	    add(statField);
+	    add(uomField);
+	    add(maintainYesField);
+	    add(maintainNoField);
+//	    containerPnl.add(pathField);
+//	    containerPnl.add(browseBtn);
+//	    containerPnl.add(uploadBtn);
+//	    containerPnl.add(imageField);
+//	    add(brandField);
+//	    add(barcodeField);
+//	    add(descField);
+	    add(typeField);
+	    add(gradeField);
+	    add(thickField);
+	    add(longField);
+	    add(wideField);
+	    add(conField);
+	    add(minQtyField);
+//	    containerPnl.add(serialYesField);
+//	    containerPnl.add(serialNoField);
+//	    containerPnl.add(assetYesField);
+//	    containerPnl.add(assetNoField);
+//	    containerPnl.add(warrantField);
+//	    containerPnl.add(dayLbl);
+//	    containerPnl.add(nettoField);
+//	    containerPnl.add(nettoUnitField);
+//	    containerPnl.add(purchaseYesField);
+//	    containerPnl.add(purchaseNoField);
+//	    containerPnl.add(minOrderField);
+//	    containerPnl.add(minOrderUnitField);
+//	    containerPnl.add(leadTimeField);
+//	    containerPnl.add(day2Lbl);
+//	    containerPnl.add(buyCostField);
+//	    containerPnl.add(expenseField);
+//	    containerPnl.add(uomAddBtn);
+//	    containerPnl.add(uomDeleteBtn);
+//	    containerPnl.add(uomScroll);
+//	    containerPnl.add(supplierField);
+//	    containerPnl.add(manufacturerField);
+//	    containerPnl.add(resSupSearchBtn);
+//	    containerPnl.add(resSupDeleteBtn);
+//	    containerPnl.add(resSupScroll);
+//	    containerPnl.add(salesYesField);
+//	    containerPnl.add(salesNoField);
+//	    containerPnl.add(serviceYesField);
+//	    containerPnl.add(serviceNoField);
+//	    containerPnl.add(sellCostField);
+//	    containerPnl.add(incomeField);
+//	    containerPnl.add(discountField);
+//	    containerPnl.add(percentLbl);
+//	    containerPnl.add(custSearchBtn);
+//	    containerPnl.add(custDeleteBtn);
+//	    containerPnl.add(custScroll);
+//	    containerPnl.add(taxAddBtn);
+//	    containerPnl.add(taxDeleteBtn);
+//	    containerPnl.add(taxScroll);
+	    add(saveBtn);
 		
 	}
 	
@@ -877,31 +902,31 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		editProduct.setProductStat(statField.getSelectedItem().toString());
 		editProduct.setProductUom(uomField.getSelectedIndex());
 		editProduct.setIsMaintain(1);
-		editProduct.setImagePath(pathField.getText()+filename);
-		editProduct.setBrand(brandField.getText());
-		editProduct.setBarcode(barcodeField.getText());
-		editProduct.setDescription(descField.getText());
+//		editProduct.setImagePath(pathField.getText()+filename);
+//		editProduct.setBrand(brandField.getText());
+//		editProduct.setBarcode(barcodeField.getText());
+//		editProduct.setDescription(descField.getText());
 		editProduct.setWoodType(typeField.getSelectedIndex());
 		editProduct.setGrade(gradeField.getSelectedIndex());
-		editProduct.setThickness(thickField.getSelectedIndex());
+		editProduct.setThickness(Integer.parseInt(thickField.getText()));
 		editProduct.setCondition(conField.getSelectedIndex());
-		editProduct.setIsAsset(1);
-		editProduct.setWarranty(Integer.parseInt(warrantField.getText()));
-		editProduct.setNetto(Double.parseDouble(nettoField.getText()));
-		editProduct.setNettoUom(nettoUnitField.getSelectedIndex());
-		editProduct.setIsPurchase(1);
-		editProduct.setMinor(Integer.parseInt(minOrderField.getText()));
-		editProduct.setMinorUom(minOrderUnitField.getSelectedIndex());
-		editProduct.setLeadTime(Integer.parseInt(leadTimeField.getText()));
-		editProduct.setBuyCost(buyCostField.getSelectedIndex());
-		editProduct.setExpense(expenseField.getSelectedIndex());
-		editProduct.setMainSuppCode(supplierField.getSelectedItem().toString());
-		editProduct.setManufacturer(manufacturerField.getText());
-		editProduct.setIsSales(1);
-		editProduct.setIsService(1);
-		editProduct.setSellCost(sellCostField.getSelectedIndex());
-		editProduct.setIncome(incomeField.getSelectedIndex());
-		editProduct.setMaxDisc(Double.parseDouble(discountField.getText()));
+//		editProduct.setIsAsset(1);
+//		editProduct.setWarranty(Integer.parseInt(warrantField.getText()));
+//		editProduct.setNetto(Double.parseDouble(nettoField.getText()));
+//		editProduct.setNettoUom(nettoUnitField.getSelectedIndex());
+//		editProduct.setIsPurchase(1);
+//		editProduct.setMinor(Integer.parseInt(minOrderField.getText()));
+//		editProduct.setMinorUom(minOrderUnitField.getSelectedIndex());
+//		editProduct.setLeadTime(Integer.parseInt(leadTimeField.getText()));
+//		editProduct.setBuyCost(buyCostField.getSelectedIndex());
+//		editProduct.setExpense(expenseField.getSelectedIndex());
+//		editProduct.setMainSuppCode(supplierField.getSelectedItem().toString());
+//		editProduct.setManufacturer(manufacturerField.getText());
+//		editProduct.setIsSales(1);
+//		editProduct.setIsService(1);
+//		editProduct.setSellCost(sellCostField.getSelectedIndex());
+//		editProduct.setIncome(incomeField.getSelectedIndex());
+//		editProduct.setMaxDisc(Double.parseDouble(discountField.getText()));
 		editProduct.setEditDate(todayDate);
 		editProduct.setEditBy("Irvan");
 		
@@ -1267,27 +1292,27 @@ public class ProductEditPanel extends JPanel implements Bridging {
 				catField.addItem(product.getProductCatName());
 				statField.addItem(String.valueOf(product.getProductStat()));
 				uomField.addItem(String.valueOf(product.getProductUom()));
-				pathField.setText(product.getImagePath());
-				brandField.setText(product.getBrand());
-				barcodeField.setText(product.getBarcode());
-				descField.setText(product.getDescription());
+//				pathField.setText(product.getImagePath());
+//				brandField.setText(product.getBrand());
+//				barcodeField.setText(product.getBarcode());
+//				descField.setText(product.getDescription());
 				typeField.addItem(product.getWoodTypeName());
 				gradeField.addItem(product.getGradeName());
-				thickField.addItem(String.valueOf(product.getThickness()));
+				thickField.setText(String.valueOf(product.getThickness()));
 				conField.addItem(String.valueOf(product.getCondition()));
-				warrantField.setText(String.valueOf(product.getWarranty()));
-				nettoField.setText(String.valueOf(product.getNetto()));
-				nettoUnitField.addItem(String.valueOf(product.getNettoUom()));
-				minOrderField.setText(String.valueOf(product.getMinor()));
-				minOrderUnitField.addItem(String.valueOf(product.getMinorUom()));
-				leadTimeField.setText(String.valueOf(product.getLeadTime()));
-				buyCostField.addItem(String.valueOf(product.getBuyCost()));
-				expenseField.addItem(String.valueOf(product.getExpense()));
-				supplierField.addItem(product.getMainSuppCode());
-				manufacturerField.setText(product.getManufacturer());
-				sellCostField.addItem(String.valueOf(product.getSellCost()));
-				incomeField.addItem(String.valueOf(product.getIncome()));
-				discountField.setText(String.valueOf(product.getMaxDisc()));
+//				warrantField.setText(String.valueOf(product.getWarranty()));
+//				nettoField.setText(String.valueOf(product.getNetto()));
+//				nettoUnitField.addItem(String.valueOf(product.getNettoUom()));
+//				minOrderField.setText(String.valueOf(product.getMinor()));
+//				minOrderUnitField.addItem(String.valueOf(product.getMinorUom()));
+//				leadTimeField.setText(String.valueOf(product.getLeadTime()));
+//				buyCostField.addItem(String.valueOf(product.getBuyCost()));
+//				expenseField.addItem(String.valueOf(product.getExpense()));
+//				supplierField.addItem(product.getMainSuppCode());
+//				manufacturerField.setText(product.getManufacturer());
+//				sellCostField.addItem(String.valueOf(product.getSellCost()));
+//				incomeField.addItem(String.valueOf(product.getIncome()));
+//				discountField.setText(String.valueOf(product.getMaxDisc()));
 				
 			}
 		} catch (SQLException e1) {

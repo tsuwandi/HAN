@@ -8,9 +8,12 @@ import javax.sql.DataSource;
 
 import module.employee.dao.EmployeeDAO;
 import module.employee.model.Employee;
+import module.pembelian.model.WoodType;
 import module.product.dao.ProductDAO;
+import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
+import module.product.model.Uom;
 import module.supplier.dao.SuppAddressDAO;
 import module.supplier.dao.SuppCpDAO;
 import module.supplier.dao.SuppVehicleDAO;
@@ -106,6 +109,36 @@ public class ProductBL {
 		try{
 			con = dataSource.getConnection();
 			return new ProductDAO(con).getAllProductCategory();
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<WoodType> getAllWoodType() throws SQLException {
+		Connection con = null;
+		try{
+			con = dataSource.getConnection();
+			return new ProductDAO(con).getAllWoodType();
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<Grade> getAllGrade() throws SQLException {
+		Connection con = null;
+		try{
+			con = dataSource.getConnection();
+			return new ProductDAO(con).getAllGrade();
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<Uom> getAllUom() throws SQLException {
+		Connection con = null;
+		try{
+			con = dataSource.getConnection();
+			return new ProductDAO(con).getAllUom();
 		} finally {
 			con.close();
 		}
