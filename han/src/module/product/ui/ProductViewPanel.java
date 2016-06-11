@@ -28,8 +28,12 @@ import javax.swing.table.AbstractTableModel;
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
+import module.pembelian.model.WoodType;
+import module.product.model.Condition;
+import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
+import module.product.model.Uom;
 import module.supplier.model.Supplier;
 import module.util.Bridging;
 
@@ -204,6 +208,10 @@ public class ProductViewPanel extends JPanel implements Bridging {
 	public Product product;
 	public ProductCategory productCategory;
 	public List<ProductCategory> categories = null;
+	public List<WoodType> woodTypes = null;
+	public List<Grade> grades = null;
+	public List<Uom> units = null;
+	public List<Condition> conditions = null;
 	
 	Date todayDate;
 	//SimpleDateFormat dateFormat = new SimpleDateFormat(yyyy-MM-dd);
@@ -284,9 +292,9 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		gradeLbl.setBounds(20, 320, 100, 30);
 		thickLbl = new JLabel("Tebal");
 		thickLbl.setBounds(20, 350, 100, 30);
-		longLbl = new JLabel("Tebal");
+		longLbl = new JLabel("Panjang");
 		longLbl.setBounds(20, 380, 100, 30);
-		wideLbl = new JLabel("Tebal");
+		wideLbl = new JLabel("Lebar");
 		wideLbl.setBounds(20, 410, 100, 30);
 		conditionLbl = new JLabel("Kondisi");
 		conditionLbl.setBounds(20, 440, 100, 30);
@@ -367,15 +375,38 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		nameField.setEnabled(false);
 		nameField.setBounds(195, 110, 150, 25);
 		
+		try {
+			categories = ServiceFactory.getProductBL().getAllProductCategory();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		catField = new JComboBox<>();
+		catField.addItem("Pilih");
+		for(int i=0; i<categories.size(); i++){
+			catField.addItem(categories.get(i).getProductCategory());
+		}
 		catField.setEnabled(false);
 		catField.setBounds(195, 140, 150, 25);
 		
 		statField = new JComboBox<>();
+		statField.addItem("Pilih");
+		statField.addItem("Aktif");
+		statField.addItem("Tidak Aktif");
 		statField.setEnabled(false);
 		statField.setBounds(195, 170, 150, 25);
 		
+		try {
+			units = ServiceFactory.getProductBL().getAllUom();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		uomField = new JComboBox<>();
+		uomField.addItem("Pilih");
+		for(int i=0; i<units.size(); i++){
+			uomField.addItem(units.get(i).getUom());
+		}
 		uomField.setEnabled(false);
 		uomField.setBounds(195, 200, 150, 25);
 		
@@ -420,11 +451,31 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		descField.setEnabled(false);
 		descField.setBounds(195, 510, 250, 55);
 		
+		try {
+			woodTypes = ServiceFactory.getProductBL().getAllWoodType();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		typeField = new JComboBox<>();
+		typeField.addItem("Pilih");
+		for(int i=0; i<woodTypes.size(); i++){
+			typeField.addItem(woodTypes.get(i).getWoodType());
+		}
 		typeField.setEnabled(false);
 		typeField.setBounds(195, 290, 150, 25);
 		
+		try {
+			grades = ServiceFactory.getProductBL().getAllGrade();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		gradeField = new JComboBox<>();
+		gradeField.addItem("Pilih");
+		for(int i=0; i<grades.size(); i++){
+			gradeField.addItem(grades.get(i).getGrade());
+		}
 		gradeField.setEnabled(false);
 		gradeField.setBounds(195, 320, 150, 25);
 		
@@ -440,7 +491,17 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		wideField.setEnabled(false);
 		wideField.setBounds(195, 410, 150, 25);
 		
+		try {
+			conditions = ServiceFactory.getProductBL().getAllCondition();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		conField = new JComboBox<>();
+		conField.addItem("Pilih");
+		for(int i=0; i<conditions.size(); i++){
+			conField.addItem(conditions.get(i).getCondition());
+		}
 		conField.setEnabled(false);
 		conField.setBounds(195, 440, 150, 25);
 		
@@ -828,30 +889,39 @@ public class ProductViewPanel extends JPanel implements Bridging {
 			if (product != null) {
 				idField.setText(product.getProductCode());
 				nameField.setText(product.getProductName());
-				catField.addItem(product.getProductCatName());
-				statField.addItem(String.valueOf(product.getProductStat()));
-				uomField.addItem(String.valueOf(product.getProductUom()));
-				pathField.setText(product.getImagePath());
-				brandField.setText(product.getBrand());
-				barcodeField.setText(product.getBarcode());
-				descField.setText(product.getDescription());
-				typeField.addItem(product.getWoodTypeName());
-				gradeField.addItem(product.getGradeName());
+				catField.setSelectedIndex(product.getProductCat());
+				if(product.getProductStat() == null){
+					statField.setSelectedIndex(0);
+				}else if(product.getProductStat().toUpperCase().equals("aktif".toUpperCase())){
+					statField.setSelectedIndex(1);
+				}else{
+					statField.setSelectedIndex(2);
+				}
+				uomField.setSelectedIndex(product.getProductUom());
+//				pathField.setText(product.getImagePath());
+//				brandField.setText(product.getBrand());
+//				barcodeField.setText(product.getBarcode());
+//				descField.setText(product.getDescription());
+				typeField.setSelectedIndex(product.getWoodType());
+				gradeField.setSelectedIndex(product.getGrade());
 				thickField.setText(String.valueOf(product.getThickness()));
-				conField.addItem(String.valueOf(product.getCondition()));
-				warrantField.setText(String.valueOf(product.getWarranty()));
-				nettoField.setText(String.valueOf(product.getNetto()));
-				nettoUnitField.addItem(String.valueOf(product.getNettoUom()));
-				minOrderField.setText(String.valueOf(product.getMinor()));
-				minOrderUnitField.addItem(String.valueOf(product.getMinorUom()));
-				leadTimeField.setText(String.valueOf(product.getLeadTime()));
-				buyCostField.addItem(String.valueOf(product.getBuyCost()));
-				expenseField.addItem(String.valueOf(product.getExpense()));
-				supplierField.addItem(product.getMainSuppCode());
-				manufacturerField.setText(product.getManufacturer());
-				sellCostField.addItem(String.valueOf(product.getSellCost()));
-				incomeField.addItem(String.valueOf(product.getIncome()));
-				discountField.setText(String.valueOf(product.getMaxDisc()));
+				longField.setText(String.valueOf(product.getLength()));
+				wideField.setText(String.valueOf(product.getWidth()));
+				conField.setSelectedIndex(product.getCondition());
+				minQtyField.setText(String.valueOf(product.getMinQy()));
+//				warrantField.setText(String.valueOf(product.getWarranty()));
+//				nettoField.setText(String.valueOf(product.getNetto()));
+//				nettoUnitField.addItem(String.valueOf(product.getNettoUom()));
+//				minOrderField.setText(String.valueOf(product.getMinor()));
+//				minOrderUnitField.addItem(String.valueOf(product.getMinorUom()));
+//				leadTimeField.setText(String.valueOf(product.getLeadTime()));
+//				buyCostField.addItem(String.valueOf(product.getBuyCost()));
+//				expenseField.addItem(String.valueOf(product.getExpense()));
+//				supplierField.addItem(product.getMainSuppCode());
+//				manufacturerField.setText(product.getManufacturer());
+//				sellCostField.addItem(String.valueOf(product.getSellCost()));
+//				incomeField.addItem(String.valueOf(product.getIncome()));
+//				discountField.setText(String.valueOf(product.getMaxDisc()));
 				
 			}
 		} catch (SQLException e1) {

@@ -10,6 +10,7 @@ import module.employee.dao.EmployeeDAO;
 import module.employee.model.Employee;
 import module.pembelian.model.WoodType;
 import module.product.dao.ProductDAO;
+import module.product.model.Condition;
 import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
@@ -139,6 +140,16 @@ public class ProductBL {
 		try{
 			con = dataSource.getConnection();
 			return new ProductDAO(con).getAllUom();
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<Condition> getAllCondition() throws SQLException {
+		Connection con = null;
+		try{
+			con = dataSource.getConnection();
+			return new ProductDAO(con).getAllCondition();
 		} finally {
 			con.close();
 		}

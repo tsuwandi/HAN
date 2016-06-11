@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 
 import module.employee.model.Employee;
 import module.pembelian.model.WoodType;
+import module.product.model.Condition;
 import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
@@ -30,24 +31,27 @@ public class ProductDAO {
 	private PreparedStatement getAllGrade;
 	private PreparedStatement getAllWoodType;
 	private PreparedStatement getAllUom;
+	private PreparedStatement getAllCondition;
 	private PreparedStatement updateProductStatement;
 	private PreparedStatement deleteProductStatement;
 	private PreparedStatement insertProductStatement;
 
 	private String selectAllQuery = "select a.id, product_code, product_name, product_category_id, "
 			+ "product_status, product_uom_id, is_maintain_stock, image_path, brand, barcode, description, "
-			+ "wood_type_id, grade_id, thickness_id, condition_id, is_has_serial, is_fixed_asset, warranty, "
+			+ "wood_type_id, grade_id, thickness, length, width, condition_id, minqty, is_has_serial, is_fixed_asset, warranty, "
 			+ "netto, netto_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, "
 			+ "expense_acc_id, main_supp_code, manufacturer, is_sales_item, is_service_item, sell_cost_center_id, "
 			+ "income_acc_id, max_disc, a.input_date, a.input_by, a.edit_date, a.edited_by, "
-			+ "b.wood_type, c.grade "
+			+ "b.wood_type, c.grade, d.product_category "
 			+ "from product a join wood_type b on a.wood_type_id = b.id "
 			+ "join grade c on a.grade_id = c.id "
+			+ "join product_category d on a.product_category_id = d.id "
+			+ "join uom e on a.product_uom_id = e.id "
 			+ "where 1=1 order by a.id asc ";
 	
 	private String getAllNoOrder = "select a.id, product_code, product_name, product_category_id, "
 			+ "product_status, product_uom_id, is_maintain_stock, image_path, brand, barcode, description, "
-			+ "wood_type_id, grade_id, thickness_id, condition_id, is_has_serial, is_fixed_asset, warranty, "
+			+ "wood_type_id, grade_id, thickness, length, width, condition_id, minqty, is_has_serial, is_fixed_asset, warranty, "
 			+ "netto, netto_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, "
 			+ "expense_acc_id, main_supp_code, manufacturer, is_sales_item, is_service_item, sell_cost_center_id, "
 			+ "income_acc_id, max_disc, a.input_date, a.input_by, a.edit_date, a.edited_by, "
@@ -59,7 +63,7 @@ public class ProductDAO {
 	
 	private String searchQuery = "select a.id, product_code, product_name, product_category_id, "
 			+ "product_status, product_uom_id, is_maintain_stock, image_path, brand, barcode, description, "
-			+ "wood_type_id, grade_id, thickness_id, condition_id, is_has_serial, is_fixed_asset, warranty, "
+			+ "wood_type_id, grade_id, thickness, length, width, condition_id, minqty, is_has_serial, is_fixed_asset, warranty, "
 			+ "netto, netto_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, "
 			+ "expense_acc_id, main_supp_code, manufacturer, is_sales_item, is_service_item, sell_cost_center_id, "
 			+ "income_acc_id, max_disc, a.input_date, a.input_by, a.edit_date, a.edited_by, "
@@ -76,19 +80,18 @@ public class ProductDAO {
 	
 	private String uomQuery = "select * from uom order by id asc";
 	
-	private String insertProductQuery = "insert into product(id, product_code, product_name, product_category_id, "
-			+ "product_status, product_uom_id, is_maintain_stock, image_path, brand, barcode, description, "
-			+ "wood_type_id, grade_id, thickness_id, condition_id, is_has_serial, is_fixed_asset, warranty, "
-			+ "netto, netto_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, "
-			+ "expense_acc_id, main_supp_code, manufacturer, is_sales_item, is_service_item, sell_cost_center_id, "
-			+ "income_acc_id, max_disc, input_date, input_by) "
-			+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+	private String conditionQuery = "select * from `condition` order by id asc";
 	
-	private String updateQuery = "update product set product_name=?, product_status=?, brand=?, barcode=?, description=?, "
-			+ "is_maintain_stock=?, is_has_serial=?, is_fixed_asset=?, is_purchase_item=?, is_sales_item=?, is_service_item=?, "			
-			+ "wood_type_id=?, grade_id=?, thickness_id=?, condition_id=?, warranty=?, netto=?, netto_uom_id=?, minor=?, "
-			+ "minor_uom_id=?, lead_time=?, buy_cost_center_id=?, expense_acc_id=?, main_supp_code=?, manufacturer=?, "
-			+ "sell_cost_center_id=?, income_acc_id=?, max_disc=?, edit_date=?, edited_by=? where product_code=? ";
+	private String insertProductQuery = "insert into product(id, product_code, product_name, product_category_id, "
+			+ "product_status, product_uom_id, is_maintain_stock, "
+			+ "wood_type_id, grade_id, thickness, length, width, condition_id, minqty, "
+			+ "input_date, input_by) "
+			+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+	
+	private String updateQuery = "update product set product_name=?, product_status=?, product_category_id=?, "
+			+ "product_uom_id = ?, is_maintain_stock=?, "			
+			+ "wood_type_id=?, grade_id=?, thickness=?, length=?, width=?, condition_id=?, minqty=?, "
+			+ "edit_date=?, edited_by=? where id=? ";
 	
 	private String getProductIdQuery = "select id from product";
 	
@@ -129,8 +132,11 @@ public class ProductDAO {
 //			insertProductStatement.setString(11, product.getDescription());
 			insertProductStatement.setInt(8, product.getWoodType());
 			insertProductStatement.setInt(9, product.getGrade());
-			insertProductStatement.setInt(10, product.getThickness());
-			insertProductStatement.setInt(11, product.getCondition());
+			insertProductStatement.setDouble(10, product.getThickness());
+			insertProductStatement.setDouble(11, product.getLength());
+			insertProductStatement.setDouble(12, product.getWidth());
+			insertProductStatement.setInt(13, product.getCondition());
+			insertProductStatement.setInt(14, product.getMinQy());
 //			insertProductStatement.setInt(16, product.getIsSerial());
 //			insertProductStatement.setInt(17, product.getIsAsset());
 //			insertProductStatement.setInt(18, product.getWarranty());
@@ -149,8 +155,8 @@ public class ProductDAO {
 //			insertProductStatement.setInt(31, product.getSellCost());
 //			insertProductStatement.setInt(32, product.getIncome());
 //			insertProductStatement.setDouble(33, product.getMaxDisc());
-			insertProductStatement.setDate(12, sqlInputDate);
-			insertProductStatement.setString(13, product.getInputBy());
+			insertProductStatement.setDate(15, sqlInputDate);
+			insertProductStatement.setString(16, product.getInputBy());
 			insertProductStatement.executeUpdate();
 			
 			System.out.println(insertProductStatement);
@@ -180,8 +186,11 @@ public class ProductDAO {
 				product.setDescription(rs.getString("description"));
 				product.setWoodType(rs.getInt("wood_type_id"));
 				product.setGrade(rs.getInt("grade_id"));
-				product.setThickness(rs.getInt("thickness_id"));
+				product.setThickness(rs.getDouble("thickness"));
+				product.setLength(rs.getDouble("length"));
+				product.setWidth(rs.getDouble("width"));
 				product.setCondition(rs.getInt("condition_id"));
+				product.setMinQy(rs.getInt("minqty"));
 				product.setIsSerial(rs.getInt("is_has_serial"));
 				product.setIsAsset(rs.getInt("is_fixed_asset"));
 				product.setWarranty(rs.getInt("warranty"));
@@ -269,8 +278,11 @@ public class ProductDAO {
 				product.setDescription(rs.getString("description"));
 				product.setWoodType(rs.getInt("wood_type_id"));
 				product.setGrade(rs.getInt("grade_id"));
-				product.setThickness(rs.getInt("thickness_id"));
+				product.setThickness(rs.getDouble("thickness"));
+				product.setLength(rs.getDouble("length"));
+				product.setWidth(rs.getDouble("width"));
 				product.setCondition(rs.getInt("condition_id"));
+				product.setMinQy(rs.getInt("minqty"));
 				product.setIsSerial(rs.getInt("is_has_serial"));
 				product.setIsAsset(rs.getInt("is_fixed_asset"));
 				product.setWarranty(rs.getInt("warranty"));
@@ -314,7 +326,7 @@ public class ProductDAO {
 			ResultSet rs = getAllProductCategory.executeQuery();
 			while (rs.next()) {
 				ProductCategory productCat = new ProductCategory();
-				productCat.setId(rs.getString("id"));
+				productCat.setId(rs.getInt("id"));
 				productCat.setProductCategory(rs.getString("product_category"));
 				categories.add(productCat);
 			}
@@ -390,44 +402,72 @@ public class ProductDAO {
 		return units;
 	}
 	
+	public List<Condition> getAllCondition() throws SQLException {
+		List<Condition> conditions = new ArrayList<Condition>();
+
+		try {
+			getAllCondition = connection.prepareStatement(conditionQuery);
+			ResultSet rs = getAllCondition.executeQuery();
+			while (rs.next()) {
+				Condition condition = new Condition();
+				condition.setId(rs.getInt("id"));
+				condition.setCondition(rs.getString("condition"));
+				conditions.add(condition);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return conditions;
+	}
+	
 	public void update(Product product) throws SQLException {
 		try {
 			updateProductStatement = connection.prepareStatement(updateQuery);
 			java.sql.Date sqlEditDate = new java.sql.Date(product.getEditDate().getTime());
-
+			
 			updateProductStatement.setString(1, product.getProductName());
-			updateProductStatement.setString(2, product.getProductStat());
-			updateProductStatement.setString(3, product.getBrand());
-			updateProductStatement.setString(4, product.getBarcode());
-			updateProductStatement.setString(5, product.getDescription());
-			updateProductStatement.setInt(6, product.getIsMaintain());
-			updateProductStatement.setInt(7, product.getIsSerial());
-			updateProductStatement.setInt(8, product.getIsAsset());
-			updateProductStatement.setInt(9, product.getIsPurchase());
-			updateProductStatement.setInt(10, product.getIsSales());
-			updateProductStatement.setInt(11, product.getIsService());
-			updateProductStatement.setInt(12, product.getWoodType());
-			updateProductStatement.setInt(13, product.getGrade());
-			updateProductStatement.setInt(14, product.getThickness());
-			updateProductStatement.setInt(15, product.getCondition());
-			updateProductStatement.setInt(16, product.getWarranty());
-			updateProductStatement.setDouble(17, product.getNetto());
-			updateProductStatement.setInt(18, product.getNettoUom());
-			updateProductStatement.setInt(19, product.getMinor());
-			updateProductStatement.setInt(20, product.getMinorUom());
-			updateProductStatement.setInt(21, product.getLeadTime());
-			updateProductStatement.setInt(22, product.getBuyCost());
-			updateProductStatement.setInt(23, product.getExpense());
-			updateProductStatement.setString(24, product.getMainSuppCode());
-			updateProductStatement.setString(25, product.getManufacturer());
-			updateProductStatement.setInt(26, product.getSellCost());
-			updateProductStatement.setInt(27, product.getIncome());
-			updateProductStatement.setDouble(28, product.getMaxDisc());
-			updateProductStatement.setDate(29, sqlEditDate);
-			updateProductStatement.setString(30, product.getEditBy());
-			updateProductStatement.setString(31, product.getProductCode());
+			updateProductStatement.setString(2, product.getProductStat());		
+			updateProductStatement.setInt(3, product.getProductCat());
+			updateProductStatement.setInt(4, product.getProductUom());
+			updateProductStatement.setInt(5, product.getIsMaintain());
+//			updateProductStatement.setString(3, product.getBrand());
+//			updateProductStatement.setString(4, product.getBarcode());
+//			updateProductStatement.setString(5, product.getDescription());
+//			updateProductStatement.setInt(6, product.getIsMaintain());
+//			updateProductStatement.setInt(7, product.getIsSerial());
+//			updateProductStatement.setInt(8, product.getIsAsset());
+//			updateProductStatement.setInt(9, product.getIsPurchase());
+//			updateProductStatement.setInt(10, product.getIsSales());
+//			updateProductStatement.setInt(11, product.getIsService());
+			updateProductStatement.setInt(6, product.getWoodType());
+			updateProductStatement.setInt(7, product.getGrade());
+			updateProductStatement.setDouble(8, product.getThickness());
+			updateProductStatement.setDouble(9, product.getLength());
+			updateProductStatement.setDouble(10, product.getWidth());
+			updateProductStatement.setInt(11, product.getCondition());
+			updateProductStatement.setInt(12, product.getMinQy());
+//			updateProductStatement.setInt(16, product.getWarranty());
+//			updateProductStatement.setDouble(17, product.getNetto());
+//			updateProductStatement.setInt(18, product.getNettoUom());
+//			updateProductStatement.setInt(19, product.getMinor());
+//			updateProductStatement.setInt(20, product.getMinorUom());
+//			updateProductStatement.setInt(21, product.getLeadTime());
+//			updateProductStatement.setInt(22, product.getBuyCost());
+//			updateProductStatement.setInt(23, product.getExpense());
+//			updateProductStatement.setString(24, product.getMainSuppCode());
+//			updateProductStatement.setString(25, product.getManufacturer());
+//			updateProductStatement.setInt(26, product.getSellCost());
+//			updateProductStatement.setInt(27, product.getIncome());
+//			updateProductStatement.setDouble(28, product.getMaxDisc());
+			updateProductStatement.setDate(13, sqlEditDate);
+			updateProductStatement.setString(14, product.getEditBy());
+			updateProductStatement.setInt(15, product.getProductId());
 			updateProductStatement.executeUpdate();
 
+			System.out.println(updateProductStatement);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
@@ -457,8 +497,11 @@ public class ProductDAO {
 				p.setDescription(rs.getString("description"));
 				p.setWoodType(rs.getInt("wood_type_id"));
 				p.setGrade(rs.getInt("grade_id"));
-				p.setThickness(rs.getInt("thickness_id"));
+				p.setThickness(rs.getDouble("thickness"));
+				p.setLength(rs.getDouble("length"));
+				p.setWidth(rs.getDouble("width"));
 				p.setCondition(rs.getInt("condition_id"));
+				p.setMinQy(rs.getInt("minqty"));
 				p.setIsSerial(rs.getInt("is_has_serial"));
 				p.setIsAsset(rs.getInt("is_fixed_asset"));
 				p.setWarranty(rs.getInt("warranty"));

@@ -17,7 +17,9 @@ public class Product {
 	private String description;
 	private int woodType;
 	private int grade;
-	private int thickness;
+	private Double thickness;
+	private Double length;
+	private Double width;
 	private int condition;
 	private int isSerial;
 	private int isAsset;
@@ -46,7 +48,35 @@ public class Product {
 	private String woodTypeName;
 	private String gradeName;
 	private String productCatName;
+	private int minQy;
+	private String unitName;
+	private String categoryName;
+	private String conditionName;
 	
+	public String getConditionName() {
+		return conditionName;
+	}
+	public void setConditionName(String conditionName) {
+		this.conditionName = conditionName;
+	}
+	public String getUnitName() {
+		return unitName;
+	}
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
+	}
+	public String getCategoryName() {
+		return categoryName;
+	}
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+	public int getMinQy() {
+		return minQy;
+	}
+	public void setMinQy(int minQy) {
+		this.minQy = minQy;
+	}
 	public int getProductId() {
 		return productId;
 	}
@@ -125,11 +155,23 @@ public class Product {
 	public void setGrade(int grade) {
 		this.grade = grade;
 	}
-	public int getThickness() {
+	public Double getThickness() {
 		return thickness;
 	}
-	public void setThickness(int thickness) {
+	public void setThickness(Double thickness) {
 		this.thickness = thickness;
+	}
+	public Double getLength() {
+		return length;
+	}
+	public void setLength(Double length) {
+		this.length = length;
+	}
+	public Double getWidth() {
+		return width;
+	}
+	public void setWidth(Double width) {
+		this.width = width;
 	}
 	public int getCondition() {
 		return condition;

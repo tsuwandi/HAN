@@ -1,13 +1,13 @@
 package module.product.model;
 
 public class ProductCategory {
-	String id;
+	int id;
 	String productCategory;
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getProductCategory() {

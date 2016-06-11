@@ -41,6 +41,7 @@ import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.pembelian.model.WoodType;
+import module.product.model.Condition;
 import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
@@ -217,6 +218,7 @@ public class CreateProductPanel extends JPanel {
 	public List<WoodType> woodTypes = null;
 	public List<Grade> grades = null;
 	public List<Uom> units = null;
+	public List<Condition> conditions = null;
 	
 	Date todayDate;
 	//SimpleDateFormat dateFormat = new SimpleDateFormat(yyyy-MM-dd);
@@ -400,6 +402,8 @@ public class CreateProductPanel extends JPanel {
 		
 		statField = new JComboBox<>();
 		statField.addItem("Pilih");
+		statField.addItem("Aktif");
+		statField.addItem("Tidak Aktif");
 		statField.setBounds(195, 170, 150, 25);
 		
 		try {
@@ -527,8 +531,17 @@ public class CreateProductPanel extends JPanel {
 		wideField = new JTextField();
 		wideField.setBounds(195, 410, 150, 25);
 		
+		try {
+			conditions = ServiceFactory.getProductBL().getAllCondition();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		conField = new JComboBox<>();
 		conField.addItem("Pilih");
+		for(int i=0; i<conditions.size(); i++){
+			conField.addItem(conditions.get(i).getCondition());
+		}
 		conField.setBounds(195, 440, 150, 25);
 		
 		minQtyField = new JTextField();
@@ -961,17 +974,28 @@ public class CreateProductPanel extends JPanel {
 		insertProduct.setProductCode(idField.getText());
 		insertProduct.setProductName(nameField.getText());
 		insertProduct.setProductCat(catField.getSelectedIndex());
-		insertProduct.setProductStat(statField.getSelectedItem().toString());
-		insertProduct.setProductUom(uomField.getSelectedIndex());
+		if(statField.getSelectedIndex() != 0){
+			insertProduct.setProductStat(statField.getSelectedItem().toString());
+		}else{
+			insertProduct.setProductStat(null);
+		}
+		int uom = units.get(uomField.getSelectedIndex()).getId();
+		insertProduct.setProductUom(uom);
 		insertProduct.setIsMaintain(1);
 		//insertProduct.setImagePath(pathField.getText()+filename);
 //		insertProduct.setBrand(brandField.getText());
 //		insertProduct.setBarcode(barcodeField.getText());
 //		insertProduct.setDescription(descField.getText());
-		insertProduct.setWoodType(typeField.getSelectedIndex());
-		insertProduct.setGrade(gradeField.getSelectedIndex());
-		insertProduct.setThickness(Integer.parseInt(thickField.getText()));
-		insertProduct.setCondition(conField.getSelectedIndex());
+		int woodType = woodTypes.get(typeField.getSelectedIndex()).getId();
+		insertProduct.setWoodType(woodType);
+		int grade = grades.get(gradeField.getSelectedIndex()).getId();
+		insertProduct.setGrade(grade);
+		insertProduct.setThickness(Double.parseDouble(thickField.getText()));
+		insertProduct.setLength(Double.parseDouble(longField.getText()));
+		insertProduct.setWidth(Double.parseDouble(wideField.getText()));
+		int condition = conditions.get(conField.getSelectedIndex()).getId();
+		insertProduct.setCondition(condition);
+		insertProduct.setMinQy(Integer.parseInt(minQtyField.getText()));
 //		insertProduct.setIsAsset(1);
 //		insertProduct.setWarranty(Integer.parseInt(warrantField.getText()));
 //		insertProduct.setNetto(Double.parseDouble(nettoField.getText()));
