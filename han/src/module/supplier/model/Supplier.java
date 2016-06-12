@@ -6,8 +6,9 @@ import java.util.Date;
 import module.sn.bank.model.Bank;
 import module.sn.currency.model.Currency;
 import module.sn.supptype.model.SuppType;
+import module.util.ComboBoxProperties;
 
-public class Supplier implements Serializable {
+public class Supplier implements Serializable, ComboBoxProperties {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,6 +38,14 @@ public class Supplier implements Serializable {
 	
 	private boolean isFlag;
 
+	public Supplier(){
+		
+	}
+	
+	public Supplier(String supplierName){
+		this.suppName = supplierName;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -360,5 +369,10 @@ public class Supplier implements Serializable {
 
 	public void setFlag(boolean isFlag) {
 		this.isFlag = isFlag;
+	}
+
+	@Override
+	public Object getField() {
+		return suppName;
 	}
 }

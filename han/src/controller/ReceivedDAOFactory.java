@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 
 import module.pembelian.dao.DeliveryDAO;
+import module.pembelian.dao.DocumentTypeDAO;
 import module.pembelian.dao.EmployeeDAO;
 import module.pembelian.dao.GradeDAO;
 import module.pembelian.dao.PICDockingDAO;
@@ -12,11 +13,13 @@ import module.pembelian.dao.PalletCardDetailDAO;
 import module.pembelian.dao.PalletDAO;
 import module.pembelian.dao.ProductDAO;
 import module.pembelian.dao.ReceivedDAO;
+import module.pembelian.dao.SuppCPDAO;
+import module.pembelian.dao.SupplierReceivedDAO;
 import module.pembelian.dao.SupplierVehicleDAO;
 import module.pembelian.dao.ThicknessDAO;
 import module.pembelian.dao.WoodResourceDAO;
 import module.pembelian.dao.WoodTypeDAO;
-import module.pembelian.dao.DocumentTypeDAO;
+import module.supplier.dao.SupplierDAO;
 
 public class ReceivedDAOFactory {
 	private static final Logger LOGGER = Logger.getLogger(ReceivedDAOFactory.class);
@@ -136,6 +139,22 @@ public class ReceivedDAOFactory {
 			return null;
 		}
 	}
+	public static SuppCPDAO getSupplierCPDAO(){
+		try {
+			return new SuppCPDAO(DataSourceFactory.getDataSource());
+		} catch (SQLException e) {
+			LOGGER.error("SQL Exception " + e);
+			return null;
+		}
+	}
 	
+	public static SupplierReceivedDAO getSupplierDAO(){
+		try {
+			return new SupplierReceivedDAO(DataSourceFactory.getDataSource());
+		} catch (SQLException e) {
+			LOGGER.error("SQL Exception " + e);
+			return null;
+		}
+	}
 	
 }

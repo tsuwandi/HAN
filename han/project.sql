@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.2.2
+-- version 4.0.10.14
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 17, 2016 at 08:43 AM
--- Server version: 5.5.27
--- PHP Version: 5.4.7
+-- Host: localhost:3306
+-- Generation Time: Jun 09, 2016 at 08:56 PM
+-- Server version: 5.5.49-cll
+-- PHP Version: 5.4.31
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -17,8 +17,216 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `projectss`
+-- Database: `onesolut_HAN`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account`
+--
+
+CREATE TABLE IF NOT EXISTS `account` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `acc_no` varchar(50) NOT NULL,
+  `account` varchar(50) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(25) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`,`acc_no`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bank`
+--
+
+CREATE TABLE IF NOT EXISTS `bank` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `bank_abbr` varchar(4) NOT NULL,
+  `bank` varchar(50) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `bank`
+--
+
+INSERT INTO `bank` (`id`, `bank_abbr`, `bank`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'BCA', 'Bank Central Asia', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chamber`
+--
+
+CREATE TABLE IF NOT EXISTS `chamber` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `chamber` varchar(50) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `chamber`
+--
+
+INSERT INTO `chamber` (`id`, `chamber`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'OVEN 1', '0000-00-00', 'admin', NULL, NULL, NULL, NULL),
+(2, 'OVEN 2', '0000-00-00', 'admin', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `city`
+--
+
+CREATE TABLE IF NOT EXISTS `city` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `city` varchar(150) NOT NULL,
+  `province_id` int(3) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `city`
+--
+
+INSERT INTO `city` (`id`, `city`, `province_id`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'Jakarta Utara', 1, '2016-04-16', 'timotius', NULL, NULL, NULL, NULL),
+(2, 'Jakarta Pusat', 1, '2016-04-16', '', NULL, NULL, NULL, NULL),
+(3, 'Jakarta Timur', 1, '2016-04-16', 'timotius', NULL, NULL, NULL, NULL),
+(4, 'Jakarta Barat', 1, '2016-04-16', 'timotius', NULL, NULL, NULL, NULL),
+(5, 'Jakarta Selatan', 1, '2016-04-16', 'timotius', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `condition`
+--
+
+CREATE TABLE IF NOT EXISTS `condition` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `condition` varchar(50) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(25) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cost_center`
+--
+
+CREATE TABLE IF NOT EXISTS `cost_center` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `cost_center` varchar(50) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(25) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `currency`
+--
+
+CREATE TABLE IF NOT EXISTS `currency` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `currency_abbr` varchar(3) NOT NULL,
+  `currency_symbol` varchar(1) NOT NULL,
+  `currency` varchar(50) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `currency`
+--
+
+INSERT INTO `currency` (`id`, `currency_abbr`, `currency_symbol`, `currency`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'USD', '$', 'US Dollar', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `delivery`
+--
+
+CREATE TABLE IF NOT EXISTS `delivery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `delivery_note` varchar(20) NOT NULL,
+  `document_type_id` int(3) DEFAULT NULL,
+  `wood_from` varchar(50) DEFAULT NULL,
+  `wood_domicile` varchar(50) NOT NULL,
+  `wood_resource_id` int(11) NOT NULL,
+  `wood_type_id` int(3) DEFAULT NULL,
+  `total_log` int(5) DEFAULT NULL,
+  `total_volume` decimal(7,2) DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`,`delivery_note`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `delivery`
+--
+
+INSERT INTO `delivery` (`id`, `delivery_note`, `document_type_id`, `wood_from`, `wood_domicile`, `wood_resource_id`, `wood_type_id`, `total_log`, `total_volume`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`, `input_date`) VALUES
+(1, '123X_XYZ', 2, NULL, 'JAKARTA', 1, 1, 10, '1000.00', 'Michael', NULL, NULL, NULL, NULL, '2016-05-26');
 
 -- --------------------------------------------------------
 
@@ -62,6 +270,147 @@ INSERT INTO `division` (`division_id`, `division_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `document_type`
+--
+
+CREATE TABLE IF NOT EXISTS `document_type` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `document_type` varchar(50) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `document_type`
+--
+
+INSERT INTO `document_type` (`id`, `document_type`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'Surat Jalan', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL),
+(2, 'Ijin Import', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dry_in`
+--
+
+CREATE TABLE IF NOT EXISTS `dry_in` (
+  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `dry_in_code` varchar(14) NOT NULL,
+  `date_in` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `chamber_id` int(5) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  `total_volume` decimal(6,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`),
+  KEY `chamber_id` (`chamber_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `dry_in`
+--
+
+INSERT INTO `dry_in` (`id`, `dry_in_code`, `date_in`, `chamber_id`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`, `total_volume`) VALUES
+(2, 'M/2016/05/0001', '2016-05-26 17:00:00', 1, '2016-05-27', 'timotius', NULL, NULL, NULL, NULL, '100.00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dry_in_pallet`
+--
+
+CREATE TABLE IF NOT EXISTS `dry_in_pallet` (
+  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `dry_in_code` varchar(14) NOT NULL,
+  `pallet_card_code` varchar(21) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`),
+  KEY `dry_in_code` (`dry_in_code`),
+  KEY `pallet_card_code` (`pallet_card_code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `dry_in_pallet`
+--
+
+INSERT INTO `dry_in_pallet` (`id`, `dry_in_code`, `pallet_card_code`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'M/2016/05/0001', '1/0004/BL/26/05/16', '2016-05-27', 'timotius', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dry_out`
+--
+
+CREATE TABLE IF NOT EXISTS `dry_out` (
+  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `dry_out_code` varchar(14) NOT NULL,
+  `date_out` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `chamber_id` int(5) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  `total_volume` decimal(6,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`),
+  KEY `chamber_id` (`chamber_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dry_out_pallet`
+--
+
+CREATE TABLE IF NOT EXISTS `dry_out_pallet` (
+  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `dry_out_code` varchar(14) NOT NULL,
+  `pallet_card_code` varchar(21) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`),
+  KEY `dry_in_code` (`dry_out_code`),
+  KEY `pallet_card_code` (`pallet_card_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `employee`
 --
 
@@ -89,6 +438,8 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`employee_id`, `employee_name`, `employee_type_id`, `address`, `city`, `birth_date`, `hire_date`, `email`, `phone_number`, `salary`, `department_id`, `gender_id`, `position_id`, `marital_id`, `employee_status_id`) VALUES
+('2011111111', 'Iwan', 'POS0002', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'POS0002', NULL, NULL),
+('2012345678', 'Mikael', 'EMPTYP01', 'Jatinegara', 'Jakarta', '2016-04-18', '2015-07-18', NULL, '123456798012', 0, 'DEPT0001', NULL, 'POS0001', '1', '1'),
 ('2013026132', 'Irvan Wilianto', 'EMPTYP01', 'Harapan Indah', 'Bekasi', '1991-08-14', '2013-12-02', 'irvan.wili@gmail.com', '081288370090', 10000000, 'DEPT0001', '1', 'POS0001', '1', '1');
 
 -- --------------------------------------------------------
@@ -129,7 +480,8 @@ CREATE TABLE IF NOT EXISTS `employee_type` (
 
 INSERT INTO `employee_type` (`employee_type_id`, `employee_type_name`) VALUES
 ('EMPTYP01', 'Employee Type 1'),
-('EMPTYP02', 'Employee Type 2');
+('EMPTYP02', 'Employee Type 2'),
+('POS0002', 'GRADER');
 
 -- --------------------------------------------------------
 
@@ -150,6 +502,32 @@ CREATE TABLE IF NOT EXISTS `gender` (
 INSERT INTO `gender` (`gender_id`, `name`) VALUES
 ('1', 'Laki-laki'),
 ('2', 'Perempuan');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `grade`
+--
+
+CREATE TABLE IF NOT EXISTS `grade` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `grade` varchar(50) NOT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(25) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `grade`
+--
+
+INSERT INTO `grade` (`id`, `grade`, `input_date`, `input_by`, `edit_date`, `edit_by`, `delete_date`, `delete_by`) VALUES
+(1, 'A', NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'B', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -196,6 +574,563 @@ INSERT INTO `ms_position` (`position_id`, `position_name`, `min_salary`, `max_sa
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ms_supplier`
+--
+
+CREATE TABLE IF NOT EXISTS `ms_supplier` (
+  `id` int(9) NOT NULL AUTO_INCREMENT,
+  `supplier_id` varchar(9) DEFAULT NULL,
+  `supplier_name` varchar(200) DEFAULT NULL,
+  `supplier_code` varchar(50) DEFAULT NULL,
+  `default_currency` int(11) DEFAULT NULL,
+  `npwp` varchar(30) DEFAULT NULL,
+  `default_tax` int(11) DEFAULT NULL,
+  `pt` varchar(200) DEFAULT NULL,
+  `credit_days` int(11) DEFAULT NULL,
+  `supplier_type` int(3) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `is_deleted` int(8) DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  `last_edited` date DEFAULT NULL,
+  `edited_by` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `ms_supplier`
+--
+
+INSERT INTO `ms_supplier` (`id`, `supplier_id`, `supplier_name`, `supplier_code`, `default_currency`, `npwp`, `default_tax`, `pt`, `credit_days`, `supplier_type`, `input_date`, `input_by`, `is_deleted`, `deleted_by`, `last_edited`, `edited_by`) VALUES
+(1, '1', 'PT. ABC', 'ABC001', 1, '901.101.101.250', 10, 'PT ABC', 10, 1, '2016-04-12', NULL, 1, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pallet_card`
+--
+
+CREATE TABLE IF NOT EXISTS `pallet_card` (
+  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `pallet_card_code` varchar(21) NOT NULL,
+  `received_code` varchar(16) NOT NULL,
+  `emp_code` varchar(10) NOT NULL,
+  `grade_id` int(11) NOT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  `total_volume` decimal(7,2) DEFAULT NULL,
+  `total_log` int(5) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `pallet_card`
+--
+
+INSERT INTO `pallet_card` (`id`, `pallet_card_code`, `received_code`, `emp_code`, `grade_id`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`, `total_volume`, `total_log`) VALUES
+(1, '001/BL/01/05/16/001', '001/BR/16/05/1', '1', 0, '0000-00-00', NULL, NULL, NULL, NULL, NULL, '1000.00', NULL),
+(4, '1/0004/BL/26/05/16', '0004/BL/26/05/16', '2011111111', 1, '2016-05-27', 'Michael', NULL, NULL, NULL, NULL, '100.00', 200);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pallet_card_dtl`
+--
+
+CREATE TABLE IF NOT EXISTS `pallet_card_dtl` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pallet_card_code` varchar(21) NOT NULL,
+  `length` decimal(5,2) NOT NULL,
+  `width` decimal(5,2) NOT NULL,
+  `thickness` decimal(5,2) NOT NULL,
+  `total` int(11) NOT NULL,
+  `volume` int(11) NOT NULL,
+  `product_code` varchar(20) NOT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `pallet_card_dtl`
+--
+
+INSERT INTO `pallet_card_dtl` (`id`, `pallet_card_code`, `length`, `width`, `thickness`, `total`, `volume`, `product_code`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, '1/0004/BL/26/05/16', '10.00', '2.00', '10.00', 100, 200, '', '2016-05-27', 'Michael', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pic_docking`
+--
+
+CREATE TABLE IF NOT EXISTS `pic_docking` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `received_code` varchar(16) NOT NULL,
+  `emp_code` varchar(10) NOT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `pic_docking`
+--
+
+INSERT INTO `pic_docking` (`id`, `received_code`, `emp_code`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, '0004/BL/26/05/16', '2012345678', '2016-05-27', 'Michael', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pic_tally`
+--
+
+CREATE TABLE IF NOT EXISTS `pic_tally` (
+  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `dry_in_code` varchar(14) NOT NULL,
+  `emp_code` varchar(10) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`),
+  KEY `dry_in_code` (`dry_in_code`),
+  KEY `pallet_card_code` (`emp_code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `pic_tally`
+--
+
+INSERT INTO `pic_tally` (`id`, `dry_in_code`, `emp_code`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'M/2016/05/0001', '2013026132', '2016-05-27', 'timotius', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product`
+--
+
+CREATE TABLE IF NOT EXISTS `product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_code` varchar(20) NOT NULL DEFAULT '',
+  `product_name` varchar(50) DEFAULT NULL,
+  `product_category_id` int(11) DEFAULT NULL,
+  `product_status` varchar(50) DEFAULT NULL,
+  `product_uom_id` int(11) DEFAULT NULL,
+  `is_maintain_stock` int(11) DEFAULT NULL,
+  `image_path` varchar(200) NOT NULL DEFAULT '',
+  `brand` varchar(50) DEFAULT NULL,
+  `barcode` varchar(50) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL,
+  `wood_type_id` int(11) DEFAULT NULL,
+  `grade_id` int(11) DEFAULT NULL,
+  `thickness_id` int(11) DEFAULT NULL,
+  `condition_id` int(11) DEFAULT NULL,
+  `is_has_serial` int(11) DEFAULT NULL,
+  `is_fixed_asset` int(11) DEFAULT NULL,
+  `warranty` int(11) DEFAULT NULL,
+  `netto` decimal(7,2) DEFAULT NULL,
+  `netto_uom_id` int(11) DEFAULT NULL,
+  `is_purchase_item` int(11) DEFAULT NULL,
+  `minor` int(11) DEFAULT NULL,
+  `minor_uom_id` int(3) DEFAULT NULL,
+  `lead_time` int(3) DEFAULT NULL,
+  `buy_cost_center_id` int(5) DEFAULT NULL,
+  `expense_acc_id` int(9) DEFAULT NULL,
+  `main_supp_code` varchar(9) DEFAULT NULL,
+  `manufacturer` varchar(50) DEFAULT NULL,
+  `is_sales_item` int(1) DEFAULT NULL,
+  `is_service_item` int(1) DEFAULT NULL,
+  `sell_cost_center_id` int(5) DEFAULT NULL,
+  `income_acc_id` int(9) DEFAULT NULL,
+  `max_disc` decimal(5,2) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  `minqty` int(5) DEFAULT NULL,
+  PRIMARY KEY (`id`,`product_code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`id`, `product_code`, `product_name`, `product_category_id`, `product_status`, `product_uom_id`, `is_maintain_stock`, `image_path`, `brand`, `barcode`, `description`, `wood_type_id`, `grade_id`, `thickness_id`, `condition_id`, `is_has_serial`, `is_fixed_asset`, `warranty`, `netto`, `netto_uom_id`, `is_purchase_item`, `minor`, `minor_uom_id`, `lead_time`, `buy_cost_center_id`, `expense_acc_id`, `main_supp_code`, `manufacturer`, `is_sales_item`, `is_service_item`, `sell_cost_center_id`, `income_acc_id`, `max_disc`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`, `minqty`) VALUES
+(2, 'BLK001', 'BALKEN 2CM', 1, 'aktif', 1, 0, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_category`
+--
+
+CREATE TABLE IF NOT EXISTS `product_category` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `product_category` varchar(50) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(25) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `product_category`
+--
+
+INSERT INTO `product_category` (`id`, `product_category`, `input_date`, `input_by`, `edit_date`, `edit_by`, `delete_date`, `delete_by`) VALUES
+(1, 'Bahan Baku', '0000-00-00', 'Admin', NULL, NULL, NULL, NULL),
+(2, 'Barang Pendukung', '0000-00-00', 'Admin', NULL, NULL, NULL, NULL),
+(3, 'Aset', '0000-00-00', 'Admin', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `province`
+--
+
+CREATE TABLE IF NOT EXISTS `province` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `province` varchar(150) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `province`
+--
+
+INSERT INTO `province` (`id`, `province`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'DKI Jakarta', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL),
+(2, 'Jawa Barat', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `received`
+--
+
+CREATE TABLE IF NOT EXISTS `received` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `received_code` varchar(16) NOT NULL,
+  `received_date` date NOT NULL,
+  `rit_no` varchar(4) NOT NULL,
+  `license_plate` varchar(10) NOT NULL,
+  `driver` varchar(50) NOT NULL,
+  `delivery_note` varchar(20) NOT NULL,
+  `wood_type_id` int(11) NOT NULL,
+  `driver_id` varchar(50) DEFAULT NULL,
+  `received_status` varchar(10) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`,`received_code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `received`
+--
+
+INSERT INTO `received` (`id`, `received_code`, `received_date`, `rit_no`, `license_plate`, `driver`, `delivery_note`, `wood_type_id`, `driver_id`, `received_status`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, '001/BL/2016/05/2', '0000-00-00', '001', 'B123CXZ', 'UCOK', 'BABABLESS', 1, NULL, NULL, '0000-00-00', 'ADMIN', NULL, NULL, NULL, NULL),
+(2, '0002/BL/26/05/16', '2016-05-26', '0002', '123', 'BABA', 'B123/UMP', 1, '1230000001', 'Baru', '2016-05-26', 'Michael', NULL, NULL, NULL, NULL),
+(4, '0003/BL/26/05/16', '2016-05-26', '0003', 'asd', 'BABA', '123_BL', 1, '12300000000', 'Baru', '2016-05-26', 'Michael', NULL, NULL, NULL, NULL),
+(5, '0004/BL/26/05/16', '2016-05-26', '0004', '123', 'XXY', '123X_XYZ', 1, '123.0.000.1984.01', 'Diproses', '2016-05-26', 'Michael', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supplier`
+--
+
+CREATE TABLE IF NOT EXISTS `supplier` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `supp_code` varchar(9) NOT NULL,
+  `supp_name` varchar(200) NOT NULL,
+  `pt` varchar(200) NOT NULL,
+  `npwp` varchar(30) NOT NULL,
+  `supp_type_id` int(3) NOT NULL,
+  `supp_status` varchar(30) NOT NULL,
+  `default_tax` int(3) NOT NULL,
+  `account_no` varchar(30) NOT NULL,
+  `bank_id` int(3) NOT NULL,
+  `account_name` varchar(30) NOT NULL,
+  `currency_id` int(3) NOT NULL,
+  `top` int(3) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `supp_code_2` (`supp_code`),
+  KEY `supp_type_id` (`supp_type_id`),
+  KEY `bank_id` (`bank_id`),
+  KEY `supp_code` (`supp_code`),
+  KEY `input_by` (`input_by`,`edited_by`,`deleted_by`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `supplier`
+--
+
+INSERT INTO `supplier` (`id`, `supp_code`, `supp_name`, `pt`, `npwp`, `supp_type_id`, `supp_status`, `default_tax`, `account_no`, `bank_id`, `account_name`, `currency_id`, `top`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'S0001', 'Agci', 'PT Indomarco', '', 0, '', 0, '', 0, '', 0, 0, '0000-00-00', '0', NULL, NULL, NULL, NULL),
+(3, 'ASC000001', 'adsa', 'dsda', 'sadsad', 2, 'Nonaktif', 101, '324342', 1, 'dsfdfs', 1, 101, '2016-04-17', 'timotius', '2016-04-17', 'timotius', '2016-04-17', 'timotius'),
+(4, 'ABS000001', 'PT ABS', 'ABS', '123456789', 1, 'Nonaktif Sementara', 10, '', 1, '', 1, 10, '2016-04-17', 'timotius', '2016-04-17', 'timotius', '2016-04-18', 'timotius'),
+(5, 'TEST', 'TEST', 'TEST', 'TEST', 1, 'Aktif', 1, 'TEST', 1, 'TEST', 1, 1, '2016-04-17', 'timotius', '2016-04-17', 'timotius', NULL, NULL),
+(6, 'SUPP-2016', 'SUPP TES !', 'maju sekawan', '101111111000000', 1, 'Aktif', 10, 'ZzXz', 1, 'ZxZx', 1, 1, '2016-04-18', 'timotius', NULL, NULL, NULL, NULL),
+(7, 'B0000111', 'Test', 'Test', '1234567890', 1, 'Aktif', 1, '12345678', 0, 'test', 0, 1, '2016-05-21', 'timotius', '2016-05-21', 'timotius', NULL, NULL),
+(8, 'aaaaa', 'aaaaa', 'aaaa', '', 1, 'Nonaktif Sementara', 0, '', 0, '', 0, 0, '2016-05-21', 'timotius', NULL, NULL, '2016-05-21', 'timotius');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supp_address`
+--
+
+CREATE TABLE IF NOT EXISTS `supp_address` (
+  `id` int(9) NOT NULL AUTO_INCREMENT,
+  `supp_code` varchar(9) NOT NULL,
+  `address_type` varchar(20) NOT NULL,
+  `address` varchar(200) NOT NULL,
+  `zip_code` varchar(5) NOT NULL,
+  `city_id` int(9) DEFAULT NULL,
+  `phone` varchar(15) NOT NULL,
+  `fax` varchar(15) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`),
+  KEY `supp_code` (`supp_code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+
+--
+-- Dumping data for table `supp_address`
+--
+
+INSERT INTO `supp_address` (`id`, `supp_code`, `address_type`, `address`, `zip_code`, `city_id`, `phone`, `fax`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(14, 'TEST', 'Billing', 'TEST', 'TEST', 3, 'TEST', 'TEST', '2016-04-17', 'timotius', '2016-04-17', 'timotius', NULL, NULL),
+(15, 'SUPP-2016', 'Warehouse', 'pasar baru\npasar baru 3', '10710', 2, '123', '123', '2016-04-18', 'timotius', NULL, NULL, NULL, NULL),
+(16, 'SUPP-2016', 'Warehouse', 'kalimantan', '11111', 2, '777777', '123', '2016-04-18', 'timotius', NULL, NULL, NULL, NULL),
+(17, 'B0000111', 'Billing', 'aaaa', '13220', 4, 'asd', 'asd', '2016-05-21', 'timotius', '2016-05-21', 'timotius', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supp_cp`
+--
+
+CREATE TABLE IF NOT EXISTS `supp_cp` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `supp_code` varchar(9) NOT NULL,
+  `supp_address_id` int(9) DEFAULT NULL,
+  `name` varchar(200) NOT NULL,
+  `department` varchar(100) NOT NULL,
+  `phone` varchar(15) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`),
+  KEY `supp_code` (`supp_code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+
+--
+-- Dumping data for table `supp_cp`
+--
+
+INSERT INTO `supp_cp` (`id`, `supp_code`, `supp_address_id`, `name`, `department`, `phone`, `email`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(8, 'TEST', 14, 'TEST1', 'TEST1', 'TEST1', 'TEST@TEST.COM', '2016-04-17', 'timotius', '2016-04-17', 'timotius', NULL, NULL),
+(9, 'SUPP-2016', 15, 'SUGI', 'BILLING', '123', 'sdadad@yshhh.com', '2016-04-18', 'timotius', NULL, NULL, NULL, NULL),
+(10, 'B0000111', 17, 'asd', 'asd', 'asd', 'asd@asd.com', '2016-05-21', 'timotius', '2016-05-21', 'timotius', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supp_type`
+--
+
+CREATE TABLE IF NOT EXISTS `supp_type` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `supp_type` varchar(50) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `supp_type`
+--
+
+INSERT INTO `supp_type` (`id`, `supp_type`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'Bahan Baku', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL),
+(2, 'Barang Jadi', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supp_vehicle`
+--
+
+CREATE TABLE IF NOT EXISTS `supp_vehicle` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `license_plate` varchar(10) NOT NULL,
+  `supp_code` varchar(9) NOT NULL,
+  `vehicle_type_id` int(3) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `license_plate` (`license_plate`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`),
+  KEY `supp_code` (`supp_code`),
+  KEY `vehicle_type_id` (`vehicle_type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `supp_vehicle`
+--
+
+INSERT INTO `supp_vehicle` (`id`, `license_plate`, `supp_code`, `vehicle_type_id`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(6, 'asd', 'ASC000001', 1, '2016-04-17', 'timotius', '2016-04-17', 'timotius', '2016-04-17', 'timotius'),
+(10, '123', 'ASC000001', 2, '2016-04-17', 'timotius', NULL, NULL, '2016-04-17', 'timotius'),
+(11, 'TEST', 'TEST', 1, '2016-04-17', 'timotius', '2016-04-17', 'timotius', NULL, NULL),
+(12, '123456789', 'B0000111', 1, '2016-05-21', 'timotius', '2016-05-21', 'timotius', NULL, NULL),
+(13, 'sdsdsd', 'B0000111', 1, '2016-05-21', 'timotius', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `thickness`
+--
+
+CREATE TABLE IF NOT EXISTS `thickness` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `thickness` decimal(7,2) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(25) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `thickness`
+--
+
+INSERT INTO `thickness` (`id`, `thickness`, `input_date`, `input_by`, `edit_date`, `edit_by`, `delete_date`, `delete_by`) VALUES
+(1, '10.00', NULL, NULL, NULL, NULL, NULL, NULL),
+(2, '20.00', NULL, NULL, NULL, NULL, NULL, NULL),
+(3, '30.00', NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `uom`
+--
+
+CREATE TABLE IF NOT EXISTS `uom` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `uom` varchar(50) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(25) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `uom`
+--
+
+INSERT INTO `uom` (`id`, `uom`, `input_date`, `input_by`, `edit_date`, `edit_by`, `delete_date`, `delete_by`) VALUES
+(1, 'batang', NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'm3', NULL, NULL, NULL, NULL, NULL, NULL),
+(3, 'botol', NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(25) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `emp_code` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `emp_code` (`emp_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -221,277 +1156,11 @@ INSERT INTO `users` (`employee_id`, `name`, `address`, `phone_no`, `email`, `pas
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `bank`
---
-
-CREATE TABLE IF NOT EXISTS `bank` (
-  `id` int(3) NOT NULL,
-  `bank_abbr` varchar(4) NOT NULL,
-  `bank` varchar(50) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
---
--- Dumping data untuk tabel `bank`
---
-
-INSERT INTO `bank` (`id`, `bank_abbr`, `bank`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
-(1, 'BCA', 'Bank Central Asia', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `city`
---
-
-CREATE TABLE IF NOT EXISTS `city` (
-  `id` int(3) NOT NULL,
-  `city` varchar(150) NOT NULL,
-  `province_id` int(3) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
---
--- Dumping data untuk tabel `city`
---
-
-INSERT INTO `city` (`id`, `city`, `province_id`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
-(1, 'Jakarta Utara', 1, '2016-04-16', 'timotius', NULL, NULL, NULL, NULL),
-(2, 'Jakarta Pusat', 1, '2016-04-16', '', NULL, NULL, NULL, NULL),
-(3, 'Jakarta Timur', 1, '2016-04-16', 'timotius', NULL, NULL, NULL, NULL),
-(4, 'Jakarta Barat', 1, '2016-04-16', 'timotius', NULL, NULL, NULL, NULL),
-(5, 'Jakarta Selatan', 1, '2016-04-16', 'timotius', NULL, NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `currency`
---
-
-CREATE TABLE IF NOT EXISTS `currency` (
-  `id` int(3) NOT NULL,
-  `currency_abbr` varchar(3) NOT NULL,
-  `currency_symbol` varchar(1) NOT NULL,
-  `currency` varchar(50) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
---
--- Dumping data untuk tabel `currency`
---
-
-INSERT INTO `currency` (`id`, `currency_abbr`, `currency_symbol`, `currency`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
-(1, 'USD', '$', 'US Dollar', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `province`
---
-
-CREATE TABLE IF NOT EXISTS `province` (
-  `id` int(3) NOT NULL,
-  `province` varchar(150) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
---
--- Dumping data untuk tabel `province`
---
-
-INSERT INTO `province` (`id`, `province`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
-(1, 'DKI Jakarta', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL),
-(2, 'Jawa Barat', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `supplier`
---
-
-CREATE TABLE IF NOT EXISTS `supplier` (
-  `id` int(3) NOT NULL,
-  `supp_code` varchar(9) NOT NULL,
-  `supp_name` varchar(200) NOT NULL,
-  `pt` varchar(200) NOT NULL,
-  `npwp` varchar(30) NOT NULL,
-  `supp_type_id` int(3) NOT NULL,
-  `supp_status` varchar(30) NOT NULL,
-  `default_tax` decimal(5,2) NOT NULL,
-  `account_no` varchar(30) NOT NULL,
-  `bank_id` int(3) NOT NULL,
-  `account_name` varchar(30) NOT NULL,
-  `currency_id` int(3) NOT NULL,
-  `top` int(3) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
---
--- Dumping data untuk tabel `supplier`
---
-
-INSERT INTO `supplier` (`id`, `supp_code`, `supp_name`, `pt`, `npwp`, `supp_type_id`, `supp_status`, `default_tax`, `account_no`, `bank_id`, `account_name`, `currency_id`, `top`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
-(3, 'ASC000001', 'adsa', 'dsda', 'sadsad', 2, 'Nonaktif', 101, '324342', 1, 'dsfdfs', 1, 101, '2016-04-17', 'timotius', '2016-04-17', 'timotius', '2016-04-17', 'timotius'),
-(4, 'ABS000001', 'PT ABS', 'ABS', '123456789', 1, 'Nonaktif Sementara', 10, '', 1, '', 1, 10, '2016-04-17', 'timotius', '2016-04-17', 'timotius', NULL, NULL),
-(5, 'TEST', 'TEST', 'TEST', 'TEST', 1, 'Aktif', 1, 'TEST', 1, 'TEST', 1, 1, '2016-04-17', 'timotius', '2016-04-17', 'timotius', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `supp_address`
---
-
-CREATE TABLE IF NOT EXISTS `supp_address` (
-  `id` int(9) NOT NULL,
-  `supp_code` varchar(9) NOT NULL,
-  `address_type` varchar(20) NOT NULL,
-  `address` varchar(200) NOT NULL,
-  `zip_code` varchar(5) NOT NULL,
-  `city_id` int(9) DEFAULT NULL,
-  `phone` varchar(15) NOT NULL,
-  `fax` varchar(15) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
-
---
--- Dumping data untuk tabel `supp_address`
---
-
-INSERT INTO `supp_address` (`id`, `supp_code`, `address_type`, `address`, `zip_code`, `city_id`, `phone`, `fax`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
-(14, 'TEST', 'Billing', 'TEST', 'TEST', 3, 'TEST', 'TEST', '2016-04-17', 'timotius', '2016-04-17', 'timotius', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `supp_cp`
---
-
-CREATE TABLE IF NOT EXISTS `supp_cp` (
-  `id` int(3) NOT NULL,
-  `supp_code` varchar(9) NOT NULL,
-  `name` varchar(200) NOT NULL,
-  `department` varchar(100) NOT NULL,
-  `phone` varchar(15) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
-
---
--- Dumping data untuk tabel `supp_cp`
---
-
-INSERT INTO `supp_cp` (`id`, `supp_code`, `name`, `department`, `phone`, `email`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
-(8, 'TEST', 'TEST1', 'TEST1', 'TEST1', 'TEST@TEST.COM', '2016-04-17', 'timotius', '2016-04-17', 'timotius', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `supp_type`
---
-
-CREATE TABLE IF NOT EXISTS `supp_type` (
-  `id` int(3) NOT NULL,
-  `supp_type` varchar(50) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
---
--- Dumping data untuk tabel `supp_type`
---
-
-INSERT INTO `supp_type` (`id`, `supp_type`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
-(1, 'Bahan Baku', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL),
-(2, 'Barang Jadi', '2016-04-16', 'timotius', NULL, NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `supp_vehicle`
---
-
-CREATE TABLE IF NOT EXISTS `supp_vehicle` (
-  `id` int(3) NOT NULL,
-  `license_plate` varchar(10) NOT NULL,
-  `supp_code` varchar(9) NOT NULL,
-  `vehicle_type_id` int(3) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-
---
--- Dumping data untuk tabel `supp_vehicle`
---
-
-INSERT INTO `supp_vehicle` (`id`, `license_plate`, `supp_code`, `vehicle_type_id`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
-(6, 'asd', 'ASC000001', 1, '2016-04-17', 'timotius', '2016-04-17', 'timotius', '2016-04-17', 'timotius'),
-(10, '123', 'ASC000001', 2, '2016-04-17', 'timotius', NULL, NULL, '2016-04-17', 'timotius'),
-(11, 'TEST', 'TEST', 1, '2016-04-17', 'timotius', '2016-04-17', 'timotius', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `user`
---
-
-CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) NOT NULL,
-  `username` varchar(25) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `emp_code` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `vehicle_type`
+-- Table structure for table `vehicle_type`
 --
 
 CREATE TABLE IF NOT EXISTS `vehicle_type` (
-  `id` int(3) NOT NULL,
+  `id` int(3) NOT NULL AUTO_INCREMENT,
   `vehicle_type` varchar(50) NOT NULL,
   `capacity` int(10) NOT NULL,
   `input_date` date NOT NULL,
@@ -499,280 +1168,34 @@ CREATE TABLE IF NOT EXISTS `vehicle_type` (
   `edit_date` date DEFAULT NULL,
   `edited_by` varchar(25) DEFAULT NULL,
   `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Dumping data untuk tabel `vehicle_type`
+-- Dumping data for table `vehicle_type`
 --
 
 INSERT INTO `vehicle_type` (`id`, `vehicle_type`, `capacity`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
 (1, 'Mobil', 1500, '2016-04-16', 'timotius', NULL, NULL, NULL, NULL),
 (2, 'Truk', 2000, '2016-04-16', 'timotius', NULL, NULL, NULL, NULL);
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `bank`
---
-ALTER TABLE `bank`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`);
-
---
--- Indexes for table `city`
---
-ALTER TABLE `city`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`);
-
---
--- Indexes for table `currency`
---
-ALTER TABLE `currency`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`);
-
---
--- Indexes for table `province`
---
-ALTER TABLE `province`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`);
-
---
--- Indexes for table `supplier`
---
-ALTER TABLE `supplier`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `supp_code_2` (`supp_code`), ADD KEY `supp_type_id` (`supp_type_id`), ADD KEY `bank_id` (`bank_id`), ADD KEY `supp_code` (`supp_code`), ADD KEY `input_by` (`input_by`,`edited_by`,`deleted_by`);
-
---
--- Indexes for table `supp_address`
---
-ALTER TABLE `supp_address`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`), ADD KEY `supp_code` (`supp_code`);
-
---
--- Indexes for table `supp_cp`
---
-ALTER TABLE `supp_cp`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`), ADD KEY `supp_code` (`supp_code`);
-
---
--- Indexes for table `supp_type`
---
-ALTER TABLE `supp_type`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`);
-
---
--- Indexes for table `supp_vehicle`
---
-ALTER TABLE `supp_vehicle`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `license_plate` (`license_plate`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`), ADD KEY `supp_code` (`supp_code`), ADD KEY `vehicle_type_id` (`vehicle_type_id`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `emp_code` (`emp_code`);
-
---
--- Indexes for table `vehicle_type`
---
-ALTER TABLE `vehicle_type`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `bank`
---
-ALTER TABLE `bank`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `city`
---
-ALTER TABLE `city`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `currency`
---
-ALTER TABLE `currency`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `province`
---
-ALTER TABLE `province`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `supplier`
---
-ALTER TABLE `supplier`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `supp_address`
---
-ALTER TABLE `supp_address`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
---
--- AUTO_INCREMENT for table `supp_cp`
---
-ALTER TABLE `supp_cp`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT for table `supp_type`
---
-ALTER TABLE `supp_type`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `supp_vehicle`
---
-ALTER TABLE `supp_vehicle`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `vehicle_type`
---
-ALTER TABLE `vehicle_type`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
---
-
---
--- Ketidakleluasaan untuk tabel `supp_address`
---
-ALTER TABLE `supp_address`
-ADD CONSTRAINT `supp_address_ibfk_1` FOREIGN KEY (`supp_code`) REFERENCES `supplier` (`supp_code`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
---
--- Struktur dari tabel `chamber`
---
-
-CREATE TABLE IF NOT EXISTS `chamber` (
-  `id` int(5) NOT NULL,
-  `chamber` varchar(50) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Struktur dari tabel `dry_in`
---
-
-CREATE TABLE IF NOT EXISTS `dry_in` (
-  `id` int(12) NOT NULL,
-  `dry_in_code` varchar(14) NOT NULL,
-  `date_in` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `chamber_id` int(5) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `dry_in_pallet`
+-- Stand-in structure for view `vsupp_addrcontact`
 --
-
-CREATE TABLE IF NOT EXISTS `dry_in_pallet` (
-  `id` int(12) NOT NULL,
-  `dry_in_code` varchar(14) NOT NULL,
-  `pallet_card_code` varchar(21) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `pic_tally` (
-  `id` int(12) NOT NULL,
-  `dry_in_code` varchar(14) NOT NULL,
-  `emp_code` varchar(10) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
-
+CREATE TABLE IF NOT EXISTS `vsupp_addrcontact` (
+`supp_name` varchar(200)
+,`supp_code` varchar(9)
+,`supp_addres_id` int(9)
+,`city_id` int(9)
+,`name` varchar(200)
+);
 -- --------------------------------------------------------
-
---
--- Struktur dari tabel `dry_out`
---
-
-CREATE TABLE IF NOT EXISTS `dry_out` (
-  `id` int(12) NOT NULL,
-  `dry_out_code` varchar(14) NOT NULL,
-  `date_out` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `chamber_id` int(5) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `dry_out_pallet`
---
-
-CREATE TABLE IF NOT EXISTS `dry_out_pallet` (
-  `id` int(12) NOT NULL,
-  `dry_out_code` varchar(14) NOT NULL,
-  `pallet_card_code` varchar(21) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pallet_card` (
-  `id` int(12) NOT NULL,
-  `pallet_card_code` varchar(21) NOT NULL,
-  `received_code` varchar(16) NOT NULL,
-  `emp_code` varchar(10) NOT NULL,
-  `grade_id` int(3) NOT NULL,
-  `total_volume` decimal(7,2) NOT NULL DEFAULT '0.00',
-  `total_log` int(5) NOT NULL,
-  `input_date` date NOT NULL,
-  `input_by` varchar(25) NOT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
---
--- Indexes for dumped tables
---
-
 
 --
 -- Table structure for table `wood_resource`
@@ -788,7 +1211,15 @@ CREATE TABLE IF NOT EXISTS `wood_resource` (
   `deleted_date` date DEFAULT NULL,
   `deleted_by` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `wood_resource`
+--
+
+INSERT INTO `wood_resource` (`id`, `wood_resource`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'Import', NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'Local', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -806,219 +1237,39 @@ CREATE TABLE IF NOT EXISTS `wood_type` (
   `deleted_date` date DEFAULT NULL,
   `deleted_by` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `wood_type`
+--
+
+INSERT INTO `wood_type` (`id`, `wood_type`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'JATI', '2016-05-10', 'ADMIN', NULL, NULL, NULL, NULL),
+(2, 'MERANTI', '2016-05-10', 'ADMIN', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `vsupp_addrcontact`
+--
+DROP TABLE IF EXISTS `vsupp_addrcontact`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`onesolut_admin`@`116.0.3.139` SQL SECURITY DEFINER VIEW `vsupp_addrcontact` AS (select `ms`.`supp_name` AS `supp_name`,`ms`.`supp_code` AS `supp_code`,`addr`.`id` AS `supp_addres_id`,`addr`.`city_id` AS `city_id`,`contact`.`name` AS `name` from ((`supplier` `ms` join `supp_address` `addr`) join `supp_cp` `contact`) where ((`addr`.`supp_code` = `ms`.`supp_code`) and (`contact`.`supp_address_id` = `addr`.`id`)));
 
 --
 -- Constraints for dumped tables
 --
 
-CREATE TABLE IF NOT EXISTS `delivery` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `delivery_note` int(11) NOT NULL,
-  `wood_domicile` varchar(50) NOT NULL,
-  `wood_resource_id` int(11) NOT NULL,
-  `input_by` varchar(25) DEFAULT NULL,
-  `edit_date` date DEFAULT NULL,
-  `edited_by` varchar(25) DEFAULT NULL,
-  `deleted_date` date DEFAULT NULL,
-  `deleted_by` varchar(25) DEFAULT NULL,
-  `input_date` date DEFAULT NULL,
-  PRIMARY KEY (`id`,`delivery_note`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+--
+-- Constraints for table `supp_address`
+--
+ALTER TABLE `supp_address`
+  ADD CONSTRAINT `supp_address_ibfk_1` FOREIGN KEY (`supp_code`) REFERENCES `supplier` (`supp_code`);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `employee`
---
-
-
---
--- Table structure for table `grade`
---
-
-CREATE TABLE IF NOT EXISTS `grade` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `grade` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `grade`
---
-
-INSERT INTO `grade` (`id`, `grade`) VALUES
-(1, 'A'),
-(2, 'B');
-
--- --------------------------------------------------------
-
-
---
--- Indexes for table `chamber`
---
-ALTER TABLE `chamber`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`);
-
---
--- Indexes for table `dry_in`
---
-ALTER TABLE `dry_in`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`), ADD KEY `chamber_id` (`chamber_id`);
-
---
--- Indexes for table `dry_in_pallet`
---
-ALTER TABLE `dry_in_pallet`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`), ADD KEY `dry_in_code` (`dry_in_code`), ADD KEY `pallet_card_code` (`pallet_card_code`);
-
---
--- Indexes for table `dry_out`
---
-ALTER TABLE `dry_out`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`), ADD KEY `chamber_id` (`chamber_id`);
-
---
--- Indexes for table `dry_out_pallet`
---
-ALTER TABLE `dry_out_pallet`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`), ADD KEY `dry_in_code` (`dry_out_code`), ADD KEY `pallet_card_code` (`pallet_card_code`);
-
---
--- Indexes for table `pic_tally`
---
-ALTER TABLE `pic_tally`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`), ADD KEY `dry_in_code` (`dry_in_code`), ADD KEY `emp_code` (`emp_code`);
-
-ALTER TABLE `pallet_card`
-  ADD PRIMARY KEY (`id`), ADD KEY `input_by` (`input_by`), ADD KEY `edited_by` (`edited_by`), ADD KEY `deleted_by` (`deleted_by`);
-
---
--- AUTO_INCREMENT for table `dry_in`
---
-ALTER TABLE `dry_in`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `dry_in_pallet`
---
-ALTER TABLE `dry_in_pallet`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `dry_out`
---
-ALTER TABLE `dry_out`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `dry_out_pallet`
---
-ALTER TABLE `dry_out_pallet`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
-  
---
--- AUTO_INCREMENT for table `pic_tally`
---
-ALTER TABLE `pic_tally`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE `pallet_card`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `chamber`
---
-ALTER TABLE `chamber`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
-CREATE TABLE thickness(
-id	int(3) PRIMARY KEY ,
-thickness	dec (7,2),
-input_date	date,
-input_by	varchar(25),
-edit_date	date,
-edited_by	varchar(25),
-deleted_date	date,
-deleted_by	varchar(25)
-);
 
-ALTER TABLE  `thickness` CHANGE  `id`  `id` INT( 3 ) NOT NULL AUTO_INCREMENT;
-
-INSERT INTO `project`.`wood_type` (`id`, `wood_type`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES (NULL, 'Balken A', NULL, NULL, NULL, NULL, NULL, NULL), (NULL, 'Balken B', NULL, NULL, NULL, NULL, NULL, NULL);
-
-ALTER TABLE `delivery` CHANGE `delivery_note` `delivery_note` VARCHAR(10) NOT NULL;
-
-
-INSERT INTO `project`.`delivery` (`id`, `delivery_note`, `wood_domicile`, `wood_resource_id`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`, `input_date`) VALUES (NULL, '112131231', 'Hong Kong Forest', '1', NULL, NULL, NULL, NULL, NULL, NULL);
-
-INSERT INTO `project`.`delivery` (`id`, `delivery_note`, `wood_domicile`, `wood_resource_id`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`, `input_date`) VALUES (NULL, '10329293', 'Tian Liu', '1', NULL, NULL, NULL, NULL, NULL, NULL); 
-
-INSERT INTO `project`.`wood_resource` (`id`, `wood_resource`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES (NULL, 'Mangrove', NULL, NULL, NULL, NULL, NULL, NULL);
-
-
-INSERT INTO `project`.`thickness` (`id`, `thickness`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES (NULL, '5', NULL, NULL, NULL, NULL, NULL, NULL), (NULL, '8', NULL, NULL, NULL, NULL, NULL, NULL);
-
--- Table structure for table `product` -- 
-CREATE TABLE IF NOT EXISTS `product` ( `id` int(11) NOT NULL AUTO_INCREMENT, `product_code` varchar(20) NOT NULL DEFAULT '', `product_name` varchar(50) DEFAULT NULL, `product_category_id` int(11) DEFAULT NULL, `product_status` varchar(50) DEFAULT NULL, `product_uom_id` int(11) DEFAULT NULL, `is_maintain_stock` int(11) DEFAULT NULL, `image_path` varchar(200) NOT NULL DEFAULT '', `brand` varchar(50) DEFAULT NULL, `barcode` varchar(50) DEFAULT NULL, `description` varchar(200) DEFAULT NULL, `wood_type_id` int(11) DEFAULT NULL, `grade_id` int(11) DEFAULT NULL, `thickness_id` int(11) DEFAULT NULL, `condition_id` int(11) DEFAULT NULL, `is_has_serial` int(11) DEFAULT NULL, `is_fixed_asset` int(11) DEFAULT NULL, `warranty` int(11) DEFAULT NULL, `netto` decimal(7,2) DEFAULT NULL, `netto_uom_id` int(11) DEFAULT NULL, `is_purchase_item` int(11) DEFAULT NULL, `minor` int(11) DEFAULT NULL, `minor_uom_id` int(3) DEFAULT NULL, `lead_time` int(3) DEFAULT NULL, `buy_cost_center_id` int(5) DEFAULT NULL, `expense_acc_id` int(9) DEFAULT NULL, `main_supp_code` varchar(9) DEFAULT NULL, `manufacturer` varchar(50) DEFAULT NULL, `is_sales_item` int(1) DEFAULT NULL, `is_service_item` int(1) DEFAULT NULL, `sell_cost_center_id` int(5) DEFAULT NULL, `income_acc_id` int(9) DEFAULT NULL, `max_disc` decimal(5,2) DEFAULT NULL, `input_date` date DEFAULT NULL, `input_by` varchar(25) DEFAULT NULL, `edit_date` date DEFAULT NULL, `edited_by` varchar(25) DEFAULT NULL, `deleted_date` date DEFAULT NULL, `deleted_by` varchar(25) DEFAULT NULL, PRIMARY KEY (`id`,`product_code`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ; -- 
-
--- -- Table structure for table `received` -- 
-CREATE TABLE IF NOT EXISTS `received` ( `id` int(11) NOT NULL AUTO_INCREMENT, `received_code` varchar(16) NOT NULL, `received_date` date NOT NULL, `rit_no` varchar(4) NOT NULL, `license_plate` varchar(10) NOT NULL, `driver` varchar(50) NOT NULL, `delivery_note` varchar(20) NOT NULL, `wood_type_id` int(11) NOT NULL, `input_date` date DEFAULT NULL, `input_by` varchar(25) DEFAULT NULL, `edit_date` date DEFAULT NULL, `edited_by` varchar(25) DEFAULT NULL, `deleted_date` date DEFAULT NULL, `deleted_by` varchar(25) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
-
-INSERT INTO `project`.`product` (`id`, `product_code`, `product_name`, `product_category_id`, `product_status`, `product_uom_id`, `is_maintain_stock`, `image_path`, `brand`, `barcode`, `description`, `wood_type_id`, `grade_id`, `thickness_id`, `condition_id`, `is_has_serial`, `is_fixed_asset`, `warranty`, `netto`, `netto_uom_id`, `is_purchase_item`, `minor`, `minor_uom_id`, `lead_time`, `buy_cost_center_id`, `expense_acc_id`, `main_supp_code`, `manufacturer`, `is_sales_item`, `is_service_item`, `sell_cost_center_id`, `income_acc_id`, `max_disc`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES (NULL, 'P0001', 'Balken Excellent Quality', '1', 'Basah', '1', NULL, '', NULL, NULL, NULL, '1', '1', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-
-INSERT INTO `project`.`employee` (`employee_id`, `employee_name`, `employee_type_id`, `address`, `city`, `birth_date`, `hire_date`, `email`, `phone_number`, `salary`, `department_id`, `gender_id`, `position_id`, `marital_id`, `employee_status_id`) VALUES ('', 'Vinci', 'EMP0002', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'POS0002', NULL, NULL);
-
- -- Table structure for table `pic_docking`
- CREATE TABLE IF NOT EXISTS `pic_docking` ( `id` int(11) NOT NULL AUTO_INCREMENT, `received_code` varchar(16) NOT NULL, `emp_code` varchar(10) NOT NULL, `input_date` date DEFAULT NULL, `input_by` varchar(25) DEFAULT NULL, `edit_date` date DEFAULT NULL, `edited_by` varchar(25) DEFAULT NULL, `deleted_date` date DEFAULT NULL, `deleted_by` varchar(25) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ; -- 
-
- INSERT INTO `project`.`received` (`id`, `received_code`, `received_date`, `rit_no`, `license_plate`, `driver`, `delivery_note`, `wood_type_id`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES (NULL, '120930123', '2016-05-11', '1212', 'asd', 'Udin', '12312', '1', NULL, NULL, NULL, NULL, NULL, NULL);
- 
-ALTER TABLE  `received` ADD  `driver_id` VARCHAR( 50 ) NOT NULL AFTER  `driver`;
-
-ALTER TABLE  `received` ADD  `received_status` VARCHAR( 50 ) NOT NULL AFTER  `wood_type_id`;
-
-
-CREATE TABLE pallet_card_dtl(
-id	int(12) primary key,
-pallet_card_code	varchar(21),
-length	dec (7,2),
-width	dec (7,2),
-thickness	dec (7,2),
-total	int (5),
-volume	dec (10,2),
-product_code	varchar(20),
-input_date	date,
-input_by	varchar(25),
-edit_date	date,
-edited_by	varchar(25),
-deleted_date	date,
-deleted_by	varchar(25)
-);
-
-ALTER TABLE  `pallet_card_dtl` CHANGE  `id`  `id` INT( 12 ) NOT NULL AUTO_INCREMENT;
-
-
-CREATE TABLE document_type(
-id	int(3) PRIMARY KEY,
-document_type	varchar(50),
-input_date	date,
-input_by	varchar(25),
-edit_date	date,
-edited_by	varchar(25),
-deleted_date	date,
-deleted_by	varchar(25)
-);
-
-ALTER TABLE  `document_type` CHANGE  `id`  `id` INT( 3 ) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE  `delivery` ADD  `document_type_id` INT( 3 ) NOT NULL AFTER  `delivery_note`;
-ALTER TABLE  `delivery` ADD  `wood_type_id` INT( 3 ) NOT NULL AFTER  `wood_resource_id` ,
-ADD  `total_log` INT( 5 ) NOT NULL AFTER  `wood_type_id` ,
-ADD  `total_volume` DECIMAL( 7, 2 ) NOT NULL AFTER  `total_log`;
-
-
-INSERT INTO `project`.`document_type` (`id`, `document_type`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES (NULL, 'Penerimaan', NULL, NULL, NULL, NULL, NULL, NULL), (NULL, 'Pengeluaran', NULL, NULL, NULL, NULL, NULL, NULL);
+ALTER TABLE  `received` ADD  `supplier_code` VARCHAR( 50 ) NOT NULL AFTER  `rit_no` ,
+ADD  `supplier_cp_id` INT NOT NULL AFTER  `supplier_code`;

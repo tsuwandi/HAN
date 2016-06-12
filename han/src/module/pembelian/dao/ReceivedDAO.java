@@ -25,18 +25,17 @@ public class ReceivedDAO {
 	private PreparedStatement updateStatusStatement;
 
 	 private String insertQuery = "INSERT INTO received (received_code, received_date,"
-	 		+ " rit_no, license_plate, driver, delivery_note, wood_type_id, driver_id, received_status, input_date, input_by) "
-	 		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+	 		+ " rit_no, license_plate, driver, delivery_note, wood_type_id, driver_id, received_status, supplier_code, supplier_cp_id, input_date, input_by) "
+	 		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	 private String updateQuery = "UPDATE received set received_date=?, rit_no=?,"
-	 		+ " license_plate=?, driver=?, delivery_note=?, wood_type_id=?, edit_date=?, edited_by=?"
+	 		+ " license_plate=?, driver=?, delivery_note=?, wood_type_id=?, supplier_code=?, supplier_cp_id=?, edit_date=?, edited_by=?"
 	 		+ " WHERE id=? AND received_code=?";
 	 private String deleteQuery = "update bank set deleted_date=?,"
 	 		+ "deleted_by=? where received_code=?";
-	private String getAllQuery = "select a.id, received_code, received_date, rit_no, a.license_plate, "
+	private String getAllQuery = "select a.id, received_code, received_date, rit_no, a.license_plate, a.supplier_code, a.supplier_cp_id, "
 			+ "driver, a.delivery_note, a.wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource "
 			+ "FROM received a " 
-			+ "INNER JOIN supp_vehicle b  ON a.license_plate = b.license_plate "
-			+ "INNER JOIN supplier c ON b.supp_code = c.supp_code INNER JOIN wood_type d ON a.wood_type_id = d.id "
+			+ "INNER JOIN supplier c ON a.supplier_code = c.supp_code INNER JOIN wood_type d ON a.wood_type_id = d.id "
 			+ "INNER JOIN delivery f ON a.delivery_note = f.delivery_note "
 			+ "INNER JOIN wood_resource e ON f.wood_resource_id = e.id WHERE 1=1";
 
@@ -116,6 +115,8 @@ public class ReceivedDAO {
 				received.setWoodTypeName(rs.getString("wood_type"));
 				received.setWoodDomicile(rs.getString("wood_domicile"));
 				received.setWoodResource(rs.getString("wood_resource"));
+				received.setSupplierCode(rs.getString("supplier_code"));
+				received.setSupplierCpID(rs.getInt("supplier_cp_id"));
 				receiveds.add(received);
 				
 			}
@@ -158,6 +159,8 @@ public class ReceivedDAO {
 				received.setWoodTypeName(rs.getString("wood_type"));
 				received.setWoodDomicile(rs.getString("wood_domicile"));
 				received.setWoodResource(rs.getString("wood_resource"));
+				received.setSupplierCode(rs.getString("supplier_code"));
+				received.setSupplierCpID(rs.getInt("supplier_cp_id"));
 				receiveds.add(received);
 			}
 
@@ -216,6 +219,8 @@ public class ReceivedDAO {
 				received.setWoodTypeName(rs.getString("wood_type"));
 				received.setWoodDomicile(rs.getString("wood_domicile"));
 				received.setWoodResource(rs.getString("wood_resource"));
+				received.setSupplierCode(rs.getString("supplier_code"));
+				received.setSupplierCpID(rs.getInt("supplier_cp_id"));
 				receiveds.add(received);
 			}
 		} catch (SQLException ex) {
@@ -246,8 +251,10 @@ public class ReceivedDAO {
     		insertStatement.setInt(7, received.getWoodTypeID());
     		insertStatement.setString(8, received.getDriverID());
     		insertStatement.setString(9, "Baru");
-    		insertStatement.setDate(10, new Date(new java.util.Date().getTime()));
-    		insertStatement.setString(11, "Michael");
+    		insertStatement.setString(10, received.getSupplierCode());
+    		insertStatement.setInt(11, received.getSupplierCpID());
+    		insertStatement.setDate(12, new Date(new java.util.Date().getTime()));
+    		insertStatement.setString(13, "Michael");
     		insertStatement.executeUpdate();
             
         } catch (SQLException ex) {
@@ -273,9 +280,11 @@ public class ReceivedDAO {
     		updateStatement.setString(5, received.getDeliveryNote());
     		updateStatement.setInt(6, received.getWoodTypeID());
     		updateStatement.setDate(7, new Date(new java.util.Date().getTime()));
-    		updateStatement.setString(8, "Michael");
-    		updateStatement.setInt(9, received.getId());
-    		updateStatement.setString(10, received.getReceivedCode());
+    		updateStatement.setString(8, received.getSupplierCode());
+    		updateStatement.setInt(9, received.getSupplierCpID());
+    		updateStatement.setString(10, "Michael");
+    		updateStatement.setInt(11, received.getId());
+    		updateStatement.setString(12, received.getReceivedCode());
     		updateStatement.executeUpdate();
             
         } catch (SQLException ex) {

@@ -8,6 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -31,7 +33,9 @@ import module.pembelian.model.Received;
 import module.pembelian.model.SupplierVehicle;
 import module.pembelian.model.WoodResource;
 import module.pembelian.model.WoodType;
+import module.supplier.model.Supplier;
 import module.util.Bridging;
+import module.pembelian.model.SupplierCP;
 
 public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	
@@ -54,6 +58,9 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	JLabel totalVolumeLbl;
 	JLabel uomTotalLogLbl;
 	JLabel uomTotalVolumeLbl;
+	JLabel supplierCPLbl;
+	JLabel supplierAddressLbl;
+	
 	
 	JLabel errorCodeLbl;
 	JLabel errorRitNumberLbl;
@@ -67,6 +74,8 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	JLabel errorTotalLogLbl;
 	JLabel errorTotalVolumeLbl;
 	JLabel errorWoodDomicileLbl;
+	JLabel errorSupplierLbl;
+	JLabel errorSupplierCPLbl;
 	
 	NumberField receivedCodeField;
 	NumberField receivedCodeDateField;
@@ -78,15 +87,17 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	
 	JTextField driverField;
 	JTextField woodDomicileField;
-	JTextField supplierTextField;
 	JTextField driverIDField;
 	JTextField docNoField;
+	JTextField licensePlateField;
 	
+	JTextArea supplierAddressArea;
 	
-	ComboBox<SupplierVehicle> licensePlateComboBox;
+	ComboBox<SupplierCP> supplierCPComboBox;
 	ComboBox<WoodType> woodTypeComboBox;
 	ComboBox<DocumentType> docTypeComboBox;
 	ComboBox<WoodResource> woodResourceComboBox;
+	ComboBox<Supplier> supplierComboBox;
 
 	JScrollPane palletScrollPane;
 	JScrollPane dockingPicScrollPane;
@@ -94,8 +105,9 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	JDateChooser receivedDateChooser;
 	
 	JButton saveBtn;
-
-	List<SupplierVehicle> suppVehicles;
+	
+	List<Supplier> suppliers;
+	List<SupplierCP> supplierCPs;
 	List<WoodResource> woodResources;
 	List<DocumentType> documentTypes;
 	List<WoodType> woodTypes;
@@ -178,52 +190,78 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		errorRitNumberLbl.setBounds(380,150,180,20);
 		containerPnl.add(errorRitNumberLbl);
 		
-		//License Plate
-		licensePlateLbl = new JLabel("No Kendaraan");
-		licensePlateLbl.setBounds(50,190,150,20);
-		containerPnl.add(licensePlateLbl);
-		
-		licensePlateComboBox = new ComboBox<SupplierVehicle>();
-		licensePlateComboBox.setBounds(220,190,150,20);
-		containerPnl.add(licensePlateComboBox);
-		
-		errorLicenseLbl = new JLabel();
-		errorLicenseLbl.setBounds(380,190,180,20);
-		containerPnl.add(errorLicenseLbl);
-		
 		//Supplier
 		supplierLbl = new JLabel("Supplier");
-		supplierLbl.setBounds(50,230,150,20);
+		supplierLbl.setBounds(50,190,150,20);
 		containerPnl.add(supplierLbl);
 		
-		supplierTextField = new JTextField();
-		supplierTextField.setBounds(220,230,150,20);
-		containerPnl.add(supplierTextField);
+		supplierComboBox = new ComboBox<Supplier>();
+		supplierComboBox.setBounds(220,190,150,20);
+		containerPnl.add(supplierComboBox);
+		
+		errorSupplierLbl = new JLabel();
+		errorSupplierLbl.setBounds(380,190,180,20);
+		containerPnl.add(errorSupplierLbl);
+		
+		//Supplier CP
+		supplierCPLbl = new JLabel("Sub Supplier");
+		supplierCPLbl.setBounds(50,230,150,20);
+		containerPnl.add(supplierCPLbl);
+		
+		supplierCPComboBox = new ComboBox<SupplierCP>();
+		supplierCPComboBox.setBounds(220,230,150,20);
+		containerPnl.add(supplierCPComboBox);
+		
+		errorSupplierCPLbl = new JLabel();
+		errorSupplierCPLbl.setBounds(380, 230, 150, 20);
+		containerPnl.add(errorSupplierCPLbl);
+		
+		//Supplier Address
+		supplierAddressLbl = new JLabel("Alamat Supplier");
+		supplierAddressLbl.setBounds(50,270,150,20);
+		containerPnl.add(supplierAddressLbl);
+		
+		supplierAddressArea = new JTextArea();
+		supplierAddressArea.setBounds(220,270,150,50);
+		containerPnl.add(supplierAddressArea);
+		
+		//License Plate
+		licensePlateLbl = new JLabel("No Kendaraan");
+		licensePlateLbl.setBounds(50,340,150,20);
+		containerPnl.add(licensePlateLbl);
+		
+		licensePlateField = new JTextField();
+		licensePlateField.setBounds(220,340,150,20);
+		containerPnl.add(licensePlateField);
+		
+		errorLicenseLbl = new JLabel();
+		errorLicenseLbl.setBounds(380,340,180,20);
+		containerPnl.add(errorLicenseLbl);
 		
 		//Driver
 		driverLbl =  new JLabel("Supir");
-		driverLbl.setBounds(50,270,150,20);
+		driverLbl.setBounds(50,380,150,20);
 		containerPnl.add(driverLbl);
 		
 		driverField = new JTextField();
-		driverField.setBounds(220, 270, 150, 20);
+		driverField.setBounds(220, 380, 150, 20);
 		containerPnl.add(driverField);
 		
 		errorDriverLbl = new JLabel();
-		errorDriverLbl.setBounds(380,270,180,20);
+		errorDriverLbl.setBounds(380,380,180,20);
 		containerPnl.add(errorDriverLbl);
 		
 		//Driver Id
 		driverIDLbl =  new JLabel("KTP Supir");
-		driverIDLbl.setBounds(50,310,150,20);
+		driverIDLbl.setBounds(50,420,150,20);
 		containerPnl.add(driverIDLbl);
 		
 		driverIDField = new JTextField();
-		driverIDField.setBounds(220, 310, 150, 20);
+		driverIDField.setBounds(220, 420, 150, 20);
 		containerPnl.add(driverIDField);
 		
 		errorDriverIDLbl = new JLabel();
-		errorDriverIDLbl.setBounds(380,310,180,20);
+		errorDriverIDLbl.setBounds(380,420,180,20);
 		containerPnl.add(errorDriverIDLbl);
 		
 	
@@ -337,9 +375,13 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		ritNumberField.setEnabled(false);
 
 		try {
-			suppVehicles = ReceivedDAOFactory.getSupplierVehicleDAO().getListSuppVehicle();
-			suppVehicles.add(0,new SupplierVehicle("--Pilih--"));
-			licensePlateComboBox.setList(suppVehicles);
+			supplierCPs = new ArrayList<>();
+			supplierCPs.add(new SupplierCP("--Pilih--"));
+			supplierCPComboBox.setList(supplierCPs);
+
+			suppliers = ReceivedDAOFactory.getSupplierDAO().getAll();
+			suppliers.add(0,new Supplier("--Pilih--"));
+			supplierComboBox.setList(suppliers);
 
 			woodTypes = ReceivedDAOFactory.getWoodTypeDAO().getWoodType();
 			woodTypes.add(0,new WoodType("--Pilih--"));
@@ -357,7 +399,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 			e.printStackTrace();
 		}
 		
-		supplierTextField.setEnabled(false);
+		supplierAddressArea.setEnabled(false);
 		receivedCodeField.setEnabled(false);
 		receivedCodeDateField.setEnabled(false);
 		receivedCodeMonthField.setEnabled(false);
@@ -379,20 +421,40 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 			}
 		});
 		
-		licensePlateComboBox.addItemListener(new ItemListener() {
+		supplierComboBox.addItemListener(new ItemListener() {
 			
 			@Override
-			public void itemStateChanged(ItemEvent arg0) {
-				if(licensePlateComboBox.getSelectedIndex()!=0){
-					supplierTextField.setText(licensePlateComboBox.getDataIndex().getSupplierName());
+			public void itemStateChanged(ItemEvent e) {
+				if(supplierComboBox.getSelectedIndex()==0){
+					supplierCPs.clear();
+					supplierCPs.add(new SupplierCP("--Pilih--"));
+					supplierCPComboBox.setList(supplierCPs);
+					supplierAddressArea.setText("");
 				}else{
-					supplierTextField.setText("");
+					try {
+						supplierCPs = new ArrayList<>();
+						supplierCPs = ReceivedDAOFactory.getSupplierCPDAO().getSuppCPBySupplier(supplierComboBox.getDataIndex().getSuppCode());
+						supplierCPs.add(0,new SupplierCP("--Pilih--"));
+						supplierCPComboBox.setList(supplierCPs);
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
 				}
 			}
 		});
 		
+		supplierCPComboBox.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(supplierCPComboBox.getSelectedIndex()!=0){
+					supplierAddressArea.setText(supplierCPComboBox.getDataIndex().getSuppAddress());
+				}else{
+					supplierAddressArea.setText("");
+				}
+			}
+		});
 	
-		
 		saveBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -422,8 +484,8 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 				}else{
 					errorDriverIDLbl.setText("");
 				}
-				if(licensePlateComboBox.getSelectedIndex()==0){
-					errorLicenseLbl.setText("<html><font color='red'>Plat Nomor harus dipilih !</font></html>");
+				if(licensePlateField.getText().equals("")){
+					errorLicenseLbl.setText("<html><font color='red'>Plat Nomor harus diisi !</font></html>");
 					error++;
 				}else{
 					errorLicenseLbl.setText("");
@@ -468,6 +530,19 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 					errorTotalLogLbl.setText("");
 				}
 				
+				if(supplierComboBox.getSelectedIndex()==0){
+					errorSupplierLbl.setText("<html><font color='red'>Supplier harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorTotalLogLbl.setText("");
+				}
+				if(supplierCPComboBox.getSelectedIndex()==0){
+					errorSupplierCPLbl.setText("<html><font color='red'>Sub Supplier harus dipilih !</font></html>");
+					error++;
+				}else{
+					errorTotalLogLbl.setText("");
+				}
+				
 				if(totalVolumeField.getText().equals("")){
 					errorTotalVolumeLbl.setText("<html><font color='red'>Total Volume harus diisi !</font></html>");
 					error++;
@@ -482,13 +557,15 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 							+receivedCodeMonthField.getText()+thirdCodeSeparator.getText()+receivedCodeYearField.getText();
 					rec.setDeliveryNote(docNoField.getText());
 					rec.setDriver(driverField.getText());
-					rec.setLicensePlate(licensePlateComboBox.getDataIndex().getLicensePlate());
+					rec.setLicensePlate(licensePlateField.getText());
 					rec.setReceivedCode(code);
 					rec.setRitNo(ritNumberField.getText());
-					rec.setSupplier(supplierTextField.getText());
+					rec.setSupplier(supplierComboBox.getDataIndex().getSuppName());
 					rec.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
 					rec.setReceivedDate(receivedDateChooser.getDate());
 					rec.setDriverID(driverIDField.getText());
+					rec.setSupplierCode(supplierComboBox.getDataIndex().getSuppCode());
+					rec.setSupplierCpID(supplierCPComboBox.getDataIndex().getId());
 					
 					Delivery del = new Delivery();
 					del.setDeliveryNote(docNoField.getText());

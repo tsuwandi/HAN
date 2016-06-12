@@ -17,6 +17,8 @@ public class Received {
 	String woodTypeName;
 	String woodDomicile;
 	String woodResource;
+	String supplierCode;
+	int supplierCpID;
 	
 	
 	
@@ -103,6 +105,18 @@ public class Received {
 	}
 	public void setSupplier(String supplier) {
 		this.supplier = supplier;
+	}
+	public String getSupplierCode() {
+		return supplierCode;
+	}
+	public void setSupplierCode(String supplierCode) {
+		this.supplierCode = supplierCode;
+	}
+	public int getSupplierCpID() {
+		return supplierCpID;
+	}
+	public void setSupplierCpID(int supplierCpID) {
+		this.supplierCpID = supplierCpID;
 	}
 	
 	
