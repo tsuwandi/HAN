@@ -142,9 +142,9 @@ public class SuppAddressDialog extends JDialog {
 		lblZipCode.setBounds(25, 135, 150, 30);
 		getContentPane().add(lblZipCode);
 
-		txtZipCode = new NumberField();
+		txtZipCode = new NumberField(5);
 		txtZipCode.setBounds(150, 135, 150, 30);
-		txtZipCode.setDocument(new JTextFieldLimit(5));
+		//txtZipCode.setDocument(new JTextFieldLimit(5));
 		getContentPane().add(txtZipCode);
 
 		lblProvince = new JLabel("<html>Provinsi <font color=\"red\">*</font></html>");
@@ -241,18 +241,18 @@ public class SuppAddressDialog extends JDialog {
 		lblPhone.setBounds(25, 310, 150, 30);
 		getContentPane().add(lblPhone);
 
-		txtPhone = new NumberField();
+		txtPhone = new NumberField(15);
 		txtPhone.setBounds(150, 310, 150, 30);
-		txtPhone.setDocument(new JTextFieldLimit(15));
+		//txtPhone.setDocument(new JTextFieldLimit(15));
 		getContentPane().add(txtPhone);
 
 		lblFax = new JLabel("Fax");
 		lblFax.setBounds(25, 345, 150, 30);
 		getContentPane().add(lblFax);
 
-		txtFax = new NumberField();
+		txtFax = new NumberField(15);
 		txtFax.setBounds(150, 345, 150, 30);
-		txtFax.setDocument(new JTextFieldLimit(15));
+		//txtFax.setDocument(new JTextFieldLimit(15));
 		getContentPane().add(txtFax);
 
 		btnInsert = new JButton("Insert");

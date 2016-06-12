@@ -26,10 +26,14 @@ public class PalletDAO {
 	private PreparedStatement detailPalletStatement;
 	private PreparedStatement deleteStatement;
 	
-	private String getAllForDryInPalletQuery = "SELECT pc.id, r.received_date, r.rit_no, pc.pallet_card_code, pc.total_volume "
-			+ "FROM pallet_card pc INNER JOIN received r ON r.received_code = pc.received_code ";
-	private String getAllForDryOutPalletQuery = "SELECT pc.id, r.received_date, r.rit_no, pc.pallet_card_code, pc.total_volume, d.date_in "
-			+ "FROM pallet_card pc INNER JOIN received r ON r.received_code = pc.received_code "
+	private String getAllForDryInPalletQuery = "SELECT pc.id, r.received_date, r.rit_no, pc.pallet_card_code, pc.total_volume, "
+			+ "pcd.length, pcd.width, pcd.thickness FROM pallet_card pc "
+			+ "INNER JOIN pallet_card_dtl pcd ON pcd.pallet_card_code = pc.pallet_card_code "
+			+ "INNER JOIN received r ON r.received_code = pc.received_code ";
+	private String getAllForDryOutPalletQuery = "SELECT pc.id, r.received_date, r.rit_no, pc.pallet_card_code, pc.total_volume, d.date_in, "
+			+ "pcd.length, pcd.width, pcd.thickness FROM pallet_card pc "
+			+ "INNER JOIN pallet_card_dtl pcd ON pcd.pallet_card_code = pc.pallet_card_code "
+			+ "INNER JOIN received r ON r.received_code = pc.received_code "
 			+ "INNER JOIN dry_in_pallet dp  ON dp.pallet_card_code = pc.pallet_card_code "
 			+ "INNER JOIN dry_in d ON d.dry_in_code = dp.dry_in_code ";
 
@@ -152,7 +156,13 @@ public class PalletDAO {
 				palletCard.setId(rs.getInt("id"));
 				palletCard.setPalletCardCode(rs.getString("pallet_card_code"));
 				palletCard.setTotalVolume(rs.getDouble("total_volume"));
-
+				
+				PalletCardDetail palletCardDetail = new PalletCardDetail();
+				palletCardDetail.setLength(rs.getDouble("length"));
+				palletCardDetail.setWidth(rs.getDouble("width"));
+				palletCardDetail.setThickness(rs.getDouble("thickness"));
+				palletCard.setPalletCardDetail(palletCardDetail);
+				
 				Received received = new Received();
 				received.setRitNo(rs.getString("rit_no"));
 				received.setReceivedDate(rs.getDate("received_date"));
@@ -190,6 +200,12 @@ public class PalletDAO {
 				palletCard.setId(rs.getInt("id"));
 				palletCard.setPalletCardCode(rs.getString("pallet_card_code"));
 				palletCard.setTotalVolume(rs.getDouble("total_volume"));
+				
+				PalletCardDetail palletCardDetail = new PalletCardDetail();
+				palletCardDetail.setLength(rs.getDouble("length"));
+				palletCardDetail.setWidth(rs.getDouble("width"));
+				palletCardDetail.setThickness(rs.getDouble("thickness"));
+				palletCard.setPalletCardDetail(palletCardDetail);
 
 				Received received = new Received();
 				received.setRitNo(rs.getString("rit_no"));
@@ -224,6 +240,12 @@ public class PalletDAO {
 				palletCard.setId(rs.getInt("id"));
 				palletCard.setPalletCardCode(rs.getString("pallet_card_code"));
 				palletCard.setTotalVolume(rs.getDouble("total_volume"));
+				
+				PalletCardDetail palletCardDetail = new PalletCardDetail();
+				palletCardDetail.setLength(rs.getDouble("length"));
+				palletCardDetail.setWidth(rs.getDouble("width"));
+				palletCardDetail.setThickness(rs.getDouble("thickness"));
+				palletCard.setPalletCardDetail(palletCardDetail);
 
 				Received received = new Received();
 				received.setRitNo(rs.getString("rit_no"));
@@ -254,8 +276,6 @@ public class PalletDAO {
 
 			getAllForDryOutPalletStatement = connection.prepareStatement(query);
 			
-			System.out.println(getAllForDryOutPalletStatement);
-
 			ResultSet rs = getAllForDryOutPalletStatement.executeQuery();
 			while (rs.next()) {
 				Pallet palletCard = new Pallet();
@@ -263,6 +283,12 @@ public class PalletDAO {
 				palletCard.setPalletCardCode(rs.getString("pallet_card_code"));
 				palletCard.setTotalVolume(rs.getDouble("total_volume"));
 				palletCard.setDateIn(rs.getTimestamp("date_in"));
+				
+				PalletCardDetail palletCardDetail = new PalletCardDetail();
+				palletCardDetail.setLength(rs.getDouble("length"));
+				palletCardDetail.setWidth(rs.getDouble("width"));
+				palletCardDetail.setThickness(rs.getDouble("thickness"));
+				palletCard.setPalletCardDetail(palletCardDetail);
 
 				Received received = new Received();
 				received.setRitNo(rs.getString("rit_no"));
@@ -307,6 +333,12 @@ public class PalletDAO {
 				palletCard.setPalletCardCode(rs.getString("pallet_card_code"));
 				palletCard.setTotalVolume(rs.getDouble("total_volume"));
 				palletCard.setDateIn(rs.getTimestamp("date_in"));
+				
+				PalletCardDetail palletCardDetail = new PalletCardDetail();
+				palletCardDetail.setLength(rs.getDouble("length"));
+				palletCardDetail.setWidth(rs.getDouble("width"));
+				palletCardDetail.setThickness(rs.getDouble("thickness"));
+				palletCard.setPalletCardDetail(palletCardDetail);
 
 				Received received = new Received();
 				received.setRitNo(rs.getString("rit_no"));
@@ -347,6 +379,12 @@ public class PalletDAO {
 				palletCard.setPalletCardCode(rs.getString("pallet_card_code"));
 				palletCard.setTotalVolume(rs.getDouble("total_volume"));
 				palletCard.setDateIn(rs.getTimestamp("date_in"));
+				
+				PalletCardDetail palletCardDetail = new PalletCardDetail();
+				palletCardDetail.setLength(rs.getDouble("length"));
+				palletCardDetail.setWidth(rs.getDouble("width"));
+				palletCardDetail.setThickness(rs.getDouble("thickness"));
+				palletCard.setPalletCardDetail(palletCardDetail);
 
 				Received received = new Received();
 				received.setRitNo(rs.getString("rit_no"));

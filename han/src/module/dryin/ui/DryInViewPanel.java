@@ -49,7 +49,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 	JLabel lblErrorChamber;
 	JLabel lblErrorPalletCard;
 
-	JLabel lblPicTally;
+	//JLabel lblPicTally;
 	JLabel lblPalletCardCode;
 	JLabel lblRitNo;
 	JLabel lblPalletCardCodeConstant;
@@ -76,10 +76,10 @@ public class DryInViewPanel extends JPanel implements Bridging {
 	JTextField txtTotalVolumePalletCard;
 	JTextField txtTotalVolume;
 
-	JScrollPane scrollPanePicTally;
-	JTable tblPicTally;
-	JButton btnSearchPicTally;
-	JButton btnDeletePicTally;
+//	JScrollPane scrollPanePicTally;
+//	JTable tblPicTally;
+//	JButton btnSearchPicTally;
+//	JButton btnDeletePicTally;
 
 	JScrollPane scrollPaneDryInPallet;
 	JTable tblDryInPallet;
@@ -94,14 +94,14 @@ public class DryInViewPanel extends JPanel implements Bridging {
 	JPanel panel;
 	JScrollPane scrollPane;
 
-	private PicTallyTableModel picTallyTableModel;
+	//private PicTallyTableModel picTallyTableModel;
 	private DryInPalletTableModel dryInPalletTableModel;
-	private List<PicTally> listOfPicTally;
+	//private List<PicTally> listOfPicTally;
 	private List<DryInPallet> listOfDryInPallet;
 	private DryIn dryIn;
 
 	public DryInViewPanel() {
-		setPreferredSize(new Dimension(1366, 850));
+		setPreferredSize(new Dimension(1366, 725));
 		setLayout(null);
 
 		panel = new JPanel();
@@ -173,128 +173,128 @@ public class DryInViewPanel extends JPanel implements Bridging {
 		cbChamber.setEnabled(false);
 		panel.add(cbChamber);
 
-		lblPicTally = new JLabel("Pic Tally");
-		lblPicTally.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblPicTally.setBounds(50, 200, 150, 30);
-		panel.add(lblPicTally);
-
-		scrollPanePicTally = new JScrollPane();
-		scrollPanePicTally.setBounds(50, 240, 975, 150);
-		panel.add(scrollPanePicTally);
-
-		listOfPicTally = new ArrayList<PicTally>();
-		picTallyTableModel = new PicTallyTableModel(listOfPicTally);
-		tblPicTally = new JTable(picTallyTableModel);
-		tblPicTally.setFocusable(false);
-		tblPicTally.setBorder(new EmptyBorder(5, 5, 5, 5));
-		tblPicTally.setEnabled(false);
-		scrollPanePicTally.setViewportView(tblPicTally);
-
-		btnSearchPicTally = new JButton("Cari");
-		btnSearchPicTally.setBounds(820, 200, 100, 30);
-		btnSearchPicTally.setEnabled(false);
-		panel.add(btnSearchPicTally);
-
-		btnDeletePicTally = new JButton("Hapus");
-		btnDeletePicTally.setBounds(925, 200, 100, 30);
-		btnDeletePicTally.setEnabled(false);
-		panel.add(btnDeletePicTally);
+//		lblPicTally = new JLabel("Pic Tally");
+//		lblPicTally.setFont(new Font("Tahoma", Font.BOLD, 14));
+//		lblPicTally.setBounds(50, 200, 150, 30);
+//		panel.add(lblPicTally);
+//
+//		scrollPanePicTally = new JScrollPane();
+//		scrollPanePicTally.setBounds(50, 240, 975, 150);
+//		panel.add(scrollPanePicTally);
+//
+//		listOfPicTally = new ArrayList<PicTally>();
+//		picTallyTableModel = new PicTallyTableModel(listOfPicTally);
+//		tblPicTally = new JTable(picTallyTableModel);
+//		tblPicTally.setFocusable(false);
+//		tblPicTally.setBorder(new EmptyBorder(5, 5, 5, 5));
+//		tblPicTally.setEnabled(false);
+//		scrollPanePicTally.setViewportView(tblPicTally);
+//
+//		btnSearchPicTally = new JButton("Cari");
+//		btnSearchPicTally.setBounds(820, 200, 100, 30);
+//		btnSearchPicTally.setEnabled(false);
+//		panel.add(btnSearchPicTally);
+//
+//		btnDeletePicTally = new JButton("Hapus");
+//		btnDeletePicTally.setBounds(925, 200, 100, 30);
+//		btnDeletePicTally.setEnabled(false);
+//		panel.add(btnDeletePicTally);
 
 		btnSearchPalletCard = new JButton("Cari Kartu Pallet");
-		btnSearchPalletCard.setBounds(49, 405, 150, 30);
+		btnSearchPalletCard.setBounds(49, 200, 150, 30);
 		btnSearchPalletCard.setEnabled(false);
 		panel.add(btnSearchPalletCard);
 
 		lblPalletCardCode = new JLabel("Kode Kartu Pallet");
-		lblPalletCardCode.setBounds(50, 445, 150, 30);
+		lblPalletCardCode.setBounds(50, 240, 150, 30);
 		panel.add(lblPalletCardCode);
 		//////////////////
 		lblRitNo = new JLabel("Rit No");
-		lblRitNo.setBounds(220, 445, 150, 30);
+		lblRitNo.setBounds(220, 240, 150, 30);
 		panel.add(lblRitNo);
 
 		txtRitNo = new JTextField();
-		txtRitNo.setBounds(220, 470, 50, 30);
+		txtRitNo.setBounds(220, 265, 50, 30);
 		txtRitNo.setEnabled(false);
 		panel.add(txtRitNo);
 
 		lblPalletCardCodeConstant = new JLabel(" / BL / ");
-		lblPalletCardCodeConstant.setBounds(275, 470, 150, 30);
+		lblPalletCardCodeConstant.setBounds(275, 265, 150, 30);
 		panel.add(lblPalletCardCodeConstant);
 
 		lblDate = new JLabel("Tanggal");
-		lblDate.setBounds(310, 445, 150, 30);
+		lblDate.setBounds(310, 240, 150, 30);
 		panel.add(lblDate);
 
 		txtDate = new JTextField();
-		txtDate.setBounds(310, 470, 50, 30);
+		txtDate.setBounds(310, 265, 50, 30);
 		txtDate.setEnabled(false);
 		panel.add(txtDate);
 
 		JLabel lblA = new JLabel(" / ");
-		lblA.setBounds(370, 470, 150, 30);
+		lblA.setBounds(370, 265, 150, 30);
 		panel.add(lblA);
 
 		lblMonth = new JLabel("Bulan");
-		lblMonth.setBounds(390, 445, 150, 30);
+		lblMonth.setBounds(390, 240, 150, 30);
 		panel.add(lblMonth);
 
 		txtMonth = new JTextField();
-		txtMonth.setBounds(390, 470, 50, 30);
+		txtMonth.setBounds(390, 265, 50, 30);
 		txtMonth.setEnabled(false);
 		panel.add(txtMonth);
 
 		JLabel lblB = new JLabel(" / ");
-		lblB.setBounds(450, 470, 150, 30);
+		lblB.setBounds(450, 265, 150, 30);
 		panel.add(lblB);
 
 		lblYear = new JLabel("Tahun");
-		lblYear.setBounds(470, 445, 150, 30);
+		lblYear.setBounds(470, 240, 150, 30);
 		panel.add(lblYear);
 
 		txtYear = new JTextField();
-		txtYear.setBounds(470, 470, 50, 30);
+		txtYear.setBounds(470, 265, 50, 30);
 		txtYear.setEnabled(false);
 		panel.add(txtYear);
 
 		JLabel lblC = new JLabel(" / ");
-		lblC.setBounds(530, 470, 150, 30);
+		lblC.setBounds(530, 265, 150, 30);
 		panel.add(lblC);
 
 		lblOrdinal = new JLabel("Sequence");
-		lblOrdinal.setBounds(550, 445, 150, 30);
+		lblOrdinal.setBounds(220, 290, 150, 30);
 		panel.add(lblOrdinal);
 
 		txtOrdinal = new JTextField();
-		txtOrdinal.setBounds(550, 470, 50, 30);
+		txtOrdinal.setBounds(220, 315, 50, 30);
 		txtOrdinal.setEnabled(false);
 		panel.add(txtOrdinal);
 
 		lblErrorPalletCard = new JLabel("");
-		lblErrorPalletCard.setBounds(610, 470, 150, 30);
+		lblErrorPalletCard.setBounds(285, 315, 150, 30);
 		lblErrorPalletCard.setForeground(Color.RED);
 		panel.add(lblErrorPalletCard);
 
 		lblTotalVolumePalletCard = new JLabel("Total Volume");
-		lblTotalVolumePalletCard.setBounds(50, 505, 150, 30);
+		lblTotalVolumePalletCard.setBounds(50, 355, 150, 30);
 		panel.add(lblTotalVolumePalletCard);
 
 		txtTotalVolumePalletCard = new JTextField();
-		txtTotalVolumePalletCard.setBounds(220, 505, 150, 30);
+		txtTotalVolumePalletCard.setBounds(220, 355, 150, 30);
 		txtTotalVolumePalletCard.setEnabled(false);
 		panel.add(txtTotalVolumePalletCard);
 
 		lblTotalVolumeUomPalletCard = new JLabel("m3");
-		lblTotalVolumeUomPalletCard.setBounds(380, 505, 150, 30);
+		lblTotalVolumeUomPalletCard.setBounds(380, 355, 150, 30);
 		panel.add(lblTotalVolumeUomPalletCard);
 
 		btnInsertDryInPallet = new JButton("Insert");
-		btnInsertDryInPallet.setBounds(220, 540, 100, 30);
+		btnInsertDryInPallet.setBounds(220, 395, 100, 30);
 		btnInsertDryInPallet.setEnabled(false);
 		panel.add(btnInsertDryInPallet);
 
 		scrollPaneDryInPallet = new JScrollPane();
-		scrollPaneDryInPallet.setBounds(50, 585, 975, 150);
+		scrollPaneDryInPallet.setBounds(50, 435, 975, 150);
 		panel.add(scrollPaneDryInPallet);
 
 		listOfDryInPallet = new ArrayList<DryInPallet>();
@@ -306,21 +306,21 @@ public class DryInViewPanel extends JPanel implements Bridging {
 		scrollPaneDryInPallet.setViewportView(tblDryInPallet);
 
 		lblTotalVolume = new JLabel("Total Volume");
-		lblTotalVolume.setBounds(50, 745, 150, 30);
+		lblTotalVolume.setBounds(50, 595, 150, 30);
 		panel.add(lblTotalVolume);
 
 		txtTotalVolume = new JTextField();
-		txtTotalVolume.setBounds(220, 745, 150, 30);
+		txtTotalVolume.setBounds(220, 595, 150, 30);
 		txtTotalVolume.setEnabled(false);
 		panel.add(txtTotalVolume);
 
 		lblTotalVolumeUomPalletCard = new JLabel("m3");
-		lblTotalVolumeUomPalletCard.setBounds(380, 745, 150, 30);
+		lblTotalVolumeUomPalletCard.setBounds(380, 595, 150, 30);
 		panel.add(lblTotalVolumeUomPalletCard);
 
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(0, 0, 1155, 605);
+		scrollPane.setBounds(0, 0, 1155, 650);
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
@@ -332,7 +332,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 				doPrint();
 			}
 		});
-		btnPrint.setBounds(715, 810, 100, 30);
+		btnPrint.setBounds(715, 645, 100, 30);
 		panel.add(btnPrint);
 
 		btnDelete = new JButton("Hapus");
@@ -344,11 +344,11 @@ public class DryInViewPanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		btnDelete.setBounds(820, 810, 100, 30);
+		btnDelete.setBounds(820, 645, 100, 30);
 		panel.add(btnDelete);
 
 		btnEdit = new JButton("Ubah");
-		btnEdit.setBounds(925, 810, 100, 30);
+		btnEdit.setBounds(925, 645, 100, 30);
 		panel.add(btnEdit);
 
 		btnEdit.addActionListener(new ActionListener() {
@@ -364,14 +364,14 @@ public class DryInViewPanel extends JPanel implements Bridging {
 				MainPanel.changePanel("module.dryin.ui.DryInListPanel");
 			}
 		});
-		btnCancel.setBounds(50, 810, 100, 30);
+		btnCancel.setBounds(50, 645, 100, 30);
 		panel.add(btnCancel);
 	}
 
 	protected void loadData(Integer dryInId) {
 		try {
 			dryIn = ServiceFactory.getDryInBL().getDryInById(dryInId);
-			listOfPicTally = ServiceFactory.getDryInBL().getPicTallyByDryInCode(dryIn.getDryInCode());
+			//listOfPicTally = ServiceFactory.getDryInBL().getPicTallyByDryInCode(dryIn.getDryInCode());
 			listOfDryInPallet = ServiceFactory.getDryInBL().getDryInPalletByDryInCode(dryIn.getDryInCode());
 
 			if (dryIn != null) {
@@ -417,12 +417,12 @@ public class DryInViewPanel extends JPanel implements Bridging {
 	}
 
 	public void refreshTablePicTally() {
-		try {
-			tblPicTally.setModel(new PicTallyTableModel(listOfPicTally));
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			DialogBox.showErrorException();
-		}
+//		try {
+//			tblPicTally.setModel(new PicTallyTableModel(listOfPicTally));
+//		} catch (Exception e1) {
+//			e1.printStackTrace();
+//			DialogBox.showErrorException();
+//		}
 	}
 
 	public void refreshTableDryInPallet() {
@@ -556,7 +556,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 3;
+			return 6;
 		}
 
 		/**
@@ -574,8 +574,14 @@ public class DryInViewPanel extends JPanel implements Bridging {
 			case 0:
 				return p.getPalletCardCode();
 			case 1:
-				return p.getPalletCard().getTotalVolume();
+				return p.getPalletCard().getPalletCardDetail().getLength();
 			case 2:
+				return p.getPalletCard().getPalletCardDetail().getWidth();
+			case 3:
+				return p.getPalletCard().getPalletCardDetail().getThickness();
+			case 4:
+				return p.getPalletCard().getTotalVolume();
+			case 5:
 				return "Delete";
 			default:
 				return "";
@@ -591,6 +597,12 @@ public class DryInViewPanel extends JPanel implements Bridging {
 			case 1:
 				return String.class;
 			case 2:
+				return Integer.class;
+			case 3:
+				return Integer.class;
+			case 4:
+				return Integer.class;
+			case 5:
 				return String.class;
 			default:
 				return String.class;
@@ -609,8 +621,14 @@ public class DryInViewPanel extends JPanel implements Bridging {
 			case 0:
 				return "Kode Kartu Pallet";
 			case 1:
-				return "Total Volume";
+				return "Panjang";
 			case 2:
+				return "Lebar";
+			case 3:
+				return "Tebal";
+			case 4:
+				return "Total Volume";
+			case 5:
 				return "Tindakan";
 			default:
 				return "";
@@ -626,13 +644,13 @@ public class DryInViewPanel extends JPanel implements Bridging {
 		loadData(dryIn.getId());
 	}
 
-	public List<PicTally> getListOfPicTally() {
-		return listOfPicTally;
-	}
-
-	public void setListOfPicTally(List<PicTally> listOfPicTally) {
-		this.listOfPicTally = listOfPicTally;
-	}
+//	public List<PicTally> getListOfPicTally() {
+//		return listOfPicTally;
+//	}
+//
+//	public void setListOfPicTally(List<PicTally> listOfPicTally) {
+//		this.listOfPicTally = listOfPicTally;
+//	}
 
 	public List<DryInPallet> getListOfDryInPallet() {
 		return listOfDryInPallet;

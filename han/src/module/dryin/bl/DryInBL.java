@@ -2,6 +2,7 @@ package module.dryin.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -18,8 +19,6 @@ import module.pembelian.dao.PalletDAO;
 import module.pembelian.model.Pallet;
 import module.sn.chamber.dao.ChamberDAO;
 import module.sn.chamber.model.Chamber;
-import module.supplier.dao.SuppAddressDAO;
-import module.supplier.model.SuppAddress;
 
 public class DryInBL {
 
@@ -73,7 +72,9 @@ public class DryInBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return String.format("%04d", new DryInDAO(con).getOrdinalOfCodeNumber() + 1);
+			return String.format("%04d",
+					new DryInDAO(con).getOrdinalOfCodeNumberByYear(Calendar.getInstance().get(Calendar.YEAR)) + 1);
+
 		} finally {
 			con.close();
 		}
@@ -109,8 +110,7 @@ public class DryInBL {
 		}
 	}
 
-	public void save(DryIn dryIn, List<PicTally> listOfPicTally, List<DryInPallet> listOfDryInPallet)
-			throws SQLException {
+	public void save(DryIn dryIn, List<DryInPallet> listOfDryInPallet) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -118,10 +118,10 @@ public class DryInBL {
 
 			new DryInDAO(con).save(dryIn);
 
-			for (PicTally pc : listOfPicTally) {
-				pc.setDryInCode(dryIn.getDryInCode());
-				new PicTallyDAO(con).save(pc);
-			}
+			// for (PicTally pc : listOfPicTally) {
+			// pc.setDryInCode(dryIn.getDryInCode());
+			// new PicTallyDAO(con).save(pc);
+			// }
 
 			for (DryInPallet dip : listOfDryInPallet) {
 				dip.setDryInCode(dryIn.getDryInCode());
@@ -139,8 +139,8 @@ public class DryInBL {
 
 	}
 
-	public void update(DryIn dryIn, List<PicTally> listOfPicTally, List<PicTally> listOfDeletedPicTally,
-			List<DryInPallet> listOfDryInPallet, List<DryInPallet> listOfDeletedDryInPallet) throws SQLException {
+	public void update(DryIn dryIn, List<DryInPallet> listOfDryInPallet, List<DryInPallet> listOfDeletedDryInPallet)
+			throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -148,19 +148,19 @@ public class DryInBL {
 
 			new DryInDAO(con).update(dryIn);
 
-			for (PicTally pc : listOfPicTally) {
-				if (pc.getId() == 0) {
-					pc.setDryInCode(dryIn.getDryInCode());
-					new PicTallyDAO(con).save(pc);
-				} else {
-					new PicTallyDAO(con).update(pc);
-				}
-			}
-			
-			for (PicTally s : listOfDeletedPicTally) {
-				if (s.getId() != 0)
-					new PicTallyDAO(con).deleteById(s.getId());
-			}
+//			for (PicTally pc : listOfPicTally) {
+//				if (pc.getId() == 0) {
+//					pc.setDryInCode(dryIn.getDryInCode());
+//					new PicTallyDAO(con).save(pc);
+//				} else {
+//					new PicTallyDAO(con).update(pc);
+//				}
+//			}
+//
+//			for (PicTally s : listOfDeletedPicTally) {
+//				if (s.getId() != 0)
+//					new PicTallyDAO(con).deleteById(s.getId());
+//			}
 
 			for (DryInPallet dip : listOfDryInPallet) {
 				if (dip.getId() == 0) {
@@ -170,7 +170,7 @@ public class DryInBL {
 					new DryInPalletDAO(con).update(dip);
 				}
 			}
-			
+
 			for (DryInPallet s : listOfDeletedDryInPallet) {
 				if (s.getId() != 0)
 					new DryInPalletDAO(con).deleteById(s.getId());

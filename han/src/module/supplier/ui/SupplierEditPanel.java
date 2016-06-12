@@ -80,7 +80,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 //	ComboBox<Bank> cbBank;
 //	JTextField txtAccountName;
 	ComboBox<Currency> cbCurrency;
-	JTextField txtTop;
+	NumberField txtTop;
 	NumberField txtDefaultTax;
 
 	JLabel lblBreadcrumb;
@@ -460,18 +460,8 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		lblTop.setBounds(50, 790, 150, 30);
 		panel.add(lblTop);
 
-		txtTop = new JTextField();
+		txtTop = new NumberField(3);
 		txtTop.setBounds(220, 790, 150, 30);
-		txtTop.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				char vchar = arg0.getKeyChar();
-				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE) {
-					arg0.consume();
-					return;
-				}
-			}
-		});
 		panel.add(txtTop);
 
 		lblTopDays = new JLabel("hari");
@@ -487,20 +477,8 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		lblDefaultTax.setBounds(50, 830, 150, 30);
 		panel.add(lblDefaultTax);
 
-		txtDefaultTax = new NumberField();
+		txtDefaultTax = new NumberField(6);
 		txtDefaultTax.setBounds(220, 830, 150, 30);
-		txtDefaultTax.setDocument(new JTextFieldLimit(6));
-//		txtDefaultTax.addKeyListener(new KeyAdapter() {
-//			@Override
-//			public void keyTyped(KeyEvent arg0) {
-//				char vchar = arg0.getKeyChar();
-//				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE
-//						|| vchar == KeyEvent.VK_COMMA) {
-//					arg0.consume();
-//					return;
-//				}
-//			}
-//		});
 		panel.add(txtDefaultTax);
 
 		lblDefaultTaxPercentage = new JLabel("%");

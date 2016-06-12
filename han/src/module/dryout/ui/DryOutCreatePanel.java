@@ -31,6 +31,8 @@ import com.toedter.calendar.JDateChooser;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
+import main.component.NumberField;
+import main.component.NumberFormat;
 import main.panel.MainPanel;
 import module.dryout.model.DryOut;
 import module.dryout.model.DryOutPallet;
@@ -72,11 +74,11 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 	ComboBox<String> cbDateInMinute;
 	ComboBox<Chamber> cbChamber;
 
-	JTextField txtRitNo;
-	JTextField txtDate;
-	JTextField txtMonth;
-	JTextField txtYear;
-	JTextField txtOrdinal;
+	NumberField txtRitNo;
+	NumberField txtDate;
+	NumberField txtMonth;
+	NumberField txtYear;
+	NumberField txtOrdinal;
 	JTextField txtTotalVolumePalletCard;
 	JTextField txtTotalVolume;
 
@@ -101,7 +103,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		dryOutCreatePanel = this;
 
 
-		setPreferredSize(new Dimension(1366, 650));
+		setPreferredSize(new Dimension(1366, 725));
 		setLayout(null);
 
 		panel = new JPanel();
@@ -136,7 +138,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		lblDateOut.setBounds(50, 120, 150, 30);
 		panel.add(lblDateOut);
 
-		dcDateOut = new JDateChooser();
+		dcDateOut = new JDateChooser(new Date());
 		dcDateOut.setBounds(220, 120, 150, 30);
 		panel.add(dcDateOut);
 
@@ -207,7 +209,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		lblRitNo.setBounds(220, 240, 150, 30);
 		panel.add(lblRitNo);
 
-		txtRitNo = new JTextField();
+		txtRitNo = new NumberField(4);
 		txtRitNo.setBounds(220, 265, 50, 30);
 		panel.add(txtRitNo);
 
@@ -219,7 +221,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		lblDate.setBounds(310, 240, 150, 30);
 		panel.add(lblDate);
 
-		txtDate = new JTextField();
+		txtDate = new NumberField(2);
 		txtDate.setBounds(310, 265, 50, 30);
 		panel.add(txtDate);
 
@@ -231,7 +233,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		lblMonth.setBounds(390, 240, 150, 30);
 		panel.add(lblMonth);
 
-		txtMonth = new JTextField();
+		txtMonth = new NumberField(2);
 		txtMonth.setBounds(390, 265, 50, 30);
 		panel.add(txtMonth);
 
@@ -243,7 +245,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		lblYear.setBounds(470, 240, 150, 30);
 		panel.add(lblYear);
 
-		txtYear = new JTextField();
+		txtYear = new NumberField(2);
 		txtYear.setBounds(470, 265, 50, 30);
 		panel.add(txtYear);
 
@@ -252,29 +254,29 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		panel.add(lblC);
 
 		lblOrdinal = new JLabel("Sequence");
-		lblOrdinal.setBounds(550, 240, 150, 30);
+		lblOrdinal.setBounds(220, 290, 150, 30);
 		panel.add(lblOrdinal);
 
-		txtOrdinal = new JTextField();
-		txtOrdinal.setBounds(550, 265, 50, 30);
+		txtOrdinal = new NumberField(4);
+		txtOrdinal.setBounds(220, 315, 50, 30);
 		panel.add(txtOrdinal);
 
 		lblErrorPalletCard = new JLabel("");
-		lblErrorPalletCard.setBounds(610, 265, 150, 30);
+		lblErrorPalletCard.setBounds(285, 315, 150, 30);
 		lblErrorPalletCard.setForeground(Color.RED);
 		panel.add(lblErrorPalletCard);
 
 		lblTotalVolumePalletCard = new JLabel("Total Volume");
-		lblTotalVolumePalletCard.setBounds(50, 300, 150, 30);
+		lblTotalVolumePalletCard.setBounds(50, 355, 150, 30);
 		panel.add(lblTotalVolumePalletCard);
 
 		txtTotalVolumePalletCard = new JTextField();
-		txtTotalVolumePalletCard.setBounds(220, 300, 150, 30);
+		txtTotalVolumePalletCard.setBounds(220, 355, 150, 30);
 		txtTotalVolumePalletCard.setEnabled(false);
 		panel.add(txtTotalVolumePalletCard);
 
 		lblTotalVolumeUomPalletCard = new JLabel("m3");
-		lblTotalVolumeUomPalletCard.setBounds(380, 300, 150, 30);
+		lblTotalVolumeUomPalletCard.setBounds(380, 355, 150, 30);
 		panel.add(lblTotalVolumeUomPalletCard);
 
 		btnInsertDryOutPallet = new JButton("Insert");
@@ -286,11 +288,11 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 				// }
 			}
 		});
-		btnInsertDryOutPallet.setBounds(220, 340, 100, 30);
+		btnInsertDryOutPallet.setBounds(220, 395, 100, 30);
 		panel.add(btnInsertDryOutPallet);
 
 		scrollPaneDryOutPallet = new JScrollPane();
-		scrollPaneDryOutPallet.setBounds(50, 380, 975, 150);
+		scrollPaneDryOutPallet.setBounds(50, 435, 975, 150);
 		panel.add(scrollPaneDryOutPallet);
 
 		listOfDryOutPallet = new ArrayList<DryOutPallet>();
@@ -306,7 +308,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 2)
+					if (column == 5)
 						doDeleteDryOutPallet(listOfDryOutPallet.get(row));
 				}
 			}
@@ -314,21 +316,21 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		scrollPaneDryOutPallet.setViewportView(tblDryOutPallet);
 
 		lblTotalVolume = new JLabel("Total Volume");
-		lblTotalVolume.setBounds(50, 540, 150, 30);
+		lblTotalVolume.setBounds(50, 595, 150, 30);
 		panel.add(lblTotalVolume);
 
 		txtTotalVolume = new JTextField();
-		txtTotalVolume.setBounds(220, 540, 150, 30);
+		txtTotalVolume.setBounds(220, 595, 150, 30);
 		txtTotalVolume.setEnabled(false);
 		panel.add(txtTotalVolume);
 
 		lblTotalVolumeUomPalletCard = new JLabel("m3");
-		lblTotalVolumeUomPalletCard.setBounds(380, 540, 150, 30);
+		lblTotalVolumeUomPalletCard.setBounds(380, 595, 150, 30);
 		panel.add(lblTotalVolumeUomPalletCard);
 
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(0, 0, 1155, 605);
+		scrollPane.setBounds(0, 0, 1155, 650);
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
@@ -346,7 +348,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		btnSave.setBounds(925, 605, 100, 30);
+		btnSave.setBounds(925, 645, 100, 30);
 		panel.add(btnSave);
 
 		btnCancel = new JButton("Kembali");
@@ -355,39 +357,26 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 				MainPanel.changePanel("module.dryout.ui.DryOutListPanel");
 			}
 		});
-		btnCancel.setBounds(49, 605, 100, 30);
+		btnCancel.setBounds(49, 645, 100, 30);
 		panel.add(btnCancel);
 
-		txtRitNo.setDocument(new JTextFieldLimit(4));
 		txtRitNo.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				char vchar = arg0.getKeyChar();
-				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE) {
-					arg0.consume();
-					return;
-				}
-			}
-
+			
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (txtRitNo.getText().length() > 2)
+				txtRitNo.setText(NumberFormat.onTypeNum(txtRitNo.getText().length(), txtRitNo.getText().toString()));
+
+				if (txtOrdinal.getText().length() > 3)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
 							txtOrdinal.getText());
+				else {
+					txtTotalVolumePalletCard.setText("");
+					palletCard = null;
+				}
 			}
 		});
 
-		txtDate.setDocument(new JTextFieldLimit(2));
 		txtDate.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				char vchar = arg0.getKeyChar();
-				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE) {
-					arg0.consume();
-					return;
-				}
-			}
-
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (txtDate.getText().length() > 1)
@@ -400,17 +389,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtMonth.setDocument(new JTextFieldLimit(2));
 		txtMonth.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				char vchar = arg0.getKeyChar();
-				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE) {
-					arg0.consume();
-					return;
-				}
-			}
-
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (txtMonth.getText().length() > 1)
@@ -423,17 +402,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtYear.setDocument(new JTextFieldLimit(2));
 		txtYear.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				char vchar = arg0.getKeyChar();
-				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE) {
-					arg0.consume();
-					return;
-				}
-			}
-
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (txtYear.getText().length() > 1)
@@ -449,17 +418,10 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		txtOrdinal.setDocument(new JTextFieldLimit(4));
 		txtOrdinal.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyTyped(KeyEvent arg0) {
-				char vchar = arg0.getKeyChar();
-				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE) {
-					arg0.consume();
-					return;
-				}
-			}
-
-			@Override
 			public void keyReleased(KeyEvent e) {
-				if (txtOrdinal.getText().length() > 2)
+				txtOrdinal.setText(NumberFormat.onTypeNum(txtOrdinal.getText().length(), txtOrdinal.getText().toString()));
+
+				if (txtOrdinal.getText().length() > 3)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
 							txtOrdinal.getText());
 				else {
@@ -701,7 +663,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 3;
+			return 6;
 		}
 
 		/**
@@ -719,8 +681,14 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			case 0:
 				return p.getPalletCardCode();
 			case 1:
-				return p.getPalletCard().getTotalVolume();
+				return p.getPalletCard().getPalletCardDetail().getLength();
 			case 2:
+				return p.getPalletCard().getPalletCardDetail().getWidth();
+			case 3:
+				return p.getPalletCard().getPalletCardDetail().getThickness();
+			case 4:
+				return p.getPalletCard().getTotalVolume();
+			case 5:
 				return "Delete";
 			default:
 				return "";
@@ -736,6 +704,12 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			case 1:
 				return String.class;
 			case 2:
+				return Integer.class;
+			case 3:
+				return Integer.class;
+			case 4:
+				return Integer.class;
+			case 5:
 				return String.class;
 			default:
 				return String.class;
@@ -754,8 +728,14 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			case 0:
 				return "Kode Kartu Pallet";
 			case 1:
-				return "Total Volume";
+				return "Panjang";
 			case 2:
+				return "Lebar";
+			case 3:
+				return "Tebal";
+			case 4:
+				return "Total Volume";
+			case 5:
 				return "Tindakan";
 			default:
 				return "";

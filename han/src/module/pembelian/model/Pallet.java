@@ -205,4 +205,18 @@ public class Pallet {
 	public void setDateIn(Timestamp dateIn) {
 		this.dateIn = dateIn;
 	}
+	
+	private PalletCardDetail palletCardDetail;
+
+	public PalletCardDetail getPalletCardDetail() {
+		if(palletCardDetail == null)
+			palletCardDetail = new PalletCardDetail();
+		return palletCardDetail;
+	}
+
+	public void setPalletCardDetail(PalletCardDetail palletCardDetail) {
+		if(palletCardDetail == null)
+			palletCardDetail = new PalletCardDetail();
+		this.palletCardDetail = palletCardDetail;
+	}
 }

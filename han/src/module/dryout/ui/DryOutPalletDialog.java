@@ -227,7 +227,7 @@ public class DryOutPalletDialog extends JDialog {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 5;
+			return 8;
 		}
 
 		/**
@@ -251,6 +251,12 @@ public class DryOutPalletDialog extends JDialog {
 			case 3:
 				return p.getPalletCardCode();
 			case 4:
+				return p.getPalletCardDetail().getLength();
+			case 5:
+				return p.getPalletCardDetail().getWidth();
+			case 6:
+				return p.getPalletCardDetail().getThickness();
+			case 7:
 				return p.getTotalVolume();
 			default:
 				return "";
@@ -272,6 +278,12 @@ public class DryOutPalletDialog extends JDialog {
 			case 3:
 				return String.class;
 			case 4:
+				return Integer.class;
+			case 5:
+				return Integer.class;
+			case 6:
+				return Integer.class;
+			case 7:
 				return Integer.class;
 			default:
 				return String.class;
@@ -296,6 +308,12 @@ public class DryOutPalletDialog extends JDialog {
 			case 3:
 				return "Kode Kartu Pallet";
 			case 4:
+				return "Panjang";
+			case 5:
+				return "Lebar";
+			case 6:
+				return "Tebal";
+			case 7:
 				return "Total Volume";
 			default:
 				return "";

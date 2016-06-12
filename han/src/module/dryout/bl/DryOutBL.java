@@ -2,6 +2,7 @@ package module.dryout.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -48,7 +49,7 @@ public class DryOutBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return String.format("%04d", new DryOutDAO(con).getOrdinalOfCodeNumber() + 1);
+			return String.format("%04d", new DryOutDAO(con).getOrdinalOfCodeNumberByYear(Calendar.getInstance().get(Calendar.YEAR)) + 1);
 		} finally {
 			con.close();
 		}

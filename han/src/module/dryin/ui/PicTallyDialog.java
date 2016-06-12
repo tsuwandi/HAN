@@ -74,26 +74,26 @@ public class PicTallyDialog extends JDialog {
 		scrollPaneEmployee.setBounds(10, 55, 464, 190);
 		getContentPane().add(scrollPaneEmployee);
 
-		try {
-			listOfEmployee = new ArrayList<Employee>();
-			listOfEmployee = ServiceFactory.getDryInBL().getAllEmployee();
-			if (dryInCreatePanel != null) {
-				for (PicTally picTally : dryInCreatePanel.getListOfPicTally()) {
-					Integer index = listOfEmployee.indexOf(picTally.getEmployee());
-					listOfEmployee.set(index, picTally.getEmployee());
-				}
-			} else if (dryInEditPanel != null) {
-				for (PicTally picTally : dryInEditPanel.getListOfPicTally()) {
-					picTally.getEmployee().setFlag(true);
-					picTally.getEmployee().setRowNum(picTally.getId());
-					Integer index = listOfEmployee.indexOf(picTally.getEmployee());
-					listOfEmployee.set(index, picTally.getEmployee());
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			DialogBox.showErrorException();
-		}
+//		try {
+//			listOfEmployee = new ArrayList<Employee>();
+//			listOfEmployee = ServiceFactory.getDryInBL().getAllEmployee();
+//			if (dryInCreatePanel != null) {
+//				for (PicTally picTally : dryInCreatePanel.getListOfPicTally()) {
+//					Integer index = listOfEmployee.indexOf(picTally.getEmployee());
+//					listOfEmployee.set(index, picTally.getEmployee());
+//				}
+//			} else if (dryInEditPanel != null) {
+//				for (PicTally picTally : dryInEditPanel.getListOfPicTally()) {
+//					picTally.getEmployee().setFlag(true);
+//					picTally.getEmployee().setRowNum(picTally.getId());
+//					Integer index = listOfEmployee.indexOf(picTally.getEmployee());
+//					listOfEmployee.set(index, picTally.getEmployee());
+//				}
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			DialogBox.showErrorException();
+//		}
 
 		employeeTableModel = new EmployeeTableModel(listOfEmployee);
 		tblEmployee = new JTable(employeeTableModel);
@@ -126,30 +126,30 @@ public class PicTallyDialog extends JDialog {
 	}
 
 	private void doInsert() {
-		List<PicTally> listOfPicTally = new ArrayList<PicTally>();
+//		List<PicTally> listOfPicTally = new ArrayList<PicTally>();
+//
+//		for (Employee emp : listOfEmployee) {
+//			PicTally picTally = new PicTally();
+//			if (emp.isFlag()) {
+//				picTally.setEmpCode(emp.getEmployeeId());
+//				picTally.setEmployee(emp);
+//				if (emp.getRowNum() != 0 && dryInEditPanel != null)
+//					picTally.setId(emp.getRowNum());
+//				listOfPicTally.add(picTally);
+//			} else {
+//				if (emp.getRowNum() != 0 && dryInEditPanel != null) {
+//					picTally.setEmpCode(emp.getEmployeeId());
+//					picTally.setEmployee(emp);
+//					picTally.setId(emp.getRowNum());
+//					dryInEditPanel.listOfDeletedPicTally.add(picTally);
+//				}
+//			}
+//		}
 
-		for (Employee emp : listOfEmployee) {
-			PicTally picTally = new PicTally();
-			if (emp.isFlag()) {
-				picTally.setEmpCode(emp.getEmployeeId());
-				picTally.setEmployee(emp);
-				if (emp.getRowNum() != 0 && dryInEditPanel != null)
-					picTally.setId(emp.getRowNum());
-				listOfPicTally.add(picTally);
-			} else {
-				if (emp.getRowNum() != 0 && dryInEditPanel != null) {
-					picTally.setEmpCode(emp.getEmployeeId());
-					picTally.setEmployee(emp);
-					picTally.setId(emp.getRowNum());
-					dryInEditPanel.listOfDeletedPicTally.add(picTally);
-				}
-			}
-		}
-
-		if (dryInCreatePanel != null)
-			dryInCreatePanel.setListOfPicTally(listOfPicTally);
-		else if (dryInEditPanel != null)
-			dryInEditPanel.setListOfPicTally(listOfPicTally);
+//		if (dryInCreatePanel != null)
+//			dryInCreatePanel.setListOfPicTally(listOfPicTally);
+//		else if (dryInEditPanel != null)
+//			dryInEditPanel.setListOfPicTally(listOfPicTally);
 		closeDialog();
 	}
 

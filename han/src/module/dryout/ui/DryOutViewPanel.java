@@ -91,7 +91,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 	private DryOut dryOut;
 	
 	public DryOutViewPanel() {
-		setPreferredSize(new Dimension(1366, 650));
+		setPreferredSize(new Dimension(1366, 725));
 		setLayout(null);
 
 		panel = new JPanel();
@@ -225,39 +225,38 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 		panel.add(lblC);
 
 		lblOrdinal = new JLabel("Sequence");
-		lblOrdinal.setBounds(550, 240, 150, 30);
+		lblOrdinal.setBounds(220, 290, 150, 30);
 		panel.add(lblOrdinal);
 
 		txtOrdinal = new JTextField();
-		txtOrdinal.setBounds(550, 265, 50, 30);
-		txtOrdinal.setEnabled(false);
+		txtOrdinal.setBounds(220, 315, 50, 30);
 		panel.add(txtOrdinal);
 
 		lblErrorPalletCard = new JLabel("");
-		lblErrorPalletCard.setBounds(610, 265, 150, 30);
+		lblErrorPalletCard.setBounds(285, 315, 150, 30);
 		lblErrorPalletCard.setForeground(Color.RED);
 		panel.add(lblErrorPalletCard);
 
 		lblTotalVolumePalletCard = new JLabel("Total Volume");
-		lblTotalVolumePalletCard.setBounds(50, 300, 150, 30);
+		lblTotalVolumePalletCard.setBounds(50, 355, 150, 30);
 		panel.add(lblTotalVolumePalletCard);
 
 		txtTotalVolumePalletCard = new JTextField();
-		txtTotalVolumePalletCard.setBounds(220, 300, 150, 30);
+		txtTotalVolumePalletCard.setBounds(220, 355, 150, 30);
 		txtTotalVolumePalletCard.setEnabled(false);
 		panel.add(txtTotalVolumePalletCard);
 
 		lblTotalVolumeUomPalletCard = new JLabel("m3");
-		lblTotalVolumeUomPalletCard.setBounds(380, 300, 150, 30);
+		lblTotalVolumeUomPalletCard.setBounds(380, 355, 150, 30);
 		panel.add(lblTotalVolumeUomPalletCard);
 
 		btnInsertDryOutPallet = new JButton("Insert");
-		btnInsertDryOutPallet.setBounds(220, 340, 100, 30);
+		btnInsertDryOutPallet.setBounds(220, 395, 100, 30);
 		btnInsertDryOutPallet.setEnabled(false);
 		panel.add(btnInsertDryOutPallet);
 
 		scrollPaneDryOutPallet = new JScrollPane();
-		scrollPaneDryOutPallet.setBounds(50, 380, 975, 150);
+		scrollPaneDryOutPallet.setBounds(50, 435, 975, 150);
 		panel.add(scrollPaneDryOutPallet);
 
 		listOfDryOutPallet = new ArrayList<DryOutPallet>();
@@ -269,16 +268,16 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 		scrollPaneDryOutPallet.setViewportView(tblDryOutPallet);
 
 		lblTotalVolume = new JLabel("Total Volume");
-		lblTotalVolume.setBounds(50, 540, 150, 30);
+		lblTotalVolume.setBounds(50, 595, 150, 30);
 		panel.add(lblTotalVolume);
 
 		txtTotalVolume = new JTextField();
-		txtTotalVolume.setBounds(220, 540, 150, 30);
+		txtTotalVolume.setBounds(220, 595, 150, 30);
 		txtTotalVolume.setEnabled(false);
 		panel.add(txtTotalVolume);
 
 		lblTotalVolumeUomPalletCard = new JLabel("m3");
-		lblTotalVolumeUomPalletCard.setBounds(380, 540, 150, 30);
+		lblTotalVolumeUomPalletCard.setBounds(380, 595, 150, 30);
 		panel.add(lblTotalVolumeUomPalletCard);
 
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -295,7 +294,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 				doPrint();
 			}
 		});
-		btnPrint.setBounds(715, 605, 100, 30);
+		btnPrint.setBounds(715, 645, 100, 30);
 		panel.add(btnPrint);
 
 		btnDelete = new JButton("Hapus");
@@ -307,11 +306,11 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		btnDelete.setBounds(820, 605, 100, 30);
+		btnDelete.setBounds(820, 645, 100, 30);
 		panel.add(btnDelete);
 
 		btnEdit = new JButton("Ubah");
-		btnEdit.setBounds(925, 605, 100, 30);
+		btnEdit.setBounds(925, 645, 100, 30);
 		panel.add(btnEdit);
 
 		btnEdit.addActionListener(new ActionListener() {
@@ -327,7 +326,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 				MainPanel.changePanel("module.dryout.ui.DryOutListPanel");
 			}
 		});
-		btnCancel.setBounds(49, 605, 100, 30);
+		btnCancel.setBounds(49, 645, 100, 30);
 		panel.add(btnCancel);
 	}
 
@@ -424,7 +423,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 3;
+			return 6;
 		}
 
 		/**
@@ -442,8 +441,14 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 			case 0:
 				return p.getPalletCardCode();
 			case 1:
-				return p.getPalletCard().getTotalVolume();
+				return p.getPalletCard().getPalletCardDetail().getLength();
 			case 2:
+				return p.getPalletCard().getPalletCardDetail().getWidth();
+			case 3:
+				return p.getPalletCard().getPalletCardDetail().getThickness();
+			case 4:
+				return p.getPalletCard().getTotalVolume();
+			case 5:
 				return "Delete";
 			default:
 				return "";
@@ -459,6 +464,12 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 			case 1:
 				return String.class;
 			case 2:
+				return Integer.class;
+			case 3:
+				return Integer.class;
+			case 4:
+				return Integer.class;
+			case 5:
 				return String.class;
 			default:
 				return String.class;
@@ -477,8 +488,14 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 			case 0:
 				return "Kode Kartu Pallet";
 			case 1:
-				return "Total Volume";
+				return "Panjang";
 			case 2:
+				return "Lebar";
+			case 3:
+				return "Tebal";
+			case 4:
+				return "Total Volume";
+			case 5:
 				return "Tindakan";
 			default:
 				return "";
