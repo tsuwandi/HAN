@@ -21,8 +21,8 @@ public class SuppCpDAO {
 	private String getAllBySuppCodeQuery = "select id, supp_code, name, department, phone,"
 			+ "email from supp_cp where supp_code = ? and deleted_date is null";
 
-	private String insertQuery = "insert into supp_cp (supp_code, name, department, phone, "
-			+ "email, input_date, input_by) values (?,?,?,?,?,?,?)";
+	private String insertQuery = "insert into supp_cp (supp_code, supp_address_id, name, department, phone, "
+			+ "email, input_date, input_by) values (?,?,?,?,?,?,?,?)";
 
 	private String updateQuery = "update supp_cp set name=?, department=?, phone=?, "
 			+ "email=?, edit_date=?, edited_by=? where id=? ";
@@ -65,12 +65,13 @@ public class SuppCpDAO {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setString(1, suppCp.getSuppCode());
-			insertStatement.setString(2, suppCp.getName());
-			insertStatement.setString(3, suppCp.getDepartment());
-			insertStatement.setString(4, suppCp.getPhone());
-			insertStatement.setString(5, suppCp.getEmail());
-			insertStatement.setDate(6, DateUtil.getCurrentDate());
-			insertStatement.setString(7, "timotius");
+			insertStatement.setInt(2, suppCp.getSuppAddressId());
+			insertStatement.setString(3, suppCp.getName());
+			insertStatement.setString(4, suppCp.getDepartment());
+			insertStatement.setString(5, suppCp.getPhone());
+			insertStatement.setString(6, suppCp.getEmail());
+			insertStatement.setDate(7, DateUtil.getCurrentDate());
+			insertStatement.setString(8, "timotius");
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -89,6 +90,7 @@ public class SuppCpDAO {
 			updateStatement.setDate(5, DateUtil.getCurrentDate());
 			updateStatement.setString(6, "timotius");
 			updateStatement.setInt(7, suppCp.getId());
+			
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {

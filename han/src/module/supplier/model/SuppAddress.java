@@ -26,6 +26,7 @@ public class SuppAddress implements Serializable {
 	
 	private City city;
 	private boolean flag;
+	private SuppCp suppCp;
 
 	public int getId() {
 		return id;
@@ -268,5 +269,17 @@ public class SuppAddress implements Serializable {
 
 	public void setFlag(boolean flag) {
 		this.flag = flag;
+	}
+
+	public SuppCp getSuppCp() {
+		if(suppCp == null)
+			suppCp = new SuppCp();
+		return suppCp;
+	}
+
+	public void setSuppCp(SuppCp suppCp) {
+		if(suppCp == null)
+			suppCp = new SuppCp();
+		this.suppCp = suppCp;
 	}
 }

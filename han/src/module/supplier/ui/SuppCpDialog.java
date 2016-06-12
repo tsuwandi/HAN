@@ -192,21 +192,21 @@ public class SuppCpDialog extends JDialog {
 		suppCp.setEmail(txtEmail.getText());
 
 		try {
-			if (isEdit == false) {
-				if (supplierCreate != null)
-					supplierCreate.listOfSuppCp.add(suppCp);
-				else if (supplierEdit != null)
-					supplierEdit.listOfSuppCp.add(suppCp);
-
-				DialogBox.showInsert();
-			} else {
-				if (supplierCreate != null) {
-					supplierCreate.listOfSuppCp.set(index, suppCp);
-				} else if (supplierEdit != null) {
-					supplierEdit.listOfSuppCp.set(index, suppCp);
-				}
-				DialogBox.showInsert();
-			}
+//			if (isEdit == false) {
+//				if (supplierCreate != null)
+//					supplierCreate.listOfSuppCp.add(suppCp);
+//				else if (supplierEdit != null)
+//					supplierEdit.listOfSuppCp.add(suppCp);
+//
+//				DialogBox.showInsert();
+//			} else {
+//				if (supplierCreate != null) {
+//					supplierCreate.listOfSuppCp.set(index, suppCp);
+//				} else if (supplierEdit != null) {
+//					supplierEdit.listOfSuppCp.set(index, suppCp);
+//				}
+//				DialogBox.showInsert();
+//			}
 			closeDialog();
 
 		} catch (Exception e1) {

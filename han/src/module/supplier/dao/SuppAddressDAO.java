@@ -10,6 +10,7 @@ import java.util.List;
 import module.sn.city.model.City;
 import module.sn.province.model.Province;
 import module.supplier.model.SuppAddress;
+import module.supplier.model.SuppCp;
 import module.util.DateUtil;
 
 public class SuppAddressDAO {
@@ -21,9 +22,10 @@ public class SuppAddressDAO {
 	private PreparedStatement deleteStatement;
 
 	private String getAllBySuppCodeQuery = "select sa.id, sa.supp_code, sa.address_type, sa.address, sa.zip_code,"
-			+ "sa.city_id, sa.phone, sa.fax, c.id, c.city, c.province_id, p.id, p.province " + "from supp_address sa "
-			+ "left join city c on sa.city_id = c.id "
-			+ "left join province p on p.id = c.province_id where sa.supp_code = ? "
+			+ "sa.city_id, sa.phone, sa.fax, c.id, c.city, c.province_id, p.id, p.province, sc.id as supp_cp_id, sc.supp_code as supp_cp_code, sc.supp_address_id, sc.name, sc.email "
+			+ "from supp_address sa left join city c on sa.city_id = c.id "
+			+ "left join province p on p.id = c.province_id "
+			+ "inner join supp_cp sc on sa.id = sc.supp_address_id where sa.supp_code = ? "
 			+ "and sa.deleted_date is null and c.deleted_date is null and p.deleted_date is null";
 
 	private String insertQuery = "insert into supp_address (supp_code, address_type, address, zip_code, "
@@ -43,33 +45,43 @@ public class SuppAddressDAO {
 
 		try {
 			getAllBySuppCodeStatement = connection.prepareStatement(getAllBySuppCodeQuery);
+			
 			getAllBySuppCodeStatement.setString(1, suppCode);
 
 			ResultSet rs = getAllBySuppCodeStatement.executeQuery();
 			while (rs.next()) {
-				SuppAddress supplier = new SuppAddress();
-				supplier.setId(rs.getInt("id"));
-				supplier.setSuppCode(rs.getString("supp_code"));
-				supplier.setAddressType(rs.getString("address_type"));
-				supplier.setAddress(rs.getString("address"));
-				supplier.setZipCode(rs.getString("zip_code"));
-				supplier.setCityId(rs.getInt("city_id"));
-				supplier.setPhone(rs.getString("phone"));
-				supplier.setFax(rs.getString("fax"));
+				SuppAddress supplierAddress = new SuppAddress();
+				supplierAddress.setId(rs.getInt("id"));
+				supplierAddress.setSuppCode(rs.getString("supp_code"));
+				supplierAddress.setAddressType(rs.getString("address_type"));
+				supplierAddress.setAddress(rs.getString("address"));
+				supplierAddress.setZipCode(rs.getString("zip_code"));
+				supplierAddress.setCityId(rs.getInt("city_id"));
+				supplierAddress.setPhone(rs.getString("phone"));
+				supplierAddress.setFax(rs.getString("fax"));
 
 				Province province = new Province();
-				province.setId(rs.getInt("id"));
+				province.setId(rs.getInt("province_id"));
 				province.setProvince(rs.getString("province"));
 
 				City city = new City();
-				city.setId(rs.getInt("id"));
+				city.setId(rs.getInt("city_id"));
 				city.setCity(rs.getString("city"));
 				city.setProvinceId(rs.getInt("province_id"));
 				city.setProvince(province);
 
-				supplier.setCity(city);
-
-				suppAddresses.add(supplier);
+				supplierAddress.setCity(city);
+				
+				SuppCp suppCp = new SuppCp();
+				suppCp.setId(rs.getInt("supp_cp_id"));
+				suppCp.setSuppCode(rs.getString("supp_cp_code"));
+				suppCp.setSuppAddressId(rs.getInt("supp_address_id"));
+				suppCp.setName(rs.getString("name"));
+				suppCp.setEmail(rs.getString("email"));
+				supplierAddress.setSuppCp(suppCp);
+				
+				suppAddresses.add(supplierAddress);
+				
 			}
 
 		} catch (SQLException ex) {
@@ -80,7 +92,9 @@ public class SuppAddressDAO {
 		return suppAddresses;
 	}
 
-	public void save(SuppAddress suppAddress) throws SQLException {
+	public SuppAddress save(SuppAddress suppAddress) throws SQLException {
+		ResultSet generatedKeys = null;
+
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setString(1, suppAddress.getSuppCode());
@@ -97,6 +111,14 @@ public class SuppAddressDAO {
 			insertStatement.setDate(8, DateUtil.getCurrentDate());
 			insertStatement.setString(9, "timotius");
 			insertStatement.executeUpdate();
+
+			generatedKeys = insertStatement.getGeneratedKeys();
+
+			if (generatedKeys.next()) {
+				suppAddress.setId(generatedKeys.getInt(1));
+				generatedKeys.close();
+			}
+			return suppAddress;
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();

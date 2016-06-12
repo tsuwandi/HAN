@@ -21,6 +21,7 @@ public class SupplierDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
+	private PreparedStatement getOrdinalOfCodeNumberStatement;
 
 	private String getAllQuery = "select s.id, s.supp_code, s.supp_name, s.pt, s.npwp, "
 			+ "s.supp_type_id, s.supp_status, s.default_tax, s.account_no,"
@@ -42,6 +43,8 @@ public class SupplierDAO {
 			+ "edit_date=?, edited_by=? where supp_code=?";
 
 	private String deleteQuery = "update supplier set deleted_date=?, deleted_by=? where id=?";
+	
+	private String getOrdinalOfCodeNumberQuery = "SELECT SUBSTRING_INDEX(supp_code, 'BL', -1) AS ordinal FROM supplier ORDER BY ordinal DESC LIMIT 1 ";
 
 	public SupplierDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -71,16 +74,16 @@ public class SupplierDAO {
 				supplier.setTop(rs.getInt("top"));
 
 				SuppType suppType = new SuppType();
-				suppType.setId(rs.getInt("id"));
+				suppType.setId(rs.getInt("supp_type_id"));
 				suppType.setSuppType(rs.getString("supp_type"));
 
 				Bank bank = new Bank();
-				bank.setId(rs.getInt("id"));
+				bank.setId(rs.getInt("bank_id"));
 				bank.setBankAbbr(rs.getString("bank_abbr"));
 				bank.setBank(rs.getString("bank"));
 
 				Currency currency = new Currency();
-				currency.setId(rs.getInt("id"));
+				currency.setId(rs.getInt("currency_id"));
 				currency.setCurrencyAbbr(rs.getString("currency_abbr"));
 				currency.setCurrency(rs.getString("currency"));
 
@@ -129,16 +132,16 @@ public class SupplierDAO {
 				supplier.setTop(rs.getInt("top"));
 
 				SuppType suppType = new SuppType();
-				suppType.setId(rs.getInt("id"));
+				suppType.setId(rs.getInt("supp_type_id"));
 				suppType.setSuppType(rs.getString("supp_type"));
 
 				Bank bank = new Bank();
-				bank.setId(rs.getInt("id"));
+				bank.setId(rs.getInt("bank_id"));
 				bank.setBankAbbr(rs.getString("bank_abbr"));
 				bank.setBank(rs.getString("bank"));
 
 				Currency currency = new Currency();
-				currency.setId(rs.getInt("id"));
+				currency.setId(rs.getInt("currency_id"));
 				currency.setCurrencyAbbr(rs.getString("currency_abbr"));
 				currency.setCurrency(rs.getString("currency"));
 
@@ -202,16 +205,16 @@ public class SupplierDAO {
 				supplier.setTop(rs.getInt("top"));
 
 				SuppType suppType = new SuppType();
-				suppType.setId(rs.getInt("id"));
+				suppType.setId(rs.getInt("supp_type_id"));
 				suppType.setSuppType(rs.getString("supp_type"));
 
 				Bank bank = new Bank();
-				bank.setId(rs.getInt("id"));
+				bank.setId(rs.getInt("bank_id"));
 				bank.setBankAbbr(rs.getString("bank_abbr"));
 				bank.setBank(rs.getString("bank"));
 
 				Currency currency = new Currency();
-				currency.setId(rs.getInt("id"));
+				currency.setId(rs.getInt("currency_id"));
 				currency.setCurrencyAbbr(rs.getString("currency_abbr"));
 				currency.setCurrency(rs.getString("currency"));
 
@@ -262,12 +265,16 @@ public class SupplierDAO {
 			insertStatement.setString(8, supplier.getAccountNo());
 			insertStatement.setInt(9, supplier.getBankId());
 			insertStatement.setString(10, supplier.getAccountName());
-			insertStatement.setInt(11, supplier.getCurrencyId());
+			if (supplier.getCurrencyId() == 0) {
+				insertStatement.setNull(11, java.sql.Types.INTEGER);
+			} else {
+				insertStatement.setInt(11, supplier.getCurrencyId());
+			}
 			insertStatement.setInt(12, supplier.getTop());
 			insertStatement.setDate(13, DateUtil.getCurrentDate());
 			insertStatement.setString(14, "timotius");
 			insertStatement.executeUpdate();
-
+			
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
@@ -286,7 +293,11 @@ public class SupplierDAO {
 			updateStatement.setString(7, supplier.getAccountNo());
 			updateStatement.setInt(8, supplier.getBankId());
 			updateStatement.setString(9, supplier.getAccountName());
-			updateStatement.setInt(10, supplier.getCurrencyId());
+			if (supplier.getCurrencyId() == 0) {
+				updateStatement.setNull(10, java.sql.Types.INTEGER);
+			} else {
+				updateStatement.setInt(10, supplier.getCurrencyId());
+			}
 			updateStatement.setInt(11, supplier.getTop());
 			updateStatement.setDate(12, DateUtil.getCurrentDate());
 			updateStatement.setString(13, "timotius");
@@ -337,16 +348,16 @@ public class SupplierDAO {
 				supplier.setTop(rs.getInt("top"));
 
 				SuppType suppType = new SuppType();
-				suppType.setId(rs.getInt("id"));
+				suppType.setId(rs.getInt("supp_type_id"));
 				suppType.setSuppType(rs.getString("supp_type"));
 
 				Bank bank = new Bank();
-				bank.setId(rs.getInt("id"));
+				bank.setId(rs.getInt("bank_id"));
 				bank.setBankAbbr(rs.getString("bank_abbr"));
 				bank.setBank(rs.getString("bank"));
 
 				Currency currency = new Currency();
-				currency.setId(rs.getInt("id"));
+				currency.setId(rs.getInt("currency_id"));
 				currency.setCurrencyAbbr(rs.getString("currency_abbr"));
 				currency.setCurrency(rs.getString("currency"));
 
@@ -361,5 +372,23 @@ public class SupplierDAO {
 		}
 
 		return supplier;
+	}
+	
+	public int getOrdinalOfCodeNumber() throws SQLException {
+		int ordinal = 0;
+		try {
+			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
+
+			ResultSet rs = getOrdinalOfCodeNumberStatement.executeQuery();
+			while (rs.next()) {
+				ordinal = rs.getInt("ordinal");
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return ordinal;
 	}
 }

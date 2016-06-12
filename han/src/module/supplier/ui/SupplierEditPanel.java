@@ -48,9 +48,9 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	public List<SuppAddress> listOfSuppAddress = new ArrayList<SuppAddress>();
 	public List<SuppAddress> listOfDeletedSuppAddress = new ArrayList<SuppAddress>();
 	private SuppAddressTableModel suppAddressTableModel;
-	public List<SuppCp> listOfSuppCp = new ArrayList<SuppCp>();
-	public List<SuppCp> listOfDeletedSuppCp = new ArrayList<SuppCp>();
-	private SuppCpTableModel suppCpTableModel;
+//	public List<SuppCp> listOfSuppCp = new ArrayList<SuppCp>();
+//	public List<SuppCp> listOfDeletedSuppCp = new ArrayList<SuppCp>();
+//	private SuppCpTableModel suppCpTableModel;
 	public List<SuppVehicle> listOfSuppVehicle = new ArrayList<SuppVehicle>();
 	public List<SuppVehicle> listOfDeletedSuppVehicle = new ArrayList<SuppVehicle>();
 	private SuppVehicleTableModel suppVehicleTableModel;
@@ -61,9 +61,9 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	JLabel lblNpwp;
 	JLabel lblSuppType;
 	JLabel lblSuppStatus;
-	JLabel lblAccountNo;
-	JLabel lblBank;
-	JLabel lblAccountName;
+//	JLabel lblAccountNo;
+//	JLabel lblBank;
+//	JLabel lblAccountName;
 	JLabel lblCurrency;
 	JLabel lblTop;
 	JLabel lblDefaultTax;
@@ -76,9 +76,9 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	JTextField txtNpwp;
 	ComboBox<SuppType> cbSuppType;
 	JComboBox<String> cbSuppStatus;
-	JTextField txtAccountNo;
-	ComboBox<Bank> cbBank;
-	JTextField txtAccountName;
+//	JTextField txtAccountNo;
+//	ComboBox<Bank> cbBank;
+//	JTextField txtAccountName;
 	ComboBox<Currency> cbCurrency;
 	JTextField txtTop;
 	NumberField txtDefaultTax;
@@ -92,11 +92,11 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	JButton btnAddSuppAddress;
 	JButton btnDeleteSuppAddress;
 
-	JLabel lblSuppCp;
-	JScrollPane scrollPaneSuppCp;
-	JTable tblSuppCp;
-	JButton btnAddSuppCp;
-	JButton btnDeleteSuppCp;
+//	JLabel lblSuppCp;
+//	JScrollPane scrollPaneSuppCp;
+//	JTable tblSuppCp;
+//	JButton btnAddSuppCp;
+//	JButton btnDeleteSuppCp;
 
 	JLabel lblSuppVehicle;
 	JScrollPane scrollPaneSuppVehicle;
@@ -130,7 +130,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 
 		panel = new JPanel();
 		panel.setBounds(0, 0, 800, 600);
-		panel.setPreferredSize(new Dimension(1005, 1300));
+		panel.setPreferredSize(new Dimension(1010, 910));
 		panel.setLayout(null);
 
 		lblSuppCode = new JLabel("<html>Kode Supplier <font color=\"red\">*</font></html>");
@@ -259,7 +259,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 5)
+					if (column == 6)
 						showEditSuppAddressDialog(listOfSuppAddress.get(row), supplierEdit, row);
 				}
 			}
@@ -288,71 +288,71 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 
 		/////// Table SuppCP ///////
 
-		lblSuppCp = new JLabel("Contact Person");
-		lblSuppCp.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblSuppCp.setBounds(50, 540, 150, 30);
-		panel.add(lblSuppCp);
-
-		scrollPaneSuppCp = new JScrollPane();
-		scrollPaneSuppCp.setBounds(50, 580, 975, 150);
-		panel.add(scrollPaneSuppCp);
-
-		suppCpTableModel = new SuppCpTableModel(new ArrayList<SuppCp>());
-		tblSuppCp = new JTable(suppCpTableModel);
-		tblSuppCp.setBorder(new EmptyBorder(5, 5, 5, 5));
-		scrollPaneSuppCp.setViewportView(tblSuppCp);
-
-		tblSuppCp.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (tblSuppCp.getValueAt(tblSuppCp.getSelectedRow(), 0).equals(true))
-					listOfSuppCp.get(tblSuppCp.getSelectedRow()).setFlag(false);
-				else
-					listOfSuppCp.get(tblSuppCp.getSelectedRow()).setFlag(true);
-
-				tblSuppCp.updateUI();
-
-				if (e.getClickCount() == 2) {
-					JTable target = (JTable) e.getSource();
-					int row = target.getSelectedRow();
-					int column = target.getSelectedColumn();
-
-					if (column == 5)
-						showEditSuppCpDialog(listOfSuppCp.get(row), supplierEdit, row);
-				}
-			}
-		});
-
-		btnAddSuppCp = new JButton("Tambah");
-		btnAddSuppCp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				showAddSuppCpDialog(supplierEdit);
-			}
-		});
-		btnAddSuppCp.setBounds(820, 540, 100, 30);
-		panel.add(btnAddSuppCp);
-
-		btnDeleteSuppCp = new JButton("Hapus");
-		btnDeleteSuppCp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				// int response = DialogBox.showDeleteChoice();
-				// if (response == JOptionPane.YES_OPTION) {
-				doDeleteSuppCp();
-				// }
-			}
-		});
-		btnDeleteSuppCp.setBounds(925, 540, 100, 30);
-		panel.add(btnDeleteSuppCp);
+//		lblSuppCp = new JLabel("Contact Person");
+//		lblSuppCp.setFont(new Font("Tahoma", Font.BOLD, 16));
+//		lblSuppCp.setBounds(50, 540, 150, 30);
+//		panel.add(lblSuppCp);
+//
+//		scrollPaneSuppCp = new JScrollPane();
+//		scrollPaneSuppCp.setBounds(50, 580, 975, 150);
+//		panel.add(scrollPaneSuppCp);
+//
+//		suppCpTableModel = new SuppCpTableModel(new ArrayList<SuppCp>());
+//		tblSuppCp = new JTable(suppCpTableModel);
+//		tblSuppCp.setBorder(new EmptyBorder(5, 5, 5, 5));
+//		scrollPaneSuppCp.setViewportView(tblSuppCp);
+//
+//		tblSuppCp.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				if (tblSuppCp.getValueAt(tblSuppCp.getSelectedRow(), 0).equals(true))
+//					listOfSuppCp.get(tblSuppCp.getSelectedRow()).setFlag(false);
+//				else
+//					listOfSuppCp.get(tblSuppCp.getSelectedRow()).setFlag(true);
+//
+//				tblSuppCp.updateUI();
+//
+//				if (e.getClickCount() == 2) {
+//					JTable target = (JTable) e.getSource();
+//					int row = target.getSelectedRow();
+//					int column = target.getSelectedColumn();
+//
+//					if (column == 5)
+//						showEditSuppCpDialog(listOfSuppCp.get(row), supplierEdit, row);
+//				}
+//			}
+//		});
+//
+//		btnAddSuppCp = new JButton("Tambah");
+//		btnAddSuppCp.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				showAddSuppCpDialog(supplierEdit);
+//			}
+//		});
+//		btnAddSuppCp.setBounds(820, 540, 100, 30);
+//		panel.add(btnAddSuppCp);
+//
+//		btnDeleteSuppCp = new JButton("Hapus");
+//		btnDeleteSuppCp.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				// int response = DialogBox.showDeleteChoice();
+//				// if (response == JOptionPane.YES_OPTION) {
+//				doDeleteSuppCp();
+//				// }
+//			}
+//		});
+//		btnDeleteSuppCp.setBounds(925, 540, 100, 30);
+//		panel.add(btnDeleteSuppCp);
 
 		/////// Table SuppCP ///////
 
 		lblSuppVehicle = new JLabel("Kendaraan");
 		lblSuppVehicle.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblSuppVehicle.setBounds(50, 750, 150, 30);
+		lblSuppVehicle.setBounds(50, 540, 150, 30);
 		panel.add(lblSuppVehicle);
 
 		scrollPaneSuppVehicle = new JScrollPane();
-		scrollPaneSuppVehicle.setBounds(50, 790, 975, 150);
+		scrollPaneSuppVehicle.setBounds(50, 580, 975, 150);
 		panel.add(scrollPaneSuppVehicle);
 
 		suppVehicleTableModel = new SuppVehicleTableModel(new ArrayList<SuppVehicle>());
@@ -390,8 +390,8 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		btnAddSuppVehicle.setBounds(820, 750, 100, 30);
 		panel.add(btnAddSuppVehicle);
 
-		btnDeleteSuppCp = new JButton("Hapus");
-		btnDeleteSuppCp.addActionListener(new ActionListener() {
+		btnDeleteSuppVehicle = new JButton("Hapus");
+		btnDeleteSuppVehicle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// int response = DialogBox.showInsertChoice();
 				// if (response == JOptionPane.YES_OPTION) {
@@ -399,48 +399,48 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 				// }
 			}
 		});
-		btnDeleteSuppCp.setBounds(925, 750, 100, 30);
-		panel.add(btnDeleteSuppCp);
+		btnDeleteSuppVehicle.setBounds(925, 540, 100, 30);
+		panel.add(btnDeleteSuppVehicle);
 
 		///////////////////////////////////////////////////////////////
 
-		lblAccountNo = new JLabel("No Akun Bank");
-		lblAccountNo.setBounds(50, 960, 150, 30);
-		panel.add(lblAccountNo);
-
-		txtAccountNo = new JTextField();
-		txtAccountNo.setBounds(220, 960, 150, 30);
-		txtAccountNo.setDocument(new JTextFieldLimit(30));
-		panel.add(txtAccountNo);
-
-		lblBank = new JLabel("Bank");
-		lblBank.setBounds(50, 1000, 150, 30);
-		panel.add(lblBank);
-
-		listOfBank = new ArrayList<Bank>();
-		try {
-			listOfBank = ServiceFactory.getSupplierBL().getAllBank();
-			listOfBank.add(0, new Bank("-- Pilih Bank --"));
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			DialogBox.showErrorException();
-		}
-		cbBank = new ComboBox<Bank>();
-		cbBank.setList(listOfBank);
-		cbBank.setBounds(220, 1000, 150, 30);
-		panel.add(cbBank);
-
-		lblAccountName = new JLabel("Nama Pemilik Akun");
-		lblAccountName.setBounds(50, 1040, 150, 30);
-		panel.add(lblAccountName);
-
-		txtAccountName = new JTextField();
-		txtAccountName.setBounds(220, 1040, 150, 30);
-		txtAccountName.setDocument(new JTextFieldLimit(30));
-		panel.add(txtAccountName);
+//		lblAccountNo = new JLabel("No Akun Bank");
+//		lblAccountNo.setBounds(50, 960, 150, 30);
+//		panel.add(lblAccountNo);
+//
+//		txtAccountNo = new JTextField();
+//		txtAccountNo.setBounds(220, 960, 150, 30);
+//		txtAccountNo.setDocument(new JTextFieldLimit(30));
+//		panel.add(txtAccountNo);
+//
+//		lblBank = new JLabel("Bank");
+//		lblBank.setBounds(50, 1000, 150, 30);
+//		panel.add(lblBank);
+//
+//		listOfBank = new ArrayList<Bank>();
+//		try {
+//			listOfBank = ServiceFactory.getSupplierBL().getAllBank();
+//			listOfBank.add(0, new Bank("-- Pilih Bank --"));
+//		} catch (SQLException e1) {
+//			e1.printStackTrace();
+//			DialogBox.showErrorException();
+//		}
+//		cbBank = new ComboBox<Bank>();
+//		cbBank.setList(listOfBank);
+//		cbBank.setBounds(220, 1000, 150, 30);
+//		panel.add(cbBank);
+//
+//		lblAccountName = new JLabel("Nama Pemilik Akun");
+//		lblAccountName.setBounds(50, 1040, 150, 30);
+//		panel.add(lblAccountName);
+//
+//		txtAccountName = new JTextField();
+//		txtAccountName.setBounds(220, 1040, 150, 30);
+//		txtAccountName.setDocument(new JTextFieldLimit(30));
+//		panel.add(txtAccountName);
 
 		lblCurrency = new JLabel("Kurs");
-		lblCurrency.setBounds(50, 1100, 150, 30);
+		lblCurrency.setBounds(50, 750, 150, 30);
 		panel.add(lblCurrency);
 
 		listOfCurrency = new ArrayList<Currency>();
@@ -453,15 +453,15 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		}
 		cbCurrency = new ComboBox<Currency>();
 		cbCurrency.setList(listOfCurrency);
-		cbCurrency.setBounds(220, 1100, 150, 30);
+		cbCurrency.setBounds(220, 750, 150, 30);
 		panel.add(cbCurrency);
 
 		lblTop = new JLabel("TOP");
-		lblTop.setBounds(50, 1140, 150, 30);
+		lblTop.setBounds(50, 790, 150, 30);
 		panel.add(lblTop);
 
 		txtTop = new JTextField();
-		txtTop.setBounds(220, 1140, 150, 30);
+		txtTop.setBounds(220, 790, 150, 30);
 		txtTop.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
@@ -475,20 +475,20 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		panel.add(txtTop);
 
 		lblTopDays = new JLabel("hari");
-		lblTopDays.setBounds(380, 1140, 150, 30);
+		lblTopDays.setBounds(380, 790, 150, 30);
 		panel.add(lblTopDays);
 
 		lblErrorTop = new JLabel();
 		lblErrorTop.setForeground(Color.RED);
-		lblErrorTop.setBounds(425, 1140, 225, 30);
+		lblErrorTop.setBounds(425, 790, 225, 30);
 		panel.add(lblErrorTop);
 
 		lblDefaultTax = new JLabel("Default Tax");
-		lblDefaultTax.setBounds(50, 1180, 150, 30);
+		lblDefaultTax.setBounds(50, 830, 150, 30);
 		panel.add(lblDefaultTax);
 
 		txtDefaultTax = new NumberField();
-		txtDefaultTax.setBounds(220, 1180, 150, 30);
+		txtDefaultTax.setBounds(220, 830, 150, 30);
 		txtDefaultTax.setDocument(new JTextFieldLimit(6));
 //		txtDefaultTax.addKeyListener(new KeyAdapter() {
 //			@Override
@@ -504,12 +504,12 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		panel.add(txtDefaultTax);
 
 		lblDefaultTaxPercentage = new JLabel("%");
-		lblDefaultTaxPercentage.setBounds(380, 1180, 150, 30);
+		lblDefaultTaxPercentage.setBounds(380, 830, 150, 30);
 		panel.add(lblDefaultTaxPercentage);
 
 		lblErrorDefaultTax = new JLabel();
 		lblErrorDefaultTax.setForeground(Color.RED);
-		lblErrorDefaultTax.setBounds(425, 1180, 225, 30);
+		lblErrorDefaultTax.setBounds(425, 830, 225, 30);
 		panel.add(lblErrorDefaultTax);
 
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -534,7 +534,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 				
 			}
 		});
-		btnSave.setBounds(925, 1240, 100, 30);
+		btnSave.setBounds(925, 870, 100, 30);
 		panel.add(btnSave);
 
 		btnCancel = new JButton("Kembali");
@@ -543,7 +543,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 				MainPanel.changePanel("module.supplier.ui.SupplierViewPanel", supplier);
 			}
 		});
-		btnCancel.setBounds(50, 1240, 100, 30);
+		btnCancel.setBounds(50, 870, 100, 30);
 		panel.add(btnCancel);
 		
 		SwingUtilities.invokeLater(new Runnable() {
@@ -558,7 +558,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		try {
 			supplier = ServiceFactory.getSupplierBL().getSupplierById(supplierId);
 			listOfSuppAddress = ServiceFactory.getSupplierBL().getSuppAddressBySuppCode(supplier.getSuppCode());
-			listOfSuppCp = ServiceFactory.getSupplierBL().getSuppCpBySuppCode(supplier.getSuppCode());
+			//listOfSuppCp = ServiceFactory.getSupplierBL().getSuppCpBySuppCode(supplier.getSuppCode());
 			listOfSuppVehicle = ServiceFactory.getSupplierBL().getSuppVehicleBySuppCode(supplier.getSuppCode());
 
 			if (supplier != null) {
@@ -569,10 +569,15 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 				cbSuppType.setSelectedItem(supplier.getSuppType().getSuppType());
 				cbSuppStatus.setSelectedItem(supplier.getSuppStatus());
 				txtDefaultTax.setText(String.valueOf(supplier.getDefaultTax()));
-				txtAccountNo.setText(supplier.getAccountNo());
-				cbBank.setSelectedItem(supplier.getBank().getBank());
-				txtAccountName.setText(supplier.getAccountName());
-				cbCurrency.setSelectedItem(supplier.getCurrency().getCurrency());
+//				txtAccountNo.setText(supplier.getAccountNo());
+//				cbBank.setSelectedItem(supplier.getBank().getBank());
+//				txtAccountName.setText(supplier.getAccountName());
+				
+				if(supplier.getCurrency().getId() == 0)
+					cbCurrency.setSelectedItem(listOfCurrency.get(0));
+				else
+					cbCurrency.setSelectedItem(supplier.getCurrency().getCurrency());
+				
 				txtTop.setText(String.valueOf(supplier.getTop()));
 
 				refreshTableSuppAddress();
@@ -633,9 +638,9 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		supplier.setNpwp(txtNpwp.getText());
 		supplier.setSuppTypeId(cbSuppType.getDataIndex().getId());
 		supplier.setSuppStatus(cbSuppStatus.getSelectedItem().toString());
-		supplier.setAccountNo(txtAccountNo.getText());
-		supplier.setBankId(cbBank.getDataIndex().getId());
-		supplier.setAccountName(txtAccountName.getText());
+//		supplier.setAccountNo(txtAccountNo.getText());
+//		supplier.setBankId(cbBank.getDataIndex().getId());
+//		supplier.setAccountName(txtAccountName.getText());
 		supplier.setCurrencyId(cbCurrency.getDataIndex().getId());
 		
 		if(!"".equals(txtTop.getText()))
@@ -649,8 +654,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 			supplier.setDefaultTax(0.00);
 
 		try {
-			ServiceFactory.getSupplierBL().update(supplier, listOfSuppAddress, listOfDeletedSuppAddress, listOfSuppCp,
-					listOfDeletedSuppCp, listOfSuppVehicle, listOfDeletedSuppVehicle);
+			ServiceFactory.getSupplierBL().update(supplier, listOfSuppAddress, listOfDeletedSuppAddress, listOfSuppVehicle, listOfDeletedSuppVehicle);
 			DialogBox.showInsert();
 			MainPanel.changePanel("module.supplier.ui.SupplierListPanel");
 		} catch (SQLException e) {
@@ -695,35 +699,35 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	/**
 	 * Method to display add supp cp dialog
 	 */
-	protected void showAddSuppCpDialog(SupplierEditPanel supplierEdit) {
-		SuppCpDialog suppCpDialog = new SuppCpDialog(false, new SuppCp(), supplierEdit, null);
-		suppCpDialog.setTitle("Contact Person");
-		suppCpDialog.setLocationRelativeTo(null);
-		suppCpDialog.setVisible(true);
-	}
+//	protected void showAddSuppCpDialog(SupplierEditPanel supplierEdit) {
+//		SuppCpDialog suppCpDialog = new SuppCpDialog(false, new SuppCp(), supplierEdit, null);
+//		suppCpDialog.setTitle("Contact Person");
+//		suppCpDialog.setLocationRelativeTo(null);
+//		suppCpDialog.setVisible(true);
+//	}
 
-	protected void showEditSuppCpDialog(SuppCp suppCp, SupplierEditPanel supplierEdit, Integer index) {
-		SuppCpDialog suppCpDialog = new SuppCpDialog(true, suppCp, supplierEdit, index);
-		suppCpDialog.setTitle("Contact Person");
-		suppCpDialog.setLocationRelativeTo(null);
-		suppCpDialog.setVisible(true);
-	}
+//	protected void showEditSuppCpDialog(SuppCp suppCp, SupplierEditPanel supplierEdit, Integer index) {
+//		SuppCpDialog suppCpDialog = new SuppCpDialog(true, suppCp, supplierEdit, index);
+//		suppCpDialog.setTitle("Contact Person");
+//		suppCpDialog.setLocationRelativeTo(null);
+//		suppCpDialog.setVisible(true);
+//	}
 
-	protected void doDeleteSuppCp() {
-		for (SuppCp s : listOfSuppCp) {
-			if (Boolean.TRUE.equals(s.isFlag())) {
-				listOfDeletedSuppCp.add(s);
-			}
-		}
-
-		if (Boolean.FALSE.equals(listOfDeletedSuppCp.isEmpty())) {
-			for (SuppCp s : listOfDeletedSuppCp) {
-				listOfSuppCp.remove(s);
-			}
-			refreshTableSuppCp();
-			DialogBox.showDelete();
-		}
-	}
+//	protected void doDeleteSuppCp() {
+//		for (SuppCp s : listOfSuppCp) {
+//			if (Boolean.TRUE.equals(s.isFlag())) {
+//				listOfDeletedSuppCp.add(s);
+//			}
+//		}
+//
+//		if (Boolean.FALSE.equals(listOfDeletedSuppCp.isEmpty())) {
+//			for (SuppCp s : listOfDeletedSuppCp) {
+//				listOfSuppCp.remove(s);
+//			}
+//			refreshTableSuppCp();
+//			DialogBox.showDelete();
+//		}
+//	}
 
 	/**
 	 * Method to display add supp cp dialog
@@ -787,7 +791,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 6;
+			return 7;
 		}
 
 		/**
@@ -809,10 +813,12 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 			case 2:
 				return p.getAddress();
 			case 3:
-				return p.getPhone();
+				return p.getSuppCp().getName();
 			case 4:
-				return p.getFax();
+				return p.getPhone();
 			case 5:
+				return p.getFax();
+			case 6:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
@@ -837,6 +843,8 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 				return String.class;
 			case 5:
 				return String.class;
+			case 6:
+				return String.class;
 			default:
 				return String.class;
 			}
@@ -858,10 +866,12 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 			case 2:
 				return "Alamat";
 			case 3:
-				return "Telepon";
+				return "Contact Person";
 			case 4:
-				return "Fax";
+				return "Telepon";
 			case 5:
+				return "Fax";
+			case 6:
 				return "Tindakan";
 			default:
 				return "";
@@ -1097,12 +1107,12 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	}
 
 	public void refreshTableSuppCp() {
-		try {
-			tblSuppCp.setModel(new SuppCpTableModel(listOfSuppCp));
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			DialogBox.showErrorException();
-		}
+//		try {
+//			tblSuppCp.setModel(new SuppCpTableModel(listOfSuppCp));
+//		} catch (Exception e1) {
+//			e1.printStackTrace();
+//			DialogBox.showErrorException();
+//		}
 	}
 
 	public void refreshTableSuppVehicle() {

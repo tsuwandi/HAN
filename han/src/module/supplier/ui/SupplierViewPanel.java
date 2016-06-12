@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +37,8 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 	private Supplier supplier;
 	public List<SuppAddress> listOfSuppAddress = new ArrayList<SuppAddress>();
 	private SuppAddressTableModel suppAddressTableModel;
-	public List<SuppCp> listOfSuppCp = new ArrayList<SuppCp>();
-	private SuppCpTableModel suppCpTableModel;
+//	public List<SuppCp> listOfSuppCp = new ArrayList<SuppCp>();
+//	private SuppCpTableModel suppCpTableModel;
 	public List<SuppVehicle> listOfSuppVehicle = new ArrayList<SuppVehicle>();
 	private SuppVehicleTableModel suppVehicleTableModel;
 
@@ -50,9 +48,9 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 	JLabel lblNpwp;
 	JLabel lblSuppType;
 	JLabel lblSuppStatus;
-	JLabel lblAccountNo;
-	JLabel lblBank;
-	JLabel lblAccountName;
+//	JLabel lblAccountNo;
+//	JLabel lblBank;
+//	JLabel lblAccountName;
 	JLabel lblCurrency;
 	JLabel lblTop;
 	JLabel lblDefaultTax;
@@ -65,9 +63,9 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 	JTextField txtNpwp;
 	JComboBox<String> cbSuppType;
 	JComboBox<String> cbSuppStatus;
-	JTextField txtAccountNo;
-	JComboBox<String> cbBank;
-	JTextField txtAccountName;
+//	JTextField txtAccountNo;
+//	JComboBox<String> cbBank;
+//	JTextField txtAccountName;
 	JComboBox<String> cbCurrency;
 	JTextField txtTop;
 	JTextField txtDefaultTax;
@@ -81,11 +79,11 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 	JButton btnAddSuppAddress;
 	JButton btnDeleteSuppAddress;
 
-	JLabel lblSuppCp;
-	JScrollPane scrollPaneSuppCp;
-	JTable tblSuppCp;
-	JButton btnAddSuppCp;
-	JButton btnDeleteSuppCp;
+//	JLabel lblSuppCp;
+//	JScrollPane scrollPaneSuppCp;
+//	JTable tblSuppCp;
+//	JButton btnAddSuppCp;
+//	JButton btnDeleteSuppCp;
 
 	JLabel lblSuppVehicle;
 	JScrollPane scrollPaneSuppVehicle;
@@ -113,7 +111,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		
 		panel = new JPanel();
 		panel.setBounds(0, 0, 800, 600);
-		panel.setPreferredSize(new Dimension(1005, 1300));
+		panel.setPreferredSize(new Dimension(1010, 910));
 		panel.setLayout(null);
 
 		lblSuppCode = new JLabel("<html>Kode Supplier <font color=\"red\">*</font></html>");
@@ -222,18 +220,6 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		tblSuppAddress.setBorder(new EmptyBorder(5, 5, 5, 5));
 		scrollPaneSuppAddress.setViewportView(tblSuppAddress);
 
-//		tblSuppAddress.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				if (tblSuppAddress.getValueAt(tblSuppAddress.getSelectedRow(), 0).equals(true))
-//					listOfSuppAddress.get(tblSuppAddress.getSelectedRow()).setFlag(false);
-//				else
-//					listOfSuppAddress.get(tblSuppAddress.getSelectedRow()).setFlag(true);
-//
-//				tblSuppAddress.updateUI();
-//			}
-//		});
-
 		btnAddSuppAddress = new JButton("Tambah");
 		btnAddSuppAddress.setEnabled(false);
 		btnAddSuppAddress.setBounds(820, 330, 100, 30);
@@ -246,40 +232,40 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 
 		/////// Table SuppCP ///////
 
-		lblSuppCp = new JLabel("Contact Person");
-		lblSuppCp.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblSuppCp.setBounds(50, 540, 150, 30);
-		panel.add(lblSuppCp);
-
-		scrollPaneSuppCp = new JScrollPane();
-		scrollPaneSuppCp.setBounds(50, 580, 975, 150);
-		panel.add(scrollPaneSuppCp);
-
-		suppCpTableModel = new SuppCpTableModel(new ArrayList<SuppCp>());
-		tblSuppCp = new JTable(suppCpTableModel);
-		tblSuppCp.setEnabled(false);
-		tblSuppCp.setBorder(new EmptyBorder(5, 5, 5, 5));
-		scrollPaneSuppCp.setViewportView(tblSuppCp);
-
-		btnAddSuppCp = new JButton("Tambah");
-		btnAddSuppCp.setEnabled(false);
-		btnAddSuppCp.setBounds(820, 540, 100, 30);
-		panel.add(btnAddSuppCp);
-
-		btnDeleteSuppCp = new JButton("Hapus");
-		btnDeleteSuppCp.setEnabled(false);
-		btnDeleteSuppCp.setBounds(925, 540, 100, 30);
-		panel.add(btnDeleteSuppCp);
+//		lblSuppCp = new JLabel("Contact Person");
+//		lblSuppCp.setFont(new Font("Tahoma", Font.BOLD, 16));
+//		lblSuppCp.setBounds(50, 540, 150, 30);
+//		panel.add(lblSuppCp);
+//
+//		scrollPaneSuppCp = new JScrollPane();
+//		scrollPaneSuppCp.setBounds(50, 580, 975, 150);
+//		panel.add(scrollPaneSuppCp);
+//
+//		suppCpTableModel = new SuppCpTableModel(new ArrayList<SuppCp>());
+//		tblSuppCp = new JTable(suppCpTableModel);
+//		tblSuppCp.setEnabled(false);
+//		tblSuppCp.setBorder(new EmptyBorder(5, 5, 5, 5));
+//		scrollPaneSuppCp.setViewportView(tblSuppCp);
+//
+//		btnAddSuppCp = new JButton("Tambah");
+//		btnAddSuppCp.setEnabled(false);
+//		btnAddSuppCp.setBounds(820, 540, 100, 30);
+//		panel.add(btnAddSuppCp);
+//
+//		btnDeleteSuppCp = new JButton("Hapus");
+//		btnDeleteSuppCp.setEnabled(false);
+//		btnDeleteSuppCp.setBounds(925, 540, 100, 30);
+//		panel.add(btnDeleteSuppCp);
 
 		/////// Table SuppCP ///////
 
 		lblSuppVehicle = new JLabel("Kendaraan");
 		lblSuppVehicle.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblSuppVehicle.setBounds(50, 750, 150, 30);
+		lblSuppVehicle.setBounds(50, 540, 150, 30);
 		panel.add(lblSuppVehicle);
 
 		scrollPaneSuppVehicle = new JScrollPane();
-		scrollPaneSuppVehicle.setBounds(50, 790, 975, 150);
+		scrollPaneSuppVehicle.setBounds(50, 580, 975, 150);
 		panel.add(scrollPaneSuppVehicle);
 
 		suppVehicleTableModel = new SuppVehicleTableModel(new ArrayList<SuppVehicle>());
@@ -290,90 +276,90 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 
 		btnAddSuppVehicle = new JButton("Tambah");
 		btnAddSuppVehicle.setEnabled(false);
-		btnAddSuppVehicle.setBounds(820, 750, 100, 30);
+		btnAddSuppVehicle.setBounds(820, 540, 100, 30);
 		panel.add(btnAddSuppVehicle);
 
-		btnDeleteSuppCp = new JButton("Hapus");
-		btnDeleteSuppCp.setEnabled(false);
-		btnDeleteSuppCp.setBounds(925, 750, 100, 30);
-		panel.add(btnDeleteSuppCp);
+		btnDeleteSuppVehicle = new JButton("Hapus");
+		btnDeleteSuppVehicle.setEnabled(false);
+		btnDeleteSuppVehicle.setBounds(925, 540, 100, 30);
+		panel.add(btnDeleteSuppVehicle);
 
 		///////////////////////////////////////////////////////////////
 
-		lblAccountNo = new JLabel("No Akun Bank");
-		lblAccountNo.setBounds(50, 960, 150, 30);
-		panel.add(lblAccountNo);
-
-		txtAccountNo = new JTextField();
-		txtAccountNo.setEnabled(false);
-		txtAccountNo.setBounds(220, 960, 150, 30);
-		txtAccountNo.setDocument(new JTextFieldLimit(30));
-		panel.add(txtAccountNo);
-
-		lblBank = new JLabel("Bank");
-		lblBank.setBounds(50, 1000, 150, 30);
-		panel.add(lblBank);
-
-		cbBank = new JComboBox<String>();
-		cbBank.setEnabled(false);
-		cbBank.addItem("-- Pilih Bank --");
-		cbBank.setBounds(220, 1000, 150, 30);
-		panel.add(cbBank);
-
-		lblAccountName = new JLabel("Nama Pemilik Akun");
-		lblAccountName.setBounds(50, 1040, 150, 30);
-		panel.add(lblAccountName);
-
-		txtAccountName = new JTextField();
-		txtAccountName.setEnabled(false);
-		txtAccountName.setBounds(220, 1040, 150, 30);
-		txtAccountName.setDocument(new JTextFieldLimit(30));
-		panel.add(txtAccountName);
+//		lblAccountNo = new JLabel("No Akun Bank");
+//		lblAccountNo.setBounds(50, 960, 150, 30);
+//		panel.add(lblAccountNo);
+//
+//		txtAccountNo = new JTextField();
+//		txtAccountNo.setEnabled(false);
+//		txtAccountNo.setBounds(220, 960, 150, 30);
+//		txtAccountNo.setDocument(new JTextFieldLimit(30));
+//		panel.add(txtAccountNo);
+//
+//		lblBank = new JLabel("Bank");
+//		lblBank.setBounds(50, 1000, 150, 30);
+//		panel.add(lblBank);
+//
+//		cbBank = new JComboBox<String>();
+//		cbBank.setEnabled(false);
+//		cbBank.addItem("-- Pilih Bank --");
+//		cbBank.setBounds(220, 1000, 150, 30);
+//		panel.add(cbBank);
+//
+//		lblAccountName = new JLabel("Nama Pemilik Akun");
+//		lblAccountName.setBounds(50, 1040, 150, 30);
+//		panel.add(lblAccountName);
+//
+//		txtAccountName = new JTextField();
+//		txtAccountName.setEnabled(false);
+//		txtAccountName.setBounds(220, 1040, 150, 30);
+//		txtAccountName.setDocument(new JTextFieldLimit(30));
+//		panel.add(txtAccountName);
 
 		lblCurrency = new JLabel("Kurs");
-		lblCurrency.setBounds(50, 1100, 150, 30);
+		lblCurrency.setBounds(50, 750, 150, 30);
 		panel.add(lblCurrency);
 
 		cbCurrency = new JComboBox<String>();
 		cbCurrency.setEnabled(false);
 		cbCurrency.addItem("-- Pilih Kurs --");
-		cbCurrency.setBounds(220, 1100, 150, 30);
+		cbCurrency.setBounds(220, 750, 150, 30);
 		panel.add(cbCurrency);
 
 		lblTop = new JLabel("TOP");
-		lblTop.setBounds(50, 1140, 150, 30);
+		lblTop.setBounds(50, 790, 150, 30);
 		panel.add(lblTop);
 
 		txtTop = new JTextField();
 		txtTop.setEnabled(false);
-		txtTop.setBounds(220, 1140, 150, 30);
+		txtTop.setBounds(220, 790, 150, 30);
 		panel.add(txtTop);
 
 		lblTopDays = new JLabel("hari");
-		lblTopDays.setBounds(380, 1140, 150, 30);
+		lblTopDays.setBounds(380, 790, 150, 30);
 		panel.add(lblTopDays);
 
 		lblErrorTop = new JLabel();
 		lblErrorTop.setForeground(Color.RED);
-		lblErrorTop.setBounds(425, 1140, 225, 30);
+		lblErrorTop.setBounds(425, 790, 225, 30);
 		panel.add(lblErrorTop);
 
 		lblDefaultTax = new JLabel("Default Tax");
-		lblDefaultTax.setBounds(50, 1180, 150, 30);
+		lblDefaultTax.setBounds(50, 830, 150, 30);
 		panel.add(lblDefaultTax);
 
 		txtDefaultTax = new JTextField();
 		txtDefaultTax.setEnabled(false);
-		txtDefaultTax.setBounds(220, 1180, 150, 30);
+		txtDefaultTax.setBounds(220, 830, 150, 30);
 		panel.add(txtDefaultTax);
 
 		lblDefaultTaxPercentage = new JLabel("%");
-		lblDefaultTaxPercentage.setBounds(380, 1180, 150, 30);
+		lblDefaultTaxPercentage.setBounds(380, 830, 150, 30);
 		panel.add(lblDefaultTaxPercentage);
 
 		lblErrorDefaultTax = new JLabel();
 		lblErrorDefaultTax.setForeground(Color.RED);
-		lblErrorDefaultTax.setBounds(425, 1180, 225, 30);
+		lblErrorDefaultTax.setBounds(425, 830, 225, 30);
 		panel.add(lblErrorDefaultTax);
 
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -390,7 +376,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 				doPrint();
 			}
 		});
-		btnPrint.setBounds(715, 1240, 100, 30);
+		btnPrint.setBounds(715, 870, 100, 30);
 		panel.add(btnPrint);
 
 		btnDelete = new JButton("Hapus");
@@ -402,11 +388,11 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		btnDelete.setBounds(820, 1240, 100, 30);
+		btnDelete.setBounds(820, 870, 100, 30);
 		panel.add(btnDelete);
 
 		btnEdit = new JButton("Ubah");
-		btnEdit.setBounds(925, 1240, 100, 30);
+		btnEdit.setBounds(925, 870, 100, 30);
 		panel.add(btnEdit);
 
 		btnEdit.addActionListener(new ActionListener() {
@@ -423,7 +409,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 				MainPanel.changePanel("module.supplier.ui.SupplierListPanel");
 			}
 		});
-		btnCancel.setBounds(50, 1240, 100, 30);
+		btnCancel.setBounds(50, 870, 100, 30);
 		panel.add(btnCancel);
 	}
 
@@ -431,7 +417,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		try {
 			supplier = ServiceFactory.getSupplierBL().getSupplierById(supplierId);
 			listOfSuppAddress = ServiceFactory.getSupplierBL().getSuppAddressBySuppCode(supplier.getSuppCode());
-			listOfSuppCp = ServiceFactory.getSupplierBL().getSuppCpBySuppCode(supplier.getSuppCode());
+			//listOfSuppCp = ServiceFactory.getSupplierBL().getSuppCpBySuppCode(supplier.getSuppCode());
 			listOfSuppVehicle = ServiceFactory.getSupplierBL().getSuppVehicleBySuppCode(supplier.getSuppCode());
 
 			if (supplier != null) {
@@ -444,10 +430,10 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 				cbSuppStatus.addItem(supplier.getSuppStatus());
 				cbSuppStatus.setSelectedIndex(1);
 				txtDefaultTax.setText(String.valueOf(supplier.getDefaultTax()));
-				txtAccountNo.setText(supplier.getAccountNo());
-				cbBank.addItem(supplier.getBank().getBank());
-				cbBank.setSelectedIndex(1);
-				txtAccountName.setText(supplier.getAccountName());
+//				txtAccountNo.setText(supplier.getAccountNo());
+//				cbBank.addItem(supplier.getBank().getBank());
+//				cbBank.setSelectedIndex(1);
+//				txtAccountName.setText(supplier.getAccountName());
 				cbCurrency.addItem(supplier.getCurrency().getCurrency());
 				cbCurrency.setSelectedIndex(1);
 				txtTop.setText(String.valueOf(supplier.getTop()));
@@ -472,12 +458,12 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 	}
 
 	public void refreshTableSuppCp() {
-		try {
-			tblSuppCp.setModel(new SuppCpTableModel(listOfSuppCp));
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			DialogBox.showErrorException();
-		}
+//		try {
+//			tblSuppCp.setModel(new SuppCpTableModel(listOfSuppCp));
+//		} catch (Exception e1) {
+//			e1.printStackTrace();
+//			DialogBox.showErrorException();
+//		}
 	}
 
 	public void refreshTableSuppVehicle() {
@@ -533,7 +519,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 6;
+			return 7;
 		}
 
 		/**
@@ -555,10 +541,12 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 			case 2:
 				return p.getAddress();
 			case 3:
-				return p.getPhone();
+				return p.getSuppCp().getName();
 			case 4:
-				return p.getFax();
+				return p.getPhone();
 			case 5:
+				return p.getFax();
+			case 6:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
@@ -583,6 +571,8 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 				return String.class;
 			case 5:
 				return String.class;
+			case 6:
+				return String.class;
 			default:
 				return String.class;
 			}
@@ -604,10 +594,12 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 			case 2:
 				return "Alamat";
 			case 3:
-				return "Telepon";
+				return "Contact Person";
 			case 4:
-				return "Fax";
+				return "Telepon";
 			case 5:
+				return "Fax";
+			case 6:
 				return "Tindakan";
 			default:
 				return "";

@@ -11,7 +11,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -19,9 +18,11 @@ import javax.swing.JTextField;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
+import main.component.NumberField;
 import module.sn.city.model.City;
 import module.sn.province.model.Province;
 import module.supplier.model.SuppAddress;
+import module.util.EmailValidator;
 import module.util.JTextFieldLimit;
 
 public class SuppAddressDialog extends JDialog {
@@ -40,16 +41,17 @@ public class SuppAddressDialog extends JDialog {
 
 	JComboBox<String> cbAddressType;
 	JTextArea txtAddress;
-	JTextField txtZipCode;
+	NumberField txtZipCode;
 	ComboBox<Province> cbProvince;
 	ComboBox<City> cbCity;
-	JTextField txtPhone;
-	JTextField txtFax;
+	NumberField txtPhone;
+	NumberField txtFax;
 
 	JButton btnInsert;
 
 	JLabel lblErrorAddressType;
 	JLabel lblErrorAddress;
+	JLabel lblErrorProvince;
 	JLabel lblErrorCity;
 
 	private boolean isEdit;
@@ -61,6 +63,13 @@ public class SuppAddressDialog extends JDialog {
 	List<City> listOfCity;
 
 	private Integer index;
+	
+	JLabel lblContactPerson;
+	JLabel lblEmail;
+	JTextField txtContactPerson;
+	JTextField txtEmail;
+	JLabel lblErrorContactPerson;
+	JLabel lblErrorEmail;
 
 	public SuppAddressDialog(boolean edit, SuppAddress suppAddress, SupplierCreatePanel supplierCreate, Integer index) {
 		this.isEdit = edit;
@@ -81,7 +90,7 @@ public class SuppAddressDialog extends JDialog {
 	public void init() {
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 600, 400);
+		setBounds(100, 100, 600, 440);
 		getContentPane().setLayout(null);
 
 		listOfProvince = new ArrayList<Province>();
@@ -133,12 +142,12 @@ public class SuppAddressDialog extends JDialog {
 		lblZipCode.setBounds(25, 135, 150, 30);
 		getContentPane().add(lblZipCode);
 
-		txtZipCode = new JTextField();
+		txtZipCode = new NumberField();
 		txtZipCode.setBounds(150, 135, 150, 30);
 		txtZipCode.setDocument(new JTextFieldLimit(5));
 		getContentPane().add(txtZipCode);
 
-		lblProvince = new JLabel("Provinsi");
+		lblProvince = new JLabel("<html>Provinsi <font color=\"red\">*</font></html>");
 		lblProvince.setBounds(25, 170, 150, 30);
 		getContentPane().add(lblProvince);
 
@@ -146,8 +155,13 @@ public class SuppAddressDialog extends JDialog {
 		cbProvince.setList(listOfProvince);
 		cbProvince.setBounds(150, 170, 150, 30);
 		getContentPane().add(cbProvince);
+		
+		lblErrorProvince = new JLabel();
+		lblErrorProvince.setForeground(Color.RED);
+		lblErrorProvince.setBounds(335, 175, 200, 30);
+		getContentPane().add(lblErrorProvince);
 
-		lblCity = new JLabel("Kota");
+		lblCity = new JLabel("<html>Kota <font color=\"red\">*</font></html>");
 		lblCity.setBounds(25, 205, 150, 30);
 		getContentPane().add(lblCity);
 
@@ -194,22 +208,50 @@ public class SuppAddressDialog extends JDialog {
 		});
 
 		getContentPane().add(cbCity);
+		
+		lblContactPerson = new JLabel("<html>Contact Person <font color=\"red\">*</font></html>");
+		lblContactPerson.setBounds(25, 240, 150, 30);
+		getContentPane().add(lblContactPerson);
+
+		txtContactPerson = new JTextField();
+		txtContactPerson.setBounds(150, 240, 150, 30);
+		txtContactPerson.setDocument(new JTextFieldLimit(50));
+		getContentPane().add(txtContactPerson);
+
+		lblErrorContactPerson = new JLabel();
+		lblErrorContactPerson.setForeground(Color.RED);
+		lblErrorContactPerson.setBounds(335, 240, 225, 30);
+		getContentPane().add(lblErrorContactPerson);
+		
+		lblEmail = new JLabel("Email");
+		lblEmail.setBounds(25, 275, 150, 30);
+		getContentPane().add(lblEmail);
+
+		txtEmail = new JTextField();
+		txtEmail.setBounds(150, 275, 150, 30);
+		txtEmail.setDocument(new JTextFieldLimit(50));
+		getContentPane().add(txtEmail);
+
+		lblErrorEmail = new JLabel();
+		lblErrorEmail.setForeground(Color.RED);
+		lblErrorEmail.setBounds(335, 275, 225, 30);
+		getContentPane().add(lblErrorEmail);
 
 		lblPhone = new JLabel("Telepon");
-		lblPhone.setBounds(25, 240, 150, 30);
+		lblPhone.setBounds(25, 310, 150, 30);
 		getContentPane().add(lblPhone);
 
-		txtPhone = new JTextField();
-		txtPhone.setBounds(150, 240, 150, 30);
+		txtPhone = new NumberField();
+		txtPhone.setBounds(150, 310, 150, 30);
 		txtPhone.setDocument(new JTextFieldLimit(15));
 		getContentPane().add(txtPhone);
 
 		lblFax = new JLabel("Fax");
-		lblFax.setBounds(25, 275, 150, 30);
+		lblFax.setBounds(25, 345, 150, 30);
 		getContentPane().add(lblFax);
 
-		txtFax = new JTextField();
-		txtFax.setBounds(150, 275, 150, 30);
+		txtFax = new NumberField();
+		txtFax.setBounds(150, 345, 150, 30);
 		txtFax.setDocument(new JTextFieldLimit(15));
 		getContentPane().add(txtFax);
 
@@ -222,7 +264,7 @@ public class SuppAddressDialog extends JDialog {
 				doInsert();
 			}
 		});
-		btnInsert.setBounds(460, 315, 100, 30);
+		btnInsert.setBounds(460, 345, 100, 30);
 		getContentPane().add(btnInsert);
 
 		if (isEdit == true) {
@@ -231,6 +273,9 @@ public class SuppAddressDialog extends JDialog {
 			txtZipCode.setText(suppAddress.getZipCode());
 			txtPhone.setText(suppAddress.getPhone());
 			txtFax.setText(suppAddress.getFax());
+			
+			txtContactPerson.setText(suppAddress.getSuppCp().getName());
+			txtEmail.setText(suppAddress.getSuppCp().getEmail());
 		
 			if (suppAddress.getCityId() != 0) {
 				getAllCityByProvinceId(suppAddress.getCity().getProvinceId());
@@ -267,11 +312,24 @@ public class SuppAddressDialog extends JDialog {
 			isValid = false;
 		}
 
-		if (cbProvince.getSelectedItem() == null || cbProvince.getSelectedIndex() != 0) {
-			if (cbCity.getSelectedItem() == null || cbCity.getSelectedIndex() == 0) {
-				lblErrorCity.setText("Combobox Kota harus dipilih.");
-				isValid = false;
-			}
+		if (cbProvince.getSelectedItem() == null || cbProvince.getSelectedIndex() == 0) {
+			lblErrorProvince.setText("Combobox Kota harus dipilih.");
+			isValid = false;
+		} 
+		
+		if (cbCity.getSelectedItem() == null || cbCity.getSelectedIndex() == 0) {
+			lblErrorCity.setText("Combobox Kota harus dipilih.");
+			isValid = false;
+		}
+		
+		if (txtContactPerson.getText() == null || txtContactPerson.getText().length() == 0) {
+			lblErrorContactPerson.setText("Textbox Contact Person harus diisi.");
+			isValid = false;
+		}
+		
+		if (Boolean.FALSE.equals(new EmailValidator().validate(txtEmail.getText()))) {
+			lblErrorEmail.setText("Format Email salah.");
+			isValid = false;
 		}
 
 		return isValid;
@@ -283,7 +341,7 @@ public class SuppAddressDialog extends JDialog {
 		suppAddress.setAddressType(String.valueOf(cbAddressType.getSelectedItem()));
 		suppAddress.setAddress(txtAddress.getText());
 		suppAddress.setZipCode(txtZipCode.getText());
-
+		
 		if (cbProvince.getSelectedIndex() != 0 && cbCity.getSelectedIndex() != 0) {
 			suppAddress.setCityId(cbCity.getDataIndex().getId());
 			
@@ -298,17 +356,21 @@ public class SuppAddressDialog extends JDialog {
 			city.setProvince(province);
 			suppAddress.setCity(city);
 		}
-			
 
 		suppAddress.setPhone(txtPhone.getText());
 		suppAddress.setFax(txtFax.getText());
-
+		
+		suppAddress.getSuppCp().setName(txtContactPerson.getText());
+		suppAddress.getSuppCp().setEmail(txtEmail.getText());
+		
 		try {
 			if (isEdit == false) {
-				if (supplierCreate != null)
+				if (supplierCreate != null) {
 					supplierCreate.listOfSuppAddress.add(suppAddress);
-				else if (supplierEdit != null)
+				}
+				else if (supplierEdit != null) {
 					supplierEdit.listOfSuppAddress.add(suppAddress);
+				}
 
 				DialogBox.showInsert();
 			} else {

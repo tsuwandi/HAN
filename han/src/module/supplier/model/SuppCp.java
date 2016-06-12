@@ -21,7 +21,8 @@ public class SuppCp implements Serializable {
 	private String deletedBy;
 	
 	private boolean isFlag;
-
+	private int suppAddressId;
+	
 	public int getId() {
 		return id;
 	}
@@ -215,7 +216,8 @@ public class SuppCp implements Serializable {
 	public String toString() {
 		return "Supplier(id=" + id + ",suppCode=" + suppCode + ",name=" + name + ",department=" + department + ",phone="
 				+ phone + ",email=" + email + ",inputDate=" + inputDate + ",inputBy=" + inputBy + ",editDate="
-				+ editDate + ",editedBy=" + editedBy + ",deletedDate=" + deletedDate + ",deletedBy=" + deletedBy + ')';
+				+ editDate + ",editedBy=" + editedBy + ",deletedDate=" + deletedDate + ",deletedBy=" + deletedBy 
+				+ ",suppAddressId=" + suppAddressId +')';
 	}
 
 	public boolean isFlag() {
@@ -224,5 +226,13 @@ public class SuppCp implements Serializable {
 
 	public void setFlag(boolean isFlag) {
 		this.isFlag = isFlag;
+	}
+
+	public int getSuppAddressId() {
+		return suppAddressId;
+	}
+
+	public void setSuppAddressId(int suppAddressId) {
+		this.suppAddressId = suppAddressId;
 	}
 }
