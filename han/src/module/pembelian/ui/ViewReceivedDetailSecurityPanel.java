@@ -137,19 +137,19 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		thirdCodeSeparator.setHorizontalAlignment(SwingConstants.CENTER);
 		containerPnl.add(thirdCodeSeparator);
 
-		receivedCodeField = new NumberField();
+		receivedCodeField = new NumberField(10);
 		receivedCodeField.setBounds(220, 70, 100, 20);
 		containerPnl.add(receivedCodeField);
 
-		receivedCodeDateField = new NumberField();
+		receivedCodeDateField = new NumberField(10);
 		receivedCodeDateField.setBounds(340, 70, 30, 20);
 		containerPnl.add(receivedCodeDateField);
 
-		receivedCodeMonthField = new NumberField();
+		receivedCodeMonthField = new NumberField(10);
 		receivedCodeMonthField.setBounds(380, 70, 30, 20);
 		containerPnl.add(receivedCodeMonthField);
 
-		receivedCodeYearField = new NumberField();
+		receivedCodeYearField = new NumberField(10);
 		receivedCodeYearField.setBounds(420, 70, 50, 20);
 		containerPnl.add(receivedCodeYearField);
 
@@ -172,7 +172,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		ritNumberLbl.setBounds(50,150,150,20);
 		containerPnl.add(ritNumberLbl);
 
-		ritNumberField = new NumberField();
+		ritNumberField = new NumberField(10);
 		ritNumberField.setBounds(220, 150, 150, 20);
 		containerPnl.add(ritNumberField);
 
@@ -301,7 +301,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		totalLogLbl.setBounds(550,270,150,20);
 		containerPnl.add(totalLogLbl);
 		
-		totalLogField = new NumberField();
+		totalLogField = new NumberField(10);
 		totalLogField.setBounds(720, 270, 150, 20);
 		containerPnl.add(totalLogField);
 		
@@ -318,7 +318,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		totalVolumeLbl.setBounds(550,310,150,20);
 		containerPnl.add(totalVolumeLbl);
 		
-		totalVolumeField = new NumberField();
+		totalVolumeField = new NumberField(10);
 		totalVolumeField.setBounds(720, 310, 150, 20);
 		containerPnl.add(totalVolumeField);
 		

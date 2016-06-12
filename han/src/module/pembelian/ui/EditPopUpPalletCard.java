@@ -115,7 +115,7 @@ public class EditPopUpPalletCard extends JDialog{
 		palletCardCodeLbl.setBounds(30,30,150,20);
 		add(palletCardCodeLbl);
 		
-		codePalletCardField = new NumberField();
+		codePalletCardField = new NumberField(10);
 		codePalletCardField.setBounds(150, 30, 150, 20);
 		add(codePalletCardField);
 		
@@ -154,7 +154,7 @@ public class EditPopUpPalletCard extends JDialog{
 		longLbl.setBounds(30,140,150,20);
 		add(longLbl);
 		
-		longField = new NumberField();
+		longField = new NumberField(10);
 		longField.setBounds(150, 140, 150, 20);
 		add(longField);
 		
@@ -180,7 +180,7 @@ public class EditPopUpPalletCard extends JDialog{
 		wideLbl.setBounds(30,220,100,20);
 		add(wideLbl);
 		
-		wideField = new NumberField();
+		wideField = new NumberField(10);
 		wideField.setBounds(150, 220, 150, 20);
 		add(wideField);
 		
@@ -214,7 +214,7 @@ public class EditPopUpPalletCard extends JDialog{
 		totalLbl.setBounds(30,300,100,20);
 		add(totalLbl);
 	
-		totalField = new NumberField();
+		totalField = new NumberField(10);
 		totalField.setBounds(150, 300, 150, 20);
 		add(totalField);
 		

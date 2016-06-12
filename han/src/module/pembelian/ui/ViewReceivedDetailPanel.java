@@ -158,19 +158,19 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		thirdCodeSeparator.setHorizontalAlignment(SwingConstants.CENTER);
 		containerPnl.add(thirdCodeSeparator);
 		
-		receivedCodeField = new NumberField();
+		receivedCodeField = new NumberField(10);
 		receivedCodeField.setBounds(220, 70, 100, 20);
 		containerPnl.add(receivedCodeField);
 		
-		receivedCodeDateField = new NumberField();
+		receivedCodeDateField = new NumberField(10);
 		receivedCodeDateField.setBounds(340, 70, 30, 20);
 		containerPnl.add(receivedCodeDateField);
 		
-		receivedCodeMonthField = new NumberField();
+		receivedCodeMonthField = new NumberField(10);
 		receivedCodeMonthField.setBounds(380, 70, 30, 20);
 		containerPnl.add(receivedCodeMonthField);
 		
-		receivedCodeYearField = new NumberField();
+		receivedCodeYearField = new NumberField(10);
 		receivedCodeYearField.setBounds(420, 70, 50, 20);
 		containerPnl.add(receivedCodeYearField);
 		
