@@ -1,0 +1,6 @@
+ALTER TABLE supplier MODIFY COLUMN account_no varchar(30) null;
+ALTER TABLE supplier MODIFY COLUMN bank_id int(3) null;
+ALTER TABLE supplier MODIFY COLUMN account_name varchar(30) null;
+ALTER TABLE supp_cp MODIFY COLUMN department varchar(100) null;
+ALTER TABLE supp_cp MODIFY COLUMN phone varchar(15) null;
+ALTER TABLE supp_cp MODIFY COLUMN email varchar(50) null;
