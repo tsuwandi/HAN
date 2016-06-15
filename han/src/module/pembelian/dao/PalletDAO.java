@@ -45,7 +45,7 @@ public class PalletDAO {
 		 		+ " VALUES (?,?,?,?,?,?,?,?)";
 	
 	private String detailPalletQuery = "SELECT a.id, pallet_card_code, length, width, thickness, total, volume, a.product_code, product_name FROM "
-			+ "pallet_card_dtl a INNER JOIN product b ON a.product_code = b.product_code WHERE pallet_card_code = ?";
+			+ "pallet_card a INNER JOIN product b ON a.product_code = b.product_code WHERE received_detail_id = ?";
 	
 	private String deletePalletQuery = "DELETE FROM pallet_card WHERE received_code = ?";
 	

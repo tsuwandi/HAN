@@ -19,7 +19,8 @@ public class Received {
 	String woodResource;
 	String supplierCode;
 	int supplierCpID;
-	
+	String subSupplierName;
+	String empCode;
 	
 	
 	public String getWoodDomicile() {
@@ -118,6 +119,18 @@ public class Received {
 	public void setSupplierCpID(int supplierCpID) {
 		this.supplierCpID = supplierCpID;
 	}
-	
-	
+	public String getSubSupplierName() {
+		return subSupplierName;
+	}
+	public void setSubSupplierName(String subSupplierName) {
+		this.subSupplierName = subSupplierName;
+	}
+	public String getEmpCode() {
+		return empCode;
+	}
+	public void setEmpCode(String empCode) {
+		this.empCode = empCode;
+	}
+
+
 }

@@ -23,6 +23,7 @@ public class ReceivedDAO {
 	private PreparedStatement lastIdStatement;
 	private PreparedStatement advancedSearchStatement;
 	private PreparedStatement updateStatusStatement;
+	private PreparedStatement udpdateEmpCodeStatement;
 
 	 private String insertQuery = "INSERT INTO received (received_code, received_date,"
 	 		+ " rit_no, license_plate, driver, delivery_note, wood_type_id, driver_id, received_status, supplier_code, supplier_cp_id, input_date, input_by) "
@@ -32,16 +33,20 @@ public class ReceivedDAO {
 	 		+ " WHERE id=? AND received_code=?";
 	 private String deleteQuery = "update bank set deleted_date=?,"
 	 		+ "deleted_by=? where received_code=?";
-	private String getAllQuery = "select a.id, received_code, received_date, rit_no, a.license_plate, a.supplier_code, a.supplier_cp_id, "
-			+ "driver, a.delivery_note, a.wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource "
+	private String getAllQuery = "select a.id, received_code, received_date, rit_no, a.license_plate, a.supplier_code, a.supplier_cp_id, s.name, "
+			+ "driver, a.delivery_note, a.wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource, a.emp_code "
 			+ "FROM received a " 
-			+ "INNER JOIN supplier c ON a.supplier_code = c.supp_code INNER JOIN wood_type d ON a.wood_type_id = d.id "
+			+ "INNER JOIN supplier c ON a.supplier_code = c.supp_code "
+			+ "INNER JOIN supp_cp s ON a.supplier_code = s.supp_code "
+			+ "INNER JOIN wood_type d ON a.wood_type_id = d.id "
 			+ "INNER JOIN delivery f ON a.delivery_note = f.delivery_note "
-			+ "INNER JOIN wood_resource e ON f.wood_resource_id = e.id WHERE 1=1";
+			+ "INNER JOIN wood_resource e ON f.wood_resource_id = e.id WHERE 1=1 AND a.deleted_date IS NULL";
 
 	private String lastID = "SELECT received_code FROM received ORDER BY ID DESC LIMIT 1";
 	
 	private String updateStatusQuery = "UPDATE received SET received_status = 'Diproses' WHERE received_code = ?";
+	
+	private String updateEmpCodeQuery = "UPDATE received SET emp_code = ? WHERE received_code = ?";
 	
 	public ReceivedDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
@@ -88,6 +93,25 @@ public class ReceivedDAO {
 			}
 		}
 	}
+	public void updateEmpCode(String empCode,String receivedCode) throws SQLException{
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			udpdateEmpCodeStatement = con.prepareStatement(updateEmpCodeQuery);
+			udpdateEmpCodeStatement.setString(1, empCode);
+			udpdateEmpCodeStatement.setString(2, receivedCode);
+			udpdateEmpCodeStatement.executeUpdate();
+			
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+			}
+		}
+	}
 	
 	public List<Received> getAllBySearch(String receivedCode) throws SQLException {
 		Connection con = null;
@@ -117,6 +141,8 @@ public class ReceivedDAO {
 				received.setWoodResource(rs.getString("wood_resource"));
 				received.setSupplierCode(rs.getString("supplier_code"));
 				received.setSupplierCpID(rs.getInt("supplier_cp_id"));
+				received.setSubSupplierName(rs.getString("name"));
+				received.setEmpCode(rs.getString("emp_code"));
 				receiveds.add(received);
 				
 			}
@@ -161,6 +187,8 @@ public class ReceivedDAO {
 				received.setWoodResource(rs.getString("wood_resource"));
 				received.setSupplierCode(rs.getString("supplier_code"));
 				received.setSupplierCpID(rs.getInt("supplier_cp_id"));
+				received.setSubSupplierName(rs.getString("name"));
+				received.setEmpCode(rs.getString("emp_code"));
 				receiveds.add(received);
 			}
 
@@ -221,6 +249,8 @@ public class ReceivedDAO {
 				received.setWoodResource(rs.getString("wood_resource"));
 				received.setSupplierCode(rs.getString("supplier_code"));
 				received.setSupplierCpID(rs.getInt("supplier_cp_id"));
+				received.setSubSupplierName(rs.getString("name"));
+				received.setEmpCode(rs.getString("emp_code"));
 				receiveds.add(received);
 			}
 		} catch (SQLException ex) {
@@ -279,9 +309,9 @@ public class ReceivedDAO {
     		updateStatement.setString(4, received.getDriver());
     		updateStatement.setString(5, received.getDeliveryNote());
     		updateStatement.setInt(6, received.getWoodTypeID());
-    		updateStatement.setDate(7, new Date(new java.util.Date().getTime()));
-    		updateStatement.setString(8, received.getSupplierCode());
-    		updateStatement.setInt(9, received.getSupplierCpID());
+    		updateStatement.setString(7, received.getSupplierCode());
+    		updateStatement.setInt(8, received.getSupplierCpID());
+    		updateStatement.setDate(9, new Date(new java.util.Date().getTime()));
     		updateStatement.setString(10, "Michael");
     		updateStatement.setInt(11, received.getId());
     		updateStatement.setString(12, received.getReceivedCode());

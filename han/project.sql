@@ -611,21 +611,25 @@ INSERT INTO `ms_supplier` (`id`, `supplier_id`, `supplier_name`, `supplier_code`
 --
 
 CREATE TABLE IF NOT EXISTS `pallet_card` (
-  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `received_detail_id` varchar(21) NOT NULL,
   `pallet_card_code` varchar(21) NOT NULL,
-  `received_code` varchar(16) NOT NULL,
-  `emp_code` varchar(10) NOT NULL,
-  `grade_id` int(11) NOT NULL,
+  `length` decimal(5,2) NOT NULL,
+  `width` decimal(5,2) NOT NULL,
+  `thickness` decimal(5,2) NOT NULL,
+  `total` int(11) NOT NULL,
+  `volume` int(11) NOT NULL,
+  `product_code` varchar(20) NOT NULL,
+  `description` varchar(500) NOT NULL,
   `input_date` date DEFAULT NULL,
   `input_by` varchar(25) DEFAULT NULL,
   `edit_date` date DEFAULT NULL,
   `edited_by` varchar(25) DEFAULT NULL,
   `deleted_date` date DEFAULT NULL,
   `deleted_by` varchar(25) DEFAULT NULL,
-  `total_volume` decimal(7,2) DEFAULT NULL,
-  `total_log` int(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+);
+
 
 --
 -- Dumping data for table `pallet_card`
@@ -725,6 +729,7 @@ INSERT INTO `pic_tally` (`id`, `dry_in_code`, `emp_code`, `input_date`, `input_b
 
 -- --------------------------------------------------------
 
+
 --
 -- Table structure for table `product`
 --
@@ -770,15 +775,20 @@ CREATE TABLE IF NOT EXISTS `product` (
   `deleted_date` date DEFAULT NULL,
   `deleted_by` varchar(25) DEFAULT NULL,
   `minqty` int(5) DEFAULT NULL,
+  `thickness` decimal(10,5) DEFAULT NULL,
+  `length` decimal(10,5) DEFAULT NULL,
+  `width` decimal(10,5) DEFAULT NULL,
   PRIMARY KEY (`id`,`product_code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `product_code`, `product_name`, `product_category_id`, `product_status`, `product_uom_id`, `is_maintain_stock`, `image_path`, `brand`, `barcode`, `description`, `wood_type_id`, `grade_id`, `thickness_id`, `condition_id`, `is_has_serial`, `is_fixed_asset`, `warranty`, `netto`, `netto_uom_id`, `is_purchase_item`, `minor`, `minor_uom_id`, `lead_time`, `buy_cost_center_id`, `expense_acc_id`, `main_supp_code`, `manufacturer`, `is_sales_item`, `is_service_item`, `sell_cost_center_id`, `income_acc_id`, `max_disc`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`, `minqty`) VALUES
-(2, 'BLK001', 'BALKEN 2CM', 1, 'aktif', 1, 0, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `product` (`id`, `product_code`, `product_name`, `product_category_id`, `product_status`, `product_uom_id`, `is_maintain_stock`, `image_path`, `brand`, `barcode`, `description`, `wood_type_id`, `grade_id`, `thickness_id`, `condition_id`, `is_has_serial`, `is_fixed_asset`, `warranty`, `netto`, `netto_uom_id`, `is_purchase_item`, `minor`, `minor_uom_id`, `lead_time`, `buy_cost_center_id`, `expense_acc_id`, `main_supp_code`, `manufacturer`, `is_sales_item`, `is_service_item`, `sell_cost_center_id`, `income_acc_id`, `max_disc`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`, `minqty`, `thickness`, `length`, `width`) VALUES
+(1, 'BLK001', 'BALKEN 2CM', 2, 'Aktif', 2, 1, '', NULL, NULL, NULL, 2, 2, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016-06-11', 'Irvan', NULL, NULL, 12, 10.00000, 10.00000, 10.00000),
+(2, 'BLK003', 'BALKEN 3CM', 3, 'Aktif', 1, 1, '', '', '', '', 1, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016-06-11', 'Irvan', '2016-06-11', 'Irvan', NULL, NULL, 12, 10.00000, 10.00000, 12.00000),
+(3, 'BLK004', 'BALKEN 4CM', 1, 'Aktif', 2, 1, '', NULL, NULL, NULL, 2, 2, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016-06-11', 'Irvan', NULL, NULL, NULL, NULL, 11, 11.00000, 11.00000, 11.00000);
 
 -- --------------------------------------------------------
 
@@ -1273,3 +1283,30 @@ ALTER TABLE `supp_address`
 
 ALTER TABLE  `received` ADD  `supplier_code` VARCHAR( 50 ) NOT NULL AFTER  `rit_no` ,
 ADD  `supplier_cp_id` INT NOT NULL AFTER  `supplier_code`;
+
+
+ALTER TABLE supplier MODIFY COLUMN account_no varchar(30) null;
+ALTER TABLE supplier MODIFY COLUMN bank_id int(3) null;
+ALTER TABLE supplier MODIFY COLUMN account_name varchar(30) null;
+ALTER TABLE supp_cp MODIFY COLUMN department varchar(100) null;
+ALTER TABLE supp_cp MODIFY COLUMN phone varchar(15) null;
+ALTER TABLE supp_cp MODIFY COLUMN email varchar(50) null;
+
+ALTER TABLE  `received` ADD  `emp_code` VARCHAR( 25 ) NOT NULL AFTER  `driver_id`;
+
+
+CREATE TABLE IF NOT EXISTS `received_detail` (
+  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `received_code` varchar(16) NOT NULL,
+  `total_volume` decimal(7,5) DEFAULT NULL,
+  `total_log` int(5) DEFAULT NULL,
+  `grade_id` int(11) NOT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+ 
+  PRIMARY KEY (`id`)
+);
