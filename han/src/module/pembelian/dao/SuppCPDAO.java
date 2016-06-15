@@ -61,4 +61,38 @@ public class SuppCPDAO {
 
 		return suppCps;
 	}
+	
+	public SupplierCP getSuppCPBySupplierByID(int suppCPID) throws SQLException {
+		Connection con = null;
+		SupplierCP suppCp = new SupplierCP();
+
+		try {
+			con = dataSource.getConnection();
+			getAllStatement = con.prepareStatement(getAllQuery+" AND a.id = ?");
+			getAllStatement.setInt(1, suppCPID);
+
+			ResultSet rs = getAllStatement.executeQuery();
+			rs.next();
+			suppCp.setId(rs.getInt("id"));
+			suppCp.setSuppCode(rs.getString("supp_code"));
+			suppCp.setSuppAddressId(rs.getInt("supp_address_id"));
+			suppCp.setSuppAddress(rs.getString("address"));
+			suppCp.setName(rs.getString("name"));
+			suppCp.setDepartment(rs.getString("department"));
+			suppCp.setPhone(rs.getString("phone"));
+			suppCp.setEmail(rs.getString("email"));
+				
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return suppCp;
+	}
 }

@@ -9,10 +9,12 @@ import module.pembelian.dao.DocumentTypeDAO;
 import module.pembelian.dao.EmployeeDAO;
 import module.pembelian.dao.GradeDAO;
 import module.pembelian.dao.PICDockingDAO;
+import module.pembelian.dao.PalletCardDAO;
 import module.pembelian.dao.PalletCardDetailDAO;
 import module.pembelian.dao.PalletDAO;
 import module.pembelian.dao.ProductDAO;
 import module.pembelian.dao.ReceivedDAO;
+import module.pembelian.dao.ReceivedDetailDAO;
 import module.pembelian.dao.SuppCPDAO;
 import module.pembelian.dao.SupplierReceivedDAO;
 import module.pembelian.dao.SupplierVehicleDAO;
@@ -151,6 +153,23 @@ public class ReceivedDAOFactory {
 	public static SupplierReceivedDAO getSupplierDAO(){
 		try {
 			return new SupplierReceivedDAO(DataSourceFactory.getDataSource());
+		} catch (SQLException e) {
+			LOGGER.error("SQL Exception " + e);
+			return null;
+		}
+	}
+	public static ReceivedDetailDAO getReceivedDetailDAO(){
+		try {
+			return new ReceivedDetailDAO(DataSourceFactory.getDataSource());
+		} catch (SQLException e) {
+			LOGGER.error("SQL Exception " + e);
+			return null;
+		}
+	}
+	
+	public static PalletCardDAO getPalletCardDAO(){
+		try {
+			return new PalletCardDAO(DataSourceFactory.getDataSource());
 		} catch (SQLException e) {
 			LOGGER.error("SQL Exception " + e);
 			return null;

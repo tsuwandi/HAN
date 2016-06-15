@@ -3,6 +3,7 @@ package module.pembelian.model;
 import java.util.List;
 
 public class ReceivedDetail {
+	boolean flag;
 	int id;
 	String receivedCode;
 	int gradeID;
@@ -12,6 +13,12 @@ public class ReceivedDetail {
 	List<PalletCard> pallets;
 	
 	
+	public boolean isFlag() {
+		return flag;
+	}
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
 	public int getId() {
 		return id;
 	}
