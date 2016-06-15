@@ -873,7 +873,12 @@ public class ProductViewPanel extends JPanel implements Bridging {
 	
 	protected void doDelete() {
 		try {
-			ServiceFactory.getProductBL().deleteAll(product);
+			Product deleteProduct = new Product();
+			deleteProduct.setDeletedDate(todayDate);
+			deleteProduct.setDeletedBy("Irvan");
+			deleteProduct.setProductCode(idField.getText());			
+			
+			ServiceFactory.getProductBL().delete(deleteProduct);
 			DialogBox.showDelete();
 			MainPanel.changePanel("module.product.ui.ProductListPanel");
 		} catch (SQLException e1) {
