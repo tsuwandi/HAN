@@ -47,7 +47,7 @@ public class ProductDAO {
 			+ "join grade c on a.grade_id = c.id "
 			+ "join product_category d on a.product_category_id = d.id "
 			+ "join uom e on a.product_uom_id = e.id "
-			+ "where 1=1 order by a.id asc ";
+			+ "where 1=1 and a.deleted_date is null and a.deleted_by is null order by a.id asc ";
 	
 	private String getAllNoOrder = "select a.id, product_code, product_name, product_category_id, "
 			+ "product_status, product_uom_id, is_maintain_stock, image_path, brand, barcode, description, "
@@ -535,5 +535,22 @@ public class ProductDAO {
 		}
 
 		return p;
+	}
+	
+	public void delete(Product product) throws SQLException {
+		try {
+			deleteProductStatement = connection.prepareStatement(deleteQuery);
+			java.sql.Date sqlDeleteDate = new java.sql.Date(product.getDeletedDate().getTime());
+			
+			deleteProductStatement.setDate(1, sqlDeleteDate);
+			deleteProductStatement.setString(2, product.getDeletedBy());
+			deleteProductStatement.setString(3, product.getProductCode());
+			deleteProductStatement.executeUpdate();
+
+			System.out.println(deleteProductStatement);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
 	}
 }
