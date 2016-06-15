@@ -95,6 +95,23 @@ public class ProductBL {
 		}
 	}
 	
+	public void delete(Product product) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			con.setAutoCommit(false);
+			new ProductDAO(con).delete(product);
+			
+			con.commit();
+		} catch (SQLException e) {
+			con.rollback();
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		} finally {
+			con.close();
+		}
+	}
+	
 	public Product getProductByCode(String productCode) throws SQLException {
 		Connection con = null;
 		try {
@@ -154,22 +171,5 @@ public class ProductBL {
 			con.close();
 		}
 	}
-	
-	public void deleteAll(Product product) throws SQLException {
-		Connection con = null;
-		try {
-			con = dataSource.getConnection();
-			con.setAutoCommit(false);
 
-			new SupplierDAO(con).delete(product.getProductId());
-
-			con.commit();
-		} catch (SQLException e) {
-			con.rollback();
-			e.printStackTrace();
-			throw new SQLException(e.getMessage());
-		} finally {
-			con.close();
-		}
-	}
 }
