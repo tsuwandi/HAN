@@ -93,13 +93,13 @@ public class PalletCardDAO {
         }
 	}
 	
-	public void delete(String receivedDetailID) throws SQLException{
+	public void delete(int receivedDetailID) throws SQLException{
 		  Connection con = null;
 	    	try {
 	    		con = dataSource.getConnection();
 	    		
 	    		deleteStatement = con.prepareStatement(deleteQuery);
-	    		deleteStatement.setString(1, receivedDetailID);
+	    		deleteStatement.setInt(1, receivedDetailID);
 	    		deleteStatement.executeUpdate();
 	            
 	        } catch (SQLException ex) {

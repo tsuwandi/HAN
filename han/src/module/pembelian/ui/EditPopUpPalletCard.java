@@ -38,6 +38,7 @@ import module.pembelian.model.Grade;
 import module.pembelian.model.Pallet;
 import module.pembelian.model.PalletCardDetail;
 import module.pembelian.model.Product;
+import module.pembelian.model.ReceivedDetail;
 import module.pembelian.model.Thickness;
 import controller.ReceivedDAOFactory;
 
@@ -104,7 +105,7 @@ public class EditPopUpPalletCard extends JDialog{
 	int indexEdit = 0;
 	int index;
 	Pallet pallet;
-	public EditPopUpPalletCard(AddReceivedDetailPanel parent, Pallet pallet, int index) {
+	public EditPopUpPalletCard(AddReceivedDetailPanel parent, ReceivedDetail pallet, int index) {
 		addReceivedDetail = parent;
 		setLayout(null);
 		setTitle("Kartu Pallet");
@@ -320,7 +321,7 @@ public class EditPopUpPalletCard extends JDialog{
 				mapTemp.put(product.getGradeId(), product);
 				productMap.put(product.getThicknessId(), mapTemp);
 			}
-			this.pallet = pallet;
+			/*this.pallet = pallet;
 			this.index = index;
 			codePalletCardField.setEnabled(false);
 			String [] splittedCode = pallet.getPalletCardCode().split("/");
@@ -329,7 +330,7 @@ public class EditPopUpPalletCard extends JDialog{
 			gradeComboBox.setSelectedItem(pallet.getGrade());
 			pcs = pallet.getPalletCardDetails();
 			pcTable.setModel(new PCTableModel(pcs));
-			pcTable.updateUI();
+			pcTable.updateUI();*/
 		
 			int total = 0;
 			double volume = 0;
@@ -554,7 +555,7 @@ public class EditPopUpPalletCard extends JDialog{
 					errorCodePallet.setText("");
 				}
 				
-				if(error==0){
+			/*	if(error==0){
 					Pallet pallet = addReceivedDetail.pallets.get(index);
 					pallet.setGradeID(gradeComboBox.getDataIndex().getId());
 					pallet.setGrade(gradeComboBox.getDataIndex().getGrade());
@@ -568,7 +569,7 @@ public class EditPopUpPalletCard extends JDialog{
 					addReceivedDetail.palletTable.updateUI();
 					dispose();
 					
-				}
+				}*/
 			}
 		});
 	

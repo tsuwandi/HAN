@@ -16,9 +16,11 @@ public class EmployeeDAO {
 	private DataSource dataSource;
 
 	private PreparedStatement getAllStatement;
+	private PreparedStatement getEmpByCodeStatement;
 
 	private String getAllQuery = "SELECT employee_id, employee_type_id, employee_name" + " FROM employee WHERE position_id=? ";
-
+	private String getEmpByCodeQuery = "SELECT employee_id, employee_type_id, employee_name" + " FROM employee WHERE employee_id =? ";
+	
 	public EmployeeDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
 
@@ -53,6 +55,34 @@ public class EmployeeDAO {
 		}
 
 		return employees;
+	}
+	
+	public Employee getEmployeeByCode(String code) throws SQLException {
+		Connection con = null;
+		Employee employee = new Employee();
+		try {
+			con = dataSource.getConnection();
+			getEmpByCodeStatement = con.prepareStatement(getEmpByCodeQuery);
+			getEmpByCodeStatement.setString(1, code);
+			
+			ResultSet rs = getEmpByCodeStatement.executeQuery();
+			rs.next();
+			
+			employee.setEmployeeId(rs.getString("employee_id"));
+			employee.setEmployeeName(rs.getString("employee_name"));	
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return employee;
 	}
 	
 	public List<Employee> getEmployeeGrader(String pos) throws SQLException {

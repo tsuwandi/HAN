@@ -89,6 +89,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	JLabel errorDriverIDLbl;
 	JLabel errorSupplierLbl;
 	JLabel errorSupplierCPLbl;
+	JLabel errorGradeLbl;
 	
 	NumberField receivedCodeField;
 	NumberField receivedCodeDateField;
@@ -138,6 +139,8 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	List<SupplierVehicle> suppVehicles;
 	List<Delivery> deliveries;
 	List<WoodType> woodTypes;
+	List<Employee> graders;
+	List<Grade> grades;
 	
 	ViewReceivedDetailPanel parent;
 	JScrollPane scrollPane;
@@ -149,7 +152,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		this.parent = this;
 		
 		containerPnl = new JPanel();
-		containerPnl.setPreferredSize(new Dimension(1100, 1000));
+		containerPnl.setPreferredSize(new Dimension(1100, 900));
 		containerPnl.setLayout(null);
 		
 		scrollPane = new JScrollPane(containerPnl);
@@ -297,53 +300,86 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	
 		// Document Number
 		docNoLbl =  new JLabel("No Dokumen");
-		docNoLbl.setBounds(50,350,150,20);
+		docNoLbl.setBounds(550,70,150,20);
 		containerPnl.add(docNoLbl);
 		
 		deliveryNoteField = new JTextField();
-		deliveryNoteField.setBounds(220, 350, 150, 20);
+		deliveryNoteField.setBounds(720, 70, 150, 20);
 		containerPnl.add(deliveryNoteField);
 		
 		errorDocNoLbl = new JLabel();
-		errorDocNoLbl.setBounds(380,350,180,20);
+		errorDocNoLbl.setBounds(890,70,180,20);
 		containerPnl.add(errorDocNoLbl);
-
 		
+	
 		//Wood Domicile
 		woodDomicileLbl = new JLabel("Asal Barang");
-		woodDomicileLbl.setBounds(50,390,150,20);
+		woodDomicileLbl.setBounds(550,110,150,20);
 		containerPnl.add(woodDomicileLbl);
 		
 		woodDomicileField = new JTextField();
-		woodDomicileField.setBounds(220, 390, 150, 20);
+		woodDomicileField.setBounds(720, 110, 150, 20);
 		containerPnl.add(woodDomicileField);
 	
 		//Wood Resource
 		woodResourceLbl = new JLabel("Asal Sumber Bahan Baku");
-		woodResourceLbl.setBounds(50, 430, 150, 20);
+		woodResourceLbl.setBounds(550, 150, 150, 20);
 		containerPnl.add(woodResourceLbl);
 		
 		woodResourceField = new JTextField();
-		woodResourceField.setBounds(220, 430, 150, 20);
+		woodResourceField.setBounds(720, 150, 150, 20);
 		containerPnl.add(woodResourceField);
 		
 		
 		//Wood Type
 		woodTypeLbl = new JLabel("Tipe Kayu");
-		woodTypeLbl.setBounds(50, 470, 150, 20);
+		woodTypeLbl.setBounds(550, 190, 150, 20);
 		containerPnl.add(woodTypeLbl);
 		
 		woodTypeField = new JTextField();
-		woodTypeField.setBounds(220, 470, 150, 20);
+		woodTypeField.setBounds(720, 190, 150, 20);
 		containerPnl.add(woodTypeField);
 		
 		errorWoodTypeLbl = new JLabel();
-		errorWoodTypeLbl.setBounds(380,470,150,20);
+		errorWoodTypeLbl.setBounds(890,190,150,20);
 		containerPnl.add(errorWoodTypeLbl);
 		
 		//Total Log
 		totalLogLbl = new JLabel("Total Kayu");
-		//TODO
+		totalLogLbl.setBounds(550,230,150,20);
+		containerPnl.add(totalLogLbl);
+		
+		totalLogField = new JTextField();
+		totalLogField.setBounds(720, 230, 150, 20);
+		containerPnl.add(totalLogField);
+		
+		//Total Volume
+		totalVolumeLbl = new JLabel("Total Kayu");
+		totalVolumeLbl.setBounds(550,270,150,20);
+		containerPnl.add(totalVolumeLbl);
+		
+		totalVolumeField = new JTextField();
+		totalVolumeField.setBounds(720, 270, 150, 20);
+		containerPnl.add(totalVolumeField);
+		
+		//Grader
+		graderLbl = new JLabel("Grader");
+		graderLbl.setBounds(550,310,150,20);
+		containerPnl.add(graderLbl);
+		
+		graderComboBox = new ComboBox<>();
+		graderComboBox.setBounds(720, 310, 150, 20);
+		containerPnl.add(graderComboBox);
+		
+		
+		//Grader
+		gradeLbl = new JLabel("Grade");
+		gradeLbl.setBounds(550,350,150,20);
+		containerPnl.add(gradeLbl);
+		
+		gradeComboBox = new ComboBox<>();
+		gradeComboBox.setBounds(720, 350, 150, 20);
+		containerPnl.add(gradeComboBox);
 		
 		//Received Detail Card
 		receivedDetails = new ArrayList<>();
@@ -394,7 +430,17 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		printBtn = new JButton("Print");
 		printBtn.setBounds(710,790,100,30);
 		containerPnl.add(printBtn);
-		
+		try {
+			graders = ReceivedDAOFactory.getPICDockingDAO().getEmployeeGrader("POS0002");
+			graders.add(0,new Employee("--Pilih--"));
+			graderComboBox.setList(graders);
+			
+			grades = ReceivedDAOFactory.getGradeDAO().getAll();
+			grades.add(0,new Grade("--Pilih--"));
+			gradeComboBox.setList(grades);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		receivedDetailTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -428,7 +474,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 				try {
 					java.sql.Connection conn = DataSourceFactory.getDataSource().getConnection();
 					JasperDesign jDesign = JRXmlLoader.load("src/module/pembelian/report/ReceivedReport.jrxml");
-					String sql = "SELECT length,thickness,width,grade,total,volume FROM pallet_card a INNER JOIN pallet_card_dtl b ON a.pallet_card_code = b.pallet_card_code INNER JOIN grade c ON  a.grade_id = c.id WHERE a.received_code = '"+received.getReceivedCode()+"'";
+					String sql = "SELECT length,thickness,width,grade,total,volume FROM received_detail a INNER JOIN pallet_card b ON a.id = b.received_detail_id INNER JOIN grade c ON  a.grade_id = c.id WHERE a.received_code = '"+received.getReceivedCode()+"'";
 					JRDesignQuery jDesignQuery = new JRDesignQuery();		
 					jDesignQuery.setText(sql);
 					jDesign.setQuery(jDesignQuery);
@@ -653,6 +699,8 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		woodTypeField.setEnabled(false);
 		subSupplierField.setEnabled(false);
 		supplierAddressArea.setEnabled(false);
+		totalLogField.setEnabled(false);
+		totalVolumeField.setEnabled(false);
 
 		String[] codes;
 		codes = received.getReceivedCode().split("/");
@@ -672,20 +720,22 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		woodResourceField.setText(received.getWoodResource());
 		woodTypeField.setText(received.getWoodTypeName());
 		subSupplierField.setText(received.getSubSupplierName());
-		
-		if(received.getEmpCode()!=null){
-			
-		}
-		
+		graderComboBox.setEnabled(false);
+		gradeComboBox.setEnabled(false);
+
 		Delivery delivery;
 		SupplierCP subSupplier;
 		try {
 			delivery = ReceivedDAOFactory.getDeliveryDAO().getDeliveryNoteByCode(received.getDeliveryNote());
 			subSupplier = ReceivedDAOFactory.getSupplierCPDAO().getSuppCPBySupplierByID(received.getSupplierCpID());
-			System.out.println("Delivery :"+delivery.getId());
 			supplierAddressArea.setText(subSupplier.getSuppAddress());
 			totalLogField.setText(delivery.getTotalLog()+"");
 			totalVolumeField.setText(delivery.getTotalVolume()+"");
+			
+			if(!received.getEmpCode().equals("")){
+				Employee emp = ReceivedDAOFactory.getPICDockingDAO().getEmployeeByCode(received.getEmpCode());
+				graderComboBox.setSelectedItem(emp.getEmployeeName());
+			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
