@@ -416,9 +416,9 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(gradeComboBox.getSelectedIndex()==0){
-					errorGraderLbl.setText("<html><font color='red'>Grader harus dipilih !</font></html>");
+					errorGradeLbl.setText("<html><font color='red'>Grader harus dipilih !</font></html>");
 				}else{
-					errorGraderLbl.setText("");
+					errorGradeLbl.setText("");
 					AddPopUpPalletCard pop = new AddPopUpPalletCard(parent);
 					pop.show();
 					pop.setLocationRelativeTo(null);

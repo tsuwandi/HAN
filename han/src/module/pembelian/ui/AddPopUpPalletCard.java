@@ -125,7 +125,7 @@ public class AddPopUpPalletCard extends JDialog{
 		
 		noPalletCardField = new NumberField(4);
 		noPalletCardField.setBounds(150, 30, 150, 20);
-		codePalletCardField.setText("0000");
+		noPalletCardField.setText("0000");
 		add(noPalletCardField);
 		
 		errorNoPallet = new JLabel();
