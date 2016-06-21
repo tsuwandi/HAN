@@ -93,7 +93,7 @@ public class ProductDAO {
 			+ "wood_type_id=?, grade_id=?, thickness=?, length=?, width=?, condition_id=?, minqty=?, "
 			+ "edit_date=?, edited_by=? where id=? ";
 	
-	private String getProductIdQuery = "select id from product";
+	private String getProductIdQuery = "select id, product_name from product";
 	
 	private String deleteQuery = "update product set deleted_date=?, deleted_by=? where product_code=?";
 	
@@ -237,7 +237,7 @@ public class ProductDAO {
 			while (rs.next()) {
 				Product product = new Product();
 				product.setProductId(rs.getInt("id"));
-				
+				product.setProductName(rs.getString("product_name"));
 				products.add(product);
 			}
 

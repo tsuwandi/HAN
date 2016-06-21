@@ -291,9 +291,9 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		gradeLbl = new JLabel("Grade");
 		gradeLbl.setBounds(20, 320, 100, 30);
 		thickLbl = new JLabel("Tebal");
-		thickLbl.setBounds(20, 350, 100, 30);
+		thickLbl.setBounds(20, 380, 100, 30);
 		longLbl = new JLabel("Panjang");
-		longLbl.setBounds(20, 380, 100, 30);
+		longLbl.setBounds(20, 350, 100, 30);
 		wideLbl = new JLabel("Lebar");
 		wideLbl.setBounds(20, 410, 100, 30);
 		conditionLbl = new JLabel("Kondisi");
@@ -481,11 +481,11 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		
 		thickField = new JTextField();
 		thickField.setEnabled(false);
-		thickField.setBounds(195, 350, 150, 25);
+		thickField.setBounds(195, 380, 150, 25);
 		
 		longField = new JTextField();
 		longField.setEnabled(false);
-		longField.setBounds(195, 380, 150, 25);
+		longField.setBounds(195, 350, 150, 25);
 		
 		wideField = new JTextField();
 		wideField.setEnabled(false);

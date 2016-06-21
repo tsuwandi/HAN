@@ -39,6 +39,7 @@ import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
+import main.component.NumberField;
 import main.panel.MainPanel;
 import module.pembelian.model.WoodType;
 import module.product.model.Condition;
@@ -133,9 +134,9 @@ public class ProductEditPanel extends JPanel implements Bridging {
 	
 	public JComboBox<String> typeField;
 	public JComboBox<String> gradeField;
-	public JTextField thickField;
-	public JTextField longField;
-	public JTextField wideField;
+	public NumberField thickField;
+	public NumberField longField;
+	public NumberField wideField;
 	public JComboBox<String> conField;
 	public JTextField minQtyField;
 	
@@ -293,9 +294,9 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		gradeLbl = new JLabel("Grade");
 		gradeLbl.setBounds(20, 320, 100, 30);
 		thickLbl = new JLabel("Tebal");
-		thickLbl.setBounds(20, 350, 100, 30);
+		thickLbl.setBounds(20, 380, 100, 30);
 		longLbl = new JLabel("Panjang");
-		longLbl.setBounds(20, 380, 100, 30);
+		longLbl.setBounds(20, 350, 100, 30);
 		wideLbl = new JLabel("Lebar");
 		wideLbl.setBounds(20, 410, 100, 30);
 		conditionLbl = new JLabel("Kondisi");
@@ -512,13 +513,13 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		//gradeField.setEnabled(false);
 		gradeField.setBounds(195, 320, 150, 25);
 		
-		thickField = new JTextField();
-		thickField.setBounds(195, 350, 150, 25);
+		thickField = new NumberField(10);
+		thickField.setBounds(195, 380, 150, 25);
 		
-		longField = new JTextField();
-		longField.setBounds(195, 380, 150, 25);
+		longField = new NumberField(10);
+		longField.setBounds(195, 350, 150, 25);
 		
-		wideField = new JTextField();
+		wideField = new NumberField(10);
 		wideField.setBounds(195, 410, 150, 25);
 		
 		try {
@@ -835,8 +836,21 @@ public class ProductEditPanel extends JPanel implements Bridging {
 				// TODO Auto-generated method stub
 				int dialogResult = JOptionPane.showConfirmDialog (null, "Apakah Anda ingin menyimpan data?","Warning",JOptionPane.YES_NO_OPTION);
 				if(dialogResult == JOptionPane.YES_OPTION){
-					validation();
-					doEdit();
+					List<Product> productNames = null;
+					try {
+						productNames = ServiceFactory.getProductBL().getProductId();
+					} catch (SQLException s) {
+						// TODO Auto-generated catch block
+						s.printStackTrace();
+					}
+					for(int i=0; i<productNames.size(); i++){
+						if(nameField.getText().trim().toUpperCase().equals(productNames.get(i).getProductName().trim().toUpperCase())){
+							int mes = JOptionPane.showConfirmDialog(null, "Nama Produk sudah pernah diinput.", "Warning", JOptionPane.YES_NO_OPTION);
+							if(mes == JOptionPane.YES_OPTION){
+								validation();
+							}
+						}
+					}
 				}
 				
 			}
@@ -1007,8 +1021,40 @@ public class ProductEditPanel extends JPanel implements Bridging {
 	}
 	
 	public void validation(){
-		if(nameField.getText() == null || nameField.getText().equals("")){
+		if(idField.getText() == null || idField.getText().equals("")){
+			JOptionPane.showMessageDialog(null, "Kode Produk harus diisi", "Pesan", JOptionPane.ERROR_MESSAGE);
+		}
+		else if(nameField.getText() == null || nameField.getText().equals("")){
 			JOptionPane.showMessageDialog(null, "Nama Produk harus diisi", "Pesan", JOptionPane.ERROR_MESSAGE);
+		}
+		else if(catField.getSelectedItem().toString() == "Pilih" || catField.getSelectedIndex() == 0){
+			JOptionPane.showMessageDialog(null, "Kategori Produk harus dipilih", "Pesan", JOptionPane.ERROR_MESSAGE);
+		}
+		else if(statField.getSelectedItem().toString() == "Pilih" || statField.getSelectedIndex() == 0){
+			JOptionPane.showMessageDialog(null, "Status Produk harus dipilih", "Pesan", JOptionPane.ERROR_MESSAGE);
+		}
+		else if(longField.getText() == null || longField.getText().equals("")){
+			JOptionPane.showMessageDialog(null, "Panjang Produk harus diisi", "Pesan", JOptionPane.ERROR_MESSAGE);
+		}
+		else if(wideField.getText() == null || wideField.getText().equals("")){
+			JOptionPane.showMessageDialog(null, "Lebar Produk harus diisi", "Pesan", JOptionPane.ERROR_MESSAGE);
+		}
+		else if(thickField.getText() == null || thickField.getText().equals("")){
+			JOptionPane.showMessageDialog(null, "Tebal Produk harus diisi", "Pesan", JOptionPane.ERROR_MESSAGE);
+		}
+		else if(minQtyField.getText() == null || minQtyField.getText().equals("")){
+			JOptionPane.showMessageDialog(null, "Minimal Qty Produk harus diisi", "Pesan", JOptionPane.ERROR_MESSAGE);
+		}
+		else if(typeField.getSelectedItem().toString() == "Pilih" || typeField.getSelectedIndex() == 0){
+			JOptionPane.showMessageDialog(null, "Jenis Kayu harus dipilih", "Pesan", JOptionPane.ERROR_MESSAGE);
+		}
+		else if(gradeField.getSelectedItem().toString() == "Pilih" || gradeField.getSelectedIndex() == 0){
+			JOptionPane.showMessageDialog(null, "Grade Produk harus dipilih", "Pesan", JOptionPane.ERROR_MESSAGE);
+		}
+		else if(conField.getSelectedItem().toString() == "Pilih" || conField.getSelectedIndex() == 0){
+			JOptionPane.showMessageDialog(null, "Kondisi Produk harus dipilih", "Pesan", JOptionPane.ERROR_MESSAGE);
+		}else{
+			doEdit();
 		}
 //		else if(statField.getSelectedItem().toString() == "Pilih" || statField.getSelectedIndex() == 0){
 //			JOptionPane.showMessageDialog(null, "Status Produk harus dipilih", "Pesan", JOptionPane.ERROR_MESSAGE);
