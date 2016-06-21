@@ -15,8 +15,9 @@ import module.dryin.model.DryInPallet;
 import module.dryin.model.PicTally;
 import module.employee.dao.EmployeeDAO;
 import module.employee.model.Employee;
-import module.pembelian.dao.PalletDAO;
+import module.pembelian.dao.PalletCardDAO;
 import module.pembelian.model.Pallet;
+import module.pembelian.model.PalletCard;
 import module.sn.chamber.dao.ChamberDAO;
 import module.sn.chamber.model.Chamber;
 
@@ -48,21 +49,21 @@ public class DryInBL {
 		}
 	}
 
-	public List<Pallet> getAllPallet() throws SQLException {
+	public List<PalletCard> getAllPallet() throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PalletDAO(con).getAllForDryInPallet();
+			return new PalletCardDAO(con).getAllForDryInPallet();
 		} finally {
 			con.close();
 		}
 	}
 
-	public List<Pallet> getAllPalletBySearch(String value) throws SQLException {
+	public List<PalletCard> getAllPalletBySearch(String value) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PalletDAO(con).getAllForDryInPalletBySearch(value);
+			return new PalletCardDAO(con).getAllForDryInPalletBySearch(value);
 		} finally {
 			con.close();
 		}
@@ -80,11 +81,11 @@ public class DryInBL {
 		}
 	}
 
-	public Pallet getPalletByPalletCardCode(String palletCardCode) throws SQLException {
+	public PalletCard getPalletByPalletCardCode(String palletCardCode) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PalletDAO(con).getPalletForDryInPalletByPalletCardCode(palletCardCode);
+			return new PalletCardDAO(con).getPalletForDryInPalletByPalletCardCode(palletCardCode);
 		} finally {
 			con.close();
 		}
@@ -214,7 +215,7 @@ public class DryInBL {
 			con.setAutoCommit(false);
 
 			new DryInDAO(con).delete(dryIn.getId());
-			new PicTallyDAO(con).deleteAll(dryIn.getDryInCode());
+			//new PicTallyDAO(con).deleteAll(dryIn.getDryInCode());
 			new DryInPalletDAO(con).deleteAll(dryIn.getDryInCode());
 
 			con.commit();

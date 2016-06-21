@@ -315,13 +315,13 @@ public class SupplierBL {
 		}
 	}
 	
-	public String getOrdinalOfCodeNumber() throws SQLException {
-		Connection con = null;
-		try {
-			con = dataSource.getConnection();
-			return String.format("%03d", new SupplierDAO(con).getOrdinalOfCodeNumber() + 1);
-		} finally {
-			con.close();
-		}
-	}
+//	public String getOrdinalOfCodeNumber() throws SQLException {
+//		Connection con = null;
+//		try {
+//			con = dataSource.getConnection();
+//			return String.format("%03d", new SupplierDAO(con).getOrdinalOfCodeNumber() + 1);
+//		} finally {
+//			con.close();
+//		}
+//	}
 }

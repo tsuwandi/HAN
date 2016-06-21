@@ -12,8 +12,8 @@ import module.dryout.dao.DryOutDAO;
 import module.dryout.dao.DryOutPalletDAO;
 import module.dryout.model.DryOut;
 import module.dryout.model.DryOutPallet;
-import module.pembelian.dao.PalletDAO;
-import module.pembelian.model.Pallet;
+import module.pembelian.dao.PalletCardDAO;
+import module.pembelian.model.PalletCard;
 import module.sn.chamber.dao.ChamberDAO;
 import module.sn.chamber.model.Chamber;
 
@@ -25,21 +25,21 @@ public class DryOutBL {
 		this.dataSource = dataSource;
 	}
 
-	public List<Pallet> getAllPalletByChamberId(int chamberId) throws SQLException {
+	public List<PalletCard> getAllPalletByChamberId(int chamberId) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PalletDAO(con).getAllForDryOutPalletByChamberId(chamberId);
+			return new PalletCardDAO(con).getAllForDryOutPalletByChamberId(chamberId);
 		} finally {
 			con.close();
 		}
 	}
 
-	public List<Pallet> getAllPalletBySearchAndChamberId(String value, int chamberId) throws SQLException {
+	public List<PalletCard> getAllPalletBySearchAndChamberId(String value, int chamberId) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PalletDAO(con).getAllForDryOutPalletBySearchAndChamberId(value, chamberId);
+			return new PalletCardDAO(con).getAllForDryOutPalletBySearchAndChamberId(value, chamberId);
 		} finally {
 			con.close();
 		}
@@ -55,11 +55,11 @@ public class DryOutBL {
 		}
 	}
 
-	public Pallet getPalletByPalletCardCodeAndChamberId(String palletCardCode, int chamberId) throws SQLException {
+	public PalletCard getPalletByPalletCardCodeAndChamberId(String palletCardCode, int chamberId) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PalletDAO(con).getPalletForDryOutPalletByPalletCardCodeAndChamberId(palletCardCode, chamberId);
+			return new PalletCardDAO(con).getPalletForDryOutPalletByPalletCardCodeAndChamberId(palletCardCode, chamberId);
 		} finally {
 			con.close();
 		}

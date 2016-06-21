@@ -574,13 +574,13 @@ public class DryInViewPanel extends JPanel implements Bridging {
 			case 0:
 				return p.getPalletCardCode();
 			case 1:
-				return p.getPalletCard().getPalletCardDetail().getLength();
+				return p.getPalletCard().getLength();
 			case 2:
-				return p.getPalletCard().getPalletCardDetail().getWidth();
+				return p.getPalletCard().getWidth();
 			case 3:
-				return p.getPalletCard().getPalletCardDetail().getThickness();
+				return p.getPalletCard().getThickness();
 			case 4:
-				return p.getPalletCard().getTotalVolume();
+				return p.getPalletCard().getVolume();
 			case 5:
 				return "Delete";
 			default:

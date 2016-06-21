@@ -316,7 +316,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 //		txtAccountName.setDocument(new JTextFieldLimit(30));
 //		panel.add(txtAccountName);
 
-		lblCurrency = new JLabel("Kurs");
+		lblCurrency = new JLabel("<html>Kurs <font color=\"red\">*</font></html>");
 		lblCurrency.setBounds(50, 750, 150, 30);
 		panel.add(lblCurrency);
 

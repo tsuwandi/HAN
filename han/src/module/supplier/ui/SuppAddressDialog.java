@@ -223,7 +223,7 @@ public class SuppAddressDialog extends JDialog {
 		lblErrorContactPerson.setBounds(335, 240, 225, 30);
 		getContentPane().add(lblErrorContactPerson);
 		
-		lblEmail = new JLabel("Email");
+		lblEmail = new JLabel("<html>Email <font color=\"red\">*</font></html>");
 		lblEmail.setBounds(25, 275, 150, 30);
 		getContentPane().add(lblEmail);
 

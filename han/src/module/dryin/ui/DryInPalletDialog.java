@@ -22,6 +22,7 @@ import controller.ServiceFactory;
 import main.component.DialogBox;
 import module.dryin.model.DryInPallet;
 import module.pembelian.model.Pallet;
+import module.pembelian.model.PalletCard;
 import module.util.DateUtil;
 
 public class DryInPalletDialog extends JDialog {
@@ -37,7 +38,7 @@ public class DryInPalletDialog extends JDialog {
 
 	private PalletCardTableModel palletCardTableModel;
 
-	List<Pallet> listOfPalletCard;
+	List<PalletCard> listOfPalletCard;
 
 	private DryInCreatePanel dryInCreatePanel;
 	private DryInEditPanel dryInEditPanel;
@@ -74,7 +75,7 @@ public class DryInPalletDialog extends JDialog {
 		getContentPane().add(scrollPanePalletCard);
 
 		try {
-			listOfPalletCard = new ArrayList<Pallet>();
+			listOfPalletCard = new ArrayList<PalletCard>();
 			listOfPalletCard = ServiceFactory.getDryInBL().getAllPallet();
 			if (dryInCreatePanel != null) {
 				for (DryInPallet dryInPallet : dryInCreatePanel.getListOfDryInPallet()) {
@@ -132,7 +133,7 @@ public class DryInPalletDialog extends JDialog {
 	private void doInsert() {
 		List<DryInPallet> listOfDryInPallet = new ArrayList<DryInPallet>();
 
-		for (Pallet palletCard : listOfPalletCard) {
+		for (PalletCard palletCard : listOfPalletCard) {
 			DryInPallet dryInPallet = new DryInPallet();
 			if (palletCard.isFlag()) {
 				dryInPallet.setPalletCard(palletCard);
@@ -172,7 +173,7 @@ public class DryInPalletDialog extends JDialog {
 
 	private void doSearchPalletCard(String value) {
 		try {
-			listOfPalletCard = new ArrayList<Pallet>();
+			listOfPalletCard = new ArrayList<PalletCard>();
 			listOfPalletCard = ServiceFactory.getDryInBL().getAllPalletBySearch(value);
 			
 			refreshTablePalletCard();
@@ -201,9 +202,9 @@ public class DryInPalletDialog extends JDialog {
 
 		private static final long serialVersionUID = 1L;
 
-		private List<Pallet> listOfPalletCard;
+		private List<PalletCard> listOfPalletCard;
 
-		public PalletCardTableModel(List<Pallet> listOfPalletCard) {
+		public PalletCardTableModel(List<PalletCard> listOfPalletCard) {
 			this.listOfPalletCard = listOfPalletCard;
 		}
 
@@ -233,7 +234,7 @@ public class DryInPalletDialog extends JDialog {
 		 * @return ({@link SupplierAddress}) Object
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			Pallet p = listOfPalletCard.get(rowIndex);
+			PalletCard p = listOfPalletCard.get(rowIndex);
 			switch (columnIndex) {
 			case 0:
 				return p.isFlag();
@@ -244,13 +245,13 @@ public class DryInPalletDialog extends JDialog {
 			case 3:
 				return p.getPalletCardCode();
 			case 4:
-				return p.getPalletCardDetail().getLength();
+				return p.getLength();
 			case 5:
-				return p.getPalletCardDetail().getWidth();
+				return p.getWidth();
 			case 6:
-				return p.getPalletCardDetail().getThickness();
+				return p.getThickness();
 			case 7:
-				return p.getTotalVolume();
+				return p.getVolume();
 			default:
 				return "";
 			}

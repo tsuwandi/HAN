@@ -1,5 +1,7 @@
 package module.pembelian.model;
 
+import java.sql.Timestamp;
+
 public class PalletCard {
 	int id;
 	int receivedDetailID;
@@ -85,5 +87,46 @@ public class PalletCard {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	// skip receive detail
+	private Received received;
+	private boolean isFlag;
+	private int rowNum;
+	private Timestamp dateIn;
 	
+	public Received getReceived() {
+		if (received == null)
+			received = new Received();
+		return received;
+	}
+
+	public void setReceived(Received received) {
+		if (received == null)
+			received = new Received();
+		this.received = received;
+	}
+
+	public boolean isFlag() {
+		return isFlag;
+	}
+
+	public void setFlag(boolean isFlag) {
+		this.isFlag = isFlag;
+	}
+
+	public int getRowNum() {
+		return rowNum;
+	}
+
+	public void setRowNum(int rowNum) {
+		this.rowNum = rowNum;
+	}
+
+	public Timestamp getDateIn() {
+		return dateIn;
+	}
+
+	public void setDateIn(Timestamp dateIn) {
+		this.dateIn = dateIn;
+	}
 }

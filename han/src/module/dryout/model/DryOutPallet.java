@@ -3,7 +3,7 @@ package module.dryout.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import module.pembelian.model.Pallet;
+import module.pembelian.model.PalletCard;
 
 public class DryOutPallet implements Serializable {
 
@@ -173,17 +173,17 @@ public class DryOutPallet implements Serializable {
 				+ ",deletedDate=" + deletedDate + ",deletedBy=" + deletedBy + ')';
 	}
 
-	private Pallet palletCard;
+	private PalletCard palletCard;
 
-	public Pallet getPalletCard() {
+	public PalletCard getPalletCard() {
 		if (palletCard == null)
-			palletCard = new Pallet();
+			palletCard = new PalletCard();
 		return palletCard;
 	}
 
-	public void setPalletCard(Pallet palletCard) {
+	public void setPalletCard(PalletCard palletCard) {
 		if (palletCard == null)
-			palletCard = new Pallet();
+			palletCard = new PalletCard();
 		this.palletCard = palletCard;
 	}
 

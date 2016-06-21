@@ -136,12 +136,11 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		panel.add(lblSuppCode);
 
 		txtSuppCode = new JTextField();
-		txtSuppCode.setEnabled(false);
 		txtSuppCode.setBounds(220, 80, 150, 30);
 		txtSuppCode.setDocument(new JTextFieldLimit(9));
 		panel.add(txtSuppCode);
 
-		lblErrorSuppCode = new JLabel();
+		lblErrorSuppCode = new JLabel("Example : BL001");
 		lblErrorSuppCode.setForeground(Color.RED);
 		lblErrorSuppCode.setBounds(425, 80, 225, 30);
 		panel.add(lblErrorSuppCode);
@@ -437,7 +436,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 //		txtAccountName.setDocument(new JTextFieldLimit(30));
 //		panel.add(txtAccountName);
 
-		lblCurrency = new JLabel("Kurs");
+		lblCurrency = new JLabel("<html>Kurs <font color=\"red\">*</font></html>");
 		lblCurrency.setBounds(50, 750, 150, 30);
 		panel.add(lblCurrency);
 
@@ -527,22 +526,22 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		    }
 		});
 		
-		makeCodeNumber();
+		//makeCodeNumber();
 	}
 	
-	public void makeCodeNumber() {
-		final String constant = "BL";
-
-		String ordinal = null;
-		try {
-			ordinal = ServiceFactory.getSupplierBL().getOrdinalOfCodeNumber();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			DialogBox.showErrorException();
-		}
-
-		txtSuppCode.setText(new StringBuilder().append(constant).append(ordinal).toString());
-	}
+//	public void makeCodeNumber() {
+//		final String constant = "BL";
+//
+//		String ordinal = null;
+//		try {
+//			ordinal = ServiceFactory.getSupplierBL().getOrdinalOfCodeNumber();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			DialogBox.showErrorException();
+//		}
+//
+//		txtSuppCode.setText(new StringBuilder().append(constant).append(ordinal).toString());
+//	}
 
 	protected boolean doValidate() {
 		boolean isValid = true;

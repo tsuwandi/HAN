@@ -9,6 +9,7 @@ import java.util.List;
 
 import module.dryout.model.DryOutPallet;
 import module.pembelian.model.Pallet;
+import module.pembelian.model.PalletCard;
 import module.pembelian.model.PalletCardDetail;
 import module.pembelian.model.Received;
 import module.util.DateUtil;
@@ -22,10 +23,10 @@ public class DryOutPalletDAO {
 	private PreparedStatement deleteStatement;
 	
 	private String getAllByDryOutCodeQuery = "select d.id, d.dry_out_code, d.pallet_card_code, di.date_in, "
-			+ "pc.id, r.received_date, r.rit_no, pc.total_volume, pcd.length, pcd.width, pcd.thickness from dry_out_pallet d "
+			+ "pc.id, r.received_date, r.rit_no, pc.total_volume, pc.length, pc.width, pc.thickness from dry_out_pallet d "
 			+ "inner join pallet_card pc on pc.pallet_card_code = d.pallet_card_code "
-			+ "inner join pallet_card_dtl pcd ON pcd.pallet_card_code = pc.pallet_card_code "
-			+ "inner join received r on r.received_code = pc.received_code "
+			+ "inner join received_dtl rd ON rd.id = pc.received_detail_id "
+			+ "inner join received r on r.received_code = rd.received_code "
 			+ "inner join dry_in_pallet dp on dp.pallet_card_code = pc.pallet_card_code "
 			+ "inner join dry_in di on di.dry_in_code = dp.dry_in_code "
 			+ "where d.dry_out_code = ? and d.deleted_date is null and pc.deleted_date is null and r.deleted_date is null "
@@ -54,17 +55,14 @@ public class DryOutPalletDAO {
 				dryOutPallet.setDryOutCode(rs.getString("dry_out_code"));
 				dryOutPallet.setPalletCardCode(rs.getString("pallet_card_code"));
 				
-				Pallet palletCard = new Pallet();
+				PalletCard palletCard = new PalletCard();
 				palletCard.setId(rs.getInt("id"));
 				palletCard.setPalletCardCode(rs.getString("pallet_card_code"));
-				palletCard.setTotalVolume(rs.getDouble("total_volume"));
+				palletCard.setVolume(rs.getDouble("volume"));
 				palletCard.setDateIn(rs.getTimestamp("date_in"));
-				
-				PalletCardDetail palletCardDetail = new PalletCardDetail();
-				palletCardDetail.setLength(rs.getDouble("length"));
-				palletCardDetail.setWidth(rs.getDouble("width"));
-				palletCardDetail.setThickness(rs.getDouble("thickness"));
-				palletCard.setPalletCardDetail(palletCardDetail);
+				palletCard.setLength(rs.getDouble("length"));
+				palletCard.setWidth(rs.getDouble("width"));
+				palletCard.setThickness(rs.getDouble("thickness"));
 				
 				Received received = new Received();
 				received.setRitNo(rs.getString("rit_no"));

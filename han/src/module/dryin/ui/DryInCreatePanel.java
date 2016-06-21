@@ -5,8 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -37,11 +37,10 @@ import main.panel.MainPanel;
 import module.dryin.model.DryIn;
 import module.dryin.model.DryInPallet;
 import module.dryin.model.PicTally;
-import module.pembelian.model.Pallet;
+import module.pembelian.model.PalletCard;
 import module.sn.chamber.model.Chamber;
 import module.util.Bridging;
 import module.util.DateUtil;
-import module.util.JTextFieldLimit;
 
 public class DryInCreatePanel extends JPanel implements Bridging {
 
@@ -105,7 +104,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 	private DryInPalletTableModel dryInPalletTableModel;
 	// private List<PicTally> listOfPicTally;
 	private List<DryInPallet> listOfDryInPallet;
-	private Pallet palletCard;
+	private PalletCard palletCard;
 	private DryInCreatePanel dryInCreatePanel;
 
 	private List<Chamber> listOfChamber;
@@ -422,10 +421,10 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		});
 		btnCancel.setBounds(49, 645, 100, 30);
 		panel.add(btnCancel);
-
-		txtRitNo.addKeyListener(new KeyAdapter() {
+		
+		txtRitNo.addFocusListener(new FocusAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void focusLost(FocusEvent arg0) {
 				txtRitNo.setText(NumberFormat.onTypeNum(txtRitNo.getText().length(), txtRitNo.getText().toString()));
 
 				if (txtOrdinal.getText().length() > 3)
@@ -438,9 +437,9 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtDate.addKeyListener(new KeyAdapter() {
+		txtDate.addFocusListener(new FocusAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void focusLost(FocusEvent e) {
 				if (txtDate.getText().length() > 1)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
 							txtOrdinal.getText());
@@ -451,9 +450,9 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtMonth.addKeyListener(new KeyAdapter() {
+		txtMonth.addFocusListener(new FocusAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void focusLost(FocusEvent e) {
 				if (txtMonth.getText().length() > 1)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
 							txtOrdinal.getText());
@@ -464,9 +463,9 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtYear.addKeyListener(new KeyAdapter() {
+		txtYear.addFocusListener(new FocusAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void focusLost(FocusEvent e) {
 				if (txtYear.getText().length() > 1)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
 							txtOrdinal.getText());
@@ -477,9 +476,9 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtOrdinal.addKeyListener(new KeyAdapter() {
+		txtOrdinal.addFocusListener(new FocusAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void focusLost(FocusEvent e) {
 				txtOrdinal.setText(NumberFormat.onTypeNum(txtOrdinal.getText().length(), txtOrdinal.getText().toString()));
 
 				if (txtOrdinal.getText().length() > 3)
@@ -653,11 +652,11 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 				.append("/").append(month).append("/").append(year).append("/").append(ordinal).toString();
 
 		try {
-			palletCard = new Pallet();
+			palletCard = new PalletCard();
 			palletCard = ServiceFactory.getDryInBL().getPalletByPalletCardCode(palletCardCode);
 
 			if (palletCard != null) {
-				txtTotalVolumePalletCard.setText(String.valueOf(palletCard.getTotalVolume()));
+				txtTotalVolumePalletCard.setText(String.valueOf(palletCard.getVolume()));
 			} else {
 				txtTotalVolumePalletCard.setText("");
 				palletCard = null;
@@ -725,7 +724,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 	public void countTotalVolumeDryInPalletCard() {
 		double totalVolume = 0.00;
 		for (DryInPallet dryInPallet : listOfDryInPallet) {
-			totalVolume += dryInPallet.getPalletCard().getTotalVolume();
+			totalVolume += dryInPallet.getPalletCard().getVolume();
 		}
 
 		txtTotalVolume.setText(String.valueOf(totalVolume));
@@ -871,13 +870,13 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			case 0:
 				return p.getPalletCardCode();
 			case 1:
-				return p.getPalletCard().getPalletCardDetail().getLength();
+				return p.getPalletCard().getLength();
 			case 2:
-				return p.getPalletCard().getPalletCardDetail().getWidth();
+				return p.getPalletCard().getWidth();
 			case 3:
-				return p.getPalletCard().getPalletCardDetail().getThickness();
+				return p.getPalletCard().getThickness();
 			case 4:
-				return p.getPalletCard().getTotalVolume();
+				return p.getPalletCard().getVolume();
 			case 5:
 				return "Delete";
 			default:

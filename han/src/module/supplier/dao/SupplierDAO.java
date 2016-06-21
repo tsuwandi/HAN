@@ -374,21 +374,21 @@ public class SupplierDAO {
 		return supplier;
 	}
 	
-	public int getOrdinalOfCodeNumber() throws SQLException {
-		int ordinal = 0;
-		try {
-			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
-
-			ResultSet rs = getOrdinalOfCodeNumberStatement.executeQuery();
-			while (rs.next()) {
-				ordinal = rs.getInt("ordinal");
-			}
-
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new SQLException(ex.getMessage());
-		}
-
-		return ordinal;
-	}
+//	public int getOrdinalOfCodeNumber() throws SQLException {
+//		int ordinal = 0;
+//		try {
+//			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
+//
+//			ResultSet rs = getOrdinalOfCodeNumberStatement.executeQuery();
+//			while (rs.next()) {
+//				ordinal = rs.getInt("ordinal");
+//			}
+//
+//		} catch (SQLException ex) {
+//			ex.printStackTrace();
+//			throw new SQLException(ex.getMessage());
+//		}
+//
+//		return ordinal;
+//	}
 }
