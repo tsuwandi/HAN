@@ -855,7 +855,7 @@ public class CreateProductPanel extends JPanel {
 					}
 					for(int i=0; i<productNames.size(); i++){
 						if(nameField.getText().trim().toUpperCase().equals(productNames.get(i).getProductName().trim().toUpperCase())){
-							int mes = JOptionPane.showConfirmDialog(null, "Nama Produk sudah pernah diinput.", "Warning", JOptionPane.YES_NO_OPTION);
+							int mes = JOptionPane.showConfirmDialog(null, "Nama Produk sudah pernah diinput. Apakah Anda ingin tetap menyimpan data?", "Warning", JOptionPane.YES_NO_OPTION);
 							if(mes == JOptionPane.YES_OPTION){
 								validation();
 							}
