@@ -121,7 +121,6 @@ public class EditPopUpPalletCard extends JDialog{
 		
 		noPalletCardField = new NumberField(4);
 		noPalletCardField.setBounds(150, 30, 150, 20);
-		noPalletCardField.setText("0000");
 		add(noPalletCardField);
 		
 		errorNoPallet = new JLabel();
@@ -154,39 +153,41 @@ public class EditPopUpPalletCard extends JDialog{
 		errorLongLbl.setBounds(325,110,150,20);
 		add(errorLongLbl);
 		
-		//Wide
-		wideLbl = new JLabel("Lebar");
-		wideLbl.setBounds(30,150,100,20);
-		add(wideLbl);
-		
-		wideField = new NumberField(10);
-		wideField.setBounds(150, 150, 150, 20);
-		add(wideField);
-		
-		uomWideLbl = new JLabel("cm");
-		uomWideLbl.setBounds(302,150,15,20);
-		add(uomWideLbl);
-		
-		errorWideLbl = new JLabel();
-		errorWideLbl.setBounds(325,150,150,20);
-		add(errorWideLbl);
-		
 		//Thickness
 		thickLbl = new JLabel("Tebal");
-		thickLbl.setBounds(30,190,100,20);
+		thickLbl.setBounds(30,150,100,20);
 		add(thickLbl);
 		
 		thicknessField = new NumberField(10);
-		thicknessField.setBounds(150, 190, 150, 20);
+		thicknessField.setBounds(150, 150, 150, 20);
 		add(thicknessField);
 		
 		uomThickLbl = new JLabel("cm");
-		uomThickLbl.setBounds(302,190,15,20);
+		uomThickLbl.setBounds(302,150,15,20);
 		add(uomThickLbl);
 		
 		errorThickLbl = new JLabel();
-		errorThickLbl.setBounds(325,190,150,20);
+		errorThickLbl.setBounds(325,150,150,20);
 		add(errorThickLbl);
+		
+		//Wide
+		wideLbl = new JLabel("Lebar");
+		wideLbl.setBounds(30,190,100,20);
+		add(wideLbl);
+		
+		wideField = new NumberField(10);
+		wideField.setBounds(150, 190, 150, 20);
+		add(wideField);
+		
+		uomWideLbl = new JLabel("cm");
+		uomWideLbl.setBounds(302,190,15,20);
+		add(uomWideLbl);
+		
+		errorWideLbl = new JLabel();
+		errorWideLbl.setBounds(325,190,150,20);
+		add(errorWideLbl);
+		
+	
 	
 		//Total
 		totalLbl = new JLabel("Jumlah");
@@ -566,7 +567,7 @@ public class EditPopUpPalletCard extends JDialog{
 	}
 	
 	public void clear(){
-		noPalletCardField.setText("0000");
+		noPalletCardField.setText("");
 		longField.setText("");
 		wideField.setText("");
 		thicknessField.setText("");
@@ -615,6 +616,8 @@ public class EditPopUpPalletCard extends JDialog{
 			}else{
 				noPallet =String.valueOf(tempNo);
 			}
+		}else{
+			noPallet="0000";
 		}
 		codePalletCardField.setText(noPallet+"/"+addReceivedDetail.received.getReceivedCode());
 	}

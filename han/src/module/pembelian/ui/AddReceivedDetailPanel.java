@@ -64,8 +64,10 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 	JLabel totalVolumeLbl;
 	JLabel graderLbl;
 	JLabel gradeLbl;
+	JLabel totalVolumeByAdminLbl;
 	JLabel uomTotalLogLbl;
 	JLabel uomTotalVolumeLbl;
+	JLabel uomTotalVolumeByAdminLbl;
 	
 	JLabel errorCodeLbl;
 	JLabel errorRitNumberLbl;
@@ -78,12 +80,13 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 	JLabel errorSupplierCPLbl;
 	JLabel errorGradeLbl;
 	JLabel errorGraderLbl;
-	
+	JLabel errorTotalVolumeByAdminLbl;
 	
 	NumberField receivedCodeField;
 	NumberField receivedCodeDateField;
 	NumberField receivedCodeMonthField;
 	NumberField receivedCodeYearField;
+	NumberField totalVolumeByAdminField;
 	
 	JTextField ritNumberField;
 	JTextField dateField;
@@ -98,6 +101,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 	JTextField woodTypeField;
 	JTextField totalVolumeField;
 	JTextField totalLogField;
+	
 	
 	JTextArea supplierAddressArea;
 	
@@ -358,30 +362,48 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		uomTotalVolumeLbl.setBounds(880,270,50,20);
 		containerPnl.add(uomTotalVolumeLbl);
 		
+		//TotalVolumeByAdmin
+		totalVolumeByAdminLbl = new JLabel("Total Volume");
+		totalVolumeByAdminLbl.setBounds(550,310,150,20);
+		containerPnl.add(totalVolumeByAdminLbl);
+		
+		totalVolumeByAdminField = new NumberField(10);
+		totalVolumeByAdminField.setBounds(720, 310, 150, 20);
+		containerPnl.add(totalVolumeByAdminField);
+		
+		uomTotalVolumeByAdminLbl = new JLabel("cm3");
+		uomTotalVolumeByAdminLbl.setBounds(880,310,30,20);
+		containerPnl.add(uomTotalVolumeByAdminLbl);
+		
+		errorTotalVolumeByAdminLbl = new JLabel();
+		errorTotalVolumeByAdminLbl.setBounds(890,340,150,20);
+		containerPnl.add(errorTotalVolumeByAdminLbl);
+		
+		
 		//Grader
 		graderLbl = new JLabel("Grader");
-		graderLbl.setBounds(550,310,150,20);
+		graderLbl.setBounds(550,350,150,20);
 		containerPnl.add(graderLbl);
 		
 		graderComboBox = new ComboBox<>();
-		graderComboBox.setBounds(720, 310, 150, 20);
+		graderComboBox.setBounds(720, 350, 150, 20);
 		containerPnl.add(graderComboBox);
 		
 		errorGraderLbl = new JLabel();
-		errorGraderLbl.setBounds(890,310,150,20);
+		errorGraderLbl.setBounds(890,350,150,20);
 		containerPnl.add(errorGraderLbl);
 		
 		//Grader
 		gradeLbl = new JLabel("Grade");
-		gradeLbl.setBounds(550,350,150,20);
+		gradeLbl.setBounds(550,390,150,20);
 		containerPnl.add(gradeLbl);
 		
 		gradeComboBox = new ComboBox<>();
-		gradeComboBox.setBounds(720, 350, 150, 20);
+		gradeComboBox.setBounds(720, 390, 150, 20);
 		containerPnl.add(gradeComboBox);
 		
 		errorGradeLbl = new JLabel();
-		errorGradeLbl.setBounds(890,350,150,20);
+		errorGradeLbl.setBounds(890,390,150,20);
 		containerPnl.add(errorGradeLbl);
 		
 		//Received Detail Card
