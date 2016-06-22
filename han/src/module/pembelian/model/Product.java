@@ -33,6 +33,10 @@ public class Product {
 	int sellCostCenterId;
 	int incomeAccId;
 	double maxDisc;
+	double length;
+	double width;
+	double thickness;
+	
 	public int getId() {
 		return id;
 	}
@@ -225,5 +229,25 @@ public class Product {
 	public void setMaxDisc(double maxDisc) {
 		this.maxDisc = maxDisc;
 	}
+	public double getLength() {
+		return length;
+	}
+	public void setLength(double length) {
+		this.length = length;
+	}
+	public double getWidth() {
+		return width;
+	}
+	public void setWidth(double width) {
+		this.width = width;
+	}
+	public double getThickness() {
+		return thickness;
+	}
+	public void setThickness(double thickness) {
+		this.thickness = thickness;
+	}
+	
+	
 	
 }

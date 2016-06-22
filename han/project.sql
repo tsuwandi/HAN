@@ -635,9 +635,6 @@ CREATE TABLE IF NOT EXISTS `pallet_card` (
 -- Dumping data for table `pallet_card`
 --
 
-INSERT INTO `pallet_card` (`id`, `pallet_card_code`, `received_code`, `emp_code`, `grade_id`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`, `total_volume`, `total_log`) VALUES
-(1, '001/BL/01/05/16/001', '001/BR/16/05/1', '1', 0, '0000-00-00', NULL, NULL, NULL, NULL, NULL, '1000.00', NULL),
-(4, '1/0004/BL/26/05/16', '0004/BL/26/05/16', '2011111111', 1, '2016-05-27', 'Michael', NULL, NULL, NULL, NULL, '100.00', 200);
 
 -- --------------------------------------------------------
 
@@ -1310,3 +1307,5 @@ CREATE TABLE IF NOT EXISTS `received_detail` (
  
   PRIMARY KEY (`id`)
 );
+
+ALTER TABLE `received` CHANGE `emp_code` `emp_code` VARCHAR(25) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';

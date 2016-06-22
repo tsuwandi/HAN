@@ -302,7 +302,7 @@ public class ViewPopUpPalletCard extends JDialog{
 			employees.add(0,new Employee("--Pilih--"));
 			graderComboBox.setList(employees);
 			
-			products = ReceivedDAOFactory.getProductDAO().getAllProduct(addReceivedDetail.received.getWoodTypeID());
+//			products = ReceivedDAOFactory.getProductDAO().getAllProduct(addReceivedDetail.received.getWoodTypeID());
 			for (Product product : products) {
 				Map<Integer, Product> mapTemp = new HashMap<Integer, Product>();
 				mapTemp.put(product.getGradeId(), product);

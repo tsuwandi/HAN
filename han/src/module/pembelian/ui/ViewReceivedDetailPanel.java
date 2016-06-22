@@ -79,6 +79,8 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	JLabel totalVolumeLbl;
 	JLabel graderLbl;
 	JLabel gradeLbl;
+	JLabel uomTotalLogLbl;
+	JLabel uomTotalVolumeLbl;
 	
 	JLabel errorCodeLbl;
 	JLabel errorRitNumberLbl;
@@ -345,7 +347,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		containerPnl.add(errorWoodTypeLbl);
 		
 		//Total Log
-		totalLogLbl = new JLabel("Total Kayu");
+		totalLogLbl = new JLabel("Total Log");
 		totalLogLbl.setBounds(550,230,150,20);
 		containerPnl.add(totalLogLbl);
 		
@@ -353,14 +355,22 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		totalLogField.setBounds(720, 230, 150, 20);
 		containerPnl.add(totalLogField);
 		
+		uomTotalLogLbl = new JLabel("batang");
+		uomTotalLogLbl.setBounds(880,230,40,20);
+		containerPnl.add(uomTotalLogLbl);
+		
 		//Total Volume
-		totalVolumeLbl = new JLabel("Total Kayu");
+		totalVolumeLbl = new JLabel("Total Volume");
 		totalVolumeLbl.setBounds(550,270,150,20);
 		containerPnl.add(totalVolumeLbl);
 		
 		totalVolumeField = new JTextField();
 		totalVolumeField.setBounds(720, 270, 150, 20);
 		containerPnl.add(totalVolumeField);
+		
+		uomTotalVolumeLbl = new JLabel("cm3");
+		uomTotalVolumeLbl.setBounds(880,270,50,20);
+		containerPnl.add(uomTotalVolumeLbl);
 		
 		//Grader
 		graderLbl = new JLabel("Grader");

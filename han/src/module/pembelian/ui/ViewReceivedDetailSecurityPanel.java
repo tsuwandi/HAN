@@ -344,7 +344,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		totalLogField.setBounds(720, 270, 150, 20);
 		containerPnl.add(totalLogField);
 		
-		uomTotalLogLbl = new JLabel("Batang");
+		uomTotalLogLbl = new JLabel("batang");
 		uomTotalLogLbl.setBounds(880,270,40,20);
 		containerPnl.add(uomTotalLogLbl);
 		
@@ -353,7 +353,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		containerPnl.add(errorTotalLogLbl);
 		
 		//Total Volume
-		totalVolumeLbl = new JLabel("Total Log");
+		totalVolumeLbl = new JLabel("Total Volume");
 		totalVolumeLbl.setBounds(550,310,150,20);
 		containerPnl.add(totalVolumeLbl);
 		
@@ -361,7 +361,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		totalVolumeField.setBounds(720, 310, 150, 20);
 		containerPnl.add(totalVolumeField);
 		
-		uomTotalVolumeLbl = new JLabel("M3");
+		uomTotalVolumeLbl = new JLabel("c3");
 		uomTotalVolumeLbl.setBounds(880,310,50,20);
 		containerPnl.add(uomTotalVolumeLbl);
 		
