@@ -32,6 +32,7 @@ import com.toedter.calendar.JDateChooser;
 import controller.DataSourceFactory;
 import controller.ReceivedDAOFactory;
 import main.component.ComboBox;
+import main.component.DialogBox;
 import main.component.NumberField;
 import main.panel.MainPanel;
 import model.User;
@@ -494,6 +495,22 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainPanel.changePanel("module.pembelian.ui.AddReceivedDetailPanel",received);
+			}
+		});
+		
+		deleteBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int choice = DialogBox.showDeleteChoice();
+				if(choice==JOptionPane.YES_OPTION){
+					try {
+						ReceivedDAOFactory.getReceivedDAO().delete(received);
+						MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel",received);
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
+				}
 			}
 		});
 		

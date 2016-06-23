@@ -1,5 +1,7 @@
 package module.pembelian.ui;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -18,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
 import com.toedter.calendar.JDateChooser;
@@ -584,6 +587,18 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 						e.printStackTrace();
 					}
 				}
+				
+				//Print
+				/*JTextPane jtp = new JTextPane();
+				jtp.setBackground(Color.white);
+				jtp.setFont(new Font("Tahoma", 1, 20));
+				jtp.setText(ritNumberField.getText());
+				boolean show = true;
+				try {
+				    jtp.print(null, null, show, null, null, show);
+				} catch (java.awt.print.PrinterException ex) {
+				    ex.printStackTrace();
+				}*/
 			}
 		});
 	

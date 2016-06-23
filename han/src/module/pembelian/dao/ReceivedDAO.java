@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.sun.jmx.snmp.Timestamp;
+
 import module.pembelian.model.Received;
 
 public class ReceivedDAO {
@@ -29,7 +31,7 @@ public class ReceivedDAO {
 	 private String updateQuery = "UPDATE received set received_date=?, rit_no=?,"
 	 		+ " license_plate=?, driver=?, delivery_note=?, wood_type_id=?, supplier_code=?, supplier_cp_id=?, edit_date=?, edited_by=?"
 	 		+ " WHERE id=? AND received_code=?";
-	 private String deleteQuery = "update bank set deleted_date=?,"
+	 private String deleteQuery = "update received set deleted_date=? , "
 	 		+ "deleted_by=? where received_code=?";
 	private String getAllQuery = "select a.id, received_code, received_date, rit_no, a.license_plate, a.supplier_code, a.supplier_cp_id, s.name, "
 			+ "driver, a.delivery_note, a.wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource, a.emp_code, a.total_volume "
@@ -48,6 +50,27 @@ public class ReceivedDAO {
 	
 	public ReceivedDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
+	}
+	
+	public void delete(Received received) throws SQLException{
+		Connection con = null;
+		
+		try {
+			con = dataSource.getConnection();
+			deleteStatement = con.prepareStatement(deleteQuery);
+			deleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
+			deleteStatement.setString(2, "Michael");
+			deleteStatement.setString(3, received.getReceivedCode());
+			deleteStatement.executeUpdate();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+		}
+		}
 	}
 	
 	public String getLastCode() throws SQLException{
