@@ -64,6 +64,7 @@ public class EditPopUpPalletCard extends JDialog{
 	JLabel errorThickLbl;
 	JLabel errorTotalLbl;
 	JLabel errorVolumeLbl;
+	JLabel errorProductLbl;
 	JLabel productCode;
 	
 	NumberField noPalletCardField;
@@ -232,6 +233,10 @@ public class EditPopUpPalletCard extends JDialog{
 		productNameField = new JTextField();
 		productNameField.setBounds(150, 310, 150, 20);
 		add(productNameField);
+		
+		errorProductLbl = new JLabel();
+		errorProductLbl.setBounds(352,310,150,20);
+		add(errorProductLbl);
 
 		productCode = new JLabel();
 		productCode.setBounds(800, 100, 310, 30);
@@ -469,6 +474,13 @@ public class EditPopUpPalletCard extends JDialog{
 				}else{
 					errorWideLbl.setText("");
 				}
+				
+				if(productNameField.getText().equals("")){
+					errorProductLbl.setText("<html><font color='red'>Produk harus diisi !</font></html>");
+					error++;
+				}else{
+					errorProductLbl.setText("");
+				}
 				if(totalField.getText().equals("")){
 					errorTotalLbl.setText("<html><font color='red'>Total Kayu harus diisi !</font></html>");
 					error++;
@@ -551,12 +563,12 @@ public class EditPopUpPalletCard extends JDialog{
 			
 				if(error==0){
 					ReceivedDetail pallet = addReceivedDetail.receivedDetails.get(index);
-					receivedDetail.setGradeID(addReceivedDetail.gradeComboBox.getDataIndex().getId());
-					receivedDetail.setGrade(addReceivedDetail.gradeComboBox.getDataIndex().getGrade());
-					receivedDetail.setTotalLog(Integer.valueOf(totalLogField.getText()));
-					receivedDetail.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
-					receivedDetail.setPallets(pcs);
-					addReceivedDetail.receivedDetails.add(receivedDetail);
+					pallet.setGradeID(addReceivedDetail.gradeComboBox.getDataIndex().getId());
+					pallet.setGrade(addReceivedDetail.gradeComboBox.getDataIndex().getGrade());
+					pallet.setTotalLog(Integer.valueOf(totalLogField.getText()));
+					pallet.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
+					pallet.setPallets(pcs);
+					
 					addReceivedDetail.receivedDetailTable.updateUI();
 					dispose();
 					

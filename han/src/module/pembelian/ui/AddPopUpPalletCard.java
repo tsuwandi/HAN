@@ -64,6 +64,7 @@ public class AddPopUpPalletCard extends JDialog{
 	JLabel errorThickLbl;
 	JLabel errorTotalLbl;
 	JLabel errorVolumeLbl;
+	JLabel errorProductLbl;
 	JLabel productCode;
 	
 	NumberField noPalletCardField;
@@ -230,6 +231,10 @@ public class AddPopUpPalletCard extends JDialog{
 		productNameField = new JTextField();
 		productNameField.setBounds(150, 310, 150, 20);
 		add(productNameField);
+		
+		errorProductLbl = new JLabel();
+		errorProductLbl.setBounds(352,310,150,20);
+		add(errorProductLbl);
 
 		productCode = new JLabel();
 		productCode.setBounds(800, 100, 310, 30);
@@ -461,6 +466,12 @@ public class AddPopUpPalletCard extends JDialog{
 				}else{
 					errorTotalLbl.setText("");
 				}
+				if(productNameField.getText().equals("")){
+					errorProductLbl.setText("<html><font color='red'>Produk harus diisi !</font></html>");
+					error++;
+				}else{
+					errorProductLbl.setText("");
+				}
 				if(noPalletCardField.getText().equals("")||noPalletCardField.getText().equals("0000")){
 					errorNoPallet.setText("<html><font color='red'>Nomor Pallet harus diisi !</font></html>");
 					error++;
@@ -548,6 +559,7 @@ public class AddPopUpPalletCard extends JDialog{
 					receivedDetail.setPallets(pcs);
 					addReceivedDetail.receivedDetails.add(receivedDetail);
 					addReceivedDetail.receivedDetailTable.updateUI();
+					addReceivedDetail.gradeCollection.add(addReceivedDetail.gradeComboBox.getDataIndex());
 					dispose();
 					
 				}

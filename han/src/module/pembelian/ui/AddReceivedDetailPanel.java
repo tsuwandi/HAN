@@ -138,11 +138,13 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 	JPanel containerPnl;
 	public Received received;
 	public Map<String, Pallet> palletMaps;
+	public List<Grade> gradeCollection;
 	
 	public AddReceivedDetailPanel(){
 		setLayout(null);
 		this.parent = this;
 		palletMaps =  new HashMap<>();
+		gradeCollection = new ArrayList<>();
 		
 		containerPnl = new JPanel();
 		containerPnl.setPreferredSize(new Dimension(1100, 840));
@@ -452,9 +454,24 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 					errorGradeLbl.setText("<html><font color='red'>Grade harus dipilih !</font></html>");
 				}else{
 					errorGradeLbl.setText("");
-					AddPopUpPalletCard pop = new AddPopUpPalletCard(parent);
-					pop.show();
-					pop.setLocationRelativeTo(null);
+					if(gradeCollection.size()!=0){
+						for (int i = 0; i < gradeCollection.size(); i++) {
+							if(gradeCollection.get(i).getId()==gradeComboBox.getDataIndex().getId()){
+								EditPopUpPalletCard pop = new EditPopUpPalletCard(parent, receivedDetails.get(i),i);
+								pop.show();
+								pop.setLocationRelativeTo(null);
+							}else{
+								AddPopUpPalletCard pop = new AddPopUpPalletCard(parent);
+								pop.show();
+								pop.setLocationRelativeTo(null);
+							}
+						}
+					}else{
+						AddPopUpPalletCard pop = new AddPopUpPalletCard(parent);
+						pop.show();
+						pop.setLocationRelativeTo(null);
+					}
+					
 				}
 			}
 		});
@@ -477,7 +494,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		receivedDetailTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(receivedDetailTable.columnAtPoint(e.getPoint())==6){
+				if(receivedDetailTable.columnAtPoint(e.getPoint())==5){
 					EditPopUpPalletCard pop = new EditPopUpPalletCard(parent, receivedDetails.get(receivedDetailTable.getSelectedRow()),receivedDetailTable.getSelectedRow());
 					pop.show();
 					pop.setLocationRelativeTo(null);
