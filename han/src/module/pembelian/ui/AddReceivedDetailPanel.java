@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -378,7 +380,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		containerPnl.add(uomTotalVolumeByAdminLbl);
 		
 		errorTotalVolumeByAdminLbl = new JLabel();
-		errorTotalVolumeByAdminLbl.setBounds(890,340,150,20);
+		errorTotalVolumeByAdminLbl.setBounds(890,310,150,20);
 		containerPnl.add(errorTotalVolumeByAdminLbl);
 		
 		
@@ -475,6 +477,27 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 				}
 			}
 		});
+		
+		deletePalletBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int totalChecked=0;
+				for (ReceivedDetail receivedDetail : receivedDetails) {
+					if(receivedDetail.isFlag()) totalChecked++;
+				}
+				if(totalChecked>0){
+					int choice = DialogBox.showDeleteChoice();
+					if(choice==JOptionPane.YES_OPTION){
+						for (int i = 0; i < receivedDetails.size(); i++) {
+							ReceivedDetail rd = receivedDetails.get(i);
+							if(rd.isFlag()) receivedDetails.remove(i);
+							receivedDetailTable.updateUI();
+						}
+					}
+				}
+			}
+		});
 
 		dockingPICTable.addMouseListener(new MouseAdapter() {
 			@Override
@@ -526,7 +549,20 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				int totalChecked=0;
+				for (PicDocking picDocking : picDockings) {
+					if(picDocking.isFlag()) totalChecked++;
+				}
+				if(totalChecked>0){
+					int choice = DialogBox.showDeleteChoice();
+					if(choice==JOptionPane.YES_OPTION){
+						for (int i = 0; i < picDockings.size(); i++) {
+							PicDocking pd = picDockings.get(i);
+							if(pd.isFlag()) picDockings.remove(i);
+							dockingPICTable.updateUI();
+						}
+					}
+				}
 			}
 		});
 		
@@ -557,6 +593,12 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 				}else{
 					errorGraderLbl.setText("");
 				}
+				if(totalVolumeByAdminField.getText().equals("")||totalVolumeByAdminField.getText().equals("0.0")||totalVolumeByAdminField.getText().equals("0")){
+					errorTotalVolumeByAdminLbl.setText("<html><font color='red'>Total Volume harus diisi !</font></html>");
+					error++;
+				}else{
+					errorTotalVolumeByAdminLbl.setText("");
+				}
 								
 				if(error==0){
 					try {
@@ -566,7 +608,9 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 							pallet.setReceivedCode(received.getReceivedCode());
 							ReceivedDAOFactory.getReceivedDetailDAO().save(pallet);
 							ReceivedDAOFactory.getPalletCardDAO().delete(pallet.getId());
+							int detailLastID = ReceivedDAOFactory.getReceivedDetailDAO().getLastID();
 							for(PalletCard palletCardDetail : pallet.getPallets()){
+								palletCardDetail.setReceivedDetailID(detailLastID);
 								ReceivedDAOFactory.getPalletCardDAO().save(palletCardDetail);
 							}
 						}
@@ -574,7 +618,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 							picDocking.setReceivedCode(received.getReceivedCode());
 							ReceivedDAOFactory.getPicDockingReceivedDAO().save(picDocking);
 						}
-						ReceivedDAOFactory.getReceivedDAO().updateStatus(received.getReceivedCode());
+						ReceivedDAOFactory.getReceivedDAO().updateStatus(Double.valueOf(totalVolumeByAdminField.getText()),graderComboBox.getDataIndex().getEmployeeId(),received.getReceivedCode());
 						DialogBox.showInsert();
 						MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
 					} catch (Exception e) {
@@ -799,6 +843,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		woodResourceField.setText(received.getWoodResource());
 		woodTypeField.setText(received.getWoodTypeName());
 		subSupplierField.setText(received.getSubSupplierName());
+		totalVolumeByAdminField.setText(received.getTotalVolume()+"");
 		
 		Delivery delivery;
 		SupplierCP subSupplier;
@@ -806,6 +851,12 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 			receivedDetails = ReceivedDAOFactory.getReceivedDetailDAO().getAllReceivedDetail(received.getReceivedCode());
 			receivedDetailTable.setModel(new ReceivedDetailModel(receivedDetails));
 			receivedDetailTable.updateUI();
+			
+			for (ReceivedDetail receivedDetail : receivedDetails) {
+				Grade grade = new Grade();
+				grade.setId(receivedDetail.getGradeID());
+				gradeCollection.add(grade);
+			}
 			
 			picDockings = ReceivedDAOFactory.getPicDockingReceivedDAO().getPICDocking(received.getReceivedCode());
 			dockingPICTable.setModel(new PicDockingTableModel(picDockings));

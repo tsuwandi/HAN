@@ -474,7 +474,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		receivedDetailTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(receivedDetailTable.columnAtPoint(e.getPoint())==6){
+				if(receivedDetailTable.columnAtPoint(e.getPoint())==5){
 					ViewPopUpPalletCard pop = new ViewPopUpPalletCard(parent, receivedDetails.get(receivedDetailTable.getSelectedRow()));
 					pop.show();
 					pop.setLocationRelativeTo(null);
@@ -731,6 +731,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		supplierAddressArea.setEnabled(false);
 		totalLogField.setEnabled(false);
 		totalVolumeField.setEnabled(false);
+		totalVolumeByAdminField.setEnabled(false);
 
 		String[] codes;
 		codes = received.getReceivedCode().split("/");
@@ -752,6 +753,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		subSupplierField.setText(received.getSubSupplierName());
 		graderComboBox.setEnabled(false);
 		gradeComboBox.setEnabled(false);
+		totalVolumeByAdminField.setText(received.getTotalVolume()+"");
 
 		Delivery delivery;
 		SupplierCP subSupplier;

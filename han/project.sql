@@ -614,9 +614,9 @@ CREATE TABLE IF NOT EXISTS `pallet_card` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `received_detail_id` varchar(21) NOT NULL,
   `pallet_card_code` varchar(21) NOT NULL,
-  `length` decimal(5,2) NOT NULL,
-  `width` decimal(5,2) NOT NULL,
-  `thickness` decimal(5,2) NOT NULL,
+  `length` decimal(7,2) NOT NULL,
+  `width` decimal(7,2) NOT NULL,
+  `thickness` decimal(7,2) NOT NULL,
   `total` int(11) NOT NULL,
   `volume` int(11) NOT NULL,
   `product_code` varchar(20) NOT NULL,
@@ -1295,7 +1295,7 @@ ALTER TABLE  `received` ADD  `emp_code` VARCHAR( 25 ) NOT NULL AFTER  `driver_id
 CREATE TABLE IF NOT EXISTS `received_detail` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `received_code` varchar(16) NOT NULL,
-  `total_volume` decimal(7,5) DEFAULT NULL,
+  `total_volume` decimal(7,2) DEFAULT NULL,
   `total_log` int(5) DEFAULT NULL,
   `grade_id` int(11) NOT NULL,
   `input_date` date DEFAULT NULL,
@@ -1309,3 +1309,6 @@ CREATE TABLE IF NOT EXISTS `received_detail` (
 );
 
 ALTER TABLE `received` CHANGE `emp_code` `emp_code` VARCHAR(25) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+
+ALTER TABLE  `received` ADD  `total_volume` DECIMAL( 7, 2 ) NOT NULL DEFAULT  '0' AFTER  `emp_code`;
+ALTER TABLE  `pallet_card` CHANGE  `volume`  `volume` DECIMAL( 7, 2 ) NOT NULL;

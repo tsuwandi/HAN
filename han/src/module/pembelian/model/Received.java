@@ -1,5 +1,6 @@
 package module.pembelian.model;
 
+
 import java.util.Date;
 
 public class Received {
@@ -21,6 +22,7 @@ public class Received {
 	int supplierCpID;
 	String subSupplierName;
 	String empCode;
+	double totalVolume;
 	
 	
 	public String getWoodDomicile() {
@@ -131,6 +133,11 @@ public class Received {
 	public void setEmpCode(String empCode) {
 		this.empCode = empCode;
 	}
-
+	public double getTotalVolume() {
+		return totalVolume;
+	}
+	public void setTotalVolume(double totalVolume) {
+		this.totalVolume = totalVolume;
+	}
 
 }

@@ -10,8 +10,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import com.sun.jmx.snmp.Timestamp;
-
 import module.pembelian.model.Received;
 
 public class ReceivedDAO {
@@ -34,7 +32,7 @@ public class ReceivedDAO {
 	 private String deleteQuery = "update bank set deleted_date=?,"
 	 		+ "deleted_by=? where received_code=?";
 	private String getAllQuery = "select a.id, received_code, received_date, rit_no, a.license_plate, a.supplier_code, a.supplier_cp_id, s.name, "
-			+ "driver, a.delivery_note, a.wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource, a.emp_code "
+			+ "driver, a.delivery_note, a.wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource, a.emp_code, a.total_volume "
 			+ "FROM received a " 
 			+ "INNER JOIN supplier c ON a.supplier_code = c.supp_code "
 			+ "INNER JOIN supp_cp s ON a.supplier_code = s.supp_code "
@@ -44,7 +42,7 @@ public class ReceivedDAO {
 
 	private String lastID = "SELECT received_code FROM received ORDER BY ID DESC LIMIT 1";
 	
-	private String updateStatusQuery = "UPDATE received SET received_status = 'Diproses' WHERE received_code = ?";
+	private String updateStatusQuery = "UPDATE received SET received_status = 'Diproses', total_volume=?, emp_code=? WHERE received_code = ?";
 	
 	private String updateEmpCodeQuery = "UPDATE received SET emp_code = ? WHERE received_code = ?";
 	
@@ -75,12 +73,14 @@ public class ReceivedDAO {
 		return code;
 	}
 	
-	public void updateStatus(String receivedCode) throws SQLException{
+	public void updateStatus(Double totalVolume, String empCode, String receivedCode) throws SQLException{
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			updateStatusStatement = con.prepareStatement(updateStatusQuery);
-			updateStatusStatement.setString(1, receivedCode);
+			updateStatusStatement.setDouble(1, totalVolume);
+			updateStatusStatement.setString(2, empCode);
+			updateStatusStatement.setString(3, receivedCode);
 			updateStatusStatement.executeUpdate();
 			
 		} catch (SQLException ex) {
@@ -143,6 +143,7 @@ public class ReceivedDAO {
 				received.setSupplierCpID(rs.getInt("supplier_cp_id"));
 				received.setSubSupplierName(rs.getString("name"));
 				received.setEmpCode(rs.getString("emp_code"));
+				received.setTotalVolume(rs.getDouble("total_volume"));
 				receiveds.add(received);
 				
 			}
@@ -189,6 +190,7 @@ public class ReceivedDAO {
 				received.setSupplierCpID(rs.getInt("supplier_cp_id"));
 				received.setSubSupplierName(rs.getString("name"));
 				received.setEmpCode(rs.getString("emp_code"));
+				received.setTotalVolume(rs.getDouble("total_volume"));
 				receiveds.add(received);
 			}
 
@@ -251,6 +253,7 @@ public class ReceivedDAO {
 				received.setSupplierCpID(rs.getInt("supplier_cp_id"));
 				received.setSubSupplierName(rs.getString("name"));
 				received.setEmpCode(rs.getString("emp_code"));
+				received.setTotalVolume(rs.getDouble("total_volume"));
 				receiveds.add(received);
 			}
 		} catch (SQLException ex) {

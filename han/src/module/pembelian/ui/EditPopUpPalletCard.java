@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -106,7 +107,7 @@ public class EditPopUpPalletCard extends JDialog{
 		setSize(800, 750);
 		
 		//Grade
-		gradeLbl = new JLabel("Grade : " + addReceivedDetail.gradeComboBox.getDataIndex().getGrade());
+		gradeLbl = new JLabel("Grade : " + receivedDetail.getGrade());
 		gradeLbl.setFont(new Font("Tahoma",Font.BOLD,20));
 		gradeLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		gradeLbl.setOpaque(true);
@@ -309,7 +310,7 @@ public class EditPopUpPalletCard extends JDialog{
 		
 		try {
 			
-			products = ReceivedDAOFactory.getProductDAO().getAllProduct(addReceivedDetail.received.getWoodTypeID(), addReceivedDetail.gradeComboBox.getDataIndex().getId());
+			products = ReceivedDAOFactory.getProductDAO().getAllProduct(addReceivedDetail.received.getWoodTypeID(), addReceivedDetail.receivedDetails.get(index).getGradeID());
 			for (Product product : products) {
 				Map<Double, Product> thicknessMap = new HashMap<Double, Product>();
 				Map<Double, Map<Double, Product>> widthMap = new HashMap<>();

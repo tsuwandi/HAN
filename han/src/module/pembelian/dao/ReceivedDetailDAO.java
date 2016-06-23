@@ -10,9 +10,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import module.pembelian.model.Pallet;
 import module.pembelian.model.PalletCard;
-import module.pembelian.model.PalletCardDetail;
 import module.pembelian.model.ReceivedDetail;
 
 public class ReceivedDetailDAO {
@@ -22,12 +20,13 @@ public class ReceivedDetailDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement detailPalletStatement;
 	private PreparedStatement deleteStatement;
+	private PreparedStatement getLastIDStatement;
 	
 	private String insertQuery = "INSERT INTO received_detail (received_code,"
 	 		+ " grade_id, total_volume, total_log, input_date, input_by) "
 	 		+ " VALUES (?,?,?,?,?,?)";
 
-	private String detailPalletQuery = "SELECT a.id, a.received_detail_id, pallet_card_code, length, width, thickness, total, volume, a.description, a.product_code, product_name FROM "
+	private String detailPalletQuery = "SELECT a.id, a.received_detail_id, a.pallet_card_code, a.length, a.width, a.thickness, a.total, a.volume, a.description, a.product_code, product_name FROM "
 			+ "pallet_card a INNER JOIN product b ON a.product_code = b.product_code WHERE received_detail_id = ?";
 
 	private String getReceivedDetailsQuery = "SELECT a.id, received_code, grade_id, total_volume, total_log, grade  "
@@ -36,9 +35,33 @@ public class ReceivedDetailDAO {
 	
 	private String deletePalletQuery = "DELETE FROM received_detail WHERE received_code = ?";
 	
+	private String getLastIDQuery ="SELECT ID FROM received_detail ORDER BY ID DESC LIMIT 1";
 	
 	public ReceivedDetailDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
+	}
+	
+	public int getLastID() throws SQLException{
+		int lastID = 0;
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			getLastIDStatement = con.prepareStatement(getLastIDQuery);
+	
+			ResultSet rs = getLastIDStatement.executeQuery();
+			rs.next();
+			lastID = rs.getInt("ID");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+			}
+		}
+		
+		return lastID;
 	}
 	
 	public List<ReceivedDetail> getAllReceivedDetail(String receivedCode) throws SQLException{
@@ -102,8 +125,8 @@ public class ReceivedDetailDAO {
     		insertStatement = con.prepareStatement(insertQuery);
     		insertStatement.setString(1, receivedDetail.getReceivedCode());
     		insertStatement.setInt(2, receivedDetail.getGradeID());
-    		insertStatement.setInt(3, receivedDetail.getTotalLog());
-    		insertStatement.setDouble(4, receivedDetail.getTotalVolume());
+    		insertStatement.setDouble(3, receivedDetail.getTotalVolume());
+    		insertStatement.setInt(4, receivedDetail.getTotalLog());
     		insertStatement.setDate(5, new Date(new java.util.Date().getTime()));
     		insertStatement.setString(6, "Michael");
     		insertStatement.executeUpdate();

@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -495,10 +496,10 @@ public class AddPopUpPalletCard extends JDialog{
 						pcTable.updateUI();
 						
 						int total = 0;
-						double volume = 0;
+						BigDecimal volume = BigDecimal.ZERO;
 						for(PalletCard pcd : pcs){
 							total+=pcd.getTotal();
-							volume+=pcd.getVolume();
+							volume=volume.add(new BigDecimal(pcd.getVolume()));
 						}
 						totalLogField.setText(total+"");
 						totalVolumeField.setText(volume+"");
@@ -516,10 +517,10 @@ public class AddPopUpPalletCard extends JDialog{
 						pc.setDescription(descriptionArea.getText());
 						pcTable.updateUI();
 						int total = 0;
-						double volume = 0;
+						BigDecimal volume = BigDecimal.ZERO;
 						for(PalletCard pcd : pcs){
 							total+=pcd.getTotal();
-							volume+=pcd.getVolume();
+							volume=volume.add(new BigDecimal(pcd.getVolume()));
 						}
 						totalLogField.setText(total+"");
 						totalVolumeField.setText(volume+"");
