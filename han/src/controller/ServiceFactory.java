@@ -3,6 +3,7 @@ package controller;
 import module.dryin.bl.DryInBL;
 import module.dryout.bl.DryOutBL;
 import module.employee.bl.EmployeeBL;
+import module.pembelian.bl.SendToFinanceBL;
 import module.product.bl.ProductBL;
 import module.report.bl.ReportBL;
 import module.supplier.bl.SupplierBL;
@@ -16,6 +17,9 @@ public class ServiceFactory {
 	private static DryOutBL dryOutBL = null;
 	private static ProductBL productBL = null;
 	private static ReportBL reportBL = null;
+
+	private static SendToFinanceBL sendToFinanceBL = null;
+
 
 	/**
 	 * Method to init or return {@link SupplierBL}
@@ -77,5 +81,12 @@ public class ServiceFactory {
 			reportBL = new ReportBL(DataSourceFactory.getDataSource());
 		}
 		return reportBL;
+	}
+	
+	public static SendToFinanceBL getSendToFinanceBL() {
+		if(sendToFinanceBL == null){
+			sendToFinanceBL = new SendToFinanceBL(DataSourceFactory.getDataSource());
+		}
+		return sendToFinanceBL;
 	}
 }

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import module.dryin.model.DryIn;
+import module.pembelian.model.PalletCard;
+import module.pembelian.model.Received;
 import module.sn.chamber.model.Chamber;
 import module.util.DateUtil;
 
@@ -45,7 +47,7 @@ public class DryInDAO {
 			String query = new StringBuilder().append(getAllQuery)
 					.append("WHERE d.deleted_date is null AND c.deleted_date is null ")
 					.append("ORDER BY dry_in_code DESC ").toString();
-			
+
 			getAllStatement = connection.prepareStatement(query);
 
 			ResultSet rs = getAllStatement.executeQuery();
@@ -56,7 +58,7 @@ public class DryInDAO {
 				dryIn.setDateIn(rs.getTimestamp("date_in"));
 				dryIn.setChamberId(rs.getInt("chamber_id"));
 				dryIn.setTotalVolume(rs.getDouble("total_volume"));
-				
+
 				Chamber chamber = new Chamber();
 				chamber.setId(rs.getInt("chamber_id"));
 				chamber.setChamber(rs.getString("chamber"));
@@ -81,10 +83,9 @@ public class DryInDAO {
 					.append("WHERE d.deleted_date is null AND c.deleted_date is null ")
 					.append("AND (dry_in_code like ('%").append(value).append("%') ")
 					.append("OR STR_TO_DATE(date_in, '%Y-%m-%d') LIKE ('%").append(value).append("%') ")
-					.append("OR total_volume like ('%").append(value).append("%') ")
-					.append("OR chamber like ('%").append(value).append("%')) ")
-					.append("ORDER BY dry_in_code DESC ").toString();
-			
+					.append("OR total_volume like ('%").append(value).append("%') ").append("OR chamber like ('%")
+					.append(value).append("%')) ").append("ORDER BY dry_in_code DESC ").toString();
+
 			getAllStatement = connection.prepareStatement(query);
 
 			ResultSet rs = getAllStatement.executeQuery();
@@ -95,7 +96,7 @@ public class DryInDAO {
 				dryIn.setDateIn(rs.getTimestamp("date_in"));
 				dryIn.setChamberId(rs.getInt("chamber_id"));
 				dryIn.setTotalVolume(rs.getDouble("total_volume"));
-				
+
 				Chamber chamber = new Chamber();
 				chamber.setId(rs.getInt("chamber_id"));
 				chamber.setChamber(rs.getString("chamber"));
@@ -117,7 +118,7 @@ public class DryInDAO {
 		try {
 			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
 			getOrdinalOfCodeNumberStatement.setInt(1, year);
-			
+
 			ResultSet rs = getOrdinalOfCodeNumberStatement.executeQuery();
 			while (rs.next()) {
 				ordinal = rs.getInt("ordinal");
@@ -168,7 +169,7 @@ public class DryInDAO {
 		}
 
 	}
-	
+
 	public void update(DryIn dryIn) throws SQLException {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
@@ -184,7 +185,7 @@ public class DryInDAO {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
-		
+
 	}
 
 	public void delete(int id) throws SQLException {
@@ -204,9 +205,8 @@ public class DryInDAO {
 		DryIn dryIn = null;
 
 		try {
-			String query = new StringBuilder().append(getAllQuery)
-					.append("WHERE d.id = ? ").toString();
-			
+			String query = new StringBuilder().append(getAllQuery).append("WHERE d.id = ? ").toString();
+
 			getAllStatement = connection.prepareStatement(query);
 			getAllStatement.setInt(1, id);
 			ResultSet rs = getAllStatement.executeQuery();
@@ -217,7 +217,7 @@ public class DryInDAO {
 				dryIn.setDateIn(rs.getTimestamp("date_in"));
 				dryIn.setChamberId(rs.getInt("chamber_id"));
 				dryIn.setTotalVolume(rs.getDouble("total_volume"));
-				
+
 				Chamber chamber = new Chamber();
 				chamber.setId(rs.getInt("chamber_id"));
 				chamber.setChamber(rs.getString("chamber"));
@@ -231,5 +231,54 @@ public class DryInDAO {
 		}
 
 		return dryIn;
+	}
+
+	/**
+	 * @createBy TSI
+	 * 
+	 * @return DryIn
+	 * @throws SQLException
+	 */
+	public List<DryIn> getAllDryInForDailyClosing() throws SQLException {
+		List<DryIn> listOfDryIn = new ArrayList<DryIn>();
+
+		try {
+
+			String allDryInForDailyClosingQuery = "SELECT d.id, d.dry_in_code, d.date_in, d.chamber_id, d.total_volume, d.confirm_date, "
+					+ "pc.total, pc.volume, pc.product_code, pc.pallet_card_code FROM dry_in d "
+					+ "INNER JOIN dry_in_pallet dp ON d.dry_in_code = dp.dry_in_code "
+					+ "INNER JOIN pallet_card pc ON pc.pallet_card_code = dp.pallet_card_code "
+					+ "WHERE d.confirm_date IS NULL "
+					+ "AND d.deleted_date IS NULL AND dp.deleted_date IS NULL AND pc.deleted_date IS NULL";
+			
+			getAllStatement = connection.prepareStatement(allDryInForDailyClosingQuery);
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				DryIn dryIn = new DryIn();
+				dryIn.setId(rs.getInt("id"));
+				dryIn.setDryInCode(rs.getString("dry_in_code"));
+				dryIn.setDateIn(rs.getTimestamp("date_in"));
+				dryIn.setChamberId(rs.getInt("chamber_id"));
+				dryIn.setTotalVolume(rs.getDouble("total_volume"));
+				dryIn.setConfirmDate(rs.getDate("confirm_date"));
+
+				PalletCard palletCard = new PalletCard();
+				palletCard.setPalletCardCode(rs.getString("pallet_card_code"));
+				palletCard.setVolume(rs.getDouble("volume"));
+				palletCard.setTotal(rs.getInt("total"));
+				palletCard.setProductCode(rs.getString("product_code"));
+
+				dryIn.setPalletCard(palletCard);
+
+				listOfDryIn.add(dryIn);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		}
+
+		return listOfDryIn;
 	}
 }

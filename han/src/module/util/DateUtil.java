@@ -1,7 +1,6 @@
 package module.util;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,6 +20,11 @@ public class DateUtil {
 		long milliseconds = timestamp.getTime()
 				+ (timestamp.getNanos() / 1000000);
 		return new Date(milliseconds);
+	}
+	
+	public static Timestamp setTimeStamp() {
+		long time = System.currentTimeMillis();
+		return new java.sql.Timestamp(time);
 	}
 	
 	public static Timestamp setTimeStamp(Date pDate, int pHour, int pMinute, int pSecond) {

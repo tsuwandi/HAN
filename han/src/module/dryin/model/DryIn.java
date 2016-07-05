@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import module.pembelian.model.PalletCard;
 import module.sn.chamber.model.Chamber;
 
 public class DryIn implements Serializable {
@@ -208,5 +209,29 @@ public class DryIn implements Serializable {
 		if (chamber == null)
 			chamber = new Chamber();
 		this.chamber = chamber;
+	}
+
+	private Date confirmDate;
+
+	public Date getConfirmDate() {
+		return confirmDate;
+	}
+
+	public void setConfirmDate(Date confirmDate) {
+		this.confirmDate = confirmDate;
+	}
+
+	private PalletCard palletCard;
+
+	public PalletCard getPalletCard() {
+		if (palletCard == null)
+			palletCard = new PalletCard();
+		return palletCard;
+	}
+
+	public void setPalletCard(PalletCard palletCard) {
+		if (palletCard == null)
+			palletCard = new PalletCard();
+		this.palletCard = palletCard;
 	}
 }

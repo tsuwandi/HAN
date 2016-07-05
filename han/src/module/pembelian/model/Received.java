@@ -140,4 +140,37 @@ public class Received {
 		this.totalVolume = totalVolume;
 	}
 
+	
+	/* 
+	 * Created By : TSI
+	 * Created Date : 040716
+	 * Desc : Send To Finance & Daily Closing Function
+	 */
+
+	private Date confirmDate;
+	private Date sendToFinanceDate;
+	private PalletCard palletCard;
+	
+	public Date getConfirmDate() {
+		return confirmDate;
+	}
+	public void setConfirmDate(Date confirmDate) {
+		this.confirmDate = confirmDate;
+	}
+	public Date getSendToFinanceDate() {
+		return sendToFinanceDate;
+	}
+	public void setSendToFinanceDate(Date sendToFinanceDate) {
+		this.sendToFinanceDate = sendToFinanceDate;
+	}
+	public PalletCard getPalletCard() {
+		if(palletCard == null)
+			palletCard = new PalletCard();
+		return palletCard;
+	}
+	public void setPalletCard(PalletCard palletCard) {
+		if(palletCard == null)
+			palletCard = new PalletCard();
+		this.palletCard = palletCard;
+	}
 }

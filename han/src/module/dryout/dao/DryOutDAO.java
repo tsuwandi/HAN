@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import module.dryin.model.DryIn;
 import module.dryout.model.DryOut;
+import module.pembelian.model.PalletCard;
 import module.sn.chamber.model.Chamber;
 import module.util.DateUtil;
 
@@ -229,5 +231,54 @@ public class DryOutDAO {
 		}
 
 		return dryOut;
+	}
+
+	/**
+	 * @createBy TSI
+	 * 
+	 * @return DryOut
+	 * @throws SQLException
+	 */
+	public List<DryOut> getAllDryOutForDailyClosing() throws SQLException {
+		List<DryOut> listOfDryOut = new ArrayList<DryOut>();
+
+		try {
+
+			String allDryOutForDailyClosingQuery = "SELECT d.id, d.dry_out_code, d.date_out, d.chamber_id, d.total_volume, d.confirm_date, "
+					+ "pc.total, pc.volume, pc.product_code, pc.pallet_card_code FROM dry_out d "
+					+ "INNER JOIN dry_out_pallet dp ON d.dry_out_code = dp.dry_out_code "
+					+ "INNER JOIN pallet_card pc ON pc.pallet_card_code = dp.pallet_card_code "
+					+ "WHERE d.confirm_date IS NULL "
+					+ "AND d.deleted_date IS NULL AND dp.deleted_date IS NULL AND pc.deleted_date IS NULL";
+			
+			getAllStatement = connection.prepareStatement(allDryOutForDailyClosingQuery);
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				DryOut dryOut = new DryOut();
+				dryOut.setId(rs.getInt("id"));
+				dryOut.setDryOutCode(rs.getString("dry_out_code"));
+				dryOut.setDateOut(rs.getTimestamp("date_out"));
+				dryOut.setChamberId(rs.getInt("chamber_id"));
+				dryOut.setTotalVolume(rs.getDouble("total_volume"));
+				dryOut.setConfirmDate(rs.getDate("confirm_date"));
+
+				PalletCard palletCard = new PalletCard();
+				palletCard.setPalletCardCode(rs.getString("pallet_card_code"));
+				palletCard.setVolume(rs.getDouble("volume"));
+				palletCard.setTotal(rs.getInt("total"));
+				palletCard.setProductCode(rs.getString("product_code"));
+
+				dryOut.setPalletCard(palletCard);
+
+				listOfDryOut.add(dryOut);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		}
+
+		return listOfDryOut;
 	}
 }
