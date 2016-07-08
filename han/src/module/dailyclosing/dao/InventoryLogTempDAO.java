@@ -23,7 +23,7 @@ public class InventoryLogTempDAO {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setString(1, inventoryLogTemp.getProductCode());
 			insertStatement.setInt(2, inventoryLogTemp.getWarehouse());
-			insertStatement.setBigDecimal(3, inventoryLogTemp.getQty());
+			insertStatement.setDouble(3, inventoryLogTemp.getQty());
 			insertStatement.setString(4, inventoryLogTemp.getMutasi());
 			insertStatement.setString(5, inventoryLogTemp.getSrcTable());
 			insertStatement.setString(6, inventoryLogTemp.getConfirmCode());

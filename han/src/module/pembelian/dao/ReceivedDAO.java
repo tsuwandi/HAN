@@ -361,7 +361,7 @@ public class ReceivedDAO {
 		List<Received> listOfReceived = new ArrayList<Received>();
 
 		try {
-			String allBySendToFinanceDateIsNullQuery = "select id, received_code, received_date, supp_code, supplier_cp_id, rit_no, license_plate, "
+			String allBySendToFinanceDateIsNullQuery = "select id, received_code, received_date, supplier_code, supplier_cp_id, rit_no, license_plate, "
 					+ "driver, delivery_note, wood_type_id, driver_id, received_status, emp_code, total_volume "
 					+ "FROM received WHERE send_to_finance_date IS NULL AND deleted_date IS NULL";
 
@@ -403,7 +403,7 @@ public class ReceivedDAO {
 	 */
 	public void updateSendToFinanceDate(Received received) throws SQLException {
 		try {
-			String updateSendToFinanceDateQuery = "UPDATE received set send_to_finance=?, edit_date=?, edited_by=? "
+			String updateSendToFinanceDateQuery = "UPDATE received set send_to_finance_date=?, edit_date=?, edited_by=? "
 					+ "WHERE id=?";
 			updateStatement = connection.prepareStatement(updateSendToFinanceDateQuery);
 			updateStatement.setDate(1, DateUtil.getCurrentDate());
@@ -428,8 +428,8 @@ public class ReceivedDAO {
 		List<Received> listOfReceived = new ArrayList<Received>();
 
 		try {
-			String allReceivedForDailyClosingQuery = "select r.id, r.received_code, r.received_date, r.supp_code, r.supplier_cp_id, r.rit_no, r.license_plate, "
-					+ "r.driver, r.delivery_note, r.wood_type_id, r.driver_id, r.received_status, r.emp_code, r.total_volume, r.confirm_date, r.send_to_finance_date "
+			String allReceivedForDailyClosingQuery = "select r.id, r.received_code, r.received_date, r.supplier_code, r.supplier_cp_id, r.rit_no, r.license_plate, "
+					+ "r.driver, r.delivery_note, r.wood_type_id, r.driver_id, r.received_status, r.emp_code, r.total_volume, r.confirm_date, r.send_to_finance_date, "
 					+ "pc.total, pc.volume, pc.product_code, pc.pallet_card_code "
 					+ "FROM received r "
 					+ "INNER JOIN received_detail rd ON r.received_code = rd.received_code "

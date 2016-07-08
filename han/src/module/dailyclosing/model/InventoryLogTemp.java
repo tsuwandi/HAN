@@ -10,7 +10,7 @@ public class InventoryLogTemp implements Serializable {
 	private int id;
 	private String productCode;
 	private int warehouse;
-	private BigDecimal qty;
+	private double qty;
 	private String mutasi;
 	private String srcTable;
 	private String confirmCode;
@@ -39,11 +39,11 @@ public class InventoryLogTemp implements Serializable {
 	public void setWarehouse(int warehouse) {
 		this.warehouse = warehouse;
 	}
-	public BigDecimal getQty() {
+	public double getQty() {
 		return qty;
 	}
-	public void setQty(BigDecimal qty) {
-		this.qty = qty;
+	public void setQty(double d) {
+		this.qty = d;
 	}
 	public String getMutasi() {
 		return mutasi;

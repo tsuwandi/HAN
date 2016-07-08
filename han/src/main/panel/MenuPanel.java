@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 
 import imcacat.jaccordion.JAccordion;
 import menu.panel.Menu1Panel;
+import module.dailyclosing.ui.DailyClosingDialog;
+import module.pembelian.ui.SendToFinanceDialog;
 import module.report.ui.ReportDialog;
 
 public class MenuPanel extends JPanel {
@@ -22,7 +24,8 @@ public class MenuPanel extends JPanel {
 	private JLabel menuBtn5;
 	private JLabel menuBtn6;
 	private JLabel menuBtn7;
-
+	private JLabel menuBtn8;
+	private JLabel menuBtn9;
 	public Menu1Panel menu1Panel;
 
 	/**
@@ -33,7 +36,7 @@ public class MenuPanel extends JPanel {
 		setLayout(null);
 
 		menu1Panel = new Menu1Panel();
-		menu1Panel.setBounds(0, 0, 1150, 630);
+		menu1Panel.setBounds(0, 0, 1150, 30);
 
 		menuBtn1 = new JLabel("<html><p style=padding:5px;>Master Supplier</p><html>");
 		menuBtn1.setBounds(50, 35, 195, 100);
@@ -89,15 +92,39 @@ public class MenuPanel extends JPanel {
 			}
 		});
 		
-		menuBtn7 = new JLabel("<html><p style=padding:5px;>Laporan</p><html>");
-		menuBtn7.setBounds(0, 35, 195, 35);
-		menuBtn7.addMouseListener(new MouseAdapter() {
+//		menuBtn7 = new JLabel("<html><p style=padding:5px;>Laporan</p><html>");
+//		menuBtn7.setBounds(0, 35, 195, 35);
+//		menuBtn7.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				ReportDialog reportDialog = new ReportDialog();
+//				reportDialog.setTitle("Laporan");
+//				reportDialog.setLocationRelativeTo(null);
+//				reportDialog.setVisible(true);
+//			}
+//		});
+		
+		menuBtn8 = new JLabel("<html><p style=padding:5px;>Send To Finance</p><html>");
+		menuBtn8.setBounds(0, 35, 195, 35);
+		menuBtn8.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ReportDialog reportDialog = new ReportDialog();
-				reportDialog.setTitle("Laporan");
-				reportDialog.setLocationRelativeTo(null);
-				reportDialog.setVisible(true);
+				SendToFinanceDialog sendToFinanceDialog = new SendToFinanceDialog();
+				sendToFinanceDialog.setTitle("Send To Finance");
+				sendToFinanceDialog.setLocationRelativeTo(null);
+				sendToFinanceDialog.setVisible(true);
+			}
+		});
+		
+		menuBtn9 = new JLabel("<html><p style=padding:5px;>Tutup Harian</p><html>");
+		menuBtn9.setBounds(0, 35, 195, 35);
+		menuBtn9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DailyClosingDialog dailyClosingDialog = new DailyClosingDialog();
+				dailyClosingDialog.setTitle("Tutup Harian");
+				dailyClosingDialog.setLocationRelativeTo(null);
+				dailyClosingDialog.setVisible(true);
 			}
 		});
 		
@@ -108,14 +135,16 @@ public class MenuPanel extends JPanel {
 		
 		JAccordion subMenu = new JAccordion();
 		Dimension menuSize = menu.getPreferredSize();
-		Dimension subMenuSize = new Dimension(198, 235);
+		Dimension subMenuSize = new Dimension(198, 255);
 		subMenu.addSection("Supplier", menuBtn1);
 		subMenu.addSection("Produk", menuBtn2);
 		subMenu.addSection("Penerimaan", menuBtn3);
 		subMenu.addSection("STTK", menuBtn4);
 		subMenu.addSection("Pengeringan In", menuBtn5);
 		subMenu.addSection("Pengeringan Out", menuBtn6);
-		subMenu.addSection("Laporan", menuBtn7);
+		//subMenu.addSection("Laporan", menuBtn7);
+		subMenu.addSection("Send To Finance", menuBtn8);
+		subMenu.addSection("Tutup Harian", menuBtn9);
 		subMenu.setPreferredSize(subMenuSize);
 		subMenu.enableMaxOneSectionOpen();
 		

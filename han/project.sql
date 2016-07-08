@@ -1312,3 +1312,82 @@ ALTER TABLE `received` CHANGE `emp_code` `emp_code` VARCHAR(25) CHARACTER SET la
 
 ALTER TABLE  `received` ADD  `total_volume` DECIMAL( 7, 2 ) NOT NULL DEFAULT  '0' AFTER  `emp_code`;
 ALTER TABLE  `pallet_card` CHANGE  `volume`  `volume` DECIMAL( 7, 2 ) NOT NULL;
+
+/* INVENTORY */
+ALTER TABLE  `received` CHANGE  `supplier_code` `supp_code` varchar(9) NULL AFTER  `rit_no`;
+ALTER TABLE  `received` ADD  `send_to_finance_date` DATE NULL;
+ALTER TABLE  `received` ADD  `confirm_date` DATE NULL;
+ALTER TABLE  `dry_in` ADD  `confirm_date` DATE NULL;
+ALTER TABLE  `dry_out` ADD  `confirm_date` DATE NULL;
+
+CREATE TABLE inventory ( 
+	id INT(9) NOT NULL AUTO_INCREMENT,
+	product_code VARCHAR(20),
+	qty DECIMAL(7,2),
+	warehouse INT(1),
+	stock_date DATE,
+	inventory_log_id INT(12),
+	input_date DATE,
+	input_by VARCHAR(25),
+	edit_date DATE,
+	edited_by VARCHAR(25),
+	deleted_date DATE,
+	deleted_bu VARCHAR(25),
+	PRIMARY KEY (`id`)
+)
+
+
+CREATE TABLE inventory_log
+( 
+	id INT(9) NOT NULL AUTO_INCREMENT,
+	product_code VARCHAR(20),
+	warehouse INT(1),
+	prev_stock	DEC(7,5),	
+	plus_stock	DEC(7,5),	
+	min_stock	DEC(7,5),	
+	curr_stock	DEC(7,5),	
+	prev_stock_date	DATE,	
+	curr_stock_date	DATE,	
+	confirm_code	VARCHAR(5),
+	input_date DATE,
+	input_by VARCHAR(25),
+	edit_date DATE,
+	edited_by VARCHAR(25),
+	deleted_date DATE,
+	deleted_by VARCHAR(25),
+	PRIMARY KEY (`id`)
+)
+
+CREATE TABLE inventory_log_temp
+( 
+	id INT(12) NOT NULL AUTO_INCREMENT,
+	product_code VARCHAR(20),
+	warehouse INT(1),
+	qty	DEC(7,2),	
+	mutasi VARCHAR(1),	
+	srctable VARCHAR(50),
+	confirm_code	VARCHAR(5),
+	input_date DATE,
+	input_by VARCHAR(25),
+	edit_date DATE,
+	edited_by VARCHAR(25),
+	deleted_date DATE,
+	deleted_by VARCHAR(25),
+	PRIMARY KEY (`id`)
+)
+
+CREATE TABLE confirm
+( 
+	id INT(12) NOT NULL AUTO_INCREMENT,
+	confirm_code VARCHAR(5),
+	module varchar(50),
+	daily_closing_date DATE,
+	input_date DATE,
+	input_by VARCHAR(25),
+	edit_date DATE,
+	edited_by VARCHAR(25),
+	deleted_date DATE,
+	deleted_by VARCHAR(25),
+	PRIMARY KEY (`id`)
+)
+

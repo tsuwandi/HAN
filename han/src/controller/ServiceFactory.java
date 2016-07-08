@@ -1,5 +1,6 @@
 package controller;
 
+import module.dailyclosing.bl.DailyClosingBL;
 import module.dryin.bl.DryInBL;
 import module.dryout.bl.DryOutBL;
 import module.employee.bl.EmployeeBL;
@@ -19,7 +20,7 @@ public class ServiceFactory {
 	private static ReportBL reportBL = null;
 
 	private static SendToFinanceBL sendToFinanceBL = null;
-
+	private static DailyClosingBL dailyClosingBL = null;
 
 	/**
 	 * Method to init or return {@link SupplierBL}
@@ -88,5 +89,12 @@ public class ServiceFactory {
 			sendToFinanceBL = new SendToFinanceBL(DataSourceFactory.getDataSource());
 		}
 		return sendToFinanceBL;
+	}
+
+	public static DailyClosingBL getDailyClosingBL() {
+		if(dailyClosingBL == null){
+			dailyClosingBL = new DailyClosingBL(DataSourceFactory.getDataSource());
+		}
+		return dailyClosingBL;
 	}
 }

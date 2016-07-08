@@ -1,5 +1,6 @@
 package module.pembelian.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class PalletCard {
@@ -9,7 +10,7 @@ public class PalletCard {
 	double length;
 	double width;
 	double thickness;
-	int total;
+	double total;
 	double volume;
 	String productCode;
 	String productName;
@@ -55,11 +56,11 @@ public class PalletCard {
 		this.thickness = thickness;
 	}
 	
-	public int getTotal() {
+	public double getTotal() {
 		return total;
 	}
 
-	public void setTotal(int total) {
+	public void setTotal(double total) {
 		this.total = total;
 	}
 

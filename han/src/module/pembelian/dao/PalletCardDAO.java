@@ -67,7 +67,7 @@ public class PalletCardDAO {
     		insertStatement.setDouble(3, palletCard.getLength());
     		insertStatement.setDouble(4, palletCard.getWidth());
     		insertStatement.setDouble(5, palletCard.getThickness());
-    		insertStatement.setInt(6, palletCard.getTotal());
+    		insertStatement.setDouble(6, palletCard.getTotal());
     		insertStatement.setDouble(7, palletCard.getVolume());
     		insertStatement.setString(8, palletCard.getProductCode());
     		insertStatement.setString(9, palletCard.getDescription());
@@ -97,7 +97,7 @@ public class PalletCardDAO {
     		updateStatement.setDouble(3, palletCard.getLength());
     		updateStatement.setDouble(4, palletCard.getWidth());
     		updateStatement.setDouble(5, palletCard.getThickness());
-    		updateStatement.setInt(6, palletCard.getTotal());
+    		updateStatement.setDouble(6, palletCard.getTotal());
     		updateStatement.setDouble(7, palletCard.getVolume());
     		updateStatement.setString(8, palletCard.getProductCode());
     		updateStatement.setString(9, palletCard.getDescription());
