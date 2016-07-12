@@ -3,6 +3,7 @@ package module.pembelian.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -71,6 +72,11 @@ public class SendToFinanceDialog extends JDialog {
 		rdbtnPrinter = new JRadioButton("Printer");
 		rdbtnPrinter.setBounds(15, 89, 109, 23);
 		getContentPane().add(rdbtnPrinter);
+		
+		ButtonGroup group = new ButtonGroup();
+	    group.add(rdbtnMonitor);
+	    group.add(rdbtnFile);
+	    group.add(rdbtnPrinter);
 
 	}
 }
