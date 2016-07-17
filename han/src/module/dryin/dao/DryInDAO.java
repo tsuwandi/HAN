@@ -22,6 +22,7 @@ public class DryInDAO {
 	private PreparedStatement isDryInCodeExistsStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
+	private PreparedStatement updateConfirmDateStatement;
 	private PreparedStatement deleteStatement;
 
 	private String getAllQuery = "SELECT d.id, d.dry_in_code, d.date_in, d.chamber_id, d.total_volume, c.chamber "
@@ -33,6 +34,8 @@ public class DryInDAO {
 	private String insertQuery = "insert into dry_in (dry_in_code, date_in, chamber_id, total_volume, "
 			+ "input_date, input_by) values (?,?,?,?,?,?)";
 	private String updateQuery = "update dry_in set date_in=?, chamber_id=?, total_volume=?, "
+			+ "edit_date=?, edited_by=? where dry_in_code=? ";
+	private String updateConfirmDateQuery = "update dry_in set confirm_date=? "
 			+ "edit_date=?, edited_by=? where dry_in_code=? ";
 	private String deleteQuery = "update dry_in set deleted_date=?, deleted_by=? where id=?";
 
@@ -185,7 +188,6 @@ public class DryInDAO {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
-
 	}
 
 	public void delete(int id) throws SQLException {
@@ -280,5 +282,21 @@ public class DryInDAO {
 		}
 
 		return listOfDryIn;
+	}
+	
+	public void updateConfirmDate(DryIn dryIn) throws SQLException {
+		try {
+			updateConfirmDateStatement = connection.prepareStatement(updateConfirmDateQuery);
+			updateConfirmDateStatement.setDate(1, DateUtil.getCurrentDate());
+			updateConfirmDateStatement.setDate(2, DateUtil.getCurrentDate());
+			updateConfirmDateStatement.setString(3, "timotius");
+			updateConfirmDateStatement.setString(4, dryIn.getDryInCode());
+			updateConfirmDateStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
 	}
 }

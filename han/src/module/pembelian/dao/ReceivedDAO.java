@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import module.dryin.model.DryIn;
 import module.pembelian.model.PalletCard;
 import module.pembelian.model.Received;
 import module.util.DateUtil;
@@ -25,7 +26,8 @@ public class ReceivedDAO {
 	private PreparedStatement advancedSearchStatement;
 	private PreparedStatement updateStatusStatement;
 	private PreparedStatement udpdateEmpCodeStatement;
-
+	private PreparedStatement updateConfirmDateStatement;
+	
 	private String insertQuery = "INSERT INTO received (received_code, received_date,"
 			+ " rit_no, license_plate, driver, delivery_note, wood_type_id, driver_id, received_status, supplier_code, supplier_cp_id, input_date, input_by) "
 			+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -46,6 +48,9 @@ public class ReceivedDAO {
 	private String updateStatusQuery = "UPDATE received SET received_status = 'Diproses', total_volume=?, emp_code=? WHERE received_code = ?";
 
 	private String updateEmpCodeQuery = "UPDATE received SET emp_code = ? WHERE received_code = ?";
+	
+	private String updateConfirmDateQuery = "UPDATE received SET confirm_date = ? "
+			+ "edit_date=?, edited_by=? WHERE received_code=? ";
 
 	public ReceivedDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
@@ -491,4 +496,19 @@ public class ReceivedDAO {
 	 * (SQLException e) { } } }
 	 */
 
+	public void updateConfirmDate(Received received) throws SQLException {
+		try {
+			updateConfirmDateStatement = connection.prepareStatement(updateConfirmDateQuery);
+			updateConfirmDateStatement.setDate(1, DateUtil.getCurrentDate());
+			updateConfirmDateStatement.setDate(2, DateUtil.getCurrentDate());
+			updateConfirmDateStatement.setString(3, "timotius");
+			updateConfirmDateStatement.setString(4, received.getReceivedCode());
+			updateConfirmDateStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+	}
 }
