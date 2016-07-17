@@ -12,8 +12,10 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 import controller.ServiceFactory;
 import main.component.ComboBox;
@@ -63,7 +65,7 @@ public class SuppAddressDialog extends JDialog {
 	List<City> listOfCity;
 
 	private Integer index;
-	
+
 	JLabel lblContactPerson;
 	JLabel lblEmail;
 	JTextField txtContactPerson;
@@ -131,7 +133,10 @@ public class SuppAddressDialog extends JDialog {
 		txtAddress.setColumns(3);
 		txtAddress.setBounds(150, 55, 150, 70);
 		txtAddress.setDocument(new JTextFieldLimit(200));
-		getContentPane().add(txtAddress);
+		
+		JScrollPane spTxtAddress = new JScrollPane(txtAddress);
+		spTxtAddress.setBounds(150, 55, 150, 70);
+		getContentPane().add(spTxtAddress);
 
 		lblErrorAddress = new JLabel();
 		lblErrorAddress.setForeground(Color.RED);
@@ -144,7 +149,7 @@ public class SuppAddressDialog extends JDialog {
 
 		txtZipCode = new NumberField(5);
 		txtZipCode.setBounds(150, 135, 150, 30);
-		//txtZipCode.setDocument(new JTextFieldLimit(5));
+		// txtZipCode.setDocument(new JTextFieldLimit(5));
 		getContentPane().add(txtZipCode);
 
 		lblProvince = new JLabel("<html>Provinsi <font color=\"red\">*</font></html>");
@@ -155,7 +160,7 @@ public class SuppAddressDialog extends JDialog {
 		cbProvince.setList(listOfProvince);
 		cbProvince.setBounds(150, 170, 150, 30);
 		getContentPane().add(cbProvince);
-		
+
 		lblErrorProvince = new JLabel();
 		lblErrorProvince.setForeground(Color.RED);
 		lblErrorProvince.setBounds(335, 175, 200, 30);
@@ -208,7 +213,7 @@ public class SuppAddressDialog extends JDialog {
 		});
 
 		getContentPane().add(cbCity);
-		
+
 		lblContactPerson = new JLabel("<html>Contact Person <font color=\"red\">*</font></html>");
 		lblContactPerson.setBounds(25, 240, 150, 30);
 		getContentPane().add(lblContactPerson);
@@ -222,8 +227,8 @@ public class SuppAddressDialog extends JDialog {
 		lblErrorContactPerson.setForeground(Color.RED);
 		lblErrorContactPerson.setBounds(335, 240, 225, 30);
 		getContentPane().add(lblErrorContactPerson);
-		
-		lblEmail = new JLabel("<html>Email <font color=\"red\">*</font></html>");
+
+		lblEmail = new JLabel("Email");
 		lblEmail.setBounds(25, 275, 150, 30);
 		getContentPane().add(lblEmail);
 
@@ -243,7 +248,7 @@ public class SuppAddressDialog extends JDialog {
 
 		txtPhone = new NumberField(15);
 		txtPhone.setBounds(150, 310, 150, 30);
-		//txtPhone.setDocument(new JTextFieldLimit(15));
+		// txtPhone.setDocument(new JTextFieldLimit(15));
 		getContentPane().add(txtPhone);
 
 		lblFax = new JLabel("Fax");
@@ -252,7 +257,7 @@ public class SuppAddressDialog extends JDialog {
 
 		txtFax = new NumberField(15);
 		txtFax.setBounds(150, 345, 150, 30);
-		//txtFax.setDocument(new JTextFieldLimit(15));
+		// txtFax.setDocument(new JTextFieldLimit(15));
 		getContentPane().add(txtFax);
 
 		btnInsert = new JButton("Insert");
@@ -273,14 +278,14 @@ public class SuppAddressDialog extends JDialog {
 			txtZipCode.setText(suppAddress.getZipCode());
 			txtPhone.setText(suppAddress.getPhone());
 			txtFax.setText(suppAddress.getFax());
-			
+
 			txtContactPerson.setText(suppAddress.getSuppCp().getName());
 			txtEmail.setText(suppAddress.getSuppCp().getEmail());
-		
+
 			if (suppAddress.getCityId() != 0) {
 				getAllCityByProvinceId(suppAddress.getCity().getProvinceId());
 				cbProvince.setSelectedItem(suppAddress.getCity().getProvince().getProvince());
-				
+
 				cbCity.setSelectedItem(suppAddress.getCity().getCity());
 			}
 		}
@@ -301,7 +306,9 @@ public class SuppAddressDialog extends JDialog {
 		lblErrorAddressType.setText("");
 		lblErrorAddress.setText("");
 		lblErrorCity.setText("");
-
+		lblErrorContactPerson.setText("");
+		lblErrorEmail.setText("");
+		
 		if (cbAddressType.getSelectedItem() == null || cbAddressType.getSelectedIndex() == 0) {
 			lblErrorAddressType.setText("Combobox Tipe alamat harus dipilih.");
 			isValid = false;
@@ -315,21 +322,23 @@ public class SuppAddressDialog extends JDialog {
 		if (cbProvince.getSelectedItem() == null || cbProvince.getSelectedIndex() == 0) {
 			lblErrorProvince.setText("Combobox Kota harus dipilih.");
 			isValid = false;
-		} 
-		
+		}
+
 		if (cbCity.getSelectedItem() == null || cbCity.getSelectedIndex() == 0) {
 			lblErrorCity.setText("Combobox Kota harus dipilih.");
 			isValid = false;
 		}
-		
+
 		if (txtContactPerson.getText() == null || txtContactPerson.getText().length() == 0) {
 			lblErrorContactPerson.setText("Textbox Contact Person harus diisi.");
 			isValid = false;
 		}
-		
-		if (Boolean.FALSE.equals(new EmailValidator().validate(txtEmail.getText()))) {
-			lblErrorEmail.setText("Format Email salah.");
-			isValid = false;
+
+		if (!"".equals(txtEmail.getText())) {
+			if (Boolean.FALSE.equals(new EmailValidator().validate(txtEmail.getText()))) {
+				lblErrorEmail.setText("Format Email salah.");
+				isValid = false;
+			}
 		}
 
 		return isValid;
@@ -341,14 +350,14 @@ public class SuppAddressDialog extends JDialog {
 		suppAddress.setAddressType(String.valueOf(cbAddressType.getSelectedItem()));
 		suppAddress.setAddress(txtAddress.getText());
 		suppAddress.setZipCode(txtZipCode.getText());
-		
+
 		if (cbProvince.getSelectedIndex() != 0 && cbCity.getSelectedIndex() != 0) {
 			suppAddress.setCityId(cbCity.getDataIndex().getId());
-			
+
 			Province province = new Province();
 			province.setId(cbProvince.getDataIndex().getId());
 			province.setProvince(cbProvince.getDataIndex().getProvince());
-			
+
 			City city = new City();
 			city.setId(cbCity.getDataIndex().getId());
 			city.setCity(cbCity.getDataIndex().getCity());
@@ -359,16 +368,15 @@ public class SuppAddressDialog extends JDialog {
 
 		suppAddress.setPhone(txtPhone.getText());
 		suppAddress.setFax(txtFax.getText());
-		
+
 		suppAddress.getSuppCp().setName(txtContactPerson.getText());
 		suppAddress.getSuppCp().setEmail(txtEmail.getText());
-		
+
 		try {
 			if (isEdit == false) {
 				if (supplierCreate != null) {
 					supplierCreate.listOfSuppAddress.add(suppAddress);
-				}
-				else if (supplierEdit != null) {
+				} else if (supplierEdit != null) {
 					supplierEdit.listOfSuppAddress.add(suppAddress);
 				}
 

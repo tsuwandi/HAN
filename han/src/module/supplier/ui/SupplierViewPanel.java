@@ -218,6 +218,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		tblSuppAddress = new JTable(suppAddressTableModel);
 		tblSuppAddress.setEnabled(false);
 		tblSuppAddress.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tblSuppAddress.setFocusable(false);
 		scrollPaneSuppAddress.setViewportView(tblSuppAddress);
 
 		btnAddSuppAddress = new JButton("Tambah");
@@ -272,6 +273,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		tblSuppVehicle = new JTable(suppVehicleTableModel);
 		tblSuppVehicle.setEnabled(false);
 		tblSuppVehicle.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tblSuppVehicle.setFocusable(false);
 		scrollPaneSuppVehicle.setViewportView(tblSuppVehicle);
 
 		btnAddSuppVehicle = new JButton("Tambah");
@@ -382,7 +384,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		btnDelete = new JButton("Hapus");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int response = DialogBox.showInsertChoice();
+				int response = DialogBox.showDeleteChoice();
 				if (response == JOptionPane.YES_OPTION) {
 					doDelete();
 				}

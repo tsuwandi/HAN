@@ -242,6 +242,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		suppAddressTableModel = new SuppAddressTableModel(new ArrayList<SuppAddress>());
 		tblSuppAddress = new JTable(suppAddressTableModel);
 		tblSuppAddress.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tblSuppAddress.setFocusable(false);
 		scrollPaneSuppAddress.setViewportView(tblSuppAddress);
 
 		tblSuppAddress.addMouseListener(new MouseAdapter() {
@@ -358,6 +359,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		suppVehicleTableModel = new SuppVehicleTableModel(new ArrayList<SuppVehicle>());
 		tblSuppVehicle = new JTable(suppVehicleTableModel);
 		tblSuppVehicle.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tblSuppVehicle.setFocusable(false);
 		scrollPaneSuppVehicle.setViewportView(tblSuppVehicle);
 
 		tblSuppVehicle.addMouseListener(new MouseAdapter() {

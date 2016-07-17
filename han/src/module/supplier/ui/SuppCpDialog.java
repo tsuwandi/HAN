@@ -129,11 +129,11 @@ public class SuppCpDialog extends JDialog {
 				if (doValidate() == false) {
 					return;
 				}
-//					int response = DialogBox.showInsertChoice();
-//					if (response == JOptionPane.YES_OPTION) {
-						doInsert();
-//					}
-//				}
+				// int response = DialogBox.showInsertChoice();
+				// if (response == JOptionPane.YES_OPTION) {
+				doInsert();
+				// }
+				// }
 			}
 		});
 		btnInsert.setBounds(459, 165, 100, 30);
@@ -170,14 +170,11 @@ public class SuppCpDialog extends JDialog {
 			isValid = false;
 		}
 
-		if (txtEmail.getText() == null || txtEmail.getText().length() == 0) {
-			lblErrorEmail.setText("Textbox Email harus diisi.");
-			isValid = false;
-		}
-
-		if (Boolean.FALSE.equals(new EmailValidator().validate(txtEmail.getText()))) {
-			lblErrorEmail.setText("Format Email salah.");
-			isValid = false;
+		if (txtEmail.getText() != null || txtEmail.getText().length() != 0) {
+			if (Boolean.FALSE.equals(new EmailValidator().validate(txtEmail.getText()))) {
+				lblErrorEmail.setText("Format Email salah.");
+				isValid = false;
+			}
 		}
 
 		return isValid;
@@ -192,21 +189,21 @@ public class SuppCpDialog extends JDialog {
 		suppCp.setEmail(txtEmail.getText());
 
 		try {
-//			if (isEdit == false) {
-//				if (supplierCreate != null)
-//					supplierCreate.listOfSuppCp.add(suppCp);
-//				else if (supplierEdit != null)
-//					supplierEdit.listOfSuppCp.add(suppCp);
-//
-//				DialogBox.showInsert();
-//			} else {
-//				if (supplierCreate != null) {
-//					supplierCreate.listOfSuppCp.set(index, suppCp);
-//				} else if (supplierEdit != null) {
-//					supplierEdit.listOfSuppCp.set(index, suppCp);
-//				}
-//				DialogBox.showInsert();
-//			}
+			// if (isEdit == false) {
+			// if (supplierCreate != null)
+			// supplierCreate.listOfSuppCp.add(suppCp);
+			// else if (supplierEdit != null)
+			// supplierEdit.listOfSuppCp.add(suppCp);
+			//
+			// DialogBox.showInsert();
+			// } else {
+			// if (supplierCreate != null) {
+			// supplierCreate.listOfSuppCp.set(index, suppCp);
+			// } else if (supplierEdit != null) {
+			// supplierEdit.listOfSuppCp.set(index, suppCp);
+			// }
+			// DialogBox.showInsert();
+			// }
 			closeDialog();
 
 		} catch (Exception e1) {
