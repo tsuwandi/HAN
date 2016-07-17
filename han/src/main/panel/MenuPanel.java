@@ -11,6 +11,7 @@ import imcacat.jaccordion.JAccordion;
 import menu.panel.Menu1Panel;
 import module.dailyclosing.ui.DailyClosingDialog;
 import module.pembelian.ui.SendToFinanceDialog;
+import module.production.ui.ListProductionPanel;
 import module.report.ui.ReportDialog;
 
 public class MenuPanel extends JPanel {
@@ -26,6 +27,7 @@ public class MenuPanel extends JPanel {
 	private JLabel menuBtn7;
 	private JLabel menuBtn8;
 	private JLabel menuBtn9;
+	private JLabel menuBtn10;
 	public Menu1Panel menu1Panel;
 
 	/**
@@ -128,6 +130,15 @@ public class MenuPanel extends JPanel {
 			}
 		});
 		
+		menuBtn10 = new JLabel("<html><p style=padding:5px;>Produksi</p><html>");
+		menuBtn10.setBounds(0, 35, 195, 35);
+		menuBtn10.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				MainPanel.changePanel("module.production.ui.ListProductionPanel");
+			}
+		});
+		
 		
 		JAccordion menu = new JAccordion();
 		menu.setBounds(1, 0, 199, 200);
@@ -135,7 +146,7 @@ public class MenuPanel extends JPanel {
 		
 		JAccordion subMenu = new JAccordion();
 		Dimension menuSize = menu.getPreferredSize();
-		Dimension subMenuSize = new Dimension(198, 255);
+		Dimension subMenuSize = new Dimension(198, 295);
 		subMenu.addSection("Supplier", menuBtn1);
 		subMenu.addSection("Produk", menuBtn2);
 		subMenu.addSection("Penerimaan", menuBtn3);
@@ -145,6 +156,7 @@ public class MenuPanel extends JPanel {
 		//subMenu.addSection("Laporan", menuBtn7);
 		subMenu.addSection("Send To Finance", menuBtn8);
 		subMenu.addSection("Tutup Harian", menuBtn9);
+		subMenu.addSection("Produksi", menuBtn10);
 		subMenu.setPreferredSize(subMenuSize);
 		subMenu.enableMaxOneSectionOpen();
 		
