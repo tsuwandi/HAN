@@ -2,6 +2,7 @@ package module.dailyclosing.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -85,6 +86,8 @@ public class DailyClosingBL {
 				inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
 
 				new InventoryLogTempDAO(con).save(inventoryLogTemp);
+				
+				new ReceivedDAO(con).updateConfirmDate(received);
 			}
 
 			for (DryIn dryIn : listOfDryIn) {
@@ -107,6 +110,8 @@ public class DailyClosingBL {
 				inventoryLogTempDebet.setConfirmCode(confirm.getConfirmCode());
 
 				new InventoryLogTempDAO(con).save(inventoryLogTempDebet);
+				
+				new DryInDAO(con).updateConfirmDate(dryIn);
 			}
 
 			for (DryOut dryOut : listOfDryOut) {
@@ -129,7 +134,11 @@ public class DailyClosingBL {
 				inventoryLogTempDebet.setConfirmCode(confirm.getConfirmCode());
 
 				new InventoryLogTempDAO(con).save(inventoryLogTempDebet);
+				
+				new DryOutDAO(con).updateConfirmDate(dryOut);
 			}
+			
+			
 
 			con.commit();
 		} catch (SQLException e) {
