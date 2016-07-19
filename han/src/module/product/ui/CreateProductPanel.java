@@ -853,13 +853,22 @@ public class CreateProductPanel extends JPanel {
 						// TODO Auto-generated catch block
 						s.printStackTrace();
 					}
+					boolean isExists = false;
 					for(int i=0; i<productNames.size(); i++){
 						if(nameField.getText().trim().toUpperCase().equals(productNames.get(i).getProductName().trim().toUpperCase())){
 							int mes = JOptionPane.showConfirmDialog(null, "Nama Produk sudah pernah diinput. Apakah Anda ingin tetap menyimpan data?", "Warning", JOptionPane.YES_NO_OPTION);
 							if(mes == JOptionPane.YES_OPTION){
 								validation();
 							}
+							isExists = true;
+							break;
+						} else {
+							isExists = false;
 						}
+					}
+					
+					if(isExists == false){
+						validation();
 					}
 				}
 				
