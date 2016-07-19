@@ -8,10 +8,6 @@
 	<classpathentry kind="lib" path="lib/commons-dbcp-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-pool-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/fast-md5.jar"/>
-	<classpathentry kind="lib" path="lib/jasperreports-4.8.0.jar"/>
-	<classpathentry kind="lib" path="lib/jasperreports-chart-themes-4.7.0.jar"/>
-	<classpathentry kind="lib" path="lib/jasperreports-fonts-4.5.0.jar"/>
-	<classpathentry kind="lib" path="lib/jasperreports-ofc-4.7.0.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.12.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-9.3-1100.jdbc4.jar"/>
 	<classpathentry kind="lib" path="lib/swingx.jar"/>
@@ -26,5 +22,10 @@
 	<classpathentry kind="lib" path="lib/joda-time-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/jaccordion-1.0.0.jar"/>
+	<classpathentry exported="true" kind="con" path="com.jaspersoft.server.JRS_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jasperreports-6.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-chart-themes-6.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-fonts-6.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-functions-6.3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

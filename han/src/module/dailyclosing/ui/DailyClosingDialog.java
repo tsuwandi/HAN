@@ -38,16 +38,7 @@ public class DailyClosingDialog extends JDialog {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					ServiceFactory.getDailyClosingBL();
-					/*java.sql.Connection conn = DataSourceFactory.getDataSource().getConnection();
-					JasperDesign jDesign = JRXmlLoader.load("src/module/report/StockBalkenBasahReport.jrxml");
-					String sql = "SELECT * FROM received order by id desc";
-					JRDesignQuery jDesignQuery = new JRDesignQuery();
-					jDesignQuery.setText(sql);
-					jDesign.setQuery(jDesignQuery);
-					JasperReport jreprt = JasperCompileManager.compileReport(jDesign);
-					JasperPrint jprintt = JasperFillManager.fillReport(jreprt, null, conn);
-					JasperViewer.viewReport(jprintt, false); */
+					
 					String confirmCode = DailyClosingBL.makeConfirmCode();
 					List<Received> listOfReceived = ServiceFactory.getDailyClosingBL().getAllReceivedForDailyClosing();
 					List<DryIn> listOfDryIn = ServiceFactory.getDailyClosingBL().getAllDryInForDailyClosing();
@@ -87,6 +78,9 @@ public class DailyClosingDialog extends JDialog {
 	    group.add(rdbtnMonitor);
 	    group.add(rdbtnFile);
 	    group.add(rdbtnPrinter);
+	    
+
+		rdbtnMonitor.setSelected(true);
 
 	}
 }

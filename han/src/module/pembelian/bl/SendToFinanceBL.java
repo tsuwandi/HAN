@@ -16,15 +16,23 @@ public class SendToFinanceBL {
 	public SendToFinanceBL(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+	
+	public List<Received> getAllBySendToFinanceDateIsNull() throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ReceivedDAO(con).getAllBySendToFinanceDateIsNull();
+		} finally {
+			con.close();
+		}
+	}
 
-	public void update() throws SQLException {
+	public void update(List<Received> listOfReceived) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
-
-			List<Received> listOfReceived = new ReceivedDAO(con).getAllBySendToFinanceDateIsNull();
-
+			
 			for(Received received : listOfReceived) {
 				new ReceivedDAO(con).updateSendToFinanceDate(received);
 			}

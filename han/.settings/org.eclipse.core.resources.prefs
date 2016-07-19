@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
+encoding//src/module/dailyclosing/template_Table.jrxml=UTF-8
+encoding//src/module/pembelian/jasper/SendToFinance.jrxml=UTF-8
 encoding//src/module/pembelian/report/ReceivedReport.jrxml=UTF-8
 encoding//src/module/report/InventoryMovementBalkenBasahInChamberReport.jrxml=UTF-8
 encoding//src/module/report/InventoryMovementBalkenBasahReport.jrxml=UTF-8
