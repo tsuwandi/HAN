@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,22 +47,9 @@ public class SendToFinanceDialog extends JDialog {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					/*
-					 * java.sql.Connection conn =
-					 * DataSourceFactory.getDataSource().getConnection();
-					 * JasperDesign jDesign = JRXmlLoader.load(
-					 * "src/module/report/StockBalkenBasahReport.jrxml"); String
-					 * sql = "SELECT * FROM received order by id desc";
-					 * JRDesignQuery jDesignQuery = new JRDesignQuery();
-					 * jDesignQuery.setText(sql);
-					 * jDesign.setQuery(jDesignQuery); JasperReport jreprt =
-					 * JasperCompileManager.compileReport(jDesign); JasperPrint
-					 * jprintt = JasperFillManager.fillReport(jreprt, null,
-					 * conn); JasperViewer.viewReport(jprintt, false);
-					 */
 
 					String outputFile = "D:" + File.separatorChar + "OneDrive" + File.separatorChar
-							+ "SendToFinanceFile.pdf";
+							+ "SendToFinanceFile_" + new Date().getTime() + ".pdf";
 
 					List<Received> listOfReceived = ServiceFactory.getSendToFinanceBL()
 							.getAllBySendToFinanceDateIsNull();
@@ -81,28 +69,38 @@ public class SendToFinanceDialog extends JDialog {
 							"src/module/pembelian/jasper/SendToFinance.jasper", parameters, new JREmptyDataSource());
 
 					if (rdbtnMonitor.isSelected()) {
-						JasperViewer.viewReport(jasperPrint, false);
-						int a = JasperViewer.EXIT_ON_CLOSE;
-						System.out.println(JasperViewer.EXIT_ON_CLOSE );
-						if(JasperViewer.EXIT_ON_CLOSE == 3) {
+						if (isValid(listOfReceived) == true) {
+							JasperViewer.viewReport(jasperPrint, false);
+							
 							setVisible(false);
+							
+							int response = JOptionPane.showConfirmDialog(null, "Apakah data sudah benar ?",
+									"Peringatan", JOptionPane.WARNING_MESSAGE);
 
-							JOptionPane.showMessageDialog(null, "Send To Finance Berhasil", "Send To Finance",
-									JOptionPane.INFORMATION_MESSAGE);
+							if (response == JOptionPane.YES_OPTION) {
+								setVisible(false);
+
+								ServiceFactory.getSendToFinanceBL().update(listOfReceived);
+
+								JOptionPane.showMessageDialog(null, "Send To Finance Berhasil", "Send To Finance",
+										JOptionPane.INFORMATION_MESSAGE);
+							}
+						} else {
+							JOptionPane.showMessageDialog(null, "Tidak ada data yang dikirim ke finance",
+									"Send To Finance", JOptionPane.INFORMATION_MESSAGE);
 						}
-					} else if (rdbtnFile.isSelected()) {
-						/* outputStream to create PDF */
-						OutputStream outputStream = new FileOutputStream(new File(outputFile));
-						/* Write content to PDF file */
-						JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+					} else if (rdbtnFile.isSelected() && isValid(listOfReceived) == true) {
+						if (isValid(listOfReceived) == true) {
+							/* outputStream to create PDF */
+							OutputStream outputStream = new FileOutputStream(new File(outputFile));
+							/* Write content to PDF file */
+							JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+						} else {
+							JOptionPane.showMessageDialog(null, "Tidak ada data yang dikirim ke finance",
+									"Send To Finance", JOptionPane.INFORMATION_MESSAGE);
+						}
 					} 
-					
-					// ServiceFactory.getSendToFinanceBL().update(listOfReceived);
-
-//					setVisible(false);
-//
-//					JOptionPane.showMessageDialog(null, "Send To Finance Berhasil", "Send To Finance",
-//							JOptionPane.INFORMATION_MESSAGE);
+				
 
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -111,9 +109,9 @@ public class SendToFinanceDialog extends JDialog {
 				}
 
 			}
-		});
-		btnOk.setBounds(137, 123, 100, 30);
-		getContentPane().add(btnOk);
+		});btnOk.setBounds(137,123,100,30);
+
+	getContentPane().add(btnOk);
 
 		rdbtnMonitor = new JRadioButton("Monitor");
 		rdbtnMonitor.setBounds(15, 19, 109, 23);
@@ -134,5 +132,11 @@ public class SendToFinanceDialog extends JDialog {
 
 		rdbtnMonitor.setSelected(true);
 
+	}
+
+	public boolean isValid(List<Received> listOfReceived) {
+		if (listOfReceived.isEmpty())
+			return false;
+		return true;
 	}
 }
