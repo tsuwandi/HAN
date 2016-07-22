@@ -668,9 +668,9 @@ public class AddPopUpPalletCard extends JDialog{
 	            case 1 : 
 	                return p.getLength();
 	            case 2 :
-	                return p.getWidth();
-	            case 3 :
 	                return p.getThickness();
+	            case 3 :
+	                return p.getWidth();
 	            case 4 :
 	                return p.getTotal();
 	            case 5 :

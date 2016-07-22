@@ -1,6 +1,8 @@
 package module.production.ui;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -92,6 +94,26 @@ public class CreateProductionPanel extends JPanel{
 		inputProductionResultBtn = new JButton("Input Hasil Produksi");
 		inputProductionResultBtn.setBounds(450,360,150,50);
 		add(inputProductionResultBtn);
+		
+		inputMaterialBtn.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PopUpInputMaterial pop = new PopUpInputMaterial();
+				pop.show();
+				pop.setLocationRelativeTo(null);
+			}
+		});
+		
+		inputProductionResultBtn.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PopUpProductionResult pop = new PopUpProductionResult();
+				pop.show();
+				pop.setLocationRelativeTo(null);
+			}
+		});
 		
 	}
 	

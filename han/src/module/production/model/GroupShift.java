@@ -5,8 +5,7 @@ import module.util.ComboBoxProperties;
 public class GroupShift implements ComboBoxProperties{
 	int id;
 	String groupShfitCode;
-	String lineCode;
-	String shiftCode;
+	
 	String description;
 	String employeeLeaderCode;
 	
@@ -21,18 +20,6 @@ public class GroupShift implements ComboBoxProperties{
 	}
 	public void setGroupShfitCode(String groupShfitCode) {
 		this.groupShfitCode = groupShfitCode;
-	}
-	public String getLineCode() {
-		return lineCode;
-	}
-	public void setLineCode(String lineCode) {
-		this.lineCode = lineCode;
-	}
-	public String getShiftCode() {
-		return shiftCode;
-	}
-	public void setShiftCode(String shiftCode) {
-		this.shiftCode = shiftCode;
 	}
 	public String getDescription() {
 		return description;
