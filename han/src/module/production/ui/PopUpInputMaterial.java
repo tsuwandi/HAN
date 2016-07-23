@@ -66,6 +66,9 @@ public class PopUpInputMaterial extends JDialog{
 	
 	
 	public PopUpInputMaterial(){
+		createGUI();
+	}
+	private void createGUI(){
 		setLayout(null);
 		setTitle("Input Bahan Baku");
 		setSize(800, 750);

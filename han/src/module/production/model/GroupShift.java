@@ -4,22 +4,27 @@ import module.util.ComboBoxProperties;
 
 public class GroupShift implements ComboBoxProperties{
 	int id;
-	String groupShfitCode;
-	
+	String groupShiftCode;
 	String description;
 	String employeeLeaderCode;
 	
+	public GroupShift(){
+	}
+	public GroupShift(String description){
+		this.description = description;
+	}
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getGroupShfitCode() {
-		return groupShfitCode;
+	
+	public String getGroupShiftCode() {
+		return groupShiftCode;
 	}
-	public void setGroupShfitCode(String groupShfitCode) {
-		this.groupShfitCode = groupShfitCode;
+	public void setGroupShiftCode(String groupShiftCode) {
+		this.groupShiftCode = groupShiftCode;
 	}
 	public String getDescription() {
 		return description;

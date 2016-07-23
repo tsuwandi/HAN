@@ -6,6 +6,12 @@ public class Machine implements ComboBoxProperties{
 	int id;
 	String machineCode;
 	String description;
+	
+	public Machine(){
+	}
+	public Machine(String description){
+		this.description = description;
+	}
 	public int getId() {
 		return id;
 	}

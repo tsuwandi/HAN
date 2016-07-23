@@ -35,43 +35,11 @@ public class ListProductionPanel extends JPanel {
 	List<Production> productions;
 	ListProductionPanel listProductionPanel;
 	public ListProductionPanel() {
-		setLayout(null);
-		listProductionPanel = this;
-		
-		JLabel lblBreadcrumb = new JLabel("ERP > Produksi");
-		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblBreadcrumb.setBounds(50, 10, 320, 30);
-		add(lblBreadcrumb);
-
-		JLabel lblHeader = new JLabel("PRODUKSI");
-		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblHeader.setBounds(50, 45, 320, 30);
-		add(lblHeader);
-		
-		searchBtn = new JButton("Cari");
-		searchBtn.setBounds(950,130,100,30);
-		add(searchBtn);
-		
-		searchField = new JTextField();
-		searchField.setBounds(800, 131, 150, 28);
-		add(searchField);
-		
-		advancedSearchBtn = new JButton("Pencarian Lanjut");
-		advancedSearchBtn.setBounds(900,80,150,30);
-		add(advancedSearchBtn);
-		
-		inputProductionBtn = new JButton("Buat Baru");
-		inputProductionBtn.setBounds(730,80,150,30);
-		add(inputProductionBtn);
+		createGUI();
+		listener();
+	}
 	
-		productions = new ArrayList<>();
-		productionTableModel = new ProductionTableModel(productions);
-		productionTable = new JTable(productionTableModel);
-		
-		scrollPane =  new JScrollPane(productionTable);
-		scrollPane.setBounds(50,200,1000,300);
-		add(scrollPane);
-		
+	private void listener(){
 		productionTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -122,6 +90,46 @@ public class ListProductionPanel extends JPanel {
 				
 			}
 		});
+		
+	}
+	
+	private void createGUI(){
+		setLayout(null);
+		listProductionPanel = this;
+		
+		JLabel lblBreadcrumb = new JLabel("ERP > Produksi");
+		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblBreadcrumb.setBounds(50, 10, 320, 30);
+		add(lblBreadcrumb);
+
+		JLabel lblHeader = new JLabel("PRODUKSI");
+		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblHeader.setBounds(50, 45, 320, 30);
+		add(lblHeader);
+		
+		searchBtn = new JButton("Cari");
+		searchBtn.setBounds(950,130,100,30);
+		add(searchBtn);
+		
+		searchField = new JTextField();
+		searchField.setBounds(800, 131, 150, 28);
+		add(searchField);
+		
+		advancedSearchBtn = new JButton("Pencarian Lanjut");
+		advancedSearchBtn.setBounds(900,80,150,30);
+		add(advancedSearchBtn);
+		
+		inputProductionBtn = new JButton("Buat Baru");
+		inputProductionBtn.setBounds(730,80,150,30);
+		add(inputProductionBtn);
+	
+		productions = new ArrayList<>();
+		productionTableModel = new ProductionTableModel(productions);
+		productionTable = new JTable(productionTableModel);
+		
+		scrollPane =  new JScrollPane(productionTable);
+		scrollPane.setBounds(50,200,1000,300);
+		add(scrollPane);
 		
 	}
 	public void setTableSize(){

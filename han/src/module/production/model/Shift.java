@@ -6,6 +6,11 @@ public class Shift implements ComboBoxProperties{
 	int id;
 	String shiftCode;
 	String shiftName;
+	public Shift(){
+	}
+	public Shift(String shiftName){
+		this.shiftName = shiftName;
+	}
 	public int getId() {
 		return id;
 	}

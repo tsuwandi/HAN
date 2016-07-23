@@ -7,6 +7,13 @@ public class Line implements ComboBoxProperties{
 	String lineCode;
 	String description;
 	
+	public Line(){
+		
+	}
+	public Line(String description){
+		this.description = description;
+	}
+	
 	public int getId() {
 		return id;
 	}

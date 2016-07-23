@@ -3,6 +3,9 @@ package module.production.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -11,6 +14,7 @@ import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
+import controller.ServiceFactory;
 import main.component.ComboBox;
 import module.production.model.GroupShift;
 import module.production.model.Shift;
@@ -35,6 +39,56 @@ public class CreateProductionPanel extends JPanel{
 	JButton inputProductionResultBtn;
 	
 	public CreateProductionPanel(){
+		createGUI();
+		listener();
+		initData();
+	}
+	
+	private void listener(){
+		inputMaterialBtn.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PopUpInputMaterial pop = new PopUpInputMaterial();
+				pop.show();
+				pop.setLocationRelativeTo(null);
+			}
+		});
+		
+		inputProductionResultBtn.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PopUpProductionResult pop = new PopUpProductionResult();
+				pop.show();
+				pop.setLocationRelativeTo(null);
+			}
+		});
+	}
+	
+	private void initData(){
+		List<Shift> shifts = new ArrayList<>();
+		List<Line> lines = new ArrayList<>();
+		List<GroupShift> groupShifts = new ArrayList<>();
+		
+		try {
+			lines = ServiceFactory.getProductionBL().getLine();
+			shifts = ServiceFactory.getProductionBL().getShift();
+			groupShifts = ServiceFactory.getProductionBL().getGroupShift();
+			
+			lines.add(0,new Line("--Pilih--"));
+			shifts.add(0,new Shift("--Pilih--"));
+			groupShifts.add(0,new GroupShift("--Pilih--"));
+			
+			lineCmb.setList(lines);
+			shiftCmb.setList(shifts);
+			groupShiftCmb.setList(groupShifts);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void createGUI(){
 		setLayout(null);
 		
 		JLabel lblBreadcrumb = new JLabel("ERP > Produksi");
@@ -94,27 +148,6 @@ public class CreateProductionPanel extends JPanel{
 		inputProductionResultBtn = new JButton("Input Hasil Produksi");
 		inputProductionResultBtn.setBounds(450,360,150,50);
 		add(inputProductionResultBtn);
-		
-		inputMaterialBtn.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				PopUpInputMaterial pop = new PopUpInputMaterial();
-				pop.show();
-				pop.setLocationRelativeTo(null);
-			}
-		});
-		
-		inputProductionResultBtn.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				PopUpProductionResult pop = new PopUpProductionResult();
-				pop.show();
-				pop.setLocationRelativeTo(null);
-			}
-		});
-		
 	}
 	
 }

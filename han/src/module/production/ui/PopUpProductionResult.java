@@ -78,6 +78,11 @@ public class PopUpProductionResult extends JDialog{
 	private JPanel borderPanel;
 	
 	public PopUpProductionResult(){
+		createGUI();
+		
+	}
+	
+	private void createGUI(){
 		setLayout(null);
 		setTitle("Input Hasil Produksi");
 		setSize(1000, 750);
@@ -263,7 +268,6 @@ public class PopUpProductionResult extends JDialog{
 		saveBtn = new JButton("Simpan");
 		saveBtn.setBounds(750,1020,150,30);
 		containerPnl.add(saveBtn);
-		
 	}
 	
 	

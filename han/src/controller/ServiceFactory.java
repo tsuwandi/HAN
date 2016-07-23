@@ -6,6 +6,7 @@ import module.dryout.bl.DryOutBL;
 import module.employee.bl.EmployeeBL;
 import module.pembelian.bl.SendToFinanceBL;
 import module.product.bl.ProductBL;
+import module.production.bl.ProductionBL;
 import module.report.bl.ReportBL;
 import module.supplier.bl.SupplierBL;
 
@@ -18,6 +19,7 @@ public class ServiceFactory {
 	private static DryOutBL dryOutBL = null;
 	private static ProductBL productBL = null;
 	private static ReportBL reportBL = null;
+	private static ProductionBL productionBL = null;
 
 	private static SendToFinanceBL sendToFinanceBL = null;
 	private static DailyClosingBL dailyClosingBL = null;
@@ -96,5 +98,12 @@ public class ServiceFactory {
 			dailyClosingBL = new DailyClosingBL(DataSourceFactory.getDataSource());
 		}
 		return dailyClosingBL;
+	}
+	
+	public static ProductionBL getProductionBL() {
+		if (productionBL == null) {
+			productionBL = new ProductionBL(DataSourceFactory.getDataSource());
+		}
+		return productionBL;
 	}
 }
