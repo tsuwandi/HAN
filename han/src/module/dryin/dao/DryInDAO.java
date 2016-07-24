@@ -247,9 +247,11 @@ public class DryInDAO {
 		try {
 
 			String allDryInForDailyClosingQuery = "SELECT d.id, d.dry_in_code, d.date_in, d.chamber_id, d.total_volume, d.confirm_date, "
-					+ "pc.total, pc.volume, pc.product_code, pc.pallet_card_code FROM dry_in d "
+					+ "pc.total, pc.volume, pc.product_code, pc.pallet_card_code, c.chamber, pd.product_name FROM dry_in d "
+					+ "INNER JOIN chamber c ON c.id = d.chamber_id "
 					+ "INNER JOIN dry_in_pallet dp ON d.dry_in_code = dp.dry_in_code "
 					+ "INNER JOIN pallet_card pc ON pc.pallet_card_code = dp.pallet_card_code "
+					+ "INNER JOIN product pd ON pd.product_code = pc.product_code "
 					+ "WHERE d.confirm_date IS NULL "
 					+ "AND d.deleted_date IS NULL AND dp.deleted_date IS NULL AND pc.deleted_date IS NULL";
 			
@@ -264,13 +266,18 @@ public class DryInDAO {
 				dryIn.setChamberId(rs.getInt("chamber_id"));
 				dryIn.setTotalVolume(rs.getDouble("total_volume"));
 				dryIn.setConfirmDate(rs.getDate("confirm_date"));
-
+				
+				Chamber chamber = new Chamber();
+				chamber.setChamber(rs.getString("chamber"));
+				dryIn.setChamber(chamber);
+				
 				PalletCard palletCard = new PalletCard();
 				palletCard.setPalletCardCode(rs.getString("pallet_card_code"));
 				palletCard.setVolume(rs.getDouble("volume"));
 				palletCard.setTotal(rs.getInt("total"));
 				palletCard.setProductCode(rs.getString("product_code"));
-
+				palletCard.setProductName(rs.getString("product_name"));
+				
 				dryIn.setPalletCard(palletCard);
 
 				listOfDryIn.add(dryIn);

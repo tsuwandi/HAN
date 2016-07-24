@@ -159,7 +159,6 @@ public class ProductDAO {
 			insertProductStatement.setString(16, product.getInputBy());
 			insertProductStatement.executeUpdate();
 			
-			System.out.println(insertProductStatement);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
@@ -308,7 +307,6 @@ public class ProductDAO {
 				product.setWoodTypeName(rs.getString("b.wood_type"));
 				product.setGradeName(rs.getString("c.grade"));
 				
-				System.out.println(getAllProductStatement);
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -466,8 +464,6 @@ public class ProductDAO {
 			updateProductStatement.setString(14, product.getEditBy());
 			updateProductStatement.setInt(15, product.getProductId());
 			updateProductStatement.executeUpdate();
-
-			System.out.println(updateProductStatement);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
@@ -481,7 +477,7 @@ public class ProductDAO {
 			getAllProductStatement = connection.prepareStatement(query);
 			getAllProductStatement.setString(1, product_code);
 			ResultSet rs = getAllProductStatement.executeQuery();
-System.out.println("aaa " + getAllProductStatement);
+
 			while (rs.next()) {
 				p = new Product();
 				p.setProductId(rs.getInt("id"));
@@ -546,8 +542,6 @@ System.out.println("aaa " + getAllProductStatement);
 			deleteProductStatement.setString(2, product.getDeletedBy());
 			deleteProductStatement.setString(3, product.getProductCode());
 			deleteProductStatement.executeUpdate();
-
-			System.out.println(deleteProductStatement);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());

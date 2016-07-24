@@ -93,7 +93,7 @@ public class SendToFinanceDialog extends JDialog {
 							JOptionPane.showMessageDialog(null, "Tidak ada data yang dikirim ke finance",
 									"Send To Finance", JOptionPane.INFORMATION_MESSAGE);
 						}
-					} else if (rdbtnFile.isSelected() && isValid(listOfReceived) == true) {
+					} else if (rdbtnFile.isSelected()) {
 						if (isValid(listOfReceived) == true) {
 							/* outputStream to create PDF */
 							OutputStream outputStream = new FileOutputStream(new File(outputFile));
