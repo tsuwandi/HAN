@@ -243,7 +243,8 @@ public class ProductEditPanel extends JPanel implements Bridging {
 //		add(scrollPane);
 		
 		breadcrumb = new JLabel("ERP > Pembelian > Produk");
-		breadcrumb.setBounds(20, 5, 200, 25);
+		breadcrumb.setFont(new Font(null, Font.BOLD, 12));
+		breadcrumb.setBounds(20, 10, 320, 30);
 		
 		backBtn = new JButton("X");
 		backBtn.setBounds(1100, 5, 40, 25);
@@ -257,9 +258,9 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		});
 		backBtn.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		titleLbl = new JLabel("EDIT PRODUCT");
-		titleLbl.setBounds(20, 20, 300, 50);
-		titleLbl.setFont(new Font(null, Font.BOLD, 24));
+		titleLbl = new JLabel("Ubah");
+		titleLbl.setBounds(20, 40, 300, 30);
+		titleLbl.setFont(new Font(null, Font.BOLD, 12));
 		
 		idLbl = new JLabel("Kode Produk");
 		idLbl.setBounds(20, 80, 100, 30);
@@ -372,7 +373,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		
 		idField = new JTextField();
 		idField.setEnabled(false);
-		idField.setBounds(195, 80, 100, 25);
+		idField.setBounds(195, 80, 150, 25);
 		
 		nameField = new JTextField();
 		nameField.setBounds(195, 110, 150, 25);
@@ -827,8 +828,8 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		taxScroll.setBounds(20, 1770, 1130, 75);
 		taxScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
-		saveBtn = new JButton("Save");
-		saveBtn.setBounds(745, 550, 75, 25);
+		saveBtn = new JButton("Simpan");
+		saveBtn.setBounds(905, 550, 75, 25);
 		saveBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -843,13 +844,22 @@ public class ProductEditPanel extends JPanel implements Bridging {
 						// TODO Auto-generated catch block
 						s.printStackTrace();
 					}
+					boolean isExists = false;
 					for(int i=0; i<productNames.size(); i++){
 						if(nameField.getText().trim().toUpperCase().equals(productNames.get(i).getProductName().trim().toUpperCase())){
 							int mes = JOptionPane.showConfirmDialog(null, "Nama Produk sudah pernah diinput. Apakah Anda ingin tetap menyimpan data?", "Warning", JOptionPane.YES_NO_OPTION);
 							if(mes == JOptionPane.YES_OPTION){
 								validation();
 							}
+							isExists = true;
+							break;
+						} else {
+							isExists = false;
 						}
+					}
+					
+					if(isExists == false){
+						validation();
 					}
 				}
 				
@@ -1448,7 +1458,6 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		this.product = (Product) objects[0];
 
 		loadData(product.getProductCode());
-		System.out.println(product.getProductCode());
 	}
 
 }

@@ -2,7 +2,11 @@ package module.dailyclosing.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -13,6 +17,11 @@ import javax.swing.JRadioButton;
 
 import controller.ServiceFactory;
 import module.pembelian.model.Received;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 import module.dailyclosing.bl.DailyClosingBL;
 import module.dryin.model.DryIn;
 import module.dryout.model.DryOut;
@@ -38,21 +47,50 @@ public class DailyClosingDialog extends JDialog {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					File file = new File("D:\\Output");
+					if (!file.exists()) {
+						file.mkdir();
+					}
+
+					String outputFile = "D:" + File.separatorChar + "Output" + File.separatorChar + "DailyClosingFile_"
+							+ new Date() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds()
+							+ ".pdf";
 					
 					String confirmCode = DailyClosingBL.makeConfirmCode();
 					List<Received> listOfReceived = ServiceFactory.getDailyClosingBL().getAllReceivedForDailyClosing();
 					List<DryIn> listOfDryIn = ServiceFactory.getDailyClosingBL().getAllDryInForDailyClosing();
 					List<DryOut> listOfDryOut = ServiceFactory.getDailyClosingBL().getAllDryOutForDailyClosing();
 					
-					ServiceFactory.getDailyClosingBL().save(listOfReceived, listOfDryIn, listOfDryOut, confirmCode);
+					/* Convert List to JRBeanCollectionDataSource */
+					JRBeanCollectionDataSource itemsJRBeanListOfReceived = new JRBeanCollectionDataSource(listOfReceived);
+					//JRBeanCollectionDataSource itemsJRBeanListOfDryIn = new JRBeanCollectionDataSource(listOfDryIn);
+					//JRBeanCollectionDataSource itemsJRBeanListOfDryOut = new JRBeanCollectionDataSource(listOfDryOut);
+
+					/* Map to hold Jasper report Parameters */
+					Map<String, Object> parameters = new HashMap<String, Object>();
+					parameters.put("ItemDataSourceListOfReceived", itemsJRBeanListOfReceived);
+					//parameters.put("ItemDataSourceListOfDryIn", itemsJRBeanListOfDryIn);
+					//parameters.put("ItemDataSourceListOfDryOut", itemsJRBeanListOfDryOut);
 					
+					/*
+					 * Using compiled version(.jasper) of Jasper report to
+					 * generate PDF
+					 */
+					JasperPrint jasperPrint = JasperFillManager.fillReport(
+							"src/module/dailyclosing/jasper/DailyClosing.jasper", parameters, new JREmptyDataSource());
+
+					JasperViewer.viewReport(jasperPrint, false);
+
 					setVisible(false);
+					//ServiceFactory.getDailyClosingBL().save(listOfReceived, listOfDryIn, listOfDryOut, confirmCode);
 					
-					JOptionPane.showMessageDialog(null, "Tutup Harian Berhasil", "Send To Finance",
-							JOptionPane.INFORMATION_MESSAGE);
+//					setVisible(false);
+//					
+//					JOptionPane.showMessageDialog(null, "Tutup Harian Berhasil", "Send To Finance",
+//							JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					e1.getCause();
 					JOptionPane.showMessageDialog(null, "Gagal Memproses Tutup Harian", "Send To Finance",
 							JOptionPane.ERROR_MESSAGE);
 				}

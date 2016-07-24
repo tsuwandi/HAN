@@ -113,22 +113,22 @@ public class ProductListPanel extends JPanel {
 			e1.printStackTrace();
 		}
 		
-		System.out.println(products.size());
+		//System.out.println(products.size());
 		productTableModel = new ProductTableModel(products);
 		productTable = new JTable(productTableModel);
-		productTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		productTable.getTableHeader().setReorderingAllowed(false);
-		productTable.getTableHeader().setResizingAllowed(false);
-		productTable.getColumnModel().getColumn(0).setPreferredWidth(30);
-		productTable.getColumnModel().getColumn(1).setPreferredWidth(120);
-		productTable.getColumnModel().getColumn(2).setPreferredWidth(170);
-		productTable.getColumnModel().getColumn(3).setPreferredWidth(170);
-		productTable.getColumnModel().getColumn(4).setPreferredWidth(130);
-		productTable.getColumnModel().getColumn(5).setPreferredWidth(140);
+//		productTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//		productTable.getTableHeader().setReorderingAllowed(false);
+//		productTable.getTableHeader().setResizingAllowed(false);
+//		productTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+//		productTable.getColumnModel().getColumn(1).setPreferredWidth(120);
+//		productTable.getColumnModel().getColumn(2).setPreferredWidth(170);
+//		productTable.getColumnModel().getColumn(3).setPreferredWidth(170);
+//		productTable.getColumnModel().getColumn(4).setPreferredWidth(130);
+//		productTable.getColumnModel().getColumn(5).setPreferredWidth(140);
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-		productTable.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		productTable.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 
 		productTable.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -138,10 +138,10 @@ public class ProductListPanel extends JPanel {
 					int column = target.getSelectedColumn();
 					Product product;
 					// do some action if appropriate column
-					if(column == 5){
+					if(column == 4){
 						product = new Product();
 						
-						product.setProductCode(productTable.getValueAt(row, 1).toString());
+						product.setProductCode(productTable.getValueAt(row, 0).toString());
 
 						MainPanel.changePanel("module.product.ui.ProductViewPanel", product);
 					}
@@ -177,15 +177,15 @@ public class ProductListPanel extends JPanel {
 			products = new ArrayList<Product>();
 			products = ServiceFactory.getProductBL().getSearchProduct(value);
 			refreshTable();
-			productTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			productTable.getTableHeader().setReorderingAllowed(false);
-			productTable.getTableHeader().setResizingAllowed(false);
-			productTable.getColumnModel().getColumn(0).setPreferredWidth(30);
-			productTable.getColumnModel().getColumn(1).setPreferredWidth(120);
-			productTable.getColumnModel().getColumn(2).setPreferredWidth(170);
-			productTable.getColumnModel().getColumn(3).setPreferredWidth(170);
-			productTable.getColumnModel().getColumn(4).setPreferredWidth(130);
-			productTable.getColumnModel().getColumn(5).setPreferredWidth(140);
+//			productTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//			productTable.getTableHeader().setReorderingAllowed(false);
+//			productTable.getTableHeader().setResizingAllowed(false);
+//			productTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+//			productTable.getColumnModel().getColumn(1).setPreferredWidth(120);
+//			productTable.getColumnModel().getColumn(2).setPreferredWidth(170);
+//			productTable.getColumnModel().getColumn(3).setPreferredWidth(170);
+//			productTable.getColumnModel().getColumn(4).setPreferredWidth(130);
+//			productTable.getColumnModel().getColumn(5).setPreferredWidth(140);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
@@ -215,7 +215,7 @@ public class ProductListPanel extends JPanel {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 6;
+			return 5;
 		}
 
 		/**
@@ -231,16 +231,14 @@ public class ProductListPanel extends JPanel {
 			Product p = products.get(rowIndex);
 			switch (columnIndex) {
 			case 0:
-				return seq = rowIndex+1;
-			case 1:
 				return p.getProductCode();
-			case 2:
+			case 1:
 				return p.getProductName();
-			case 3:
+			case 2:
 				return p.getProductCat();
-			case 4: 
+			case 3: 
 				return p.getProductStat();
-			case 5:
+			case 4:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
@@ -257,16 +255,14 @@ public class ProductListPanel extends JPanel {
 		public String getColumnName(int column) {
 			switch (column) {
 			case 0:
-				return "No";
-			case 1:
 				return "Kode Produk";
-			case 2:
+			case 1:
 				return "Nama Produk";
-			case 3:
+			case 2:
 				return "Kategori Produk";
-			case 4:
+			case 3:
 				return "Status Produk";
-			case 5:
+			case 4:
 				return "Action";
 			default:
 				return "";
