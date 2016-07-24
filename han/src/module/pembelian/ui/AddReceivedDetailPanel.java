@@ -139,7 +139,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 	JScrollPane scrollPane;
 	JPanel containerPnl;
 	public Received received;
-	public Map<String, Pallet> palletMaps;
+	public Map<String, PalletCard> palletMaps;
 	public List<Grade> gradeCollection;
 	
 	public AddReceivedDetailPanel(){
@@ -457,16 +457,20 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 				}else{
 					errorGradeLbl.setText("");
 					if(gradeCollection.size()!=0){
+						int index = 0;
 						for (int i = 0; i < gradeCollection.size(); i++) {
 							if(gradeCollection.get(i).getId()==gradeComboBox.getDataIndex().getId()){
-								EditPopUpPalletCard pop = new EditPopUpPalletCard(parent, receivedDetails.get(i),i);
-								pop.show();
-								pop.setLocationRelativeTo(null);
-							}else{
-								AddPopUpPalletCard pop = new AddPopUpPalletCard(parent);
-								pop.show();
-								pop.setLocationRelativeTo(null);
+								index = i;
 							}
+						}
+						if(index!=0){
+							EditPopUpPalletCard pop = new EditPopUpPalletCard(parent, receivedDetails.get(index),index);
+							pop.show();
+							pop.setLocationRelativeTo(null);
+						}else{
+							AddPopUpPalletCard pop = new AddPopUpPalletCard(parent);
+							pop.show();
+							pop.setLocationRelativeTo(null);
 						}
 					}else{
 						AddPopUpPalletCard pop = new AddPopUpPalletCard(parent);
@@ -852,10 +856,15 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 			receivedDetailTable.setModel(new ReceivedDetailModel(receivedDetails));
 			receivedDetailTable.updateUI();
 			
+			
 			for (ReceivedDetail receivedDetail : receivedDetails) {
 				Grade grade = new Grade();
 				grade.setId(receivedDetail.getGradeID());
 				gradeCollection.add(grade);
+				
+				for(PalletCard pc : receivedDetail.getPallets()){
+					palletMaps.put(pc.getPalletCardCode(), pc);
+				}
 			}
 			
 			picDockings = ReceivedDAOFactory.getPicDockingReceivedDAO().getPICDocking(received.getReceivedCode());

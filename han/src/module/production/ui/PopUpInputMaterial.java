@@ -1,18 +1,28 @@
 package module.production.ui;
 
 import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ServiceFactory;
+import main.component.DialogBox;
 import model.User;
 import module.pembelian.model.PalletCard;
 import module.production.model.ProdRM;
@@ -66,13 +76,15 @@ public class PopUpInputMaterial extends JDialog{
 	private MaterialTableModel materialTableModel;
 	
 	private CreateProductionPanel createProductionPanel;
-	
+	private List<ProdRM> prodRms;
 	public PopUpInputMaterial(JPanel parent){
-		createProductionPanel = (CreateProductionPanel) parent;
 		createGUI();
+		initData(parent);
+		listener();
 	}
 	private void createGUI(){
 		setLayout(null);
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setTitle("Input Bahan Baku");
 		setSize(800, 750);
 		
@@ -91,31 +103,31 @@ public class PopUpInputMaterial extends JDialog{
 		add(palletCardCodeLbl);
 		
 		ritNoField = new JTextField();
-		ritNoField.setBounds(200, 100, 100, 20);
+		ritNoField.setBounds(200, 100, 50, 20);
 		add(ritNoField);
 		
 		firstSeparatorLbl = new JLabel("/BL/");
-		firstSeparatorLbl.setBounds(300,100,40,20);
+		firstSeparatorLbl.setBounds(250,100,30,20);
 		add(firstSeparatorLbl);
 		
 		dateField = new JTextField();
-		dateField.setBounds(340, 100, 50, 20);
+		dateField.setBounds(280, 100, 50, 20);
 		add(dateField);
 		
 		secondSeparatorLbl = new JLabel("/");
-		secondSeparatorLbl.setBounds(390,100,10,20);
+		secondSeparatorLbl.setBounds(330,100,10,20);
 		add(secondSeparatorLbl);
 		
 		monthField = new JTextField();
-		monthField.setBounds(400, 100, 50, 20);
+		monthField.setBounds(340, 100, 50, 20);
 		add(monthField);
 		
 		thirdSeparatorLbl = new JLabel("/");
-		thirdSeparatorLbl.setBounds(450,100,10,20);
+		thirdSeparatorLbl.setBounds(390,100,10,20);
 		add(thirdSeparatorLbl);
 		
 		yearField = new JTextField();
-		yearField.setBounds(460, 100, 50, 20);
+		yearField.setBounds(400, 100, 50, 20);
 		add(yearField);
 		
 		sequenceField = new JTextField();
@@ -249,6 +261,83 @@ public class PopUpInputMaterial extends JDialog{
 		add(saveBtn);
 	}
 	
+	private void initData(JPanel parent){
+		prodRms = new ArrayList<>();
+		createProductionPanel = (CreateProductionPanel) parent;
+		lengthField.setEnabled(false);
+		widthField.setEnabled(false);
+		thickField.setEnabled(false);
+		logField.setEnabled(false);
+		volumeField.setEnabled(false);
+		totalLogField.setEnabled(false);
+		totalVolumeField.setEnabled(false);
+		palletCardField.setEnabled(false);
+		Date currentDate = new Date();
+		String date = new SimpleDateFormat("dd").format(currentDate);
+		String month = new SimpleDateFormat("MM").format(currentDate);
+		String year = new SimpleDateFormat("yy").format(currentDate);
+		dateField.setText(date);
+		monthField.setText(month);
+		yearField.setText(year);
+		
+		if(createProductionPanel.getProduction().getListOfProdRM()!=null){
+			prodRms = createProductionPanel.getProduction().getListOfProdRM();
+			materialTable.setModel(new MaterialTableModel(prodRms));
+			materialTable.updateUI();
+		}
+	}
+	
+	private void listener(){
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				if(DialogBox.showCloseChoice()==JOptionPane.YES_OPTION)dispose();
+			}
+		});
+		
+		sequenceField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				checkPallet();
+			}
+		});
+		ritNoField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				checkPallet();
+			}
+		});
+	}
+	
+	private void checkPallet(){
+		if(ritNoField.getText().equals("")||sequenceField.equals("")){
+			DialogBox.showError("Rit No dan sequence harus diisi !");
+		}else{
+			try {
+				String palletCardCode = ritNoField.getText()+"/BL/"+dateField+"/"+monthField+"/"+yearField+"/"+sequenceField;
+				ProdRM prodRM = ServiceFactory.getProductionBL().getSearchProdRMByPalletCard(palletCardCode, prodRms);
+				if(prodRM==null)DialogBox.showError("Pallet Card tidak ditemukan");
+				else{
+					lengthField.setText(prodRM.getLength()+"");
+					widthField.setText(prodRM.getWidth()+"");
+					thickField.setText(prodRM.getThick()+"");
+					logField.setText(prodRM.getLog()+"");
+					volumeField.setText(prodRM.getVolume()+"");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void clearPallet(){
+		lengthField.setText("");
+		widthField.setText("");
+		thickField.setText("");
+		logField.setText("");
+		volumeField.setText("");
+		
+	}
 	
 	private class MaterialTableModel extends AbstractTableModel{
 		
