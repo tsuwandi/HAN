@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import module.dryin.model.DryIn;
 import module.pembelian.model.PalletCard;
 import module.pembelian.model.Received;
+import module.supplier.model.Supplier;
 import module.util.DateUtil;
 
 public class ReceivedDAO {
@@ -435,15 +436,17 @@ public class ReceivedDAO {
 		try {
 			String allReceivedForDailyClosingQuery = "select r.id, r.received_code, r.received_date, r.supplier_code, r.supplier_cp_id, r.rit_no, r.license_plate, "
 					+ "r.driver, r.delivery_note, r.wood_type_id, r.driver_id, r.received_status, r.emp_code, r.total_volume, r.confirm_date, r.send_to_finance_date, "
-					+ "pc.total, pc.volume, pc.product_code, pc.pallet_card_code "
+					+ "pc.total, pc.volume, pc.product_code, pc.pallet_card_code, s.supp_name, pd.product_name "
 					+ "FROM received r "
 					+ "INNER JOIN received_detail rd ON r.received_code = rd.received_code "
+					+ "INNER JOIN supplier s ON s.supp_code = r.supplier_code "
 					+ "INNER JOIN pallet_card pc ON rd.id = pc.received_detail_id "
+					+ "INNER JOIN product pd ON pd.product_code = pd.product_name "
 					+ "WHERE r.send_to_finance_date IS NOT NULL AND r.confirm_date IS NULL "
 					+ "AND r.deleted_date IS NULL AND rd.deleted_date IS NULL AND pc.deleted_date IS NULL";
 
 			getAllStatement = connection.prepareStatement(allReceivedForDailyClosingQuery);
-
+			System.out.println(getAllStatement);
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
 				Received received = new Received();
@@ -469,6 +472,9 @@ public class ReceivedDAO {
 				palletCard.setVolume(rs.getDouble("volume"));
 				palletCard.setTotal(rs.getInt("total"));
 				palletCard.setProductCode(rs.getString("product_code"));
+				palletCard.setProductName("product_name");
+				
+				received.setSupplier(rs.getString("supp_name"));
 				
 				received.setPalletCard(palletCard);
 				

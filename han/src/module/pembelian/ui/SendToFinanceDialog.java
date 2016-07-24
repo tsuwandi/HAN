@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,8 +49,14 @@ public class SendToFinanceDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 
-					String outputFile = "D:" + File.separatorChar + "OneDrive" + File.separatorChar
-							+ "SendToFinanceFile_" + new Date().getTime() + ".pdf";
+					File file = new File("D:\\Output");
+					if (!file.exists()) {
+						file.mkdir();
+					}
+
+					String outputFile = "D:" + File.separatorChar + "Output" + File.separatorChar + "SendToFinanceFile_"
+							+ new Date() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds()
+							+ ".pdf";
 
 					List<Received> listOfReceived = ServiceFactory.getSendToFinanceBL()
 							.getAllBySendToFinanceDateIsNull();
@@ -71,19 +78,16 @@ public class SendToFinanceDialog extends JDialog {
 					if (rdbtnMonitor.isSelected()) {
 						if (isValid(listOfReceived) == true) {
 							JasperViewer.viewReport(jasperPrint, false);
-							
+
 							setVisible(false);
-							
+
 							int response = JOptionPane.showConfirmDialog(null, "Apakah data sudah benar ?",
 									"Peringatan", JOptionPane.WARNING_MESSAGE);
 
 							if (response == JOptionPane.YES_OPTION) {
 								setVisible(false);
 
-								ServiceFactory.getSendToFinanceBL().update(listOfReceived);
-
-								JOptionPane.showMessageDialog(null, "Send To Finance Berhasil", "Send To Finance",
-										JOptionPane.INFORMATION_MESSAGE);
+								update(listOfReceived);
 							}
 						} else {
 							JOptionPane.showMessageDialog(null, "Tidak ada data yang dikirim ke finance",
@@ -95,12 +99,13 @@ public class SendToFinanceDialog extends JDialog {
 							OutputStream outputStream = new FileOutputStream(new File(outputFile));
 							/* Write content to PDF file */
 							JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+
+							update(listOfReceived);
 						} else {
 							JOptionPane.showMessageDialog(null, "Tidak ada data yang dikirim ke finance",
 									"Send To Finance", JOptionPane.INFORMATION_MESSAGE);
 						}
-					} 
-				
+					}
 
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -109,9 +114,10 @@ public class SendToFinanceDialog extends JDialog {
 				}
 
 			}
-		});btnOk.setBounds(137,123,100,30);
+		});
+		btnOk.setBounds(137, 123, 100, 30);
 
-	getContentPane().add(btnOk);
+		getContentPane().add(btnOk);
 
 		rdbtnMonitor = new JRadioButton("Monitor");
 		rdbtnMonitor.setBounds(15, 19, 109, 23);
@@ -138,5 +144,14 @@ public class SendToFinanceDialog extends JDialog {
 		if (listOfReceived.isEmpty())
 			return false;
 		return true;
+	}
+
+	public void update(List<Received> listOfReceived) throws SQLException {
+
+		ServiceFactory.getSendToFinanceBL().update(listOfReceived);
+
+		JOptionPane.showMessageDialog(null, "Send To Finance Berhasil", "Send To Finance",
+				JOptionPane.INFORMATION_MESSAGE);
+
 	}
 }

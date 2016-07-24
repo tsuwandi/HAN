@@ -241,7 +241,8 @@ public class CreateProductPanel extends JPanel {
 //		add(scrollPane);
 		
 		breadcrumb = new JLabel("ERP > Pembelian > Produk");
-		breadcrumb.setBounds(20, 5, 200, 25);
+		breadcrumb.setFont(new Font(null, Font.BOLD, 12));
+		breadcrumb.setBounds(50, 10, 320, 30);
 		
 		backBtn = new JButton("X");
 		backBtn.setBounds(1100, 5, 40, 25);
@@ -255,9 +256,9 @@ public class CreateProductPanel extends JPanel {
 		});
 		backBtn.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		titleLbl = new JLabel("CREATE NEW");
-		titleLbl.setBounds(20, 20, 300, 50);
-		titleLbl.setFont(new Font(null, Font.BOLD, 24));
+		titleLbl = new JLabel("BUAT BARU");
+		titleLbl.setBounds(20, 40, 300, 30);
+		titleLbl.setFont(new Font("Dialog", Font.BOLD, 12));
 		
 		idLbl = new JLabel("Kode Produk");
 		idLbl.setBounds(20, 80, 100, 30);
@@ -371,7 +372,7 @@ public class CreateProductPanel extends JPanel {
 		idField = new JTextField();
 //		idField.setText(generateCode());
 //		idField.setEnabled(false);
-		idField.setBounds(195, 80, 100, 25);
+		idField.setBounds(195, 80, 150, 25);
 		
 		nameField = new JTextField();
 		nameField.setBounds(195, 110, 150, 25);
@@ -837,8 +838,8 @@ public class CreateProductPanel extends JPanel {
 		taxScroll.setBounds(20, 1770, 1130, 75);
 		taxScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
-		saveBtn = new JButton("Save");
-		saveBtn.setBounds(745, 550, 75, 25);
+		saveBtn = new JButton("Simpan");
+		saveBtn.setBounds(905, 550, 75, 25);
 		saveBtn.addActionListener(new ActionListener() {
 			
 			@Override
