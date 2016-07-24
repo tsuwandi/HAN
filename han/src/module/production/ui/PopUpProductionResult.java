@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
@@ -30,6 +32,7 @@ import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
 import model.User;
+import module.pembelian.model.PalletCard;
 import module.production.model.Machine;
 import module.production.model.ProductionResult;
 import module.production.model.ProductionResultDetail;
@@ -102,7 +105,9 @@ public class PopUpProductionResult extends JDialog{
 	private JPanel borderPanel;
 	private CreateProductionPanel createProductionPanel;
 	private List<Machine> machines;
-	
+	private List<ProductionResultDetail> listOfPrd;
+	private boolean editMode=false;
+	private int indexEdit=0;
 	public PopUpProductionResult(JPanel parent){
 		createGUI();
 		initData(parent);
@@ -110,6 +115,14 @@ public class PopUpProductionResult extends JDialog{
 	}
 	private void initData(JPanel parent){
 		prodResultCodeField.setEnabled(false);
+		totalOutputField.setEnabled(false);
+		totalKlemField.setEnabled(false);
+		totalProtolField.setEnabled(false);
+		totalGoodResultAField.setEnabled(false);
+		totalGoodResultBField.setEnabled(false);
+		totalAllGoodResultField.setEnabled(false);
+		listOfPrd = new ArrayList<>();
+		
 		try {
 			machines = ServiceFactory.getProductionBL().getMachine();
 			machines.add(0,new Machine("--Pilih--"));
@@ -138,7 +151,8 @@ public class PopUpProductionResult extends JDialog{
 			totalGoodResultAField.setText(pr.getTotalFineA()+"");
 			totalGoodResultBField.setText(pr.getTotalFineB()+"");
 			totalAllGoodResultField.setText(pr.getTotalFineResult()+"");
-			productionResultTable.setModel(new ProductionResultTableModel(pr.getListOfProductionResultDetail()));
+			listOfPrd = pr.getListOfProductionResultDetail();
+			productionResultTable.setModel(new ProductionResultTableModel(listOfPrd));
 			productionResultTable.updateUI();
 		}
 	}
@@ -276,7 +290,7 @@ public class PopUpProductionResult extends JDialog{
 		borderPanel.add(protolGradeAField);
 		
 		errorProtolALbl = new JLabel();
-		errorProtolALbl.setBounds(355,290,150,20);
+		errorProtolALbl.setBounds(355,250,150,20);
 		borderPanel.add(errorProtolALbl);
 		
 		protolGradeBLbl = new JLabel("Jumlah Grade B");
@@ -304,6 +318,10 @@ public class PopUpProductionResult extends JDialog{
 		goodResultGradeAField.setBounds(200,370,150,20);
 		borderPanel.add(goodResultGradeAField);
 		
+		errorGoodResultALbl = new JLabel();
+		errorGoodResultALbl.setBounds(355,370,150,20);
+		borderPanel.add(errorGoodResultALbl);
+		
 		goodResultGradeBLbl = new JLabel("Jumlah Grade B");
 		goodResultGradeBLbl.setBounds(10,410,150,20);
 		borderPanel.add(goodResultGradeBLbl);
@@ -311,6 +329,10 @@ public class PopUpProductionResult extends JDialog{
 		goodResultGradeBField = new NumberField(5);
 		goodResultGradeBField.setBounds(200,410,150,20);
 		borderPanel.add(goodResultGradeBField);
+		
+		errorGoodResultBLbl = new JLabel();
+		errorGoodResultBLbl.setBounds(355,410,150,20);
+		borderPanel.add(errorGoodResultBLbl);
 		
 		//TODO add BTN Area
 		addBtn = new JButton("Tambah");
@@ -398,7 +420,44 @@ public class PopUpProductionResult extends JDialog{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				validatingDetail();
+			}
+		});
+		
+		productionResultTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(productionResultTable.columnAtPoint(e.getPoint())==9){
+					editMode=true;
+					indexEdit=productionResultTable.getSelectedRow();
+					ProductionResultDetail prd = listOfPrd.get(productionResultTable.getSelectedRow());
+					pressNoField.setText(prd.getPressedNo()+"");
+					String [] splitTime = prd.getStartTime().split(":");
+					hourField.setText(splitTime[0]);
+					minuteField.setText(splitTime[1]);
+					klemGradeAField.setText(prd.getRepairKlemA()+"");
+					klemGradeBField.setText(prd.getRepairKlemB()+"");
+					protolGradeAField.setText(prd.getRepairProtolA()+"");
+					protolGradeBField.setText(prd.getRepairProtolB()+"");
+					goodResultGradeAField.setText(prd.getFineA()+"");
+					goodResultGradeBField.setText(prd.getFineB()+"");
+					
+				}
+				if(productionResultTable.columnAtPoint(e.getPoint())==10){
+					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
+						listOfPrd.remove(productionResultTable.getSelectedRow());
+						productionResultTable.updateUI();
+						calculateTotal();
+					}
+				}
+			}
+		});
+		
+		saveBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveProductResult();
 			}
 		});
 	}
@@ -407,7 +466,151 @@ public class PopUpProductionResult extends JDialog{
 	private void validatingDetail(){
 		int error = 0;
 		if(pressNoField.getText().equals("")){
-			
+			errorPressNoLbl.setText("<html><font color='red'>Pengepresan harus diisi !</font></html>");
+			error++;
+		}else{
+			errorPressNoLbl.setText("");
+		}
+		if(hourField.getText().equals("")||minuteField.getText().equals("")){
+			errorTimeLbl.setText("<html><font color='red'>Jam Mulai harus diisi !</font></html>");
+			error++;
+		}else{
+			errorTimeLbl.setText("");
+		}
+		if(klemGradeAField.getText().equals("")){
+			errorKlemALbl.setText("<html><font color='red'>Repair Klem A harus diisi !</font></html>");
+			error++;
+		}else{
+			errorKlemALbl.setText("");
+		}
+		if(klemGradeBField.getText().equals("")){
+			errorKlemBLbl.setText("<html><font color='red'>Repair Klem B harus diisi !</font></html>");
+			error++;
+		}else{
+			errorKlemBLbl.setText("");
+		}
+		
+		if(protolGradeAField.getText().equals("")){
+			errorProtolALbl.setText("<html><font color='red'>Repair Protol A harus diisi !</font></html>");
+			error++;
+		}else{
+			errorProtolALbl.setText("");
+		}
+		if(protolGradeBField.getText().equals("")){
+			errorProtolBLbl.setText("<html><font color='red'>Repair Protol B harus diisi !</font></html>");
+			error++;
+		}else{
+			errorProtolBLbl.setText("");
+		}
+		if(goodResultGradeAField.getText().equals("")){
+			errorGoodResultALbl.setText("<html><font color='red'>Hasil Baik A harus diisi !</font></html>");
+			error++;
+		}else{
+			errorGoodResultALbl.setText("");
+		}
+		if(goodResultGradeBField.getText().equals("")){
+			errorGoodResultBLbl.setText("<html><font color='red'>Hasil Baik B harus diisi !</font></html>");
+			error++;
+		}else{
+			errorGoodResultBLbl.setText("");
+		}
+		
+		if(error==0){
+			if(editMode){
+				ProductionResultDetail prd = listOfPrd.get(indexEdit);
+				prd.setPressedNo(Integer.parseInt(pressNoField.getText()));
+				prd.setStartTime(hourField.getText()+":"+minuteField.getText());
+				prd.setRepairKlemA(Integer.parseInt(klemGradeAField.getText()));
+				prd.setRepairKlemB(Integer.parseInt(klemGradeBField.getText()));
+				prd.setRepairProtolA(Integer.parseInt(protolGradeAField.getText()));
+				prd.setRepairProtolB(Integer.parseInt(protolGradeBField.getText()));
+				prd.setFineA(Integer.parseInt(goodResultGradeAField.getText()));
+				prd.setFineB(Integer.parseInt(goodResultGradeBField.getText()));
+				int total = prd.getFineA()+prd.getFineB()+prd.getRepairKlemA()+prd.getRepairKlemB()+prd.getRepairProtolA()+prd.getRepairProtolB();
+				prd.setTotal(total);
+				productionResultTable.updateUI();
+				editMode=false;
+				indexEdit=0;
+			}else{
+				ProductionResultDetail prd = new ProductionResultDetail();
+				prd.setPressedNo(Integer.parseInt(pressNoField.getText()));
+				prd.setStartTime(hourField.getText()+":"+minuteField.getText());
+				prd.setRepairKlemA(Integer.parseInt(klemGradeAField.getText()));
+				prd.setRepairKlemB(Integer.parseInt(klemGradeBField.getText()));
+				prd.setRepairProtolA(Integer.parseInt(protolGradeAField.getText()));
+				prd.setRepairProtolB(Integer.parseInt(protolGradeBField.getText()));
+				prd.setFineA(Integer.parseInt(goodResultGradeAField.getText()));
+				prd.setFineB(Integer.parseInt(goodResultGradeBField.getText()));
+				int total = prd.getFineA()+prd.getFineB()+prd.getRepairKlemA()+prd.getRepairKlemB()+prd.getRepairProtolA()+prd.getRepairProtolB();
+				prd.setTotal(total);
+				listOfPrd.add(prd);
+				productionResultTable.setModel(new ProductionResultTableModel(listOfPrd));
+				productionResultTable.updateUI();
+			}
+			calculateTotal();
+			clearDetail();
+		}
+	}
+	
+	private void clearDetail(){
+		pressNoField.setText("");
+		hourField.setText("");
+		minuteField.setText("");
+		goodResultGradeAField.setText("");
+		goodResultGradeBField.setText("");
+		protolGradeAField.setText("");
+		protolGradeBField.setText("");
+		klemGradeAField.setText("");
+		klemGradeBField.setText("");
+	}
+	private void calculateTotal(){
+		int totalOutput=0;
+		int totalKlem=0;
+		int totalProtol=0;
+		int totalFineA=0;
+		int totalFineB=0;
+		int totalAllFine=0;
+		for (ProductionResultDetail prd : listOfPrd) {
+			totalOutput+=prd.getTotal();
+			totalKlem+=(prd.getRepairKlemA()+prd.getRepairKlemB());
+			totalProtol+=(prd.getRepairProtolA()+prd.getRepairProtolB());
+			totalFineA+=prd.getFineA();
+			totalFineB+=prd.getFineB();
+			totalAllFine+=(prd.getFineA()+prd.getFineB());
+		}
+		
+		totalOutputField.setText(totalOutput+"");
+		totalKlemField.setText(totalKlem+"");
+		totalProtolField.setText(totalProtol+"");
+		totalGoodResultAField.setText(totalFineA+"");
+		totalGoodResultBField.setText(totalFineB+"");
+		totalAllGoodResultField.setText(totalAllFine+"");
+	}
+	
+	private void saveProductResult(){
+		int error=0;
+		if(machineCmb.getSelectedIndex()==0){
+			errorMachineLbl.setText("<html><font color='red'>Mesin harus dipilih !</font></html>");
+			error++;
+		}else{
+			errorMachineLbl.setText("");
+		}
+		if(error==0){
+			ProductionResult productionResult = new ProductionResult();
+			productionResult.setProdResultCode(prodResultCodeField.getText());
+			productionResult.setProdResultDate(resultDateChooser.getDate());
+			productionResult.setMachineCode(machineCmb.getDataIndex().getMachineCode());
+			productionResult.setMachineDescription(machineCmb.getDataIndex().getDescription());
+			productionResult.setTotalOutput(Integer.parseInt(totalOutputField.getText()));
+			productionResult.setTotalFineA(Integer.parseInt(totalGoodResultAField.getText()));
+			productionResult.setTotalFineB(Integer.parseInt(totalGoodResultBField.getText()));
+			productionResult.setTotalFineResult(Integer.parseInt(totalAllGoodResultField.getText()));
+			productionResult.setTotalRepairProtol(Integer.parseInt(totalProtolField.getText()));
+			productionResult.setTotalRepairKlem(Integer.parseInt(totalKlemField.getText()));
+			productionResult.setListOfProductionResultDetail(listOfPrd);;
+			createProductionPanel.getProduction().setProductionResult(productionResult);
+			DialogBox.showInsert();
+			dispose();
 		}
 	}
 	
