@@ -18,8 +18,8 @@ public class ProductionResultDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	
-	private String getAllQuery = "SELECT a.id, prod_result_code, production_code, prod_result_date, a.machine_code, description, total_output, total_repair_klem, total_repair_protol, total_fine_a, total_fine_b, total_fine_result"
-			+ "FROM prod_result a INNER JOIN machine b ON a.machine_code = b.machine_code WHERE deleted_date IS NULL";
+	private String getAllQuery = "SELECT a.id, prod_result_code, production_code, prod_result_date, a.machine_code, description, total_output, total_repair_klem, total_repair_protol, total_fine_a, total_fine_b, total_fine_result "
+			+ "FROM prod_result a INNER JOIN machine b ON a.machine_code = b.machine_code WHERE a.deleted_date IS NULL";
 	
 	private String getLastCodeQuery = "SELECT prod_result_code FROM prod_result WHERE deleted_date IS NULL ORDER BY id DESC LIMIT 1";
 	

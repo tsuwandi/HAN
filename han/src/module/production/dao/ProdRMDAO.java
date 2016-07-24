@@ -20,14 +20,14 @@ public class ProdRMDAO {
 	private PreparedStatement getAllForSearchByPalletCardCodeStatement;
 	
 	private String getAllQuery = "SELECT a.id, a.pallet_card_code, b.length, b.width, b.thickness, b.total, b.volume  FROM prod_rm a "
-			+ "INNER JOIN pallet_card b ON a.pallet_card_code = b.pallet_card_code WHERE deleted_date IS NULL ";
+			+ "INNER JOIN pallet_card b ON a.pallet_card_code = b.pallet_card_code WHERE a.deleted_date IS NULL ";
 	
-	private String insertQuery = "INSERT INTO prod_result_dtl (production_code, pallet_card_code, input_by, input_date) "
+	private String insertQuery = "INSERT INTO prod_rm (production_code, pallet_card_code, input_by, input_date) "
 			+ "VALUES (?,?,?,?)";
 	private String deleteQuery = "DELETE FROM prod_rm WHERE production_code = ?";
 	
 	private String getAllForSearchQuery = "SELECT a.id, a.input_date, b.pallet_card_code, b.length, b.width, b.thickness, b.total, b.volume  FROM dry_out_pallet a "
-			+ "INNER JOIN pallet_card b ON a.pallet_card_code = b.pallet_card_code WHERE NOT EXISTS(SELECT pallet_card_code FROM prod_rm c WHERE b.pallet_card_code = c.pallet_card_code )";
+			+ "INNER JOIN pallet_card b ON a.pallet_card_code = b.pallet_card_code WHERE NOT EXISTS(SELECT c.pallet_card_code FROM prod_rm c WHERE b.pallet_card_code = c.pallet_card_code )";
 	
 	public ProdRMDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -124,22 +124,22 @@ public class ProdRMDAO {
 		ProdRM prodRM = null;
 		try {
 			StringBuffer sb  = new StringBuffer(getAllForSearchQuery);
-			sb.append(" AND pallet_card_code = ? ");
+			sb.append(" AND b.pallet_card_code = ? ");
 			sb.append(query);
 			
 			getAllForSearchByPalletCardCodeStatement = connection.prepareStatement(sb.toString());
 			getAllForSearchByPalletCardCodeStatement.setString(1, palletCardCode);
-			
 			ResultSet rs = getAllForSearchByPalletCardCodeStatement.executeQuery();
-			rs.next(); 
-			prodRM = new ProdRM();
-			prodRM.setId(rs.getInt("id"));
-			prodRM.setPalletCardCode(rs.getString("pallet_card_code"));
-			prodRM.setLength(rs.getDouble("length"));
-			prodRM.setWidth(rs.getDouble("width"));
-			prodRM.setThick(rs.getDouble("thickness"));
-			prodRM.setLog(rs.getInt("total"));
-			prodRM.setVolume(rs.getDouble("volume"));
+			if(rs.next()){
+				prodRM = new ProdRM();
+				prodRM.setId(rs.getInt("id"));
+				prodRM.setPalletCardCode(rs.getString("pallet_card_code"));
+				prodRM.setLength(rs.getDouble("length"));
+				prodRM.setWidth(rs.getDouble("width"));
+				prodRM.setThick(rs.getDouble("thickness"));
+				prodRM.setLog(rs.getInt("total"));
+				prodRM.setVolume(rs.getDouble("volume"));
+			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());

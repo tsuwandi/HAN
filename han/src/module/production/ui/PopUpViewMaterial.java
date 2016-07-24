@@ -31,7 +31,7 @@ import module.pembelian.model.PalletCard;
 import module.production.model.ProdRM;
 import module.production.model.Production;
 
-public class PopUpInputMaterial extends JDialog{
+public class PopUpViewMaterial extends JDialog{
 
 	private static final long serialVersionUID = 1L;
 	private JLabel titleLbl;
@@ -74,18 +74,18 @@ public class PopUpInputMaterial extends JDialog{
 	
 	private JButton searchPalletCardBtn;
 	private JButton addBtn;
-	private JButton saveBtn;
+	private JButton orintBtn;
 	
 	private JTable materialTable;
 	private JScrollPane scrollPane;
 	private MaterialTableModel materialTableModel;
 	
-	private CreateProductionPanel createProductionPanel;
+	private ViewProductionPanel viewProductionPanel;
 	private List<ProdRM> prodRms;
 	private ProdRM tempProdRM;
-	private PopUpInputMaterial parentDialog;
+	private PopUpViewMaterial parentDialog;
 	
-	public PopUpInputMaterial(JPanel parent){
+	public PopUpViewMaterial(JPanel parent){
 		createGUI();
 		initData(parent);
 		listener();
@@ -93,10 +93,10 @@ public class PopUpInputMaterial extends JDialog{
 	private void createGUI(){
 		setLayout(null);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		setTitle("Input Bahan Baku");
+		setTitle("View Bahan Baku");
 		setSize(800, 750);
 		
-		titleLbl = new JLabel("Input Bahan Baku");
+		titleLbl = new JLabel("View Bahan Baku");
 		titleLbl.setBounds(50,10,200,30);
 		titleLbl.setFont(new Font("Arial", 1, 18));
 		add(titleLbl);
@@ -264,15 +264,15 @@ public class PopUpInputMaterial extends JDialog{
 		uomTotalVolumeLbl.setBounds(352,650,20,20);
 		add(uomTotalVolumeLbl);
 		
-		saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(600,680,150,30);
-		add(saveBtn);
+		orintBtn = new JButton("Cetak");
+		orintBtn.setBounds(600,680,150,30);
+		add(orintBtn);
 	}
 	
 	private void initData(JPanel parent){
 		prodRms = new ArrayList<>();
 		parentDialog = this;
-		createProductionPanel = (CreateProductionPanel) parent;
+		viewProductionPanel = (ViewProductionPanel) parent;
 		lengthField.setEnabled(false);
 		widthField.setEnabled(false);
 		thickField.setEnabled(false);
@@ -281,6 +281,13 @@ public class PopUpInputMaterial extends JDialog{
 		totalLogField.setEnabled(false);
 		totalVolumeField.setEnabled(false);
 		palletCardField.setEnabled(false);
+		ritNoField.setEnabled(false);
+		sequenceField.setEnabled(false);
+		dateField.setEnabled(false);
+		monthField.setEnabled(false);
+		yearField.setEnabled(false);
+		addBtn.setEnabled(false);
+		searchPalletCardBtn.setEnabled(false);
 		Date currentDate = new Date();
 		String date = new SimpleDateFormat("dd").format(currentDate);
 		String month = new SimpleDateFormat("MM").format(currentDate);
@@ -289,8 +296,8 @@ public class PopUpInputMaterial extends JDialog{
 		monthField.setText(month);
 		yearField.setText(year);
 		
-		if(createProductionPanel.getProduction().getListOfProdRM()!=null){
-			prodRms = createProductionPanel.getProduction().getListOfProdRM();
+		if(viewProductionPanel.getProduction().getListOfProdRM()!=null){
+			prodRms = viewProductionPanel.getProduction().getListOfProdRM();
 			materialTable.setModel(new MaterialTableModel(prodRms));
 			materialTable.updateUI();
 			calculateTotal();
@@ -315,80 +322,12 @@ public class PopUpInputMaterial extends JDialog{
 			}
 		});
 		
-		sequenceField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyChar()==KeyEvent.VK_ENTER)checkPallet();
-			}
-		});
-		ritNoField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyChar()==KeyEvent.VK_ENTER)checkPallet();
-			}
-		});
-		
-		addBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(tempProdRM!=null){
-					prodRms.add(tempProdRM);
-					materialTable.setModel(new MaterialTableModel(prodRms));
-					materialTable.updateUI();
-					calculateTotal();
-					clearPallet();	
-				}
-			}
-		});
-		
-		saveBtn.addActionListener(new ActionListener() {
+		orintBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Production prod = createProductionPanel.getProduction();
-				prod.setTotalLog(Integer.parseInt(totalLogField.getText()));
-				prod.setTotalPalletCard(Integer.parseInt(totalLogField.getText()));
-				prod.setTotalVolume(Double.parseDouble(totalVolumeField.getText()));
-				for (ProdRM prodRM : prodRms) {
-					prodRM.setProductionCode(createProductionPanel.getProductionCodeField().getText());
-				}
-				prod.setListOfProdRM(prodRms);
-				DialogBox.showInsert();
-				dispose();
 			}
 		});
-	}
-	
-	private void checkPallet(){
-		String palletCardCode = null;
-		if(ritNoField.getText().equals("")||sequenceField.equals("")){
-			DialogBox.showError("Rit No dan sequence harus diisi !");
-		}else{
-			try {
-				palletCardCode = ritNoField.getText()+"/BL/"+dateField.getText()+"/"+monthField.getText()+"/"+yearField.getText()+"/"+sequenceField.getText();
-				ProdRM prodRM = ServiceFactory.getProductionBL().getSearchProdRMByPalletCard(palletCardCode, prodRms);
-				if(prodRM==null)DialogBox.showError("Pallet Card tidak ditemukan");
-				else{
-					tempProdRM = prodRM;
-					lengthField.setText(prodRM.getLength()+"");
-					widthField.setText(prodRM.getWidth()+"");
-					thickField.setText(prodRM.getThick()+"");
-					logField.setText(prodRM.getLog()+"");
-					volumeField.setText(prodRM.getVolume()+"");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	private void clearPallet(){
-		lengthField.setText("");
-		widthField.setText("");
-		thickField.setText("");
-		logField.setText("");
-		volumeField.setText("");
-		tempProdRM=null;
 	}
 	
 	private void calculateTotal(){
@@ -404,14 +343,6 @@ public class PopUpInputMaterial extends JDialog{
 		totalVolumeField.setText(totalVolume+"");
 		palletCardField.setText(totalPalletCard+"");
 	}
-	
-	public void updateTableFromSearch(List<ProdRM> prodRMs){
-		this.prodRms.addAll(prodRMs);
-		materialTable.setModel(new MaterialTableModel(prodRms));
-		materialTable.updateUI();
-		calculateTotal();
-	}
-	
 	
 	public List<ProdRM> getProdRms() {
 		return prodRms;
