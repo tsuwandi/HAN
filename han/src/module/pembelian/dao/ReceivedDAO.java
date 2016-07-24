@@ -50,7 +50,7 @@ public class ReceivedDAO {
 
 	private String updateEmpCodeQuery = "UPDATE received SET emp_code = ? WHERE received_code = ?";
 	
-	private String updateConfirmDateQuery = "UPDATE received SET confirm_date = ? "
+	private String updateConfirmDateQuery = "UPDATE received SET confirm_date = ?, "
 			+ "edit_date=?, edited_by=? WHERE received_code=? ";
 
 	public ReceivedDAO(DataSource dataSource) throws SQLException {
@@ -441,12 +441,12 @@ public class ReceivedDAO {
 					+ "INNER JOIN received_detail rd ON r.received_code = rd.received_code "
 					+ "INNER JOIN supplier s ON s.supp_code = r.supplier_code "
 					+ "INNER JOIN pallet_card pc ON rd.id = pc.received_detail_id "
-					+ "INNER JOIN product pd ON pd.product_code = pd.product_name "
+					+ "INNER JOIN product pd ON pd.product_code = pc.product_code "
 					+ "WHERE r.send_to_finance_date IS NOT NULL AND r.confirm_date IS NULL "
 					+ "AND r.deleted_date IS NULL AND rd.deleted_date IS NULL AND pc.deleted_date IS NULL";
 
 			getAllStatement = connection.prepareStatement(allReceivedForDailyClosingQuery);
-			System.out.println(getAllStatement);
+			
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
 				Received received = new Received();
@@ -472,7 +472,7 @@ public class ReceivedDAO {
 				palletCard.setVolume(rs.getDouble("volume"));
 				palletCard.setTotal(rs.getInt("total"));
 				palletCard.setProductCode(rs.getString("product_code"));
-				palletCard.setProductName("product_name");
+				palletCard.setProductName(rs.getString("product_name"));
 				
 				received.setSupplier(rs.getString("supp_name"));
 				
@@ -505,6 +505,7 @@ public class ReceivedDAO {
 	public void updateConfirmDate(Received received) throws SQLException {
 		try {
 			updateConfirmDateStatement = connection.prepareStatement(updateConfirmDateQuery);
+			
 			updateConfirmDateStatement.setDate(1, DateUtil.getCurrentDate());
 			updateConfirmDateStatement.setDate(2, DateUtil.getCurrentDate());
 			updateConfirmDateStatement.setString(3, "timotius");

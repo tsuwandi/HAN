@@ -11,7 +11,7 @@ public class InventoryLogTempDAO {
 	private Connection connection;
 	private PreparedStatement insertStatement;
 	
-	private String insertQuery = "insert into inventory_log_temp (product_code, warehouse, qty, mutasi, src_table, confirm_code"
+	private String insertQuery = "insert into inventory_log_temp (product_code, warehouse, qty, mutasi, srctable, confirm_code, "
 			+ "input_date, input_by) values (?,?,?,?,?,?,?,?)";
 	
 	public InventoryLogTempDAO(Connection connection) throws SQLException {

@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import imcacat.jaccordion.JAccordion;
@@ -17,7 +18,7 @@ import module.report.ui.ReportDialog;
 public class MenuPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private JLabel menuBtn1;
 	private JLabel menuBtn2;
 	private JLabel menuBtn3;
@@ -48,7 +49,7 @@ public class MenuPanel extends JPanel {
 				MainPanel.changePanel("module.supplier.ui.SupplierListPanel");
 			}
 		});
-		
+
 		menuBtn2 = new JLabel("<html><p style=padding:5px;>Master Produk</p><html>");
 		menuBtn2.setBounds(0, 35, 195, 35);
 		menuBtn2.addMouseListener(new MouseAdapter() {
@@ -57,7 +58,7 @@ public class MenuPanel extends JPanel {
 				MainPanel.changePanel("module.product.ui.ProductListPanel");
 			}
 		});
-		
+
 		menuBtn3 = new JLabel("<html><p style=padding:5px;>Penerimaan</p><html>");
 		menuBtn3.setBounds(0, 35, 195, 35);
 		menuBtn3.addMouseListener(new MouseAdapter() {
@@ -66,7 +67,7 @@ public class MenuPanel extends JPanel {
 				MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
 			}
 		});
-		
+
 		menuBtn4 = new JLabel("<html><p style=padding:5px;>STTK</p><html>");
 		menuBtn4.setBounds(0, 35, 195, 35);
 		menuBtn4.addMouseListener(new MouseAdapter() {
@@ -75,7 +76,7 @@ public class MenuPanel extends JPanel {
 				MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
 			}
 		});
-	
+
 		menuBtn5 = new JLabel("<html><p style=padding:5px;>Pengeringan In</p><html>");
 		menuBtn5.setBounds(0, 35, 195, 35);
 		menuBtn5.addMouseListener(new MouseAdapter() {
@@ -84,7 +85,7 @@ public class MenuPanel extends JPanel {
 				MainPanel.changePanel("module.dryin.ui.DryInListPanel");
 			}
 		});
-		
+
 		menuBtn6 = new JLabel("<html><p style=padding:5px;>Pengeringan Out</p><html>");
 		menuBtn6.setBounds(0, 35, 195, 35);
 		menuBtn6.addMouseListener(new MouseAdapter() {
@@ -93,43 +94,56 @@ public class MenuPanel extends JPanel {
 				MainPanel.changePanel("module.dryout.ui.DryOutListPanel");
 			}
 		});
-		
-//		menuBtn7 = new JLabel("<html><p style=padding:5px;>Laporan</p><html>");
-//		menuBtn7.setBounds(0, 35, 195, 35);
-//		menuBtn7.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				ReportDialog reportDialog = new ReportDialog();
-//				reportDialog.setTitle("Laporan");
-//				reportDialog.setLocationRelativeTo(null);
-//				reportDialog.setVisible(true);
-//			}
-//		});
-		
+
+		// menuBtn7 = new JLabel("<html><p
+		// style=padding:5px;>Laporan</p><html>");
+		// menuBtn7.setBounds(0, 35, 195, 35);
+		// menuBtn7.addMouseListener(new MouseAdapter() {
+		// @Override
+		// public void mouseClicked(MouseEvent e) {
+		// ReportDialog reportDialog = new ReportDialog();
+		// reportDialog.setTitle("Laporan");
+		// reportDialog.setLocationRelativeTo(null);
+		// reportDialog.setVisible(true);
+		// }
+		// });
+
 		menuBtn8 = new JLabel("<html><p style=padding:5px;>Send To Finance</p><html>");
 		menuBtn8.setBounds(0, 35, 195, 35);
 		menuBtn8.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				SendToFinanceDialog sendToFinanceDialog = new SendToFinanceDialog();
-				sendToFinanceDialog.setTitle("Send To Finance");
-				sendToFinanceDialog.setLocationRelativeTo(null);
-				sendToFinanceDialog.setVisible(true);
+				int response = JOptionPane.showConfirmDialog(null, "Apakah anda yakin untuk send to finance ?",
+						"Peringatan", JOptionPane.WARNING_MESSAGE);
+
+				if (response == JOptionPane.YES_OPTION) {
+					SendToFinanceDialog sendToFinanceDialog = new SendToFinanceDialog();
+					sendToFinanceDialog.setTitle("Send To Finance");
+					sendToFinanceDialog.setLocationRelativeTo(null);
+					sendToFinanceDialog.setVisible(true);
+				}
 			}
 		});
-		
+
 		menuBtn9 = new JLabel("<html><p style=padding:5px;>Tutup Harian</p><html>");
 		menuBtn9.setBounds(0, 35, 195, 35);
 		menuBtn9.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				DailyClosingDialog dailyClosingDialog = new DailyClosingDialog();
-				dailyClosingDialog.setTitle("Tutup Harian");
-				dailyClosingDialog.setLocationRelativeTo(null);
-				dailyClosingDialog.setVisible(true);
+				int response = JOptionPane.showConfirmDialog(null, "Apakah anda yakin untuk tutup harian ?",
+						"Peringatan", JOptionPane.WARNING_MESSAGE);
+
+				if (response == JOptionPane.YES_OPTION) {
+
+					DailyClosingDialog dailyClosingDialog = new DailyClosingDialog();
+					dailyClosingDialog.setTitle("Tutup Harian");
+					dailyClosingDialog.setLocationRelativeTo(null);
+					dailyClosingDialog.setVisible(true);
+
+				}
 			}
 		});
-		
+
 		menuBtn10 = new JLabel("<html><p style=padding:5px;>Produksi</p><html>");
 		menuBtn10.setBounds(0, 35, 195, 35);
 		menuBtn10.addMouseListener(new MouseAdapter() {
@@ -138,12 +152,10 @@ public class MenuPanel extends JPanel {
 				MainPanel.changePanel("module.production.ui.ListProductionPanel");
 			}
 		});
-		
-		
+
 		JAccordion menu = new JAccordion();
 		menu.setBounds(1, 0, 199, 200);
-	
-		
+
 		JAccordion subMenu = new JAccordion();
 		Dimension menuSize = menu.getPreferredSize();
 		Dimension subMenuSize = new Dimension(198, 295);
@@ -153,100 +165,97 @@ public class MenuPanel extends JPanel {
 		subMenu.addSection("STTK", menuBtn4);
 		subMenu.addSection("Pengeringan In", menuBtn5);
 		subMenu.addSection("Pengeringan Out", menuBtn6);
-		//subMenu.addSection("Laporan", menuBtn7);
+		// subMenu.addSection("Laporan", menuBtn7);
 		subMenu.addSection("Send To Finance", menuBtn8);
 		subMenu.addSection("Tutup Harian", menuBtn9);
 		subMenu.addSection("Produksi", menuBtn10);
 		subMenu.setPreferredSize(subMenuSize);
 		subMenu.enableMaxOneSectionOpen();
-		
-		
+
 		if (subMenuSize.width > menuSize.width)
 			menuSize.width = subMenuSize.width;
 		if (subMenuSize.height > menuSize.height)
 			menuSize.height = subMenuSize.height;
-		
+
 		menu.setSize(menuSize);
 		menu.addSection("Pembelian", subMenu);
 		menu.getSection(0).setOpen(true);
-	
+
 		add(menu);
-		
-		
-		
-//
-//		menuBtn2 = new JButton("Master Supplier");
-//		menuBtn2.setBounds(0, 35, 200, 35);
-//		menuBtn2.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				MainPanel.changePanel("module.supplier.ui.SupplierListPanel");
-//			}
-//		});
-//
-//		menuBtn3 = new JButton("Master Produk");
-//		menuBtn3.setBounds(0, 70, 200, 35);
-//		menuBtn3.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				MainPanel.changePanel("module.product.ui.ProductListPanel");
-//			}
-//		});
-//
-//		menuBtn4 = new JButton("Pemasukan");
-//		menuBtn4.setBounds(0, 105, 200, 35);
-//		menuBtn4.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				MainPanel.changePanel("module.dryin.ui.DryInListPanel");
-//			}
-//		});
-//
-//		menuBtn5 = new JButton("Pengeluaran");
-//		menuBtn5.setBounds(0, 140, 200, 35);
-//		menuBtn5.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				MainPanel.changePanel("module.dryout.ui.DryOutListPanel");
-//			}
-//		});
-//
-//		menuBtn6 = new JButton("Penerimaan dari Truk");
-//		menuBtn6.setBounds(0, 175, 200, 35);
-//		menuBtn6.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
-//			}
-//		});
-//
-//		menuBtn7 = new JButton("Penerimaan Balken");
-//		menuBtn7.setBounds(0, 210, 200, 35);
-//		menuBtn7.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
-//			}
-//		});
-//
-//		add(menuBtn1);
-//		add(menuBtn2);
-//		add(menuBtn3);
-//		add(menuBtn4);
-//		add(menuBtn5);
-//		add(menuBtn6);
-//		add(menuBtn7);
+
+		//
+		// menuBtn2 = new JButton("Master Supplier");
+		// menuBtn2.setBounds(0, 35, 200, 35);
+		// menuBtn2.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// // TODO Auto-generated method stub
+		// MainPanel.changePanel("module.supplier.ui.SupplierListPanel");
+		// }
+		// });
+		//
+		// menuBtn3 = new JButton("Master Produk");
+		// menuBtn3.setBounds(0, 70, 200, 35);
+		// menuBtn3.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// // TODO Auto-generated method stub
+		// MainPanel.changePanel("module.product.ui.ProductListPanel");
+		// }
+		// });
+		//
+		// menuBtn4 = new JButton("Pemasukan");
+		// menuBtn4.setBounds(0, 105, 200, 35);
+		// menuBtn4.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// // TODO Auto-generated method stub
+		// MainPanel.changePanel("module.dryin.ui.DryInListPanel");
+		// }
+		// });
+		//
+		// menuBtn5 = new JButton("Pengeluaran");
+		// menuBtn5.setBounds(0, 140, 200, 35);
+		// menuBtn5.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// // TODO Auto-generated method stub
+		// MainPanel.changePanel("module.dryout.ui.DryOutListPanel");
+		// }
+		// });
+		//
+		// menuBtn6 = new JButton("Penerimaan dari Truk");
+		// menuBtn6.setBounds(0, 175, 200, 35);
+		// menuBtn6.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// // TODO Auto-generated method stub
+		// MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
+		// }
+		// });
+		//
+		// menuBtn7 = new JButton("Penerimaan Balken");
+		// menuBtn7.setBounds(0, 210, 200, 35);
+		// menuBtn7.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// // TODO Auto-generated method stub
+		// MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
+		// }
+		// });
+		//
+		// add(menuBtn1);
+		// add(menuBtn2);
+		// add(menuBtn3);
+		// add(menuBtn4);
+		// add(menuBtn5);
+		// add(menuBtn6);
+		// add(menuBtn7);
 	}
 }

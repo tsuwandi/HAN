@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-07-24T14:28:44 -->
+<!-- 2016-07-24T18:56:50 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DailyClosing" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="95b2a938-121a-4c3f-8fab-14a4576ec553">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
@@ -57,7 +57,25 @@
 			<rightPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<subDataset name="Dataset1" uuid="cff8ab32-00cc-4453-aa0c-09d38bc37248">
+	<style name="Table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="Table 2_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="Table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<subDataset name="ItemDataSetListOfReceived" uuid="cff8ab32-00cc-4453-aa0c-09d38bc37248">
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
@@ -72,18 +90,37 @@
 		<field name="palletCard.productName" class="java.lang.String"/>
 		<field name="supplier" class="java.lang.String"/>
 	</subDataset>
-	<subDataset name="Dataset2" uuid="492ec9d4-482d-49fe-8b67-eb288324fe94">
+	<subDataset name="ItemDataSetListOfDryIn" uuid="ca99162b-34d1-48f1-a17f-e8ea874117ba">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
+		<field name="dryInCode" class="java.lang.String"/>
+		<field name="dateIn" class="java.util.Date"/>
+		<field name="chamber.chamber" class="java.lang.String"/>
+		<field name="palletCard.palletCardCode" class="java.lang.String"/>
+		<field name="palletCard.productCode" class="java.lang.String"/>
+		<field name="palletCard.productName" class="java.lang.String"/>
+		<field name="palletCard.volume" class="java.lang.Double"/>
+		<field name="palletCard.total" class="java.lang.Double"/>
 	</subDataset>
-	<subDataset name="Dataset3" uuid="41ecf23b-8ca4-4c82-9836-133d21563463">
+	<subDataset name="ItemDataSetListOfDryOut" uuid="84a1554b-92bf-42f7-b4ef-50ed390b7378">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
+		<field name="dryInCode" class="java.lang.String"/>
+		<field name="dateIn" class="java.util.Date"/>
+		<field name="chamber.chamber" class="java.lang.String"/>
+		<field name="palletCard.palletCardCode" class="java.lang.String"/>
+		<field name="palletCard.productCode" class="java.lang.String"/>
+		<field name="palletCard.productName" class="java.lang.String"/>
+		<field name="palletCard.volume" class="java.lang.Double"/>
+		<field name="palletCard.total" class="java.lang.Double"/>
 	</subDataset>
 	<parameter name="ItemDataSourceListOfReceived" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="ItemDataSourceListOfDryIn" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="ItemDataSourceListOfDryOut" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -109,14 +146,14 @@
 		</band>
 	</title>
 	<detail>
-		<band height="219" splitType="Stretch">
+		<band height="129" splitType="Stretch">
 			<componentElement>
-				<reportElement x="0" y="9" width="555" height="200" uuid="1deea86b-4153-4887-9ca7-6b54d02782c6">
+				<reportElement x="0" y="40" width="555" height="60" uuid="1deea86b-4153-4887-9ca7-6b54d02782c6">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value=""/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Dataset1" uuid="ac15a225-2c7c-40cf-8ded-25d59e2233fe">
+					<datasetRun subDataset="ItemDataSetListOfReceived" uuid="ac15a225-2c7c-40cf-8ded-25d59e2233fe">
 						<dataSourceExpression><![CDATA[$P{ItemDataSourceListOfReceived}]]></dataSourceExpression>
 					</datasetRun>
 					<jr:column width="111" uuid="863341a9-ef7f-4d03-8595-3d8a3bb14119">
@@ -276,11 +313,383 @@
 					</jr:column>
 				</jr:table>
 			</componentElement>
+			<staticText>
+				<reportElement x="0" y="0" width="160" height="30" uuid="3854c03e-4525-4cdc-b93f-f5097e4dfc23"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[1. Bagian Penerimaan]]></text>
+			</staticText>
 		</band>
-		<band height="219"/>
-		<band height="50"/>
+		<band height="139">
+			<componentElement>
+				<reportElement x="0" y="40" width="555" height="70" uuid="452e54a7-60df-47c4-856a-14097bc81f9c">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 2_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 2_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table 2_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="ItemDataSetListOfDryIn" uuid="538d6a79-f1e0-48b9-85ee-d3c4bfc86518">
+						<dataSourceExpression><![CDATA[$P{ItemDataSourceListOfDryIn}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="111" uuid="754261f0-0faf-4d99-83e8-15efc8373499">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:columnHeader style="Table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="153a885b-8658-45c9-9104-a17fa2aecd1d"/>
+								<text><![CDATA[DryInCode]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="0" y="15" width="111" height="15" uuid="25e23027-a05d-4111-b782-b246ec6c881a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Pallet Card Code]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="111" height="15" uuid="d130caa2-70f8-450c-82c6-909efd480af1"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{dryInCode}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="15" width="111" height="15" uuid="c814b0b8-4218-4983-b8b7-379fe7feaafd"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{palletCard.palletCardCode}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="111" uuid="cb428617-4247-4769-8a53-2583fa5241cf">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:columnHeader style="Table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="352bddb4-5cf0-4a6f-ba4f-76692a9452a7"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Date In]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="0" y="15" width="111" height="15" uuid="894aeb7a-1d61-4355-bb53-96630fa8d36b"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Product Code]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="111" height="15" uuid="6c5f64fe-74d5-4432-9b6a-8ce23088f295"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{dateIn}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="15" width="111" height="15" uuid="d8d52d83-26c7-4bc7-a66d-7ad3ff5fd943"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{palletCard.productCode}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="111" uuid="25b0939b-2eb7-4e88-a88f-bb1922f56873">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:columnHeader style="Table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="34c268bf-14a9-4cc3-9120-515c99188de7"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Chamber]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="0" y="15" width="111" height="15" uuid="edd7601b-d842-4a26-a184-35f5298d74c5"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Product Name]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="111" height="15" uuid="2105d4cd-6b9c-4fdd-8aef-b871f9a3cbd7"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{chamber.chamber}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="15" width="111" height="15" uuid="6ca3c3a1-67e1-4c78-b7aa-9a15322c89d1"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{palletCard.productName}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="111" uuid="48858336-7843-4fe5-9208-fbb292d13b68">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:columnHeader style="Table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="31082b07-69f0-442b-a235-3998bfddea22"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="0" y="15" width="111" height="15" uuid="4b7c0bbe-c7db-488b-936d-c802da03ee57"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Volume]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="0bd415b8-250c-4b45-8cf1-e7c719b0c1e0"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[]]></text>
+							</staticText>
+							<textField>
+								<reportElement x="0" y="15" width="111" height="15" uuid="a381bb57-5cff-4500-9303-0657c901311b"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{palletCard.volume}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="111" uuid="a400d265-d013-405d-a065-b3d9bae0f100">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:columnHeader style="Table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="426851d1-bb2e-424b-bee7-86b10ddbf452"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="0" y="15" width="111" height="15" uuid="c4ac4969-1d8e-4b06-a323-9ad071f641ab"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Total]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="2b8bb733-44bf-43d4-83ff-afc8d1a47d2d"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[]]></text>
+							</staticText>
+							<textField>
+								<reportElement x="0" y="15" width="111" height="15" uuid="ab82902a-bc48-4cd5-b5ad-dc4284534380"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{palletCard.total}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement x="0" y="0" width="160" height="30" uuid="d4cc7b9d-a1c6-4e01-aae0-b9920b532cf0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[2. Bagian Pengeringan IN]]></text>
+			</staticText>
+		</band>
+		<band height="134">
+			<staticText>
+				<reportElement x="0" y="0" width="160" height="30" uuid="e61b5f1c-553f-4959-ade4-d3e4275287e6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[3. Bagian Pengeringan OUT]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="0" y="40" width="555" height="70" uuid="a3416a25-3447-4d26-88f9-dd5d35f1a7e1">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 2_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 2_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table 2_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="ItemDataSetListOfDryOut" uuid="a90ddb03-44f6-4b9a-b1f5-d3644937d243">
+						<dataSourceExpression><![CDATA[$P{ItemDataSourceListOfDryOut}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="111" uuid="7b015eca-d723-452e-a4aa-19df24e9071f">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:columnHeader style="Table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="40f1e4c0-67d0-497b-a442-0dc6b5462ae3"/>
+								<text><![CDATA[DryInCode]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="0" y="15" width="111" height="15" uuid="f83aebbd-63ff-41e7-adcf-8041da6d9b1d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Pallet Card Code]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="111" height="15" uuid="61c09beb-8503-49c6-9ab8-4795f47046ed"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{dryInCode}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="15" width="111" height="15" uuid="7e64d976-5287-43bd-b194-d7e823206cd4"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{palletCard.palletCardCode}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="111" uuid="5762896b-958d-43dd-8c62-208684408b0c">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:columnHeader style="Table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="7d2fef0e-5026-4785-8413-877c07356b1d"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Date In]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="0" y="15" width="111" height="15" uuid="d52bb9c4-59d4-4375-b93f-b20d0edd1bff"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Product Code]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="111" height="15" uuid="14223847-19be-4ace-99db-ae7a98c28c0d"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{dateIn}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="15" width="111" height="15" uuid="fc149398-97df-4ccb-843f-9656dd4d3f7a"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{palletCard.productCode}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="111" uuid="ae2b5b80-d9a9-44cf-b70d-fc55b905b327">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:columnHeader style="Table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="5c0bbecb-b206-417e-9ef7-87b769e98b4d"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Chamber]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="0" y="15" width="111" height="15" uuid="8144c28d-c158-41da-8cde-45a6a1cd799b"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Product Name]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="111" height="15" uuid="bba3999d-c274-4931-9d08-7a68efe75f0c"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{chamber.chamber}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="15" width="111" height="15" uuid="9e3779e3-717b-4e34-9317-3dcae45686d2"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{palletCard.productName}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="111" uuid="b7a2f8ce-1acc-4979-b815-481f265b9278">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:columnHeader style="Table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="a8465949-dee4-4cbd-bb1a-9f1d1bf0b836"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="0" y="15" width="111" height="15" uuid="6c56f1d2-0a67-4844-8828-f81db5b79859"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Volume]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="a69e378a-adda-4605-a287-cc74286f963d"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[]]></text>
+							</staticText>
+							<textField>
+								<reportElement x="0" y="15" width="111" height="15" uuid="389c9555-5f90-4528-b305-61f4fe5dc84a"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{palletCard.volume}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="111" uuid="b3f102cb-f050-4479-89ef-3cd40c310a83">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:columnHeader style="Table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="7fb6abd0-4532-4653-90db-c7a2c5b6d4d3"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="0" y="15" width="111" height="15" uuid="81849e30-e4b1-4c8d-8adb-e894290fffba"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[Total]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="15" uuid="89f6c88a-9f50-43a0-b876-3f05deec02dc"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Serif" size="11"/>
+								</textElement>
+								<text><![CDATA[]]></text>
+							</staticText>
+							<textField>
+								<reportElement x="0" y="15" width="111" height="15" uuid="38baec47-5211-4e46-8cce-cc7f60a9d424"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{palletCard.total}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
 	</detail>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="63" splitType="Stretch">
+			<textField>
+				<reportElement x="180" y="16" width="100" height="30" uuid="1cca1df1-4aba-4c6b-8b1f-55581d28c55c"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="280" y="16" width="100" height="30" uuid="4d497bc9-fd1b-4fd6-98a1-d1325ade3e1e"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 </jasperReport>
