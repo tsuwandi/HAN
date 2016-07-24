@@ -42,8 +42,7 @@ public class ProductionDAO {
 		try {
 			getLastCodeStatement = connection.prepareStatement(getLastCodeQuery);
 			ResultSet rs = getLastCodeStatement.executeQuery();
-			rs.next();
-			lastCode =  rs.getString("production_code");
+			if(rs.next()) lastCode =  rs.getString("production_code");
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());

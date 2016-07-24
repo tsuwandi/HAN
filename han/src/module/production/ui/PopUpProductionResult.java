@@ -3,13 +3,20 @@ package module.production.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -18,10 +25,13 @@ import javax.swing.table.AbstractTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
+import controller.ServiceFactory;
 import main.component.ComboBox;
+import main.component.DialogBox;
 import main.component.NumberField;
 import model.User;
 import module.production.model.Machine;
+import module.production.model.ProductionResult;
 import module.production.model.ProductionResultDetail;
 
 public class PopUpProductionResult extends JDialog{
@@ -46,6 +56,16 @@ public class PopUpProductionResult extends JDialog{
 	private JLabel totalGoodResultBLbl;
 	private JLabel totalAllGoodResultLbl;
 	private JLabel prodResultCodeLbl;
+	
+	private JLabel errorMachineLbl;
+	private JLabel errorPressNoLbl;
+	private JLabel errorTimeLbl;
+	private JLabel errorKlemALbl;
+	private JLabel errorKlemBLbl;
+	private JLabel errorProtolALbl;
+	private JLabel errorProtolBLbl;
+	private JLabel errorGoodResultALbl;
+	private JLabel errorGoodResultBLbl;
 	
 	private JTextField prodResultCodeField;
 	
@@ -80,16 +100,53 @@ public class PopUpProductionResult extends JDialog{
 	private JScrollPane containerScrollPane;
 	private JPanel containerPnl;
 	private JPanel borderPanel;
+	private CreateProductionPanel createProductionPanel;
+	private List<Machine> machines;
 	
-	public PopUpProductionResult(){
+	public PopUpProductionResult(JPanel parent){
 		createGUI();
-		
+		initData(parent);
+		listener();
 	}
-	
+	private void initData(JPanel parent){
+		prodResultCodeField.setEnabled(false);
+		try {
+			machines = ServiceFactory.getProductionBL().getMachine();
+			machines.add(0,new Machine("--Pilih--"));
+			machineCmb.setList(machines);
+			
+			Date currentDate = new Date();
+			String date = new SimpleDateFormat("dd").format(currentDate);
+			String month = new SimpleDateFormat("MM").format(currentDate);
+			String year = new SimpleDateFormat("yy").format(currentDate);
+			prodResultCodeField.setText(ServiceFactory.getProductionBL().getProductionResultLastCode()+"/PR/"+date+"/"+month+"/"+year);
+			resultDateChooser.setDate(currentDate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		createProductionPanel = (CreateProductionPanel) parent;
+		if(createProductionPanel.getProduction().getProductionResult()!=null){
+			ProductionResult pr = createProductionPanel.getProduction().getProductionResult();
+			prodResultCodeField.setText(pr.getProdResultCode());
+			resultDateChooser.setDate(pr.getProdResultDate());
+			machineCmb.setSelectedItem(pr.getMachineDescription());
+			totalOutputField.setText(pr.getTotalOutput()+"");
+			totalKlemField.setText(pr.getTotalRepairKlem()+"");
+			totalProtolField.setText(pr.getTotalRepairProtol()+"");
+			totalGoodResultAField.setText(pr.getTotalFineA()+"");
+			totalGoodResultBField.setText(pr.getTotalFineB()+"");
+			totalAllGoodResultField.setText(pr.getTotalFineResult()+"");
+			productionResultTable.setModel(new ProductionResultTableModel(pr.getListOfProductionResultDetail()));
+			productionResultTable.updateUI();
+		}
+	}
 	private void createGUI(){
 		setLayout(null);
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setTitle("Input Hasil Produksi");
-		setSize(1050, 750);
+		setSize(1020, 750);
 		
 		containerPnl = new JPanel();
 		containerPnl.setPreferredSize(new Dimension(1000,1200));	
@@ -131,6 +188,10 @@ public class PopUpProductionResult extends JDialog{
 		machineCmb.setBounds(240,130,150,20);
 		containerPnl.add(machineCmb);
 		
+		errorMachineLbl = new JLabel();
+		errorMachineLbl.setBounds(395, 130,150,20);
+		containerPnl.add(errorMachineLbl);
+		
 		//TODO borderPnl Area
 		borderPanel = new JPanel();
 		borderPanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -147,6 +208,10 @@ public class PopUpProductionResult extends JDialog{
 		pressNoField.setBounds(200,10,150,20);
 		borderPanel.add(pressNoField);
 		
+		errorPressNoLbl = new JLabel();
+		errorPressNoLbl.setBounds(355,10,150,20);
+		borderPanel.add(errorPressNoLbl);
+		
 		//TODO Time Area
 		startTimeLbl = new JLabel("Jam Mulai");
 		startTimeLbl.setBounds(10,50,150,20);
@@ -156,13 +221,17 @@ public class PopUpProductionResult extends JDialog{
 		hourField.setBounds(200,50,50,20);
 		borderPanel.add(hourField);
 		
-		timeSeparator = new JLabel(": ");
-		timeSeparator.setBounds(255,50,10,20);
+		timeSeparator = new JLabel(" : ");
+		timeSeparator.setBounds(255,50,15,20);
 		borderPanel.add(timeSeparator);
 		
 		minuteField = new NumberField(5);
-		minuteField.setBounds(260,50,50,20);
+		minuteField.setBounds(265,50,50,20);
 		borderPanel.add(minuteField);
+		
+		errorTimeLbl = new JLabel();
+		errorTimeLbl.setBounds(270,50,150,20);
+		borderPanel.add(errorTimeLbl);
 		
 		//TODO klem Area
 		klemLbl = new JLabel("Repair (Klem)");
@@ -177,6 +246,10 @@ public class PopUpProductionResult extends JDialog{
 		klemGradeAField.setBounds(200,130,150,20);
 		borderPanel.add(klemGradeAField);
 		
+		errorKlemALbl = new JLabel();
+		errorKlemALbl.setBounds(355,130,150,20);
+		borderPanel.add(errorKlemALbl);
+		
 		klemGradeBLbl = new JLabel("Jumlah Grade B");
 		klemGradeBLbl.setBounds(10,170,150,20);
 		borderPanel.add(klemGradeBLbl);
@@ -184,6 +257,10 @@ public class PopUpProductionResult extends JDialog{
 		klemGradeBField = new NumberField(5);
 		klemGradeBField.setBounds(200,170,150,20);
 		borderPanel.add(klemGradeBField);
+		
+		errorKlemBLbl = new JLabel();
+		errorKlemBLbl.setBounds(355,170,150,20);
+		borderPanel.add(errorKlemBLbl);
 		
 		//TODO protol Area
 		protolLbl = new JLabel("Repair (protol)");
@@ -198,6 +275,10 @@ public class PopUpProductionResult extends JDialog{
 		protolGradeAField.setBounds(200,250,150,20);
 		borderPanel.add(protolGradeAField);
 		
+		errorProtolALbl = new JLabel();
+		errorProtolALbl.setBounds(355,290,150,20);
+		borderPanel.add(errorProtolALbl);
+		
 		protolGradeBLbl = new JLabel("Jumlah Grade B");
 		protolGradeBLbl.setBounds(10,290,150,20);
 		borderPanel.add(protolGradeBLbl);
@@ -205,6 +286,10 @@ public class PopUpProductionResult extends JDialog{
 		protolGradeBField = new NumberField(5);
 		protolGradeBField.setBounds(200,290,150,20);
 		borderPanel.add(protolGradeBField);
+		
+		errorProtolBLbl = new JLabel();
+		errorProtolBLbl.setBounds(355,290,150,20);
+		borderPanel.add(errorProtolBLbl);
 		
 		//TODO goodResult Area
 		goodResultLbl = new JLabel("Repair (goodResult)");
@@ -300,6 +385,31 @@ public class PopUpProductionResult extends JDialog{
 		containerPnl.add(saveBtn);
 	}
 	
+	
+	private void listener(){
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				if(DialogBox.showCloseChoice()==JOptionPane.YES_OPTION) dispose();
+			}
+		});
+		
+		addBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+	}
+	
+
+	private void validatingDetail(){
+		int error = 0;
+		if(pressNoField.getText().equals("")){
+			
+		}
+	}
 	
 	private class ProductionResultTableModel extends AbstractTableModel{
 		private static final long serialVersionUID = 1L;

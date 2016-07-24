@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -64,8 +65,10 @@ public class PopUpInputMaterial extends JDialog{
 	private JScrollPane scrollPane;
 	private MaterialTableModel materialTableModel;
 	
+	private CreateProductionPanel createProductionPanel;
 	
-	public PopUpInputMaterial(){
+	public PopUpInputMaterial(JPanel parent){
+		createProductionPanel = (CreateProductionPanel) parent;
 		createGUI();
 	}
 	private void createGUI(){

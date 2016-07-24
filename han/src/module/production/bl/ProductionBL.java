@@ -67,7 +67,7 @@ public class ProductionBL {
 		return groupShiftDAO.getAll();
 	}
 	
-	public String productionLastCode() throws SQLException{
+	public String getProductionLastCode() throws SQLException{
 		String lastCode = productionDAO.getLastCode();
 		if(lastCode==null){
 			lastCode = ("0001");
@@ -88,7 +88,7 @@ public class ProductionBL {
 		return lastCode;
 	}
 	
-	public String productionResultLastCode() throws SQLException{
+	public String getProductionResultLastCode() throws SQLException{
 		String lastCode = productionResultDAO.getLastCode();
 		if(lastCode==null){
 			lastCode = ("0001");

@@ -39,8 +39,7 @@ public class ProductionResultDAO {
 		try {
 			getLastCodeStatement = connection.prepareStatement(getLastCodeQuery);
 			ResultSet rs = getLastCodeStatement.executeQuery();
-			rs.next();
-			lastCode =  rs.getString("prod_result_code");
+			if(rs.next()) lastCode =  rs.getString("prod_result_code");
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
@@ -90,21 +89,21 @@ public class ProductionResultDAO {
 			getProdResultByProductionCodeStatement.setString(1, productionCode);
 			
 			ResultSet rs = getProdResultByProductionCodeStatement.executeQuery();
-			rs.next();
-			productionResult = new ProductionResult();
-			productionResult.setId(rs.getInt("id"));
-			productionResult.setProdResultCode(rs.getString("prod_result_code"));
-			productionResult.setProductionCode(rs.getString("production_code"));
-			productionResult.setProdResultDate(rs.getDate("prod_result_date"));
-			productionResult.setMachineCode(rs.getString("machine_code"));
-			productionResult.setMachineDescription(rs.getString("description"));
-			productionResult.setTotalOutput(rs.getInt("total_output"));
-			productionResult.setTotalRepairKlem(rs.getInt("total_repair_klem"));
-			productionResult.setTotalRepairProtol(rs.getInt("total_repair_protol"));
-			productionResult.setTotalFineA(rs.getInt("total_fine_a"));
-			productionResult.setTotalFineB(rs.getInt("total_fine_b"));
-			productionResult.setTotalFineResult(rs.getInt("total_fine_result"));
-
+			if(rs.next()){
+				productionResult = new ProductionResult();
+				productionResult.setId(rs.getInt("id"));
+				productionResult.setProdResultCode(rs.getString("prod_result_code"));
+				productionResult.setProductionCode(rs.getString("production_code"));
+				productionResult.setProdResultDate(rs.getDate("prod_result_date"));
+				productionResult.setMachineCode(rs.getString("machine_code"));
+				productionResult.setMachineDescription(rs.getString("description"));
+				productionResult.setTotalOutput(rs.getInt("total_output"));
+				productionResult.setTotalRepairKlem(rs.getInt("total_repair_klem"));
+				productionResult.setTotalRepairProtol(rs.getInt("total_repair_protol"));
+				productionResult.setTotalFineA(rs.getInt("total_fine_a"));
+				productionResult.setTotalFineB(rs.getInt("total_fine_b"));
+				productionResult.setTotalFineResult(rs.getInt("total_fine_result"));
+			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());

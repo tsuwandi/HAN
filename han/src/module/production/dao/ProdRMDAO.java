@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import module.production.model.ProdRM;
-import module.production.model.ProductionResultDetail;
 
 public class ProdRMDAO {
 	private Connection connection;

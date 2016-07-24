@@ -40,4 +40,13 @@ public class DialogBox extends JOptionPane {
 	public static void showErrorException() {
 		JOptionPane.showMessageDialog(null, "Terjadi kesalahan pada sistem", "Error", JOptionPane.ERROR_MESSAGE);
 	}
+	
+	public static void showError(String errorMessage) {
+		JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public static int showCloseChoice() {
+		return JOptionPane.showConfirmDialog(null, "Data yang belum disimpan akan dihapus, Apakah anda yakin menutup layar ?", "Peringatan",
+				JOptionPane.WARNING_MESSAGE);
+	}
 }

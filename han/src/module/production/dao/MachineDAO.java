@@ -29,7 +29,7 @@ public class MachineDAO {
 			while (rs.next()) {
 				Machine machine = new Machine();
 				machine.setId(rs.getInt("id"));
-				machine.setMachineCode(rs.getString("line_code"));
+				machine.setMachineCode(rs.getString("machine_code"));
 				machine.setDescription(rs.getString("description"));
 				machines.add(machine);
 			}
