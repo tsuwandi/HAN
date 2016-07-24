@@ -141,7 +141,7 @@ public class ProductListPanel extends JPanel {
 					if(column == 4){
 						product = new Product();
 						
-						product.setProductCode(productTable.getValueAt(row, 1).toString());
+						product.setProductCode(productTable.getValueAt(row, 0).toString());
 
 						MainPanel.changePanel("module.product.ui.ProductViewPanel", product);
 					}

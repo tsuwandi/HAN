@@ -1458,7 +1458,6 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		this.product = (Product) objects[0];
 
 		loadData(product.getProductCode());
-		System.out.println(product.getProductCode());
 	}
 
 }

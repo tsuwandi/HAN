@@ -230,9 +230,9 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		todayDate = new Date();
 		todayDate.getTime();
 		
-		containerPnl = new JPanel();
-		containerPnl.setPreferredSize(new Dimension(1166, 1950));
-		containerPnl.setLayout(null);
+//		containerPnl = new JPanel();
+//		containerPnl.setPreferredSize(new Dimension(1166, 1950));
+//		containerPnl.setLayout(null);
 		
 //		scrollPane = new JScrollPane(containerPnl);
 //		scrollPane.setBounds(0,0,1166,630);
