@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import com.toedter.calendar.JDateChooser;
@@ -44,6 +45,9 @@ public class PopUpProductionResult extends JDialog{
 	private JLabel totalGoodResultALbl;
 	private JLabel totalGoodResultBLbl;
 	private JLabel totalAllGoodResultLbl;
+	private JLabel prodResultCodeLbl;
+	
+	private JTextField prodResultCodeField;
 	
 	private JLabel timeSeparator;
 	
@@ -85,10 +89,10 @@ public class PopUpProductionResult extends JDialog{
 	private void createGUI(){
 		setLayout(null);
 		setTitle("Input Hasil Produksi");
-		setSize(1000, 750);
+		setSize(1050, 750);
 		
 		containerPnl = new JPanel();
-		containerPnl.setPreferredSize(new Dimension(1000,1100));	
+		containerPnl.setPreferredSize(new Dimension(1000,1200));	
 		containerPnl.setLayout(null);
 		
 		containerScrollPane = new JScrollPane(containerPnl);
@@ -100,28 +104,37 @@ public class PopUpProductionResult extends JDialog{
 		titleLbl.setFont(new Font("Arial", 1, 18));
 		containerPnl.add(titleLbl);
 		
+		//TODO prodResultCode Area
+		prodResultCodeLbl = new JLabel("Production Result Code");
+		prodResultCodeLbl.setBounds(50,50,150,20);
+		containerPnl.add(prodResultCodeLbl);
+		
+		prodResultCodeField = new JTextField();
+		prodResultCodeField.setBounds(240,50,150,20);
+		containerPnl.add(prodResultCodeField);
+		
 		//TODO date Area
 		dateLbl = new JLabel("Tanggal");
-		dateLbl.setBounds(50,50,150,20);
+		dateLbl.setBounds(50,90,150,20);
 		containerPnl.add(dateLbl);
 		
 		resultDateChooser = new JDateChooser();
-		resultDateChooser.setBounds(240,50,150,20);
+		resultDateChooser.setBounds(240,90,150,20);
 		containerPnl.add(resultDateChooser);
 		
 		//TODO machine Area
 		machineLbl = new JLabel("No Mesin");
-		machineLbl.setBounds(50,90,150,20);
+		machineLbl.setBounds(50, 130,150,20);
 		containerPnl.add(machineLbl);
 		
 		machineCmb = new ComboBox<>();
-		machineCmb.setBounds(240,90,150,20);
+		machineCmb.setBounds(240,130,150,20);
 		containerPnl.add(machineCmb);
 		
 		//TODO borderPnl Area
 		borderPanel = new JPanel();
 		borderPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		borderPanel.setBounds(40,130,900,450);
+		borderPanel.setBounds(40,170,900,500);
 		borderPanel.setLayout(null);
 		containerPnl.add(borderPanel);
 		
@@ -134,72 +147,89 @@ public class PopUpProductionResult extends JDialog{
 		pressNoField.setBounds(200,10,150,20);
 		borderPanel.add(pressNoField);
 		
+		//TODO Time Area
+		startTimeLbl = new JLabel("Jam Mulai");
+		startTimeLbl.setBounds(10,50,150,20);
+		borderPanel.add(startTimeLbl);
+		
+		hourField = new NumberField(5);
+		hourField.setBounds(200,50,50,20);
+		borderPanel.add(hourField);
+		
+		timeSeparator = new JLabel(": ");
+		timeSeparator.setBounds(255,50,10,20);
+		borderPanel.add(timeSeparator);
+		
+		minuteField = new NumberField(5);
+		minuteField.setBounds(260,50,50,20);
+		borderPanel.add(minuteField);
+		
 		//TODO klem Area
 		klemLbl = new JLabel("Repair (Klem)");
-		klemLbl.setBounds(10,50,150,20);
+		klemLbl.setBounds(10,90,150,20);
 		borderPanel.add(klemLbl);
 		
 		klemGradeALbl = new JLabel("Jumlah Grade A");
-		klemGradeALbl.setBounds(10,90,150,20);
+		klemGradeALbl.setBounds(10,130,150,20);
 		borderPanel.add(klemGradeALbl);
 		
 		klemGradeAField = new NumberField(5);
-		klemGradeAField.setBounds(200,90,150,20);
+		klemGradeAField.setBounds(200,130,150,20);
 		borderPanel.add(klemGradeAField);
 		
 		klemGradeBLbl = new JLabel("Jumlah Grade B");
-		klemGradeBLbl.setBounds(10,130,150,20);
+		klemGradeBLbl.setBounds(10,170,150,20);
 		borderPanel.add(klemGradeBLbl);
 		
 		klemGradeBField = new NumberField(5);
-		klemGradeBField.setBounds(200,130,150,20);
+		klemGradeBField.setBounds(200,170,150,20);
 		borderPanel.add(klemGradeBField);
 		
 		//TODO protol Area
 		protolLbl = new JLabel("Repair (protol)");
-		protolLbl.setBounds(10,170,150,20);
+		protolLbl.setBounds(10,210,150,20);
 		borderPanel.add(protolLbl);
 		
 		protolGradeALbl = new JLabel("Jumlah Grade A");
-		protolGradeALbl.setBounds(10,210,150,20);
+		protolGradeALbl.setBounds(10,250,150,20);
 		borderPanel.add(protolGradeALbl);
 		
 		protolGradeAField = new NumberField(5);
-		protolGradeAField.setBounds(200,210,150,20);
+		protolGradeAField.setBounds(200,250,150,20);
 		borderPanel.add(protolGradeAField);
 		
 		protolGradeBLbl = new JLabel("Jumlah Grade B");
-		protolGradeBLbl.setBounds(10,250,150,20);
+		protolGradeBLbl.setBounds(10,290,150,20);
 		borderPanel.add(protolGradeBLbl);
 		
 		protolGradeBField = new NumberField(5);
-		protolGradeBField.setBounds(200,250,150,20);
+		protolGradeBField.setBounds(200,290,150,20);
 		borderPanel.add(protolGradeBField);
 		
 		//TODO goodResult Area
 		goodResultLbl = new JLabel("Repair (goodResult)");
-		goodResultLbl.setBounds(10,290,150,20);
+		goodResultLbl.setBounds(10,330,150,20);
 		borderPanel.add(goodResultLbl);
 		
 		goodResultGradeALbl = new JLabel("Jumlah Grade A");
-		goodResultGradeALbl.setBounds(10,330,150,20);
+		goodResultGradeALbl.setBounds(10,370,150,20);
 		borderPanel.add(goodResultGradeALbl);
 		
 		goodResultGradeAField = new NumberField(5);
-		goodResultGradeAField.setBounds(200,330,150,20);
+		goodResultGradeAField.setBounds(200,370,150,20);
 		borderPanel.add(goodResultGradeAField);
 		
 		goodResultGradeBLbl = new JLabel("Jumlah Grade B");
-		goodResultGradeBLbl.setBounds(10,370,150,20);
+		goodResultGradeBLbl.setBounds(10,410,150,20);
 		borderPanel.add(goodResultGradeBLbl);
 		
 		goodResultGradeBField = new NumberField(5);
-		goodResultGradeBField.setBounds(200,370,150,20);
+		goodResultGradeBField.setBounds(200,410,150,20);
 		borderPanel.add(goodResultGradeBField);
 		
 		//TODO add BTN Area
 		addBtn = new JButton("Tambah");
-		addBtn.setBounds(740,410,150,30);
+		addBtn.setBounds(740,450,150,30);
 		borderPanel.add(addBtn);
 		
 		
@@ -208,65 +238,65 @@ public class PopUpProductionResult extends JDialog{
 		productionResultTable = new JTable(productionResultTableModel);
 		
 		scrollPane = new JScrollPane(productionResultTable);
-		scrollPane.setBounds(40,600,900,150);
+		scrollPane.setBounds(40,700,900,150);
 		containerPnl.add(scrollPane);
 		
 		//TODO totalOutput Area
 		totalOutputLbl = new JLabel("Total Output");
-		totalOutputLbl.setBounds(50,770,150,20);
+		totalOutputLbl.setBounds(50,870,150,20);
 		containerPnl.add(totalOutputLbl);
 		
 		totalOutputField = new NumberField(5);
-		totalOutputField.setBounds(240,770,150,20);
+		totalOutputField.setBounds(240,870,150,20);
 		containerPnl.add(totalOutputField);
 		
 		//TODO totalKlem Area
 		totalKlemLbl = new JLabel("Total Repair(Klem)");
-		totalKlemLbl.setBounds(50,810,150,20);
+		totalKlemLbl.setBounds(50,910,150,20);
 		containerPnl.add(totalKlemLbl);
 		
 		totalKlemField = new NumberField(5);
-		totalKlemField.setBounds(240,810,150,20);
+		totalKlemField.setBounds(240,910,150,20);
 		containerPnl.add(totalKlemField);
 		
 		//TODO totalProtol Area
 		totalProtolLbl = new JLabel("Total Repair(Protol)");
-		totalProtolLbl.setBounds(50,850,150,20);
+		totalProtolLbl.setBounds(50,950,150,20);
 		containerPnl.add(totalProtolLbl);
 		
 		totalProtolField = new NumberField(5);
-		totalProtolField.setBounds(240,850,150,20);
+		totalProtolField.setBounds(240,950,150,20);
 		containerPnl.add(totalProtolField);
 		
 		//TODO totalGoodResultA Area
 		totalGoodResultALbl = new JLabel("Total Hasil Produk Baik Grade(A)");
-		totalGoodResultALbl.setBounds(50,900,200,20);
+		totalGoodResultALbl.setBounds(50,990,200,20);
 		containerPnl.add(totalGoodResultALbl);
 		
 		totalGoodResultAField = new NumberField(5);
-		totalGoodResultAField.setBounds(240,900,150,20);
+		totalGoodResultAField.setBounds(240,990,150,20);
 		containerPnl.add(totalGoodResultAField);
 		
 		//TODO totalGoodResultB Area
 		totalGoodResultBLbl = new JLabel("Total Hasil Produk Baik Grade(B)");
-		totalGoodResultBLbl.setBounds(50,940,200,20);
+		totalGoodResultBLbl.setBounds(50,1030,200,20);
 		containerPnl.add(totalGoodResultBLbl);
 		
 		totalGoodResultBField = new NumberField(5);
-		totalGoodResultBField.setBounds(240,940,150,20);
+		totalGoodResultBField.setBounds(240,1030,150,20);
 		containerPnl.add(totalGoodResultBField);
 		
 		//TODO totalAllGoodResult Area
 		totalAllGoodResultLbl = new JLabel("Total Hasil Produk Baik");
-		totalAllGoodResultLbl.setBounds(50,980,200,20);
+		totalAllGoodResultLbl.setBounds(50,1070,200,20);
 		containerPnl.add(totalAllGoodResultLbl);
 		
 		totalAllGoodResultField = new NumberField(5);
-		totalAllGoodResultField.setBounds(240,980,150,20);
+		totalAllGoodResultField.setBounds(240,1070,150,20);
 		containerPnl.add(totalAllGoodResultField);
 		
 		saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(750,1020,150,30);
+		saveBtn.setBounds(750,1110,150,30);
 		containerPnl.add(saveBtn);
 	}
 	

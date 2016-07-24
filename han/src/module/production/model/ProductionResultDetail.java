@@ -2,7 +2,7 @@ package module.production.model;
 
 public class ProductionResultDetail {
 	int id;
-	String productionResultCode;
+	String prodResultCode;
 	int pressedNo;
 	String startTime;
 	int repairKlemA;
@@ -18,11 +18,12 @@ public class ProductionResultDetail {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getProductionResultCode() {
-		return productionResultCode;
+	
+	public String getProdResultCode() {
+		return prodResultCode;
 	}
-	public void setProductionResultCode(String productionResultCode) {
-		this.productionResultCode = productionResultCode;
+	public void setProdResultCode(String prodResultCode) {
+		this.prodResultCode = prodResultCode;
 	}
 	public int getPressedNo() {
 		return pressedNo;

@@ -17,10 +17,12 @@ import com.toedter.calendar.JDateChooser;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import module.production.model.GroupShift;
-import module.production.model.Shift;
 import module.production.model.Line;
+import module.production.model.Shift;
+import module.util.Bridging;
+import module.production.model.Production;
 
-public class CreateProductionPanel extends JPanel{
+public class CreateProductionPanel extends JPanel implements Bridging{
 	private static final long serialVersionUID = 1L;
 	
 	JLabel productionCodeLbl;
@@ -37,6 +39,8 @@ public class CreateProductionPanel extends JPanel{
 	
 	JButton inputMaterialBtn;
 	JButton inputProductionResultBtn;
+	
+	Production production;
 	
 	public CreateProductionPanel(){
 		createGUI();
@@ -71,6 +75,9 @@ public class CreateProductionPanel extends JPanel{
 		List<Line> lines = new ArrayList<>();
 		List<GroupShift> groupShifts = new ArrayList<>();
 		
+		productionCodeField.setEnabled(false);
+		
+
 		try {
 			lines = ServiceFactory.getProductionBL().getLine();
 			shifts = ServiceFactory.getProductionBL().getShift();
@@ -148,6 +155,18 @@ public class CreateProductionPanel extends JPanel{
 		inputProductionResultBtn = new JButton("Input Hasil Produksi");
 		inputProductionResultBtn.setBounds(450,360,150,50);
 		add(inputProductionResultBtn);
+	}
+
+	@Override
+	public void invokeObjects(Object... objects) {
+		if(objects.length!=0)production = (Production)objects[0];
+		if(production!=null){
+			productionCodeField.setText(production.getProductionCode());
+			productionDateChooser.setDate(production.getProductionDate());
+			groupShiftCmb.setSelectedItem(production.getGroupShiftDescription());
+			shiftCmb.setSelectedItem(production.getShiftName());
+			lineCmb.setSelectedItem(production.getLineDescription());
+		}
 	}
 	
 }

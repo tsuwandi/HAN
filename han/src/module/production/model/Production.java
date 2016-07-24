@@ -1,6 +1,7 @@
 package module.production.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class Production {
 	int id;
@@ -10,13 +11,15 @@ public class Production {
 	String shiftCode;
 	Date productionDate;
 	String information;
-	int sumPalletCard;
-	int sumLog;
-	int sumVolume;
+	int totalPalletCard;
+	int totalLog;
+	double totalVolume;
 	String groupShiftDescription;
 	String lineDescription;
 	String shiftName;
 	String status;
+	List<ProdRM> listOfProdRM;
+	ProductionResult productionResult;
 	
 	public int getId() {
 		return id;
@@ -60,23 +63,25 @@ public class Production {
 	public void setInformation(String information) {
 		this.information = information;
 	}
-	public int getSumPalletCard() {
-		return sumPalletCard;
+
+	public int getTotalPalletCard() {
+		return totalPalletCard;
 	}
-	public void setSumPalletCard(int sumPalletCard) {
-		this.sumPalletCard = sumPalletCard;
+	public void setTotalPalletCard(int totalPalletCard) {
+		this.totalPalletCard = totalPalletCard;
 	}
-	public int getSumLog() {
-		return sumLog;
+	public int getTotalLog() {
+		return totalLog;
 	}
-	public void setSumLog(int sumLog) {
-		this.sumLog = sumLog;
+	public void setTotalLog(int totalLog) {
+		this.totalLog = totalLog;
 	}
-	public int getSumVolume() {
-		return sumVolume;
+	
+	public double getTotalVolume() {
+		return totalVolume;
 	}
-	public void setSumVolume(int sumVolume) {
-		this.sumVolume = sumVolume;
+	public void setTotalVolume(double totalVolume) {
+		this.totalVolume = totalVolume;
 	}
 	public String getGroupShiftDescription() {
 		return groupShiftDescription;
@@ -101,6 +106,18 @@ public class Production {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public List<ProdRM> getListOfProdRM() {
+		return listOfProdRM;
+	}
+	public void setListOfProdRM(List<ProdRM> listOfProdRM) {
+		this.listOfProdRM = listOfProdRM;
+	}
+	public ProductionResult getProductionResult() {
+		return productionResult;
+	}
+	public void setProductionResult(ProductionResult productionResult) {
+		this.productionResult = productionResult;
 	}
 	
 	

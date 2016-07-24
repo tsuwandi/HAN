@@ -1,5 +1,7 @@
 package module.production.model;
 
+import java.util.Date;
+
 public class ProdRM {
 	int id;
 	String productionCode;
@@ -9,6 +11,7 @@ public class ProdRM {
 	double thick;
 	int log;
 	double volume;
+	Date dateDryOut;
 	
 	public int getId() {
 		return id;
@@ -57,6 +60,12 @@ public class ProdRM {
 	}
 	public void setVolume(double volume) {
 		this.volume = volume;
+	}
+	public Date getDateDryOut() {
+		return dateDryOut;
+	}
+	public void setDateDryOut(Date dateDryOut) {
+		this.dateDryOut = dateDryOut;
 	}
 	
 	
