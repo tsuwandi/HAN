@@ -481,7 +481,7 @@ public class ProductDAO {
 			getAllProductStatement = connection.prepareStatement(query);
 			getAllProductStatement.setString(1, product_code);
 			ResultSet rs = getAllProductStatement.executeQuery();
-
+System.out.println("aaa " + getAllProductStatement);
 			while (rs.next()) {
 				p = new Product();
 				p.setProductId(rs.getInt("id"));

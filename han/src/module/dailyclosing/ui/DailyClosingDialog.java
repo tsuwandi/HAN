@@ -63,13 +63,13 @@ public class DailyClosingDialog extends JDialog {
 					
 					/* Convert List to JRBeanCollectionDataSource */
 					JRBeanCollectionDataSource itemsJRBeanListOfReceived = new JRBeanCollectionDataSource(listOfReceived);
-					//JRBeanCollectionDataSource itemsJRBeanListOfDryIn = new JRBeanCollectionDataSource(listOfDryIn);
+					JRBeanCollectionDataSource itemsJRBeanListOfDryIn = new JRBeanCollectionDataSource(listOfDryIn);
 					//JRBeanCollectionDataSource itemsJRBeanListOfDryOut = new JRBeanCollectionDataSource(listOfDryOut);
 
 					/* Map to hold Jasper report Parameters */
 					Map<String, Object> parameters = new HashMap<String, Object>();
 					parameters.put("ItemDataSourceListOfReceived", itemsJRBeanListOfReceived);
-					//parameters.put("ItemDataSourceListOfDryIn", itemsJRBeanListOfDryIn);
+					parameters.put("ItemDataSourceListOfDryIn", itemsJRBeanListOfDryIn);
 					//parameters.put("ItemDataSourceListOfDryOut", itemsJRBeanListOfDryOut);
 					
 					/*
