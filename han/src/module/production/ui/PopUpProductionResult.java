@@ -194,6 +194,7 @@ public class PopUpProductionResult extends JDialog{
 		
 		resultDateChooser = new JDateChooser();
 		resultDateChooser.setBounds(240,90,150,20);
+		resultDateChooser.setFocusable(false);
 		containerPnl.add(resultDateChooser);
 		
 		//TODO machine Area
@@ -203,6 +204,7 @@ public class PopUpProductionResult extends JDialog{
 		
 		machineCmb = new ComboBox<>();
 		machineCmb.setBounds(240,130,150,20);
+		machineCmb.setFocusable(false);
 		containerPnl.add(machineCmb);
 		
 		errorMachineLbl = new JLabel();
@@ -346,6 +348,7 @@ public class PopUpProductionResult extends JDialog{
 		//Table Area
 		productionResultTableModel = new ProductionResultTableModel(new ArrayList<ProductionResultDetail>());
 		productionResultTable = new JTable(productionResultTableModel);
+		productionResultTable.setFocusable(false);
 		
 		scrollPane = new JScrollPane(productionResultTable);
 		scrollPane.setBounds(40,700,900,150);
@@ -407,6 +410,7 @@ public class PopUpProductionResult extends JDialog{
 		
 		saveBtn = new JButton("Simpan");
 		saveBtn.setBounds(750,1110,150,30);
+		saveBtn.setFocusable(false);
 		containerPnl.add(saveBtn);
 	}
 	

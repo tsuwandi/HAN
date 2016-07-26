@@ -120,6 +120,7 @@ public class PopUpInputMaterial extends JDialog{
 		
 		dateField = new NumberField(2);
 		dateField.setBounds(280, 100, 50, 20);
+		dateField.setFocusable(false);
 		add(dateField);
 		
 		secondSeparatorLbl = new JLabel("/");
@@ -128,6 +129,7 @@ public class PopUpInputMaterial extends JDialog{
 		
 		monthField = new NumberField(2);
 		monthField.setBounds(340, 100, 50, 20);
+		monthField.setFocusable(false);
 		add(monthField);
 		
 		thirdSeparatorLbl = new JLabel("/");
@@ -136,6 +138,7 @@ public class PopUpInputMaterial extends JDialog{
 		
 		yearField = new NumberField(2);
 		yearField.setBounds(400, 100, 50, 20);
+		yearField.setFocusable(false);
 		add(yearField);
 		
 		sequenceField = new NumberField(4);
@@ -220,7 +223,7 @@ public class PopUpInputMaterial extends JDialog{
 		materialTableModel = new MaterialTableModel(new ArrayList<ProdRM>());
 		
 		materialTable = new JTable(materialTableModel);
-		
+		materialTable.setFocusable(false);
 		scrollPane = new JScrollPane(materialTable);
 		scrollPane.setBounds(50,450,700,100);
 		add(scrollPane);

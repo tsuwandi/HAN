@@ -3,11 +3,8 @@ package module.production.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,13 +20,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.component.NumberField;
 import model.User;
-import module.pembelian.model.PalletCard;
 import module.production.model.ProdRM;
-import module.production.model.Production;
 
 public class PopUpViewMaterial extends JDialog{
 
@@ -82,8 +76,9 @@ public class PopUpViewMaterial extends JDialog{
 	
 	private ViewProductionPanel viewProductionPanel;
 	private List<ProdRM> prodRms;
-	private ProdRM tempProdRM;
+
 	private PopUpViewMaterial parentDialog;
+
 	
 	public PopUpViewMaterial(JPanel parent){
 		createGUI();
@@ -120,6 +115,7 @@ public class PopUpViewMaterial extends JDialog{
 		
 		dateField = new NumberField(2);
 		dateField.setBounds(280, 100, 50, 20);
+		dateField.setFocusable(false);
 		add(dateField);
 		
 		secondSeparatorLbl = new JLabel("/");
@@ -128,6 +124,7 @@ public class PopUpViewMaterial extends JDialog{
 		
 		monthField = new NumberField(2);
 		monthField.setBounds(340, 100, 50, 20);
+		monthField.setFocusable(false);
 		add(monthField);
 		
 		thirdSeparatorLbl = new JLabel("/");
@@ -136,6 +133,7 @@ public class PopUpViewMaterial extends JDialog{
 		
 		yearField = new NumberField(2);
 		yearField.setBounds(400, 100, 50, 20);
+		yearField.setRequestFocusEnabled(false);
 		add(yearField);
 		
 		sequenceField = new NumberField(4);
@@ -304,6 +302,8 @@ public class PopUpViewMaterial extends JDialog{
 		}
 	}
 	
+	
+	
 	private void listener(){
 		this.addWindowListener(new WindowAdapter() {
 			@Override
@@ -314,6 +314,7 @@ public class PopUpViewMaterial extends JDialog{
 		
 		searchPalletCardBtn.addActionListener(new ActionListener() {
 			
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				PopUpSearchMaterial pop = new PopUpSearchMaterial(parentDialog);
