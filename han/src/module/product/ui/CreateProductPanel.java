@@ -242,7 +242,7 @@ public class CreateProductPanel extends JPanel {
 		
 		breadcrumb = new JLabel("ERP > Pembelian > Produk");
 		breadcrumb.setFont(new Font(null, Font.BOLD, 12));
-		breadcrumb.setBounds(50, 10, 320, 30);
+		breadcrumb.setBounds(20, 10, 320, 30);
 		
 		backBtn = new JButton("X");
 		backBtn.setBounds(1100, 5, 40, 25);
