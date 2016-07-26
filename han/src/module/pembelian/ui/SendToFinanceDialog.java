@@ -2,6 +2,8 @@ package module.pembelian.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -77,18 +79,33 @@ public class SendToFinanceDialog extends JDialog {
 
 					if (rdbtnMonitor.isSelected()) {
 						if (isValid(listOfReceived) == true) {
-							JasperViewer.viewReport(jasperPrint, false);
+							JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+
+							JDialog dialog = new JDialog();
+							dialog.setContentPane(jasperViewer.getContentPane());
+							dialog.setSize(jasperViewer.getSize());
+							dialog.setTitle("Laporan Send To Finance");
+							dialog.setVisible(true);
 
 							setVisible(false);
+							dialog.toFront();
+							dialog.addWindowListener(new WindowAdapter() {
+								public void windowClosing(WindowEvent e) {
+									int response = JOptionPane.showConfirmDialog(null, "Apakah data sudah benar ?",
+											"Peringatan", JOptionPane.WARNING_MESSAGE);
 
-							int response = JOptionPane.showConfirmDialog(null, "Apakah data sudah benar ?",
-									"Peringatan", JOptionPane.WARNING_MESSAGE);
+									if (response == JOptionPane.YES_OPTION) {
+										dialog.dispose();
+										try {
+											update(listOfReceived);
+										} catch (SQLException e1) {
+											JOptionPane.showMessageDialog(null, "Gagal Memproses Send To Finance",
+													"Send To Finance", JOptionPane.ERROR_MESSAGE);
+										}
+									}
+								}
+							});
 
-							if (response == JOptionPane.YES_OPTION) {
-								setVisible(false);
-
-								update(listOfReceived);
-							}
 						} else {
 							JOptionPane.showMessageDialog(null, "Tidak ada data yang dikirim ke finance",
 									"Send To Finance", JOptionPane.INFORMATION_MESSAGE);
