@@ -269,6 +269,7 @@ public class EditPopUpPalletCard extends JDialog{
 		pcs = new ArrayList<>();
 		pcTableModel = new PCTableModel(pcs);
 		pcTable = new JTable(pcTableModel);
+		pcTable.setFocusable(false);
 		
 		pcScrollPane = new JScrollPane(pcTable);
 		pcScrollPane.setBounds(30,460,740,100);

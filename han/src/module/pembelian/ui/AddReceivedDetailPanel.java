@@ -23,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import controller.ReceivedDAOFactory;
@@ -414,6 +415,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		receivedDetails = new ArrayList<>();
 		receivedDetailModel = new ReceivedDetailModel(receivedDetails);
 		receivedDetailTable = new JTable(receivedDetailModel);
+		receivedDetailTable.setFocusable(false);
 		
 		receivedDetailScrollPane = new JScrollPane(receivedDetailTable);
 		receivedDetailScrollPane.setBounds(50,540,1000,150);
@@ -425,12 +427,14 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		
 		deletePalletBtn = new JButton("Delete");
 		deletePalletBtn.setBounds(800,490,100,30);
+		deletePalletBtn.setFocusable(false);
 		containerPnl.add(deletePalletBtn);
 		
 		//Pic Docking
 		picDockings = new ArrayList<>();
 		picDockingTableModel = new PicDockingTableModel(picDockings);
 		dockingPICTable = new JTable(picDockingTableModel);
+		dockingPICTable.setFocusable(false);
 		
 		dockingPicScrollPane = new JScrollPane(dockingPICTable);
 		dockingPicScrollPane.setBounds(50,710,500,100);
@@ -438,6 +442,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		
 		deletePicBtn = new JButton("Delete");
 		deletePicBtn.setBounds(570,750,100,30);
+		deletePicBtn.setFocusable(false);
 		containerPnl.add(deletePicBtn);
 		
 		searchPicBtn = new JButton("Search");
@@ -629,6 +634,12 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 						e.printStackTrace();
 					}
 				}
+			}
+		});
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				graderComboBox.requestFocusInWindow();
 			}
 		});
 	
