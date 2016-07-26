@@ -3,6 +3,7 @@ package module.production.model;
 import java.util.Date;
 
 public class ProdRM {
+	boolean flag=false;
 	int id;
 	String productionCode;
 	String palletCardCode;
@@ -13,6 +14,14 @@ public class ProdRM {
 	double volume;
 	Date dateDryOut;
 	
+	
+	
+	public boolean isFlag() {
+		return flag;
+	}
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
 	public int getId() {
 		return id;
 	}

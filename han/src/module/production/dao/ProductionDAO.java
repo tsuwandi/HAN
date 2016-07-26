@@ -22,7 +22,7 @@ public class ProductionDAO {
 			+ "production_date, information, total_pallet_card, total_log, total_volume, status "
 			+ "FROM production a INNER JOIN line b ON a.line_code = b.line_code "
 			+ "INNER JOIN shift c ON a.shift_code = c.shift_code INNER JOIN group_shift d ON a.group_shift_code = d.group_shift_code "
-			+ "WHERE deleted_date IS NULL";
+			+ "WHERE a.deleted_date IS NULL";
 	
 	private String getLastCodeQuery = "SELECT production_code FROM production WHERE deleted_date IS NULL ORDER BY id DESC LIMIT 1";
 	
@@ -123,7 +123,7 @@ public class ProductionDAO {
 			updateStatement.setString(9, production.getStatus());
 			updateStatement.setString(10, "Michael");
 			updateStatement.setDate(11, new Date(new java.util.Date().getTime()));
-			updateStatement.setString(2, production.getProductionCode());
+			updateStatement.setString(12, production.getProductionCode());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {

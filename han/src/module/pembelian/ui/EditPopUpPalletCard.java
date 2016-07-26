@@ -66,6 +66,7 @@ public class EditPopUpPalletCard extends JDialog{
 	JLabel errorTotalLbl;
 	JLabel errorVolumeLbl;
 	JLabel errorProductLbl;
+	JLabel errorPalletCardLbl;
 	JLabel productCode;
 	
 	NumberField noPalletCardField;
@@ -100,6 +101,7 @@ public class EditPopUpPalletCard extends JDialog{
 	int indexEdit = 0;
 	int index;
 	ReceivedDetail receivedDetail;
+	Map<String, PalletCard> tempPallet;
 	public EditPopUpPalletCard(AddReceivedDetailPanel parent, ReceivedDetail receivedDetail, int index) {
 		addReceivedDetail = parent;
 		setLayout(null);
@@ -137,6 +139,10 @@ public class EditPopUpPalletCard extends JDialog{
 		codePalletCardField = new JTextField();
 		codePalletCardField.setBounds(150, 70, 150, 20);
 		add(codePalletCardField);
+		
+		errorPalletCardLbl = new JLabel();
+		errorPalletCardLbl.setBounds(320, 70, 180, 20);
+		add(errorPalletCardLbl);
 	
 		//Long 
 		longLbl = new JLabel("Panjang");
@@ -307,7 +313,7 @@ public class EditPopUpPalletCard extends JDialog{
 		
 		changePallet();
 		productMap = new HashMap<Double, Map<Double,Map<Double, Product>>>();
-		
+		tempPallet = new HashMap<>();
 		try {
 			
 			products = ReceivedDAOFactory.getProductDAO().getAllProduct(addReceivedDetail.received.getWoodTypeID(), addReceivedDetail.receivedDetails.get(index).getGradeID());
@@ -425,7 +431,7 @@ public class EditPopUpPalletCard extends JDialog{
 					PalletCard pc = pcs.get(pcTable.getSelectedRow());
 					codePalletCardField.setText(pc.getPalletCardCode());
 					String [] splits = pc.getPalletCardCode().split("/");
-					noPalletCardField.setText(splits[0]);
+					noPalletCardField.setText(splits[5]);
 					longField.setText(pc.getLength()+"");
 					wideField.setText(pc.getWidth()+"");
 					thicknessField.setText(pc.getThickness()+"");
@@ -495,6 +501,15 @@ public class EditPopUpPalletCard extends JDialog{
 					errorNoPallet.setText("");
 				}
 				
+				if(!editMode){
+					if(addReceivedDetail.palletMaps.containsKey(codePalletCardField.getText())||tempPallet.containsKey(codePalletCardField.getText())){
+						errorPalletCardLbl.setText("<html><font color='red'>Code Pallet sudah ada !</font></html>");
+						error++;
+					}else{
+						errorPalletCardLbl.setText("");
+					}
+				}
+				
 				if(error==0){
 					if(!editMode){
 						PalletCard pc = new PalletCard();
@@ -507,6 +522,7 @@ public class EditPopUpPalletCard extends JDialog{
 						pc.setProductName(productNameField.getText());
 						pc.setProductCode(productCode.getText());
 						pc.setDescription(descriptionArea.getText());
+						tempPallet.put(codePalletCardField.getText(), pc);
 						pcs.add(pc);
 						pcTable.updateUI();
 						
@@ -569,7 +585,7 @@ public class EditPopUpPalletCard extends JDialog{
 					pallet.setTotalLog(Integer.valueOf(totalLogField.getText()));
 					pallet.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
 					pallet.setPallets(pcs);
-					
+					addReceivedDetail.palletMaps.putAll(tempPallet);
 					addReceivedDetail.receivedDetailTable.updateUI();
 					dispose();
 					
@@ -632,7 +648,7 @@ public class EditPopUpPalletCard extends JDialog{
 		}else{
 			noPallet="0000";
 		}
-		codePalletCardField.setText(noPallet+"/"+addReceivedDetail.received.getReceivedCode());
+		codePalletCardField.setText(addReceivedDetail.received.getReceivedCode()+"/"+noPallet);
 	}
 	
 	public void calculateVolume(){

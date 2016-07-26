@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
+import controller.ServiceFactory;
 import main.panel.MainPanel;
 import model.User;
 import module.production.model.Production;
@@ -37,14 +39,21 @@ public class ListProductionPanel extends JPanel {
 	public ListProductionPanel() {
 		createGUI();
 		listener();
+		initData();
 	}
 	
 	private void listener(){
 		productionTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(productionTable.columnAtPoint(e.getPoint())==7)
-				MainPanel.changePanel("module.pembelian.ui.ViewReceivedDetailPanel", productions.get(productionTable.getSelectedRow()));
+				if(productionTable.columnAtPoint(e.getPoint())==7){
+					if(!productions.get(productionTable.getSelectedRow()).getStatus().equals("Complete")){
+						MainPanel.changePanel("module.production.ui.CreateProductionPanel", productions.get(productionTable.getSelectedRow()));
+					}
+				}
+				if(productionTable.columnAtPoint(e.getPoint())==8){
+					MainPanel.changePanel("module.production.ui.ViewProductionPanel", productions.get(productionTable.getSelectedRow()));
+				}
 			}
 		});
 		
@@ -56,15 +65,7 @@ public class ListProductionPanel extends JPanel {
 			}
 		});
 	
-//		try {
-//			productions = ReceivedDAOFactory.getReceivedDAO().getAll();
-//			productionTable.setModel(new ProductionTableModel(productions));
-//			productionTable.updateUI();
-//			setTableSize();
-//		} catch (SQLException e1) {
-//			e1.printStackTrace();
-//		}
-//		
+
 		advancedSearchBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -79,18 +80,20 @@ public class ListProductionPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-//				try {
-//					productions = ReceivedDAOFactory.getReceivedDAO().getAllBySearch(searchField.getText());
-//					productionTable.setModel(new ProductionTableModel(productions));
-//					productionTable.updateUI();
-//					setTableSize();
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-				
+
 			}
 		});
 		
+	}
+	
+	private void initData(){
+		try {
+			productions = ServiceFactory.getProductionBL().getProduction();
+			productionTable.setModel(new ProductionTableModel(productions));
+			productionTable.updateUI();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void createGUI(){
@@ -194,7 +197,7 @@ public class ListProductionPanel extends JPanel {
 	     * Method to get Column Count
 	     */
 	    public int getColumnCount() {
-	        return 8;
+	        return 9;
 	    }
 	    
 	    /**
@@ -221,6 +224,8 @@ public class ListProductionPanel extends JPanel {
 	            case 6 :
 	                return p.getStatus();
 	            case 7 :
+	                return "Edit";
+	            case 8 :
 	                return "View";
 	            default :
 	                return "";
@@ -253,6 +258,8 @@ public class ListProductionPanel extends JPanel {
 	            case 6 :
 	                return "Status";
 	            case 7 :
+	                return "Action";
+	            case 8 :
 	                return "Action";
 	            default :
 	                return "";

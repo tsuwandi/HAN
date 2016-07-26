@@ -115,7 +115,7 @@ public class ProductionBL {
 			production.setProductionResult(getProductionResultByCode(production.getProductionCode()));
 			production.setListOfProdRM(getProductRMByCode(production.getProductionCode()));
 		}
-		return productionDAO.getAll();
+		return productions;
 	}
 	
 	private ProductionResult getProductionResultByCode(String productionCode) throws SQLException {
@@ -131,12 +131,32 @@ public class ProductionBL {
 		return prodRMDAO.getAllByProductionCode(productionCode);
 	}
 	
-	public List<ProdRM> getSearchProdRM()throws SQLException{
-		return prodRMDAO.getAllSearch();				
+	public List<ProdRM> getSearchProdRM(List<ProdRM> prodRMs)throws SQLException{
+		StringBuffer sqlQuery = new StringBuffer();
+		if(prodRMs.size()!=0){
+			sqlQuery.append(" AND b.pallet_card_code NOT IN (");
+			for (int i=0;i<prodRMs.size();i++) {
+				ProdRM pr = prodRMs.get(i);
+				if(i==0)sqlQuery.append("'"+pr.getPalletCardCode()+"'");
+				else sqlQuery.append(",'"+pr.getPalletCardCode()+"'");
+			}
+			sqlQuery.append(") ");
+		}
+		return prodRMDAO.getAllSearch(sqlQuery.toString());				
 	}
 	
-	public ProdRM getSearchProdRMByPalletCard(String palletCardCode)throws SQLException{
-		return prodRMDAO.getProdRMByPalletCard(palletCardCode);				
+	public ProdRM getSearchProdRMByPalletCard(String palletCardCode,List<ProdRM> prodRMs)throws SQLException{
+		StringBuffer sqlQuery = new StringBuffer();
+		if(prodRMs.size()!=0){
+			sqlQuery.append(" AND b.pallet_card_code NOT IN (");
+			for (int i=0;i<prodRMs.size();i++) {
+				ProdRM pr = prodRMs.get(i);
+				if(i==0)sqlQuery.append("'"+pr.getPalletCardCode()+"'");
+				else sqlQuery.append(",'"+pr.getPalletCardCode()+"'");
+			}
+			sqlQuery.append(") ");
+		}
+		return prodRMDAO.getProdRMByPalletCard(palletCardCode,sqlQuery.toString());				
 	}
 	
 	public void saveAll(Production production)throws SQLException {
@@ -153,7 +173,7 @@ public class ProductionBL {
 				}
 				flagProductionResult=true;
 			}
-			if(production.getListOfProdRM()!=null||production.getListOfProdRM().size()!=0){
+			if(production.getListOfProdRM()!=null){
 				for(ProdRM prodRM :production.getListOfProdRM()){
 					new ProdRMDAO(con).save(prodRM);
 				}
