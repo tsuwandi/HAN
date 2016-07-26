@@ -258,17 +258,17 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		titleLbl.setBounds(20, 40, 300, 30);
 		titleLbl.setFont(new Font(null, Font.BOLD, 12));
 		
-		idLbl = new JLabel("Kode Produk");
+		idLbl = new JLabel("<html>Kode Produk <font color=\"red\">*</font></html>");
 		idLbl.setBounds(20, 80, 100, 30);
-		nameLbl = new JLabel("Nama Produk");
+		nameLbl = new JLabel("<html>Nama Produk <font color=\"red\">*</font></html>");
 		nameLbl.setBounds(20, 110, 100, 30);
-		catLbl = new JLabel("Kategori Produk");
+		catLbl = new JLabel("<html>Kategori Produk <font color=\"red\">*</font></html>");
 		catLbl.setBounds(20, 140, 100, 30);
-		statLbl = new JLabel("Status Produk");
+		statLbl = new JLabel("<html>Status Produk <font color=\"red\">*</font></html>");
 		statLbl.setBounds(20, 170, 100, 30);
-		unitLbl = new JLabel("Satuan Produk");
+		unitLbl = new JLabel("<html>Satuan Produk <font color=\"red\">*</font></html>");
 		unitLbl.setBounds(20, 200, 100, 30);
-		maintainLbl = new JLabel("Maintain Stock");
+		maintainLbl = new JLabel("<html>Maintain Stock <font color=\"red\">*</font></html>");
 		maintainLbl.setBounds(20, 230, 100, 30);
 		picLbl = new JLabel("Gambar");
 		picLbl.setBounds(20, 260, 100, 30);
@@ -286,19 +286,19 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		attLbl = new JLabel("<html><u>Atribut Produk</u></html>");
 		attLbl.setBounds(20, 260, 100, 30);
 		attLbl.setFont(new Font(null, Font.BOLD, 12));
-		typeLbl = new JLabel("Jenis Kayu");
+		typeLbl = new JLabel("<html>Jenis Kayu <font color=\"red\">*</font></html>");
 		typeLbl.setBounds(20, 290, 100, 30);
-		gradeLbl = new JLabel("Grade");
+		gradeLbl = new JLabel("<html>Grade <font color=\"red\">*</font></html>");
 		gradeLbl.setBounds(20, 320, 100, 30);
-		thickLbl = new JLabel("Tebal");
+		thickLbl = new JLabel("<html>Tebal <font color=\"red\">*</font></html>");
 		thickLbl.setBounds(20, 380, 100, 30);
-		longLbl = new JLabel("Panjang");
+		longLbl = new JLabel("<html>Panjang <font color=\"red\">*</font></html>");
 		longLbl.setBounds(20, 350, 100, 30);
-		wideLbl = new JLabel("Lebar");
+		wideLbl = new JLabel("<html>Lebar <font color=\"red\">*</font></html>");
 		wideLbl.setBounds(20, 410, 100, 30);
-		conditionLbl = new JLabel("Kondisi");
+		conditionLbl = new JLabel("<html>Kondisi <font color=\"red\">*</font></html>");
 		conditionLbl.setBounds(20, 440, 100, 30);
-		minQtyLbl = new JLabel("Minimum Qty");
+		minQtyLbl = new JLabel("<html>Minimum Qty <font color=\"red\">*</font></html>");
 		minQtyLbl.setBounds(20, 470, 100, 30);
 		
 		inventLbl = new JLabel("<html><u>Inventory</u></html>");
@@ -872,8 +872,88 @@ public class ProductViewPanel extends JPanel implements Bridging {
 	    add(printBtn);
 	    add(deleteBtn);
 	    add(editBtn);
+	    
+	    idLblError = new JLabel("");
+	    idLblError.setForeground(Color.RED);
+	    idLblError.setBounds(375, 80, 225, 30);
+		
+	    nameLblError = new JLabel("");
+	    nameLblError.setForeground(Color.RED);
+		nameLblError.setBounds(375, 110, 225, 30);
+		
+		catLblError = new JLabel("");
+		catLblError.setForeground(Color.RED);
+		catLblError.setBounds(375, 140, 225, 30);
+		
+		statLblError = new JLabel("");
+		statLblError.setForeground(Color.RED);
+		statLblError.setBounds(375, 170, 225, 30);
+		
+		unitLblError = new JLabel("");
+		unitLblError.setForeground(Color.RED);
+		unitLblError.setBounds(375, 200, 225, 30);
+		
+		maintainLblError = new JLabel("");
+		maintainLblError.setForeground(Color.RED);
+		maintainLblError.setBounds(375, 230, 225, 30);
+		
+		typeLblError = new JLabel("");
+		typeLblError.setForeground(Color.RED);
+		typeLblError.setBounds(375, 290, 225, 30);
+		
+		gradeLblError = new JLabel("");
+		gradeLblError.setForeground(Color.RED);
+		gradeLblError.setBounds(375, 320, 225, 30);
+		
+		thickLblError = new JLabel("");
+		thickLblError.setForeground(Color.RED);
+		thickLblError.setBounds(375, 380, 225, 30);
+		
+		longLblError = new JLabel("");
+		longLblError.setForeground(Color.RED);
+		longLblError.setBounds(375, 350, 225, 30);
+		
+		wideLblError = new JLabel("");
+		wideLblError.setForeground(Color.RED);
+		wideLblError.setBounds(375, 410, 225, 30);
+		
+		conditionLblError = new JLabel("");
+		conditionLblError.setForeground(Color.RED);
+		conditionLblError.setBounds(375, 440, 225, 30);
+		
+		minQtyLblError = new JLabel("");
+		minQtyLblError.setForeground(Color.RED);
+		minQtyLblError.setBounds(375, 470, 225, 30);
+		
+		add(idLblError);
+		add(nameLblError);
+		add(catLblError);
+		add(statLblError);
+		add(unitLblError);
+		add(maintainLblError);
+		add(typeLblError);
+		add(gradeLblError);
+		add(thickLblError);
+		add(longLblError);
+		add(wideLblError);
+		add(conditionLblError);
+		add(minQtyLblError);
 		
 	}
+	
+	private JLabel idLblError;
+	private JLabel nameLblError;
+	private JLabel catLblError;
+	private JLabel statLblError;
+	private JLabel unitLblError;
+	private JLabel maintainLblError;
+	private JLabel typeLblError;
+	private JLabel gradeLblError;
+	private JLabel thickLblError;
+	private JLabel longLblError;
+	private JLabel wideLblError;
+	private JLabel conditionLblError;
+	private JLabel minQtyLblError;
 	
 	protected void doDelete() {
 		try {

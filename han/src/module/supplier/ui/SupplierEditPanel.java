@@ -389,7 +389,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 				showAddSuppVehicleDialog(supplierEdit);
 			}
 		});
-		btnAddSuppVehicle.setBounds(820, 750, 100, 30);
+		btnAddSuppVehicle.setBounds(820, 540, 100, 30);
 		panel.add(btnAddSuppVehicle);
 
 		btnDeleteSuppVehicle = new JButton("Hapus");
@@ -529,7 +529,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		SwingUtilities.invokeLater(new Runnable() {
 		    @Override
 		    public void run() {
-		        txtSuppCode.requestFocusInWindow();
+		        txtSuppName.requestFocusInWindow();
 		    }
 		});
 	}

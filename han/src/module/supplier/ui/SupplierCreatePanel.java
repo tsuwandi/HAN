@@ -438,7 +438,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 //		txtAccountName.setDocument(new JTextFieldLimit(30));
 //		panel.add(txtAccountName);
 
-		lblCurrency = new JLabel("<html>Kurs <font color=\"red\">*</font></html>");
+		lblCurrency = new JLabel("Kurs");
 		lblCurrency.setBounds(50, 750, 150, 30);
 		panel.add(lblCurrency);
 

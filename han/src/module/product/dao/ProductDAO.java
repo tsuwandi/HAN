@@ -216,8 +216,6 @@ public class ProductDAO {
 				product.setGradeName(rs.getString("c.grade"));
 
 				products.add(product);
-				
-				System.out.println(getAllProductStatement);
 			}
 
 		} catch (SQLException ex) {
