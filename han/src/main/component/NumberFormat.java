@@ -3,6 +3,9 @@ package main.component;
 public class NumberFormat {
 
 	public static String onTypeNum(int numLength, String value) {
+		if(value.equals(""))
+			return ""; 
+		
 		String words = null;
 
 		if (numLength <= 10)

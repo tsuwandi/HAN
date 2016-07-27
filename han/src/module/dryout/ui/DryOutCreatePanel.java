@@ -378,6 +378,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
+		txtDate.setFocusable(false);
 		txtDate.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -391,6 +392,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
+		txtMonth.setFocusable(false);
 		txtMonth.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -404,6 +406,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
+		txtYear.setFocusable(false);
 		txtYear.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -417,7 +420,6 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		//txtOrdinal.setDocument(new JTextFieldLimit(4));
 		txtOrdinal.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
