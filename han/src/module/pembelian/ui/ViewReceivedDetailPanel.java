@@ -136,6 +136,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	JButton inputBtn;
 	JButton deleteBtn;
 	JButton printBtn;
+	JButton backBtn;
 	
 	ReceivedDetailModel receivedDetailModel;
 	PicDockingTableModel picDockingTableModel;
@@ -451,16 +452,21 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		containerPnl.add(searchPicBtn);
 		
 		inputBtn = new JButton("Input");
-		inputBtn.setBounds(950,790,100,30);
+		inputBtn.setBounds(950,840,100,30);
 		containerPnl.add(inputBtn);
 		
-		deleteBtn = new JButton("Delete");
-		deleteBtn.setBounds(830,790,100,30);
+		deleteBtn = new JButton("Hapus");
+		deleteBtn.setBounds(830,840,100,30);
 		containerPnl.add(deleteBtn);
 		
-		printBtn = new JButton("Print");
-		printBtn.setBounds(710,790,100,30);
+		printBtn = new JButton("Cetak");
+		printBtn.setBounds(710,840,100,30);
 		containerPnl.add(printBtn);
+		
+		backBtn = new JButton("Kembali");
+		backBtn.setBounds(50,840,100,30);
+		containerPnl.add(backBtn);
+		
 		try {
 			graders = ReceivedDAOFactory.getPICDockingDAO().getEmployeeGrader("POS0002");
 			graders.add(0,new Employee("--Pilih--"));
@@ -495,6 +501,14 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainPanel.changePanel("module.pembelian.ui.AddReceivedDetailPanel",received);
+			}
+		});
+		
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION) MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
 			}
 		});
 		
@@ -549,6 +563,8 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 
 			}
 		});
+		
+		
 		
 	}
 		

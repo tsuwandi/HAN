@@ -50,6 +50,12 @@ public class DialogBox extends JOptionPane {
 				"Data yang belum disimpan akan dihapus, Apakah anda yakin menutup layar ?", "Peringatan",
 				JOptionPane.WARNING_MESSAGE);
 	}
+	
+	public static int showBackChoice() {
+		return JOptionPane.showConfirmDialog(null,
+				"Data yang belum disimpan akan dihapus, Apakah anda yakin kembali ?", "Peringatan",
+				JOptionPane.WARNING_MESSAGE);
+	}
 
 	public static void showDeleteEmptyChoice() {
 		JOptionPane.showMessageDialog(null, "Tidak ada data yang terhapus, silahkan pilih data.", "Peringatan",

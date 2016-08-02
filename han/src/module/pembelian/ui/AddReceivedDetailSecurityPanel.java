@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -109,6 +110,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	JDateChooser receivedDateChooser;
 	
 	JButton saveBtn;
+	JButton backBtn;
 	
 	List<Supplier> suppliers;
 	List<SupplierCP> supplierCPs;
@@ -172,13 +174,14 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		
 		
 		//Receive Date
-		receivedDateLbl = new JLabel("Tanggal Penerimaan");
+		receivedDateLbl = new JLabel("Tanggal Penerimaan *");
 		receivedDateLbl.setBounds(50,110,150,20);
 		containerPnl.add(receivedDateLbl);
 		
 		receivedDateChooser = new JDateChooser();
 		receivedDateChooser.setBounds(220,110,150,20);
 		receivedDateChooser.setDate(new Date());
+//		receivedDateChooser.getDateEditor().setEnabled(false);
 		containerPnl.add(receivedDateChooser);
 		
 		//Rit Number
@@ -195,7 +198,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		containerPnl.add(errorRitNumberLbl);
 		
 		//Supplier
-		supplierLbl = new JLabel("Supplier");
+		supplierLbl = new JLabel("Supplier *");
 		supplierLbl.setBounds(50,190,150,20);
 		containerPnl.add(supplierLbl);
 		
@@ -208,7 +211,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		containerPnl.add(errorSupplierLbl);
 		
 		//Supplier CP
-		supplierCPLbl = new JLabel("Sub Supplier");
+		supplierCPLbl = new JLabel("Sub Supplier *");
 		supplierCPLbl.setBounds(50,230,150,20);
 		containerPnl.add(supplierCPLbl);
 		
@@ -270,7 +273,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		
 	
 		// Document Number
-		docNoLbl =  new JLabel("No Dokumen");
+		docNoLbl =  new JLabel("No Dokumen *");
 		docNoLbl.setBounds(550,70,150,20);
 		containerPnl.add(docNoLbl);
 		
@@ -284,7 +287,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		
 		
 		// Document Type
-		documentTypeLbl =  new JLabel("Tipe Dokumen");
+		documentTypeLbl =  new JLabel("Tipe Dokumen *");
 		documentTypeLbl.setBounds(550,110,150,20);
 		containerPnl.add(documentTypeLbl);
 		
@@ -298,7 +301,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 
 		
 		//Wood Domicile
-		woodDomicileLbl = new JLabel("Asal Barang");
+		woodDomicileLbl = new JLabel("Asal Barang *");
 		woodDomicileLbl.setBounds(550,150,150,20);
 		containerPnl.add(woodDomicileLbl);
 		
@@ -311,7 +314,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		containerPnl.add(errorWoodDomicileLbl);
 	
 		//Wood Resource
-		woodResourceLbl = new JLabel("Asal Sumber Bahan Baku");
+		woodResourceLbl = new JLabel("Asal Sumber Bahan Baku *");
 		woodResourceLbl.setBounds(550, 190, 150, 20);
 		containerPnl.add(woodResourceLbl);
 		
@@ -324,7 +327,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		containerPnl.add(errorWoodResourceLbl);
 		
 		//Wood Type
-		woodTypeLbl = new JLabel("Tipe Kayu");
+		woodTypeLbl = new JLabel("Tipe Kayu *");
 		woodTypeLbl.setBounds(550, 230, 150, 20);
 		containerPnl.add(woodTypeLbl);
 		
@@ -370,9 +373,14 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		errorTotalVolumeLbl.setBounds(930,310,150,20);
 		containerPnl.add(errorTotalVolumeLbl);
 
-		saveBtn = new JButton("Save");
-		saveBtn.setBounds(480,540,100,30);
+		saveBtn = new JButton("Simpan");
+		saveBtn.setBounds(850,540,100,30);
 		containerPnl.add(saveBtn);
+		
+		backBtn = new JButton("Kembali");
+		backBtn.setBounds(50,540,100,30);
+		backBtn.setFocusable(false);
+		containerPnl.add(backBtn);
 		
 		getLastCode();
 		ritNumberField.setText(receivedCodeField.getText());
@@ -456,6 +464,14 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 				}else{
 					supplierAddressArea.setText("");
 				}
+			}
+		});
+		
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION) MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
 			}
 		});
 	
@@ -555,38 +571,41 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 				}
 				
 				if(error==0){
-					Received rec = new Received();
-					String code = receivedCodeField.getText()+firstCodeSeparator.getText()
-							+receivedCodeDateField.getText()+secondCodeSeparator.getText()
-							+receivedCodeMonthField.getText()+thirdCodeSeparator.getText()+receivedCodeYearField.getText();
-					rec.setDeliveryNote(docNoField.getText());
-					rec.setDriver(driverField.getText());
-					rec.setLicensePlate(licensePlateField.getText());
-					rec.setReceivedCode(code);
-					rec.setRitNo(ritNumberField.getText());
-					rec.setSupplier(supplierComboBox.getDataIndex().getSuppName());
-					rec.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
-					rec.setReceivedDate(receivedDateChooser.getDate());
-					rec.setDriverID(driverIDField.getText());
-					rec.setSupplierCode(supplierComboBox.getDataIndex().getSuppCode());
-					rec.setSupplierCpID(supplierCPComboBox.getDataIndex().getId());
-					
-					Delivery del = new Delivery();
-					del.setDeliveryNote(docNoField.getText());
-					del.setDocumentTypeID(docTypeComboBox.getDataIndex().getId());
-					del.setWoodDomicile(woodDomicileField.getText());
-					del.setWoodResourceId(woodResourceComboBox.getDataIndex().getId());
-					del.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
-					del.setTotalLog(Integer.valueOf(totalLogField.getText()));
-					del.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
-					try {
-						ReceivedDAOFactory.getReceivedDAO().save(rec);
-						ReceivedDAOFactory.getDeliveryDAO().save(del);
-						DialogBox.showInsert();
-						MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
-					} catch (Exception e) {
-						e.printStackTrace();
+					if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
+						Received rec = new Received();
+						String code = receivedCodeField.getText()+firstCodeSeparator.getText()
+								+receivedCodeDateField.getText()+secondCodeSeparator.getText()
+								+receivedCodeMonthField.getText()+thirdCodeSeparator.getText()+receivedCodeYearField.getText();
+						rec.setDeliveryNote(docNoField.getText());
+						rec.setDriver(driverField.getText());
+						rec.setLicensePlate(licensePlateField.getText());
+						rec.setReceivedCode(code);
+						rec.setRitNo(ritNumberField.getText());
+						rec.setSupplier(supplierComboBox.getDataIndex().getSuppName());
+						rec.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
+						rec.setReceivedDate(receivedDateChooser.getDate());
+						rec.setDriverID(driverIDField.getText());
+						rec.setSupplierCode(supplierComboBox.getDataIndex().getSuppCode());
+						rec.setSupplierCpID(supplierCPComboBox.getDataIndex().getId());
+						
+						Delivery del = new Delivery();
+						del.setDeliveryNote(docNoField.getText());
+						del.setDocumentTypeID(docTypeComboBox.getDataIndex().getId());
+						del.setWoodDomicile(woodDomicileField.getText());
+						del.setWoodResourceId(woodResourceComboBox.getDataIndex().getId());
+						del.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
+						del.setTotalLog(Integer.valueOf(totalLogField.getText()));
+						del.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
+						try {
+							ReceivedDAOFactory.getReceivedDAO().save(rec);
+							ReceivedDAOFactory.getDeliveryDAO().save(del);
+							DialogBox.showInsert();
+							MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
+					
 				}
 				
 				//Print
@@ -606,7 +625,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				receivedDateChooser.requestFocusInWindow();
+				docNoField.requestFocusInWindow();
 			}
 		});
 	

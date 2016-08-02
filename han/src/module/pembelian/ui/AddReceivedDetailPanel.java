@@ -368,7 +368,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		containerPnl.add(uomTotalVolumeLbl);
 		
 		//TotalVolumeByAdmin
-		totalVolumeByAdminLbl = new JLabel("Total Volume");
+		totalVolumeByAdminLbl = new JLabel("Total Volume *");
 		totalVolumeByAdminLbl.setBounds(550,310,150,20);
 		containerPnl.add(totalVolumeByAdminLbl);
 		
@@ -386,7 +386,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		
 		
 		//Grader
-		graderLbl = new JLabel("Grader");
+		graderLbl = new JLabel("Grader *");
 		graderLbl.setBounds(550,350,150,20);
 		containerPnl.add(graderLbl);
 		
@@ -399,7 +399,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		containerPnl.add(errorGraderLbl);
 		
 		//Grader
-		gradeLbl = new JLabel("Grade");
+		gradeLbl = new JLabel("Grade *");
 		gradeLbl.setBounds(550,390,150,20);
 		containerPnl.add(gradeLbl);
 		
@@ -421,12 +421,12 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		receivedDetailScrollPane.setBounds(50,540,1000,150);
 		containerPnl.add(receivedDetailScrollPane);
 		
-		addPalletBtn = new JButton("Add");
-		addPalletBtn.setBounds(900,490,100,30);
+		addPalletBtn = new JButton("Tambah");
+		addPalletBtn.setBounds(800,490,100,30);
 		containerPnl.add(addPalletBtn);
 		
-		deletePalletBtn = new JButton("Delete");
-		deletePalletBtn.setBounds(800,490,100,30);
+		deletePalletBtn = new JButton("Hapus");
+		deletePalletBtn.setBounds(900,490,100,30);
 		deletePalletBtn.setFocusable(false);
 		containerPnl.add(deletePalletBtn);
 		
@@ -639,7 +639,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				graderComboBox.requestFocusInWindow();
+				totalVolumeByAdminField.requestFocusInWindow();
 			}
 		});
 	

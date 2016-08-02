@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
@@ -135,7 +136,12 @@ public class ListReceivedSecurityPanel extends JPanel {
 			}
 		});
 		
-		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				createBtn.requestFocusInWindow();
+			}
+		});
 		
 	}
 	public void setTableSize(){

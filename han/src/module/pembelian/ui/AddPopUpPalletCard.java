@@ -143,7 +143,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(errorPalletCardLbl);
 	
 		//Long 
-		longLbl = new JLabel("Panjang");
+		longLbl = new JLabel("Panjang *");
 		longLbl.setBounds(30,110,150,20);
 		add(longLbl);
 		
@@ -162,7 +162,7 @@ public class AddPopUpPalletCard extends JDialog{
 		
 		
 		//Thickness
-		thickLbl = new JLabel("Tebal");
+		thickLbl = new JLabel("Tebal *");
 		thickLbl.setBounds(30,150,100,20);
 		add(thickLbl);
 		
@@ -179,7 +179,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(errorThickLbl);
 		
 		//Wide
-		wideLbl = new JLabel("Lebar");
+		wideLbl = new JLabel("Lebar *");
 		wideLbl.setBounds(30,190,100,20);
 		add(wideLbl);
 		
@@ -196,7 +196,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(errorWideLbl);
 	
 		//Total
-		totalLbl = new JLabel("Jumlah");
+		totalLbl = new JLabel("Jumlah *");
 		totalLbl.setBounds(30,230,100,20);
 		add(totalLbl);
 	

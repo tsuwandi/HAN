@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
@@ -31,7 +32,7 @@ public class ListReceivedPanel extends JPanel {
 	private JTextField searchField;
 	JTable receivedTable;
 	private JScrollPane scrollPane;
-	private JLabel titleLabel;
+//	private JLabel titleLabel;
 	private JButton advancedSearchBtn;
 	
 	ReceivedTableModel receivedTableModel;
@@ -115,6 +116,13 @@ public class ListReceivedPanel extends JPanel {
 					e.printStackTrace();
 				}
 				
+			}
+		});
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				searchField.requestFocusInWindow();
 			}
 		});
 		
