@@ -38,7 +38,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.Logger;
+
 import controller.ServiceFactory;
+import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
 import main.panel.MainPanel;
@@ -54,8 +57,17 @@ import sun.net.www.content.text.plain;
 public class ProductEditPanel extends JPanel implements Bridging {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
+	/**
 	 * Create the panel.
 	 */
+	
+	private static final Logger LOGGER = Logger.getLogger(CreateProductPanel.class);
+
 	private JLabel breadcrumb;
 	private JButton backBtn;
 	private JLabel titleLbl;
@@ -118,9 +130,9 @@ public class ProductEditPanel extends JPanel implements Bridging {
 
 	public JTextField idField;
 	public JTextField nameField;
-	public JComboBox<String> catField;
+	public ComboBox<ProductCategory> catField;
 	public JComboBox<String> statField;
-	public JComboBox<String> uomField;
+	public ComboBox<Uom> uomField;
 	public ButtonGroup maintain;
 	public JRadioButton maintainYesField;
 	public JRadioButton maintainNoField;
@@ -133,13 +145,13 @@ public class ProductEditPanel extends JPanel implements Bridging {
 	public JTextField barcodeField;
 	public JTextArea descField;
 
-	public JComboBox<String> typeField;
-	public JComboBox<String> gradeField;
+	public ComboBox<WoodType> typeField;
+	public ComboBox<Grade> gradeField;
 	public NumberField thickField;
 	public NumberField longField;
 	public NumberField wideField;
-	public JComboBox<String> conField;
-	public JTextField minQtyField;
+	public ComboBox<Condition> conField;
+	public NumberField minQtyField;
 
 	public ButtonGroup flagSerial;
 	public ButtonGroup flagAsset;
@@ -383,34 +395,28 @@ public class ProductEditPanel extends JPanel implements Bridging {
 
 		try {
 			categories = ServiceFactory.getProductBL().getAllProductCategory();
+			categories.add(0, new ProductCategory("-- Pilih Kategori Produk --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		catField = new JComboBox<>();
-		catField.addItem("Pilih");
-		for (int i = 0; i < categories.size(); i++) {
-			catField.addItem(categories.get(i).getProductCategory());
-		}
+		catField = new ComboBox<ProductCategory>();
+		catField.setList(categories);
 		catField.setBounds(195, 140, 150, 25);
 
 		statField = new JComboBox<>();
-		statField.addItem("Pilih");
+		statField.addItem("-- Pilih Status Produk --");
 		statField.addItem("Aktif");
 		statField.addItem("Tidak Aktif");
 		statField.setBounds(195, 170, 150, 25);
 
 		try {
 			units = ServiceFactory.getProductBL().getAllUom();
+			units.add(0, new Uom("-- Pilih Satuan Produk --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		uomField = new JComboBox<>();
-		uomField.addItem("Pilih");
-		for (int i = 0; i < units.size(); i++) {
-			uomField.addItem(units.get(i).getUom());
-		}
+		uomField = new ComboBox<Uom>();
+		uomField.setList(units);
 		uomField.setBounds(195, 200, 150, 25);
 
 		maintain = new ButtonGroup();
@@ -492,30 +498,22 @@ public class ProductEditPanel extends JPanel implements Bridging {
 
 		try {
 			woodTypes = ServiceFactory.getProductBL().getAllWoodType();
+			woodTypes.add(0, new WoodType("-- Pilih Jenis Kayu --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		typeField = new JComboBox<>();
-		typeField.addItem("Pilih");
-		for (int i = 0; i < woodTypes.size(); i++) {
-			typeField.addItem(woodTypes.get(i).getWoodType());
-		}
-		// typeField.setEnabled(false);
+		typeField = new ComboBox<WoodType>();
+		typeField.setList(woodTypes);
 		typeField.setBounds(195, 290, 150, 25);
 
 		try {
 			grades = ServiceFactory.getProductBL().getAllGrade();
+			grades.add(0, new Grade("-- Pilih Grade --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		gradeField = new JComboBox<>();
-		gradeField.addItem("Pilih");
-		for (int i = 0; i < grades.size(); i++) {
-			gradeField.addItem(grades.get(i).getGrade());
-		}
-		// gradeField.setEnabled(false);
+		gradeField = new ComboBox<Grade>();
+		gradeField.setList(grades);
 		gradeField.setBounds(195, 320, 150, 25);
 
 		thickField = new NumberField(10);
@@ -529,18 +527,15 @@ public class ProductEditPanel extends JPanel implements Bridging {
 
 		try {
 			conditions = ServiceFactory.getProductBL().getAllCondition();
+			conditions.add(0, new Condition("-- Pilih Kondisi --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		conField = new JComboBox<>();
-		conField.addItem("Pilih");
-		for (int i = 0; i < conditions.size(); i++) {
-			conField.addItem(conditions.get(i).getCondition());
-		}
+		conField = new ComboBox<Condition>();
+		conField.setList(conditions);
 		conField.setBounds(195, 440, 150, 25);
 
-		minQtyField = new JTextField();
+		minQtyField = new NumberField(5);
 		minQtyField.setBounds(195, 470, 150, 25);
 
 		flagSerial = new ButtonGroup();
@@ -842,36 +837,30 @@ public class ProductEditPanel extends JPanel implements Bridging {
 				if (doValidate() == false) {
 					return;
 				} else {
-					int response = DialogBox.showEditChoice();
+					int response = DialogBox.showInsertChoice();
 					if (response == JOptionPane.YES_OPTION) {
-						List<Product> productNames = null;
-						try {
-							productNames = ServiceFactory.getProductBL().getProductId();
-						} catch (SQLException s) {
-							// TODO Auto-generated catch block
-							s.printStackTrace();
-						}
-						boolean isExists = false;
-						for (int i = 0; i < productNames.size(); i++) {
-							if (nameField.getText().trim().toUpperCase()
-									.equals(productNames.get(i).getProductName().trim().toUpperCase())) {
-								int mes = JOptionPane.showConfirmDialog(null,
-										"Nama Produk sudah pernah diinput. Apakah Anda ingin tetap menyimpan data?",
-										"Warning", JOptionPane.YES_NO_OPTION);
-								if (mes == JOptionPane.YES_OPTION) {
-									isExists = false;
-								} else {
-									isExists = true;
-									break;
-								}
-							} else {
-								isExists = false;
-							}
-						}
-
-						if (isExists == false) {
+						// TODO Auto-generated method stub
+//						boolean isExists = false;
+//						try {
+//							if (ServiceFactory.getProductBL().isProductNameExists(nameField.getText()) > 0) {
+//								int mes = JOptionPane.showConfirmDialog(null,
+//										"Nama Produk sudah pernah diinput. Apakah Anda ingin tetap menyimpan data?",
+//										"Warning", JOptionPane.YES_NO_OPTION);
+//								if (mes == JOptionPane.YES_OPTION) {
+//									isExists = false;
+//								} else {
+//									isExists = true;
+//								}
+//							}
+//						} catch (SQLException e1) {
+//							LOGGER.error(e1.getMessage());
+//							DialogBox.showErrorException();
+//							isExists = true;
+//						}
+//
+//						if (isExists == false) {
 							doEdit();
-						}
+						//}
 					}
 				}
 
@@ -1060,52 +1049,34 @@ public class ProductEditPanel extends JPanel implements Bridging {
 	}
 
 	public void doEdit() {
-		Product editProduct = new Product();
-
-		editProduct.setProductName(nameField.getText());
-		editProduct.setProductStat(statField.getSelectedItem().toString());
-		int productCat = categories.get(catField.getSelectedIndex() - 1).getId();
-		editProduct.setProductCat(productCat);
-		int uom = units.get(uomField.getSelectedIndex() - 1).getId();
-		editProduct.setProductUom(uom);
-		editProduct.setIsMaintain(1);
-		// editProduct.setImagePath(pathField.getText()+filename);
-		// editProduct.setBrand(brandField.getText());
-		// editProduct.setBarcode(barcodeField.getText());
-		// editProduct.setDescription(descField.getText());
-		int woodType = woodTypes.get(typeField.getSelectedIndex() - 1).getId();
-		editProduct.setWoodType(woodType);
-		int grade = grades.get(gradeField.getSelectedIndex() - 1).getId();
-		editProduct.setGrade(grade);
-		editProduct.setThickness(Double.parseDouble(thickField.getText()));
-		editProduct.setLength(Double.parseDouble(longField.getText()));
-		editProduct.setWidth(Double.parseDouble(wideField.getText()));
-		int condition = conditions.get(conField.getSelectedIndex() - 1).getId();
-		editProduct.setCondition(condition);
-		editProduct.setMinQy(Integer.parseInt(minQtyField.getText()));
-		// editProduct.setIsAsset(1);
-		// editProduct.setWarranty(Integer.parseInt(warrantField.getText()));
-		// editProduct.setNetto(Double.parseDouble(nettoField.getText()));
-		// editProduct.setNettoUom(nettoUnitField.getSelectedIndex());
-		// editProduct.setIsPurchase(1);
-		// editProduct.setMinor(Integer.parseInt(minOrderField.getText()));
-		// editProduct.setMinorUom(minOrderUnitField.getSelectedIndex());
-		// editProduct.setLeadTime(Integer.parseInt(leadTimeField.getText()));
-		// editProduct.setBuyCost(buyCostField.getSelectedIndex());
-		// editProduct.setExpense(expenseField.getSelectedIndex());
-		// editProduct.setMainSuppCode(supplierField.getSelectedItem().toString());
-		// editProduct.setManufacturer(manufacturerField.getText());
-		// editProduct.setIsSales(1);
-		// editProduct.setIsService(1);
-		// editProduct.setSellCost(sellCostField.getSelectedIndex());
-		// editProduct.setIncome(incomeField.getSelectedIndex());
-		// editProduct.setMaxDisc(Double.parseDouble(discountField.getText()));
-		editProduct.setEditDate(todayDate);
-		editProduct.setEditBy("Irvan");
-		editProduct.setProductId(id);
-
+		Product product = new Product();
+		
+		product.setProductId(id);
+		product.setProductCode(idField.getText());
+		product.setProductName(nameField.getText());
+		product.setProductCat(catField.getSelectedIndex());
+		if (statField.getSelectedIndex() != 0) {
+			product.setProductStat(statField.getSelectedItem().toString());
+		} else {
+			product.setProductStat(null);
+		}
+		product.setProductUom(uomField.getDataIndex().getId());
+		
+		if(maintainYesField.isSelected())
+			product.setIsMaintain(0);
+		else 
+			product.setIsMaintain(1);
+		
+		product.setWoodType(typeField.getDataIndex().getId());
+		product.setGrade(gradeField.getDataIndex().getId());
+		product.setThickness(Double.parseDouble(thickField.getText()));
+		product.setLength(Double.parseDouble(longField.getText()));
+		product.setWidth(Double.parseDouble(wideField.getText()));
+		product.setCondition(conField.getDataIndex().getId());
+		product.setMinQy(Integer.parseInt(minQtyField.getText()));
+		
 		try {
-			ServiceFactory.getProductBL().update(editProduct);
+			ServiceFactory.getProductBL().update(product);
 			DialogBox.showEdit();
 			MainPanel.changePanel("module.product.ui.ProductListPanel");
 		} catch (SQLException e) {
@@ -1144,11 +1115,10 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		conditionLblError.setText("");
 		minQtyLblError.setText("");
 
-		if (idField.getText() == null || idField.getText().equals("")) {
+		if (idField.getText() == null || idField.getText().length() == 0) {
 			idLblError.setText("Kode Produk harus diisi");
 			isValid = false;
 		}
-
 		if (nameField.getText() == null || nameField.getText().equals("")) {
 			nameLblError.setText("Nama Produk harus diisi");
 			isValid = true;
@@ -1205,17 +1175,6 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		}
 
 		return isValid;
-
-		// else if(statField.getSelectedItem().toString() == "Pilih" ||
-		// statField.getSelectedIndex() == 0){
-		// JOptionPane.showMessageDialog(null, "Status Produk harus dipilih",
-		// "Pesan", JOptionPane.ERROR_MESSAGE);
-		// }
-		// else if(uomField.getSelectedItem().toString() == "Pilih" ||
-		// uomField.getSelectedIndex() == 0){
-		// JOptionPane.showMessageDialog(null, "Satuan Produk harus dipilih",
-		// "Pesan", JOptionPane.ERROR_MESSAGE);
-		// }
 	}
 
 	class ProductTableModel extends AbstractTableModel {
@@ -1569,10 +1528,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 					statField.setSelectedIndex(2);
 				}
 				uomField.setSelectedIndex(product.getProductUom());
-				// pathField.setText(product.getImagePath());
-				// brandField.setText(product.getBrand());
-				// barcodeField.setText(product.getBarcode());
-				// descField.setText(product.getDescription());
+				
 				typeField.setSelectedIndex(product.getWoodType());
 				gradeField.setSelectedIndex(product.getGrade());
 				thickField.setText(String.valueOf(product.getThickness()));
@@ -1580,19 +1536,11 @@ public class ProductEditPanel extends JPanel implements Bridging {
 				wideField.setText(String.valueOf(product.getWidth()));
 				conField.setSelectedIndex(product.getCondition());
 				minQtyField.setText(String.valueOf(product.getMinQy()));
-				// warrantField.setText(String.valueOf(product.getWarranty()));
-				// nettoField.setText(String.valueOf(product.getNetto()));
-				// nettoUnitField.addItem(String.valueOf(product.getNettoUom()));
-				// minOrderField.setText(String.valueOf(product.getMinor()));
-				// minOrderUnitField.addItem(String.valueOf(product.getMinorUom()));
-				// leadTimeField.setText(String.valueOf(product.getLeadTime()));
-				// buyCostField.addItem(String.valueOf(product.getBuyCost()));
-				// expenseField.addItem(String.valueOf(product.getExpense()));
-				// supplierField.addItem(product.getMainSuppCode());
-				// manufacturerField.setText(product.getManufacturer());
-				// sellCostField.addItem(String.valueOf(product.getSellCost()));
-				// incomeField.addItem(String.valueOf(product.getIncome()));
-				// discountField.setText(String.valueOf(product.getMaxDisc()));
+				if(product.getIsMaintain() == 0) {
+					maintainYesField.setSelected(true);
+				} else {
+					maintainNoField.setSelected(true);
+				}
 
 			}
 		} catch (SQLException e1) {

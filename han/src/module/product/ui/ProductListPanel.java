@@ -6,9 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -18,11 +16,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import controller.DaoFactory;
+import org.apache.log4j.Logger;
+
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
@@ -32,9 +30,15 @@ import module.supplier.model.Supplier;
 public class ProductListPanel extends JPanel {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Create the panel.
 	 */
-	private JLabel titleLbl;
+	private static final Logger LOGGER = Logger.getLogger(ProductListPanel.class);
+	
 	private JButton createNewBtn;
 	private JButton exportBtn;
 	private JButton advanceSearchBtn;
@@ -54,10 +58,6 @@ public class ProductListPanel extends JPanel {
 			refreshTable();
 		}
 		
-//		titleLbl = new JLabel("PRODUK");
-//		titleLbl.setFont(new Font("", Font.BOLD, 24));
-//		titleLbl.setBounds(20, 20, 200, 50);
-		
 		JLabel lblBreadcrumb = new JLabel("ERP > Produk");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
@@ -74,7 +74,6 @@ public class ProductListPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				MainPanel.changePanel("module.product.ui.CreateProductPanel");
 			}
 		});
@@ -88,19 +87,15 @@ public class ProductListPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				//MainPanel.changePanel("module.product.ui.EmployeeSearchPanel");
-
 			}
 		});
 
 		searchBtn = new JButton("Cari");
 		searchBtn.setBounds(950, 130, 100, 30);
 		searchBtn.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				doSearch(searchField.getText());
 			}
 		});
@@ -111,22 +106,12 @@ public class ProductListPanel extends JPanel {
 		try{
 			products = ServiceFactory.getProductBL().getAll();
 		}catch(SQLException e1){
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
 		
-		//System.out.println(products.size());
 		productTableModel = new ProductTableModel(products);
 		productTable = new JTable(productTableModel);
 		productTable.setFocusable(false);
-//		productTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-//		productTable.getTableHeader().setReorderingAllowed(false);
-//		productTable.getTableHeader().setResizingAllowed(false);
-//		productTable.getColumnModel().getColumn(0).setPreferredWidth(30);
-//		productTable.getColumnModel().getColumn(1).setPreferredWidth(120);
-//		productTable.getColumnModel().getColumn(2).setPreferredWidth(170);
-//		productTable.getColumnModel().getColumn(3).setPreferredWidth(170);
-//		productTable.getColumnModel().getColumn(4).setPreferredWidth(130);
-//		productTable.getColumnModel().getColumn(5).setPreferredWidth(140);
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
@@ -139,12 +124,9 @@ public class ProductListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 					Product product;
-					// do some action if appropriate column
 					if(column == 4){
 						product = new Product();
-						
 						product.setProductCode(productTable.getValueAt(row, 0).toString());
-
 						MainPanel.changePanel("module.product.ui.ProductViewPanel", product);
 					}
 				}
@@ -152,11 +134,8 @@ public class ProductListPanel extends JPanel {
 		});
 
 		scrollPane = new JScrollPane(productTable);
-		//scrollPane.setBounds(20, 200, 1130, 265);
 		scrollPane.setBounds(50, 200, 1000, 300);
-		//scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-		//add(titleLbl);
 		add(createNewBtn);
 		add(exportBtn);
 		add(advanceSearchBtn);
@@ -176,7 +155,7 @@ public class ProductListPanel extends JPanel {
 		try {
 			productTable.setModel(new ProductTableModel(products));
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -186,17 +165,8 @@ public class ProductListPanel extends JPanel {
 			products = new ArrayList<Product>();
 			products = ServiceFactory.getProductBL().getSearchProduct(value);
 			refreshTable();
-//			productTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-//			productTable.getTableHeader().setReorderingAllowed(false);
-//			productTable.getTableHeader().setResizingAllowed(false);
-//			productTable.getColumnModel().getColumn(0).setPreferredWidth(30);
-//			productTable.getColumnModel().getColumn(1).setPreferredWidth(120);
-//			productTable.getColumnModel().getColumn(2).setPreferredWidth(170);
-//			productTable.getColumnModel().getColumn(3).setPreferredWidth(170);
-//			productTable.getColumnModel().getColumn(4).setPreferredWidth(130);
-//			productTable.getColumnModel().getColumn(5).setPreferredWidth(140);
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -244,7 +214,7 @@ public class ProductListPanel extends JPanel {
 			case 1:
 				return p.getProductName();
 			case 2:
-				return p.getProductCat();
+				return p.getProductCatName();
 			case 3: 
 				return p.getProductStat();
 			case 4:
@@ -279,7 +249,6 @@ public class ProductListPanel extends JPanel {
 		}
 		@Override
 		public boolean isCellEditable(int row, int column) {
-			//all cells false
 			return false;
 		}
 

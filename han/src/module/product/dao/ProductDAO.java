@@ -9,17 +9,12 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import module.employee.model.Employee;
 import module.pembelian.model.WoodType;
 import module.product.model.Condition;
 import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
 import module.product.model.Uom;
-import module.sn.bank.model.Bank;
-import module.sn.currency.model.Currency;
-import module.sn.supptype.model.SuppType;
-import module.supplier.model.Supplier;
 import module.util.DateUtil;
 
 public class ProductDAO {
@@ -42,65 +37,49 @@ public class ProductDAO {
 			+ "netto, netto_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, "
 			+ "expense_acc_id, main_supp_code, manufacturer, is_sales_item, is_service_item, sell_cost_center_id, "
 			+ "income_acc_id, max_disc, a.input_date, a.input_by, a.edit_date, a.edited_by, "
-			+ "b.wood_type, c.grade, d.product_category "
-			+ "from product a join wood_type b on a.wood_type_id = b.id "
-			+ "join grade c on a.grade_id = c.id "
-			+ "join product_category d on a.product_category_id = d.id "
+			+ "b.wood_type, c.grade, d.product_category " + "from product a join wood_type b on a.wood_type_id = b.id "
+			+ "join grade c on a.grade_id = c.id " + "join product_category d on a.product_category_id = d.id "
 			+ "join uom e on a.product_uom_id = e.id "
-			+ "where 1=1 and a.deleted_date is null and a.deleted_by is null order by a.id asc ";
-	
+			+ "where 1=1 and a.deleted_date is null and a.deleted_by is null ";
+
 	private String getAllNoOrder = "select a.id, product_code, product_name, product_category_id, "
 			+ "product_status, product_uom_id, is_maintain_stock, image_path, brand, barcode, description, "
 			+ "wood_type_id, grade_id, thickness, length, width, condition_id, minqty, is_has_serial, is_fixed_asset, warranty, "
 			+ "netto, netto_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, "
 			+ "expense_acc_id, main_supp_code, manufacturer, is_sales_item, is_service_item, sell_cost_center_id, "
 			+ "income_acc_id, max_disc, a.input_date, a.input_by, a.edit_date, a.edited_by, "
-			+ "b.wood_type, c.grade, d.product_category "
-			+ "from product a join wood_type b on a.wood_type_id = b.id "
-			+ "join grade c on a.grade_id = c.id "
-			+ "join product_category d on a.product_category_id = d.id "
+			+ "b.wood_type, c.grade, d.product_category " + "from product a join wood_type b on a.wood_type_id = b.id "
+			+ "join grade c on a.grade_id = c.id " + "join product_category d on a.product_category_id = d.id "
 			+ "where 1=1 ";
-	
-	private String searchQuery = "select a.id, product_code, product_name, product_category_id, "
-			+ "product_status, product_uom_id, is_maintain_stock, image_path, brand, barcode, description, "
-			+ "wood_type_id, grade_id, thickness, length, width, condition_id, minqty, is_has_serial, is_fixed_asset, warranty, "
-			+ "netto, netto_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, "
-			+ "expense_acc_id, main_supp_code, manufacturer, is_sales_item, is_service_item, sell_cost_center_id, "
-			+ "income_acc_id, max_disc, a.input_date, a.input_by, a.edit_date, a.edited_by, "
-			+ "b.wood_type, c.grade "
-			+ "from product a join wood_type b on a.wood_type_id = b.id "
-			+ "join grade c on a.grade_id = c.id "
-			+ "where 1=1 ";
-	
+
 	private String productCatQuery = "select * from product_category order by id asc";
-	
+
 	private String woodTypeQuery = "select * from wood_type order by id asc";
-	
+
 	private String gradeQuery = "select * from grade order by id asc";
-	
+
 	private String uomQuery = "select * from uom order by id asc";
-	
+
 	private String conditionQuery = "select * from `condition` order by id asc";
-	
-	private String insertProductQuery = "insert into product(id, product_code, product_name, product_category_id, "
+
+	private String insertProductQuery = "insert into product(product_code, product_name, product_category_id, "
 			+ "product_status, product_uom_id, is_maintain_stock, "
-			+ "wood_type_id, grade_id, thickness, length, width, condition_id, minqty, "
-			+ "input_date, input_by) "
-			+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
-	
+			+ "wood_type_id, grade_id, thickness, length, width, condition_id, minqty, " + "input_date, input_by) "
+			+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+
 	private String updateQuery = "update product set product_name=?, product_status=?, product_category_id=?, "
-			+ "product_uom_id = ?, is_maintain_stock=?, "			
+			+ "product_uom_id = ?, is_maintain_stock=?, "
 			+ "wood_type_id=?, grade_id=?, thickness=?, length=?, width=?, condition_id=?, minqty=?, "
 			+ "edit_date=?, edited_by=? where id=? ";
-	
+
 	private String getProductIdQuery = "select id, product_name from product";
-	
+
 	private String deleteQuery = "update product set deleted_date=?, deleted_by=? where product_code=?";
-	
+
 	public ProductDAO(Connection connection) throws SQLException {
 		this.connection = connection;
 	}
-	
+
 	public void delete(String productCode) throws SQLException {
 		try {
 			deleteProductStatement = connection.prepareStatement(deleteQuery);
@@ -113,62 +92,38 @@ public class ProductDAO {
 			throw new SQLException(ex.getMessage());
 		}
 	}
-	
+
 	public void save(Product product) throws SQLException {
 		try {
 			insertProductStatement = connection.prepareStatement(insertProductQuery);
-			java.sql.Date sqlInputDate = new java.sql.Date(product.getInputDate().getTime());
-			
-			insertProductStatement.setInt(1, product.getProductId());
-			insertProductStatement.setString(2, product.getProductCode());
-			insertProductStatement.setString(3, product.getProductName());
-			insertProductStatement.setInt(4, product.getProductCat());
-			insertProductStatement.setString(5, product.getProductStat());
-			insertProductStatement.setInt(6, product.getProductUom());
-			insertProductStatement.setInt(7, product.getIsMaintain());
-//			insertProductStatement.setString(8, product.getImagePath());
-//			insertProductStatement.setString(9, product.getBrand());
-//			insertProductStatement.setString(10, product.getBarcode());
-//			insertProductStatement.setString(11, product.getDescription());
-			insertProductStatement.setInt(8, product.getWoodType());
-			insertProductStatement.setInt(9, product.getGrade());
-			insertProductStatement.setDouble(10, product.getThickness());
-			insertProductStatement.setDouble(11, product.getLength());
-			insertProductStatement.setDouble(12, product.getWidth());
-			insertProductStatement.setInt(13, product.getCondition());
-			insertProductStatement.setInt(14, product.getMinQy());
-//			insertProductStatement.setInt(16, product.getIsSerial());
-//			insertProductStatement.setInt(17, product.getIsAsset());
-//			insertProductStatement.setInt(18, product.getWarranty());
-//			insertProductStatement.setDouble(19, product.getNetto());
-//			insertProductStatement.setInt(20, product.getNettoUom());
-//			insertProductStatement.setInt(21, product.getIsPurchase());
-//			insertProductStatement.setInt(22, product.getMinor());
-//			insertProductStatement.setInt(23, product.getMinorUom());
-//			insertProductStatement.setInt(24, product.getLeadTime());
-//			insertProductStatement.setInt(25, product.getBuyCost());
-//			insertProductStatement.setInt(26, product.getExpense());
-//			insertProductStatement.setString(27, product.getMainSuppCode());
-//			insertProductStatement.setString(28, product.getManufacturer());
-//			insertProductStatement.setInt(29, product.getIsSales());
-//			insertProductStatement.setInt(30, product.getIsService());
-//			insertProductStatement.setInt(31, product.getSellCost());
-//			insertProductStatement.setInt(32, product.getIncome());
-//			insertProductStatement.setDouble(33, product.getMaxDisc());
-			insertProductStatement.setDate(15, sqlInputDate);
-			insertProductStatement.setString(16, product.getInputBy());
+			insertProductStatement.setString(1, product.getProductCode());
+			insertProductStatement.setString(2, product.getProductName());
+			insertProductStatement.setInt(3, product.getProductCat());
+			insertProductStatement.setString(4, product.getProductStat());
+			insertProductStatement.setInt(5, product.getProductUom());
+			insertProductStatement.setInt(6, product.getIsMaintain());
+			insertProductStatement.setInt(7, product.getWoodType());
+			insertProductStatement.setInt(8, product.getGrade());
+			insertProductStatement.setDouble(9, product.getThickness());
+			insertProductStatement.setDouble(10, product.getLength());
+			insertProductStatement.setDouble(11, product.getWidth());
+			insertProductStatement.setInt(12, product.getCondition());
+			insertProductStatement.setInt(13, product.getMinQy());
+			insertProductStatement.setDate(14, DateUtil.getCurrentDate());
+			insertProductStatement.setString(15, "Timotius");
 			insertProductStatement.executeUpdate();
-			
+
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
-	
+
 	public List<Product> getAll() throws SQLException {
 		List<Product> products = new ArrayList<Product>();
 		try {
-			getAllProductStatement = connection.prepareStatement(selectAllQuery);
+			String query = new StringBuilder().append(selectAllQuery).append(" order by a.id asc").toString();
+			getAllProductStatement = connection.prepareStatement(query);
 			ResultSet rs = getAllProductStatement.executeQuery();
 			while (rs.next()) {
 				Product product = new Product();
@@ -214,6 +169,7 @@ public class ProductDAO {
 				product.setEditBy(rs.getString("a.edited_by"));
 				product.setWoodTypeName(rs.getString("b.wood_type"));
 				product.setGradeName(rs.getString("c.grade"));
+				product.setProductCatName(rs.getString("d.product_category"));
 
 				products.add(product);
 			}
@@ -225,7 +181,7 @@ public class ProductDAO {
 
 		return products;
 	}
-	
+
 	public List<Product> getProductId() throws SQLException {
 		List<Product> products = new ArrayList<Product>();
 		try {
@@ -245,18 +201,22 @@ public class ProductDAO {
 
 		return products;
 	}
-	
+
 	public List<Product> getAllBySimpleSearch(String keyword) throws SQLException {
 		List<Product> products = new ArrayList<Product>();
 		try {
+
+			StringBuilder query = new StringBuilder().append(selectAllQuery);
 			if (null != keyword && !"".equals(keyword)) {
-				String query = new StringBuilder().append(searchQuery).append(" and")
-						.append(" (lower(product_code)=lower('%s')").append(" or lower(product_name) like lower('%s')")
-						.append(" or lower(product_category_id) like lower('%s')")
-						.append(" or lower(product_status) like lower('%s')) order by a.id asc ").toString();
-				getAllProductStatement = connection.prepareStatement(String.format(query, keyword, keyword, keyword, keyword));
+				query.append(" and (lower(product_code) like lower('%s')");
+				query.append(" or lower(product_name) like lower('%s')");
+				query.append(" or lower(product_category) like lower('%s')");
+				query.append(" or lower(product_status) like lower('%s')) order by a.id asc ");
+				getAllProductStatement = connection
+						.prepareStatement(String.format(query.toString(), keyword, keyword, keyword, keyword));
 			} else {
-				getAllProductStatement = connection.prepareStatement(selectAllQuery);
+				query.append(" order by a.id asc");
+				getAllProductStatement = connection.prepareStatement(query.toString());
 			}
 
 			ResultSet rs = getAllProductStatement.executeQuery();
@@ -304,7 +264,9 @@ public class ProductDAO {
 				product.setEditBy(rs.getString("a.edited_by"));
 				product.setWoodTypeName(rs.getString("b.wood_type"));
 				product.setGradeName(rs.getString("c.grade"));
+				product.setProductCatName(rs.getString("d.product_category"));
 				
+				products.add(product);
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -313,7 +275,7 @@ public class ProductDAO {
 
 		return products;
 	}
-	
+
 	public List<ProductCategory> getAllProductCategory() throws SQLException {
 		List<ProductCategory> categories = new ArrayList<ProductCategory>();
 
@@ -334,7 +296,7 @@ public class ProductDAO {
 
 		return categories;
 	}
-	
+
 	public List<WoodType> getAllWoodType() throws SQLException {
 		List<WoodType> woodTypes = new ArrayList<WoodType>();
 
@@ -355,7 +317,7 @@ public class ProductDAO {
 
 		return woodTypes;
 	}
-	
+
 	public List<Grade> getAllGrade() throws SQLException {
 		List<Grade> grades = new ArrayList<Grade>();
 
@@ -376,7 +338,7 @@ public class ProductDAO {
 
 		return grades;
 	}
-	
+
 	public List<Uom> getAllUom() throws SQLException {
 		List<Uom> units = new ArrayList<Uom>();
 
@@ -397,7 +359,7 @@ public class ProductDAO {
 
 		return units;
 	}
-	
+
 	public List<Condition> getAllCondition() throws SQLException {
 		List<Condition> conditions = new ArrayList<Condition>();
 
@@ -418,26 +380,16 @@ public class ProductDAO {
 
 		return conditions;
 	}
-	
+
 	public void update(Product product) throws SQLException {
 		try {
 			updateProductStatement = connection.prepareStatement(updateQuery);
-			java.sql.Date sqlEditDate = new java.sql.Date(product.getEditDate().getTime());
 			
 			updateProductStatement.setString(1, product.getProductName());
-			updateProductStatement.setString(2, product.getProductStat());		
+			updateProductStatement.setString(2, product.getProductStat());
 			updateProductStatement.setInt(3, product.getProductCat());
 			updateProductStatement.setInt(4, product.getProductUom());
 			updateProductStatement.setInt(5, product.getIsMaintain());
-//			updateProductStatement.setString(3, product.getBrand());
-//			updateProductStatement.setString(4, product.getBarcode());
-//			updateProductStatement.setString(5, product.getDescription());
-//			updateProductStatement.setInt(6, product.getIsMaintain());
-//			updateProductStatement.setInt(7, product.getIsSerial());
-//			updateProductStatement.setInt(8, product.getIsAsset());
-//			updateProductStatement.setInt(9, product.getIsPurchase());
-//			updateProductStatement.setInt(10, product.getIsSales());
-//			updateProductStatement.setInt(11, product.getIsService());
 			updateProductStatement.setInt(6, product.getWoodType());
 			updateProductStatement.setInt(7, product.getGrade());
 			updateProductStatement.setDouble(8, product.getThickness());
@@ -445,21 +397,8 @@ public class ProductDAO {
 			updateProductStatement.setDouble(10, product.getWidth());
 			updateProductStatement.setInt(11, product.getCondition());
 			updateProductStatement.setInt(12, product.getMinQy());
-//			updateProductStatement.setInt(16, product.getWarranty());
-//			updateProductStatement.setDouble(17, product.getNetto());
-//			updateProductStatement.setInt(18, product.getNettoUom());
-//			updateProductStatement.setInt(19, product.getMinor());
-//			updateProductStatement.setInt(20, product.getMinorUom());
-//			updateProductStatement.setInt(21, product.getLeadTime());
-//			updateProductStatement.setInt(22, product.getBuyCost());
-//			updateProductStatement.setInt(23, product.getExpense());
-//			updateProductStatement.setString(24, product.getMainSuppCode());
-//			updateProductStatement.setString(25, product.getManufacturer());
-//			updateProductStatement.setInt(26, product.getSellCost());
-//			updateProductStatement.setInt(27, product.getIncome());
-//			updateProductStatement.setDouble(28, product.getMaxDisc());
-			updateProductStatement.setDate(13, sqlEditDate);
-			updateProductStatement.setString(14, product.getEditBy());
+			updateProductStatement.setDate(13, DateUtil.getCurrentDate());
+			updateProductStatement.setString(14, "Timotius");
 			updateProductStatement.setInt(15, product.getProductId());
 			updateProductStatement.executeUpdate();
 		} catch (SQLException ex) {
@@ -467,10 +406,11 @@ public class ProductDAO {
 			throw new SQLException(ex.getMessage());
 		}
 	}
-	
+
 	public Product getById(String product_code) throws SQLException {
 		Product p = null;
-		String query = new StringBuilder().append(getAllNoOrder).append(" and product_code=? order by a.id asc ").toString();
+		String query = new StringBuilder().append(getAllNoOrder).append(" and product_code=? order by a.id asc ")
+				.toString();
 		try {
 			getAllProductStatement = connection.prepareStatement(query);
 			getAllProductStatement.setString(1, product_code);
@@ -530,12 +470,12 @@ public class ProductDAO {
 
 		return p;
 	}
-	
+
 	public void delete(Product product) throws SQLException {
 		try {
 			deleteProductStatement = connection.prepareStatement(deleteQuery);
 			java.sql.Date sqlDeleteDate = new java.sql.Date(product.getDeletedDate().getTime());
-			
+
 			deleteProductStatement.setDate(1, sqlDeleteDate);
 			deleteProductStatement.setString(2, product.getDeletedBy());
 			deleteProductStatement.setString(3, product.getProductCode());
@@ -544,5 +484,51 @@ public class ProductDAO {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
+	}
+	
+	private PreparedStatement isProductCodeExistsStatement;
+	private String isProductCodeExistsQuery = "select count(*) as is_exists from product where product_code = ? and deleted_date is null ";
+
+	public int isProductCodeExists(String productCode) throws SQLException {
+		int count = 0;
+		try {
+			isProductCodeExistsStatement = connection.prepareStatement(isProductCodeExistsQuery);
+			isProductCodeExistsStatement.setString(1, productCode);
+
+			ResultSet rs = isProductCodeExistsStatement.executeQuery();
+
+			while (rs.next()) {
+				count = rs.getInt("is_exists");
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return count;
+	}
+	
+	private PreparedStatement isProductNameExistsStatement;
+	private String isProductNameExistsQuery = "select count(*) as is_exists from product where product_name = ? and deleted_date is null ";
+
+	public int isProductNameExists(String productName) throws SQLException {
+		int count = 0;
+		try {
+			isProductNameExistsStatement = connection.prepareStatement(isProductNameExistsQuery);
+			isProductNameExistsStatement.setString(1, productName);
+
+			ResultSet rs = isProductNameExistsStatement.executeQuery();
+
+			while (rs.next()) {
+				count = rs.getInt("is_exists");
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return count;
 	}
 }

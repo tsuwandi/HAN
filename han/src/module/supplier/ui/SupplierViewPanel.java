@@ -111,7 +111,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		
 		panel = new JPanel();
 		panel.setBounds(0, 0, 800, 600);
-		panel.setPreferredSize(new Dimension(1010, 910));
+		panel.setPreferredSize(new Dimension(1050, 950));
 		panel.setLayout(null);
 
 		lblSuppCode = new JLabel("<html>Kode Supplier <font color=\"red\">*</font></html>");

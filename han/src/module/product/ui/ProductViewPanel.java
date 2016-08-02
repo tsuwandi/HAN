@@ -25,7 +25,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.Logger;
+
 import controller.ServiceFactory;
+import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.pembelian.model.WoodType;
@@ -40,8 +43,16 @@ import module.util.Bridging;
 public class ProductViewPanel extends JPanel implements Bridging {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Create the panel.
 	 */
+	
+	private static final Logger LOGGER = Logger.getLogger(ProductViewPanel.class);
+
 	private JLabel breadcrumb;
 	private JButton backBtn;
 	private JLabel titleLbl;
@@ -104,9 +115,9 @@ public class ProductViewPanel extends JPanel implements Bridging {
 
 	public JTextField idField;
 	public JTextField nameField;
-	public JComboBox<String> catField;
+	public ComboBox<ProductCategory> catField;
 	public JComboBox<String> statField;
-	public JComboBox<String> uomField;
+	public ComboBox<Uom> uomField;
 	public ButtonGroup maintain;
 	public JRadioButton maintainYesField;
 	public JRadioButton maintainNoField;
@@ -119,12 +130,12 @@ public class ProductViewPanel extends JPanel implements Bridging {
 	public JTextField barcodeField;
 	public JTextArea descField;
 
-	public JComboBox<String> typeField;
-	public JComboBox<String> gradeField;
+	public ComboBox<WoodType> typeField;
+	public ComboBox<Grade> gradeField;
 	public JTextField thickField;
 	public JTextField longField;
 	public JTextField wideField;
-	public JComboBox<String> conField;
+	public ComboBox<Condition> conField;
 	public JTextField minQtyField;
 
 	public ButtonGroup flagSerial;
@@ -374,15 +385,12 @@ public class ProductViewPanel extends JPanel implements Bridging {
 
 		try {
 			categories = ServiceFactory.getProductBL().getAllProductCategory();
+			categories.add(0, new ProductCategory("-- Pilih Kategori Produk --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		catField = new JComboBox<>();
-		catField.addItem("Pilih");
-		for (int i = 0; i < categories.size(); i++) {
-			catField.addItem(categories.get(i).getProductCategory());
-		}
+		catField = new ComboBox<ProductCategory>();
+		catField.setList(categories);
 		catField.setEnabled(false);
 		catField.setBounds(195, 140, 150, 25);
 
@@ -395,15 +403,12 @@ public class ProductViewPanel extends JPanel implements Bridging {
 
 		try {
 			units = ServiceFactory.getProductBL().getAllUom();
+			units.add(0, new Uom("-- Pilih Satuan Produk --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		uomField = new JComboBox<>();
-		uomField.addItem("Pilih");
-		for (int i = 0; i < units.size(); i++) {
-			uomField.addItem(units.get(i).getUom());
-		}
+		uomField = new ComboBox<Uom>();
+		uomField.setList(units);
 		uomField.setEnabled(false);
 		uomField.setBounds(195, 200, 150, 25);
 
@@ -450,29 +455,23 @@ public class ProductViewPanel extends JPanel implements Bridging {
 
 		try {
 			woodTypes = ServiceFactory.getProductBL().getAllWoodType();
+			woodTypes.add(0, new WoodType("-- Pilih Jenis Kayu --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		typeField = new JComboBox<>();
-		typeField.addItem("Pilih");
-		for (int i = 0; i < woodTypes.size(); i++) {
-			typeField.addItem(woodTypes.get(i).getWoodType());
-		}
+		typeField = new ComboBox<WoodType>();
+		typeField.setList(woodTypes);
 		typeField.setEnabled(false);
 		typeField.setBounds(195, 290, 150, 25);
 
 		try {
 			grades = ServiceFactory.getProductBL().getAllGrade();
+			grades.add(0, new Grade("-- Pilih Grade --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		gradeField = new JComboBox<>();
-		gradeField.addItem("Pilih");
-		for (int i = 0; i < grades.size(); i++) {
-			gradeField.addItem(grades.get(i).getGrade());
-		}
+		gradeField = new ComboBox<Grade>();
+		gradeField.setList(grades);
 		gradeField.setEnabled(false);
 		gradeField.setBounds(195, 320, 150, 25);
 
@@ -490,15 +489,12 @@ public class ProductViewPanel extends JPanel implements Bridging {
 
 		try {
 			conditions = ServiceFactory.getProductBL().getAllCondition();
+			conditions.add(0, new Condition("-- Pilih Kondisi --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		conField = new JComboBox<>();
-		conField.addItem("Pilih");
-		for (int i = 0; i < conditions.size(); i++) {
-			conField.addItem(conditions.get(i).getCondition());
-		}
+		conField = new ComboBox<Condition>();
+		conField.setList(conditions);
 		conField.setEnabled(false);
 		conField.setBounds(195, 440, 150, 25);
 
@@ -739,7 +735,6 @@ public class ProductViewPanel extends JPanel implements Bridging {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				int dialogResult = DialogBox.showDeleteChoice();
 				if (dialogResult == JOptionPane.YES_OPTION) {
 					doDelete();
@@ -753,7 +748,6 @@ public class ProductViewPanel extends JPanel implements Bridging {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				product = new Product();
 
 				product.setProductCode(idField.getText());
@@ -984,10 +978,6 @@ public class ProductViewPanel extends JPanel implements Bridging {
 					statField.setSelectedIndex(2);
 				}
 				uomField.setSelectedIndex(product.getProductUom());
-				// pathField.setText(product.getImagePath());
-				// brandField.setText(product.getBrand());
-				// barcodeField.setText(product.getBarcode());
-				// descField.setText(product.getDescription());
 				typeField.setSelectedIndex(product.getWoodType());
 				gradeField.setSelectedIndex(product.getGrade());
 				thickField.setText(String.valueOf(product.getThickness()));
@@ -995,20 +985,11 @@ public class ProductViewPanel extends JPanel implements Bridging {
 				wideField.setText(String.valueOf(product.getWidth()));
 				conField.setSelectedIndex(product.getCondition());
 				minQtyField.setText(String.valueOf(product.getMinQy()));
-				// warrantField.setText(String.valueOf(product.getWarranty()));
-				// nettoField.setText(String.valueOf(product.getNetto()));
-				// nettoUnitField.addItem(String.valueOf(product.getNettoUom()));
-				// minOrderField.setText(String.valueOf(product.getMinor()));
-				// minOrderUnitField.addItem(String.valueOf(product.getMinorUom()));
-				// leadTimeField.setText(String.valueOf(product.getLeadTime()));
-				// buyCostField.addItem(String.valueOf(product.getBuyCost()));
-				// expenseField.addItem(String.valueOf(product.getExpense()));
-				// supplierField.addItem(product.getMainSuppCode());
-				// manufacturerField.setText(product.getManufacturer());
-				// sellCostField.addItem(String.valueOf(product.getSellCost()));
-				// incomeField.addItem(String.valueOf(product.getIncome()));
-				// discountField.setText(String.valueOf(product.getMaxDisc()));
-
+				if(product.getIsMaintain() == 0) {
+					maintainYesField.setSelected(true);
+				} else {
+					maintainNoField.setSelected(true);
+				}
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();

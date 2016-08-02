@@ -118,6 +118,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	JLabel lblErrorSuppName;
 	JLabel lblErrorSuppType;
 	JLabel lblErrorSuppStatus;
+	JLabel lblErrorCurrency;
 	JLabel lblErrorTop;
 	JLabel lblErrorDefaultTax;
 
@@ -134,7 +135,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 
 		panel = new JPanel();
 		panel.setBounds(0, 0, 800, 600);
-		panel.setPreferredSize(new Dimension(1010, 910));
+		panel.setPreferredSize(new Dimension(1050, 950));
 		panel.setLayout(null);
 
 		lblSuppCode = new JLabel("<html>Kode Supplier <font color=\"red\">*</font></html>");
@@ -466,7 +467,12 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		cbCurrency.setList(listOfCurrency);
 		cbCurrency.setBounds(220, 750, 150, 30);
 		panel.add(cbCurrency);
-
+		
+		lblErrorCurrency = new JLabel();
+		lblErrorCurrency.setForeground(Color.RED);
+		lblErrorCurrency.setBounds(425, 750, 225, 30);
+		panel.add(lblErrorCurrency);
+		
 		lblTop = new JLabel("TOP");
 		lblTop.setBounds(50, 790, 150, 30);
 		panel.add(lblTop);
@@ -595,6 +601,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		lblErrorSuppName.setText("");
 		lblErrorSuppType.setText("");
 		lblErrorSuppStatus.setText("");
+		lblErrorCurrency.setText("");
 		lblErrorTop.setText("");
 		lblErrorDefaultTax.setText("");
 
@@ -615,6 +622,11 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 
 		if (cbSuppStatus.getSelectedItem() == null || cbSuppType.getSelectedIndex() == 0) {
 			lblErrorSuppStatus.setText("Combobox Status Supplier harus dipilih.");
+			isValid = false;
+		}
+		
+		if (cbCurrency.getSelectedItem() == null || cbCurrency.getSelectedIndex() == 0) {
+			lblErrorCurrency.setText("Combobox Kurs harus dipilih.");
 			isValid = false;
 		}
 		

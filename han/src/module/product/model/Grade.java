@@ -1,9 +1,14 @@
 package module.product.model;
 
-public class Grade {
+import module.util.ComboBoxProperties;
+
+public class Grade implements ComboBoxProperties{
 	int id;
 	String grade;
 	
+	public Grade(String grade) {
+		this.grade = grade;
+	}
 	public int getId() {
 		return id;
 	}
@@ -15,6 +20,13 @@ public class Grade {
 	}
 	public void setGrade(String grade) {
 		this.grade = grade;
+	}
+	@Override
+	public Object getField() {
+		return grade;
+	}
+	
+	public Grade(){
 	}
 	
 }
