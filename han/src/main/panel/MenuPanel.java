@@ -64,7 +64,7 @@ public class MenuPanel extends JPanel {
 		menuBtn3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
+				MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
 			}
 		});
 
@@ -73,7 +73,7 @@ public class MenuPanel extends JPanel {
 		menuBtn4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
+				MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
 			}
 		});
 
