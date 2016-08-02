@@ -6,8 +6,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import module.employee.dao.EmployeeDAO;
-import module.employee.model.Employee;
+import org.apache.log4j.Logger;
+
 import module.pembelian.model.WoodType;
 import module.product.dao.ProductDAO;
 import module.product.model.Condition;
@@ -15,16 +15,11 @@ import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
 import module.product.model.Uom;
-import module.supplier.dao.SuppAddressDAO;
-import module.supplier.dao.SuppCpDAO;
-import module.supplier.dao.SuppVehicleDAO;
 import module.supplier.dao.SupplierDAO;
-import module.supplier.model.SuppAddress;
-import module.supplier.model.SuppCp;
-import module.supplier.model.SuppVehicle;
-import module.supplier.model.Supplier;
 
 public class ProductBL {
+	private static final Logger LOGGER = Logger.getLogger(ProductBL.class);
+	
 	private DataSource dataSource;
 
 	public ProductBL(DataSource dataSource) {
@@ -71,7 +66,7 @@ public class ProductBL {
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();
@@ -88,7 +83,7 @@ public class ProductBL {
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();
@@ -105,7 +100,7 @@ public class ProductBL {
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();
@@ -167,6 +162,26 @@ public class ProductBL {
 		try{
 			con = dataSource.getConnection();
 			return new ProductDAO(con).getAllCondition();
+		} finally {
+			con.close();
+		}
+	}
+	
+	public int isProductCodeExists(String productCode) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductDAO(con).isProductCodeExists(productCode);
+		} finally {
+			con.close();
+		}
+	}
+	
+	public int isProductNameExists(String productName) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductDAO(con).isProductNameExists(productName);
 		} finally {
 			con.close();
 		}

@@ -32,7 +32,7 @@ public class SupplierDAO {
 			+ "where s.deleted_date is null and st.deleted_date is null "
 			+ "and b.deleted_date is null and c.deleted_date is null ";
 
-	private String isSuppCodeExistsQuery = "select count(*) as is_exists from supp_vehicle where supp_code = ? and deleted_date is null ";
+	private String isSuppCodeExistsQuery = "select count(*) as is_exists from supplier where supp_code = ? and deleted_date is null ";
 
 	private String insertQuery = "insert into supplier (supp_code, supp_name, pt, npwp, "
 			+ "supp_type_id, supp_status, default_tax, account_no, bank_id, account_name, currency_id, top, "
@@ -107,7 +107,7 @@ public class SupplierDAO {
 		try {
 			if (null != keyword && !"".equals(keyword)) {
 				String query = new StringBuilder().append(getAllQuery).append(" and")
-						.append(" (lower(s.supp_code)=lower('%s')").append(" or lower(s.supp_name) like lower('%s')")
+						.append(" (lower(s.supp_code) like lower('%s')").append(" or lower(s.supp_name) like lower('%s')")
 						.append(" or lower(st.supp_type) like lower('%s'))").toString();
 				getAllStatement = connection.prepareStatement(String.format(query, keyword, keyword, keyword));
 			} else {

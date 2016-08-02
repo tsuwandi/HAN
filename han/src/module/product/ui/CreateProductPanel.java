@@ -3,27 +3,15 @@ package module.product.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -35,10 +23,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.Logger;
+
 import controller.ServiceFactory;
+import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
 import main.panel.MainPanel;
@@ -48,13 +38,21 @@ import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
 import module.product.model.Uom;
-import sun.net.www.content.text.plain;
+import module.sn.supptype.model.SuppType;
+import module.supplier.model.Supplier;
 
 public class CreateProductPanel extends JPanel {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Create the panel.
 	 */
+	private static final Logger LOGGER = Logger.getLogger(CreateProductPanel.class);
+
 	private JLabel breadcrumb;
 	private JButton backBtn;
 	private JLabel titleLbl;
@@ -117,9 +115,9 @@ public class CreateProductPanel extends JPanel {
 
 	public JTextField idField;
 	public JTextField nameField;
-	public JComboBox<String> catField;
+	public ComboBox<ProductCategory> catField;
 	public JComboBox<String> statField;
-	public JComboBox<String> uomField;
+	public ComboBox<Uom> uomField;
 	public ButtonGroup maintain;
 	public JRadioButton maintainYesField;
 	public JRadioButton maintainNoField;
@@ -132,13 +130,13 @@ public class CreateProductPanel extends JPanel {
 	public JTextField barcodeField;
 	public JTextArea descField;
 
-	public JComboBox<String> typeField;
-	public JComboBox<String> gradeField;
+	public ComboBox<WoodType> typeField;
+	public ComboBox<Grade> gradeField;
 	public NumberField thickField;
 	public NumberField longField;
 	public NumberField wideField;
-	public JComboBox<String> conField;
-	public JTextField minQtyField;
+	public ComboBox<Condition> conField;
+	public NumberField minQtyField;
 
 	public ButtonGroup flagSerial;
 	public ButtonGroup flagAsset;
@@ -381,15 +379,12 @@ public class CreateProductPanel extends JPanel {
 
 		try {
 			categories = ServiceFactory.getProductBL().getAllProductCategory();
+			categories.add(0, new ProductCategory("-- Pilih Kategori Produk --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		catField = new JComboBox<>();
-		catField.addItem("Pilih");
-		for (int i = 0; i < categories.size(); i++) {
-			catField.addItem(categories.get(i).getProductCategory());
-		}
+		catField = new ComboBox<ProductCategory>();
+		catField.setList(categories);
 		catField.addActionListener(new ActionListener() {
 
 			@Override
@@ -405,22 +400,19 @@ public class CreateProductPanel extends JPanel {
 		catField.setBounds(195, 140, 150, 25);
 
 		statField = new JComboBox<>();
-		statField.addItem("Pilih");
+		statField.addItem("-- Pilih Status Produk --");
 		statField.addItem("Aktif");
 		statField.addItem("Tidak Aktif");
 		statField.setBounds(195, 170, 150, 25);
 
 		try {
 			units = ServiceFactory.getProductBL().getAllUom();
+			units.add(0, new Uom("-- Pilih Satuan Produk --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		uomField = new JComboBox<>();
-		uomField.addItem("Pilih");
-		for (int i = 0; i < units.size(); i++) {
-			uomField.addItem(units.get(i).getUom());
-		}
+		uomField = new ComboBox<Uom>();
+		uomField.setList(units);
 		uomField.setBounds(195, 200, 150, 25);
 
 		maintain = new ButtonGroup();
@@ -436,61 +428,6 @@ public class CreateProductPanel extends JPanel {
 		maintain.add(maintainYesField);
 		maintain.add(maintainNoField);
 
-		// pathField = new JTextField();
-		// pathField.setBounds(195, 260, 150, 25);
-		//
-		// browseBtn = new JButton("Browse");
-		// browseBtn.setBounds(345, 260, 75, 25);
-		// browseBtn.addActionListener(new ActionListener() {
-		//
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// // TODO Auto-generated method stub
-		// JFileChooser fc = new JFileChooser();
-		// fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		// int result = fc.showOpenDialog(null);
-		// if (result == JFileChooser.APPROVE_OPTION) {
-		// File file = fc.getSelectedFile();
-		// try {
-		// imageField.setIcon(new
-		// ImageIcon(ImageIO.read(file).getScaledInstance(imageField.getWidth(),
-		// imageField.getHeight(), Image.SCALE_SMOOTH)));
-		// pathField.setText(file.getAbsolutePath());
-		// filename = file.getName();
-		// } catch (IOException ioe) {
-		// ioe.printStackTrace();
-		// }
-		// }
-		// }
-		// });
-		//
-		// uploadBtn = new JButton("Upload");
-		// uploadBtn.setBounds(425, 260, 75, 25);
-		// uploadBtn.addActionListener(new ActionListener() {
-		//
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// // TODO Auto-generated method stub
-		// Path source = Paths.get(pathField.getText());
-		// Path destination = Paths.get("C:/test/");
-		//
-		// try {
-		// Path target = destination.resolve(filename);
-		// Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
-		//
-		// JOptionPane.showMessageDialog(null, "Upload Berhasil");
-		// } catch (IOException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// JOptionPane.showMessageDialog(null, "Upload Gagal");
-		// }
-		// }
-		// });
-		//
-		// imageField = new JLabel();
-		// imageField.setBounds(20, 290, 300, 125);
-		// imageField.setBorder(new LineBorder(Color.black));
-
 		brandField = new JTextField();
 		brandField.setBounds(195, 450, 150, 25);
 
@@ -502,30 +439,22 @@ public class CreateProductPanel extends JPanel {
 
 		try {
 			woodTypes = ServiceFactory.getProductBL().getAllWoodType();
+			woodTypes.add(0, new WoodType("-- Pilih Jenis Kayu --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		typeField = new JComboBox<>();
-		typeField.addItem("Pilih");
-		for (int i = 0; i < woodTypes.size(); i++) {
-			typeField.addItem(woodTypes.get(i).getWoodType());
-		}
-		// typeField.setEnabled(false);
+		typeField = new ComboBox<WoodType>();
+		typeField.setList(woodTypes);
 		typeField.setBounds(195, 290, 150, 25);
 
 		try {
 			grades = ServiceFactory.getProductBL().getAllGrade();
+			grades.add(0, new Grade("-- Pilih Grade --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		gradeField = new JComboBox<>();
-		gradeField.addItem("Pilih");
-		for (int i = 0; i < grades.size(); i++) {
-			gradeField.addItem(grades.get(i).getGrade());
-		}
-		// gradeField.setEnabled(false);
+		gradeField = new ComboBox<Grade>();
+		gradeField.setList(grades);
 		gradeField.setBounds(195, 320, 150, 25);
 
 		thickField = new NumberField(10);
@@ -539,18 +468,15 @@ public class CreateProductPanel extends JPanel {
 
 		try {
 			conditions = ServiceFactory.getProductBL().getAllCondition();
+			conditions.add(0, new Condition("-- Pilih Kondisi --"));
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 		}
-		conField = new JComboBox<>();
-		conField.addItem("Pilih");
-		for (int i = 0; i < conditions.size(); i++) {
-			conField.addItem(conditions.get(i).getCondition());
-		}
+		conField = new ComboBox<Condition>();
+		conField.setList(conditions);
 		conField.setBounds(195, 440, 150, 25);
 
-		minQtyField = new JTextField();
+		minQtyField = new NumberField(5);
 		minQtyField.setBounds(195, 470, 150, 25);
 
 		flagSerial = new ButtonGroup();
@@ -855,18 +781,9 @@ public class CreateProductPanel extends JPanel {
 					int response = DialogBox.showInsertChoice();
 					if (response == JOptionPane.YES_OPTION) {
 						// TODO Auto-generated method stub
-
-						List<Product> productNames = null;
-						try {
-							productNames = ServiceFactory.getProductBL().getProductId();
-						} catch (SQLException s) {
-							// TODO Auto-generated catch block
-							s.printStackTrace();
-						}
 						boolean isExists = false;
-						for (int i = 0; i < productNames.size(); i++) {
-							if (nameField.getText().trim().toUpperCase()
-									.equals(productNames.get(i).getProductName().trim().toUpperCase())) {
+						try {
+							if (ServiceFactory.getProductBL().isProductNameExists(nameField.getText()) > 0) {
 								int mes = JOptionPane.showConfirmDialog(null,
 										"Nama Produk sudah pernah diinput. Apakah Anda ingin tetap menyimpan data?",
 										"Warning", JOptionPane.YES_NO_OPTION);
@@ -874,11 +791,12 @@ public class CreateProductPanel extends JPanel {
 									isExists = false;
 								} else {
 									isExists = true;
-									break;
 								}
-							} else {
-								isExists = false;
 							}
+						} catch (SQLException e1) {
+							LOGGER.error(e1.getMessage());
+							DialogBox.showErrorException();
+							isExists = true;
 						}
 
 						if (isExists == false) {
@@ -1073,62 +991,33 @@ public class CreateProductPanel extends JPanel {
 	}
 
 	public void doInsert() {
-		Product insertProduct = new Product();
-		try {
-			products = ServiceFactory.getProductBL().getProductId();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		int productId = products.size() + 1;
-		insertProduct.setProductId(productId);
-		insertProduct.setProductCode(idField.getText());
-		insertProduct.setProductName(nameField.getText());
-		insertProduct.setProductCat(catField.getSelectedIndex());
+		Product product = new Product();
+
+		product.setProductCode(idField.getText());
+		product.setProductName(nameField.getText());
+		product.setProductCat(catField.getSelectedIndex());
 		if (statField.getSelectedIndex() != 0) {
-			insertProduct.setProductStat(statField.getSelectedItem().toString());
+			product.setProductStat(statField.getSelectedItem().toString());
 		} else {
-			insertProduct.setProductStat(null);
+			product.setProductStat(null);
 		}
-		int uom = units.get(uomField.getSelectedIndex()).getId();
-		insertProduct.setProductUom(uom);
-		insertProduct.setIsMaintain(1);
-		// insertProduct.setImagePath(pathField.getText()+filename);
-		// insertProduct.setBrand(brandField.getText());
-		// insertProduct.setBarcode(barcodeField.getText());
-		// insertProduct.setDescription(descField.getText());
-		int woodType = woodTypes.get(typeField.getSelectedIndex()).getId();
-		insertProduct.setWoodType(woodType);
-		int grade = grades.get(gradeField.getSelectedIndex()).getId();
-		insertProduct.setGrade(grade);
-		insertProduct.setThickness(Double.parseDouble(thickField.getText()));
-		insertProduct.setLength(Double.parseDouble(longField.getText()));
-		insertProduct.setWidth(Double.parseDouble(wideField.getText()));
-		int condition = conditions.get(conField.getSelectedIndex()).getId();
-		insertProduct.setCondition(condition);
-		insertProduct.setMinQy(Integer.parseInt(minQtyField.getText()));
-		// insertProduct.setIsAsset(1);
-		// insertProduct.setWarranty(Integer.parseInt(warrantField.getText()));
-		// insertProduct.setNetto(Double.parseDouble(nettoField.getText()));
-		// insertProduct.setNettoUom(nettoUnitField.getSelectedIndex());
-		// insertProduct.setIsPurchase(1);
-		// insertProduct.setMinor(Integer.parseInt(minOrderField.getText()));
-		// insertProduct.setMinorUom(minOrderUnitField.getSelectedIndex());
-		// insertProduct.setLeadTime(Integer.parseInt(leadTimeField.getText()));
-		// insertProduct.setBuyCost(buyCostField.getSelectedIndex());
-		// insertProduct.setExpense(expenseField.getSelectedIndex());
-		// insertProduct.setMainSuppCode(supplierField.getSelectedItem().toString());
-		// insertProduct.setManufacturer(manufacturerField.getText());
-		// insertProduct.setIsSales(1);
-		// insertProduct.setIsService(1);
-		// insertProduct.setSellCost(sellCostField.getSelectedIndex());
-		// insertProduct.setIncome(incomeField.getSelectedIndex());
-		// insertProduct.setMaxDisc(Double.parseDouble(discountField.getText()));
-		insertProduct.setInputDate(todayDate);
-		insertProduct.setInputBy("Irvan");
+		product.setProductUom(uomField.getDataIndex().getId());
+
+		if (maintainYesField.isSelected())
+			product.setIsMaintain(0);
+		else
+			product.setIsMaintain(1);
+
+		product.setWoodType(typeField.getDataIndex().getId());
+		product.setGrade(gradeField.getDataIndex().getId());
+		product.setThickness(Double.parseDouble(thickField.getText()));
+		product.setLength(Double.parseDouble(longField.getText()));
+		product.setWidth(Double.parseDouble(wideField.getText()));
+		product.setCondition(conField.getDataIndex().getId());
+		product.setMinQy(Integer.parseInt(minQtyField.getText()));
 
 		try {
-			ServiceFactory.getProductBL().save(insertProduct);
+			ServiceFactory.getProductBL().save(product);
 			DialogBox.showInsert();
 			MainPanel.changePanel("module.product.ui.ProductListPanel");
 		} catch (SQLException e) {
@@ -1168,9 +1057,20 @@ public class CreateProductPanel extends JPanel {
 		conditionLblError.setText("");
 		minQtyLblError.setText("");
 
-		if (idField.getText() == null || idField.getText().equals("")) {
+		if (idField.getText() == null || idField.getText().length() == 0) {
 			idLblError.setText("Kode Produk harus diisi");
 			isValid = false;
+		} else {
+			try {
+				if (ServiceFactory.getProductBL().isProductCodeExists(idField.getText()) > 0) {
+					idLblError.setText("Kode Produk sudah pernah diinput.");
+					isValid = false;
+				}
+			} catch (SQLException e) {
+				LOGGER.error(e.getMessage());
+				DialogBox.showErrorException();
+				isValid = false;
+			}
 		}
 
 		if (nameField.getText() == null || nameField.getText().equals("")) {
@@ -1228,17 +1128,6 @@ public class CreateProductPanel extends JPanel {
 		}
 
 		return isValid;
-
-		// else if(statField.getSelectedItem().toString() == "Pilih" ||
-		// statField.getSelectedIndex() == 0){
-		// JOptionPane.showMessageDialog(null, "Status Produk harus dipilih",
-		// "Pesan", JOptionPane.ERROR_MESSAGE);
-		// }
-		// else if(uomField.getSelectedItem().toString() == "Pilih" ||
-		// uomField.getSelectedIndex() == 0){
-		// JOptionPane.showMessageDialog(null, "Satuan Produk harus dipilih",
-		// "Pesan", JOptionPane.ERROR_MESSAGE);
-		// }
 	}
 
 	class ProductTableModel extends AbstractTableModel {

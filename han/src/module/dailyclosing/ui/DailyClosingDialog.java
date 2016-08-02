@@ -159,7 +159,7 @@ public class DailyClosingDialog extends JDialog {
 		group.add(rdbtnMonitor);
 		group.add(rdbtnFile);
 		group.add(rdbtnPrinter);
-
+		
 		rdbtnMonitor.setSelected(true);
 
 	}
