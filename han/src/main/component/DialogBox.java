@@ -32,21 +32,27 @@ public class DialogBox extends JOptionPane {
 		return JOptionPane.showConfirmDialog(null, "Apakah anda ingin mengubah data ?", "Peringatan",
 				JOptionPane.WARNING_MESSAGE);
 	}
-	
+
 	public static void showErrorIsExists() {
 		JOptionPane.showMessageDialog(null, "Data sudah ada.", "Error", JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 	public static void showErrorException() {
 		JOptionPane.showMessageDialog(null, "Terjadi kesalahan pada sistem", "Error", JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 	public static void showError(String errorMessage) {
 		JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 	public static int showCloseChoice() {
-		return JOptionPane.showConfirmDialog(null, "Data yang belum disimpan akan dihapus, Apakah anda yakin menutup layar ?", "Peringatan",
+		return JOptionPane.showConfirmDialog(null,
+				"Data yang belum disimpan akan dihapus, Apakah anda yakin menutup layar ?", "Peringatan",
+				JOptionPane.WARNING_MESSAGE);
+	}
+
+	public static void showDeleteEmptyChoice() {
+		JOptionPane.showMessageDialog(null, "Tidak ada data yang terhapus, silahkan pilih data.", "Peringatan",
 				JOptionPane.WARNING_MESSAGE);
 	}
 }

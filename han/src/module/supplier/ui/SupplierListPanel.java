@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import controller.DataSourceFactory;
@@ -151,6 +152,7 @@ public class SupplierListPanel extends JPanel {
 
 		supplierTableModel = new SupplierTableModel(new ArrayList<Supplier>());
 		tblSupplier = new JTable(supplierTableModel);
+		tblSupplier.setFocusable(false);
 		scrollPaneSupplier.setViewportView(tblSupplier);
 
 		tblSupplier.addMouseListener(new MouseAdapter() {
@@ -175,6 +177,13 @@ public class SupplierListPanel extends JPanel {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				btnCreateNew.requestFocusInWindow();
+			}
+		});
 
 	}
 

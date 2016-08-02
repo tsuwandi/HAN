@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -116,6 +117,7 @@ public class ProductListPanel extends JPanel {
 		//System.out.println(products.size());
 		productTableModel = new ProductTableModel(products);
 		productTable = new JTable(productTableModel);
+		productTable.setFocusable(false);
 //		productTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 //		productTable.getTableHeader().setReorderingAllowed(false);
 //		productTable.getTableHeader().setResizingAllowed(false);
@@ -161,6 +163,13 @@ public class ProductListPanel extends JPanel {
 		add(searchField);
 		add(searchBtn);
 		add(scrollPane);
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				createNewBtn.requestFocusInWindow();
+			}
+		});
 	}
 	
 	public void refreshTable() {

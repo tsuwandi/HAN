@@ -245,14 +245,15 @@ public class CreateProductPanel extends JPanel {
 		breadcrumb.setFont(new Font(null, Font.BOLD, 12));
 		breadcrumb.setBounds(20, 10, 320, 30);
 
-		backBtn = new JButton("X");
-		backBtn.setBounds(1100, 5, 40, 25);
+		backBtn = new JButton("Kembali");
+		backBtn.setBounds(20, 550, 75, 25);
 		backBtn.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				MainPanel.changePanel("module.product.ui.ProductListPanel");
+				int response = DialogBox.showCloseChoice();
+				if (response == JOptionPane.YES_OPTION) {
+					MainPanel.changePanel("module.product.ui.ProductListPanel");
+				}
 			}
 		});
 		backBtn.setHorizontalAlignment(SwingConstants.CENTER);
@@ -842,7 +843,7 @@ public class CreateProductPanel extends JPanel {
 		taxScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(905, 550, 75, 25);
+		saveBtn.setBounds(925, 550, 75, 25);
 		saveBtn.addActionListener(new ActionListener() {
 
 			@Override

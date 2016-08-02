@@ -357,7 +357,10 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		btnCancel = new JButton("Kembali");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MainPanel.changePanel("module.dryout.ui.DryOutListPanel");
+				int response = DialogBox.showCloseChoice();
+				if (response == JOptionPane.YES_OPTION) {
+					MainPanel.changePanel("module.dryout.ui.DryOutListPanel");
+				}
 			}
 		});
 		btnCancel.setBounds(49, 645, 100, 30);

@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
@@ -111,6 +112,7 @@ public class DryInListPanel extends JPanel {
 
 		dryInTableModel = new DryInTableModel(new ArrayList<DryIn>());
 		tblDryIn = new JTable(dryInTableModel);
+		tblDryIn.setFocusable(false);
 		scrollPaneDryIn.setViewportView(tblDryIn);
 
 		tblDryIn.addMouseListener(new MouseAdapter() {
@@ -135,6 +137,13 @@ public class DryInListPanel extends JPanel {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				btnCreateNew.requestFocusInWindow();
+			}
+		});
 
 	}
 

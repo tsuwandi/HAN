@@ -3,8 +3,11 @@ package module.supplier.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -87,6 +90,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	JLabel lblHeader;
 
 	JLabel lblSuppAddress;
+	JLabel lblErrorSuppAddress;
 	JScrollPane scrollPaneSuppAddress;
 	JTable tblSuppAddress;
 	JButton btnAddSuppAddress;
@@ -234,6 +238,11 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		lblSuppAddress.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblSuppAddress.setBounds(50, 330, 150, 30);
 		panel.add(lblSuppAddress);
+		
+		lblErrorSuppAddress = new JLabel("");
+		lblErrorSuppAddress.setForeground(Color.RED);
+		lblErrorSuppAddress.setBounds(220, 330, 225, 30);
+		panel.add(lblErrorSuppAddress);
 
 		scrollPaneSuppAddress = new JScrollPane();
 		scrollPaneSuppAddress.setBounds(50, 370, 975, 150);
@@ -498,6 +507,12 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+		cbCurrency.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				scrollPane.getViewport().setViewPosition(new Point(220,750));
+			}
+		});
 		add(scrollPane);
 
 		btnSave = new JButton("Simpan");
@@ -520,7 +535,10 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		btnCancel = new JButton("Kembali");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MainPanel.changePanel("module.supplier.ui.SupplierViewPanel", supplier);
+				int response = DialogBox.showCloseChoice();
+				if (response == JOptionPane.YES_OPTION) {
+					MainPanel.changePanel("module.supplier.ui.SupplierViewPanel", supplier);
+				}
 			}
 		});
 		btnCancel.setBounds(50, 870, 100, 30);
@@ -606,6 +624,11 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 				isValid = false;
 			}
 		}
+		
+		if(listOfSuppAddress.isEmpty()) {
+			lblErrorSuppAddress.setText("Alamat supplier harus diisi minimal 1.");
+			isValid = false;
+		}
 
 		return isValid;
 	}
@@ -661,18 +684,31 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	}
 
 	protected void doDeleteSuppAddress() {
-		for (SuppAddress s : listOfSuppAddress) {
-			if (Boolean.TRUE.equals(s.isFlag())) {
-				listOfDeletedSuppAddress.add(s);
-			}
-		}
+		if (listOfSuppAddress.isEmpty())
+			DialogBox.showDeleteEmptyChoice();
+		else {
+			int count = 0;
 
-		if (Boolean.FALSE.equals(listOfDeletedSuppAddress.isEmpty())) {
-			for (SuppAddress s : listOfDeletedSuppAddress) {
-				listOfSuppAddress.remove(s);
+			List<SuppAddress> temp = new ArrayList<SuppAddress>();
+			for (SuppAddress s : listOfSuppAddress) {
+				if (Boolean.TRUE.equals(s.isFlag())) {
+					temp.add(s);
+				} else
+					count += 1;
 			}
-			refreshTableSuppAddress();
-			DialogBox.showDelete();
+
+			if (count == listOfSuppAddress.size()) {
+				DialogBox.showDeleteEmptyChoice();
+				return;
+			}
+
+			if (Boolean.FALSE.equals(temp.isEmpty())) {
+				for (SuppAddress s : temp) {
+					listOfSuppAddress.remove(s);
+				}
+				refreshTableSuppAddress();
+				DialogBox.showDelete();
+			}
 		}
 	}
 
@@ -727,18 +763,32 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	}
 
 	protected void doDeleteSuppVehicle() {
-		for (SuppVehicle s : listOfSuppVehicle) {
-			if (Boolean.TRUE.equals(s.isFlag())) {
-				listOfDeletedSuppVehicle.add(s);
-			}
-		}
+		if (listOfSuppVehicle.isEmpty())
+			DialogBox.showDeleteEmptyChoice();
+		else {
+			int count = 0;
 
-		if (Boolean.FALSE.equals(listOfDeletedSuppVehicle.isEmpty())) {
-			for (SuppVehicle s : listOfDeletedSuppVehicle) {
-				listOfSuppVehicle.remove(s);
+			List<SuppVehicle> temp = new ArrayList<SuppVehicle>();
+			for (SuppVehicle s : listOfSuppVehicle) {
+				if (Boolean.TRUE.equals(s.isFlag())) {
+					temp.add(s);
+				} else {
+					count += 1;
+				}
 			}
-			refreshTableSuppVehicle();
-			DialogBox.showDelete();
+
+			if (count == listOfSuppVehicle.size()) {
+				DialogBox.showDeleteEmptyChoice();
+				return;
+			}
+
+			if (Boolean.FALSE.equals(temp.isEmpty())) {
+				for (SuppVehicle s : temp) {
+					listOfSuppVehicle.remove(s);
+				}
+				refreshTableSuppVehicle();
+				DialogBox.showDelete();
+			}
 		}
 	}
 

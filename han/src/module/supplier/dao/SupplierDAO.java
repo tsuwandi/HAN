@@ -184,7 +184,6 @@ public class SupplierDAO {
 				query.append(supplierSearch.getSuppStatus());
 			query.append("%') ");
 			
-			System.out.println(query.toString());
 			getAllStatement = connection.prepareStatement(query.toString());
 
 			ResultSet rs = getAllStatement.executeQuery();

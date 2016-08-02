@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
@@ -109,6 +110,7 @@ public class DryOutListPanel extends JPanel {
 
 		dryOutTableModel = new DryOutTableModel(new ArrayList<DryOut>());
 		tblDryOut = new JTable(dryOutTableModel);
+		tblDryOut.setFocusable(false);
 		scrollPaneDryOut.setViewportView(tblDryOut);
 
 		tblDryOut.addMouseListener(new MouseAdapter() {
@@ -134,6 +136,12 @@ public class DryOutListPanel extends JPanel {
 			DialogBox.showErrorException();
 		}
 
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				btnCreateNew.requestFocusInWindow();
+			}
+		});
 	}
 
 	public void refreshTableDryOut() {

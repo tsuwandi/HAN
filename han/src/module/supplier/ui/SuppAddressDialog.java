@@ -3,6 +3,8 @@ package module.supplier.ui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +135,20 @@ public class SuppAddressDialog extends JDialog {
 		txtAddress.setColumns(3);
 		txtAddress.setBounds(150, 55, 150, 70);
 		txtAddress.setDocument(new JTextFieldLimit(200));
-		
+		txtAddress.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_TAB) {
+					if (e.getModifiers() > 0) {
+						txtAddress.transferFocusBackward();
+					} else {
+						txtAddress.transferFocus();
+					}
+					e.consume();
+				}
+			}
+		});
+
 		JScrollPane spTxtAddress = new JScrollPane(txtAddress);
 		spTxtAddress.setBounds(150, 55, 150, 70);
 		getContentPane().add(spTxtAddress);
@@ -308,7 +323,7 @@ public class SuppAddressDialog extends JDialog {
 		lblErrorCity.setText("");
 		lblErrorContactPerson.setText("");
 		lblErrorEmail.setText("");
-		
+
 		if (cbAddressType.getSelectedItem() == null || cbAddressType.getSelectedIndex() == 0) {
 			lblErrorAddressType.setText("Combobox Tipe alamat harus dipilih.");
 			isValid = false;

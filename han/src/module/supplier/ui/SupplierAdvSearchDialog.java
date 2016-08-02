@@ -97,12 +97,12 @@ public class SupplierAdvSearchDialog extends JDialog {
 		listOfSuppType = new ArrayList<SuppType>();
 		try {
 			listOfSuppType = ServiceFactory.getSupplierBL().getAllSuppType();
+			listOfSuppType.add(0, new SuppType("-- Pilih Tipe Supplier --"));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
 		cbSuppType = new ComboBox<SuppType>();
-		cbSuppType.addItem("-- Pilih Tipe Supplier --");
 		cbSuppType.setList(listOfSuppType);
 		cbSuppType.setBounds(410, 15, 150, 30);
 		getContentPane().add(cbSuppType);

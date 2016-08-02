@@ -1,10 +1,16 @@
 package module.supplier.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -39,6 +45,8 @@ import module.supplier.model.SuppVehicle;
 import module.supplier.model.Supplier;
 import module.util.Bridging;
 import module.util.JTextFieldLimit;
+import javax.swing.event.CaretListener;
+import javax.swing.event.CaretEvent;
 
 public class SupplierCreatePanel extends JPanel implements Bridging {
 
@@ -47,8 +55,8 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 	private Supplier supplier;
 	public List<SuppAddress> listOfSuppAddress = new ArrayList<SuppAddress>();
 	private SuppAddressTableModel suppAddressTableModel;
-	//public List<SuppCp> listOfSuppCp = new ArrayList<SuppCp>();
-	//private SuppCpTableModel suppCpTableModel;
+	// public List<SuppCp> listOfSuppCp = new ArrayList<SuppCp>();
+	// private SuppCpTableModel suppCpTableModel;
 	public List<SuppVehicle> listOfSuppVehicle = new ArrayList<SuppVehicle>();
 	private SuppVehicleTableModel suppVehicleTableModel;
 
@@ -58,9 +66,9 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 	JLabel lblNpwp;
 	JLabel lblSuppType;
 	JLabel lblSuppStatus;
-//	JLabel lblAccountNo;
-//	JLabel lblBank;
-//	JLabel lblAccountName;
+	// JLabel lblAccountNo;
+	// JLabel lblBank;
+	// JLabel lblAccountName;
 	JLabel lblCurrency;
 	JLabel lblTop;
 	JLabel lblDefaultTax;
@@ -73,9 +81,9 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 	JTextField txtNpwp;
 	ComboBox<SuppType> cbSuppType;
 	JComboBox<String> cbSuppStatus;
-//	JTextField txtAccountNo;
-//	ComboBox<Bank> cbBank;
-//	JTextField txtAccountName;
+	// JTextField txtAccountNo;
+	// ComboBox<Bank> cbBank;
+	// JTextField txtAccountName;
 	ComboBox<Currency> cbCurrency;
 	NumberField txtTop;
 	NumberField txtDefaultTax;
@@ -84,16 +92,17 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 	JLabel lblHeader;
 
 	JLabel lblSuppAddress;
+	JLabel lblErrorSuppAddress;
 	JScrollPane scrollPaneSuppAddress;
 	JTable tblSuppAddress;
 	JButton btnAddSuppAddress;
 	JButton btnDeleteSuppAddress;
 
-//	JLabel lblSuppCp;
-//	JScrollPane scrollPaneSuppCp;
-//	JTable tblSuppCp;
-//	JButton btnAddSuppCp;
-//	JButton btnDeleteSuppCp;
+	// JLabel lblSuppCp;
+	// JScrollPane scrollPaneSuppCp;
+	// JTable tblSuppCp;
+	// JButton btnAddSuppCp;
+	// JButton btnDeleteSuppCp;
 
 	JLabel lblSuppVehicle;
 	JScrollPane scrollPaneSuppVehicle;
@@ -231,6 +240,11 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		lblSuppAddress.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblSuppAddress.setBounds(50, 330, 150, 30);
 		panel.add(lblSuppAddress);
+		
+		lblErrorSuppAddress = new JLabel("");
+		lblErrorSuppAddress.setForeground(Color.RED);
+		lblErrorSuppAddress.setBounds(220, 330, 225, 30);
+		panel.add(lblErrorSuppAddress);
 
 		scrollPaneSuppAddress = new JScrollPane();
 		scrollPaneSuppAddress.setBounds(50, 370, 975, 150);
@@ -286,61 +300,61 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 
 		/////// Table SuppCP ///////
 
-//		lblSuppCp = new JLabel("Contact Person");
-//		lblSuppCp.setFont(new Font("Tahoma", Font.BOLD, 16));
-//		lblSuppCp.setBounds(50, 540, 150, 30);
-//		panel.add(lblSuppCp);
-//
-//		scrollPaneSuppCp = new JScrollPane();
-//		scrollPaneSuppCp.setBounds(50, 580, 975, 150);
-//		panel.add(scrollPaneSuppCp);
-//
-//		suppCpTableModel = new SuppCpTableModel(new ArrayList<SuppCp>());
-//		tblSuppCp = new JTable(suppCpTableModel);
-//		tblSuppCp.setBorder(new EmptyBorder(5, 5, 5, 5));
-//		scrollPaneSuppCp.setViewportView(tblSuppCp);
-//
-//		tblSuppCp.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				if (tblSuppCp.getValueAt(tblSuppCp.getSelectedRow(), 0).equals(true))
-//					listOfSuppCp.get(tblSuppCp.getSelectedRow()).setFlag(false);
-//				else
-//					listOfSuppCp.get(tblSuppCp.getSelectedRow()).setFlag(true);
-//
-//				tblSuppCp.updateUI();
-//
-//				if (e.getClickCount() == 2) {
-//					JTable target = (JTable) e.getSource();
-//					int row = target.getSelectedRow();
-//					int column = target.getSelectedColumn();
-//
-//					if (column == 5)
-//						showEditSuppCpDialog(listOfSuppCp.get(row), supplierCreate, row);
-//				}
-//			}
-//		});
-//
-//		btnAddSuppCp = new JButton("Tambah");
-//		btnAddSuppCp.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				showAddSuppCpDialog(supplierCreate);
-//			}
-//		});
-//		btnAddSuppCp.setBounds(820, 540, 100, 30);
-//		panel.add(btnAddSuppCp);
-//
-//		btnDeleteSuppCp = new JButton("Hapus");
-//		btnDeleteSuppCp.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				// int response = DialogBox.showDeleteChoice();
-//				// if (response == JOptionPane.YES_OPTION) {
-//				doDeleteSuppCp();
-//				// }
-//			}
-//		});
-//		btnDeleteSuppCp.setBounds(925, 540, 100, 30);
-//		panel.add(btnDeleteSuppCp);
+		// lblSuppCp = new JLabel("Contact Person");
+		// lblSuppCp.setFont(new Font("Tahoma", Font.BOLD, 16));
+		// lblSuppCp.setBounds(50, 540, 150, 30);
+		// panel.add(lblSuppCp);
+		//
+		// scrollPaneSuppCp = new JScrollPane();
+		// scrollPaneSuppCp.setBounds(50, 580, 975, 150);
+		// panel.add(scrollPaneSuppCp);
+		//
+		// suppCpTableModel = new SuppCpTableModel(new ArrayList<SuppCp>());
+		// tblSuppCp = new JTable(suppCpTableModel);
+		// tblSuppCp.setBorder(new EmptyBorder(5, 5, 5, 5));
+		// scrollPaneSuppCp.setViewportView(tblSuppCp);
+		//
+		// tblSuppCp.addMouseListener(new MouseAdapter() {
+		// @Override
+		// public void mouseClicked(MouseEvent e) {
+		// if (tblSuppCp.getValueAt(tblSuppCp.getSelectedRow(), 0).equals(true))
+		// listOfSuppCp.get(tblSuppCp.getSelectedRow()).setFlag(false);
+		// else
+		// listOfSuppCp.get(tblSuppCp.getSelectedRow()).setFlag(true);
+		//
+		// tblSuppCp.updateUI();
+		//
+		// if (e.getClickCount() == 2) {
+		// JTable target = (JTable) e.getSource();
+		// int row = target.getSelectedRow();
+		// int column = target.getSelectedColumn();
+		//
+		// if (column == 5)
+		// showEditSuppCpDialog(listOfSuppCp.get(row), supplierCreate, row);
+		// }
+		// }
+		// });
+		//
+		// btnAddSuppCp = new JButton("Tambah");
+		// btnAddSuppCp.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent arg0) {
+		// showAddSuppCpDialog(supplierCreate);
+		// }
+		// });
+		// btnAddSuppCp.setBounds(820, 540, 100, 30);
+		// panel.add(btnAddSuppCp);
+		//
+		// btnDeleteSuppCp = new JButton("Hapus");
+		// btnDeleteSuppCp.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent arg0) {
+		// // int response = DialogBox.showDeleteChoice();
+		// // if (response == JOptionPane.YES_OPTION) {
+		// doDeleteSuppCp();
+		// // }
+		// }
+		// });
+		// btnDeleteSuppCp.setBounds(925, 540, 100, 30);
+		// panel.add(btnDeleteSuppCp);
 
 		/////// Table SuppCP ///////
 
@@ -403,40 +417,40 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 
 		///////////////////////////////////////////////////////////////
 
-//		lblAccountNo = new JLabel("No Akun Bank");
-//		lblAccountNo.setBounds(50, 960, 150, 30);
-//		panel.add(lblAccountNo);
-//
-//		txtAccountNo = new JTextField();
-//		txtAccountNo.setBounds(220, 960, 150, 30);
-//		txtAccountNo.setDocument(new JTextFieldLimit(30));
-//		panel.add(txtAccountNo);
-//
-//		lblBank = new JLabel("Bank");
-//		lblBank.setBounds(50, 1000, 150, 30);
-//		panel.add(lblBank);
-//
-//		listOfBank = new ArrayList<Bank>();
-//		try {
-//			listOfBank = ServiceFactory.getSupplierBL().getAllBank();
-//			listOfBank.add(0, new Bank("-- Pilih Bank --"));
-//		} catch (SQLException e1) {
-//			e1.printStackTrace();
-//			DialogBox.showErrorException();
-//		}
-//		cbBank = new ComboBox<Bank>();
-//		cbBank.setList(listOfBank);
-//		cbBank.setBounds(220, 1000, 150, 30);
-//		panel.add(cbBank);
-//
-//		lblAccountName = new JLabel("Nama Pemilik Akun");
-//		lblAccountName.setBounds(50, 1040, 150, 30);
-//		panel.add(lblAccountName);
-//
-//		txtAccountName = new JTextField();
-//		txtAccountName.setBounds(220, 1040, 150, 30);
-//		txtAccountName.setDocument(new JTextFieldLimit(30));
-//		panel.add(txtAccountName);
+		// lblAccountNo = new JLabel("No Akun Bank");
+		// lblAccountNo.setBounds(50, 960, 150, 30);
+		// panel.add(lblAccountNo);
+		//
+		// txtAccountNo = new JTextField();
+		// txtAccountNo.setBounds(220, 960, 150, 30);
+		// txtAccountNo.setDocument(new JTextFieldLimit(30));
+		// panel.add(txtAccountNo);
+		//
+		// lblBank = new JLabel("Bank");
+		// lblBank.setBounds(50, 1000, 150, 30);
+		// panel.add(lblBank);
+		//
+		// listOfBank = new ArrayList<Bank>();
+		// try {
+		// listOfBank = ServiceFactory.getSupplierBL().getAllBank();
+		// listOfBank.add(0, new Bank("-- Pilih Bank --"));
+		// } catch (SQLException e1) {
+		// e1.printStackTrace();
+		// DialogBox.showErrorException();
+		// }
+		// cbBank = new ComboBox<Bank>();
+		// cbBank.setList(listOfBank);
+		// cbBank.setBounds(220, 1000, 150, 30);
+		// panel.add(cbBank);
+		//
+		// lblAccountName = new JLabel("Nama Pemilik Akun");
+		// lblAccountName.setBounds(50, 1040, 150, 30);
+		// panel.add(lblAccountName);
+		//
+		// txtAccountName = new JTextField();
+		// txtAccountName.setBounds(220, 1040, 150, 30);
+		// txtAccountName.setDocument(new JTextFieldLimit(30));
+		// panel.add(txtAccountName);
 
 		lblCurrency = new JLabel("Kurs");
 		lblCurrency.setBounds(50, 750, 150, 30);
@@ -495,6 +509,13 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+
+		cbCurrency.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				scrollPane.getViewport().setViewPosition(new Point(220, 750));
+			}
+		});
 		add(scrollPane);
 
 		btnSave = new JButton("Simpan");
@@ -515,36 +536,40 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		btnCancel = new JButton("Kembali");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MainPanel.changePanel("module.supplier.ui.SupplierListPanel");
+				int response = DialogBox.showCloseChoice();
+				if (response == JOptionPane.YES_OPTION) {
+					MainPanel.changePanel("module.supplier.ui.SupplierListPanel");
+				}
 			}
 		});
 		btnCancel.setBounds(50, 870, 100, 30);
 		panel.add(btnCancel);
-		
-		SwingUtilities.invokeLater(new Runnable() {
-		    @Override
-		    public void run() {
-		        txtSuppCode.requestFocusInWindow();
-		    }
-		});
-		
-		//makeCodeNumber();
-	}
-	
-//	public void makeCodeNumber() {
-//		final String constant = "BL";
-//
-//		String ordinal = null;
-//		try {
-//			ordinal = ServiceFactory.getSupplierBL().getOrdinalOfCodeNumber();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			DialogBox.showErrorException();
-//		}
-//
-//		txtSuppCode.setText(new StringBuilder().append(constant).append(ordinal).toString());
-//	}
 
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				txtSuppCode.requestFocusInWindow();
+			}
+		});
+
+		// makeCodeNumber();
+	}
+
+	// public void makeCodeNumber() {
+	// final String constant = "BL";
+	//
+	// String ordinal = null;
+	// try {
+	// ordinal = ServiceFactory.getSupplierBL().getOrdinalOfCodeNumber();
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// DialogBox.showErrorException();
+	// }
+	//
+	// txtSuppCode.setText(new
+	// StringBuilder().append(constant).append(ordinal).toString());
+	// }
+	
 	protected boolean doValidate() {
 		boolean isValid = true;
 
@@ -554,7 +579,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		lblErrorSuppStatus.setText("");
 		lblErrorTop.setText("");
 		lblErrorDefaultTax.setText("");
-
+		lblErrorSuppAddress.setText("");
 		if (txtSuppCode.getText() == null || txtSuppCode.getText().length() == 0) {
 			lblErrorSuppCode.setText("Textbox Kode Supplier harus diisi.");
 			isValid = false;
@@ -592,6 +617,11 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 				isValid = false;
 			}
 		}
+		
+		if(listOfSuppAddress.isEmpty()) {
+			lblErrorSuppAddress.setText("Alamat supplier harus diisi minimal 1.");
+			isValid = false;
+		}
 
 		return isValid;
 	}
@@ -604,9 +634,9 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		supplier.setNpwp(txtNpwp.getText());
 		supplier.setSuppTypeId(cbSuppType.getDataIndex().getId());
 		supplier.setSuppStatus(cbSuppStatus.getSelectedItem().toString());
-//		supplier.setAccountNo(txtAccountNo.getText());
-//		supplier.setBankId(cbBank.getDataIndex().getId());
-//		supplier.setAccountName(txtAccountName.getText());
+		// supplier.setAccountNo(txtAccountNo.getText());
+		// supplier.setBankId(cbBank.getDataIndex().getId());
+		// supplier.setAccountName(txtAccountName.getText());
 		supplier.setCurrencyId(cbCurrency.getDataIndex().getId());
 
 		if (!"".equals(txtTop.getText()))
@@ -648,55 +678,70 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 	}
 
 	protected void doDeleteSuppAddress() {
-		List<SuppAddress> temp = new ArrayList<SuppAddress>();
-		for (SuppAddress s : listOfSuppAddress) {
-			if (Boolean.TRUE.equals(s.isFlag())) {
-				temp.add(s);
-			}
-		}
+		if (listOfSuppAddress.isEmpty())
+			DialogBox.showDeleteEmptyChoice();
+		else {
+			int count = 0;
 
-		if (Boolean.FALSE.equals(temp.isEmpty())) {
-			for (SuppAddress s : temp) {
-				listOfSuppAddress.remove(s);
+			List<SuppAddress> temp = new ArrayList<SuppAddress>();
+			for (SuppAddress s : listOfSuppAddress) {
+				if (Boolean.TRUE.equals(s.isFlag())) {
+					temp.add(s);
+				} else
+					count += 1;
 			}
-			refreshTableSuppAddress();
-			DialogBox.showDelete();
+
+			if (count == listOfSuppAddress.size()) {
+				DialogBox.showDeleteEmptyChoice();
+				return;
+			}
+
+			if (Boolean.FALSE.equals(temp.isEmpty())) {
+				for (SuppAddress s : temp) {
+					listOfSuppAddress.remove(s);
+				}
+				refreshTableSuppAddress();
+				DialogBox.showDelete();
+			}
 		}
 	}
 
 	/**
 	 * Method to display add supp cp dialog
 	 */
-//	protected void showAddSuppCpDialog(SupplierCreatePanel supplierCreate) {
-//		SuppCpDialog suppCpDialog = new SuppCpDialog(false, new SuppCp(), supplierCreate, null);
-//		suppCpDialog.setTitle("Contact Person");
-//		suppCpDialog.setLocationRelativeTo(null);
-//		suppCpDialog.setVisible(true);
-//	}
-//
-//	protected void showEditSuppCpDialog(SuppCp suppCp, SupplierCreatePanel supplierCreate, Integer index) {
-//		SuppCpDialog suppCpDialog = new SuppCpDialog(true, suppCp, supplierCreate, index);
-//		suppCpDialog.setTitle("Contact Person");
-//		suppCpDialog.setLocationRelativeTo(null);
-//		suppCpDialog.setVisible(true);
-//	}
+	// protected void showAddSuppCpDialog(SupplierCreatePanel supplierCreate) {
+	// SuppCpDialog suppCpDialog = new SuppCpDialog(false, new SuppCp(),
+	// supplierCreate, null);
+	// suppCpDialog.setTitle("Contact Person");
+	// suppCpDialog.setLocationRelativeTo(null);
+	// suppCpDialog.setVisible(true);
+	// }
+	//
+	// protected void showEditSuppCpDialog(SuppCp suppCp, SupplierCreatePanel
+	// supplierCreate, Integer index) {
+	// SuppCpDialog suppCpDialog = new SuppCpDialog(true, suppCp,
+	// supplierCreate, index);
+	// suppCpDialog.setTitle("Contact Person");
+	// suppCpDialog.setLocationRelativeTo(null);
+	// suppCpDialog.setVisible(true);
+	// }
 
-//	protected void doDeleteSuppCp() {
-//		List<SuppCp> temp = new ArrayList<SuppCp>();
-//		for (SuppCp s : listOfSuppCp) {
-//			if (Boolean.TRUE.equals(s.isFlag())) {
-//				temp.add(s);
-//			}
-//		}
-//
-//		if (Boolean.FALSE.equals(temp.isEmpty())) {
-//			for (SuppCp s : temp) {
-//				listOfSuppCp.remove(s);
-//			}
-//			refreshTableSuppCp();
-//			DialogBox.showDelete();
-//		}
-//	}
+	// protected void doDeleteSuppCp() {
+	// List<SuppCp> temp = new ArrayList<SuppCp>();
+	// for (SuppCp s : listOfSuppCp) {
+	// if (Boolean.TRUE.equals(s.isFlag())) {
+	// temp.add(s);
+	// }
+	// }
+	//
+	// if (Boolean.FALSE.equals(temp.isEmpty())) {
+	// for (SuppCp s : temp) {
+	// listOfSuppCp.remove(s);
+	// }
+	// refreshTableSuppCp();
+	// DialogBox.showDelete();
+	// }
+	// }
 
 	/**
 	 * Method to display add supp cp dialog
@@ -717,19 +762,32 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 	}
 
 	protected void doDeleteSuppVehicle() {
-		List<SuppVehicle> temp = new ArrayList<SuppVehicle>();
-		for (SuppVehicle s : listOfSuppVehicle) {
-			if (Boolean.TRUE.equals(s.isFlag())) {
-				temp.add(s);
-			}
-		}
+		if (listOfSuppVehicle.isEmpty())
+			DialogBox.showDeleteEmptyChoice();
+		else {
+			int count = 0;
 
-		if (Boolean.FALSE.equals(temp.isEmpty())) {
-			for (SuppVehicle s : temp) {
-				listOfSuppVehicle.remove(s);
+			List<SuppVehicle> temp = new ArrayList<SuppVehicle>();
+			for (SuppVehicle s : listOfSuppVehicle) {
+				if (Boolean.TRUE.equals(s.isFlag())) {
+					temp.add(s);
+				} else {
+					count += 1;
+				}
 			}
-			refreshTableSuppVehicle();
-			DialogBox.showDelete();
+
+			if (count == listOfSuppVehicle.size()) {
+				DialogBox.showDeleteEmptyChoice();
+				return;
+			}
+
+			if (Boolean.FALSE.equals(temp.isEmpty())) {
+				for (SuppVehicle s : temp) {
+					listOfSuppVehicle.remove(s);
+				}
+				refreshTableSuppVehicle();
+				DialogBox.showDelete();
+			}
 		}
 	}
 
@@ -1076,12 +1134,12 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 	}
 
 	public void refreshTableSuppCp() {
-//		try {
-//			tblSuppCp.setModel(new SuppCpTableModel(listOfSuppCp));
-//		} catch (Exception e1) {
-//			e1.printStackTrace();
-//			DialogBox.showErrorException();
-//		}
+		// try {
+		// tblSuppCp.setModel(new SuppCpTableModel(listOfSuppCp));
+		// } catch (Exception e1) {
+		// e1.printStackTrace();
+		// DialogBox.showErrorException();
+		// }
 	}
 
 	public void refreshTableSuppVehicle() {
