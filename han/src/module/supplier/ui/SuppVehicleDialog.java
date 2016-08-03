@@ -67,27 +67,27 @@ public class SuppVehicleDialog extends JDialog {
 	public void init() {
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 600, 180);
+		setBounds(100, 100, 600, 170);
 		getContentPane().setLayout(null);
 
 		lblLicensePlate = new JLabel("<html>No Kendaraan <font color=\"red\">*</font></html>");
-		lblLicensePlate.setBounds(25, 15, 150, 30);
+		lblLicensePlate.setBounds(25, 15, 150, 25);
 		getContentPane().add(lblLicensePlate);
 
 		txtLicensePlate = new JTextField();
 		if (isEdit == true)
 			txtLicensePlate.setEnabled(false);
-		txtLicensePlate.setBounds(150, 15, 150, 30);
+		txtLicensePlate.setBounds(150, 15, 150, 25);
 		txtLicensePlate.setDocument(new JTextFieldLimit(10));
 		getContentPane().add(txtLicensePlate);
 
 		lblErrorLicensePlate = new JLabel();
 		lblErrorLicensePlate.setForeground(Color.RED);
-		lblErrorLicensePlate.setBounds(335, 15, 225, 30);
+		lblErrorLicensePlate.setBounds(335, 15, 225, 25);
 		getContentPane().add(lblErrorLicensePlate);
 
 		lblVehicleType = new JLabel("<html>Tipe Kendaraan <font color=\"red\">*</font></html>");
-		lblVehicleType.setBounds(25, 50, 150, 30);
+		lblVehicleType.setBounds(25, 45, 150, 25);
 		getContentPane().add(lblVehicleType);
 
 		listOfVehicleType = new ArrayList<VehicleType>();
@@ -100,13 +100,13 @@ public class SuppVehicleDialog extends JDialog {
 		}
 
 		cbVehicleType = new ComboBox<VehicleType>();
-		cbVehicleType.setBounds(150, 50, 150, 30);
+		cbVehicleType.setBounds(150, 45, 150, 25);
 		cbVehicleType.setList(listOfVehicleType);
 		getContentPane().add(cbVehicleType);
 
 		lblErrorVehicleType = new JLabel();
 		lblErrorVehicleType.setForeground(Color.RED);
-		lblErrorVehicleType.setBounds(335, 50, 225, 30);
+		lblErrorVehicleType.setBounds(335, 45, 225, 25);
 		getContentPane().add(lblErrorVehicleType);
 
 		btnInsert = new JButton("Insert");
@@ -122,7 +122,7 @@ public class SuppVehicleDialog extends JDialog {
 //				}
 			}
 		});
-		btnInsert.setBounds(460, 95, 100, 30);
+		btnInsert.setBounds(460, 80, 100, 25);
 		getContentPane().add(btnInsert);
 
 		if (isEdit == true) {

@@ -94,7 +94,7 @@ public class SuppAddressDialog extends JDialog {
 	public void init() {
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 600, 440);
+		setBounds(100, 100, 600, 420);
 		getContentPane().setLayout(null);
 
 		listOfProvince = new ArrayList<Province>();
@@ -109,12 +109,12 @@ public class SuppAddressDialog extends JDialog {
 		}
 
 		lblAddressType = new JLabel("<html>Tipe Alamat <font color=\"red\">*</font></html>");
-		lblAddressType.setBounds(25, 15, 150, 30);
+		lblAddressType.setBounds(25, 15, 150, 25);
 		getContentPane().add(lblAddressType);
 
 		lblErrorAddressType = new JLabel();
 		lblErrorAddressType.setForeground(Color.RED);
-		lblErrorAddressType.setBounds(335, 15, 225, 30);
+		lblErrorAddressType.setBounds(335, 15, 225, 25);
 		getContentPane().add(lblErrorAddressType);
 
 		cbAddressType = new JComboBox<String>();
@@ -123,17 +123,17 @@ public class SuppAddressDialog extends JDialog {
 		cbAddressType.addItem("Warehouse");
 		cbAddressType.addItem("Office");
 		cbAddressType.addItem("Shipping");
-		cbAddressType.setBounds(150, 15, 150, 30);
+		cbAddressType.setBounds(150, 15, 150, 25);
 		getContentPane().add(cbAddressType);
 
 		lblAddress = new JLabel("<html>Alamat <font color=\"red\">*</font></html>");
-		lblAddress.setBounds(25, 60, 150, 30);
+		lblAddress.setBounds(25, 45, 150, 25);
 		getContentPane().add(lblAddress);
 
 		txtAddress = new JTextArea();
 		txtAddress.setRows(3);
 		txtAddress.setColumns(3);
-		txtAddress.setBounds(150, 55, 150, 70);
+		txtAddress.setBounds(150, 45, 150, 70);
 		txtAddress.setDocument(new JTextFieldLimit(200));
 		txtAddress.addKeyListener(new KeyAdapter() {
 			@Override
@@ -150,47 +150,47 @@ public class SuppAddressDialog extends JDialog {
 		});
 
 		JScrollPane spTxtAddress = new JScrollPane(txtAddress);
-		spTxtAddress.setBounds(150, 55, 150, 70);
+		spTxtAddress.setBounds(150, 45, 150, 70);
 		getContentPane().add(spTxtAddress);
 
 		lblErrorAddress = new JLabel();
 		lblErrorAddress.setForeground(Color.RED);
-		lblErrorAddress.setBounds(335, 55, 225, 30);
+		lblErrorAddress.setBounds(335, 45, 225, 25);
 		getContentPane().add(lblErrorAddress);
 
 		lblZipCode = new JLabel("Kode Pos");
-		lblZipCode.setBounds(25, 135, 150, 30);
+		lblZipCode.setBounds(25, 120, 150, 25);
 		getContentPane().add(lblZipCode);
 
 		txtZipCode = new NumberField(5);
-		txtZipCode.setBounds(150, 135, 150, 30);
+		txtZipCode.setBounds(150, 120, 150, 25);
 		// txtZipCode.setDocument(new JTextFieldLimit(5));
 		getContentPane().add(txtZipCode);
 
 		lblProvince = new JLabel("<html>Provinsi <font color=\"red\">*</font></html>");
-		lblProvince.setBounds(25, 170, 150, 30);
+		lblProvince.setBounds(25, 150, 150, 25);
 		getContentPane().add(lblProvince);
 
 		cbProvince = new ComboBox<Province>();
 		cbProvince.setList(listOfProvince);
-		cbProvince.setBounds(150, 170, 150, 30);
+		cbProvince.setBounds(150, 150, 150, 25);
 		getContentPane().add(cbProvince);
 
 		lblErrorProvince = new JLabel();
 		lblErrorProvince.setForeground(Color.RED);
-		lblErrorProvince.setBounds(335, 175, 200, 30);
+		lblErrorProvince.setBounds(335, 150, 200, 25);
 		getContentPane().add(lblErrorProvince);
 
 		lblCity = new JLabel("<html>Kota <font color=\"red\">*</font></html>");
-		lblCity.setBounds(25, 205, 150, 30);
+		lblCity.setBounds(25, 180, 150, 25);
 		getContentPane().add(lblCity);
 
 		cbCity = new ComboBox<City>();
-		cbCity.setBounds(150, 205, 150, 30);
+		cbCity.setBounds(150, 180, 150, 25);
 
 		lblErrorCity = new JLabel();
 		lblErrorCity.setForeground(Color.RED);
-		lblErrorCity.setBounds(335, 205, 200, 30);
+		lblErrorCity.setBounds(335, 180, 200, 25);
 		getContentPane().add(lblErrorCity);
 
 		if (cbProvince.getSelectedIndex() != 0) {
@@ -230,48 +230,48 @@ public class SuppAddressDialog extends JDialog {
 		getContentPane().add(cbCity);
 
 		lblContactPerson = new JLabel("<html>Contact Person <font color=\"red\">*</font></html>");
-		lblContactPerson.setBounds(25, 240, 150, 30);
+		lblContactPerson.setBounds(25, 210, 150, 25);
 		getContentPane().add(lblContactPerson);
 
 		txtContactPerson = new JTextField();
-		txtContactPerson.setBounds(150, 240, 150, 30);
+		txtContactPerson.setBounds(150, 210, 150, 25);
 		txtContactPerson.setDocument(new JTextFieldLimit(50));
 		getContentPane().add(txtContactPerson);
 
 		lblErrorContactPerson = new JLabel();
 		lblErrorContactPerson.setForeground(Color.RED);
-		lblErrorContactPerson.setBounds(335, 240, 225, 30);
+		lblErrorContactPerson.setBounds(335, 210, 225, 25);
 		getContentPane().add(lblErrorContactPerson);
 
 		lblEmail = new JLabel("Email");
-		lblEmail.setBounds(25, 275, 150, 30);
+		lblEmail.setBounds(25, 240, 150, 25);
 		getContentPane().add(lblEmail);
 
 		txtEmail = new JTextField();
-		txtEmail.setBounds(150, 275, 150, 30);
+		txtEmail.setBounds(150, 240, 150, 25);
 		txtEmail.setDocument(new JTextFieldLimit(50));
 		getContentPane().add(txtEmail);
 
 		lblErrorEmail = new JLabel();
 		lblErrorEmail.setForeground(Color.RED);
-		lblErrorEmail.setBounds(335, 275, 225, 30);
+		lblErrorEmail.setBounds(335, 240, 225, 25);
 		getContentPane().add(lblErrorEmail);
 
 		lblPhone = new JLabel("Telepon");
-		lblPhone.setBounds(25, 310, 150, 30);
+		lblPhone.setBounds(25, 270, 150, 25);
 		getContentPane().add(lblPhone);
 
 		txtPhone = new NumberField(15);
-		txtPhone.setBounds(150, 310, 150, 30);
+		txtPhone.setBounds(150, 270, 150, 25);
 		// txtPhone.setDocument(new JTextFieldLimit(15));
 		getContentPane().add(txtPhone);
 
 		lblFax = new JLabel("Fax");
-		lblFax.setBounds(25, 345, 150, 30);
+		lblFax.setBounds(25, 300, 150, 25);
 		getContentPane().add(lblFax);
 
 		txtFax = new NumberField(15);
-		txtFax.setBounds(150, 345, 150, 30);
+		txtFax.setBounds(150, 300, 150, 25);
 		// txtFax.setDocument(new JTextFieldLimit(15));
 		getContentPane().add(txtFax);
 
@@ -284,7 +284,7 @@ public class SuppAddressDialog extends JDialog {
 				doInsert();
 			}
 		});
-		btnInsert.setBounds(460, 345, 100, 30);
+		btnInsert.setBounds(460, 335, 100, 25);
 		getContentPane().add(btnInsert);
 
 		if (isEdit == true) {

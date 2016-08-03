@@ -68,59 +68,59 @@ public class SuppCpDialog extends JDialog {
 		getContentPane().setLayout(null);
 
 		lblName = new JLabel("<html>Nama <font color=\"red\">*</font></html>");
-		lblName.setBounds(25, 15, 150, 30);
+		lblName.setBounds(25, 15, 150, 25);
 		getContentPane().add(lblName);
 
 		txtName = new JTextField();
-		txtName.setBounds(150, 15, 150, 30);
+		txtName.setBounds(150, 15, 150, 25);
 		txtName.setDocument(new JTextFieldLimit(200));
 		getContentPane().add(txtName);
 
 		lblErrorName = new JLabel();
 		lblErrorName.setForeground(Color.RED);
-		lblErrorName.setBounds(335, 15, 225, 30);
+		lblErrorName.setBounds(335, 15, 225, 25);
 		getContentPane().add(lblErrorName);
 
 		lblDepartment = new JLabel("<html>Department <font color=\"red\">*</font></html>");
-		lblDepartment.setBounds(25, 50, 150, 30);
+		lblDepartment.setBounds(25, 50, 150, 25);
 		getContentPane().add(lblDepartment);
 
 		txtDepartment = new JTextField();
-		txtDepartment.setBounds(150, 50, 150, 30);
+		txtDepartment.setBounds(150, 50, 150, 25);
 		txtDepartment.setDocument(new JTextFieldLimit(100));
 		getContentPane().add(txtDepartment);
 
 		lblErrorDepartment = new JLabel();
 		lblErrorDepartment.setForeground(Color.RED);
-		lblErrorDepartment.setBounds(335, 50, 225, 30);
+		lblErrorDepartment.setBounds(335, 50, 225, 25);
 		getContentPane().add(lblErrorDepartment);
 
 		lblPhone = new JLabel("<html>Telepon <font color=\"red\">*</font></html>");
-		lblPhone.setBounds(25, 85, 150, 30);
+		lblPhone.setBounds(25, 85, 150, 25);
 		getContentPane().add(lblPhone);
 
 		txtPhone = new JTextField();
-		txtPhone.setBounds(150, 85, 150, 30);
+		txtPhone.setBounds(150, 85, 150, 25);
 		txtPhone.setDocument(new JTextFieldLimit(15));
 		getContentPane().add(txtPhone);
 
 		lblErrorPhone = new JLabel();
 		lblErrorPhone.setForeground(Color.RED);
-		lblErrorPhone.setBounds(335, 85, 225, 30);
+		lblErrorPhone.setBounds(335, 85, 225, 25);
 		getContentPane().add(lblErrorPhone);
 
 		lblEmail = new JLabel("<html>Email <font color=\"red\">*</font></html>");
-		lblEmail.setBounds(25, 120, 150, 30);
+		lblEmail.setBounds(25, 120, 150, 25);
 		getContentPane().add(lblEmail);
 
 		txtEmail = new JTextField();
-		txtEmail.setBounds(150, 120, 150, 30);
+		txtEmail.setBounds(150, 120, 150, 25);
 		txtEmail.setDocument(new JTextFieldLimit(50));
 		getContentPane().add(txtEmail);
 
 		lblErrorEmail = new JLabel();
 		lblErrorEmail.setForeground(Color.RED);
-		lblErrorEmail.setBounds(335, 120, 225, 30);
+		lblErrorEmail.setBounds(335, 120, 225, 25);
 		getContentPane().add(lblErrorEmail);
 
 		btnInsert = new JButton("Insert");
@@ -136,7 +136,7 @@ public class SuppCpDialog extends JDialog {
 				// }
 			}
 		});
-		btnInsert.setBounds(459, 165, 100, 30);
+		btnInsert.setBounds(459, 165, 100, 25);
 		getContentPane().add(btnInsert);
 
 		if (isEdit == true) {

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,7 +16,7 @@ import module.util.Bridging;
 public class MainPanel extends JFrame {
 
 	public JPanel headerPanel;
-	//public JPanel menuPanel;
+	// public JPanel menuPanel;
 	public static JPanel bodyPanel;
 	public static JPanel glassPane;
 	public static LoginPanel loginPanel;
@@ -27,7 +28,7 @@ public class MainPanel extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				
+
 				try {
 					for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 						if ("Windows".equals(info.getName())) {
@@ -39,17 +40,16 @@ public class MainPanel extends JFrame {
 
 				}
 
-				
 				try {
 					MainPanel frame = new MainPanel();
 
-					glassPane = new JPanel(){
-						public void paintComponent(Graphics g){
-							g.setColor(new Color(0,0,0,170));
-							g.fillRect(0,0,1366,768);
+					glassPane = new JPanel() {
+						public void paintComponent(Graphics g) {
+							g.setColor(new Color(0, 0, 0, 170));
+							g.fillRect(0, 0, 1366, 768);
 						}
 					};
-					//glassPane.setPreferredSize(new Dimension(1366, 768));
+					// glassPane.setPreferredSize(new Dimension(1366, 768));
 					glassPane.setOpaque(false);
 					glassPane.setLayout(null);
 
@@ -80,40 +80,40 @@ public class MainPanel extends JFrame {
 	 */
 	public MainPanel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(1366, 768));
+		//setPreferredSize(new Dimension(1366, 768));
 		setBounds(0, 0, 1366, 768);
-		setLayout(null);
-		setTitle("Project");
 
-		//		glassPane = new JPanel(){
-		//			public void paintComponent(Graphics g){
-		//				g.setColor(new Color(0,0,0,200));
-		//				g.fillRect(0,0,1366,768);
-		//			}
-		//		};
-		//		glassPane.setOpaque(false);
-		//		setGlassPane(glassPane);
-		//		glassPane.setVisible(true);
+		setLayout(null);
+		setTitle("HAN Application");
+
+		// glassPane = new JPanel(){
+		// public void paintComponent(Graphics g){
+		// g.setColor(new Color(0,0,0,200));
+		// g.fillRect(0,0,1366,768);
+		// }
+		// };
+		// glassPane.setOpaque(false);
+		// setGlassPane(glassPane);
+		// glassPane.setVisible(true);
 
 		headerPanel = new JPanel();
 		headerPanel.setBorder(new LineBorder(Color.BLACK, 2));
-		//headerPanel.setLayout(new BorderLayout(0, 0));
+		// headerPanel.setLayout(new BorderLayout(0, 0));
 		headerPanel.setBounds(0, 0, 1366, 100);
 		headerPanel.setBackground(Color.WHITE);
-		//contentPane.setBackground(Color.BLUE);
-		//setContentPane(headerPanel);
+		// contentPane.setBackground(Color.BLUE);
+		// setContentPane(headerPanel);
 
 		menuPanel = new MenuPanel();
 		menuPanel.setBorder(new LineBorder(Color.BLACK, 1));
 		menuPanel.setBounds(0, 100, 200, 630);
 
-		//add(glassPane);
+		// add(glassPane);
 		add(headerPanel);
 		add(menuPanel);
 	}
 
-
-	public static void changePanel(String panel){
+	public static void changePanel(String panel) {
 		JPanel classPane;
 		try {
 			classPane = (JPanel) Class.forName(panel).newInstance();
@@ -121,7 +121,7 @@ public class MainPanel extends JFrame {
 			bodyPanel.revalidate();
 			bodyPanel.repaint();
 			classPane.setBounds(0, 0, 1366, 630);
-			bodyPanel.add(classPane);	
+			bodyPanel.add(classPane);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -132,28 +132,26 @@ public class MainPanel extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void changePanel(String panel, Object... objects) {
-		  JPanel classPane;
-		  try {
-		   classPane = (JPanel) Class.forName(panel).newInstance();
-		   if (classPane instanceof Bridging)
-		    ((Bridging) classPane).invokeObjects(objects);
-		   bodyPanel.removeAll();
-		   bodyPanel.revalidate();
-		   bodyPanel.repaint();
-		   classPane.setBounds(0, 0, 1366, 630);
-		   bodyPanel.add(classPane);
-		  } catch (InstantiationException e) {
-		   e.printStackTrace();
-		  } catch (IllegalAccessException e) {
+		JPanel classPane;
+		try {
+			classPane = (JPanel) Class.forName(panel).newInstance();
+			if (classPane instanceof Bridging)
+				((Bridging) classPane).invokeObjects(objects);
+			bodyPanel.removeAll();
+			bodyPanel.revalidate();
+			bodyPanel.repaint();
+			classPane.setBounds(0, 0, 1366, 630);
+			bodyPanel.add(classPane);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
 
-		   e.printStackTrace();
-		  } catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 
-		   e.printStackTrace();
-		  }
-		 }
+			e.printStackTrace();
+		}
+	}
 }
-
-
