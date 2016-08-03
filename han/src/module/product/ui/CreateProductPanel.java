@@ -241,10 +241,10 @@ public class CreateProductPanel extends JPanel {
 
 		breadcrumb = new JLabel("ERP > Pembelian > Produk");
 		breadcrumb.setFont(new Font(null, Font.BOLD, 12));
-		breadcrumb.setBounds(20, 10, 320, 30);
+		breadcrumb.setBounds(50, 10, 320, 25);
 
 		backBtn = new JButton("Kembali");
-		backBtn.setBounds(20, 550, 75, 25);
+		backBtn.setBounds(50, 550, 75, 25);
 		backBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -257,125 +257,125 @@ public class CreateProductPanel extends JPanel {
 		backBtn.setHorizontalAlignment(SwingConstants.CENTER);
 
 		titleLbl = new JLabel("BUAT BARU");
-		titleLbl.setBounds(20, 40, 300, 30);
+		titleLbl.setBounds(50, 40, 300, 25);
 		titleLbl.setFont(new Font("Dialog", Font.BOLD, 12));
 
 		idLbl = new JLabel("<html>Kode Produk <font color=\"red\">*</font></html>");
-		idLbl.setBounds(20, 80, 100, 30);
+		idLbl.setBounds(50, 80, 100, 25);
 		nameLbl = new JLabel("<html>Nama Produk <font color=\"red\">*</font></html>");
-		nameLbl.setBounds(20, 110, 100, 30);
+		nameLbl.setBounds(50, 110, 100, 25);
 		catLbl = new JLabel("<html>Kategori Produk <font color=\"red\">*</font></html>");
-		catLbl.setBounds(20, 140, 100, 30);
+		catLbl.setBounds(50, 140, 100, 25);
 		statLbl = new JLabel("<html>Status Produk <font color=\"red\">*</font></html>");
-		statLbl.setBounds(20, 170, 100, 30);
+		statLbl.setBounds(50, 170, 100, 25);
 		unitLbl = new JLabel("<html>Satuan Produk <font color=\"red\">*</font></html>");
-		unitLbl.setBounds(20, 200, 100, 30);
+		unitLbl.setBounds(50, 200, 100, 25);
 		maintainLbl = new JLabel("<html>Maintain Stock <font color=\"red\">*</font></html>");
-		maintainLbl.setBounds(20, 230, 100, 30);
+		maintainLbl.setBounds(50, 230, 100, 25);
 		// picLbl = new JLabel("Gambar");
-		// picLbl.setBounds(20, 260, 100, 30);
+		// picLbl.setBounds(20, 260, 100, 25);
 
 		descTitleLbl = new JLabel("<html><u>Description</u></html>");
-		descTitleLbl.setBounds(20, 420, 100, 30);
+		descTitleLbl.setBounds(20, 420, 100, 25);
 		descTitleLbl.setFont(new Font(null, Font.BOLD, 12));
 		brandLbl = new JLabel("Brand");
-		brandLbl.setBounds(20, 450, 100, 30);
+		brandLbl.setBounds(20, 450, 100, 25);
 		barcodeLbl = new JLabel("Barcode");
-		barcodeLbl.setBounds(20, 480, 100, 30);
+		barcodeLbl.setBounds(20, 480, 100, 25);
 		descLbl = new JLabel("Deskripsi");
-		descLbl.setBounds(20, 510, 100, 30);
+		descLbl.setBounds(20, 510, 100, 25);
 
 		attLbl = new JLabel("<html><u>Atribut Produk</u></html>");
-		attLbl.setBounds(20, 260, 100, 30);
+		attLbl.setBounds(50, 260, 100, 25);
 		attLbl.setFont(new Font(null, Font.BOLD, 12));
 		typeLbl = new JLabel("<html>Jenis Kayu <font color=\"red\">*</font></html>");
-		typeLbl.setBounds(20, 290, 100, 30);
+		typeLbl.setBounds(50, 290, 100, 25);
 		gradeLbl = new JLabel("<html>Grade <font color=\"red\">*</font></html>");
-		gradeLbl.setBounds(20, 320, 100, 30);
+		gradeLbl.setBounds(50, 320, 100, 25);
 		thickLbl = new JLabel("<html>Tebal <font color=\"red\">*</font></html>");
-		thickLbl.setBounds(20, 380, 100, 30);
+		thickLbl.setBounds(50, 380, 100, 25);
 		longLbl = new JLabel("<html>Panjang <font color=\"red\">*</font></html>");
-		longLbl.setBounds(20, 350, 100, 30);
+		longLbl.setBounds(50, 350, 100, 25);
 		wideLbl = new JLabel("<html>Lebar <font color=\"red\">*</font></html>");
-		wideLbl.setBounds(20, 410, 100, 30);
+		wideLbl.setBounds(50, 410, 100, 25);
 		conditionLbl = new JLabel("<html>Kondisi <font color=\"red\">*</font></html>");
-		conditionLbl.setBounds(20, 440, 100, 30);
+		conditionLbl.setBounds(50, 440, 100, 25);
 		minQtyLbl = new JLabel("<html>Minimum Qty <font color=\"red\">*</font></html>");
-		minQtyLbl.setBounds(20, 470, 100, 30);
+		minQtyLbl.setBounds(50, 470, 100, 25);
 
 		inventLbl = new JLabel("<html><u>Inventory</u></html>");
-		inventLbl.setBounds(20, 780, 100, 30);
+		inventLbl.setBounds(20, 780, 100, 25);
 		inventLbl.setFont(new Font(null, Font.BOLD, 12));
 		flagSerialLbl = new JLabel("Flag Serial No");
-		flagSerialLbl.setBounds(20, 750, 100, 30);
+		flagSerialLbl.setBounds(20, 750, 100, 25);
 		flagAssetLbl = new JLabel("Flag Aktiva Tetap");
-		flagAssetLbl.setBounds(20, 780, 100, 30);
+		flagAssetLbl.setBounds(20, 780, 100, 25);
 		warrantLbl = new JLabel("Garansi");
-		warrantLbl.setBounds(20, 810, 100, 30);
+		warrantLbl.setBounds(20, 810, 100, 25);
 		weightLbl = new JLabel("Berat Netto");
-		weightLbl.setBounds(20, 840, 100, 30);
+		weightLbl.setBounds(20, 840, 100, 25);
 
 		purchaseInfoLbl = new JLabel("<html><u>Purchase Information</u></html>");
-		purchaseInfoLbl.setBounds(20, 870, 150, 30);
+		purchaseInfoLbl.setBounds(20, 870, 150, 25);
 		purchaseInfoLbl.setFont(new Font(null, Font.BOLD, 12));
 		flagPurchaseLbl = new JLabel("Flag Purchase Item");
-		flagPurchaseLbl.setBounds(20, 900, 100, 30);
+		flagPurchaseLbl.setBounds(20, 900, 100, 25);
 		minOrderLbl = new JLabel("Minimum Order");
-		minOrderLbl.setBounds(20, 930, 100, 30);
+		minOrderLbl.setBounds(20, 930, 100, 25);
 		leadTimeLbl = new JLabel("Lead Time");
-		leadTimeLbl.setBounds(20, 960, 100, 30);
+		leadTimeLbl.setBounds(20, 960, 100, 25);
 
 		defCostLbl = new JLabel("Default Buying Cost Center");
-		defCostLbl.setBounds(20, 990, 140, 30);
+		defCostLbl.setBounds(20, 990, 140, 25);
 		defExpense = new JLabel("Default Expense Account");
-		defExpense.setBounds(20, 1020, 130, 30);
+		defExpense.setBounds(20, 1020, 130, 25);
 
 		conversionLbl = new JLabel("Konversi Unit of Measurement");
 		conversionLbl.setFont(new Font(null, Font.BOLD, 12));
-		conversionLbl.setBounds(20, 1050, 200, 30);
+		conversionLbl.setBounds(20, 1050, 200, 25);
 
 		suppInfoLbl = new JLabel("<html><u>Informasi Supplier</u></html>");
-		suppInfoLbl.setBounds(20, 1190, 150, 30);
+		suppInfoLbl.setBounds(20, 1190, 150, 25);
 		suppInfoLbl.setFont(new Font(null, Font.BOLD, 12));
 		suppLbl = new JLabel("Supplier");
-		suppLbl.setBounds(20, 1220, 100, 30);
+		suppLbl.setBounds(20, 1220, 100, 25);
 		manufacturerLbl = new JLabel("Manufacturer");
-		manufacturerLbl.setBounds(20, 1250, 100, 30);
+		manufacturerLbl.setBounds(20, 1250, 100, 25);
 
 		reservedSuppLbl = new JLabel("Supplier Cadangan");
 		reservedSuppLbl.setFont(new Font(null, Font.BOLD, 12));
-		reservedSuppLbl.setBounds(20, 1280, 150, 30);
+		reservedSuppLbl.setBounds(20, 1280, 150, 25);
 
 		salesInfoLbl = new JLabel("<html><u>Sales Information</u></html>");
 		salesInfoLbl.setFont(new Font(null, Font.BOLD, 12));
-		salesInfoLbl.setBounds(20, 1420, 100, 30);
+		salesInfoLbl.setBounds(20, 1420, 100, 25);
 		flagSalesLbl = new JLabel("Flag Sales Item");
-		flagSalesLbl.setBounds(20, 1450, 100, 30);
+		flagSalesLbl.setBounds(20, 1450, 100, 25);
 		flagProductLbl = new JLabel("Flag Produk Jasa");
-		flagProductLbl.setBounds(20, 1480, 100, 30);
+		flagProductLbl.setBounds(20, 1480, 100, 25);
 
 		defSellCostLbl = new JLabel("Default Selling Cost Center");
-		defSellCostLbl.setBounds(20, 1510, 130, 30);
+		defSellCostLbl.setBounds(20, 1510, 130, 25);
 		defIncomeLbl = new JLabel("Default Income Account");
-		defIncomeLbl.setBounds(20, 1540, 120, 30);
+		defIncomeLbl.setBounds(20, 1540, 120, 25);
 		maxDiscountLbl = new JLabel("Diskon Maksimum");
-		maxDiscountLbl.setBounds(20, 1570, 100, 30);
+		maxDiscountLbl.setBounds(20, 1570, 100, 25);
 
 		customerListLbl = new JLabel("List Customer");
 		customerListLbl.setFont(new Font(null, Font.BOLD, 12));
-		customerListLbl.setBounds(20, 1600, 100, 30);
+		customerListLbl.setBounds(20, 1600, 100, 25);
 
 		taxLbl = new JLabel("Pajak");
 		taxLbl.setFont(new Font(null, Font.BOLD, 12));
-		taxLbl.setBounds(20, 1740, 100, 30);
+		taxLbl.setBounds(20, 1740, 100, 25);
 
 		idField = new JTextField();
 		// idField.setText(generateCode());
 		// idField.setEnabled(false);
-		idField.setBounds(195, 80, 150, 25);
+		idField.setBounds(220, 80, 150, 25);
 
 		nameField = new JTextField();
-		nameField.setBounds(195, 110, 150, 25);
+		nameField.setBounds(220, 110, 150, 25);
 
 		try {
 			categories = ServiceFactory.getProductBL().getAllProductCategory();
@@ -397,13 +397,13 @@ public class CreateProductPanel extends JPanel {
 				}
 			}
 		});
-		catField.setBounds(195, 140, 150, 25);
+		catField.setBounds(220, 140, 150, 25);
 
 		statField = new JComboBox<>();
 		statField.addItem("-- Pilih Status Produk --");
 		statField.addItem("Aktif");
 		statField.addItem("Tidak Aktif");
-		statField.setBounds(195, 170, 150, 25);
+		statField.setBounds(220, 170, 150, 25);
 
 		try {
 			units = ServiceFactory.getProductBL().getAllUom();
@@ -413,17 +413,17 @@ public class CreateProductPanel extends JPanel {
 		}
 		uomField = new ComboBox<Uom>();
 		uomField.setList(units);
-		uomField.setBounds(195, 200, 150, 25);
+		uomField.setBounds(220, 200, 150, 25);
 
 		maintain = new ButtonGroup();
 
 		maintainYesField = new JRadioButton("Ya");
 		maintainYesField.setSelected(true);
-		maintainYesField.setBounds(195, 230, 50, 25);
+		maintainYesField.setBounds(220, 230, 50, 25);
 
 		maintainNoField = new JRadioButton("Tidak");
 		maintainNoField.setSelected(false);
-		maintainNoField.setBounds(250, 230, 50, 25);
+		maintainNoField.setBounds(290, 230, 50, 25);
 
 		maintain.add(maintainYesField);
 		maintain.add(maintainNoField);
@@ -445,7 +445,7 @@ public class CreateProductPanel extends JPanel {
 		}
 		typeField = new ComboBox<WoodType>();
 		typeField.setList(woodTypes);
-		typeField.setBounds(195, 290, 150, 25);
+		typeField.setBounds(220, 290, 150, 25);
 
 		try {
 			grades = ServiceFactory.getProductBL().getAllGrade();
@@ -455,16 +455,16 @@ public class CreateProductPanel extends JPanel {
 		}
 		gradeField = new ComboBox<Grade>();
 		gradeField.setList(grades);
-		gradeField.setBounds(195, 320, 150, 25);
+		gradeField.setBounds(220, 320, 150, 25);
 
 		thickField = new NumberField(10);
-		thickField.setBounds(195, 380, 150, 25);
+		thickField.setBounds(220, 380, 150, 25);
 
 		longField = new NumberField(10);
-		longField.setBounds(195, 350, 150, 25);
+		longField.setBounds(220, 350, 150, 25);
 
 		wideField = new NumberField(10);
-		wideField.setBounds(195, 410, 150, 25);
+		wideField.setBounds(220, 410, 150, 25);
 
 		try {
 			conditions = ServiceFactory.getProductBL().getAllCondition();
@@ -474,10 +474,10 @@ public class CreateProductPanel extends JPanel {
 		}
 		conField = new ComboBox<Condition>();
 		conField.setList(conditions);
-		conField.setBounds(195, 440, 150, 25);
+		conField.setBounds(220, 440, 150, 25);
 
 		minQtyField = new NumberField(5);
-		minQtyField.setBounds(195, 470, 150, 25);
+		minQtyField.setBounds(220, 470, 150, 25);
 
 		flagSerial = new ButtonGroup();
 
@@ -507,7 +507,7 @@ public class CreateProductPanel extends JPanel {
 		warrantField.setBounds(195, 810, 150, 25);
 
 		dayLbl = new JLabel("Hari");
-		dayLbl.setBounds(350, 810, 50, 30);
+		dayLbl.setBounds(350, 810, 50, 25);
 
 		nettoField = new JTextField();
 		nettoField.setBounds(195, 840, 150, 25);
@@ -566,7 +566,7 @@ public class CreateProductPanel extends JPanel {
 		leadTimeField.setBounds(195, 960, 150, 25);
 
 		day2Lbl = new JLabel("Hari");
-		day2Lbl.setBounds(350, 960, 50, 30);
+		day2Lbl.setBounds(350, 960, 50, 25);
 
 		buyCostField = new JComboBox<>();
 		buyCostField.addItem("Pilih");
@@ -709,7 +709,7 @@ public class CreateProductPanel extends JPanel {
 		discountField.setBounds(195, 1570, 150, 25);
 
 		percentLbl = new JLabel("%");
-		percentLbl.setBounds(350, 1570, 50, 30);
+		percentLbl.setBounds(350, 1570, 50, 25);
 
 		custSearchBtn = new JButton("Search");
 		custSearchBtn.setBounds(395, 1600, 75, 25);
@@ -917,55 +917,55 @@ public class CreateProductPanel extends JPanel {
 
 		idLblError = new JLabel("");
 		idLblError.setForeground(Color.RED);
-		idLblError.setBounds(375, 80, 225, 30);
+		idLblError.setBounds(425, 80, 225, 25);
 
 		nameLblError = new JLabel("");
 		nameLblError.setForeground(Color.RED);
-		nameLblError.setBounds(375, 110, 225, 30);
+		nameLblError.setBounds(425, 110, 225, 25);
 
 		catLblError = new JLabel("");
 		catLblError.setForeground(Color.RED);
-		catLblError.setBounds(375, 140, 225, 30);
+		catLblError.setBounds(425, 140, 225, 25);
 
 		statLblError = new JLabel("");
 		statLblError.setForeground(Color.RED);
-		statLblError.setBounds(375, 170, 225, 30);
+		statLblError.setBounds(425, 170, 225, 25);
 
 		unitLblError = new JLabel("");
 		unitLblError.setForeground(Color.RED);
-		unitLblError.setBounds(375, 200, 225, 30);
+		unitLblError.setBounds(425, 200, 225, 25);
 
 		maintainLblError = new JLabel("");
 		maintainLblError.setForeground(Color.RED);
-		maintainLblError.setBounds(375, 230, 225, 30);
+		maintainLblError.setBounds(425, 230, 225, 25);
 
 		typeLblError = new JLabel("");
 		typeLblError.setForeground(Color.RED);
-		typeLblError.setBounds(375, 290, 225, 30);
+		typeLblError.setBounds(425, 290, 225, 25);
 
 		gradeLblError = new JLabel("");
 		gradeLblError.setForeground(Color.RED);
-		gradeLblError.setBounds(375, 320, 225, 30);
+		gradeLblError.setBounds(425, 320, 225, 25);
 
 		thickLblError = new JLabel("");
 		thickLblError.setForeground(Color.RED);
-		thickLblError.setBounds(375, 380, 225, 30);
+		thickLblError.setBounds(425, 380, 225, 25);
 
 		longLblError = new JLabel("");
 		longLblError.setForeground(Color.RED);
-		longLblError.setBounds(375, 350, 225, 30);
+		longLblError.setBounds(425, 350, 225, 25);
 
 		wideLblError = new JLabel("");
 		wideLblError.setForeground(Color.RED);
-		wideLblError.setBounds(375, 410, 225, 30);
+		wideLblError.setBounds(425, 410, 225, 25);
 
 		conditionLblError = new JLabel("");
 		conditionLblError.setForeground(Color.RED);
-		conditionLblError.setBounds(375, 440, 225, 30);
+		conditionLblError.setBounds(425, 440, 225, 25);
 
 		minQtyLblError = new JLabel("");
 		minQtyLblError.setForeground(Color.RED);
-		minQtyLblError.setBounds(375, 470, 225, 30);
+		minQtyLblError.setBounds(425, 470, 225, 25);
 
 		add(idLblError);
 		add(nameLblError);
