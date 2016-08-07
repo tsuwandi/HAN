@@ -1,11 +1,14 @@
 package module.pembelian.ui;
 
 import java.awt.Dimension;
+import java.awt.KeyboardFocusManager;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigDecimal;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -22,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
@@ -35,7 +40,6 @@ import model.User;
 import module.pembelian.model.Delivery;
 import module.pembelian.model.Employee;
 import module.pembelian.model.Grade;
-import module.pembelian.model.Pallet;
 import module.pembelian.model.PalletCard;
 import module.pembelian.model.PicDocking;
 import module.pembelian.model.Received;
@@ -124,6 +128,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 	JButton deletePicBtn;
 	
 	JButton saveBtn;
+	JButton backBtn;
 
 	ReceivedDetailModel receivedDetailModel;
 	PicDockingTableModel picDockingTableModel;
@@ -150,7 +155,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		gradeCollection = new ArrayList<>();
 		
 		containerPnl = new JPanel();
-		containerPnl.setPreferredSize(new Dimension(1100, 840));
+		containerPnl.setPreferredSize(new Dimension(1100, 900));
 		containerPnl.setLayout(null);
 		
 		scrollPane = new JScrollPane(containerPnl);
@@ -427,7 +432,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		
 		deletePalletBtn = new JButton("Hapus");
 		deletePalletBtn.setBounds(900,490,100,30);
-		deletePalletBtn.setFocusable(false);
+//		deletePalletBtn.setFocusable(false);
 		containerPnl.add(deletePalletBtn);
 		
 		//Pic Docking
@@ -440,18 +445,23 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		dockingPicScrollPane.setBounds(50,710,500,100);
 		containerPnl.add(dockingPicScrollPane);
 		
-		deletePicBtn = new JButton("Delete");
+		deletePicBtn = new JButton("Hapus");
 		deletePicBtn.setBounds(570,750,100,30);
-		deletePicBtn.setFocusable(false);
+//		deletePicBtn.setFocusable(false);
 		containerPnl.add(deletePicBtn);
 		
-		searchPicBtn = new JButton("Search");
+		searchPicBtn = new JButton("Cari");
 		searchPicBtn.setBounds(570,710,100,30);
 		containerPnl.add(searchPicBtn);
 		
-		saveBtn = new JButton("Save");
-		saveBtn.setBounds(950,790,100,30);
+		saveBtn = new JButton("Simpan");
+		saveBtn.setBounds(950,830,100,30);
 		containerPnl.add(saveBtn);
+		
+		backBtn = new JButton("Kembali");
+		backBtn.setBounds(50,830,100,30);
+		backBtn.setFocusable(false);
+		containerPnl.add(backBtn);
 		
 		addPalletBtn.addActionListener(new ActionListener() {
 			
@@ -553,7 +563,13 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 				
 			}
 		});
-		
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)MainPanel.changePanel("module.pembelian.ui.ViewReceivedDetailPanel", received);
+			}
+		});
 		deletePicBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -642,7 +658,25 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 				totalVolumeByAdminField.requestFocusInWindow();
 			}
 		});
-	
+		
+		 KeyboardFocusManager.getCurrentKeyboardFocusManager().
+         addPropertyChangeListener("focusOwner", new PropertyChangeListener() {
+
+     @Override
+     public void propertyChange(PropertyChangeEvent evt) {
+	         if (!(evt.getNewValue() instanceof JComponent)) {
+	             return;
+	         }
+	         JViewport viewport = (JViewport) containerPnl.getParent();
+	         JComponent focused = (JComponent) evt.getNewValue();
+	         if (containerPnl.isAncestorOf(focused)) {
+	             Rectangle rect = focused.getBounds();
+	             Rectangle r2 = viewport.getVisibleRect();
+	             containerPnl.scrollRectToVisible(new Rectangle(rect.x, rect.y, (int) r2.getWidth(), (int) r2.getHeight()));
+	         }
+     	}
+	 });
+		
 	}
 	
 	public void setTablePic(List<PicDocking> picDockings){

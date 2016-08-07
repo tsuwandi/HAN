@@ -309,6 +309,7 @@ public class ViewPopUpPalletCard extends JDialog{
 		confirmButton.setEnabled(false);
 		noPalletCardField.setEnabled(false);
 		totalLogField.setEnabled(false);
+		descriptionArea.setEnabled(false);
 		
 
 		productMap = new HashMap<Double, Map<Double,Map<Double, Product>>>();

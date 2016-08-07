@@ -2,8 +2,11 @@ package module.pembelian.ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
@@ -255,6 +258,8 @@ public class AddPopUpPalletCard extends JDialog{
 		
 		descriptionArea = new JTextArea();
 		descriptionArea.setBounds(150, 350, 150, 50);
+		descriptionArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+		descriptionArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 		add(descriptionArea);		
 		
 		//insert Button
@@ -443,6 +448,7 @@ public class AddPopUpPalletCard extends JDialog{
 				}
 			}
 		});
+
 	
 		insertButton.addActionListener(new ActionListener() {
 			

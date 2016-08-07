@@ -71,6 +71,7 @@ public class ListReceivedPanel extends JPanel {
 		receiveds = new ArrayList<>();
 		receivedTableModel = new ReceivedTableModel(receiveds);
 		receivedTable = new JTable(receivedTableModel);
+		receivedTable.setFocusable(false);
 		
 		scrollPane =  new JScrollPane(receivedTable);
 		scrollPane.setBounds(50,200,1000,300);

@@ -422,13 +422,13 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		receivedDetailScrollPane.setBounds(50,540,1000,150);
 		containerPnl.add(receivedDetailScrollPane);
 		
-		addPalletBtn = new JButton("Add");
-		addPalletBtn.setBounds(900,490,100,30);
+		addPalletBtn = new JButton("Tambah");
+		addPalletBtn.setBounds(800,490,100,30);
 		addPalletBtn.setEnabled(false);
 		containerPnl.add(addPalletBtn);
 		
-		deletePalletBtn = new JButton("Delete");
-		deletePalletBtn.setBounds(800,490,100,30);
+		deletePalletBtn = new JButton("Hapus");
+		deletePalletBtn.setBounds(900,490,100,30);
 		deletePalletBtn.setEnabled(false);
 		containerPnl.add(deletePalletBtn);
 		
@@ -441,12 +441,12 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		dockingPicScrollPane.setBounds(50,710,500,100);
 		containerPnl.add(dockingPicScrollPane);
 		
-		deletePicBtn = new JButton("Delete");
+		deletePicBtn = new JButton("Hapus");
 		deletePicBtn.setBounds(570,750,100,30);
 		deletePicBtn.setEnabled(false);
 		containerPnl.add(deletePicBtn);
 		
-		searchPicBtn = new JButton("Search");
+		searchPicBtn = new JButton("Cari");
 		searchPicBtn.setBounds(570,710,100,30);
 		searchPicBtn.setEnabled(false);
 		containerPnl.add(searchPicBtn);

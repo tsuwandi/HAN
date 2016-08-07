@@ -72,6 +72,7 @@ public class ListReceivedSecurityPanel extends JPanel {
 		receiveds = new ArrayList<>();
 		receivedTableModel = new ReceivedTableModel(receiveds);
 		receivedTable = new JTable(receivedTableModel);
+		receivedTable.setFocusable(false);
 		receivedTable.getTableHeader().setResizingAllowed(false);
 		receivedTable.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(30);
 		receivedTable.getColumnModel().getColumn(0).setMaxWidth(30);
