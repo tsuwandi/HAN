@@ -146,7 +146,7 @@ public class EditPopUpPalletCard extends JDialog{
 		add(errorPalletCardLbl);
 	
 		//Long 
-		longLbl = new JLabel("Panjang *");
+		longLbl = new JLabel("<html><font color='red'>Panjang *</font></html>");
 		longLbl.setBounds(30,110,150,20);
 		add(longLbl);
 		
@@ -163,7 +163,7 @@ public class EditPopUpPalletCard extends JDialog{
 		add(errorLongLbl);
 		
 		//Thickness
-		thickLbl = new JLabel("Tebal *");
+		thickLbl = new JLabel("<html><font color='red'>Tebal *</font></html>");
 		thickLbl.setBounds(30,150,100,20);
 		add(thickLbl);
 		
@@ -180,7 +180,7 @@ public class EditPopUpPalletCard extends JDialog{
 		add(errorThickLbl);
 		
 		//Wide
-		wideLbl = new JLabel("Lebar *");
+		wideLbl = new JLabel("<html><font color='red'>Lebar *</font></html>");
 		wideLbl.setBounds(30,190,100,20);
 		add(wideLbl);
 		
@@ -199,7 +199,7 @@ public class EditPopUpPalletCard extends JDialog{
 	
 	
 		//Total
-		totalLbl = new JLabel("Jumlah *");
+		totalLbl = new JLabel("<html><font color='red'>Jumlah *</font></html>");
 		totalLbl.setBounds(30,230,100,20);
 		add(totalLbl);
 	
@@ -263,7 +263,7 @@ public class EditPopUpPalletCard extends JDialog{
 		add(descriptionArea);		
 		
 		//insert Button
-		insertButton = new JButton("Insert");
+		insertButton = new JButton("Tambah");
 		insertButton.setBounds(360,420,150,30);
 		add(insertButton);
 		
@@ -305,7 +305,7 @@ public class EditPopUpPalletCard extends JDialog{
 		add(uomTotalVolumeLbl);
 
 		//Confirm Btn
-		confirmButton = new JButton("Confirm");
+		confirmButton = new JButton("Konfirmasi");
 		confirmButton.setBounds(600,680,150,30);
 		add(confirmButton);
 		
@@ -446,6 +446,7 @@ public class EditPopUpPalletCard extends JDialog{
 					descriptionArea.setText(pc.getDescription());
 				}
 				if(pcTable.columnAtPoint(e.getPoint())==9){
+					addReceivedDetail.palletMaps.remove(pcs.get(pcTable.getSelectedRow()).getPalletCardCode());
 					pcs.remove(pcTable.getSelectedRow());
 					pcTable.updateUI();
 					int total = 0;
@@ -581,11 +582,16 @@ public class EditPopUpPalletCard extends JDialog{
 				}*/else{
 					errorNoPallet.setText("");
 				}
+				
+				if(pcs.size()==0){
+					error++;
+					addReceivedDetail.receivedDetails.remove(index);
+					addReceivedDetail.receivedDetailTable.updateUI();
+					dispose();
+				}
 			
 				if(error==0){
 					ReceivedDetail pallet = addReceivedDetail.receivedDetails.get(index);
-					pallet.setGradeID(addReceivedDetail.gradeComboBox.getDataIndex().getId());
-					pallet.setGrade(addReceivedDetail.gradeComboBox.getDataIndex().getGrade());
 					pallet.setTotalLog(Integer.valueOf(totalLogField.getText()));
 					pallet.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
 					pallet.setPallets(pcs);

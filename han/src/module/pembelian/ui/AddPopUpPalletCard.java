@@ -146,7 +146,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(errorPalletCardLbl);
 	
 		//Long 
-		longLbl = new JLabel("Panjang *");
+		longLbl = new JLabel("<html><font color='red'>Panjang *</font></html>");
 		longLbl.setBounds(30,110,150,20);
 		add(longLbl);
 		
@@ -165,7 +165,7 @@ public class AddPopUpPalletCard extends JDialog{
 		
 		
 		//Thickness
-		thickLbl = new JLabel("Tebal *");
+		thickLbl = new JLabel("<html><font color='red'>Tebal *</font></html>");
 		thickLbl.setBounds(30,150,100,20);
 		add(thickLbl);
 		
@@ -182,7 +182,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(errorThickLbl);
 		
 		//Wide
-		wideLbl = new JLabel("Lebar *");
+		wideLbl = new JLabel("<html><font color='red'>Lebar *</font></html>");
 		wideLbl.setBounds(30,190,100,20);
 		add(wideLbl);
 		
@@ -199,7 +199,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(errorWideLbl);
 	
 		//Total
-		totalLbl = new JLabel("Jumlah *");
+		totalLbl = new JLabel("<html><font color='red'>Jumlah *</font></html>");
 		totalLbl.setBounds(30,230,100,20);
 		add(totalLbl);
 	
@@ -263,7 +263,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(descriptionArea);		
 		
 		//insert Button
-		insertButton = new JButton("Insert");
+		insertButton = new JButton("Tambah");
 		insertButton.setBounds(360,420,150,30);
 		add(insertButton);
 		
@@ -305,7 +305,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(uomTotalVolumeLbl);
 
 		//Confirm Btn
-		confirmButton = new JButton("Confirm");
+		confirmButton = new JButton("Konfirmasi");
 		confirmButton.setBounds(600,680,150,30);
 		add(confirmButton);
 		
@@ -568,11 +568,13 @@ public class AddPopUpPalletCard extends JDialog{
 				if(codePalletCardField.getText().equals("")){
 					errorNoPallet.setText("<html><font color='red'>Code Pallet harus diisi !</font></html>");
 					error++;
-				}/*else if(addReceivedDetail.palletMaps.get(codePalletCardField.getText()+"/"+addReceivedDetail.received.getReceivedCode())!=null){
-					errorNoPallet.setText("<html><font color='red'>Code Pallet sudah ada !</font></html>");
-					error++;
-				}*/else{
+				}else{
 					errorNoPallet.setText("");
+				}
+				
+				if(pcs.size()==0){
+					error++;
+					dispose();
 				}
 				
 				if(error==0){

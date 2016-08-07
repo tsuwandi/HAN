@@ -373,7 +373,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		containerPnl.add(uomTotalVolumeLbl);
 		
 		//TotalVolumeByAdmin
-		totalVolumeByAdminLbl = new JLabel("Total Volume *");
+		totalVolumeByAdminLbl = new JLabel("<html><font color='red'>Total Volume *</font></html>");
 		totalVolumeByAdminLbl.setBounds(550,310,150,20);
 		containerPnl.add(totalVolumeByAdminLbl);
 		
@@ -391,7 +391,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		
 		
 		//Grader
-		graderLbl = new JLabel("Grader *");
+		graderLbl = new JLabel("<html><font color='red'>Grader *</font></html>");
 		graderLbl.setBounds(550,350,150,20);
 		containerPnl.add(graderLbl);
 		
@@ -404,7 +404,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		containerPnl.add(errorGraderLbl);
 		
 		//Grader
-		gradeLbl = new JLabel("Grade *");
+		gradeLbl = new JLabel("<html><font color='red'>Grade *</font></html>");
 		gradeLbl.setBounds(550,390,150,20);
 		containerPnl.add(gradeLbl);
 		
@@ -475,14 +475,17 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 						int index = 0;
 						for (int i = 0; i < gradeCollection.size(); i++) {
 							if(gradeCollection.get(i).getId()==gradeComboBox.getDataIndex().getId()){
-								index = i;
+								System.out.println("Index :"+i);
+								index = i+1;
 							}
 						}
 						if(index!=0){
-							EditPopUpPalletCard pop = new EditPopUpPalletCard(parent, receivedDetails.get(index),index);
+							System.out.println("Edit");
+							EditPopUpPalletCard pop = new EditPopUpPalletCard(parent, receivedDetails.get(index-1),index-1);
 							pop.show();
 							pop.setLocationRelativeTo(null);
 						}else{
+							System.out.println("Add");
 							AddPopUpPalletCard pop = new AddPopUpPalletCard(parent);
 							pop.show();
 							pop.setLocationRelativeTo(null);

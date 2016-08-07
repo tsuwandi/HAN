@@ -80,14 +80,13 @@ public class ReceivedDAO {
 
 	public String getLastCode() throws SQLException {
 		Connection con = null;
-		String code;
+		String code = null;
 		try {
 			con = dataSource.getConnection();
 			lastIdStatement = con.prepareStatement(lastID);
 
 			ResultSet rs = lastIdStatement.executeQuery();
-			rs.next();
-			code = rs.getString("received_code");
+			if(rs.next())code = rs.getString("received_code");
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
