@@ -35,7 +35,7 @@ public class DryInDAO {
 			+ "input_date, input_by) values (?,?,?,?,?,?)";
 	private String updateQuery = "update dry_in set date_in=?, chamber_id=?, total_volume=?, "
 			+ "edit_date=?, edited_by=? where dry_in_code=? ";
-	private String updateConfirmDateQuery = "update dry_in set confirm_date=? "
+	private String updateConfirmDateQuery = "update dry_in set confirm_date=?, "
 			+ "edit_date=?, edited_by=? where dry_in_code=? ";
 	private String deleteQuery = "update dry_in set deleted_date=?, deleted_by=? where id=?";
 

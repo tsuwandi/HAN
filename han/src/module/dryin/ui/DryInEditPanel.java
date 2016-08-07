@@ -39,6 +39,7 @@ import main.panel.MainPanel;
 import module.dryin.model.DryIn;
 import module.dryin.model.DryInPallet;
 import module.dryin.model.PicTally;
+import module.dryin.ui.DryInCreatePanel.DryInPalletTableModel;
 import module.pembelian.model.PalletCard;
 import module.sn.chamber.model.Chamber;
 import module.util.Bridging;
@@ -117,7 +118,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 	public DryInEditPanel() {
 		dryInCreatePanel = this;
 
-		setPreferredSize(new Dimension(1366, 725));
+		//setPreferredSize(new Dimension(1366, 725));
 		setLayout(null);
 
 		panel = new JPanel();
@@ -126,59 +127,70 @@ public class DryInEditPanel extends JPanel implements Bridging {
 
 		lblBreadcrumb = new JLabel("ERP > Pengeringan > Pemasukan");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblBreadcrumb.setBounds(50, 10, 320, 30);
+		lblBreadcrumb.setBounds(50, 10, 320, 25);
 		panel.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("UBAH");
+		lblHeader = new JLabel("BUAT BARU");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblHeader.setBounds(50, 45, 320, 30);
+		lblHeader.setBounds(50, 45, 320, 25);
 		panel.add(lblHeader);
 
 		lblDryInCode = new JLabel("<html>Kode Pemasukan <font color=\"red\">*</font></html>");
-		lblDryInCode.setBounds(50, 80, 150, 30);
+		lblDryInCode.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			}
+		});
+		lblDryInCode.setBounds(50, 80, 150, 25);
 		panel.add(lblDryInCode);
 
 		txtDryInCode = new JTextField();
-		txtDryInCode.setBounds(220, 80, 150, 30);
+		txtDryInCode.setBounds(220, 80, 150, 25);
 		txtDryInCode.setEnabled(false);
 		panel.add(txtDryInCode);
 
 		lblErrorDryInCode = new JLabel("");
 		lblErrorDryInCode.setForeground(Color.RED);
-		lblErrorDryInCode.setBounds(380, 80, 270, 30);
+		lblErrorDryInCode.setBounds(380, 80, 270, 25);
 		panel.add(lblErrorDryInCode);
 
 		lblDateIn = new JLabel("<html>Tanggal Masuk <font color=\"red\">*</font></html>");
-		lblDateIn.setBounds(50, 120, 150, 30);
+		lblDateIn.setBounds(50, 110, 150, 25);
 		panel.add(lblDateIn);
 
-		dcDateIn = new JDateChooser();
-		dcDateIn.setBounds(220, 120, 150, 30);
+		dcDateIn = new JDateChooser(new Date());
+		dcDateIn.setBounds(220, 110, 150, 25);
 		panel.add(dcDateIn);
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 
 		cbDateInHour = new ComboBox<String>();
-		cbDateInHour.setBounds(380, 120, 45, 30);
+		for (int i = 0; i < 24; i++)
+			cbDateInHour.addItem(String.format("%02d", i));
+		cbDateInHour.setSelectedItem(String.format("%02d", cal.get(Calendar.HOUR_OF_DAY)));
+		cbDateInHour.setBounds(380, 110, 45, 25);
 		panel.add(cbDateInHour);
 
 		cbDateInMinute = new ComboBox<String>();
-		cbDateInMinute.setBounds(440, 120, 45, 30);
+		for (int i = 0; i < 60; i++)
+			cbDateInMinute.addItem(String.format("%02d", i));
+		cbDateInMinute.setSelectedItem(String.format("%02d", cal.get(Calendar.MINUTE)));
+		cbDateInMinute.setBounds(440, 110, 45, 25);
 		panel.add(cbDateInMinute);
 
 		lblErrorDateIn = new JLabel("");
 		lblErrorDateIn.setForeground(Color.RED);
-		lblErrorDateIn.setBounds(500, 120, 270, 30);
+		lblErrorDateIn.setBounds(500, 110, 270, 25);
 		panel.add(lblErrorDateIn);
 
 		lblChamber = new JLabel("<html>Chamber <font color=\"red\">*</font></html>");
-		lblChamber.setBounds(50, 160, 150, 30);
+		lblChamber.setBounds(50, 140, 150, 25);
 		panel.add(lblChamber);
 
 		lblErrorChamber = new JLabel("");
 		lblErrorChamber.setForeground(Color.RED);
-		lblErrorChamber.setBounds(380, 160, 270, 30);
+		lblErrorChamber.setBounds(380, 140, 270, 25);
 		panel.add(lblErrorChamber);
 		try {
 			listOfChamber = new ArrayList<Chamber>();
@@ -192,15 +204,15 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		cbChamber = new ComboBox<Chamber>();
 		cbChamber.addItem("-- Pilih Chamber --");
 		cbChamber.setList(listOfChamber);
-		cbChamber.setBounds(220, 160, 150, 30);
+		cbChamber.setBounds(220, 140, 150, 25);
 		panel.add(cbChamber);
 
-		/////// Table SuppAddress ///////
+		/////// Table Pic Tally ///////
 		// lblPicTally = new JLabel("Pic Tally");
 		// lblPicTally.setFont(new Font("Tahoma", Font.BOLD, 14));
-		// lblPicTally.setBounds(50, 200, 150, 30);
+		// lblPicTally.setBounds(50, 200, 150, 25);
 		// panel.add(lblPicTally);
-
+		//
 		// scrollPanePicTally = new JScrollPane();
 		// scrollPanePicTally.setBounds(50, 240, 975, 150);
 		// panel.add(scrollPanePicTally);
@@ -231,19 +243,19 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		// showAddPicTallyDialog(dryInCreatePanel);
 		// }
 		// });
-		// btnSearchPicTally.setBounds(820, 200, 100, 30);
+		// btnSearchPicTally.setBounds(820, 200, 100, 25);
 		// panel.add(btnSearchPicTally);
 		//
 		// btnDeletePicTally = new JButton("Hapus");
 		// btnDeletePicTally.addActionListener(new ActionListener() {
 		// public void actionPerformed(ActionEvent arg0) {
-		//// int response = DialogBox.showDeleteChoice();
-		//// if (response == JOptionPane.YES_OPTION) {
+		// // int response = DialogBox.showDeleteChoice();
+		// // if (response == JOptionPane.YES_OPTION) {
 		// doDeletePicTally();
-		//// }
+		// // }
 		// }
 		// });
-		// btnDeletePicTally.setBounds(925, 200, 100, 30);
+		// btnDeletePicTally.setBounds(925, 200, 100, 25);
 		// panel.add(btnDeletePicTally);
 
 		btnSearchPalletCard = new JButton("Cari Kartu Pallet");
@@ -252,89 +264,85 @@ public class DryInEditPanel extends JPanel implements Bridging {
 				showAddDryInPalletDialog(dryInCreatePanel);
 			}
 		});
-		btnSearchPalletCard.setBounds(49, 200, 150, 30);
+		btnSearchPalletCard.setBounds(50, 175, 150, 25);
 		panel.add(btnSearchPalletCard);
 
 		lblPalletCardCode = new JLabel("Kode Kartu Pallet");
-		lblPalletCardCode.setBounds(50, 240, 150, 30);
+		lblPalletCardCode.setBounds(50, 205, 150, 25);
 		panel.add(lblPalletCardCode);
 		//////////////////
 		lblRitNo = new JLabel("Rit No");
-		lblRitNo.setBounds(220, 240, 150, 30);
-		panel.add(lblRitNo);
-
-		lblRitNo = new JLabel("Rit No");
-		lblRitNo.setBounds(220, 240, 150, 30);
+		lblRitNo.setBounds(220, 205, 150, 25);
 		panel.add(lblRitNo);
 
 		txtRitNo = new NumberField(4);
-		txtRitNo.setBounds(220, 265, 50, 30);
+		txtRitNo.setBounds(220, 230, 50, 25);
 		panel.add(txtRitNo);
 
 		lblPalletCardCodeConstant = new JLabel(" / BL / ");
-		lblPalletCardCodeConstant.setBounds(275, 265, 150, 30);
+		lblPalletCardCodeConstant.setBounds(275, 230, 150, 25);
 		panel.add(lblPalletCardCodeConstant);
 
 		lblDate = new JLabel("Tanggal");
-		lblDate.setBounds(310, 240, 150, 30);
+		lblDate.setBounds(310, 205, 150, 25);
 		panel.add(lblDate);
 
 		txtDate = new NumberField(2);
-		txtDate.setBounds(310, 265, 50, 30);
+		txtDate.setBounds(310, 230, 50, 25);
 		panel.add(txtDate);
 
 		JLabel lblA = new JLabel(" / ");
-		lblA.setBounds(370, 265, 150, 30);
+		lblA.setBounds(370, 230, 150, 25);
 		panel.add(lblA);
 
 		lblMonth = new JLabel("Bulan");
-		lblMonth.setBounds(390, 240, 150, 30);
+		lblMonth.setBounds(390, 205, 150, 25);
 		panel.add(lblMonth);
 
 		txtMonth = new NumberField(2);
-		txtMonth.setBounds(390, 265, 50, 30);
+		txtMonth.setBounds(390, 230, 50, 25);
 		panel.add(txtMonth);
 
 		JLabel lblB = new JLabel(" / ");
-		lblB.setBounds(450, 265, 150, 30);
+		lblB.setBounds(450, 230, 150, 25);
 		panel.add(lblB);
 
 		lblYear = new JLabel("Tahun");
-		lblYear.setBounds(470, 240, 150, 30);
+		lblYear.setBounds(470, 205, 150, 25);
 		panel.add(lblYear);
 
 		txtYear = new NumberField(2);
-		txtYear.setBounds(470, 265, 50, 30);
+		txtYear.setBounds(470, 230, 50, 25);
 		panel.add(txtYear);
 
 		JLabel lblC = new JLabel(" / ");
-		lblC.setBounds(530, 265, 150, 30);
+		lblC.setBounds(530, 230, 150, 25);
 		panel.add(lblC);
 
 		lblOrdinal = new JLabel("Sequence");
-		lblOrdinal.setBounds(220, 290, 150, 30);
+		lblOrdinal.setBounds(220, 255, 150, 25);
 		panel.add(lblOrdinal);
 
 		txtOrdinal = new NumberField(4);
-		txtOrdinal.setBounds(220, 315, 50, 30);
+		txtOrdinal.setBounds(220, 280, 50, 25);
 		panel.add(txtOrdinal);
 
 		lblErrorPalletCard = new JLabel("");
-		lblErrorPalletCard.setBounds(285, 315, 150, 30);
+		lblErrorPalletCard.setBounds(285, 405, 150, 25);
 		lblErrorPalletCard.setForeground(Color.RED);
 		panel.add(lblErrorPalletCard);
 
 		lblTotalVolumePalletCard = new JLabel("Total Volume");
-		lblTotalVolumePalletCard.setBounds(50, 355, 150, 30);
+		lblTotalVolumePalletCard.setBounds(50, 315, 150, 25);
 		panel.add(lblTotalVolumePalletCard);
 
 		txtTotalVolumePalletCard = new JTextField();
-		txtTotalVolumePalletCard.setBounds(220, 355, 150, 30);
+		txtTotalVolumePalletCard.setBounds(220, 315, 150, 25);
 		txtTotalVolumePalletCard.setEnabled(false);
 		panel.add(txtTotalVolumePalletCard);
 
 		lblTotalVolumeUomPalletCard = new JLabel("m3");
-		lblTotalVolumeUomPalletCard.setBounds(380, 355, 150, 30);
+		lblTotalVolumeUomPalletCard.setBounds(380, 315, 150, 25);
 		panel.add(lblTotalVolumeUomPalletCard);
 
 		btnInsertDryInPallet = new JButton("Insert");
@@ -346,11 +354,11 @@ public class DryInEditPanel extends JPanel implements Bridging {
 				// }
 			}
 		});
-		btnInsertDryInPallet.setBounds(220, 395, 100, 30);
+		btnInsertDryInPallet.setBounds(220, 345, 100, 25);
 		panel.add(btnInsertDryInPallet);
 
 		scrollPaneDryInPallet = new JScrollPane();
-		scrollPaneDryInPallet.setBounds(50, 435, 975, 150);
+		scrollPaneDryInPallet.setBounds(50, 375, 975, 150);
 		panel.add(scrollPaneDryInPallet);
 
 		listOfDryInPallet = new ArrayList<DryInPallet>();
@@ -374,21 +382,22 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		scrollPaneDryInPallet.setViewportView(tblDryInPallet);
 
 		lblTotalVolume = new JLabel("Total Volume");
-		lblTotalVolume.setBounds(50, 595, 150, 30);
+		lblTotalVolume.setBounds(50, 535, 150, 25);
 		panel.add(lblTotalVolume);
 
 		txtTotalVolume = new JTextField();
-		txtTotalVolume.setBounds(220, 595, 150, 30);
+		txtTotalVolume.setBounds(220, 535, 150, 25);
 		txtTotalVolume.setEnabled(false);
 		panel.add(txtTotalVolume);
 
 		lblTotalVolumeUomPalletCard = new JLabel("m3");
-		lblTotalVolumeUomPalletCard.setBounds(380, 595, 150, 30);
+		lblTotalVolumeUomPalletCard.setBounds(380, 535, 150, 25);
 		panel.add(lblTotalVolumeUomPalletCard);
 
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(0, 0, 1155, 650);
+		//scrollPane.setBounds(0, 0, 1155, 580);
+		scrollPane.setSize(MainPanel.bodyPanel.getSize());
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
@@ -405,9 +414,10 @@ public class DryInEditPanel extends JPanel implements Bridging {
 				if (response == JOptionPane.YES_OPTION) {
 					doSave();
 				}
+
 			}
 		});
-		btnSave.setBounds(925, 645, 100, 30);
+		btnSave.setBounds(925, 570, 100, 25);
 		panel.add(btnSave);
 
 		btnCancel = new JButton("Kembali");
@@ -419,12 +429,12 @@ public class DryInEditPanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		btnCancel.setBounds(49, 645, 100, 30);
+		btnCancel.setBounds(49, 570, 100, 25);
 		panel.add(btnCancel);
-
+		
 		txtRitNo.addFocusListener(new FocusAdapter() {
 			@Override
-			public void focusLost(FocusEvent e) {
+			public void focusLost(FocusEvent arg0) {
 				txtRitNo.setText(NumberFormat.onTypeNum(txtRitNo.getText().length(), txtRitNo.getText().toString()));
 
 				if (txtOrdinal.getText().length() > 3)
@@ -479,7 +489,6 @@ public class DryInEditPanel extends JPanel implements Bridging {
 			}
 		});
 
-		//txtOrdinal.setDocument(new JTextFieldLimit(4));
 		txtOrdinal.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
