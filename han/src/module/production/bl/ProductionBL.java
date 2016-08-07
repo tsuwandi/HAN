@@ -112,15 +112,16 @@ public class ProductionBL {
 	public List<Production> getProduction() throws SQLException {
 		List<Production> productions = productionDAO.getAll();
 		for (Production production : productions) {
-			production.setProductionResult(getProductionResultByCode(production.getProductionCode()));
-			production.setListOfProdRM(getProductRMByCode(production.getProductionCode()));
+			if(getProductionResultByCode(production.getProductionCode())!=null)production.setProductionResult(getProductionResultByCode(production.getProductionCode()));
+			if(getProductRMByCode(production.getProductionCode())!=null)production.setListOfProdRM(getProductRMByCode(production.getProductionCode()));
 		}
 		return productions;
 	}
 	
 	private ProductionResult getProductionResultByCode(String productionCode) throws SQLException {
 		ProductionResult productionResult = productionResultDAO.getAllByProductionCode(productionCode);
-		productionResult.setListOfProductionResultDetail(getProductionResultDetailByCode(productionResult.getProdResultCode()));
+		if(productionResult!=null)
+			productionResult.setListOfProductionResultDetail(getProductionResultDetailByCode(productionResult.getProdResultCode()));
 		return productionResult;
 	}
 	private List<ProductionResultDetail> getProductionResultDetailByCode(String prodResultCode) throws SQLException {
@@ -160,70 +161,76 @@ public class ProductionBL {
 	}
 	
 	public void saveAll(Production production)throws SQLException {
-		Connection con = null;
+		Connection cone = null;
 		boolean flagProductionResult=false;
 		boolean flagProductionRawMaterial=false;
 		try {
-			con = dataSource.getConnection();
-			con.setAutoCommit(false);
+			cone = dataSource.getConnection();
+			cone.setAutoCommit(false);
 			if(production.getProductionResult()!=null){
-				new ProductionResultDAO(con).save(production.getProductionResult());
+				new ProductionResultDAO(cone).save(production.getProductionResult());
 				for(ProductionResultDetail prd : production.getProductionResult().getListOfProductionResultDetail()){
-					new ProductionResultDetailDAO(con).save(prd);
+					new ProductionResultDetailDAO(cone).save(prd);
 				}
 				flagProductionResult=true;
 			}
 			if(production.getListOfProdRM()!=null){
-				for(ProdRM prodRM :production.getListOfProdRM()){
-					new ProdRMDAO(con).save(prodRM);
+				if(production.getListOfProdRM().size()!=0){
+					for(ProdRM prodRM :production.getListOfProdRM()){
+						new ProdRMDAO(cone).save(prodRM);
+					}
+					flagProductionRawMaterial=true;
 				}
-				flagProductionRawMaterial=true;
+				
 			}
-			if(flagProductionRawMaterial&&flagProductionResult)production.setStatus("Complete");
+			if(flagProductionRawMaterial&&flagProductionResult)production.setStatus("Complete");	
 			else production.setStatus("InComplete");
-			new ProductionDAO(con).save(production);
-			con.commit();
+			new ProductionDAO(cone).save(production);
+			cone.commit();
 		} catch (Exception e) {
-			con.rollback();
+			cone.rollback();
 			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		}finally {
-			con.close();
+			cone.close();
 		}
 	}
 	
 	public void updateAll(Production production)throws SQLException {
-		Connection con = null;
+		Connection cone = null;
 		boolean flagProductionResult=false;
 		boolean flagProductionRawMaterial=false;
 		try {
-			con = dataSource.getConnection();
-			con.setAutoCommit(false);
+			cone = dataSource.getConnection();
+			cone.setAutoCommit(false);
 			if(production.getProductionResult()!=null){
-				new ProductionResultDAO(con).update(production.getProductionResult());
-				new ProductionResultDetailDAO(con).delete(production.getProductionResult().getProdResultCode());
+				if(getProductionResultByCode(production.getProductionCode())!=null)new ProductionResultDAO(cone).update(production.getProductionResult());
+				else new ProductionResultDAO(cone).save(production.getProductionResult());
+				new ProductionResultDetailDAO(cone).delete(production.getProductionResult().getProdResultCode());
 				for(ProductionResultDetail prd : production.getProductionResult().getListOfProductionResultDetail()){
-					new ProductionResultDetailDAO(con).save(prd);
+					new ProductionResultDetailDAO(cone).save(prd);
 				}
 				flagProductionResult=true;
 			}
-			if(production.getListOfProdRM()!=null||production.getListOfProdRM().size()!=0){
-				new ProdRMDAO(con).delete(production.getProductionCode());
-				for(ProdRM prodRM :production.getListOfProdRM()){
-					new ProdRMDAO(con).save(prodRM);
+			if(production.getListOfProdRM()!=null){
+				if(production.getListOfProdRM().size()!=0){
+					new ProdRMDAO(cone).delete(production.getProductionCode());
+					for(ProdRM prodRM :production.getListOfProdRM()){
+						new ProdRMDAO(cone).save(prodRM);
+					}
+					flagProductionRawMaterial=true;
 				}
-				flagProductionRawMaterial=true;
 			}
 			if(flagProductionRawMaterial&&flagProductionResult)production.setStatus("Complete");
 			else production.setStatus("InComplete");
-			new ProductionDAO(con).update(production);
-			con.commit();
+			new ProductionDAO(cone).update(production);
+			cone.commit();
 		} catch (Exception e) {
-			con.rollback();
+			cone.rollback();
 			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		}finally {
-			con.close();
+			cone.close();
 		}
 	}
 }

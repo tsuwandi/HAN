@@ -1,12 +1,16 @@
 package module.pembelian.ui;
 
 import java.awt.Dimension;
+import java.awt.KeyboardFocusManager;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,6 +21,7 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,7 +29,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import com.toedter.calendar.JDateChooser;
@@ -417,6 +424,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		receivedDetails = new ArrayList<>();
 		receivedDetailModel = new ReceivedDetailModel(receivedDetails);
 		receivedDetailTable = new JTable(receivedDetailModel);
+		receivedDetailTable.setFocusable(false);
 		
 		receivedDetailScrollPane = new JScrollPane(receivedDetailTable);
 		receivedDetailScrollPane.setBounds(50,540,1000,150);
@@ -436,6 +444,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		picDockings = new ArrayList<>();
 		picDockingTableModel = new PicDockingTableModel(picDockings);
 		dockingPICTable = new JTable(picDockingTableModel);
+		dockingPICTable.setFocusable(false);
 		
 		dockingPicScrollPane = new JScrollPane(dockingPICTable);
 		dockingPicScrollPane.setBounds(50,710,500,100);
@@ -476,6 +485,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			grades.add(0,new Grade("--Pilih--"));
 			gradeComboBox.setList(grades);
 		} catch (Exception e) {
+			DialogBox.showError("Tidak Dapat Terhubung ke Database");
 			e.printStackTrace();
 		}
 		receivedDetailTable.addMouseListener(new MouseAdapter() {
@@ -564,7 +574,30 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			}
 		});
 		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				printBtn.requestFocusInWindow();
+			}
+		});
 		
+//		 KeyboardFocusManager.getCurrentKeyboardFocusManager().
+//         addPropertyChangeListener("focusOwner", new PropertyChangeListener() {
+//
+//	     @Override
+//	     public void propertyChange(PropertyChangeEvent evt) {
+//		         if (!(evt.getNewValue() instanceof JComponent)) {
+//		             return;
+//		         }
+//		         JViewport viewport = (JViewport) containerPnl.getParent();
+//		         JComponent focused = (JComponent) evt.getNewValue();
+//		         if (containerPnl.isAncestorOf(focused)) {
+//		             Rectangle rect = focused.getBounds();
+//		             Rectangle r2 = viewport.getVisibleRect();
+//		             containerPnl.scrollRectToVisible(new Rectangle(rect.x, rect.y, (int) r2.getWidth(), (int) r2.getHeight()));
+//		         }
+//	     	}
+//		 });
 		
 	}
 		

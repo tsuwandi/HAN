@@ -15,10 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
 import controller.ServiceFactory;
+import main.component.DialogBox;
 import main.panel.MainPanel;
 import model.User;
 import module.production.model.Production;
@@ -83,6 +85,12 @@ public class ListProductionPanel extends JPanel {
 
 			}
 		});
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				inputProductionBtn.requestFocusInWindow();
+			}
+		});
 		
 	}
 	
@@ -91,7 +99,9 @@ public class ListProductionPanel extends JPanel {
 			productions = ServiceFactory.getProductionBL().getProduction();
 			productionTable.setModel(new ProductionTableModel(productions));
 			productionTable.updateUI();
+			setTableSize();
 		} catch (SQLException e) {
+			DialogBox.showError("Tidak Dapat Terhubung ke Database");
 			e.printStackTrace();
 		}
 	}
@@ -129,6 +139,7 @@ public class ListProductionPanel extends JPanel {
 		productions = new ArrayList<>();
 		productionTableModel = new ProductionTableModel(productions);
 		productionTable = new JTable(productionTableModel);
+		productionTable.setFocusable(false);
 		
 		scrollPane =  new JScrollPane(productionTable);
 		scrollPane.setBounds(50,200,1000,300);

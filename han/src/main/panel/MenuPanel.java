@@ -178,7 +178,7 @@ public class MenuPanel extends JPanel {
 			menuSize.height = subMenuSize.height;
 
 		menu.setSize(menuSize);
-		menu.addSection("Pembelian", subMenu);
+		menu.addSection("Penerimaan", subMenu);
 		menu.getSection(0).setOpen(true);
 
 		add(menu);

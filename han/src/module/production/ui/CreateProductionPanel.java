@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -48,6 +49,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 	private JButton inputMaterialBtn;
 	private JButton inputProductionResultBtn;
 	private JButton saveBtn;
+	private JButton backBtn;
 	
 	private Production production;
 	private CreateProductionPanel parent;
@@ -86,6 +88,13 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				save();
+			}
+		});
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				productionDateLbl.requestFocusInWindow();
 			}
 		});
 	}
@@ -192,16 +201,21 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		
 		//TODO Button Area
 		inputMaterialBtn = new JButton("Input Bahan Baku");
-		inputMaterialBtn.setBounds(280,360,150,50);
+		inputMaterialBtn.setBounds(630,550,150,30);
 		add(inputMaterialBtn);
 		
 		inputProductionResultBtn = new JButton("Input Hasil Produksi");
-		inputProductionResultBtn.setBounds(450,360,150,50);
+		inputProductionResultBtn.setBounds(790,550,150,30);
 		add(inputProductionResultBtn);
 		
 		saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(610,360,150,50);
+		saveBtn.setBounds(950,550,150,30);
 		add(saveBtn);
+		
+		backBtn = new JButton("Kembali");
+		backBtn.setBounds(30,550,150,30);
+		backBtn.setFocusable(false);
+		add(backBtn);
 	}
 	
 	private void save(){

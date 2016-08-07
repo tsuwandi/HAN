@@ -123,6 +123,7 @@ public class PopUpProductionResult extends JDialog{
 		totalGoodResultAField.setEnabled(false);
 		totalGoodResultBField.setEnabled(false);
 		totalAllGoodResultField.setEnabled(false);
+	
 		listOfPrd = new ArrayList<>();
 		
 		try {
@@ -171,6 +172,7 @@ public class PopUpProductionResult extends JDialog{
 		
 		containerScrollPane = new JScrollPane(containerPnl);
 		containerScrollPane.setBounds(0,0,1000,750);
+		containerScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(containerScrollPane);
 		
 		titleLbl = new JLabel("Input Hasil Produksi");
@@ -236,7 +238,7 @@ public class PopUpProductionResult extends JDialog{
 		startTimeLbl.setBounds(10,50,150,20);
 		borderPanel.add(startTimeLbl);
 		
-		hourField = new NumberField(5);
+		hourField = new NumberField(2);
 		hourField.setBounds(200,50,50,20);
 		borderPanel.add(hourField);
 		
@@ -244,7 +246,7 @@ public class PopUpProductionResult extends JDialog{
 		timeSeparator.setBounds(255,50,15,20);
 		borderPanel.add(timeSeparator);
 		
-		minuteField = new NumberField(5);
+		minuteField = new NumberField(2);
 		minuteField.setBounds(265,50,50,20);
 		borderPanel.add(minuteField);
 		

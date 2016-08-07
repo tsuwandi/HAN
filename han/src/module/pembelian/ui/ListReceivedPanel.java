@@ -20,6 +20,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
 import controller.ReceivedDAOFactory;
+import main.component.DialogBox;
 import main.panel.MainPanel;
 import model.User;
 import module.pembelian.model.Received;
@@ -91,6 +92,7 @@ public class ListReceivedPanel extends JPanel {
 			receivedTable.updateUI();
 			setTableSize();
 		} catch (SQLException e1) {
+			DialogBox.showError("Tidak Dapat Terhubung ke Database");
 			e1.printStackTrace();
 		}
 		

@@ -1,11 +1,15 @@
 package module.pembelian.ui;
 
+import java.awt.KeyboardFocusManager;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,13 +17,16 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -406,6 +413,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		
 		} catch (SQLException e) {
 			e.printStackTrace();
+			DialogBox.showError("Tidak Dapat Terhubung ke Database");
 		}
 		
 		supplierAddressArea.setEnabled(false);
@@ -623,8 +631,9 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 				}
 			}
 		});
-
+		
 	}
+	
 
 	@Override
 	public void invokeObjects(Object... objects) {

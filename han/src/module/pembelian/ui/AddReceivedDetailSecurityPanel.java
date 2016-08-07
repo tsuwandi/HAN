@@ -8,6 +8,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -452,6 +454,19 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 						e2.printStackTrace();
 					}
 				}
+			}
+		});
+		
+		receivedDateChooser.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent e) {
+				 if ("date".equals(e.getPropertyName())) {
+		                Date date = (Date) e.getNewValue();
+		                receivedCodeDateField.setText(new SimpleDateFormat("dd").format(date));
+		        		receivedCodeMonthField.setText(new SimpleDateFormat("MM").format(date));
+		        		receivedCodeYearField.setText(new SimpleDateFormat("yy").format(date));
+		            }
 			}
 		});
 		
