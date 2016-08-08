@@ -182,7 +182,7 @@ public class PalletCardDAO {
 					.append("AND ( STR_TO_DATE(r.received_date, '%Y-%m-%d') LIKE ('%").append(value).append("%') ")
 					.append("OR r.rit_no LIKE ('%").append(value).append("%') ")
 					.append("OR pc.pallet_card_code LIKE ('%").append(value).append("%') ")
-					.append("OR pc.total_volume LIKE ('%").append(value).append("%')) ")
+					.append("OR pc.volume LIKE ('%").append(value).append("%')) ")
 					.append("ORDER BY r.received_code, pc.pallet_card_code ").toString();
 
 			getAllForDryInPalletStatement = connection.prepareStatement(query);
@@ -305,7 +305,7 @@ public class PalletCardDAO {
 					.append("WHERE STR_TO_DATE(a.received_date, '%Y-%m-%d') LIKE ('%").append(value).append("%') ")
 					.append("OR a.rit_no LIKE ('%").append(value).append("%') ")
 					.append("OR a.pallet_card_code LIKE ('%").append(value).append("%') ")
-					.append("OR a.total_volume LIKE ('%").append(value).append("%') ")
+					.append("OR a.volume LIKE ('%").append(value).append("%') ")
 					.append("ORDER BY a.pallet_card_code ").toString();
 
 			getAllForDryOutPalletStatement = connection.prepareStatement(query);

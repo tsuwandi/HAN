@@ -28,15 +28,13 @@ public class DateUtil {
 	}
 	
 	public static Timestamp setTimeStamp(Date pDate, int pHour, int pMinute, int pSecond) {
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.HOUR_OF_DAY, pHour);
-		cal.set(Calendar.MINUTE, pMinute);
-		cal.set(Calendar.SECOND, pSecond);
-		cal.setTime(pDate);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(pDate);
+		calendar.set(Calendar.HOUR, pHour);
+		calendar.set(Calendar.MINUTE, pMinute);
+		calendar.set(Calendar.SECOND, pSecond);
 		
-		Date date = cal.getTime();
-		
-		return new java.sql.Timestamp(date.getTime());
+		return new java.sql.Timestamp(calendar.getTimeInMillis());
 
 	}
 

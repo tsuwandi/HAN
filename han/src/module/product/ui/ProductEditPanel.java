@@ -1078,7 +1078,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		try {
 			ServiceFactory.getProductBL().update(product);
 			DialogBox.showEdit();
-			MainPanel.changePanel("module.product.ui.ProductListPanel");
+			MainPanel.changePanel("module.product.ui.ProductViewPanel", product);
 		} catch (SQLException e) {
 			DialogBox.showErrorException();
 			e.printStackTrace();

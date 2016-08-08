@@ -355,6 +355,19 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		}
 		cbCurrency = new ComboBox<Currency>();
 		cbCurrency.setList(listOfCurrency);
+		
+		//default IDR
+		final String CURRENCY_IDR = "IDR";
+		
+		int i = 0;
+		for(Currency currency : listOfCurrency) {
+			if(CURRENCY_IDR.equals(currency.getCurrencyAbbr())) {
+				cbCurrency.setSelectedIndex(i);
+				break;
+			}
+			i++;
+		}
+		
 		cbCurrency.setBounds(220, 655, 150, 25);
 		panel.add(cbCurrency);
 
@@ -507,10 +520,10 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 			}
 		}
 
-		if (listOfSuppAddress.isEmpty()) {
-			lblErrorSuppAddress.setText("Alamat supplier harus diisi minimal 1.");
-			isValid = false;
-		}
+//		if (listOfSuppAddress.isEmpty()) {
+//			lblErrorSuppAddress.setText("Alamat supplier harus diisi minimal 1.");
+//			isValid = false;
+//		}
 
 		return isValid;
 	}

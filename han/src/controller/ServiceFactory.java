@@ -4,11 +4,11 @@ import module.dailyclosing.bl.DailyClosingBL;
 import module.dryin.bl.DryInBL;
 import module.dryout.bl.DryOutBL;
 import module.employee.bl.EmployeeBL;
-import module.pembelian.bl.SendToFinanceBL;
 import module.product.bl.ProductBL;
 import module.production.bl.ProductionBL;
 import module.report.bl.ReportBL;
 import module.supplier.bl.SupplierBL;
+import module.sendtofinance.bl.SendToFinanceBL;
 
 public class ServiceFactory {
 	// private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
@@ -71,35 +71,35 @@ public class ServiceFactory {
 		}
 		return dryOutBL;
 	}
-	
+
 	public static ProductBL getProductBL() {
-		if(productBL == null){
+		if (productBL == null) {
 			productBL = new ProductBL(DataSourceFactory.getDataSource());
 		}
 		return productBL;
 	}
-	
+
 	public static ReportBL getReportBL() {
-		if(reportBL == null){
+		if (reportBL == null) {
 			reportBL = new ReportBL(DataSourceFactory.getDataSource());
 		}
 		return reportBL;
 	}
-	
+
 	public static SendToFinanceBL getSendToFinanceBL() {
-		if(sendToFinanceBL == null){
+		if (sendToFinanceBL == null) {
 			sendToFinanceBL = new SendToFinanceBL(DataSourceFactory.getDataSource());
 		}
 		return sendToFinanceBL;
 	}
 
 	public static DailyClosingBL getDailyClosingBL() {
-		if(dailyClosingBL == null){
+		if (dailyClosingBL == null) {
 			dailyClosingBL = new DailyClosingBL(DataSourceFactory.getDataSource());
 		}
 		return dailyClosingBL;
 	}
-	
+
 	public static ProductionBL getProductionBL() {
 		if (productionBL == null) {
 			productionBL = new ProductionBL(DataSourceFactory.getDataSource());

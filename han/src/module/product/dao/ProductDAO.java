@@ -202,12 +202,13 @@ public class ProductDAO {
 		return products;
 	}
 
-	public List<Product> getAllBySimpleSearch(String keyword) throws SQLException {
+	public List<Product> getAllBySimpleSearch(String value) throws SQLException {
 		List<Product> products = new ArrayList<Product>();
 		try {
 
 			StringBuilder query = new StringBuilder().append(selectAllQuery);
-			if (null != keyword && !"".equals(keyword)) {
+			if (null != value && !"".equals(value)) {
+				String keyword = new StringBuilder().append('%').append(value).append('%').toString();
 				query.append(" and (lower(product_code) like lower('%s')");
 				query.append(" or lower(product_name) like lower('%s')");
 				query.append(" or lower(product_category) like lower('%s')");

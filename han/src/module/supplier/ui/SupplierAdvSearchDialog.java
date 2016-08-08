@@ -51,47 +51,47 @@ public class SupplierAdvSearchDialog extends JDialog {
 		this.supplierList = supplierList;
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 600, 250);
+		setBounds(100, 100, 600, 210);
 		getContentPane().setLayout(null);
 
 		lblSuppName = new JLabel("Nama Supplier");
-		lblSuppName.setBounds(25, 15, 150, 30);
+		lblSuppName.setBounds(25, 15, 150, 25);
 		getContentPane().add(lblSuppName);
 
 		txtSuppName = new JTextField();
-		txtSuppName.setBounds(120, 15, 150, 30);
+		txtSuppName.setBounds(120, 15, 150, 25);
 		txtSuppName.setDocument(new JTextFieldLimit(200));
 		getContentPane().add(txtSuppName);
 
 		lblSuppCode = new JLabel("Kode Supplier");
-		lblSuppCode.setBounds(25, 50, 150, 30);
+		lblSuppCode.setBounds(25, 45, 150, 25);
 		getContentPane().add(lblSuppCode);
 
 		txtSuppCode = new JTextField();
-		txtSuppCode.setBounds(120, 50, 150, 30);
+		txtSuppCode.setBounds(120, 45, 150, 25);
 		txtSuppCode.setDocument(new JTextFieldLimit(100));
 		getContentPane().add(txtSuppCode);
 
 		lblPt = new JLabel("PT");
-		lblPt.setBounds(25, 85, 150, 30);
+		lblPt.setBounds(25, 70, 150, 25);
 		getContentPane().add(lblPt);
 
 		txtPt = new JTextField();
-		txtPt.setBounds(120, 85, 150, 30);
+		txtPt.setBounds(120, 70, 150, 25);
 		txtPt.setDocument(new JTextFieldLimit(200));
 		getContentPane().add(txtPt);
 
 		lblNpwp = new JLabel("NPWP");
-		lblNpwp.setBounds(25, 120, 150, 30);
+		lblNpwp.setBounds(25, 100, 150, 25);
 		getContentPane().add(lblNpwp);
 
 		txtNpwp = new JTextField();
-		txtNpwp.setBounds(120, 120, 150, 30);
+		txtNpwp.setBounds(120, 100, 150, 25);
 		txtNpwp.setDocument(new JTextFieldLimit(30));
 		getContentPane().add(txtNpwp);
 
 		lblSuppType = new JLabel("Tipe Supplier");
-		lblSuppType.setBounds(305, 15, 150, 30);
+		lblSuppType.setBounds(305, 15, 150, 25);
 		getContentPane().add(lblSuppType);
 
 		listOfSuppType = new ArrayList<SuppType>();
@@ -104,11 +104,11 @@ public class SupplierAdvSearchDialog extends JDialog {
 		}
 		cbSuppType = new ComboBox<SuppType>();
 		cbSuppType.setList(listOfSuppType);
-		cbSuppType.setBounds(410, 15, 150, 30);
+		cbSuppType.setBounds(410, 15, 150, 25);
 		getContentPane().add(cbSuppType);
 
 		lblSuppStatus = new JLabel("Status Supplier ");
-		lblSuppStatus.setBounds(305, 50, 150, 30);
+		lblSuppStatus.setBounds(305, 45, 150, 25);
 		getContentPane().add(lblSuppStatus);
 
 		cbSuppStatus = new JComboBox<String>();
@@ -116,7 +116,7 @@ public class SupplierAdvSearchDialog extends JDialog {
 		cbSuppStatus.addItem("Aktif");
 		cbSuppStatus.addItem("Nonaktif Sementara");
 		cbSuppStatus.addItem("Nonaktif");
-		cbSuppStatus.setBounds(410, 50, 150, 30);
+		cbSuppStatus.setBounds(410, 45, 150, 25);
 		getContentPane().add(cbSuppStatus);
 
 		btnSearch = new JButton("Cari");
@@ -125,7 +125,7 @@ public class SupplierAdvSearchDialog extends JDialog {
 				doAdvancedSearch();
 			}
 		});
-		btnSearch.setBounds(459, 165, 100, 30);
+		btnSearch.setBounds(459, 130, 100, 25);
 		getContentPane().add(btnSearch);
 	}
 

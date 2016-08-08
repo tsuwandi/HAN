@@ -54,11 +54,11 @@ public class DryInPalletDialog extends JDialog {
 
 		lblError = new JLabel();
 		lblError.setForeground(Color.RED);
-		lblError.setBounds(10, 10, 225, 30);
+		lblError.setBounds(10, 10, 225, 25);
 		getContentPane().add(lblError);
 
 		txtSearch = new JTextField();
-		txtSearch.setBounds(320, 10, 150, 30);
+		txtSearch.setBounds(320, 10, 150, 25);
 		getContentPane().add(txtSearch);
 
 		btnSearch = new JButton("Search");
@@ -67,11 +67,11 @@ public class DryInPalletDialog extends JDialog {
 				doSearchPalletCard(txtSearch.getText());
 			}
 		});
-		btnSearch.setBounds(480, 10, 95, 30);
+		btnSearch.setBounds(480, 10, 95, 25);
 		getContentPane().add(btnSearch);
 
 		scrollPanePalletCard = new JScrollPane();
-		scrollPanePalletCard.setBounds(10, 55, 564, 190);
+		scrollPanePalletCard.setBounds(10, 50, 564, 190);
 		getContentPane().add(scrollPanePalletCard);
 
 		try {
@@ -82,6 +82,7 @@ public class DryInPalletDialog extends JDialog {
 					Integer index = listOfPalletCard.indexOf(dryInPallet.getPalletCard());
 					listOfPalletCard.set(index, dryInPallet.getPalletCard());
 				}
+
 			} else if (dryInEditPanel != null) {
 				for (DryInPallet dryInPallet : dryInEditPanel.getListOfDryInPallet()) {
 					dryInPallet.getPalletCard().setFlag(true);
@@ -120,14 +121,18 @@ public class DryInPalletDialog extends JDialog {
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				int response = DialogBox.showInsertChoice();
-//				if (response == JOptionPane.YES_OPTION) {
-					doInsert();
-//				}
+				// int response = DialogBox.showInsertChoice();
+				// if (response == JOptionPane.YES_OPTION) {
+				doInsert();
+				// }
 			}
 		});
-		btnInsert.setBounds(480, 250, 95, 30);
+		btnInsert.setBounds(480, 250, 95, 25);
 		getContentPane().add(btnInsert);
+	}
+
+	public void getSelectedPalletCard() {
+
 	}
 
 	private void doInsert() {
@@ -175,7 +180,6 @@ public class DryInPalletDialog extends JDialog {
 		try {
 			listOfPalletCard = new ArrayList<PalletCard>();
 			listOfPalletCard = ServiceFactory.getDryInBL().getAllPalletBySearch(value);
-			
 			refreshTablePalletCard();
 		} catch (SQLException e1) {
 			e1.printStackTrace();

@@ -336,7 +336,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		txtTotalVolumePalletCard.setEnabled(false);
 		panel.add(txtTotalVolumePalletCard);
 
-		lblTotalVolumeUomPalletCard = new JLabel("m3");
+		lblTotalVolumeUomPalletCard = new JLabel("cm3");
 		lblTotalVolumeUomPalletCard.setBounds(380, 315, 150, 25);
 		panel.add(lblTotalVolumeUomPalletCard);
 
@@ -385,7 +385,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		txtTotalVolume.setEnabled(false);
 		panel.add(txtTotalVolume);
 
-		lblTotalVolumeUomPalletCard = new JLabel("m3");
+		lblTotalVolumeUomPalletCard = new JLabel("cm3");
 		lblTotalVolumeUomPalletCard.setBounds(380, 535, 150, 25);
 		panel.add(lblTotalVolumeUomPalletCard);
 
@@ -442,7 +442,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtDate.setFocusable(false);
+		
 		txtDate.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -456,7 +456,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtMonth.setFocusable(false);
+		
 		txtMonth.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -470,7 +470,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtYear.setFocusable(false);
+		
 		txtYear.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -558,8 +558,12 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 				DateUtil.setTimeStamp(dcDateIn.getDate(), Integer.parseInt(cbDateInHour.getSelectedItem().toString()),
 						Integer.parseInt(cbDateInMinute.getSelectedItem().toString()), 0));
 		dryIn.setChamberId(cbChamber.getDataIndex().getId());
-		dryIn.setTotalVolume(Double.parseDouble(txtTotalVolume.getText()));
-
+		
+		if(!txtTotalVolume.getText().equals(""))
+			dryIn.setTotalVolume(Double.parseDouble(txtTotalVolume.getText()));
+		else
+			dryIn.setTotalVolume(0);
+		
 		try {
 			ServiceFactory.getDryInBL().save(dryIn, listOfDryInPallet);
 			DialogBox.showInsert();

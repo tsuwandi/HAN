@@ -23,9 +23,9 @@ public class DryOutPalletDAO {
 	private PreparedStatement deleteStatement;
 	
 	private String getAllByDryOutCodeQuery = "select d.id, d.dry_out_code, d.pallet_card_code, di.date_in, "
-			+ "pc.id, r.received_date, r.rit_no, pc.total_volume, pc.length, pc.width, pc.thickness from dry_out_pallet d "
+			+ "pc.id, r.received_date, r.rit_no, pc.volume, pc.length, pc.width, pc.thickness from dry_out_pallet d "
 			+ "inner join pallet_card pc on pc.pallet_card_code = d.pallet_card_code "
-			+ "inner join received_dtl rd ON rd.id = pc.received_detail_id "
+			+ "inner join received_detail rd ON rd.id = pc.received_detail_id "
 			+ "inner join received r on r.received_code = rd.received_code "
 			+ "inner join dry_in_pallet dp on dp.pallet_card_code = pc.pallet_card_code "
 			+ "inner join dry_in di on di.dry_in_code = dp.dry_in_code "

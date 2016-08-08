@@ -106,7 +106,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		dryOutCreatePanel = this;
 
 
-		setPreferredSize(new Dimension(1366, 725));
+		//setPreferredSize(new Dimension(1366, 725));
 		setLayout(null);
 
 		panel = new JPanel();
@@ -115,34 +115,34 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 
 		lblBreadcrumb = new JLabel("ERP > Pengeringan > Pengeluaran");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblBreadcrumb.setBounds(50, 10, 320, 30);
+		lblBreadcrumb.setBounds(50, 10, 320, 25);
 		panel.add(lblBreadcrumb);
 
 		lblHeader = new JLabel("BUAT BARU");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblHeader.setBounds(50, 45, 320, 30);
+		lblHeader.setBounds(50, 45, 320, 25);
 		panel.add(lblHeader);
 
 		lblDryOutCode = new JLabel("<html>Kode Pengeluaran <font color=\"red\">*</font></html>");
-		lblDryOutCode.setBounds(50, 80, 150, 30);
+		lblDryOutCode.setBounds(50, 80, 150, 25);
 		panel.add(lblDryOutCode);
 
 		txtDryOutCode = new JTextField();
-		txtDryOutCode.setBounds(220, 80, 150, 30);
+		txtDryOutCode.setBounds(220, 80, 150, 25);
 		txtDryOutCode.setEnabled(false);
 		panel.add(txtDryOutCode);
 
 		lblErrorDryOutCode = new JLabel("");
 		lblErrorDryOutCode.setForeground(Color.RED);
-		lblErrorDryOutCode.setBounds(380, 80, 270, 30);
+		lblErrorDryOutCode.setBounds(380, 80, 270, 25);
 		panel.add(lblErrorDryOutCode);
 
 		lblDateOut = new JLabel("<html>Tanggal Keluar <font color=\"red\">*</font></html>");
-		lblDateOut.setBounds(50, 120, 150, 30);
+		lblDateOut.setBounds(50, 110, 150, 25);
 		panel.add(lblDateOut);
 
 		dcDateOut = new JDateChooser(new Date());
-		dcDateOut.setBounds(220, 120, 150, 30);
+		dcDateOut.setBounds(220, 110, 150, 25);
 		panel.add(dcDateOut);
 
 		Calendar cal = Calendar.getInstance();
@@ -152,28 +152,28 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		for (int i = 0; i < 24; i++)
 			cbDateInHour.addItem(String.format("%02d", i));
 		cbDateInHour.setSelectedItem(String.format("%02d", cal.get(Calendar.HOUR_OF_DAY)));
-		cbDateInHour.setBounds(380, 120, 45, 30);
+		cbDateInHour.setBounds(380, 110, 45, 25);
 		panel.add(cbDateInHour);
 
 		cbDateInMinute = new ComboBox<String>();
 		for (int i = 0; i < 60; i++)
 			cbDateInMinute.addItem(String.format("%02d", i));
 		cbDateInMinute.setSelectedItem(String.format("%02d", cal.get(Calendar.MINUTE)));
-		cbDateInMinute.setBounds(440, 120, 45, 30);
+		cbDateInMinute.setBounds(440, 110, 45, 25);
 		panel.add(cbDateInMinute);
 
 		lblErrorDateIn = new JLabel("");
 		lblErrorDateIn.setForeground(Color.RED);
-		lblErrorDateIn.setBounds(500, 120, 270, 30);
+		lblErrorDateIn.setBounds(500, 110, 270, 25);
 		panel.add(lblErrorDateIn);
 
 		lblChamber = new JLabel("<html>Chamber <font color=\"red\">*</font></html>");
-		lblChamber.setBounds(50, 160, 150, 30);
+		lblChamber.setBounds(50, 140, 150, 25);
 		panel.add(lblChamber);
 
 		lblErrorChamber = new JLabel("");
 		lblErrorChamber.setForeground(Color.RED);
-		lblErrorChamber.setBounds(380, 160, 270, 30);
+		lblErrorChamber.setBounds(380, 140, 270, 25);
 		panel.add(lblErrorChamber);
 		try {
 			listOfChamber = new ArrayList<Chamber>();
@@ -192,7 +192,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			}
 		});
 		cbChamber.setList(listOfChamber);
-		cbChamber.setBounds(220, 160, 150, 30);
+		cbChamber.setBounds(220, 140, 150, 25);
 		panel.add(cbChamber);
 
 		btnSearchPalletCard = new JButton("Cari Kartu Pallet");
@@ -201,85 +201,85 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 				showAddDryOutPalletDialog(dryOutCreatePanel);
 			}
 		});
-		btnSearchPalletCard.setBounds(49, 200, 150, 30);
+		btnSearchPalletCard.setBounds(49, 175, 150, 25);
 		panel.add(btnSearchPalletCard);
 
 		lblPalletCardCode = new JLabel("Kode Kartu Pallet");
-		lblPalletCardCode.setBounds(50, 240, 150, 30);
+		lblPalletCardCode.setBounds(50, 205, 150, 25);
 		panel.add(lblPalletCardCode);
 		//////////////////
 		lblRitNo = new JLabel("Rit No");
-		lblRitNo.setBounds(220, 240, 150, 30);
+		lblRitNo.setBounds(220, 205, 150, 25);
 		panel.add(lblRitNo);
 
 		txtRitNo = new NumberField(4);
-		txtRitNo.setBounds(220, 265, 50, 30);
+		txtRitNo.setBounds(220, 230, 50, 25);
 		panel.add(txtRitNo);
 
 		lblPalletCardCodeConstant = new JLabel(" / BL / ");
-		lblPalletCardCodeConstant.setBounds(275, 265, 150, 30);
+		lblPalletCardCodeConstant.setBounds(275, 230, 150, 25);
 		panel.add(lblPalletCardCodeConstant);
 
 		lblDate = new JLabel("Tanggal");
-		lblDate.setBounds(310, 240, 150, 30);
+		lblDate.setBounds(310, 205, 150, 25);
 		panel.add(lblDate);
 
 		txtDate = new NumberField(2);
-		txtDate.setBounds(310, 265, 50, 30);
+		txtDate.setBounds(310, 230, 50, 25);
 		panel.add(txtDate);
 
 		JLabel lblA = new JLabel(" / ");
-		lblA.setBounds(370, 265, 150, 30);
+		lblA.setBounds(370, 230, 150, 25);
 		panel.add(lblA);
 
 		lblMonth = new JLabel("Bulan");
-		lblMonth.setBounds(390, 240, 150, 30);
+		lblMonth.setBounds(390, 205, 150, 25);
 		panel.add(lblMonth);
 
 		txtMonth = new NumberField(2);
-		txtMonth.setBounds(390, 265, 50, 30);
+		txtMonth.setBounds(390, 230, 50, 25);
 		panel.add(txtMonth);
 
 		JLabel lblB = new JLabel(" / ");
-		lblB.setBounds(450, 265, 150, 30);
+		lblB.setBounds(450, 230, 150, 25);
 		panel.add(lblB);
 
 		lblYear = new JLabel("Tahun");
-		lblYear.setBounds(470, 240, 150, 30);
+		lblYear.setBounds(470, 205, 150, 25);
 		panel.add(lblYear);
 
 		txtYear = new NumberField(2);
-		txtYear.setBounds(470, 265, 50, 30);
+		txtYear.setBounds(470, 230, 50, 25);
 		panel.add(txtYear);
 
 		JLabel lblC = new JLabel(" / ");
-		lblC.setBounds(530, 265, 150, 30);
+		lblC.setBounds(530, 230, 150, 25);
 		panel.add(lblC);
 
 		lblOrdinal = new JLabel("Sequence");
-		lblOrdinal.setBounds(220, 290, 150, 30);
+		lblOrdinal.setBounds(220, 255, 150, 25);
 		panel.add(lblOrdinal);
 
 		txtOrdinal = new NumberField(4);
-		txtOrdinal.setBounds(220, 315, 50, 30);
+		txtOrdinal.setBounds(220, 280, 50, 25);
 		panel.add(txtOrdinal);
 
 		lblErrorPalletCard = new JLabel("");
-		lblErrorPalletCard.setBounds(285, 315, 150, 30);
+		lblErrorPalletCard.setBounds(405, 315, 150, 25);
 		lblErrorPalletCard.setForeground(Color.RED);
 		panel.add(lblErrorPalletCard);
 
 		lblTotalVolumePalletCard = new JLabel("Total Volume");
-		lblTotalVolumePalletCard.setBounds(50, 355, 150, 30);
+		lblTotalVolumePalletCard.setBounds(50, 315, 150, 25);
 		panel.add(lblTotalVolumePalletCard);
 
 		txtTotalVolumePalletCard = new JTextField();
-		txtTotalVolumePalletCard.setBounds(220, 355, 150, 30);
+		txtTotalVolumePalletCard.setBounds(220, 315, 150, 25);
 		txtTotalVolumePalletCard.setEnabled(false);
 		panel.add(txtTotalVolumePalletCard);
 
-		lblTotalVolumeUomPalletCard = new JLabel("m3");
-		lblTotalVolumeUomPalletCard.setBounds(380, 355, 150, 30);
+		lblTotalVolumeUomPalletCard = new JLabel("cm3");
+		lblTotalVolumeUomPalletCard.setBounds(380, 315, 150, 25);
 		panel.add(lblTotalVolumeUomPalletCard);
 
 		btnInsertDryOutPallet = new JButton("Insert");
@@ -291,11 +291,11 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 				// }
 			}
 		});
-		btnInsertDryOutPallet.setBounds(220, 395, 100, 30);
+		btnInsertDryOutPallet.setBounds(220, 345, 100, 25);
 		panel.add(btnInsertDryOutPallet);
 
 		scrollPaneDryOutPallet = new JScrollPane();
-		scrollPaneDryOutPallet.setBounds(50, 435, 975, 150);
+		scrollPaneDryOutPallet.setBounds(50, 375, 975, 150);
 		panel.add(scrollPaneDryOutPallet);
 
 		listOfDryOutPallet = new ArrayList<DryOutPallet>();
@@ -319,21 +319,21 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		scrollPaneDryOutPallet.setViewportView(tblDryOutPallet);
 
 		lblTotalVolume = new JLabel("Total Volume");
-		lblTotalVolume.setBounds(50, 595, 150, 30);
+		lblTotalVolume.setBounds(50, 535, 150, 25);
 		panel.add(lblTotalVolume);
 
 		txtTotalVolume = new JTextField();
-		txtTotalVolume.setBounds(220, 595, 150, 30);
+		txtTotalVolume.setBounds(220, 535, 150, 25);
 		txtTotalVolume.setEnabled(false);
 		panel.add(txtTotalVolume);
 
-		lblTotalVolumeUomPalletCard = new JLabel("m3");
-		lblTotalVolumeUomPalletCard.setBounds(380, 595, 150, 30);
+		lblTotalVolumeUomPalletCard = new JLabel("cm3");
+		lblTotalVolumeUomPalletCard.setBounds(380, 535, 150, 25);
 		panel.add(lblTotalVolumeUomPalletCard);
 
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(0, 0, 1155, 650);
+		scrollPane.setSize(MainPanel.bodyPanel.getSize());
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
@@ -351,7 +351,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		btnSave.setBounds(925, 645, 100, 30);
+		btnSave.setBounds(925, 570, 100, 25);
 		panel.add(btnSave);
 
 		btnCancel = new JButton("Kembali");
@@ -363,7 +363,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		btnCancel.setBounds(49, 645, 100, 30);
+		btnCancel.setBounds(49, 570, 100, 25);
 		panel.add(btnCancel);
 
 		txtRitNo.addFocusListener(new FocusAdapter() {
@@ -381,7 +381,6 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtDate.setFocusable(false);
 		txtDate.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -395,7 +394,6 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtMonth.setFocusable(false);
 		txtMonth.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -409,7 +407,6 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtYear.setFocusable(false);
 		txtYear.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -497,8 +494,12 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 				DateUtil.setTimeStamp(dcDateOut.getDate(), Integer.parseInt(cbDateInHour.getSelectedItem().toString()),
 						Integer.parseInt(cbDateInMinute.getSelectedItem().toString()), 0));
 		dryOut.setChamberId(cbChamber.getDataIndex().getId());
-		dryOut.setTotalVolume(Double.parseDouble(txtTotalVolume.getText()));
-
+		
+		if(!txtTotalVolume.getText().equals(""))
+			dryOut.setTotalVolume(Double.parseDouble(txtTotalVolume.getText()));
+		else
+			dryOut.setTotalVolume(0);
+		
 		try {
 			ServiceFactory.getDryOutBL().save(dryOut, listOfDryOutPallet);
 			DialogBox.showInsert();

@@ -1,4 +1,4 @@
-package module.pembelian.bl;
+package module.sendtofinance.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;

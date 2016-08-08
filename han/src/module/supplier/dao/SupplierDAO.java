@@ -102,10 +102,11 @@ public class SupplierDAO {
 		return suppliers;
 	}
 
-	public List<Supplier> getAllBySimpleSearch(String keyword) throws SQLException {
+	public List<Supplier> getAllBySimpleSearch(String value) throws SQLException {
 		List<Supplier> suppliers = new ArrayList<Supplier>();
 		try {
-			if (null != keyword && !"".equals(keyword)) {
+			if (null != value && !"".equals(value)) {
+				String keyword = new StringBuilder().append("%").append(value).append("%").toString();
 				String query = new StringBuilder().append(getAllQuery).append(" and")
 						.append(" (lower(s.supp_code) like lower('%s')").append(" or lower(s.supp_name) like lower('%s')")
 						.append(" or lower(st.supp_type) like lower('%s'))").toString();

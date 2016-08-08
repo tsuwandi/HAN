@@ -117,6 +117,7 @@ public class DailyClosingDialog extends JDialog {
 						} else {
 							JOptionPane.showMessageDialog(null, "Tidak ada data yang diproses.", "Tutup Harian",
 									JOptionPane.INFORMATION_MESSAGE);
+							dispose();
 						}
 					} else if (rdbtnFile.isSelected()) {
 						if (isValid(listOfReceived, listOfDryIn, listOfDryOut) == true) {
@@ -129,6 +130,7 @@ public class DailyClosingDialog extends JDialog {
 						} else {
 							JOptionPane.showMessageDialog(null, "Tidak ada data yang diproses.",
 									"Tutup Harian", JOptionPane.INFORMATION_MESSAGE);
+							dispose();
 						}
 					}
 

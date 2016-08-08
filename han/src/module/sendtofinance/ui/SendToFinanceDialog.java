@@ -1,4 +1,4 @@
-package module.pembelian.ui;
+package module.sendtofinance.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -75,7 +75,7 @@ public class SendToFinanceDialog extends JDialog {
 					 * generate PDF
 					 */
 					JasperPrint jasperPrint = JasperFillManager.fillReport(
-							"src/module/pembelian/jasper/SendToFinance.jasper", parameters, new JREmptyDataSource());
+							"src/module/sendtofinance/jasper/SendToFinance.jasper", parameters, new JREmptyDataSource());
 
 					if (rdbtnMonitor.isSelected()) {
 						if (isValid(listOfReceived) == true) {
@@ -109,6 +109,7 @@ public class SendToFinanceDialog extends JDialog {
 						} else {
 							JOptionPane.showMessageDialog(null, "Tidak ada data yang dikirim ke finance",
 									"Send To Finance", JOptionPane.INFORMATION_MESSAGE);
+							dispose();
 						}
 					} else if (rdbtnFile.isSelected()) {
 						if (isValid(listOfReceived) == true) {
@@ -121,6 +122,7 @@ public class SendToFinanceDialog extends JDialog {
 						} else {
 							JOptionPane.showMessageDialog(null, "Tidak ada data yang dikirim ke finance",
 									"Send To Finance", JOptionPane.INFORMATION_MESSAGE);
+							dispose();
 						}
 					}
 
@@ -128,6 +130,7 @@ public class SendToFinanceDialog extends JDialog {
 					e1.printStackTrace();
 					JOptionPane.showMessageDialog(null, "Gagal Memproses Send To Finance", "Send To Finance",
 							JOptionPane.ERROR_MESSAGE);
+					dispose();
 				}
 
 			}

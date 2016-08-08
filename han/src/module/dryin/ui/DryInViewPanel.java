@@ -280,7 +280,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 		txtTotalVolumePalletCard.setEnabled(false);
 		panel.add(txtTotalVolumePalletCard);
 
-		lblTotalVolumeUomPalletCard = new JLabel("m3");
+		lblTotalVolumeUomPalletCard = new JLabel("cm3");
 		lblTotalVolumeUomPalletCard.setBounds(380, 315, 150, 25);
 		panel.add(lblTotalVolumeUomPalletCard);
 
@@ -310,7 +310,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 		txtTotalVolume.setEnabled(false);
 		panel.add(txtTotalVolume);
 
-		lblTotalVolumeUomPalletCard = new JLabel("m3");
+		lblTotalVolumeUomPalletCard = new JLabel("cm3");
 		lblTotalVolumeUomPalletCard.setBounds(380, 535, 150, 25);
 		panel.add(lblTotalVolumeUomPalletCard);
 
