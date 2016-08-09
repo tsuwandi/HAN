@@ -216,6 +216,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 
 		txtRitNo = new NumberField(4);
 		txtRitNo.setBounds(220, 230, 50, 25);
+		txtRitNo.setEnabled(false);
 		panel.add(txtRitNo);
 
 		lblPalletCardCodeConstant = new JLabel(" / BL / ");
@@ -228,6 +229,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 
 		txtDate = new NumberField(2);
 		txtDate.setBounds(310, 230, 50, 25);
+		txtDate.setEnabled(false);
 		panel.add(txtDate);
 
 		JLabel lblA = new JLabel(" / ");
@@ -240,6 +242,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 
 		txtMonth = new NumberField(2);
 		txtMonth.setBounds(390, 230, 50, 25);
+		txtMonth.setEnabled(false);
 		panel.add(txtMonth);
 
 		JLabel lblB = new JLabel(" / ");
@@ -252,6 +255,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 
 		txtYear = new NumberField(2);
 		txtYear.setBounds(470, 230, 50, 25);
+		txtYear.setEnabled(false);
 		panel.add(txtYear);
 
 		JLabel lblC = new JLabel(" / ");
@@ -264,6 +268,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 
 		txtOrdinal = new NumberField(4);
 		txtOrdinal.setBounds(220, 280, 50, 25);
+		txtOrdinal.setEnabled(false);
 		panel.add(txtOrdinal);
 
 		lblErrorPalletCard = new JLabel("");
