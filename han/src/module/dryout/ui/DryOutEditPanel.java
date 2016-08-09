@@ -103,6 +103,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 	private DryOut dryOut;
 	public List<DryOutPallet> listOfDeletedDryOutPallet;
 
+	@SuppressWarnings("deprecation")
 	public DryOutEditPanel() {
 		dryOutEditPanel = this;
 
@@ -375,6 +376,8 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 				}
 			}
 		});
+		
+		txtRitNo.setNextFocusableComponent(txtOrdinal);
 
 		txtDate.addFocusListener(new FocusAdapter() {
 			@Override

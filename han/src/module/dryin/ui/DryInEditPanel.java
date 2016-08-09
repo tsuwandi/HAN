@@ -115,6 +115,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 	// public List<PicTally> listOfDeletedPicTally;
 	public List<DryInPallet> listOfDeletedDryInPallet;
 
+	@SuppressWarnings("deprecation")
 	public DryInEditPanel() {
 		dryInCreatePanel = this;
 
@@ -446,8 +447,9 @@ public class DryInEditPanel extends JPanel implements Bridging {
 				}
 			}
 		});
+		
+		txtRitNo.setNextFocusableComponent(txtOrdinal);
 
-		txtDate.setFocusable(false);
 		txtDate.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -461,7 +463,6 @@ public class DryInEditPanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtMonth.setFocusable(false);
 		txtMonth.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -475,7 +476,6 @@ public class DryInEditPanel extends JPanel implements Bridging {
 			}
 		});
 
-		txtYear.setFocusable(false);
 		txtYear.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {

@@ -111,6 +111,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 
 	private List<Chamber> listOfChamber;
 
+	@SuppressWarnings("deprecation")
 	public DryInCreatePanel() {
 		dryInCreatePanel = this;
 
@@ -444,6 +445,8 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
+		txtRitNo.setNextFocusableComponent(txtOrdinal);
+		
 		txtDate.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -457,7 +460,6 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 			}
 		});
 
-		
 		txtMonth.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {

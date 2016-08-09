@@ -102,6 +102,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 	private DryOutCreatePanel dryOutCreatePanel;
 	private List<Chamber> listOfChamber;
 
+	@SuppressWarnings("deprecation")
 	public DryOutCreatePanel() {
 		dryOutCreatePanel = this;
 
@@ -380,6 +381,8 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 				}
 			}
 		});
+		
+		txtRitNo.setNextFocusableComponent(txtOrdinal);
 
 		txtDate.addFocusListener(new FocusAdapter() {
 			@Override
