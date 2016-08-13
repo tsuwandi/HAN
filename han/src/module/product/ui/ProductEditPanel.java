@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -91,7 +93,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 	private JLabel thickLbl;
 	private JLabel longLbl;
 	private JLabel wideLbl;
-	private JLabel conditionLbl;
+	//private JLabel conditionLbl;
 	private JLabel minQtyLbl;
 
 	private JLabel inventLbl;
@@ -150,7 +152,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 	public NumberField thickField;
 	public NumberField longField;
 	public NumberField wideField;
-	public ComboBox<Condition> conField;
+	//public ComboBox<Condition> conField;
 	public NumberField minQtyField;
 
 	public ButtonGroup flagSerial;
@@ -305,20 +307,20 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		attLbl = new JLabel("<html><u>Atribut Produk</u></html>");
 		attLbl.setBounds(50, 260, 100, 25);
 		attLbl.setFont(new Font(null, Font.BOLD, 12));
-		typeLbl = new JLabel("<html>Jenis Kayu <font color=\"red\">*</font></html>");
+		typeLbl = new JLabel("Jenis Kayu");
 		typeLbl.setBounds(50, 290, 100, 25);
-		gradeLbl = new JLabel("<html>Grade <font color=\"red\">*</font></html>");
+		gradeLbl = new JLabel("Grade");
 		gradeLbl.setBounds(50, 320, 100, 25);
-		thickLbl = new JLabel("<html>Tebal <font color=\"red\">*</font></html>");
+		thickLbl = new JLabel("Tebal");
 		thickLbl.setBounds(50, 380, 100, 25);
-		longLbl = new JLabel("<html>Panjang <font color=\"red\">*</font></html>");
+		longLbl = new JLabel("Panjang");
 		longLbl.setBounds(50, 350, 100, 25);
-		wideLbl = new JLabel("<html>Lebar <font color=\"red\">*</font></html>");
+		wideLbl = new JLabel("Lebar");
 		wideLbl.setBounds(50, 410, 100, 25);
-		conditionLbl = new JLabel("<html>Kondisi <font color=\"red\">*</font></html>");
-		conditionLbl.setBounds(50, 440, 100, 25);
+//		conditionLbl = new JLabel("<html>Kondisi <font color=\"red\">*</font></html>");
+//		conditionLbl.setBounds(50, 440, 100, 25);
 		minQtyLbl = new JLabel("<html>Minimum Qty <font color=\"red\">*</font></html>");
-		minQtyLbl.setBounds(50, 470, 100, 25);
+		minQtyLbl.setBounds(50, 440, 100, 25);
 
 		inventLbl = new JLabel("<html><u>Inventory</u></html>");
 		inventLbl.setBounds(50, 720, 100, 25);
@@ -400,6 +402,24 @@ public class ProductEditPanel extends JPanel implements Bridging {
 			LOGGER.error(e1.getMessage());
 		}
 		catField = new ComboBox<ProductCategory>();
+		catField.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				if (catField.getDataIndex().getId() == BALKEN_BASAH
+						|| catField.getDataIndex().getId() == BALKEN_KERING) {
+					typeLbl.setText("<html>Jenis Kayu <font color=\"red\">*</font></html>");
+					gradeLbl.setText("<html>Grade <font color=\"red\">*</font></html>");
+					thickLbl.setText("<html>Tebal <font color=\"red\">*</font></html>");
+					longLbl.setText("<html>Panjang <font color=\"red\">*</font></html>");
+					wideLbl.setText("<html>Lebar <font color=\"red\">*</font></html>");
+				} else {
+					typeLbl.setText("Jenis Kayu");
+					gradeLbl.setText("Grade");
+					thickLbl.setText("Tebal");
+					longLbl.setText("Panjang");
+					wideLbl.setText("Lebar");
+				}
+			}
+		});
 		catField.setList(categories);
 		catField.setBounds(220, 140, 150, 25);
 
@@ -525,18 +545,18 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		wideField = new NumberField(10);
 		wideField.setBounds(220, 410, 150, 25);
 
-		try {
-			conditions = ServiceFactory.getProductBL().getAllCondition();
-			conditions.add(0, new Condition("-- Pilih Kondisi --"));
-		} catch (SQLException e1) {
-			LOGGER.error(e1.getMessage());
-		}
-		conField = new ComboBox<Condition>();
-		conField.setList(conditions);
-		conField.setBounds(220, 440, 150, 25);
+//		try {
+//			conditions = ServiceFactory.getProductBL().getAllCondition();
+//			conditions.add(0, new Condition("-- Pilih Kondisi --"));
+//		} catch (SQLException e1) {
+//			LOGGER.error(e1.getMessage());
+//		}
+//		conField = new ComboBox<Condition>();
+//		conField.setList(conditions);
+//		conField.setBounds(220, 440, 150, 25);
 
 		minQtyField = new NumberField(5);
-		minQtyField.setBounds(220, 470, 150, 25);
+		minQtyField.setBounds(220, 440, 150, 25);
 
 		flagSerial = new ButtonGroup();
 
@@ -887,7 +907,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		add(thickLbl);
 		add(longLbl);
 		add(wideLbl);
-		add(conditionLbl);
+		//add(conditionLbl);
 		add(minQtyLbl);
 		// containerPnl.add(inventLbl);
 		// containerPnl.add(flagSerialLbl);
@@ -932,7 +952,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		add(thickField);
 		add(longField);
 		add(wideField);
-		add(conField);
+		//add(conField);
 		add(minQtyField);
 		// containerPnl.add(serialYesField);
 		// containerPnl.add(serialNoField);
@@ -1024,7 +1044,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 
 		minQtyLblError = new JLabel("");
 		minQtyLblError.setForeground(Color.RED);
-		minQtyLblError.setBounds(425, 470, 225, 25);
+		minQtyLblError.setBounds(425, 440, 225, 25);
 
 		add(idLblError);
 		add(nameLblError);
@@ -1047,7 +1067,10 @@ public class ProductEditPanel extends JPanel implements Bridging {
 			}
 		});
 	}
-
+	
+	static final int BALKEN_BASAH = 1;
+	static final int BALKEN_KERING = 2;
+	
 	public void doEdit() {
 		Product product = new Product();
 		
@@ -1072,7 +1095,13 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		product.setThickness(Double.parseDouble(thickField.getText()));
 		product.setLength(Double.parseDouble(longField.getText()));
 		product.setWidth(Double.parseDouble(wideField.getText()));
-		product.setCondition(conField.getDataIndex().getId());
+		//product.setCondition(conField.getDataIndex().getId());
+		
+		if(product.getProductCat() == BALKEN_BASAH)
+			product.setCondition(BALKEN_BASAH);
+		else if(product.getProductCat() == BALKEN_KERING)
+			product.setCondition(BALKEN_KERING);
+		
 		product.setMinQy(Integer.parseInt(minQtyField.getText()));
 		
 		try {
@@ -1139,19 +1168,31 @@ public class ProductEditPanel extends JPanel implements Bridging {
 			isValid = false;
 		}
 
-		if (longField.getText() == null || longField.getText().equals("")) {
-			longLblError.setText("Panjang Produk harus diisi");
-			isValid = true;
-		}
+		if (catField.getDataIndex().getId() == BALKEN_BASAH || catField.getDataIndex().getId() == BALKEN_KERING) {
 
-		if (wideField.getText() == null || wideField.getText().equals("")) {
-			wideLblError.setText("Lebar Produk harus diisi");
-			isValid = true;
-		}
+			if (typeField.getSelectedItem().toString() == "Pilih" || typeField.getSelectedIndex() == 0) {
+				typeLblError.setText("Jenis Kayu harus dipilih");
+				isValid = false;
+			}
 
-		if (thickField.getText() == null || thickField.getText().equals("")) {
-			thickLblError.setText("Tebal Produk harus diisi");
-			isValid = true;
+			if (gradeField.getSelectedItem().toString() == "Pilih" || gradeField.getSelectedIndex() == 0) {
+				gradeLblError.setText("Grade Produk harus dipilih");
+				isValid = false;
+			}
+
+			if (longField.getText() == null || longField.getText().equals("")) {
+				longLblError.setText("Panjang Produk harus diisi");
+				isValid = false;
+			}
+			if (wideField.getText() == null || wideField.getText().equals("")) {
+				wideLblError.setText("Lebar Produk harus diisi");
+				isValid = false;
+			}
+
+			if (thickField.getText() == null || thickField.getText().equals("")) {
+				thickLblError.setText("Tebal Produk harus diisi");
+				isValid = false;
+			}
 		}
 
 		if (minQtyField.getText() == null || minQtyField.getText().equals("")) {
@@ -1159,20 +1200,10 @@ public class ProductEditPanel extends JPanel implements Bridging {
 			isValid = true;
 		}
 
-		if (typeField.getSelectedItem().toString() == "Pilih" || typeField.getSelectedIndex() == 0) {
-			typeLblError.setText("Jenis Kayu harus dipilih");
-			isValid = true;
-		}
-
-		if (gradeField.getSelectedItem().toString() == "Pilih" || gradeField.getSelectedIndex() == 0) {
-			gradeLblError.setText("Grade Produk harus dipilih");
-			isValid = true;
-		}
-
-		if (conField.getSelectedItem().toString() == "Pilih" || conField.getSelectedIndex() == 0) {
-			conditionLblError.setText("Kondisi Produk harus dipilih");
-			isValid = true;
-		}
+//		if (conField.getSelectedItem().toString() == "Pilih" || conField.getSelectedIndex() == 0) {
+//			conditionLblError.setText("Kondisi Produk harus dipilih");
+//			isValid = true;
+//		}
 
 		return isValid;
 	}
@@ -1510,7 +1541,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		}
 
 	}
-
+	
 	protected void loadData(String productCode) {
 		try {
 			product = ServiceFactory.getProductBL().getProductByCode(productCode);
@@ -1534,7 +1565,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 				thickField.setText(String.valueOf(product.getThickness()));
 				longField.setText(String.valueOf(product.getLength()));
 				wideField.setText(String.valueOf(product.getWidth()));
-				conField.setSelectedIndex(product.getCondition());
+				//conField.setSelectedIndex(product.getCondition());
 				minQtyField.setText(String.valueOf(product.getMinQy()));
 				if(product.getIsMaintain() == 0) {
 					maintainYesField.setSelected(true);
