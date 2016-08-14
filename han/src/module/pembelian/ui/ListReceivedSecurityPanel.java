@@ -120,6 +120,7 @@ public class ListReceivedSecurityPanel extends JPanel {
 				PopUpAdvanceSearchSecurity pop = new PopUpAdvanceSearchSecurity(parent);
 				pop.show();
 				pop.setLocationRelativeTo(null);
+				pop.setModal(true);
 			}
 		});
 		

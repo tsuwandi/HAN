@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -34,6 +35,7 @@ public class PopUpPicDocking extends JDialog {
 	JDialog dialog;
 	
 	public PopUpPicDocking(JPanel parentPanel) {
+		super((JFrame)parentPanel.getTopLevelAncestor());
 		setLayout(null);
 		setSize(400,400);
 		this.dialog = this;

@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import controller.DataSourceFactory;
+import main.component.DialogBox;
 import model.User;
 
 public class LoginPanel extends JPanel {
@@ -56,7 +57,6 @@ public class LoginPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				doLogin();
 
 			}
@@ -68,6 +68,8 @@ public class LoginPanel extends JPanel {
 		add(passwordLbl);
 		add(passwordField);
 		add(submitBtn);
+		
+		checkConnection();
 	}
 
 	@SuppressWarnings("deprecation")
@@ -103,6 +105,17 @@ public class LoginPanel extends JPanel {
 
 	}
 
+	private void checkConnection(){
+		Connection con;
+		try {
+			con = DataSourceFactory.getDataSource().getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			DialogBox.showError("Tidak dapat terhubung dengan database !");
+			System.exit(1);
+		}
+	}
+	
 	public User getUser() {
 		return user;
 	}

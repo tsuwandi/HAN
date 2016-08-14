@@ -18,6 +18,7 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -30,6 +31,7 @@ import javax.swing.table.AbstractTableModel;
 
 import controller.ReceivedDAOFactory;
 import main.component.NumberField;
+import main.panel.MainPanel;
 import model.User;
 import module.pembelian.model.Employee;
 import module.pembelian.model.Grade;
@@ -91,6 +93,7 @@ public class AddPopUpPalletCard extends JDialog{
 	
 	JTable pcTable;
 	JScrollPane pcScrollPane;
+	JScrollPane areaScrollPane;
 	
 	PCTableModel pcTableModel;
 	List<PalletCard> pcs;
@@ -104,10 +107,11 @@ public class AddPopUpPalletCard extends JDialog{
 	int indexEdit = 0;
 	Map<String, PalletCard> tempPallet;
 	public AddPopUpPalletCard(AddReceivedDetailPanel parent) {
+		super((JFrame)parent.getTopLevelAncestor());
 		addReceivedDetail = parent;
 		setLayout(null);
 		setTitle("Kartu Pallet");
-		setSize(800, 750);
+		setSize(810, 750);
 		
 		//Grade
 		gradeLbl = new JLabel("Grade : " + addReceivedDetail.gradeComboBox.getDataIndex().getGrade());
@@ -146,7 +150,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(errorPalletCardLbl);
 	
 		//Long 
-		longLbl = new JLabel("<html><font color='red'>Panjang *</font></html>");
+		longLbl = new JLabel("<html>Panjang <font color='red'>*</font></html>");
 		longLbl.setBounds(30,110,150,20);
 		add(longLbl);
 		
@@ -165,7 +169,7 @@ public class AddPopUpPalletCard extends JDialog{
 		
 		
 		//Thickness
-		thickLbl = new JLabel("<html><font color='red'>Tebal *</font></html>");
+		thickLbl = new JLabel("<html>Tebal <font color='red'>*</font></html>");
 		thickLbl.setBounds(30,150,100,20);
 		add(thickLbl);
 		
@@ -182,7 +186,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(errorThickLbl);
 		
 		//Wide
-		wideLbl = new JLabel("<html><font color='red'>Lebar *</font></html>");
+		wideLbl = new JLabel("<html>Lebar <font color='red'>*</font></html>");
 		wideLbl.setBounds(30,190,100,20);
 		add(wideLbl);
 		
@@ -199,7 +203,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(errorWideLbl);
 	
 		//Total
-		totalLbl = new JLabel("<html><font color='red'>Jumlah *</font></html>");
+		totalLbl = new JLabel("<html>Jumlah <font color='red'>*</font></html>");
 		totalLbl.setBounds(30,230,100,20);
 		add(totalLbl);
 	
@@ -255,12 +259,15 @@ public class AddPopUpPalletCard extends JDialog{
 		descriptionLbl = new JLabel("Keterangan");
 		descriptionLbl.setBounds(30,350,150,20);
 		add(descriptionLbl);
-		
+
 		descriptionArea = new JTextArea();
-		descriptionArea.setBounds(150, 350, 150, 50);
 		descriptionArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
-		descriptionArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
-		add(descriptionArea);		
+		descriptionArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);		
+		
+		areaScrollPane = new JScrollPane(descriptionArea);
+		areaScrollPane.setBounds(150, 350, 150, 50);
+		areaScrollPane.setFocusable(false);
+		add(areaScrollPane);
 		
 		//insert Button
 		insertButton = new JButton("Tambah");
@@ -275,33 +282,33 @@ public class AddPopUpPalletCard extends JDialog{
 		pcTable.setFocusable(false);
 		
 		pcScrollPane = new JScrollPane(pcTable);
-		pcScrollPane.setBounds(30,460,740,100);
+		pcScrollPane.setBounds(30,460,740,200);
 		add(pcScrollPane);
 		
 		//Total Log
 		totalLogLbl = new JLabel("Total Jumlah Kayu");
-		totalLogLbl.setBounds(30,580,150,20);
+		totalLogLbl.setBounds(500,110,150,20);
 		add(totalLogLbl);
 	
 		totalLogField =  new JTextField();
-		totalLogField.setBounds(350, 580, 150, 20);
+		totalLogField.setBounds(600, 110, 150, 20);
 		add(totalLogField);
 		
 		uomTotalLogLbl = new JLabel("batang");
-		uomTotalLogLbl.setBounds(502,580,40,20);
+		uomTotalLogLbl.setBounds(752,110,40,20);
 		add(uomTotalLogLbl);
 		
 		//total Volume
 		totalVolumeLbl = new JLabel("Total Volume");
-		totalVolumeLbl.setBounds(30,620,150,20);
+		totalVolumeLbl.setBounds(500,150,150,20);
 		add(totalVolumeLbl);
 
 		totalVolumeField =  new JTextField();
-		totalVolumeField.setBounds(350, 620, 150, 20);
+		totalVolumeField.setBounds(600, 150, 150, 20);
 		add(totalVolumeField);
 		
 		uomTotalVolumeLbl = new JLabel("<html><span>cm&#179;</span></html>");
-		uomTotalVolumeLbl.setBounds(502,620,16,20);
+		uomTotalVolumeLbl.setBounds(752,150,16,20);
 		add(uomTotalVolumeLbl);
 
 		//Confirm Btn

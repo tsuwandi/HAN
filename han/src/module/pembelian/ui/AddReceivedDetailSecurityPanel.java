@@ -176,7 +176,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		
 		
 		//Receive Date
-		receivedDateLbl = new JLabel("<html><font color='red'>Tanggal Penerimaan *</font></html>");
+		receivedDateLbl = new JLabel("<html>Tanggal Penerimaan <font color='red'>*</font></html>");
 		receivedDateLbl.setBounds(50,110,150,20);
 		containerPnl.add(receivedDateLbl);
 		
@@ -200,7 +200,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		containerPnl.add(errorRitNumberLbl);
 		
 		//Supplier
-		supplierLbl = new JLabel("<html><font color='red'>Supplier *</font></html>");
+		supplierLbl = new JLabel("<html>Supplier <font color='red'>*</font></html>");
 		supplierLbl.setBounds(50,190,150,20);
 		containerPnl.add(supplierLbl);
 		
@@ -213,7 +213,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		containerPnl.add(errorSupplierLbl);
 		
 		//Supplier CP
-		supplierCPLbl = new JLabel("<html><font color='red'>Sub Supplier *</font></html>");
+		supplierCPLbl = new JLabel("<html>Sub Supplier <font color='red'>*</font></html>");
 		supplierCPLbl.setBounds(50,230,150,20);
 		containerPnl.add(supplierCPLbl);
 		
@@ -275,7 +275,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		
 	
 		// Document Number
-		docNoLbl =  new JLabel("<html><font color='red'>No Dokumen *</font></html>");
+		docNoLbl =  new JLabel("<html>No Dokumen <font color='red'>*</font></html>");
 		docNoLbl.setBounds(550,70,150,20);
 		containerPnl.add(docNoLbl);
 		
@@ -289,7 +289,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		
 		
 		// Document Type
-		documentTypeLbl =  new JLabel("<html><font color='red'>Tipe Dokumen *</font></html>");
+		documentTypeLbl =  new JLabel("<html>Tipe Dokumen <font color='red'>*</font></html>");
 		documentTypeLbl.setBounds(550,110,150,20);
 		containerPnl.add(documentTypeLbl);
 		
@@ -303,7 +303,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 
 		
 		//Wood Domicile
-		woodDomicileLbl = new JLabel("<html><font color='red'>Asal Barang *</font></html>");
+		woodDomicileLbl = new JLabel("<html>Asal Barang <font color='red'>*</font></html>");
 		woodDomicileLbl.setBounds(550,150,150,20);
 		containerPnl.add(woodDomicileLbl);
 		
@@ -316,7 +316,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		containerPnl.add(errorWoodDomicileLbl);
 	
 		//Wood Resource
-		woodResourceLbl = new JLabel("<html><font color='red'>Asal Sumber Bahan Baku *</font></html>");
+		woodResourceLbl = new JLabel("<html>Asal Sumber Bahan Baku <font color='red'>*</font></html>");
 		woodResourceLbl.setBounds(550, 190, 150, 20);
 		containerPnl.add(woodResourceLbl);
 		
@@ -329,7 +329,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		containerPnl.add(errorWoodResourceLbl);
 		
 		//Wood Type
-		woodTypeLbl = new JLabel("<html><font color='red'>Tipe Kayu *</font></html>");
+		woodTypeLbl = new JLabel("<html>Tipe Kayu <font color='red'>*</font></html>");
 		woodTypeLbl.setBounds(550, 230, 150, 20);
 		containerPnl.add(woodTypeLbl);
 		
