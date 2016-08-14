@@ -45,7 +45,7 @@ import module.util.JTextFieldLimit;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
-public class CreateProductPanel extends JPanel {
+public class ProductCreatePanel extends JPanel {
 
 	/**
 	 * 
@@ -55,7 +55,7 @@ public class CreateProductPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(CreateProductPanel.class);
+	private static final Logger LOGGER = Logger.getLogger(ProductCreatePanel.class);
 
 	private JLabel breadcrumb;
 	private JButton backBtn;
@@ -229,10 +229,10 @@ public class CreateProductPanel extends JPanel {
 	Date todayDate;
 	// SimpleDateFormat dateFormat = new SimpleDateFormat(yyyy-MM-dd);
 	
-	CreateProductPanel createProductPanel;
+	ProductCreatePanel productCreatePanel;
 
-	public CreateProductPanel() {
-		this.createProductPanel = this;
+	public ProductCreatePanel() {
+		this.productCreatePanel = this;
 		
 		setLayout(null);
 		// this.parent = this;
@@ -845,7 +845,7 @@ public class CreateProductPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ProductCopyFromDialog productCopyFromDialog = new ProductCopyFromDialog(createProductPanel);
+				ProductCopyFromDialog productCopyFromDialog = new ProductCopyFromDialog(productCreatePanel);
 				productCopyFromDialog.setTitle("Detail");
 				productCopyFromDialog.setLocationRelativeTo(null);
 				productCopyFromDialog.setVisible(true);

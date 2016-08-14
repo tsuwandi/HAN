@@ -39,10 +39,10 @@ public class ProductCopyFromDialog extends JDialog {
 
 	List<Product> products;
 
-	CreateProductPanel createProductPanel;
+	ProductCreatePanel productCreatePanel;
 
-	public ProductCopyFromDialog(CreateProductPanel createProductPanel) {
-		this.createProductPanel = createProductPanel;
+	public ProductCopyFromDialog(ProductCreatePanel productCreatePanel) {
+		this.productCreatePanel = productCreatePanel;
 
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -85,10 +85,10 @@ public class ProductCopyFromDialog extends JDialog {
 		tblProduct.setFocusable(false);
 		scrollPaneProduct.setViewportView(tblProduct);
 
-		btnCopyTo = new JButton("Copy To");
+		btnCopyTo = new JButton("Copy");
 		btnCopyTo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				createProductPanel.loadData(getSelectedProduct().getProductCode());
+				productCreatePanel.loadData(getSelectedProduct().getProductCode());
 				dispose();
 			}
 		});

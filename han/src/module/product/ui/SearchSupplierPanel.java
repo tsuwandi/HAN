@@ -1,7 +1,5 @@
 package module.product.ui;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -9,7 +7,6 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -18,12 +15,14 @@ import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
 import main.panel.MainPanel;
-import module.product.model.Product;
-import module.product.ui.CreateProductPanel.ReserveSupplierTableModel;
 import module.supplier.model.Supplier;
 
 public class SearchSupplierPanel extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public JTable supplierTable;
 	public JTextField searchField;
 	public JButton searchBtn;

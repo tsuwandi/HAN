@@ -69,7 +69,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 	 * Create the panel.
 	 */
 	
-	private static final Logger LOGGER = Logger.getLogger(CreateProductPanel.class);
+	private static final Logger LOGGER = Logger.getLogger(ProductEditPanel.class);
 
 	private JLabel breadcrumb;
 	private JButton backBtn;
