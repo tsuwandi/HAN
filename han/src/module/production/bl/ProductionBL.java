@@ -233,4 +233,12 @@ public class ProductionBL {
 			cone.close();
 		}
 	}
+	
+	public List<Production> advancedSearchProduction(String sql, List<Object> objs) throws SQLException{
+		return productionDAO.advancedSearchProduction(sql, objs);
+	}
+	
+	public List<Production> searchProduction(String sql) throws SQLException{
+		return productionDAO.getSearchAll(sql);
+	}
 }

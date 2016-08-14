@@ -72,9 +72,9 @@ public class ListProductionPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				PopUpAdvanceSearch pop = new PopUpAdvanceSearch(listProductionPanel);
-//				pop.show();
-//				pop.setLocationRelativeTo(null);
+				PopUpAdvancedSearch pop = new PopUpAdvancedSearch(listProductionPanel);
+				pop.show();
+				pop.setLocationRelativeTo(null);
 			}
 		});
 		
@@ -82,7 +82,14 @@ public class ListProductionPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
+				if(!searchField.getText().equals("")){
+					try {
+						List<Production> productions = ServiceFactory.getProductionBL().searchProduction(" AND production_code LIKE '%"+searchField.getText()+"%'");
+						updateTableData(productions);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 		SwingUtilities.invokeLater(new Runnable() {
@@ -156,6 +163,7 @@ public class ListProductionPanel extends JPanel {
 		TableColumn column5 = productionTable.getColumnModel().getColumn(4);
 		TableColumn column6 = productionTable.getColumnModel().getColumn(6);
 		TableColumn column7 = productionTable.getColumnModel().getColumn(7);
+		TableColumn column8 = productionTable.getColumnModel().getColumn(8);
 		
 		
 		column1.setPreferredWidth(0);
@@ -178,14 +186,24 @@ public class ListProductionPanel extends JPanel {
 		column5.setMinWidth(150);
 		column5.setMaxWidth(150);
 		
-		column6.setPreferredWidth(150);
-		column6.setMinWidth(150);
-		column6.setMaxWidth(150);
+		column6.setPreferredWidth(100);
+		column6.setMinWidth(100);
+		column6.setMaxWidth(100);
 		
-		column7.setPreferredWidth(150);
-		column7.setMinWidth(150);
-		column7.setMaxWidth(150);
+		column7.setPreferredWidth(100);
+		column7.setMinWidth(100);
+		column7.setMaxWidth(100);
+		
+		column8.setPreferredWidth(100);
+		column8.setMinWidth(100);
+		column8.setMaxWidth(100);
 
+	}
+	
+	public void updateTableData(List<Production> productions){
+		productionTable.setModel(new ProductionTableModel(productions));
+		productionTable.updateUI();
+		setTableSize();
 	}
 	
 	public class ProductionTableModel extends AbstractTableModel {

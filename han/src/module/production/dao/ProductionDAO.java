@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import module.pembelian.model.Received;
 import module.production.model.Production;
 
 public class ProductionDAO {
@@ -55,6 +56,40 @@ public class ProductionDAO {
 
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery);
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				Production production = new Production();
+				production.setId(rs.getInt("id"));
+				production.setProductionCode(rs.getString("production_code"));
+				production.setGroupShiftCode(rs.getString("group_shift_code"));
+				production.setGroupShiftDescription(rs.getString("group_shift_description"));
+				production.setLineCode(rs.getString("line_code"));
+				production.setLineDescription(rs.getString("line_description"));
+				production.setShiftCode(rs.getString("shift_code"));
+				production.setShiftName(rs.getString("shift_name"));
+				production.setProductionDate(rs.getDate("production_date"));
+				production.setInformation(rs.getString("information"));
+				production.setTotalPalletCard(rs.getInt("total_pallet_card"));
+				production.setTotalLog(rs.getInt("total_log"));
+				production.setTotalVolume(rs.getDouble("total_volume"));
+				production.setStatus(rs.getString("status"));
+				productions.add(production);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return productions;
+	}
+	
+	public List<Production> getSearchAll(String sql) throws SQLException {
+		List<Production> productions = new ArrayList<Production>();
+
+		try {
+			getAllStatement = connection.prepareStatement(getAllQuery+sql);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
@@ -131,5 +166,54 @@ public class ProductionDAO {
 			throw new SQLException(ex.getMessage());
 		}
 
+	}
+	
+	
+	public List<Production> advancedSearchProduction(String sql, List<Object> objs) throws SQLException{
+		List<Production> productions = new ArrayList<Production>();
+
+		try {
+			getAllStatement = connection.prepareStatement(getAllQuery + sql);
+
+			int i = 1;
+			for (int j = 0; j < objs.size(); j++) {
+				Object obj = objs.get(j);
+				if (obj instanceof String) {
+					if (obj != null) {
+						getAllStatement.setString(i, (String) "%" + obj + "%");
+						i++;
+					}
+				} else {
+					if (obj != null) {
+						getAllStatement.setDate(i, new Date(((java.util.Date) obj).getTime()));
+						i++;
+					}
+				}
+			}
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				Production production = new Production();
+				production.setId(rs.getInt("id"));
+				production.setProductionCode(rs.getString("production_code"));
+				production.setGroupShiftCode(rs.getString("group_shift_code"));
+				production.setGroupShiftDescription(rs.getString("group_shift_description"));
+				production.setLineCode(rs.getString("line_code"));
+				production.setLineDescription(rs.getString("line_description"));
+				production.setShiftCode(rs.getString("shift_code"));
+				production.setShiftName(rs.getString("shift_name"));
+				production.setProductionDate(rs.getDate("production_date"));
+				production.setInformation(rs.getString("information"));
+				production.setTotalPalletCard(rs.getInt("total_pallet_card"));
+				production.setTotalLog(rs.getInt("total_log"));
+				production.setTotalVolume(rs.getDouble("total_volume"));
+				production.setStatus(rs.getString("status"));
+				productions.add(production);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+		return productions;
 	}
 }

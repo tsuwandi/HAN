@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -35,6 +36,7 @@ public class PopUpSearchMaterial extends JDialog{
 	PopUpInputMaterial popUpInputMaterial;
 	
 	public PopUpSearchMaterial(JDialog parent){
+		super(parent);
 		createGUI(parent);
 	}
 	private void createGUI(JDialog parent){

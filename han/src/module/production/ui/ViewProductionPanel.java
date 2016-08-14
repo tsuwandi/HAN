@@ -18,6 +18,7 @@ import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
 import main.component.ComboBox;
+import main.panel.MainPanel;
 import module.production.model.GroupShift;
 import module.production.model.Line;
 import module.production.model.Production;
@@ -46,6 +47,7 @@ public class ViewProductionPanel extends JPanel implements Bridging{
 	private JButton inputMaterialBtn;
 	private JButton inputProductionResultBtn;
 	private JButton printBtn;
+	private JButton backBtn;
 	
 	private Production production;
 	private ViewProductionPanel parent;
@@ -83,6 +85,14 @@ public class ViewProductionPanel extends JPanel implements Bridging{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+			}
+		});
+		
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.production.ui.ListProductionPanel");
 			}
 		});
 	}
@@ -189,16 +199,20 @@ public class ViewProductionPanel extends JPanel implements Bridging{
 		
 		//TODO Button Area
 		inputMaterialBtn = new JButton("View Bahan Baku");
-		inputMaterialBtn.setBounds(280,360,150,50);
+		inputMaterialBtn.setBounds(630,550,150,30);
 		add(inputMaterialBtn);
 		
 		inputProductionResultBtn = new JButton("View Hasil Produksi");
-		inputProductionResultBtn.setBounds(450,360,150,50);
+		inputProductionResultBtn.setBounds(790,550,150,30);
 		add(inputProductionResultBtn);
 		
 		printBtn = new JButton("Cetak");
-		printBtn.setBounds(610,360,150,50);
+		printBtn.setBounds(950,550,150,30);
 		add(printBtn);
+		
+		backBtn = new JButton("Kembali");
+		backBtn.setBounds(30,550,150,30);
+		add(backBtn);
 	}
 	
 	

@@ -71,6 +71,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 				PopUpInputMaterial pop = new PopUpInputMaterial(parent);
 				pop.show();
 				pop.setLocationRelativeTo(null);
+//				pop.setModal(true);
 			}
 		});
 		
@@ -81,6 +82,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 				PopUpProductionResult pop = new PopUpProductionResult(parent);
 				pop.show();
 				pop.setLocationRelativeTo(null);
+//				pop.setModal(true);
 			}
 		});
 		
@@ -88,6 +90,14 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				save();
+			}
+		});
+		
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.production.ui.ListProductionPanel");
 			}
 		});
 		
@@ -152,7 +162,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		add(productionCodeField);
 		
 		//TODO ProductionDate Area
-		productionDateLbl = new JLabel("Tanggal Produksi");
+		productionDateLbl = new JLabel("<html>Tanggal Produksi <font color='red'>*</font></html>");
 		productionDateLbl.setBounds(30,160,150,20);
 		add(productionDateLbl);
 		
@@ -161,7 +171,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		add(productionDateChooser);
 		
 		//TODO GroupShift Area
-		groupShiftLbl = new JLabel("Group Shift");
+		groupShiftLbl = new JLabel("<html>Group Shift <font color='red'>*</font></html>");
 		groupShiftLbl.setBounds(30,200,150,20);
 		add(groupShiftLbl);
 		
@@ -174,7 +184,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		add(errorGroupShiftLbl);
 		
 		//TODO Shift Area
-		shiftLbl = new JLabel("Shift");
+		shiftLbl = new JLabel("<html>Shift <font color='red'>*</font></html>");
 		shiftLbl.setBounds(30,240,150,20);
 		add(shiftLbl);
 		
@@ -187,7 +197,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		add(errorShiftLbl);
 		
 		//TODO Line Area
-		lineLbl = new JLabel("Line");
+		lineLbl = new JLabel("<html>Line <font color='red'>*</font></html>");
 		lineLbl.setBounds(30,280,150,20);
 		add(lineLbl);
 		

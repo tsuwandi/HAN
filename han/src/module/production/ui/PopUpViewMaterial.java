@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -81,6 +82,7 @@ public class PopUpViewMaterial extends JDialog{
 
 	
 	public PopUpViewMaterial(JPanel parent){
+		super((JFrame)parent.getTopLevelAncestor());
 		createGUI();
 		initData(parent);
 		listener();

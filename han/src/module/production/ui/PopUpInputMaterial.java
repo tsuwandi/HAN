@@ -15,6 +15,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -86,6 +87,7 @@ public class PopUpInputMaterial extends JDialog{
 	private PopUpInputMaterial parentDialog;
 	
 	public PopUpInputMaterial(JPanel parent){
+		super((JFrame)parent.getTopLevelAncestor());
 		createGUI();
 		initData(parent);
 		listener();

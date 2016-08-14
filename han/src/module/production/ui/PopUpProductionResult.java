@@ -17,6 +17,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -111,6 +112,7 @@ public class PopUpProductionResult extends JDialog{
 	private boolean editMode=false;
 	private int indexEdit=0;
 	public PopUpProductionResult(JPanel parent){
+		super((JFrame)parent.getTopLevelAncestor());
 		createGUI();
 		initData(parent);
 		listener();
