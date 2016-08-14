@@ -71,7 +71,7 @@ public class ProductListPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.product.ui.CreateProductPanel");
+				MainPanel.changePanel("module.product.ui.ProductCreatePanel");
 			}
 		});
 
