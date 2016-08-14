@@ -34,9 +34,6 @@ public class ProductListPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Create the panel.
-	 */
 	private static final Logger LOGGER = Logger.getLogger(ProductListPanel.class);
 	
 	private JButton createNewBtn;

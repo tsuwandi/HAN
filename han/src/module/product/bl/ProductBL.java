@@ -19,13 +19,13 @@ import module.supplier.dao.SupplierDAO;
 
 public class ProductBL {
 	private static final Logger LOGGER = Logger.getLogger(ProductBL.class);
-	
+
 	private DataSource dataSource;
 
 	public ProductBL(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-	
+
 	public List<Product> getAll() throws SQLException {
 		Connection con = null;
 		try {
@@ -35,7 +35,7 @@ public class ProductBL {
 			con.close();
 		}
 	}
-	
+
 	public List<Product> getProductId() throws SQLException {
 		Connection con = null;
 		try {
@@ -45,7 +45,7 @@ public class ProductBL {
 			con.close();
 		}
 	}
-	
+
 	public List<Product> getSearchProduct(String value) throws SQLException {
 		Connection con = null;
 		try {
@@ -55,14 +55,15 @@ public class ProductBL {
 			con.close();
 		}
 	}
-	
+
 	public void save(Product product) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
+
 			new ProductDAO(con).save(product);
-			
+
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
@@ -72,14 +73,13 @@ public class ProductBL {
 			con.close();
 		}
 	}
-	
+
 	public void update(Product product) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 			new ProductDAO(con).update(product);
-			
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
@@ -89,14 +89,14 @@ public class ProductBL {
 			con.close();
 		}
 	}
-	
+
 	public void delete(Product product) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 			new ProductDAO(con).delete(product);
-			
+
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
@@ -106,7 +106,7 @@ public class ProductBL {
 			con.close();
 		}
 	}
-	
+
 	public Product getProductByCode(String productCode) throws SQLException {
 		Connection con = null;
 		try {
@@ -116,57 +116,57 @@ public class ProductBL {
 			con.close();
 		}
 	}
-	
+
 	public List<ProductCategory> getAllProductCategory() throws SQLException {
 		Connection con = null;
-		try{
+		try {
 			con = dataSource.getConnection();
 			return new ProductDAO(con).getAllProductCategory();
 		} finally {
 			con.close();
 		}
 	}
-	
+
 	public List<WoodType> getAllWoodType() throws SQLException {
 		Connection con = null;
-		try{
+		try {
 			con = dataSource.getConnection();
 			return new ProductDAO(con).getAllWoodType();
 		} finally {
 			con.close();
 		}
 	}
-	
+
 	public List<Grade> getAllGrade() throws SQLException {
 		Connection con = null;
-		try{
+		try {
 			con = dataSource.getConnection();
 			return new ProductDAO(con).getAllGrade();
 		} finally {
 			con.close();
 		}
 	}
-	
+
 	public List<Uom> getAllUom() throws SQLException {
 		Connection con = null;
-		try{
+		try {
 			con = dataSource.getConnection();
 			return new ProductDAO(con).getAllUom();
 		} finally {
 			con.close();
 		}
 	}
-	
+
 	public List<Condition> getAllCondition() throws SQLException {
 		Connection con = null;
-		try{
+		try {
 			con = dataSource.getConnection();
 			return new ProductDAO(con).getAllCondition();
 		} finally {
 			con.close();
 		}
 	}
-	
+
 	public int isProductCodeExists(String productCode) throws SQLException {
 		Connection con = null;
 		try {
@@ -176,7 +176,7 @@ public class ProductBL {
 			con.close();
 		}
 	}
-	
+
 	public int isProductNameExists(String productName) throws SQLException {
 		Connection con = null;
 		try {

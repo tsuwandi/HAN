@@ -40,6 +40,8 @@ import module.product.model.ProductCategory;
 import module.product.model.Uom;
 import module.sn.supptype.model.SuppType;
 import module.supplier.model.Supplier;
+import module.util.JTextFieldLimit;
+
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
@@ -222,10 +224,16 @@ public class CreateProductPanel extends JPanel {
 	public List<Uom> units = null;
 	public List<Condition> conditions = null;
 
+	private JButton copyFromBtn;
+
 	Date todayDate;
 	// SimpleDateFormat dateFormat = new SimpleDateFormat(yyyy-MM-dd);
+	
+	CreateProductPanel createProductPanel;
 
 	public CreateProductPanel() {
+		this.createProductPanel = this;
+		
 		setLayout(null);
 		// this.parent = this;
 		setPreferredSize(new Dimension(1166, 620));
@@ -373,11 +381,13 @@ public class CreateProductPanel extends JPanel {
 		taxLbl.setBounds(20, 1740, 100, 25);
 
 		idField = new JTextField();
+		idField.setDocument(new JTextFieldLimit(18));
 		// idField.setText(generateCode());
 		// idField.setEnabled(false);
 		idField.setBounds(220, 80, 150, 25);
 
 		nameField = new JTextField();
+		nameField.setDocument(new JTextFieldLimit(50));
 		nameField.setBounds(220, 110, 150, 25);
 
 		try {
@@ -828,7 +838,22 @@ public class CreateProductPanel extends JPanel {
 
 			}
 		});
+		
+		copyFromBtn = new JButton("Copy From");
+		copyFromBtn.setBounds(825, 550, 100, 25);
+		copyFromBtn.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ProductCopyFromDialog productCopyFromDialog = new ProductCopyFromDialog(createProductPanel);
+				productCopyFromDialog.setTitle("Detail");
+				productCopyFromDialog.setLocationRelativeTo(null);
+				productCopyFromDialog.setVisible(true);
+			}
+		});		
+		
+		
+		add(copyFromBtn);
 		add(breadcrumb);
 		add(backBtn);
 		add(titleLbl);
@@ -1516,8 +1541,42 @@ public class CreateProductPanel extends JPanel {
 		} else if (products.size() > 100 && products.size() < 1000) {
 			productCode = "PRD" + String.valueOf(products.size() + 1);
 		}
-		System.out.println(products.size());
 		return productCode;
+	}
+	
+	protected void loadData(String productCode) {
+		try {
+			product = ServiceFactory.getProductBL().getProductByCode(productCode);
+
+			if (product != null) {
+				nameField.setText(product.getProductName());
+				if (product.getProductStat() == null) {
+					statField.setSelectedIndex(0);
+				} else if (product.getProductStat().toUpperCase().equals("aktif".toUpperCase())) {
+					statField.setSelectedIndex(1);
+				} else if (product.getProductStat().toUpperCase().equals("tidak aktif".toUpperCase())) {
+					statField.setSelectedIndex(2);
+				}
+				uomField.setSelectedIndex(product.getProductUom());
+				
+				typeField.setSelectedIndex(product.getWoodType());
+				gradeField.setSelectedIndex(product.getGrade());
+				thickField.setText(String.valueOf(product.getThickness()));
+				longField.setText(String.valueOf(product.getLength()));
+				wideField.setText(String.valueOf(product.getWidth()));
+				//conField.setSelectedIndex(product.getCondition());
+				minQtyField.setText(String.valueOf(product.getMinQy()));
+				if(product.getIsMaintain() == 0) {
+					maintainYesField.setSelected(true);
+				} else {
+					maintainNoField.setSelected(true);
+				}
+
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			DialogBox.showErrorException();
+		}
 	}
 
 }
