@@ -40,6 +40,7 @@ import model.User;
 import module.pembelian.model.Delivery;
 import module.pembelian.model.Employee;
 import module.pembelian.model.Grade;
+import module.pembelian.model.Pallet;
 import module.pembelian.model.PalletCard;
 import module.pembelian.model.PicDocking;
 import module.pembelian.model.Received;
@@ -373,7 +374,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		containerPnl.add(uomTotalVolumeLbl);
 		
 		//TotalVolumeByAdmin
-		totalVolumeByAdminLbl = new JLabel("<html><font color='red'>Total Volume *</font></html>");
+		totalVolumeByAdminLbl = new JLabel("<html>Total Volume <font color='red'>*</font></html>");
 		totalVolumeByAdminLbl.setBounds(550,310,150,20);
 		containerPnl.add(totalVolumeByAdminLbl);
 		
@@ -391,7 +392,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		
 		
 		//Grader
-		graderLbl = new JLabel("<html><font color='red'>Grader *</font></html>");
+		graderLbl = new JLabel("<html>Grader <font color='red'>*</font></html>");
 		graderLbl.setBounds(550,350,150,20);
 		containerPnl.add(graderLbl);
 		
@@ -404,7 +405,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		containerPnl.add(errorGraderLbl);
 		
 		//Grader
-		gradeLbl = new JLabel("<html><font color='red'>Grade *</font></html>");
+		gradeLbl = new JLabel("<html>Grade <font color='red'>*</font></html>");
 		gradeLbl.setBounds(550,390,150,20);
 		containerPnl.add(gradeLbl);
 		
@@ -513,7 +514,18 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 					if(choice==JOptionPane.YES_OPTION){
 						for (int i = 0; i < receivedDetails.size(); i++) {
 							ReceivedDetail rd = receivedDetails.get(i);
-							if(rd.isFlag()) receivedDetails.remove(i);
+							if(rd.isFlag()) {
+								for (PalletCard palletCard : rd.getPallets()) {
+									if(palletMaps.containsKey(palletCard.getPalletCardCode())) palletMaps.remove(palletCard.getPalletCardCode());
+										
+								}
+								for (int j = 0; j < gradeCollection.size(); j++) {
+									if(gradeCollection.get(j).getId()==rd.getGradeID()){
+										gradeCollection.remove(j);
+									}
+								}
+								receivedDetails.remove(i);
+							}
 							receivedDetailTable.updateUI();
 						}
 					}

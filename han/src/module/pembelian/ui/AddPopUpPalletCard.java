@@ -91,6 +91,7 @@ public class AddPopUpPalletCard extends JDialog{
 	
 	JTable pcTable;
 	JScrollPane pcScrollPane;
+	JScrollPane areaScrollPane;
 	
 	PCTableModel pcTableModel;
 	List<PalletCard> pcs;
@@ -146,7 +147,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(errorPalletCardLbl);
 	
 		//Long 
-		longLbl = new JLabel("<html><font color='red'>Panjang *</font></html>");
+		longLbl = new JLabel("<html>Panjang <font color='red'>*</font></html>");
 		longLbl.setBounds(30,110,150,20);
 		add(longLbl);
 		
@@ -165,7 +166,7 @@ public class AddPopUpPalletCard extends JDialog{
 		
 		
 		//Thickness
-		thickLbl = new JLabel("<html><font color='red'>Tebal *</font></html>");
+		thickLbl = new JLabel("<html>Tebal <font color='red'>*</font></html>");
 		thickLbl.setBounds(30,150,100,20);
 		add(thickLbl);
 		
@@ -182,7 +183,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(errorThickLbl);
 		
 		//Wide
-		wideLbl = new JLabel("<html><font color='red'>Lebar *</font></html>");
+		wideLbl = new JLabel("<html>Lebar <font color='red'>*</font></html>");
 		wideLbl.setBounds(30,190,100,20);
 		add(wideLbl);
 		
@@ -199,7 +200,7 @@ public class AddPopUpPalletCard extends JDialog{
 		add(errorWideLbl);
 	
 		//Total
-		totalLbl = new JLabel("<html><font color='red'>Jumlah *</font></html>");
+		totalLbl = new JLabel("<html>Jumlah <font color='red'>*</font></html>");
 		totalLbl.setBounds(30,230,100,20);
 		add(totalLbl);
 	
@@ -255,12 +256,17 @@ public class AddPopUpPalletCard extends JDialog{
 		descriptionLbl = new JLabel("Keterangan");
 		descriptionLbl.setBounds(30,350,150,20);
 		add(descriptionLbl);
-		
+
 		descriptionArea = new JTextArea();
-		descriptionArea.setBounds(150, 350, 150, 50);
+//		descriptionArea.setBounds(150, 350, 150, 50);
 		descriptionArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
 		descriptionArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
-		add(descriptionArea);		
+//		add(descriptionArea);		
+		
+		areaScrollPane = new JScrollPane(descriptionArea);
+		areaScrollPane.setBounds(150, 350, 150, 50);
+		areaScrollPane.setFocusable(false);
+		add(areaScrollPane);
 		
 		//insert Button
 		insertButton = new JButton("Tambah");
