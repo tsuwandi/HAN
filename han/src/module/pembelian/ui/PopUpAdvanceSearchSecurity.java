@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
@@ -37,6 +38,7 @@ public class PopUpAdvanceSearchSecurity extends JDialog{
 	ListReceivedSecurityPanel parent;
 	
 	public PopUpAdvanceSearchSecurity(ListReceivedSecurityPanel parent) {
+		super((JFrame)parent.getTopLevelAncestor());
 		this.parent =parent;
 		setLayout(null);
 		setTitle("Advance Search");

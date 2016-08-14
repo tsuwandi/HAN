@@ -16,6 +16,7 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -105,10 +106,11 @@ public class EditPopUpPalletCard extends JDialog{
 	ReceivedDetail receivedDetail;
 	Map<String, PalletCard> tempPallet;
 	public EditPopUpPalletCard(AddReceivedDetailPanel parent, ReceivedDetail receivedDetail, int index) {
+		super((JFrame)parent.getTopLevelAncestor());
 		addReceivedDetail = parent;
 		setLayout(null);
 		setTitle("Kartu Pallet");
-		setSize(800, 750);
+		setSize(810, 750);
 		
 		//Grade
 		gradeLbl = new JLabel("Grade : " + receivedDetail.getGrade());
@@ -279,33 +281,33 @@ public class EditPopUpPalletCard extends JDialog{
 		pcTable.setFocusable(false);
 		
 		pcScrollPane = new JScrollPane(pcTable);
-		pcScrollPane.setBounds(30,460,740,100);
+		pcScrollPane.setBounds(30,460,740,200);
 		add(pcScrollPane);
 		
 		//Total Log
 		totalLogLbl = new JLabel("Total Jumlah Kayu");
-		totalLogLbl.setBounds(30,580,150,20);
+		totalLogLbl.setBounds(500,110,150,20);
 		add(totalLogLbl);
 	
 		totalLogField =  new JTextField();
-		totalLogField.setBounds(350, 580, 150, 20);
+		totalLogField.setBounds(600, 110, 150, 20);
 		add(totalLogField);
 		
 		uomTotalLogLbl = new JLabel("batang");
-		uomTotalLogLbl.setBounds(502,580,40,20);
+		uomTotalLogLbl.setBounds(752,110,40,20);
 		add(uomTotalLogLbl);
 		
 		//total Volume
 		totalVolumeLbl = new JLabel("Total Volume");
-		totalVolumeLbl.setBounds(30,620,150,20);
+		totalVolumeLbl.setBounds(500,150,150,20);
 		add(totalVolumeLbl);
 
 		totalVolumeField =  new JTextField();
-		totalVolumeField.setBounds(350, 620, 150, 20);
+		totalVolumeField.setBounds(600, 150, 150, 20);
 		add(totalVolumeField);
 		
 		uomTotalVolumeLbl = new JLabel("<html><span>cm&#179;</span></html>");
-		uomTotalVolumeLbl.setBounds(502,620,16,20);
+		uomTotalVolumeLbl.setBounds(752,150,16,20);
 		add(uomTotalVolumeLbl);
 
 		//Confirm Btn

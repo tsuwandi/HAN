@@ -19,6 +19,7 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -485,16 +486,20 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 							EditPopUpPalletCard pop = new EditPopUpPalletCard(parent, receivedDetails.get(index-1),index-1);
 							pop.show();
 							pop.setLocationRelativeTo(null);
+							pop.setModal(true);
 						}else{
 							System.out.println("Add");
 							AddPopUpPalletCard pop = new AddPopUpPalletCard(parent);
 							pop.show();
 							pop.setLocationRelativeTo(null);
+							pop.setAlwaysOnTop(true);
+							pop.setModal(true);
 						}
 					}else{
 						AddPopUpPalletCard pop = new AddPopUpPalletCard(parent);
 						pop.show();
 						pop.setLocationRelativeTo(null);
+						pop.setModal(true);
 					}
 					
 				}
@@ -555,6 +560,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 					EditPopUpPalletCard pop = new EditPopUpPalletCard(parent, receivedDetails.get(receivedDetailTable.getSelectedRow()),receivedDetailTable.getSelectedRow());
 					pop.show();
 					pop.setLocationRelativeTo(null);
+					pop.setModal(true);
 				}
 				if(receivedDetailTable.columnAtPoint(e.getPoint())==0){
 					if(receivedDetails.get(receivedDetailTable.getSelectedRow()).isFlag()){
@@ -575,7 +581,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 				PopUpPicDocking pop = new PopUpPicDocking(parent);
 				pop.show();
 				pop.setLocationRelativeTo(null);
-				
+				pop.setModal(true);
 			}
 		});
 		backBtn.addActionListener(new ActionListener() {

@@ -103,6 +103,7 @@ public class ListReceivedPanel extends JPanel {
 				PopUpAdvanceSearch pop = new PopUpAdvanceSearch(listReceivedPanel);
 				pop.show();
 				pop.setLocationRelativeTo(null);
+				pop.setModal(true);
 			}
 		});
 		
