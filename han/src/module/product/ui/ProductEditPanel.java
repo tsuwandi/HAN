@@ -54,6 +54,7 @@ import module.product.model.Product;
 import module.product.model.ProductCategory;
 import module.product.model.Uom;
 import module.util.Bridging;
+import module.util.JTextFieldLimit;
 import sun.net.www.content.text.plain;
 
 public class ProductEditPanel extends JPanel implements Bridging {
@@ -393,6 +394,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		idField.setBounds(220, 80, 150, 25);
 
 		nameField = new JTextField();
+		nameField.setDocument(new JTextFieldLimit(50));
 		nameField.setBounds(220, 110, 150, 25);
 
 		try {
