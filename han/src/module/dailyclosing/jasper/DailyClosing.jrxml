@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-07-24T18:56:50 -->
+<!-- 2016-08-15T22:06:34 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DailyClosing" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="95b2a938-121a-4c3f-8fab-14a4576ec553">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
@@ -109,8 +109,8 @@
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
-		<field name="dryInCode" class="java.lang.String"/>
-		<field name="dateIn" class="java.util.Date"/>
+		<field name="dryOutCode" class="java.lang.String"/>
+		<field name="dateOut" class="java.util.Date"/>
 		<field name="chamber.chamber" class="java.lang.String"/>
 		<field name="palletCard.palletCardCode" class="java.lang.String"/>
 		<field name="palletCard.productCode" class="java.lang.String"/>
@@ -523,7 +523,7 @@
 						<jr:columnHeader style="Table 2_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="111" height="15" uuid="40f1e4c0-67d0-497b-a442-0dc6b5462ae3"/>
-								<text><![CDATA[DryInCode]]></text>
+								<text><![CDATA[DryOutCode]]></text>
 							</staticText>
 							<staticText>
 								<reportElement x="0" y="15" width="111" height="15" uuid="f83aebbd-63ff-41e7-adcf-8041da6d9b1d"/>
@@ -537,7 +537,7 @@
 							<textField>
 								<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="111" height="15" uuid="61c09beb-8503-49c6-9ab8-4795f47046ed"/>
 								<textElement textAlignment="Left" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{dryInCode}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{dryOutCode}]]></textFieldExpression>
 							</textField>
 							<textField>
 								<reportElement x="0" y="15" width="111" height="15" uuid="7e64d976-5287-43bd-b194-d7e823206cd4"/>
@@ -554,7 +554,7 @@
 								<textElement textAlignment="Left" verticalAlignment="Middle">
 									<font fontName="Serif" size="11"/>
 								</textElement>
-								<text><![CDATA[Date In]]></text>
+								<text><![CDATA[Date Out]]></text>
 							</staticText>
 							<staticText>
 								<reportElement x="0" y="15" width="111" height="15" uuid="d52bb9c4-59d4-4375-b93f-b20d0edd1bff"/>
@@ -568,7 +568,7 @@
 							<textField>
 								<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="111" height="15" uuid="14223847-19be-4ace-99db-ae7a98c28c0d"/>
 								<textElement textAlignment="Left" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{dateIn}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{dateOut}]]></textFieldExpression>
 							</textField>
 							<textField>
 								<reportElement x="0" y="15" width="111" height="15" uuid="fc149398-97df-4ccb-843f-9656dd4d3f7a"/>
