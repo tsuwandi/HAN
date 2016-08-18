@@ -20,7 +20,7 @@ import module.sn.chamber.model.Chamber;
 public class DryOutBL {
 
 	private DataSource dataSource;
-
+	
 	public DryOutBL(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
@@ -91,6 +91,8 @@ public class DryOutBL {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 
+			dryOut.setStatus(dryOut.STATUS_COMPLETED);
+			
 			new DryOutDAO(con).save(dryOut);
 
 			for (DryOutPallet dop : listOfDryOutPallet) {

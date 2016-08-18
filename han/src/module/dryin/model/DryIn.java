@@ -234,4 +234,17 @@ public class DryIn implements Serializable {
 			palletCard = new PalletCard();
 		this.palletCard = palletCard;
 	}
+	
+	private String status;
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	public final String STATUS_COMPLETED = "COMPLETED";
+	public final String STATUS_FINAL = "FINAL";
 }

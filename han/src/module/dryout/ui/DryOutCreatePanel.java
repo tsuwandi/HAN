@@ -106,8 +106,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 	public DryOutCreatePanel() {
 		dryOutCreatePanel = this;
 
-
-		//setPreferredSize(new Dimension(1366, 725));
+		// setPreferredSize(new Dimension(1366, 725));
 		setLayout(null);
 
 		panel = new JPanel();
@@ -199,7 +198,10 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		btnSearchPalletCard = new JButton("Cari Kartu Pallet");
 		btnSearchPalletCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showAddDryOutPalletDialog(dryOutCreatePanel);
+				if (cbChamber.getSelectedIndex() == 0)
+					DialogBox.showChooseChamberForSearchPalletInDryOut();
+				else
+					showAddDryOutPalletDialog(dryOutCreatePanel);
 			}
 		});
 		btnSearchPalletCard.setBounds(49, 175, 150, 25);
@@ -365,6 +367,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 			}
 		});
 		btnCancel.setBounds(49, 570, 100, 25);
+		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
 
 		txtRitNo.addFocusListener(new FocusAdapter() {
@@ -381,7 +384,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		
+
 		txtRitNo.setNextFocusableComponent(txtOrdinal);
 
 		txtDate.addFocusListener(new FocusAdapter() {
@@ -426,7 +429,8 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		txtOrdinal.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				txtOrdinal.setText(NumberFormat.onTypeNum(txtOrdinal.getText().length(), txtOrdinal.getText().toString()));
+				txtOrdinal.setText(
+						NumberFormat.onTypeNum(txtOrdinal.getText().length(), txtOrdinal.getText().toString()));
 
 				if (txtOrdinal.getText().length() > 3)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
@@ -440,12 +444,12 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 
 		makeDefaultDatePalletCardCode();
 		makeCodeNumber();
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
-		    @Override
-		    public void run() {
-		        dcDateOut.requestFocusInWindow();
-		    }
+			@Override
+			public void run() {
+				dcDateOut.requestFocusInWindow();
+			}
 		});
 	}
 
@@ -497,12 +501,12 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 				DateUtil.setTimeStamp(dcDateOut.getDate(), Integer.parseInt(cbDateInHour.getSelectedItem().toString()),
 						Integer.parseInt(cbDateInMinute.getSelectedItem().toString()), 0));
 		dryOut.setChamberId(cbChamber.getDataIndex().getId());
-		
-		if(!txtTotalVolume.getText().equals(""))
+
+		if (!txtTotalVolume.getText().equals(""))
 			dryOut.setTotalVolume(Double.parseDouble(txtTotalVolume.getText()));
 		else
 			dryOut.setTotalVolume(0);
-		
+
 		try {
 			ServiceFactory.getDryOutBL().save(dryOut, listOfDryOutPallet);
 			DialogBox.showInsert();

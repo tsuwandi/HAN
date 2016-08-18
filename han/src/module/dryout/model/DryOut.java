@@ -210,7 +210,7 @@ public class DryOut implements Serializable {
 			chamber = new Chamber();
 		this.chamber = chamber;
 	}
-	
+
 	private Date confirmDate;
 
 	public Date getConfirmDate() {
@@ -234,4 +234,17 @@ public class DryOut implements Serializable {
 			palletCard = new PalletCard();
 		this.palletCard = palletCard;
 	}
+
+	private String status;
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	public final String STATUS_COMPLETED = "COMPLETED";
+	public final String STATUS_FINAL = "FINAL";
 }

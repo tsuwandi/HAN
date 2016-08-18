@@ -64,7 +64,7 @@ public class ProductCreatePanel extends JPanel {
 	private JLabel idLbl;
 	private JLabel nameLbl;
 	private JLabel catLbl;
-	private JLabel statLbl;
+	//private JLabel statLbl;
 	private JLabel unitLbl;
 	private JLabel maintainLbl;
 	// private JLabel picLbl;
@@ -120,7 +120,7 @@ public class ProductCreatePanel extends JPanel {
 	public JTextField idField;
 	public JTextField nameField;
 	public ComboBox<ProductCategory> catField;
-	public JComboBox<String> statField;
+	//public JComboBox<String> statField;
 	public ComboBox<Uom> uomField;
 	public ButtonGroup maintain;
 	public JRadioButton maintainYesField;
@@ -228,12 +228,12 @@ public class ProductCreatePanel extends JPanel {
 
 	Date todayDate;
 	// SimpleDateFormat dateFormat = new SimpleDateFormat(yyyy-MM-dd);
-	
+
 	ProductCreatePanel productCreatePanel;
 
 	public ProductCreatePanel() {
 		this.productCreatePanel = this;
-		
+
 		setLayout(null);
 		// this.parent = this;
 		setPreferredSize(new Dimension(1166, 620));
@@ -264,6 +264,7 @@ public class ProductCreatePanel extends JPanel {
 				}
 			}
 		});
+		backBtn.setFocusable(false);
 		backBtn.setHorizontalAlignment(SwingConstants.CENTER);
 
 		titleLbl = new JLabel("BUAT BARU");
@@ -276,12 +277,12 @@ public class ProductCreatePanel extends JPanel {
 		nameLbl.setBounds(50, 110, 100, 25);
 		catLbl = new JLabel("<html>Kategori Produk <font color=\"red\">*</font></html>");
 		catLbl.setBounds(50, 140, 100, 25);
-		statLbl = new JLabel("<html>Status Produk <font color=\"red\">*</font></html>");
-		statLbl.setBounds(50, 170, 100, 25);
+//		statLbl = new JLabel("<html>Status Produk <font color=\"red\">*</font></html>");
+//		statLbl.setBounds(50, 170, 100, 25);
 		unitLbl = new JLabel("<html>Satuan Produk <font color=\"red\">*</font></html>");
-		unitLbl.setBounds(50, 200, 100, 25);
+		unitLbl.setBounds(50, 170, 100, 25);
 		maintainLbl = new JLabel("<html>Maintain Stock <font color=\"red\">*</font></html>");
-		maintainLbl.setBounds(50, 230, 100, 25);
+		maintainLbl.setBounds(50, 200, 100, 25);
 		// picLbl = new JLabel("Gambar");
 		// picLbl.setBounds(20, 260, 100, 25);
 
@@ -430,11 +431,11 @@ public class ProductCreatePanel extends JPanel {
 		});
 		catField.setBounds(220, 140, 150, 25);
 
-		statField = new JComboBox<>();
-		statField.addItem("-- Pilih Status Produk --");
-		statField.addItem("Aktif");
-		statField.addItem("Tidak Aktif");
-		statField.setBounds(220, 170, 150, 25);
+//		statField = new JComboBox<>();
+//		statField.addItem("-- Pilih Status Produk --");
+//		statField.addItem("Aktif");
+//		statField.addItem("Tidak Aktif");
+//		statField.setBounds(220, 170, 150, 25);
 
 		try {
 			units = ServiceFactory.getProductBL().getAllUom();
@@ -444,17 +445,17 @@ public class ProductCreatePanel extends JPanel {
 		}
 		uomField = new ComboBox<Uom>();
 		uomField.setList(units);
-		uomField.setBounds(220, 200, 150, 25);
+		uomField.setBounds(220, 170, 150, 25);
 
 		maintain = new ButtonGroup();
 
 		maintainYesField = new JRadioButton("Ya");
 		maintainYesField.setSelected(true);
-		maintainYesField.setBounds(220, 230, 50, 25);
+		maintainYesField.setBounds(220, 200, 50, 25);
 
 		maintainNoField = new JRadioButton("Tidak");
 		maintainNoField.setSelected(false);
-		maintainNoField.setBounds(290, 230, 50, 25);
+		maintainNoField.setBounds(290, 200, 50, 25);
 
 		maintain.add(maintainYesField);
 		maintain.add(maintainNoField);
@@ -508,6 +509,7 @@ public class ProductCreatePanel extends JPanel {
 		// conField.setBounds(220, 440, 150, 25);
 
 		minQtyField = new NumberField(5);
+		minQtyField.setText("0");
 		minQtyField.setBounds(220, 440, 150, 25);
 
 		flagSerial = new ButtonGroup();
@@ -838,7 +840,7 @@ public class ProductCreatePanel extends JPanel {
 
 			}
 		});
-		
+
 		copyFromBtn = new JButton("Copy From");
 		copyFromBtn.setBounds(825, 550, 100, 25);
 		copyFromBtn.addActionListener(new ActionListener() {
@@ -850,9 +852,8 @@ public class ProductCreatePanel extends JPanel {
 				productCopyFromDialog.setLocationRelativeTo(null);
 				productCopyFromDialog.setVisible(true);
 			}
-		});		
-		
-		
+		});
+
 		add(copyFromBtn);
 		add(breadcrumb);
 		add(backBtn);
@@ -860,7 +861,7 @@ public class ProductCreatePanel extends JPanel {
 		add(idLbl);
 		add(nameLbl);
 		add(catLbl);
-		add(statLbl);
+		//add(statLbl);
 		add(unitLbl);
 		add(maintainLbl);
 		// containerPnl.add(picLbl);
@@ -903,7 +904,7 @@ public class ProductCreatePanel extends JPanel {
 		add(idField);
 		add(nameField);
 		add(catField);
-		add(statField);
+		//add(statField);
 		add(uomField);
 		add(maintainYesField);
 		add(maintainNoField);
@@ -973,17 +974,17 @@ public class ProductCreatePanel extends JPanel {
 		catLblError.setForeground(Color.RED);
 		catLblError.setBounds(425, 140, 225, 25);
 
-		statLblError = new JLabel("");
-		statLblError.setForeground(Color.RED);
-		statLblError.setBounds(425, 170, 225, 25);
+//		statLblError = new JLabel("");
+//		statLblError.setForeground(Color.RED);
+//		statLblError.setBounds(425, 170, 225, 25);
 
 		unitLblError = new JLabel("");
 		unitLblError.setForeground(Color.RED);
-		unitLblError.setBounds(425, 200, 225, 25);
+		unitLblError.setBounds(425, 170, 225, 25);
 
 		maintainLblError = new JLabel("");
 		maintainLblError.setForeground(Color.RED);
-		maintainLblError.setBounds(425, 230, 225, 25);
+		maintainLblError.setBounds(425, 200, 225, 25);
 
 		typeLblError = new JLabel("");
 		typeLblError.setForeground(Color.RED);
@@ -1040,41 +1041,38 @@ public class ProductCreatePanel extends JPanel {
 	static final int BALKEN_KERING = 2;
 
 	public void doInsert() {
-		Product product = new Product();
-
-		product.setProductCode(idField.getText());
-		product.setProductName(nameField.getText());
-		product.setProductCat(catField.getSelectedIndex());
-		if (statField.getSelectedIndex() != 0) {
-			product.setProductStat(statField.getSelectedItem().toString());
-		} else {
-			product.setProductStat(null);
-		}
-		product.setProductUom(uomField.getDataIndex().getId());
-
-		if (maintainYesField.isSelected())
-			product.setIsMaintain(0);
-		else
-			product.setIsMaintain(1);
-
-		product.setWoodType(typeField.getDataIndex().getId());
-		product.setGrade(gradeField.getDataIndex().getId());
-		product.setThickness(Double.parseDouble(thickField.getText()));
-		product.setLength(Double.parseDouble(longField.getText()));
-		product.setWidth(Double.parseDouble(wideField.getText()));
-
-		if (product.getProductCat() == BALKEN_BASAH)
-			product.setCondition(BALKEN_BASAH);
-		else if (product.getProductCat() == BALKEN_KERING)
-			product.setCondition(BALKEN_KERING);
-
-		product.setMinQy(Integer.parseInt(minQtyField.getText()));
-
 		try {
+			Product product = new Product();
+
+			product.setProductCode(idField.getText());
+			product.setProductName(nameField.getText());
+			product.setProductCat(catField.getSelectedIndex());
+//			if (statField.getSelectedIndex() != 0) {
+//				product.setProductStat(statField.getSelectedItem().toString());
+//			} else {
+//				product.setProductStat(null);
+//			}
+			product.setProductUom(uomField.getDataIndex().getId());
+
+			if (maintainYesField.isSelected())
+				product.setIsMaintain(0);
+			else
+				product.setIsMaintain(1);
+
+			if (product.getProductCat() == BALKEN_BASAH || product.getProductCat() == BALKEN_KERING) {
+				product.setWoodType(typeField.getDataIndex().getId());
+				product.setGrade(gradeField.getDataIndex().getId());
+				product.setThickness(Double.parseDouble(thickField.getText()));
+				product.setLength(Double.parseDouble(longField.getText()));
+				product.setWidth(Double.parseDouble(wideField.getText()));
+			}
+
+			product.setMinQy(Integer.parseInt(minQtyField.getText()));
+
 			ServiceFactory.getProductBL().save(product);
 			DialogBox.showInsert();
 			MainPanel.changePanel("module.product.ui.ProductListPanel");
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			DialogBox.showErrorException();
 			e.printStackTrace();
 		}
@@ -1137,10 +1135,10 @@ public class ProductCreatePanel extends JPanel {
 			isValid = false;
 		}
 
-		if (statField.getSelectedItem().toString() == "Pilih" || statField.getSelectedIndex() == 0) {
-			statLblError.setText("Status Produk harus dipilih");
-			isValid = false;
-		}
+//		if (statField.getSelectedItem().toString() == "Pilih" || statField.getSelectedIndex() == 0) {
+//			statLblError.setText("Status Produk harus dipilih");
+//			isValid = false;
+//		}
 
 		if (uomField.getSelectedItem().toString() == "Pilih" || uomField.getSelectedIndex() == 0) {
 			unitLblError.setText("Satuan Produk harus dipilih");
@@ -1543,30 +1541,30 @@ public class ProductCreatePanel extends JPanel {
 		}
 		return productCode;
 	}
-	
+
 	protected void loadData(String productCode) {
 		try {
 			product = ServiceFactory.getProductBL().getProductByCode(productCode);
 
 			if (product != null) {
 				nameField.setText(product.getProductName());
-				if (product.getProductStat() == null) {
-					statField.setSelectedIndex(0);
-				} else if (product.getProductStat().toUpperCase().equals("aktif".toUpperCase())) {
-					statField.setSelectedIndex(1);
-				} else if (product.getProductStat().toUpperCase().equals("tidak aktif".toUpperCase())) {
-					statField.setSelectedIndex(2);
-				}
+//				if (product.getProductStat() == null) {
+//					statField.setSelectedIndex(0);
+//				} else if (product.getProductStat().toUpperCase().equals("aktif".toUpperCase())) {
+//					statField.setSelectedIndex(1);
+//				} else if (product.getProductStat().toUpperCase().equals("tidak aktif".toUpperCase())) {
+//					statField.setSelectedIndex(2);
+//				}
 				uomField.setSelectedIndex(product.getProductUom());
-				
+
 				typeField.setSelectedIndex(product.getWoodType());
 				gradeField.setSelectedIndex(product.getGrade());
 				thickField.setText(String.valueOf(product.getThickness()));
 				longField.setText(String.valueOf(product.getLength()));
 				wideField.setText(String.valueOf(product.getWidth()));
-				//conField.setSelectedIndex(product.getCondition());
+				// conField.setSelectedIndex(product.getCondition());
 				minQtyField.setText(String.valueOf(product.getMinQy()));
-				if(product.getIsMaintain() == 0) {
+				if (product.getIsMaintain() == 0) {
 					maintainYesField.setSelected(true);
 				} else {
 					maintainNoField.setSelected(true);

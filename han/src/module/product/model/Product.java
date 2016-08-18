@@ -341,6 +341,4 @@ public class Product {
 	public void setProductCatName(String productCatName) {
 		this.productCatName = productCatName;
 	}
-	
-	
 }

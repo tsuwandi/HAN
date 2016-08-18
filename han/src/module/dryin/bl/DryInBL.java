@@ -16,7 +16,6 @@ import module.dryin.model.PicTally;
 import module.employee.dao.EmployeeDAO;
 import module.employee.model.Employee;
 import module.pembelian.dao.PalletCardDAO;
-import module.pembelian.model.Pallet;
 import module.pembelian.model.PalletCard;
 import module.sn.chamber.dao.ChamberDAO;
 import module.sn.chamber.model.Chamber;
@@ -24,7 +23,7 @@ import module.sn.chamber.model.Chamber;
 public class DryInBL {
 
 	private DataSource dataSource;
-
+	
 	public DryInBL(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
@@ -117,6 +116,8 @@ public class DryInBL {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 
+			dryIn.setStatus(dryIn.STATUS_COMPLETED);
+			
 			new DryInDAO(con).save(dryIn);
 
 			// for (PicTally pc : listOfPicTally) {
@@ -146,6 +147,8 @@ public class DryInBL {
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
+			
+			dryIn.setStatus(dryIn.STATUS_COMPLETED);
 
 			new DryInDAO(con).update(dryIn);
 

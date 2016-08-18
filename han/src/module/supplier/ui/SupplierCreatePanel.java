@@ -196,22 +196,22 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		lblErrorSuppType.setBounds(425, 200, 225, 25);
 		panel.add(lblErrorSuppType);
 
-		lblSuppStatus = new JLabel("<html>Status Supplier <font color=\"red\">*</font></html>");
-		lblSuppStatus.setBounds(50, 230, 150, 25);
-		panel.add(lblSuppStatus);
+//		lblSuppStatus = new JLabel("<html>Status Supplier <font color=\"red\">*</font></html>");
+//		lblSuppStatus.setBounds(50, 230, 150, 25);
+//		panel.add(lblSuppStatus);
 
-		cbSuppStatus = new JComboBox<String>();
-		cbSuppStatus.addItem("-- Pilih Status Supplier --");
-		cbSuppStatus.addItem("Aktif");
-		cbSuppStatus.addItem("Nonaktif Sementara");
-		cbSuppStatus.addItem("Nonaktif");
-		cbSuppStatus.setBounds(220, 230, 150, 25);
-		panel.add(cbSuppStatus);
-
-		lblErrorSuppStatus = new JLabel();
-		lblErrorSuppStatus.setForeground(Color.RED);
-		lblErrorSuppStatus.setBounds(425, 230, 225, 25);
-		panel.add(lblErrorSuppStatus);
+//		cbSuppStatus = new JComboBox<String>();
+//		cbSuppStatus.addItem("-- Pilih Status Supplier --");
+//		cbSuppStatus.addItem("Aktif");
+//		cbSuppStatus.addItem("Nonaktif Sementara");
+//		cbSuppStatus.addItem("Nonaktif");
+//		cbSuppStatus.setBounds(220, 230, 150, 25);
+//		panel.add(cbSuppStatus);
+//
+//		lblErrorSuppStatus = new JLabel();
+//		lblErrorSuppStatus.setForeground(Color.RED);
+//		lblErrorSuppStatus.setBounds(425, 230, 225, 25);
+//		panel.add(lblErrorSuppStatus);
 
 		lblBreadcrumb = new JLabel("ERP > Pembelian > Supplier");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -453,6 +453,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 			}
 		});
 		btnCancel.setBounds(50, 760, 100, 25);
+		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -471,7 +472,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		lblErrorSuppCode.setText("");
 		lblErrorSuppName.setText("");
 		lblErrorSuppType.setText("");
-		lblErrorSuppStatus.setText("");
+		//lblErrorSuppStatus.setText("");
 		lblErrorCurrency.setText("");
 		lblErrorTop.setText("");
 		lblErrorDefaultTax.setText("");
@@ -503,10 +504,10 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 			isValid = false;
 		}
 
-		if (cbSuppStatus.getSelectedItem() == null || cbSuppStatus.getSelectedIndex() == 0) {
-			lblErrorSuppStatus.setText("Combobox Status Supplier harus dipilih.");
-			isValid = false;
-		}
+//		if (cbSuppStatus.getSelectedItem() == null || cbSuppStatus.getSelectedIndex() == 0) {
+//			lblErrorSuppStatus.setText("Combobox Status Supplier harus dipilih.");
+//			isValid = false;
+//		}
 
 		if (cbCurrency.getSelectedItem() == null || cbCurrency.getSelectedIndex() == 0) {
 			lblErrorCurrency.setText("Combobox Kurs harus dipilih.");
@@ -535,7 +536,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		supplier.setPt(txtPt.getText());
 		supplier.setNpwp(txtNpwp.getText());
 		supplier.setSuppTypeId(cbSuppType.getDataIndex().getId());
-		supplier.setSuppStatus(cbSuppStatus.getSelectedItem().toString());
+		//supplier.setSuppStatus(cbSuppStatus.getSelectedItem().toString());
 		supplier.setCurrencyId(cbCurrency.getDataIndex().getId());
 
 		if (!"".equals(txtTop.getText()))

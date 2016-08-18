@@ -60,7 +60,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 	private JLabel idLbl;
 	private JLabel nameLbl;
 	private JLabel catLbl;
-	private JLabel statLbl;
+	//private JLabel statLbl;
 	private JLabel unitLbl;
 	private JLabel maintainLbl;
 	private JLabel picLbl;
@@ -116,7 +116,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 	public JTextField idField;
 	public JTextField nameField;
 	public ComboBox<ProductCategory> catField;
-	public JComboBox<String> statField;
+	//public JComboBox<String> statField;
 	public ComboBox<Uom> uomField;
 	public ButtonGroup maintain;
 	public JRadioButton maintainYesField;
@@ -260,6 +260,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 				MainPanel.changePanel("module.product.ui.ProductListPanel");
 			}
 		});
+		backBtn.setFocusable(false);
 		backBtn.setHorizontalAlignment(SwingConstants.CENTER);
 
 		titleLbl = new JLabel("VIEW DETAIL");
@@ -272,12 +273,12 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		nameLbl.setBounds(50, 110, 100, 25);
 		catLbl = new JLabel("<html>Kategori Produk <font color=\"red\">*</font></html>");
 		catLbl.setBounds(50, 140, 100, 25);
-		statLbl = new JLabel("<html>Status Produk <font color=\"red\">*</font></html>");
-		statLbl.setBounds(50, 170, 100, 25);
+//		statLbl = new JLabel("<html>Status Produk <font color=\"red\">*</font></html>");
+//		statLbl.setBounds(50, 170, 100, 25);
 		unitLbl = new JLabel("<html>Satuan Produk <font color=\"red\">*</font></html>");
-		unitLbl.setBounds(50, 200, 100, 25);
+		unitLbl.setBounds(50, 170, 100, 25);
 		maintainLbl = new JLabel("<html>Maintain Stock <font color=\"red\">*</font></html>");
-		maintainLbl.setBounds(50, 230, 100, 25);
+		maintainLbl.setBounds(50, 200, 100, 25);
 		picLbl = new JLabel("Gambar");
 		picLbl.setBounds(50, 260, 100, 25);
 
@@ -394,12 +395,12 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		catField.setEnabled(false);
 		catField.setBounds(220, 140, 150, 25);
 
-		statField = new JComboBox<>();
-		statField.addItem("Pilih");
-		statField.addItem("Aktif");
-		statField.addItem("Tidak Aktif");
-		statField.setEnabled(false);
-		statField.setBounds(220, 170, 150, 25);
+//		statField = new JComboBox<>();
+//		statField.addItem("Pilih");
+//		statField.addItem("Aktif");
+//		statField.addItem("Tidak Aktif");
+//		statField.setEnabled(false);
+//		statField.setBounds(220, 170, 150, 25);
 
 		try {
 			units = ServiceFactory.getProductBL().getAllUom();
@@ -410,17 +411,17 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		uomField = new ComboBox<Uom>();
 		uomField.setList(units);
 		uomField.setEnabled(false);
-		uomField.setBounds(220, 200, 150, 25);
+		uomField.setBounds(220, 170, 150, 25);
 
 		maintain = new ButtonGroup();
 
 		maintainYesField = new JRadioButton("Ya");
 		maintainYesField.setEnabled(false);
-		maintainYesField.setBounds(220, 230, 50, 25);
+		maintainYesField.setBounds(220, 200, 50, 25);
 
 		maintainNoField = new JRadioButton("Tidak");
 		maintainNoField.setEnabled(false);
-		maintainNoField.setBounds(280, 230, 50, 25);
+		maintainNoField.setBounds(280, 200, 50, 25);
 
 		maintain.add(maintainYesField);
 		maintain.add(maintainNoField);
@@ -500,7 +501,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 
 		minQtyField = new JTextField();
 		minQtyField.setEnabled(false);
-		minQtyField.setBounds(220, 470, 150, 25);
+		minQtyField.setBounds(220, 440, 150, 25);
 
 		flagSerial = new ButtonGroup();
 
@@ -761,7 +762,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		add(idLbl);
 		add(nameLbl);
 		add(catLbl);
-		add(statLbl);
+		//add(statLbl);
 		add(unitLbl);
 		add(maintainLbl);
 		// containerPnl.add(picLbl);
@@ -804,7 +805,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		add(idField);
 		add(nameField);
 		add(catField);
-		add(statField);
+		//add(statField);
 		add(uomField);
 		add(maintainYesField);
 		add(maintainNoField);
@@ -876,17 +877,17 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		catLblError.setForeground(Color.RED);
 		catLblError.setBounds(425, 140, 225, 25);
 
-		statLblError = new JLabel("");
-		statLblError.setForeground(Color.RED);
-		statLblError.setBounds(425, 170, 225, 25);
+//		statLblError = new JLabel("");
+//		statLblError.setForeground(Color.RED);
+//		statLblError.setBounds(425, 170, 225, 25);
 
 		unitLblError = new JLabel("");
 		unitLblError.setForeground(Color.RED);
-		unitLblError.setBounds(425, 200, 225, 25);
+		unitLblError.setBounds(425, 170, 225, 25);
 
 		maintainLblError = new JLabel("");
 		maintainLblError.setForeground(Color.RED);
-		maintainLblError.setBounds(425, 230, 225, 25);
+		maintainLblError.setBounds(425, 200, 225, 25);
 
 		typeLblError = new JLabel("");
 		typeLblError.setForeground(Color.RED);
@@ -972,19 +973,25 @@ public class ProductViewPanel extends JPanel implements Bridging {
 				idField.setText(product.getProductCode());
 				nameField.setText(product.getProductName());
 				catField.setSelectedIndex(product.getProductCat());
-				if (product.getProductStat() == null) {
-					statField.setSelectedIndex(0);
-				} else if (product.getProductStat().toUpperCase().equals("aktif".toUpperCase())) {
-					statField.setSelectedIndex(1);
-				} else {
-					statField.setSelectedIndex(2);
-				}
+//				if (product.getProductStat() == null) {
+//					statField.setSelectedIndex(0);
+//				} else if (product.getProductStat().toUpperCase().equals("aktif".toUpperCase())) {
+//					statField.setSelectedIndex(1);
+//				} else {
+//					statField.setSelectedIndex(2);
+//				}
 				uomField.setSelectedIndex(product.getProductUom());
 				typeField.setSelectedIndex(product.getWoodType());
 				gradeField.setSelectedIndex(product.getGrade());
-				thickField.setText(String.valueOf(product.getThickness()));
-				longField.setText(String.valueOf(product.getLength()));
-				wideField.setText(String.valueOf(product.getWidth()));
+				
+				if(product.getThickness() != 0.00)
+					thickField.setText(String.valueOf(product.getThickness()));
+				
+				if(product.getLength() != 0.00)
+					longField.setText(String.valueOf(product.getLength()));
+				
+				if(product.getWidth() != 0.00)
+					wideField.setText(String.valueOf(product.getWidth()));
 				//conField.setSelectedIndex(product.getCondition());
 				minQtyField.setText(String.valueOf(product.getMinQy()));
 				if(product.getIsMaintain() == 0) {

@@ -431,6 +431,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 			}
 		});
 		btnCancel.setBounds(49, 570, 100, 25);
+		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
 		
 		txtRitNo.addFocusListener(new FocusAdapter() {

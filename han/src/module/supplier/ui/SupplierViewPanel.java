@@ -179,20 +179,20 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		lblErrorSuppType.setBounds(425, 200, 225, 25);
 		panel.add(lblErrorSuppType);
 
-		lblSuppStatus = new JLabel("<html>Status Supplier <font color=\"red\">*</font></html>");
-		lblSuppStatus.setBounds(50, 230, 150, 25);
-		panel.add(lblSuppStatus);
-
-		cbSuppStatus = new JComboBox<String>();
-		cbSuppStatus.setEnabled(false);
-		cbSuppStatus.addItem("-- Pilih Status Supplier --");
-		cbSuppStatus.setBounds(220, 230, 150, 25);
-		panel.add(cbSuppStatus);
-
-		lblErrorSuppStatus = new JLabel();
-		lblErrorSuppStatus.setForeground(Color.RED);
-		lblErrorSuppStatus.setBounds(425, 230, 225, 25);
-		panel.add(lblErrorSuppStatus);
+//		lblSuppStatus = new JLabel("<html>Status Supplier <font color=\"red\">*</font></html>");
+//		lblSuppStatus.setBounds(50, 230, 150, 25);
+//		panel.add(lblSuppStatus);
+//
+//		cbSuppStatus = new JComboBox<String>();
+//		cbSuppStatus.setEnabled(false);
+//		cbSuppStatus.addItem("-- Pilih Status Supplier --");
+//		cbSuppStatus.setBounds(220, 230, 150, 25);
+//		panel.add(cbSuppStatus);
+//
+//		lblErrorSuppStatus = new JLabel();
+//		lblErrorSuppStatus.setForeground(Color.RED);
+//		lblErrorSuppStatus.setBounds(425, 230, 225, 25);
+//		panel.add(lblErrorSuppStatus);
 
 		lblBreadcrumb = new JLabel("ERP > Pembelian > Supplier");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -356,6 +356,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 			}
 		});
 		btnCancel.setBounds(50, 760, 100, 25);
+		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
 	}
 
@@ -373,8 +374,8 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 				txtNpwp.setText(supplier.getNpwp());
 				cbSuppType.addItem(supplier.getSuppType().getSuppType());
 				cbSuppType.setSelectedIndex(1);
-				cbSuppStatus.addItem(supplier.getSuppStatus());
-				cbSuppStatus.setSelectedIndex(1);
+				//cbSuppStatus.addItem(supplier.getSuppStatus());
+				//cbSuppStatus.setSelectedIndex(1);
 				txtDefaultTax.setText(String.valueOf(supplier.getDefaultTax()));
 //				txtAccountNo.setText(supplier.getAccountNo());
 //				cbBank.addItem(supplier.getBank().getBank());

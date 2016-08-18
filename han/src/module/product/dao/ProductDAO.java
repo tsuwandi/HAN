@@ -37,9 +37,9 @@ public class ProductDAO {
 			+ "netto, netto_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, "
 			+ "expense_acc_id, main_supp_code, manufacturer, is_sales_item, is_service_item, sell_cost_center_id, "
 			+ "income_acc_id, max_disc, a.input_date, a.input_by, a.edit_date, a.edited_by, "
-			+ "b.wood_type, c.grade, d.product_category " + "from product a join wood_type b on a.wood_type_id = b.id "
-			+ "join grade c on a.grade_id = c.id " + "join product_category d on a.product_category_id = d.id "
-			+ "join uom e on a.product_uom_id = e.id "
+			+ "b.wood_type, c.grade, d.product_category " + "from product a left join wood_type b on a.wood_type_id = b.id "
+			+ "left join grade c on a.grade_id = c.id " + "inner join product_category d on a.product_category_id = d.id "
+			+ "inner join uom e on a.product_uom_id = e.id "
 			+ "where 1=1 and a.deleted_date is null and a.deleted_by is null ";
 
 	private String getAllNoOrder = "select a.id, product_code, product_name, product_category_id, "
@@ -48,8 +48,8 @@ public class ProductDAO {
 			+ "netto, netto_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, "
 			+ "expense_acc_id, main_supp_code, manufacturer, is_sales_item, is_service_item, sell_cost_center_id, "
 			+ "income_acc_id, max_disc, a.input_date, a.input_by, a.edit_date, a.edited_by, "
-			+ "b.wood_type, c.grade, d.product_category " + "from product a join wood_type b on a.wood_type_id = b.id "
-			+ "join grade c on a.grade_id = c.id " + "join product_category d on a.product_category_id = d.id "
+			+ "b.wood_type, c.grade, d.product_category " + "from product a left join wood_type b on a.wood_type_id = b.id "
+			+ "left join grade c on a.grade_id = c.id " + "inner join product_category d on a.product_category_id = d.id "
 			+ "where 1=1 ";
 
 	private String productCatQuery = "select * from product_category order by id asc";
@@ -102,11 +102,32 @@ public class ProductDAO {
 			insertProductStatement.setString(4, product.getProductStat());
 			insertProductStatement.setInt(5, product.getProductUom());
 			insertProductStatement.setInt(6, product.getIsMaintain());
-			insertProductStatement.setInt(7, product.getWoodType());
-			insertProductStatement.setInt(8, product.getGrade());
-			insertProductStatement.setDouble(9, product.getThickness());
-			insertProductStatement.setDouble(10, product.getLength());
-			insertProductStatement.setDouble(11, product.getWidth());
+			
+			if(product.getWoodType() == 0)
+				insertProductStatement.setNull(7, java.sql.Types.INTEGER);
+			else
+				insertProductStatement.setInt(7, product.getWoodType());
+			
+			if(product.getGrade() == 0)
+				insertProductStatement.setNull(8, java.sql.Types.INTEGER);
+			else
+				insertProductStatement.setInt(8, product.getGrade());
+			
+			if(product.getThickness() == null)
+				insertProductStatement.setNull(9, java.sql.Types.DOUBLE);
+			else
+				insertProductStatement.setDouble(9, product.getThickness());
+			
+			if(product.getLength() == null)
+				insertProductStatement.setNull(10, java.sql.Types.DOUBLE);
+			else
+				insertProductStatement.setDouble(10, product.getLength());
+			
+			if(product.getWidth() == null)
+				insertProductStatement.setNull(11, java.sql.Types.DOUBLE);
+			else
+				insertProductStatement.setDouble(11, product.getWidth());
+			
 			insertProductStatement.setInt(12, product.getCondition());
 			insertProductStatement.setInt(13, product.getMinQy());
 			insertProductStatement.setDate(14, DateUtil.getCurrentDate());
@@ -219,7 +240,7 @@ public class ProductDAO {
 				query.append(" order by a.id asc");
 				getAllProductStatement = connection.prepareStatement(query.toString());
 			}
-
+			
 			ResultSet rs = getAllProductStatement.executeQuery();
 			while (rs.next()) {
 				Product product = new Product();
@@ -391,11 +412,32 @@ public class ProductDAO {
 			updateProductStatement.setInt(3, product.getProductCat());
 			updateProductStatement.setInt(4, product.getProductUom());
 			updateProductStatement.setInt(5, product.getIsMaintain());
-			updateProductStatement.setInt(6, product.getWoodType());
-			updateProductStatement.setInt(7, product.getGrade());
-			updateProductStatement.setDouble(8, product.getThickness());
-			updateProductStatement.setDouble(9, product.getLength());
-			updateProductStatement.setDouble(10, product.getWidth());
+			
+			if(product.getWoodType() == 0)
+				updateProductStatement.setNull(6, java.sql.Types.INTEGER);
+			else
+				updateProductStatement.setInt(6, product.getWoodType());
+			
+			if(product.getGrade() == 0)
+				updateProductStatement.setNull(7, java.sql.Types.INTEGER);
+			else
+				updateProductStatement.setInt(7, product.getGrade());
+			
+			if(product.getThickness() == null)
+				updateProductStatement.setNull(8, java.sql.Types.DOUBLE);
+			else
+				updateProductStatement.setDouble(8, product.getThickness());
+			
+			if(product.getLength() == null)
+				updateProductStatement.setNull(9, java.sql.Types.DOUBLE);
+			else
+				updateProductStatement.setDouble(9, product.getLength());
+			
+			if(product.getWidth() == null)
+				updateProductStatement.setNull(10, java.sql.Types.DOUBLE);
+			else
+				updateProductStatement.setDouble(10, product.getWidth());
+			
 			updateProductStatement.setInt(11, product.getCondition());
 			updateProductStatement.setInt(12, product.getMinQy());
 			updateProductStatement.setDate(13, DateUtil.getCurrentDate());
@@ -415,6 +457,7 @@ public class ProductDAO {
 		try {
 			getAllProductStatement = connection.prepareStatement(query);
 			getAllProductStatement.setString(1, product_code);
+			
 			ResultSet rs = getAllProductStatement.executeQuery();
 
 			while (rs.next()) {

@@ -61,4 +61,8 @@ public class DialogBox extends JOptionPane {
 		JOptionPane.showMessageDialog(null, "Tidak ada data yang terhapus, silahkan pilih data.", "Peringatan",
 				JOptionPane.WARNING_MESSAGE);
 	}
+	
+	public static void showChooseChamberForSearchPalletInDryOut() {
+		JOptionPane.showMessageDialog(null, "Silahkan pilih Chamber terlebih dahulu.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+	}
 }

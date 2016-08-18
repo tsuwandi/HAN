@@ -24,7 +24,7 @@ public class SupplierDAO {
 	private PreparedStatement getOrdinalOfCodeNumberStatement;
 
 	private String getAllQuery = "select s.id, s.supp_code, s.supp_name, s.pt, s.npwp, "
-			+ "s.supp_type_id, s.supp_status, s.default_tax, s.account_no,"
+			+ "s.supp_type_id, s.default_tax, s.account_no,"
 			+ "s.bank_id, s.account_name, s.currency_id, s.top, "
 			+ "st.supp_type, b.bank, b.bank_abbr, c.currency, c.currency_abbr from supplier s "
 			+ "inner join supp_type st on s.supp_type_id = st.id left join bank b on s.bank_id = b.id "
@@ -35,11 +35,11 @@ public class SupplierDAO {
 	private String isSuppCodeExistsQuery = "select count(*) as is_exists from supplier where supp_code = ? and deleted_date is null ";
 
 	private String insertQuery = "insert into supplier (supp_code, supp_name, pt, npwp, "
-			+ "supp_type_id, supp_status, default_tax, account_no, bank_id, account_name, currency_id, top, "
-			+ "input_date, input_by) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			+ "supp_type_id, default_tax, account_no, bank_id, account_name, currency_id, top, "
+			+ "input_date, input_by) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 	private String updateQuery = "update supplier set supp_name=?, pt=?, npwp=?, "
-			+ "supp_type_id=?, supp_status=?, default_tax=?, account_no=?, bank_id=?, account_name=?, currency_id=?, top=?, "
+			+ "supp_type_id=?, default_tax=?, account_no=?, bank_id=?, account_name=?, currency_id=?, top=?, "
 			+ "edit_date=?, edited_by=? where supp_code=?";
 
 	private String deleteQuery = "update supplier set deleted_date=?, deleted_by=? where id=?";
@@ -65,7 +65,7 @@ public class SupplierDAO {
 				supplier.setPt(rs.getString("pt"));
 				supplier.setNpwp(rs.getString("npwp"));
 				supplier.setSuppTypeId(rs.getInt("supp_type_id"));
-				supplier.setSuppStatus(rs.getString("supp_status"));
+				//supplier.setSuppStatus(rs.getString("supp_status"));
 				supplier.setDefaultTax(rs.getInt("default_tax"));
 				supplier.setAccountNo(rs.getString("account_no"));
 				supplier.setBankId(rs.getInt("bank_id"));
@@ -124,7 +124,7 @@ public class SupplierDAO {
 				supplier.setPt(rs.getString("pt"));
 				supplier.setNpwp(rs.getString("npwp"));
 				supplier.setSuppTypeId(rs.getInt("supp_type_id"));
-				supplier.setSuppStatus(rs.getString("supp_status"));
+				//supplier.setSuppStatus(rs.getString("supp_status"));
 				supplier.setDefaultTax(rs.getInt("default_tax"));
 				supplier.setAccountNo(rs.getString("account_no"));
 				supplier.setBankId(rs.getInt("bank_id"));
@@ -180,10 +180,10 @@ public class SupplierDAO {
 			if(supplierSearch.getSuppType().getSuppType() != null)
 				query.append(supplierSearch.getSuppType().getSuppType());
 			query.append("%') ");
-			query.append(" and lower(s.supp_status) like lower('%");
-			if(supplierSearch.getSuppStatus() != null)
-				query.append(supplierSearch.getSuppStatus());
-			query.append("%') ");
+//			query.append(" and lower(s.supp_status) like lower('%");
+//			if(supplierSearch.getSuppStatus() != null)
+//				query.append(supplierSearch.getSuppStatus());
+//			query.append("%') ");
 			
 			getAllStatement = connection.prepareStatement(query.toString());
 
@@ -196,7 +196,7 @@ public class SupplierDAO {
 				supplier.setPt(rs.getString("pt"));
 				supplier.setNpwp(rs.getString("npwp"));
 				supplier.setSuppTypeId(rs.getInt("supp_type_id"));
-				supplier.setSuppStatus(rs.getString("supp_status"));
+				//supplier.setSuppStatus(rs.getString("supp_status"));
 				supplier.setDefaultTax(rs.getInt("default_tax"));
 				supplier.setAccountNo(rs.getString("account_no"));
 				supplier.setBankId(rs.getInt("bank_id"));
@@ -260,19 +260,19 @@ public class SupplierDAO {
 			insertStatement.setString(3, supplier.getPt());
 			insertStatement.setString(4, supplier.getNpwp());
 			insertStatement.setInt(5, supplier.getSuppTypeId());
-			insertStatement.setString(6, supplier.getSuppStatus());
-			insertStatement.setDouble(7, supplier.getDefaultTax());
-			insertStatement.setString(8, supplier.getAccountNo());
-			insertStatement.setInt(9, supplier.getBankId());
-			insertStatement.setString(10, supplier.getAccountName());
+			//insertStatement.setString(6, supplier.getSuppStatus());
+			insertStatement.setDouble(6, supplier.getDefaultTax());
+			insertStatement.setString(7, supplier.getAccountNo());
+			insertStatement.setInt(8, supplier.getBankId());
+			insertStatement.setString(9, supplier.getAccountName());
 			if (supplier.getCurrencyId() == 0) {
-				insertStatement.setNull(11, java.sql.Types.INTEGER);
+				insertStatement.setNull(10, java.sql.Types.INTEGER);
 			} else {
-				insertStatement.setInt(11, supplier.getCurrencyId());
+				insertStatement.setInt(10, supplier.getCurrencyId());
 			}
-			insertStatement.setInt(12, supplier.getTop());
-			insertStatement.setDate(13, DateUtil.getCurrentDate());
-			insertStatement.setString(14, "timotius");
+			insertStatement.setInt(11, supplier.getTop());
+			insertStatement.setDate(12, DateUtil.getCurrentDate());
+			insertStatement.setString(13, "timotius");
 			insertStatement.executeUpdate();
 			
 		} catch (SQLException ex) {
@@ -288,20 +288,20 @@ public class SupplierDAO {
 			updateStatement.setString(2, supplier.getPt());
 			updateStatement.setString(3, supplier.getNpwp());
 			updateStatement.setInt(4, supplier.getSuppTypeId());
-			updateStatement.setString(5, supplier.getSuppStatus());
-			updateStatement.setDouble(6, supplier.getDefaultTax());
-			updateStatement.setString(7, supplier.getAccountNo());
-			updateStatement.setInt(8, supplier.getBankId());
-			updateStatement.setString(9, supplier.getAccountName());
+			//updateStatement.setString(5, supplier.getSuppStatus());
+			updateStatement.setDouble(5, supplier.getDefaultTax());
+			updateStatement.setString(6, supplier.getAccountNo());
+			updateStatement.setInt(7, supplier.getBankId());
+			updateStatement.setString(8, supplier.getAccountName());
 			if (supplier.getCurrencyId() == 0) {
-				updateStatement.setNull(10, java.sql.Types.INTEGER);
+				updateStatement.setNull(9, java.sql.Types.INTEGER);
 			} else {
-				updateStatement.setInt(10, supplier.getCurrencyId());
+				updateStatement.setInt(9, supplier.getCurrencyId());
 			}
-			updateStatement.setInt(11, supplier.getTop());
-			updateStatement.setDate(12, DateUtil.getCurrentDate());
-			updateStatement.setString(13, "timotius");
-			updateStatement.setString(14, supplier.getSuppCode());
+			updateStatement.setInt(10, supplier.getTop());
+			updateStatement.setDate(11, DateUtil.getCurrentDate());
+			updateStatement.setString(12, "timotius");
+			updateStatement.setString(13, supplier.getSuppCode());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -339,7 +339,7 @@ public class SupplierDAO {
 				supplier.setPt(rs.getString("pt"));
 				supplier.setNpwp(rs.getString("npwp"));
 				supplier.setSuppTypeId(rs.getInt("supp_type_id"));
-				supplier.setSuppStatus(rs.getString("supp_status"));
+				//supplier.setSuppStatus(rs.getString("supp_status"));
 				supplier.setDefaultTax(rs.getInt("default_tax"));
 				supplier.setAccountNo(rs.getString("account_no"));
 				supplier.setBankId(rs.getInt("bank_id"));

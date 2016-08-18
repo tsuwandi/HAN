@@ -194,7 +194,10 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 		btnSearchPalletCard = new JButton("Cari Kartu Pallet");
 		btnSearchPalletCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showAddDryOutPalletDialog(dryOutEditPanel);
+				if (cbChamber.getSelectedIndex() == 0)
+					DialogBox.showChooseChamberForSearchPalletInDryOut();
+				else
+					showAddDryOutPalletDialog(dryOutEditPanel);
 			}
 		});
 		btnSearchPalletCard.setBounds(49, 175, 150, 25);
@@ -360,6 +363,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 			}
 		});
 		btnCancel.setBounds(49, 570, 100, 25);
+		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
 
 		txtRitNo.addFocusListener(new FocusAdapter() {

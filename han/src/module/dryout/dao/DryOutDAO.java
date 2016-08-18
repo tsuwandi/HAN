@@ -25,14 +25,14 @@ public class DryOutDAO {
 	private PreparedStatement deleteStatement;
 	private PreparedStatement updateConfirmDateStatement;
 
-	private String getAllQuery = "SELECT d.id, d.dry_out_code, d.date_out, d.chamber_id, d.total_volume, c.chamber "
+	private String getAllQuery = "SELECT d.id, d.dry_out_code, d.date_out, d.chamber_id, d.total_volume, d.status, c.chamber "
 			+ "FROM dry_out d INNER JOIN chamber c ON d.chamber_id = c.id ";
 	private String getOrdinalOfCodeNumberQuery = "SELECT SUBSTRING_INDEX(dry_out_code, '/', -1) AS ordinal FROM dry_out "
 			+ "WHERE SUBSTRING_INDEX(SUBSTRING_INDEX(dry_out_code, '/', 2), '/', -1) = ? "
 			+ "ORDER BY ordinal DESC LIMIT 1 ";
 	private String isDryOutCodeExistsQuery = "select count(*) as is_exists from dry_out where dry_out_code = ? ";
-	private String insertQuery = "insert into dry_out (dry_out_code, date_out, chamber_id, total_volume, "
-			+ "input_date, input_by) values (?,?,?,?,?,?)";
+	private String insertQuery = "insert into dry_out (dry_out_code, date_out, chamber_id, total_volume, status, "
+			+ "input_date, input_by) values (?,?,?,?,?,?,?)";
 	private String updateQuery = "update dry_out set date_out=?, chamber_id=?, total_volume=?, "
 			+ "edit_date=?, edited_by=? where dry_out_code=? ";
 	private String deleteQuery = "update dry_out set deleted_date=?, deleted_by=? where id=?";
@@ -162,8 +162,9 @@ public class DryOutDAO {
 			insertStatement.setTimestamp(2, dryOut.getDateOut());
 			insertStatement.setInt(3, dryOut.getChamberId());
 			insertStatement.setDouble(4, dryOut.getTotalVolume());
-			insertStatement.setDate(5, DateUtil.getCurrentDate());
-			insertStatement.setString(6, "timotius");
+			insertStatement.setString(5, dryOut.getStatus());
+			insertStatement.setDate(6, DateUtil.getCurrentDate());
+			insertStatement.setString(7, "timotius");
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -220,6 +221,7 @@ public class DryOutDAO {
 				dryOut.setDateOut(rs.getTimestamp("date_out"));
 				dryOut.setChamberId(rs.getInt("chamber_id"));
 				dryOut.setTotalVolume(rs.getDouble("total_volume"));
+				dryOut.setStatus(rs.getString("status"));
 				
 				Chamber chamber = new Chamber();
 				chamber.setId(rs.getInt("chamber_id"));

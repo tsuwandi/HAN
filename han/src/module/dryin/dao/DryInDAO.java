@@ -25,13 +25,13 @@ public class DryInDAO {
 	private PreparedStatement updateConfirmDateStatement;
 	private PreparedStatement deleteStatement;
 
-	private String getAllQuery = "SELECT d.id, d.dry_in_code, d.date_in, d.chamber_id, d.total_volume, c.chamber "
+	private String getAllQuery = "SELECT d.id, d.dry_in_code, d.date_in, d.chamber_id, d.total_volume, d.status, c.chamber "
 			+ "FROM dry_in d INNER JOIN chamber c ON d.chamber_id = c.id ";
 	private String getOrdinalOfCodeNumberQuery = "SELECT SUBSTRING_INDEX(dry_in_code, '/', -1) AS ordinal FROM dry_in "
 			+ "WHERE SUBSTRING_INDEX(SUBSTRING_INDEX(dry_in_code, '/', 2), '/', -1) = ? "
 			+ "ORDER BY ordinal DESC LIMIT 1 ";
 	private String isDryInCodeExistsQuery = "select count(*) as is_exists from dry_in where dry_in_code = ? ";
-	private String insertQuery = "insert into dry_in (dry_in_code, date_in, chamber_id, total_volume, "
+	private String insertQuery = "insert into dry_in (dry_in_code, date_in, chamber_id, total_volume, status, "
 			+ "input_date, input_by) values (?,?,?,?,?,?)";
 	private String updateQuery = "update dry_in set date_in=?, chamber_id=?, total_volume=?, "
 			+ "edit_date=?, edited_by=? where dry_in_code=? ";
@@ -162,8 +162,9 @@ public class DryInDAO {
 			insertStatement.setTimestamp(2, dryIn.getDateIn());
 			insertStatement.setInt(3, dryIn.getChamberId());
 			insertStatement.setDouble(4, dryIn.getTotalVolume());
-			insertStatement.setDate(5, DateUtil.getCurrentDate());
-			insertStatement.setString(6, "timotius");
+			insertStatement.setString(5, dryIn.getStatus());
+			insertStatement.setDate(6, DateUtil.getCurrentDate());
+			insertStatement.setString(7, "timotius");
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -219,6 +220,7 @@ public class DryInDAO {
 				dryIn.setDateIn(rs.getTimestamp("date_in"));
 				dryIn.setChamberId(rs.getInt("chamber_id"));
 				dryIn.setTotalVolume(rs.getDouble("total_volume"));
+				dryIn.setStatus(rs.getString("status"));
 
 				Chamber chamber = new Chamber();
 				chamber.setId(rs.getInt("chamber_id"));

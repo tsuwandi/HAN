@@ -27,6 +27,7 @@ import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
+import module.dryout.bl.DryOutBL;
 import module.dryout.model.DryOut;
 import module.dryout.model.DryOutPallet;
 import module.sn.chamber.model.Chamber;
@@ -327,6 +328,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 			}
 		});
 		btnCancel.setBounds(49, 570, 100, 25);
+		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
 	}
 
@@ -353,6 +355,11 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 				txtTotalVolume.setText(String.valueOf(dryOut.getTotalVolume()));
 
 				refreshTableDryOutPallet();
+				
+				if (dryOut.getStatus().equals(dryOut.STATUS_FINAL)) {
+					btnEdit.setEnabled(false);
+					updateUI();
+				}
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();

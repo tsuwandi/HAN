@@ -30,14 +30,14 @@ public class SupplierAdvSearchDialog extends JDialog {
 	JLabel lblSuppName;
 	JLabel lblSuppCode;
 	JLabel lblSuppType;
-	JLabel lblSuppStatus;
+	//JLabel lblSuppStatus;
 	JLabel lblPt;
 	JLabel lblNpwp;
 
 	JTextField txtSuppName;
 	JTextField txtSuppCode;
 	ComboBox<SuppType> cbSuppType;
-	JComboBox<String> cbSuppStatus;
+	//JComboBox<String> cbSuppStatus;
 	JTextField txtPt;
 	JTextField txtNpwp;
 
@@ -73,20 +73,20 @@ public class SupplierAdvSearchDialog extends JDialog {
 		getContentPane().add(txtSuppCode);
 
 		lblPt = new JLabel("PT");
-		lblPt.setBounds(25, 70, 150, 25);
+		lblPt.setBounds(25, 75, 150, 25);
 		getContentPane().add(lblPt);
 
 		txtPt = new JTextField();
-		txtPt.setBounds(120, 70, 150, 25);
+		txtPt.setBounds(120, 75, 150, 25);
 		txtPt.setDocument(new JTextFieldLimit(200));
 		getContentPane().add(txtPt);
 
 		lblNpwp = new JLabel("NPWP");
-		lblNpwp.setBounds(25, 100, 150, 25);
+		lblNpwp.setBounds(25, 105, 150, 25);
 		getContentPane().add(lblNpwp);
 
 		txtNpwp = new JTextField();
-		txtNpwp.setBounds(120, 100, 150, 25);
+		txtNpwp.setBounds(120, 105, 150, 25);
 		txtNpwp.setDocument(new JTextFieldLimit(30));
 		getContentPane().add(txtNpwp);
 
@@ -107,17 +107,17 @@ public class SupplierAdvSearchDialog extends JDialog {
 		cbSuppType.setBounds(410, 15, 150, 25);
 		getContentPane().add(cbSuppType);
 
-		lblSuppStatus = new JLabel("Status Supplier ");
-		lblSuppStatus.setBounds(305, 45, 150, 25);
-		getContentPane().add(lblSuppStatus);
-
-		cbSuppStatus = new JComboBox<String>();
-		cbSuppStatus.addItem("-- Pilih Status Supplier --");
-		cbSuppStatus.addItem("Aktif");
-		cbSuppStatus.addItem("Nonaktif Sementara");
-		cbSuppStatus.addItem("Nonaktif");
-		cbSuppStatus.setBounds(410, 45, 150, 25);
-		getContentPane().add(cbSuppStatus);
+//		lblSuppStatus = new JLabel("Status Supplier ");
+//		lblSuppStatus.setBounds(305, 45, 150, 25);
+//		getContentPane().add(lblSuppStatus);
+//
+//		cbSuppStatus = new JComboBox<String>();
+//		cbSuppStatus.addItem("-- Pilih Status Supplier --");
+//		cbSuppStatus.addItem("Aktif");
+//		cbSuppStatus.addItem("Nonaktif Sementara");
+//		cbSuppStatus.addItem("Nonaktif");
+//		cbSuppStatus.setBounds(410, 45, 150, 25);
+//		getContentPane().add(cbSuppStatus);
 
 		btnSearch = new JButton("Cari");
 		btnSearch.addActionListener(new ActionListener() {
@@ -141,8 +141,8 @@ public class SupplierAdvSearchDialog extends JDialog {
 				suppType.setSuppType(cbSuppType.getSelectedItem().toString());
 				supplier.setSuppType(suppType);
 			}
-			if (cbSuppStatus.getSelectedIndex() != 0)
-				supplier.setSuppStatus(cbSuppStatus.getSelectedItem().toString());
+//			if (cbSuppStatus.getSelectedIndex() != 0)
+//				supplier.setSuppStatus(cbSuppStatus.getSelectedItem().toString());
 
 			supplierList.listOfSupplier = ServiceFactory.getSupplierBL().getAllSupplierByAdvancedSearch(supplier);
 			closeDialog();
