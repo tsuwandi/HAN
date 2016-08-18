@@ -16,7 +16,7 @@ public class ProductDAO {
 
 	private PreparedStatement getAllStatement;
 
-	private String getAllQuery = "SELECT id, product_name, product_code, length, width, thickness FROM product WHERE 1 = 1 AND wood_type_id = ? AND condition_id = 1 AND grade_id = ? ";
+	private String getAllQuery = "SELECT id, product_name, product_code, length, width, thickness FROM product WHERE 1 = 1 AND wood_type_id = ? AND condition_id = 1 AND grade_id = ? AND deleted_date IS NULL";
 
 	public ProductDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;

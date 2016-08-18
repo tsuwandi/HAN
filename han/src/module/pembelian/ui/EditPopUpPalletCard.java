@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +26,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ReceivedDAOFactory;
 import main.component.NumberField;
 import model.User;
 import module.pembelian.model.Employee;
@@ -35,7 +35,6 @@ import module.pembelian.model.PalletCard;
 import module.pembelian.model.Product;
 import module.pembelian.model.ReceivedDetail;
 import module.pembelian.model.Thickness;
-import controller.ReceivedDAOFactory;
 
 public class EditPopUpPalletCard extends JDialog{
 
@@ -98,7 +97,7 @@ public class EditPopUpPalletCard extends JDialog{
 	List<Thickness> thicknesses;
 	List<Employee> employees;
 	List<Product> products;
-	Map<Double, Map<Double, Map<Double, Product>>> productMap;
+	Map<Double, List<Map<Double, Map<Double, Product>>>> productMap;
 	AddReceivedDetailPanel addReceivedDetail;
 	boolean editMode = false;
 	int indexEdit = 0;
@@ -322,17 +321,29 @@ public class EditPopUpPalletCard extends JDialog{
 		codePalletCardField.setEnabled(false);
 		
 		changePallet();
-		productMap = new HashMap<Double, Map<Double,Map<Double, Product>>>();
+		productMap = new HashMap<>();
 		tempPallet = new HashMap<>();
 		try {
 			
 			products = ReceivedDAOFactory.getProductDAO().getAllProduct(addReceivedDetail.received.getWoodTypeID(), addReceivedDetail.receivedDetails.get(index).getGradeID());
 			for (Product product : products) {
-				Map<Double, Product> thicknessMap = new HashMap<Double, Product>();
-				Map<Double, Map<Double, Product>> widthMap = new HashMap<>();
-				thicknessMap.put(product.getThickness(), product);
-				widthMap.put(product.getWidth(), thicknessMap);
-				productMap.put(product.getLength(), widthMap);
+				if(productMap.get(product.getLength())==null){
+					List<Map<Double, Map<Double, Product>>> lengthList = new ArrayList<>();
+					Map<Double, Map<Double, Product>> widthMap = new HashMap<>();
+					Map<Double, Product> thicknessMap = new HashMap<>();
+					thicknessMap.put(product.getThickness(), product);
+					widthMap.put(product.getWidth(), thicknessMap);
+					lengthList.add(widthMap);
+					productMap.put(product.getLength(), lengthList);
+					
+				}else{
+					List<Map<Double, Map<Double, Product>>> lengthList= productMap.get(product.getLength());
+					Map<Double, Map<Double, Product>> widthMap = new HashMap<>();
+					Map<Double, Product> thicknessMap = new HashMap<>();
+					thicknessMap.put(product.getThickness(), product);
+					widthMap.put(product.getWidth(), thicknessMap);
+					lengthList.add(widthMap);
+				}
 			}
 			this.receivedDetail = receivedDetail;
 			this.index = index;
@@ -452,6 +463,7 @@ public class EditPopUpPalletCard extends JDialog{
 					descriptionArea.setText(pc.getDescription());
 				}
 				if(pcTable.columnAtPoint(e.getPoint())==9){
+					tempPallet.remove(pcs.get(pcTable.getSelectedRow()).getPalletCardCode());
 					addReceivedDetail.palletMaps.remove(pcs.get(pcTable.getSelectedRow()).getPalletCardCode());
 					pcs.remove(pcTable.getSelectedRow());
 					pcTable.updateUI();
@@ -626,17 +638,23 @@ public class EditPopUpPalletCard extends JDialog{
 	public void getProductName(){
 		if(!thicknessField.getText().equals("") && !wideField.getText().equals("") && !longField.getText().equals("")){
 			if(productMap.get(Double.valueOf(longField.getText()))!=null){
-				if(productMap.get(Double.valueOf(longField.getText())).get(Double.valueOf(wideField.getText()))!=null){
-					if(productMap.get(Double.valueOf(longField.getText())).get(Double.valueOf(wideField.getText())).get(Double.valueOf(thicknessField.getText()))!=null){
-						productNameField.setText(productMap.get(Double.valueOf(longField.getText())).get(Double.valueOf(wideField.getText())).get(Double.valueOf(thicknessField.getText())).getProductName());
-						productCode.setText(productMap.get(Double.valueOf(longField.getText())).get(Double.valueOf(wideField.getText())).get(Double.valueOf(thicknessField.getText())).getProductCode());
+				loopProduct:
+				for(Map<Double, Map<Double, Product>> widthMap : productMap.get(Double.valueOf(longField.getText()))){
+					if(widthMap.get(Double.valueOf(wideField.getText()))!=null){
+						Map<Double, Product>thicknessMap =widthMap.get(Double.valueOf(wideField.getText()));
+						if (thicknessMap.get(Double.valueOf(thicknessField.getText()))!=null) {
+							Product product = thicknessMap.get(Double.valueOf(thicknessField.getText()));
+							productNameField.setText(product.getProductName());
+							productCode.setText(product.getProductCode());
+							break loopProduct;
+						}else{
+							productNameField.setText("");
+							productCode.setText("");
+						}
 					}else{
 						productNameField.setText("");
 						productCode.setText("");
 					}
-				}else{
-					productNameField.setText("");
-					productCode.setText("");
 				}
 			}else{
 				productNameField.setText("");
