@@ -1017,7 +1017,7 @@ public class ProductCreatePanel extends JPanel {
 		add(idLblError);
 		add(nameLblError);
 		add(catLblError);
-		add(statLblError);
+		//add(statLblError);
 		add(unitLblError);
 		add(maintainLblError);
 		add(typeLblError);
@@ -1098,7 +1098,7 @@ public class ProductCreatePanel extends JPanel {
 
 		nameLblError.setText("");
 		catLblError.setText("");
-		statLblError.setText("");
+		//statLblError.setText("");
 		unitLblError.setText("");
 		maintainLblError.setText("");
 		typeLblError.setText("");

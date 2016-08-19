@@ -920,7 +920,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		add(idLblError);
 		add(nameLblError);
 		add(catLblError);
-		add(statLblError);
+		//add(statLblError);
 		add(unitLblError);
 		add(maintainLblError);
 		add(typeLblError);

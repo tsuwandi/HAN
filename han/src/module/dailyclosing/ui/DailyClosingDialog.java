@@ -108,8 +108,8 @@ public class DailyClosingDialog extends JDialog {
 										try {
 											save(listOfReceived, listOfDryIn, listOfDryOut, confirmCode);
 										} catch (SQLException e1) {
-											JOptionPane.showMessageDialog(null, "Gagal Memproses Send To Finance",
-													"Send To Finance", JOptionPane.ERROR_MESSAGE);
+											JOptionPane.showMessageDialog(null, "Gagal Memproses Tutup Harian",
+													"Tutup Harian", JOptionPane.ERROR_MESSAGE);
 										}
 									}
 								}

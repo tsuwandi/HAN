@@ -37,7 +37,7 @@ public class DryOutDAO {
 			+ "edit_date=?, edited_by=? where dry_out_code=? ";
 	private String deleteQuery = "update dry_out set deleted_date=?, deleted_by=? where id=?";
 	private String updateConfirmDateQuery = "update dry_out set confirm_date=?, "
-			+ "edit_date=?, edited_by=? where dry_ouy_code=? ";
+			+ "edit_date=?, edited_by=? where dry_out_code=? ";
 
 	public DryOutDAO(Connection connection) throws SQLException {
 		this.connection = connection;

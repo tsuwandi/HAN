@@ -1056,7 +1056,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		add(idLblError);
 		add(nameLblError);
 		add(catLblError);
-		add(statLblError);
+		//add(statLblError);
 		add(unitLblError);
 		add(maintainLblError);
 		add(typeLblError);
@@ -1142,7 +1142,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 
 		nameLblError.setText("");
 		catLblError.setText("");
-		statLblError.setText("");
+		//statLblError.setText("");
 		unitLblError.setText("");
 		maintainLblError.setText("");
 		typeLblError.setText("");
@@ -1173,7 +1173,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 //		}
 
 		if (uomField.getSelectedItem().toString() == "Pilih" || uomField.getSelectedIndex() == 0) {
-			statLblError.setText("Satuan Produk harus dipilih");
+			unitLblError.setText("Satuan Produk harus dipilih");
 			isValid = false;
 		}
 
