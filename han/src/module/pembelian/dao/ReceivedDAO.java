@@ -46,7 +46,7 @@ public class ReceivedDAO {
 
 	private String lastID = "SELECT received_code FROM received ORDER BY ID DESC LIMIT 1";
 
-	private String updateStatusQuery = "UPDATE received SET received_status = 'Diproses', total_volume=?, emp_code=? WHERE received_code = ?";
+	private String updateStatusQuery = "UPDATE received SET received_status = 'Completed', total_volume=?, emp_code=? WHERE received_code = ?";
 
 	private String updateEmpCodeQuery = "UPDATE received SET emp_code = ? WHERE received_code = ?";
 	

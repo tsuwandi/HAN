@@ -49,7 +49,7 @@ public class DataSourceFactory {
 		Class.forName(driver).newInstance();
 		
 		GenericObjectPool connectionPool = new GenericObjectPool();
-		connectionPool.setMaxActive(5);
+		connectionPool.setMaxActive(50);
 		connectionPool.setMinIdle(1);
 		connectionPool.setMaxWait(10000);
 

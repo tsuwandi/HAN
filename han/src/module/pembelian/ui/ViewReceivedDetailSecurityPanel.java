@@ -513,7 +513,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 					}else{
 						errorRitNumberLbl.setText("");
 					}
-					if(driverField.getText().equals("")){
+					/*if(driverField.getText().equals("")){
 						errorDriverLbl.setText("<html><font color='red'>Nama Supir tidak bole kosong !</font></html>");
 						error++;
 					}else{
@@ -524,23 +524,26 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 						error++;
 					}else{
 						errorDriverIDLbl.setText("");
-					}
+					}*/
 					if(supplierComboBox.getSelectedIndex()==0){
 						errorSupplierLbl.setText("<html><font color='red'>Supplier harus dipilih !</font></html>");
 						error++;
 					}else{
-						errorTotalLogLbl.setText("");
+						errorSupplierLbl.setText("");
 					}
 					if(supplierCPComboBox.getSelectedIndex()==0){
 						errorSupplierCPLbl.setText("<html><font color='red'>Sub Supplier harus dipilih !</font></html>");
 						error++;
 					}
-					if(licensePlateField.getText().equals("")){
+					else{
+						errorSupplierCPLbl.setText("");
+					}
+					/*if(licensePlateField.getText().equals("")){
 						errorLicenseLbl.setText("<html><font color='red'>Plat Nomor harus diisi !</font></html>");
 						error++;
 					}else{
 						errorLicenseLbl.setText("");
-					}
+					}*/
 				
 					if(woodTypeComboBox.getSelectedIndex()==0){
 						errorWoodTypeLbl.setText("<html><font color='red'>Tipe Kayu harus dipilih !</font></html>");
@@ -575,7 +578,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 						errorWoodDomicileLbl.setText("");
 					}
 					
-					if(totalLogField.getText().equals("")){
+					/*if(totalLogField.getText().equals("")){
 						errorTotalLogLbl.setText("<html><font color='red'>Total Kayu harus dipilih !</font></html>");
 						error++;
 					}else{
@@ -587,7 +590,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 						error++;
 					}else{
 						errorTotalVolumeLbl.setText("");
-					}
+					}*/
 					
 					if(error==0){
 						if(DialogBox.showEditChoice()==JOptionPane.YES_OPTION){
@@ -614,8 +617,10 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 							del.setWoodDomicile(woodDomicileField.getText());
 							del.setWoodResourceId(woodResourceComboBox.getDataIndex().getId());
 							del.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
-							del.setTotalLog(Integer.valueOf(totalLogField.getText()));
-							del.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
+							if(totalLogField.getText().equals("")) del.setTotalLog(0);
+							else del.setTotalLog(Integer.valueOf(totalLogField.getText()));
+							if(totalVolumeField.getText().equals("")) del.setTotalVolume(0);
+							else del.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
 							del.setId(delivery.getId());
 							try {
 								ReceivedDAOFactory.getReceivedDAO().update(rec);

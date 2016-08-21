@@ -122,7 +122,7 @@ public class AddPopUpPalletCard extends JDialog{
 
 		
 		//Nomor Pallet
-		noPalletLbl = new JLabel("No Pallet");
+		noPalletLbl = new JLabel("<html>No Pallet <font color='red'>*</font></html>");
 		noPalletLbl.setBounds(30,30,150,20);
 		add(noPalletLbl);
 		
