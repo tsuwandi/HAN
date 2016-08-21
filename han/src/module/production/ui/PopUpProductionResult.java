@@ -253,7 +253,7 @@ public class PopUpProductionResult extends JDialog{
 		borderPanel.add(minuteField);
 		
 		errorTimeLbl = new JLabel();
-		errorTimeLbl.setBounds(270,50,150,20);
+		errorTimeLbl.setBounds(320,50,160,20);
 		borderPanel.add(errorTimeLbl);
 		
 		//TODO klem Area
@@ -315,7 +315,7 @@ public class PopUpProductionResult extends JDialog{
 		borderPanel.add(errorProtolBLbl);
 		
 		//TODO goodResult Area
-		goodResultLbl = new JLabel("Repair (goodResult)");
+		goodResultLbl = new JLabel("Hasil Baik");
 		goodResultLbl.setBounds(10,330,150,20);
 		borderPanel.add(goodResultLbl);
 		
@@ -484,6 +484,12 @@ public class PopUpProductionResult extends JDialog{
 		}
 		if(hourField.getText().equals("")||minuteField.getText().equals("")){
 			errorTimeLbl.setText("<html><font color='red'>Jam Mulai harus diisi !</font></html>");
+			error++;
+		}else{
+			errorTimeLbl.setText("");
+		}
+		if(hourField.getText().length()!=2||minuteField.getText().length()!=2){
+			errorTimeLbl.setText("<html><font color='red'>Format Jam mulai harus 00:00 !</font></html>");
 			error++;
 		}else{
 			errorTimeLbl.setText("");

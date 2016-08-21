@@ -156,6 +156,7 @@ public class ViewProductionPanel extends JPanel implements Bridging{
 		
 		productionDateChooser = new JDateChooser();
 		productionDateChooser.setBounds(190,160,150,20);
+		productionDateChooser.setDateFormatString("dd-MM-yyyy");
 		add(productionDateChooser);
 		
 		//TODO GroupShift Area

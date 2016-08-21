@@ -260,7 +260,7 @@ public class PopUpViewMaterial extends JDialog{
 		totalVolumeField.setBounds(200, 650, 150, 20);
 		add(totalVolumeField);
 		
-		uomTotalVolumeLbl = new JLabel("m3");
+		uomTotalVolumeLbl = new JLabel("cm3");
 		uomTotalVolumeLbl.setBounds(352,650,20,20);
 		add(uomTotalVolumeLbl);
 		
@@ -310,7 +310,7 @@ public class PopUpViewMaterial extends JDialog{
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				if(DialogBox.showCloseChoice()==JOptionPane.YES_OPTION)dispose();
+				dispose();
 			}
 		});
 		

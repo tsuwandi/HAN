@@ -27,7 +27,8 @@ public class ProdRMDAO {
 	private String deleteQuery = "DELETE FROM prod_rm WHERE production_code = ?";
 	
 	private String getAllForSearchQuery = "SELECT a.id, a.input_date, b.pallet_card_code, b.length, b.width, b.thickness, b.total, b.volume  FROM dry_out_pallet a "
-			+ "INNER JOIN pallet_card b ON a.pallet_card_code = b.pallet_card_code WHERE NOT EXISTS(SELECT c.pallet_card_code FROM prod_rm c WHERE b.pallet_card_code = c.pallet_card_code )";
+			+ "INNER JOIN pallet_card b ON a.pallet_card_code = b.pallet_card_code WHERE NOT EXISTS(SELECT c.pallet_card_code FROM prod_rm c WHERE b.pallet_card_code = c.pallet_card_code ) "
+			+ "AND a.deleted_date IS NULL";
 	
 	public ProdRMDAO(Connection connection) throws SQLException {
 		this.connection = connection;

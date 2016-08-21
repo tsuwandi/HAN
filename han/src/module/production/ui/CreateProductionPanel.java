@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -168,6 +169,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		
 		productionDateChooser = new JDateChooser();
 		productionDateChooser.setBounds(190,160,150,20);
+		productionDateChooser.setDateFormatString("dd-MM-yyyy");
 		add(productionDateChooser);
 		
 		//TODO GroupShift Area
@@ -252,22 +254,24 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		}
 		
 		if(error==0){
-			try {
-				production.setProductionCode(productionCodeField.getText());
-				production.setGroupShiftCode(groupShiftCmb.getDataIndex().getGroupShiftCode());
-				production.setShiftCode(shiftCmb.getDataIndex().getShiftCode());
-				production.setLineCode(lineCmb.getDataIndex().getLineCode());
-				production.setProductionDate(productionDateChooser.getDate());
-				if(editMode){
-					ServiceFactory.getProductionBL().updateAll(production);
-					DialogBox.showEdit();
-				}else {
-					ServiceFactory.getProductionBL().saveAll(production);
-					DialogBox.showInsert();
+			if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
+				try {
+					production.setProductionCode(productionCodeField.getText());
+					production.setGroupShiftCode(groupShiftCmb.getDataIndex().getGroupShiftCode());
+					production.setShiftCode(shiftCmb.getDataIndex().getShiftCode());
+					production.setLineCode(lineCmb.getDataIndex().getLineCode());
+					production.setProductionDate(productionDateChooser.getDate());
+					if(editMode){
+						ServiceFactory.getProductionBL().updateAll(production);
+						DialogBox.showEdit();
+					}else {
+						ServiceFactory.getProductionBL().saveAll(production);
+						DialogBox.showInsert();
+					}
+					MainPanel.changePanel("module.production.ui.ListProductionPanel");
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
-				MainPanel.changePanel("module.production.ui.ListProductionPanel");
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
 		}
 	}

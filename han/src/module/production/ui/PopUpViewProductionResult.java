@@ -324,7 +324,7 @@ public class PopUpViewProductionResult extends JDialog{
 		borderPanel.add(errorProtolBLbl);
 		
 		//TODO goodResult Area
-		goodResultLbl = new JLabel("Repair (goodResult)");
+		goodResultLbl = new JLabel("Hasil Baik");
 		goodResultLbl.setBounds(10,330,150,20);
 		borderPanel.add(goodResultLbl);
 		
@@ -430,7 +430,7 @@ public class PopUpViewProductionResult extends JDialog{
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				if(DialogBox.showCloseChoice()==JOptionPane.YES_OPTION) dispose();
+				dispose();
 			}
 		});
 		
