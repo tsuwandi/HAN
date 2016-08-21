@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -210,7 +211,7 @@ public class ListReceivedPanel extends JPanel {
 	            case 1 : 
 	                return p.getReceivedCode();
 	            case 2 :
-	                return p.getReceivedDate();
+	                return new SimpleDateFormat("dd-MM-yyyy").format(p.getReceivedDate());
 	            case 3 :
 	                return p.getRitNo();
 	            case 4 :

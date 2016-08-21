@@ -647,28 +647,30 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 				}
 								
 				if(error==0){
-					try {
-						ReceivedDAOFactory.getPicDockingReceivedDAO().delete(received.getReceivedCode());
-						ReceivedDAOFactory.getReceivedDetailDAO().delete(received.getReceivedCode());
-						for(ReceivedDetail pallet : receivedDetails){
-							pallet.setReceivedCode(received.getReceivedCode());
-							ReceivedDAOFactory.getReceivedDetailDAO().save(pallet);
-							ReceivedDAOFactory.getPalletCardDAO().delete(pallet.getId());
-							int detailLastID = ReceivedDAOFactory.getReceivedDetailDAO().getLastID();
-							for(PalletCard palletCardDetail : pallet.getPallets()){
-								palletCardDetail.setReceivedDetailID(detailLastID);
-								ReceivedDAOFactory.getPalletCardDAO().save(palletCardDetail);
+					if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
+						try {
+							ReceivedDAOFactory.getPicDockingReceivedDAO().delete(received.getReceivedCode());
+							ReceivedDAOFactory.getReceivedDetailDAO().delete(received.getReceivedCode());
+							for(ReceivedDetail pallet : receivedDetails){
+								pallet.setReceivedCode(received.getReceivedCode());
+								ReceivedDAOFactory.getReceivedDetailDAO().save(pallet);
+								ReceivedDAOFactory.getPalletCardDAO().delete(pallet.getId());
+								int detailLastID = ReceivedDAOFactory.getReceivedDetailDAO().getLastID();
+								for(PalletCard palletCardDetail : pallet.getPallets()){
+									palletCardDetail.setReceivedDetailID(detailLastID);
+									ReceivedDAOFactory.getPalletCardDAO().save(palletCardDetail);
+								}
 							}
+							for(PicDocking picDocking : picDockings){
+								picDocking.setReceivedCode(received.getReceivedCode());
+								ReceivedDAOFactory.getPicDockingReceivedDAO().save(picDocking);
+							}
+							ReceivedDAOFactory.getReceivedDAO().updateStatus(Double.valueOf(totalVolumeByAdminField.getText()),graderComboBox.getDataIndex().getEmployeeId(),received.getReceivedCode());
+							DialogBox.showInsert();
+							MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
-						for(PicDocking picDocking : picDockings){
-							picDocking.setReceivedCode(received.getReceivedCode());
-							ReceivedDAOFactory.getPicDockingReceivedDAO().save(picDocking);
-						}
-						ReceivedDAOFactory.getReceivedDAO().updateStatus(Double.valueOf(totalVolumeByAdminField.getText()),graderComboBox.getDataIndex().getEmployeeId(),received.getReceivedCode());
-						DialogBox.showInsert();
-						MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
 				}
 			}
@@ -902,7 +904,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		receivedCodeDateField.setText(codes[2]);
 		receivedCodeMonthField.setText(codes[3]);
 		receivedCodeYearField.setText(codes[4]);
-		dateField.setText(new SimpleDateFormat("dd-MM-yy").format(received.getReceivedDate()));
+		dateField.setText(new SimpleDateFormat("dd-MM-yyyy").format(received.getReceivedDate()));
 		ritNumberField.setText(received.getRitNo());
 		licensePlateField.setText(received.getLicensePlate());
 		supplierField.setText(received.getSupplier());

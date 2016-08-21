@@ -518,7 +518,8 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION) MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
+				/*if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)*/ 
+					MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
 			}
 		});
 		
@@ -806,7 +807,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		receivedCodeDateField.setText(codes[2]);
 		receivedCodeMonthField.setText(codes[3]);
 		receivedCodeYearField.setText(codes[4]);
-		dateField.setText(new SimpleDateFormat("dd-MM-yy").format(received.getReceivedDate()));
+		dateField.setText(new SimpleDateFormat("dd-MM-yyyy").format(received.getReceivedDate()));
 		ritNumberField.setText(received.getRitNo());
 		licensePlateField.setText(received.getLicensePlate());
 		supplierField.setText(received.getSupplier());

@@ -187,6 +187,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 
 		receivedDateChooser = new JDateChooser();
 		receivedDateChooser.setBounds(220,110,150,20);
+		receivedDateChooser.setDateFormatString("dd-MM-yyyy");
 		containerPnl.add(receivedDateChooser);
 
 		//Rit Number
@@ -477,7 +478,8 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION) MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
+				/*if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)*/
+					MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
 			}
 		});
 		editBtn.addActionListener(new ActionListener() {

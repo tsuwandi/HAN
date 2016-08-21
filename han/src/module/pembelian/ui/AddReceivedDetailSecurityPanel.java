@@ -183,6 +183,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		receivedDateChooser = new JDateChooser();
 		receivedDateChooser.setBounds(220,110,150,20);
 		receivedDateChooser.setDate(new Date());
+		receivedDateChooser.setDateFormatString("dd-MM-yyyy");
 //		receivedDateChooser.getDateEditor().setEnabled(false);
 		containerPnl.add(receivedDateChooser);
 		
