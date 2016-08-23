@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,8 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+
+import com.sun.istack.internal.logging.Logger;
 
 import controller.ServiceFactory;
 import module.pembelian.model.Received;
@@ -57,9 +60,10 @@ public class DailyClosingDialog extends JDialog {
 					if (!file.exists()) {
 						file.mkdir();
 					}
+					
+					SimpleDateFormat sdf = new SimpleDateFormat ("ddMMyyyyhhmmss");
 
-					String outputFile = "D:" + File.separatorChar + "Output" + File.separatorChar + "DailyClosingFile_"
-							+ new Date() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds()
+					String outputFile = "D:" + File.separatorChar + "DailyClosingFile_" + sdf.format(new Date()).toString()
 							+ ".pdf";
 
 					String confirmCode = DailyClosingBL.makeConfirmCode();
@@ -108,6 +112,7 @@ public class DailyClosingDialog extends JDialog {
 										try {
 											save(listOfReceived, listOfDryIn, listOfDryOut, confirmCode);
 										} catch (SQLException e1) {
+											e1.printStackTrace();
 											JOptionPane.showMessageDialog(null, "Gagal Memproses Tutup Harian",
 													"Tutup Harian", JOptionPane.ERROR_MESSAGE);
 										}
@@ -135,7 +140,7 @@ public class DailyClosingDialog extends JDialog {
 					}
 
 				} catch (Exception e1) {
-					e1.getCause();
+					e1.printStackTrace();
 					JOptionPane.showMessageDialog(null, "Gagal Memproses Tutup Harian", "Tutup Harian",
 							JOptionPane.ERROR_MESSAGE);
 				}

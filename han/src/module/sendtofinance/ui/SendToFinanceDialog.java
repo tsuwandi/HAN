@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -56,8 +57,10 @@ public class SendToFinanceDialog extends JDialog {
 						file.mkdir();
 					}
 
-					String outputFile = "D:" + File.separatorChar + "Output" + File.separatorChar + "SendToFinanceFile_"
-							+ new Date() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds()
+					SimpleDateFormat sdf = new SimpleDateFormat ("ddMMyyyyhhmmss");
+
+					String outputFile = "D:" + File.separatorChar + "SendToFinanceFile_"
+							+ sdf.format(new Date()).toString()
 							+ ".pdf";
 
 					List<Received> listOfReceived = ServiceFactory.getSendToFinanceBL()
