@@ -244,7 +244,4 @@ public class DryOut implements Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	public final String STATUS_COMPLETED = "COMPLETED";
-	public final String STATUS_FINAL = "FINAL";
 }

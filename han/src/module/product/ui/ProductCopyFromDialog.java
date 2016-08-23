@@ -155,7 +155,7 @@ public class ProductCopyFromDialog extends JDialog {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 4;
+			return 3;
 		}
 
 		/**
@@ -176,8 +176,6 @@ public class ProductCopyFromDialog extends JDialog {
 				return p.getProductName();
 			case 2:
 				return p.getProductCatName();
-			case 3:
-				return p.getProductStat();
 			default:
 				return "";
 			}
@@ -198,8 +196,6 @@ public class ProductCopyFromDialog extends JDialog {
 				return "Nama Produk";
 			case 2:
 				return "Kategori Produk";
-			case 3:
-				return "Status Produk";
 			default:
 				return "";
 			}

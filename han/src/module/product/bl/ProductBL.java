@@ -15,6 +15,10 @@ import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
 import module.product.model.Uom;
+import module.sn.production.quality.dao.ProductionQualityDAO;
+import module.sn.production.quality.model.ProductionQuality;
+import module.sn.production.type.dao.ProductionTypeDAO;
+import module.sn.production.type.model.ProductionType;
 import module.supplier.dao.SupplierDAO;
 
 public class ProductBL {
@@ -95,7 +99,7 @@ public class ProductBL {
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
-			new ProductDAO(con).delete(product);
+			new ProductDAO(con).delete(product.getProductCode());
 
 			con.commit();
 		} catch (SQLException e) {
@@ -182,6 +186,36 @@ public class ProductBL {
 		try {
 			con = dataSource.getConnection();
 			return new ProductDAO(con).isProductNameExists(productName);
+		} finally {
+			con.close();
+		}
+	}
+
+	public List<ProductionType> getAllProductionType() throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductionTypeDAO(con).getAll();
+		} finally {
+			con.close();
+		}
+	}
+
+	public List<ProductionQuality> getAllProductionQuality() throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductionQualityDAO(con).getAll();
+		} finally {
+			con.close();
+		}
+	}
+	
+	public Product isProductExists(Product product) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductDAO(con).isProductExists(product);
 		} finally {
 			con.close();
 		}

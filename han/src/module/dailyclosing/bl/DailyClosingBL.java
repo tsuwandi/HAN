@@ -11,8 +11,10 @@ import module.dailyclosing.dao.ConfirmDAO;
 import module.dailyclosing.dao.InventoryLogTempDAO;
 import module.dailyclosing.model.Confirm;
 import module.dailyclosing.model.InventoryLogTemp;
+import module.dryin.DryInType;
 import module.dryin.dao.DryInDAO;
 import module.dryin.model.DryIn;
+import module.dryout.DryOutType;
 import module.dryout.dao.DryOutDAO;
 import module.dryout.model.DryOut;
 import module.pembelian.dao.ReceivedDAO;
@@ -56,12 +58,12 @@ public class DailyClosingBL {
 		}
 	}
 
-	static final String BUYING_MODULE = "PEMBELIAN";
-	static final String RECEIVED = "RECEIVED";
-	static final String DRY_IN = "DRY_IN";
-	static final String DRY_OUT = "DRY_OUT";
-	static final String DEBET = "D";
-	static final String CREDIT = "C";
+	final String BUYING_MODULE = "PEMBELIAN";
+	final String RECEIVED = "RECEIVED";
+	final String DRY_IN = "DRY_IN";
+	final String DRY_OUT = "DRY_OUT";
+	final String DEBET = "D";
+	final String CREDIT = "C";
 
 	public void save(List<Received> listOfReceived, List<DryIn> listOfDryIn, List<DryOut> listOfDryOut, String confirmCode)
 			throws SQLException {
@@ -111,7 +113,9 @@ public class DailyClosingBL {
 
 				new InventoryLogTempDAO(con).save(inventoryLogTempDebet);
 				
-				new DryInDAO(con).updateConfirmDate(dryIn);
+				dryIn.setStatus(DryInType.FINAL.toString());
+				
+				new DryInDAO(con).updateDailyClosing(dryIn);
 			}
 
 			for (DryOut dryOut : listOfDryOut) {
@@ -135,10 +139,10 @@ public class DailyClosingBL {
 
 				new InventoryLogTempDAO(con).save(inventoryLogTempDebet);
 				
-				new DryOutDAO(con).updateConfirmDate(dryOut);
+				dryOut.setStatus(DryOutType.FINAL.toString());
+				
+				new DryOutDAO(con).updateDailyClosing(dryOut);
 			}
-			
-			
 
 			con.commit();
 		} catch (SQLException e) {

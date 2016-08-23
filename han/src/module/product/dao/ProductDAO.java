@@ -37,7 +37,7 @@ public class ProductDAO {
 			+ "netto, netto_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, "
 			+ "expense_acc_id, main_supp_code, manufacturer, is_sales_item, is_service_item, sell_cost_center_id, "
 			+ "income_acc_id, max_disc, a.input_date, a.input_by, a.edit_date, a.edited_by, "
-			+ "b.wood_type, c.grade, d.product_category " + "from product a left join wood_type b on a.wood_type_id = b.id "
+			+ "b.wood_type, c.grade, d.product_category, production_quality_id, production_type_id " + "from product a left join wood_type b on a.wood_type_id = b.id "
 			+ "left join grade c on a.grade_id = c.id " + "inner join product_category d on a.product_category_id = d.id "
 			+ "inner join uom e on a.product_uom_id = e.id "
 			+ "where 1=1 and a.deleted_date is null and a.deleted_by is null ";
@@ -48,7 +48,7 @@ public class ProductDAO {
 			+ "netto, netto_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, "
 			+ "expense_acc_id, main_supp_code, manufacturer, is_sales_item, is_service_item, sell_cost_center_id, "
 			+ "income_acc_id, max_disc, a.input_date, a.input_by, a.edit_date, a.edited_by, "
-			+ "b.wood_type, c.grade, d.product_category " + "from product a left join wood_type b on a.wood_type_id = b.id "
+			+ "b.wood_type, c.grade, d.product_category, production_quality_id, production_type_id " + "from product a left join wood_type b on a.wood_type_id = b.id "
 			+ "left join grade c on a.grade_id = c.id " + "inner join product_category d on a.product_category_id = d.id "
 			+ "where 1=1 ";
 
@@ -64,13 +64,13 @@ public class ProductDAO {
 
 	private String insertProductQuery = "insert into product(product_code, product_name, product_category_id, "
 			+ "product_status, product_uom_id, is_maintain_stock, "
-			+ "wood_type_id, grade_id, thickness, length, width, condition_id, minqty, " + "input_date, input_by) "
-			+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+			+ "wood_type_id, grade_id, thickness, length, width, condition_id, minqty, " + "input_date, input_by, production_type_id, production_quality_id) "
+			+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
 	private String updateQuery = "update product set product_name=?, product_status=?, product_category_id=?, "
 			+ "product_uom_id = ?, is_maintain_stock=?, "
 			+ "wood_type_id=?, grade_id=?, thickness=?, length=?, width=?, condition_id=?, minqty=?, "
-			+ "edit_date=?, edited_by=? where id=? ";
+			+ "edit_date=?, edited_by=?, production_type_id=?, production_quality_id=? where id=? ";
 
 	private String getProductIdQuery = "select id, product_name from product";
 
@@ -84,7 +84,7 @@ public class ProductDAO {
 		try {
 			deleteProductStatement = connection.prepareStatement(deleteQuery);
 			deleteProductStatement.setDate(1, DateUtil.getCurrentDate());
-			deleteProductStatement.setString(2, "Irvan");
+			deleteProductStatement.setString(2, "Timotius");
 			deleteProductStatement.setString(3, productCode);
 			deleteProductStatement.executeUpdate();
 		} catch (SQLException ex) {
@@ -129,9 +129,20 @@ public class ProductDAO {
 				insertProductStatement.setDouble(11, product.getWidth());
 			
 			insertProductStatement.setInt(12, product.getCondition());
-			insertProductStatement.setInt(13, product.getMinQy());
+			insertProductStatement.setInt(13, product.getMinQty());
 			insertProductStatement.setDate(14, DateUtil.getCurrentDate());
 			insertProductStatement.setString(15, "Timotius");
+			
+			if(product.getProductionTypeId() == 0)
+				insertProductStatement.setNull(16, java.sql.Types.INTEGER);
+			else
+				insertProductStatement.setInt(16, product.getProductionTypeId());
+			
+			if(product.getProductionQualityId() == 0)
+				insertProductStatement.setNull(17, java.sql.Types.INTEGER);
+			else
+				insertProductStatement.setInt(17, product.getProductionQualityId());
+			
 			insertProductStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -165,7 +176,7 @@ public class ProductDAO {
 				product.setLength(rs.getDouble("length"));
 				product.setWidth(rs.getDouble("width"));
 				product.setCondition(rs.getInt("condition_id"));
-				product.setMinQy(rs.getInt("minqty"));
+				product.setMinQty(rs.getInt("minqty"));
 				product.setIsSerial(rs.getInt("is_has_serial"));
 				product.setIsAsset(rs.getInt("is_fixed_asset"));
 				product.setWarranty(rs.getInt("warranty"));
@@ -191,7 +202,8 @@ public class ProductDAO {
 				product.setWoodTypeName(rs.getString("b.wood_type"));
 				product.setGradeName(rs.getString("c.grade"));
 				product.setProductCatName(rs.getString("d.product_category"));
-
+				product.setProductionTypeId(rs.getInt("production_type_id"));
+				product.setProductionQualityId(rs.getInt("production_quality_id"));
 				products.add(product);
 			}
 
@@ -261,7 +273,7 @@ public class ProductDAO {
 				product.setLength(rs.getDouble("length"));
 				product.setWidth(rs.getDouble("width"));
 				product.setCondition(rs.getInt("condition_id"));
-				product.setMinQy(rs.getInt("minqty"));
+				product.setMinQty(rs.getInt("minqty"));
 				product.setIsSerial(rs.getInt("is_has_serial"));
 				product.setIsAsset(rs.getInt("is_fixed_asset"));
 				product.setWarranty(rs.getInt("warranty"));
@@ -287,7 +299,8 @@ public class ProductDAO {
 				product.setWoodTypeName(rs.getString("b.wood_type"));
 				product.setGradeName(rs.getString("c.grade"));
 				product.setProductCatName(rs.getString("d.product_category"));
-				
+				product.setProductionTypeId(rs.getInt("production_type_id"));
+				product.setProductionQualityId(rs.getInt("production_quality_id"));
 				products.add(product);
 			}
 		} catch (SQLException ex) {
@@ -439,10 +452,21 @@ public class ProductDAO {
 				updateProductStatement.setDouble(10, product.getWidth());
 			
 			updateProductStatement.setInt(11, product.getCondition());
-			updateProductStatement.setInt(12, product.getMinQy());
+			updateProductStatement.setInt(12, product.getMinQty());
 			updateProductStatement.setDate(13, DateUtil.getCurrentDate());
 			updateProductStatement.setString(14, "Timotius");
-			updateProductStatement.setInt(15, product.getProductId());
+			
+			if(product.getProductionTypeId() == 0)
+				updateProductStatement.setNull(15, java.sql.Types.INTEGER);
+			else
+				updateProductStatement.setInt(15, product.getProductionTypeId());
+			
+			if(product.getProductionQualityId() == 0)
+				updateProductStatement.setNull(16, java.sql.Types.INTEGER);
+			else
+				updateProductStatement.setInt(16, product.getProductionQualityId());
+			
+			updateProductStatement.setInt(17, product.getProductId());
 			updateProductStatement.executeUpdate();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -479,7 +503,7 @@ public class ProductDAO {
 				p.setLength(rs.getDouble("length"));
 				p.setWidth(rs.getDouble("width"));
 				p.setCondition(rs.getInt("condition_id"));
-				p.setMinQy(rs.getInt("minqty"));
+				p.setMinQty(rs.getInt("minqty"));
 				p.setIsSerial(rs.getInt("is_has_serial"));
 				p.setIsAsset(rs.getInt("is_fixed_asset"));
 				p.setWarranty(rs.getInt("warranty"));
@@ -505,6 +529,8 @@ public class ProductDAO {
 				p.setWoodTypeName(rs.getString("b.wood_type"));
 				p.setGradeName(rs.getString("c.grade"));
 				p.setProductCatName(rs.getString("d.product_category"));
+				p.setProductionTypeId(rs.getInt("production_type_id"));
+				p.setProductionQualityId(rs.getInt("production_quality_id"));
 			}
 
 		} catch (SQLException ex) {
@@ -514,24 +540,9 @@ public class ProductDAO {
 
 		return p;
 	}
-
-	public void delete(Product product) throws SQLException {
-		try {
-			deleteProductStatement = connection.prepareStatement(deleteQuery);
-			java.sql.Date sqlDeleteDate = new java.sql.Date(product.getDeletedDate().getTime());
-
-			deleteProductStatement.setDate(1, sqlDeleteDate);
-			deleteProductStatement.setString(2, product.getDeletedBy());
-			deleteProductStatement.setString(3, product.getProductCode());
-			deleteProductStatement.executeUpdate();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new SQLException(ex.getMessage());
-		}
-	}
 	
 	private PreparedStatement isProductCodeExistsStatement;
-	private String isProductCodeExistsQuery = "select count(*) as is_exists from product where product_code = ? and deleted_date is null ";
+	private String isProductCodeExistsQuery = "select count(*) as is_exists from product where product_code = ? ";
 
 	public int isProductCodeExists(String productCode) throws SQLException {
 		int count = 0;
@@ -554,7 +565,7 @@ public class ProductDAO {
 	}
 	
 	private PreparedStatement isProductNameExistsStatement;
-	private String isProductNameExistsQuery = "select count(*) as is_exists from product where product_name = ? and deleted_date is null ";
+	private String isProductNameExistsQuery = "select count(*) as is_exists from product where product_name = ? ";
 
 	public int isProductNameExists(String productName) throws SQLException {
 		int count = 0;
@@ -574,5 +585,59 @@ public class ProductDAO {
 		}
 
 		return count;
+	}
+	
+	private PreparedStatement isProductExistsStatement;
+	private String isProductExistsQuery = "select count(*) as is_exists, product_code from product "
+			+ "where product_category_id = ? "
+			+ "and grade_id = ? and wood_type_id = ? and deleted_date is null ";
+
+	public Product isProductExists(Product pProduct) throws SQLException {
+		Product product = null;
+		try {
+			StringBuilder sb = new StringBuilder(isProductExistsQuery);
+			if(pProduct.getThickness() == null)
+				sb.append("and thickness is null ");
+			else
+				sb.append("and thickness = ? ");
+			
+			if(pProduct.getLength() == null)
+				sb.append("and length is null ");
+			else
+				sb.append("and length = ? ");
+			
+			if(pProduct.getWidth() == null)
+				sb.append("and width is null ");
+			else
+				sb.append("and width = ? ");
+			
+			isProductExistsStatement = connection.prepareStatement(sb.toString());
+			isProductExistsStatement.setInt(1, pProduct.getProductCat());
+			isProductExistsStatement.setInt(2, pProduct.getGrade());
+			isProductExistsStatement.setInt(3, pProduct.getWoodType());
+			
+			if(pProduct.getThickness() != null)
+				isProductExistsStatement.setDouble(4, pProduct.getThickness());
+			
+			if(pProduct.getLength() != null)
+				isProductExistsStatement.setDouble(5, pProduct.getLength());
+			
+			if(pProduct.getWidth() != null)
+				isProductExistsStatement.setDouble(6, pProduct.getWidth());
+			
+			ResultSet rs = isProductExistsStatement.executeQuery();
+
+			while (rs.next()) {
+				product = new Product();
+				product.setProductCode(rs.getString("product_code"));
+				product.setIsExists(rs.getInt("is_exists"));
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return product;
 	}
 }

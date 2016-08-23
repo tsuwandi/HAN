@@ -419,10 +419,11 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(32);
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-		cbCurrency.addFocusListener(new FocusAdapter() {
+		cbCurrency.setEnabled(false);
+		txtTop.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
-				scrollPane.getViewport().setViewPosition(new Point(220, 655));
+				scrollPane.getViewport().setViewPosition(new Point(220, 685));
 			}
 		});
 		add(scrollPane);

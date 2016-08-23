@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import module.dryin.DryInType;
 import module.dryin.dao.PicTallyDAO;
 import module.dryout.dao.DryOutDAO;
 import module.dryout.dao.DryOutPalletDAO;
@@ -16,6 +17,7 @@ import module.pembelian.dao.PalletCardDAO;
 import module.pembelian.model.PalletCard;
 import module.sn.chamber.dao.ChamberDAO;
 import module.sn.chamber.model.Chamber;
+import module.dryout.DryOutType;
 
 public class DryOutBL {
 
@@ -91,7 +93,7 @@ public class DryOutBL {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 
-			dryOut.setStatus(dryOut.STATUS_COMPLETED);
+			dryOut.setStatus(DryOutType.COMPLETED.toString());
 			
 			new DryOutDAO(con).save(dryOut);
 

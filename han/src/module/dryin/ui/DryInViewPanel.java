@@ -1,7 +1,6 @@
 package module.dryin.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +27,7 @@ import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
 import main.panel.MainPanel;
+import module.dryin.DryInType;
 import module.dryin.model.DryIn;
 import module.dryin.model.DryInPallet;
 import module.dryin.model.PicTally;
@@ -399,8 +399,9 @@ public class DryInViewPanel extends JPanel implements Bridging {
 				refreshTablePicTally();
 				refreshTableDryInPallet();
 
-				if (dryIn.getStatus().equals(dryIn.STATUS_FINAL)) {
+				if (dryIn.getStatus().equals(DryInType.FINAL.toString())) {
 					btnEdit.setEnabled(false);
+					btnDelete.setEnabled(false);
 					updateUI();
 				}
 			}

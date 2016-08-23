@@ -1,7 +1,6 @@
 package module.dryout.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +26,7 @@ import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.dryout.bl.DryOutBL;
+import module.dryout.DryOutType;
 import module.dryout.model.DryOut;
 import module.dryout.model.DryOutPallet;
 import module.sn.chamber.model.Chamber;
@@ -356,8 +355,9 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 
 				refreshTableDryOutPallet();
 				
-				if (dryOut.getStatus().equals(dryOut.STATUS_FINAL)) {
+				if (dryOut.getStatus().equals(DryOutType.FINAL.toString())) {
 					btnEdit.setEnabled(false);
+					btnDelete.setEnabled(false);
 					updateUI();
 				}
 			}

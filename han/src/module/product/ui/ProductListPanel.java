@@ -112,7 +112,6 @@ public class ProductListPanel extends JPanel {
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-		productTable.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 
 		productTable.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -121,7 +120,7 @@ public class ProductListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 					Product product;
-					if(column == 4){
+					if(column == 3){
 						product = new Product();
 						product.setProductCode(productTable.getValueAt(row, 0).toString());
 						MainPanel.changePanel("module.product.ui.ProductViewPanel", product);
@@ -191,7 +190,7 @@ public class ProductListPanel extends JPanel {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 5;
+			return 4;
 		}
 
 		/**
@@ -212,9 +211,7 @@ public class ProductListPanel extends JPanel {
 				return p.getProductName();
 			case 2:
 				return p.getProductCatName();
-			case 3: 
-				return p.getProductStat();
-			case 4:
+			case 3:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
@@ -237,8 +234,6 @@ public class ProductListPanel extends JPanel {
 			case 2:
 				return "Kategori Produk";
 			case 3:
-				return "Status Produk";
-			case 4:
 				return "Action";
 			default:
 				return "";

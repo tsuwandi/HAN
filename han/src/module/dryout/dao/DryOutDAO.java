@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import module.dryin.model.DryIn;
 import module.dryout.model.DryOut;
 import module.pembelian.model.PalletCard;
 import module.sn.chamber.model.Chamber;
@@ -23,7 +22,7 @@ public class DryOutDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
-	private PreparedStatement updateConfirmDateStatement;
+	private PreparedStatement updateDailyClosingStatement;
 
 	private String getAllQuery = "SELECT d.id, d.dry_out_code, d.date_out, d.chamber_id, d.total_volume, d.status, c.chamber "
 			+ "FROM dry_out d INNER JOIN chamber c ON d.chamber_id = c.id ";
@@ -36,7 +35,7 @@ public class DryOutDAO {
 	private String updateQuery = "update dry_out set date_out=?, chamber_id=?, total_volume=?, "
 			+ "edit_date=?, edited_by=? where dry_out_code=? ";
 	private String deleteQuery = "update dry_out set deleted_date=?, deleted_by=? where id=?";
-	private String updateConfirmDateQuery = "update dry_out set confirm_date=?, "
+	private String updateDailyClosingQuery = "update dry_out set confirm_date=?, status=?, "
 			+ "edit_date=?, edited_by=? where dry_out_code=? ";
 
 	public DryOutDAO(Connection connection) throws SQLException {
@@ -294,14 +293,15 @@ public class DryOutDAO {
 		return listOfDryOut;
 	}
 	
-	public void updateConfirmDate(DryOut dryOut) throws SQLException {
+	public void updateDailyClosing(DryOut dryOut) throws SQLException {
 		try {
-			updateConfirmDateStatement = connection.prepareStatement(updateConfirmDateQuery);
-			updateConfirmDateStatement.setDate(1, DateUtil.getCurrentDate());
-			updateConfirmDateStatement.setDate(2, DateUtil.getCurrentDate());
-			updateConfirmDateStatement.setString(3, "timotius");
-			updateConfirmDateStatement.setString(4, dryOut.getDryOutCode());
-			updateConfirmDateStatement.executeUpdate();
+			updateDailyClosingStatement = connection.prepareStatement(updateDailyClosingQuery);
+			updateDailyClosingStatement.setDate(1, DateUtil.getCurrentDate());
+			updateDailyClosingStatement.setString(2, dryOut.getStatus());
+			updateDailyClosingStatement.setDate(3, DateUtil.getCurrentDate());
+			updateDailyClosingStatement.setString(4, "timotius");
+			updateDailyClosingStatement.setString(5, dryOut.getDryOutCode());
+			updateDailyClosingStatement.executeUpdate();
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
