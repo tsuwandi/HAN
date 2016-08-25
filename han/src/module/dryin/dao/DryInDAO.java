@@ -31,7 +31,7 @@ public class DryInDAO {
 			+ "ORDER BY ordinal DESC LIMIT 1 ";
 	private String isDryInCodeExistsQuery = "select count(*) as is_exists from dry_in where dry_in_code = ? ";
 	private String insertQuery = "insert into dry_in (dry_in_code, date_in, chamber_id, total_volume, status, "
-			+ "input_date, input_by) values (?,?,?,?,?,?)";
+			+ "input_date, input_by) values (?,?,?,?,?,?,?)";
 	private String updateQuery = "update dry_in set date_in=?, chamber_id=?, total_volume=?, "
 			+ "edit_date=?, edited_by=? where dry_in_code=? ";
 	private String updateDailyClosingQuery = "update dry_in set confirm_date=?, status=?, "

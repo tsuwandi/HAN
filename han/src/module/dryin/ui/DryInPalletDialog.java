@@ -84,8 +84,7 @@ public class DryInPalletDialog extends JDialog {
 				}
 
 			} else if (dryInEditPanel != null) {
-				for (DryInPallet dryInPallet : dryInEditPanel.getListOfDryInPallet()) {
-					dryInPallet.getPalletCard().setFlag(true);
+				for (DryInPallet dryInPallet : dryInEditPanel.getDryInPallets()) {
 					dryInPallet.getPalletCard().setRowNum(dryInPallet.getId());
 					if (!listOfPalletCard.contains(dryInPallet.getPalletCard())) {
 						listOfPalletCard.add(dryInPallet.getPalletCard());
@@ -93,6 +92,12 @@ public class DryInPalletDialog extends JDialog {
 						Integer index = listOfPalletCard.indexOf(dryInPallet.getPalletCard());
 						listOfPalletCard.set(index, dryInPallet.getPalletCard());
 					}
+				}
+				
+				for (DryInPallet dryInPallet : dryInEditPanel.getListOfDryInPallet()) {
+					dryInPallet.getPalletCard().setFlag(true);
+					Integer index = listOfPalletCard.indexOf(dryInPallet.getPalletCard());
+					listOfPalletCard.set(index, dryInPallet.getPalletCard());
 				}
 			}
 		} catch (Exception e) {
@@ -121,10 +126,7 @@ public class DryInPalletDialog extends JDialog {
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// int response = DialogBox.showInsertChoice();
-				// if (response == JOptionPane.YES_OPTION) {
 				doInsert();
-				// }
 			}
 		});
 		btnInsert.setBounds(480, 250, 95, 25);
@@ -143,8 +145,9 @@ public class DryInPalletDialog extends JDialog {
 			if (palletCard.isFlag()) {
 				dryInPallet.setPalletCard(palletCard);
 				dryInPallet.setPalletCardCode(palletCard.getPalletCardCode());
-				if (palletCard.getRowNum() != 0 && dryInEditPanel != null)
+				if (palletCard.getRowNum() != 0 && dryInEditPanel != null) {
 					dryInPallet.setId(palletCard.getRowNum());
+				}
 				listOfDryInPallet.add(dryInPallet);
 			} else {
 				if (palletCard.getRowNum() != 0 && dryInEditPanel != null) {
@@ -180,6 +183,18 @@ public class DryInPalletDialog extends JDialog {
 		try {
 			listOfPalletCard = new ArrayList<PalletCard>();
 			listOfPalletCard = ServiceFactory.getDryInBL().getAllPalletBySearch(value);
+
+			if (value.equals("") && dryInEditPanel != null) {
+				for (DryInPallet dryInPallet : dryInEditPanel.getDryInPallets()) {
+					dryInPallet.getPalletCard().setRowNum(dryInPallet.getId());
+					if (!listOfPalletCard.contains(dryInPallet.getPalletCard())) {
+						listOfPalletCard.add(dryInPallet.getPalletCard());
+					} else {
+						Integer index = listOfPalletCard.indexOf(dryInPallet.getPalletCard());
+						listOfPalletCard.set(index, dryInPallet.getPalletCard());
+					}
+				}
+			}
 			refreshTablePalletCard();
 		} catch (SQLException e1) {
 			e1.printStackTrace();

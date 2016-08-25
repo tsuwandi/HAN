@@ -230,7 +230,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		lblBreadcrumb.setBounds(50, 10, 320, 25);
 		panel.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("Buat Baru");
+		lblHeader = new JLabel("Ubah");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 25);
 		panel.add(lblHeader);

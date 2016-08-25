@@ -20,6 +20,7 @@ import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
+import module.dryin.model.DryInPallet;
 import module.dryout.model.DryOutPallet;
 import module.pembelian.model.Pallet;
 import module.pembelian.model.PalletCard;
@@ -85,8 +86,10 @@ public class DryOutPalletDialog extends JDialog {
 					listOfPalletCard.set(index, dryOutPallet.getPalletCard());
 				}
 			} else if (dryOutEditPanel != null) {
-				for (DryOutPallet dryOutPallet : dryOutEditPanel.getListOfDryOutPallet()) {
-					dryOutPallet.getPalletCard().setFlag(true);
+				listOfPalletCard = ServiceFactory.getDryOutBL()
+						.getAllPalletByChamberId(dryOutEditPanel.cbChamber.getDataIndex().getId());
+
+				for (DryOutPallet dryOutPallet : dryOutEditPanel.getDryOutPallets()) {
 					dryOutPallet.getPalletCard().setRowNum(dryOutPallet.getId());
 					if (!listOfPalletCard.contains(dryOutPallet.getPalletCard())) {
 						listOfPalletCard.add(dryOutPallet.getPalletCard());
@@ -94,6 +97,12 @@ public class DryOutPalletDialog extends JDialog {
 						Integer index = listOfPalletCard.indexOf(dryOutPallet.getPalletCard());
 						listOfPalletCard.set(index, dryOutPallet.getPalletCard());
 					}
+				}
+				
+				for (DryOutPallet dryOutPallet : dryOutEditPanel.getListOfDryOutPallet()) {
+					dryOutPallet.getPalletCard().setFlag(true);
+					Integer index = listOfPalletCard.indexOf(dryOutPallet.getPalletCard());
+					listOfPalletCard.set(index, dryOutPallet.getPalletCard());
 				}
 			}
 		} catch (Exception e) {
@@ -174,6 +183,7 @@ public class DryOutPalletDialog extends JDialog {
 	private void doSearchPalletCard(String value) {
 		try {
 			listOfPalletCard = new ArrayList<PalletCard>();
+
 			if (dryOutCreatePanel != null) {
 				listOfPalletCard = ServiceFactory.getDryOutBL().getAllPalletBySearchAndChamberId(value,
 						dryOutCreatePanel.cbChamber.getDataIndex().getId());
@@ -182,6 +192,18 @@ public class DryOutPalletDialog extends JDialog {
 			if (dryOutEditPanel != null) {
 				listOfPalletCard = ServiceFactory.getDryOutBL().getAllPalletBySearchAndChamberId(value,
 						dryOutEditPanel.cbChamber.getDataIndex().getId());
+			}
+			
+			if (value.equals("") && dryOutEditPanel != null) {
+				for (DryOutPallet dryOutPallet : dryOutEditPanel.getListOfDryOutPallet()) {
+					dryOutPallet.getPalletCard().setRowNum(dryOutPallet.getId());
+					if (!listOfPalletCard.contains(dryOutPallet.getPalletCard())) {
+						listOfPalletCard.add(dryOutPallet.getPalletCard());
+					} else {
+						Integer index = listOfPalletCard.indexOf(dryOutPallet.getPalletCard());
+						listOfPalletCard.set(index, dryOutPallet.getPalletCard());
+					}
+				}
 			}
 			refreshTablePalletCard();
 		} catch (SQLException e1) {

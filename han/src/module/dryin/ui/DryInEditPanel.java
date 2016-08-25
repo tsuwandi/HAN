@@ -119,7 +119,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 	public DryInEditPanel() {
 		dryInCreatePanel = this;
 
-		//setPreferredSize(new Dimension(1366, 725));
+		// setPreferredSize(new Dimension(1366, 725));
 		setLayout(null);
 
 		panel = new JPanel();
@@ -131,7 +131,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		lblBreadcrumb.setBounds(50, 10, 320, 25);
 		panel.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("BUAT BARU");
+		lblHeader = new JLabel("Ubah");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 25);
 		panel.add(lblHeader);
@@ -397,7 +397,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		//scrollPane.setBounds(0, 0, 1155, 580);
+		// scrollPane.setBounds(0, 0, 1155, 580);
 		scrollPane.setSize(MainPanel.bodyPanel.getSize());
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
@@ -433,7 +433,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		btnCancel.setBounds(49, 570, 100, 25);
 		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
-		
+
 		txtRitNo.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
@@ -448,7 +448,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		
+
 		txtRitNo.setNextFocusableComponent(txtOrdinal);
 
 		txtDate.addFocusListener(new FocusAdapter() {
@@ -493,7 +493,8 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		txtOrdinal.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				txtOrdinal.setText(NumberFormat.onTypeNum(txtOrdinal.getText().length(), txtOrdinal.getText().toString()));
+				txtOrdinal.setText(
+						NumberFormat.onTypeNum(txtOrdinal.getText().length(), txtOrdinal.getText().toString()));
 
 				if (txtOrdinal.getText().length() > 3)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
@@ -550,12 +551,12 @@ public class DryInEditPanel extends JPanel implements Bridging {
 				DateUtil.setTimeStamp(dcDateIn.getDate(), Integer.parseInt(cbDateInHour.getSelectedItem().toString()),
 						Integer.parseInt(cbDateInMinute.getSelectedItem().toString()), 0));
 		dryIn.setChamberId(cbChamber.getDataIndex().getId());
-		
-		if(!txtTotalVolume.getText().equals(""))
+
+		if (!txtTotalVolume.getText().equals(""))
 			dryIn.setTotalVolume(Double.parseDouble(txtTotalVolume.getText()));
 		else
 			dryIn.setTotalVolume(0);
-		
+
 		try {
 			ServiceFactory.getDryInBL().update(dryIn, listOfDryInPallet, listOfDeletedDryInPallet);
 			DialogBox.showInsert();
@@ -679,6 +680,15 @@ public class DryInEditPanel extends JPanel implements Bridging {
 	protected void doDeleteDryInPallet(DryInPallet dryInPallet) {
 		listOfDeletedDryInPallet.add(dryInPallet);
 		listOfDryInPallet.remove(dryInPallet);
+
+		int index = 0;
+		for (DryInPallet tDryInPallet : dryInPallets) {
+			if (dryInPallet.getPalletCardCode().equals(tDryInPallet.getPalletCardCode())) {
+				dryInPallet.getPalletCard().setFlag(false);
+				dryInPallets.set(index, dryInPallet);
+			}
+			index++;
+		}
 
 		refreshTableDryInPallet();
 		countTotalVolumeDryInPalletCard();
@@ -938,12 +948,26 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		this.listOfDryInPallet = listOfDryInPallet;
 	}
 
+	List<DryInPallet> dryInPallets = new ArrayList<DryInPallet>();
+
+	public List<DryInPallet> getDryInPallets() {
+		return dryInPallets;
+	}
+
+	public void setDryInPallets(List<DryInPallet> dryInPallets) {
+		this.dryInPallets = dryInPallets;
+	}
+
 	protected void loadData(Integer dryInId) {
 		try {
 			dryIn = ServiceFactory.getDryInBL().getDryInById(dryInId);
-			// listOfPicTally =
-			// ServiceFactory.getDryInBL().getPicTallyByDryInCode(dryIn.getDryInCode());
 			listOfDryInPallet = ServiceFactory.getDryInBL().getDryInPalletByDryInCode(dryIn.getDryInCode());
+
+			// copy object
+			for (DryInPallet dryInPallet : listOfDryInPallet) {
+				dryInPallet.getPalletCard().setFlag(true);
+				dryInPallets.add(dryInPallet);
+			}
 
 			if (dryIn != null) {
 				txtDryInCode.setText(dryIn.getDryInCode());

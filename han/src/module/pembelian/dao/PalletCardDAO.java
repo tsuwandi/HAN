@@ -178,13 +178,13 @@ public class PalletCardDAO {
 
 		try {
 			String query = new StringBuilder().append(getAllForDryInPalletQuery)
-					.append("WHERE pc.pallet_card_code NOT IN (SELECT pallet_card_code FROM dry_in_pallet) ")
+					.append("WHERE pc.pallet_card_code NOT IN (SELECT pallet_card_code FROM dry_in_pallet where deleted_date is null) ")
 					.append("AND ( STR_TO_DATE(r.received_date, '%Y-%m-%d') LIKE ('%").append(value).append("%') ")
 					.append("OR r.rit_no LIKE ('%").append(value).append("%') ")
 					.append("OR pc.pallet_card_code LIKE ('%").append(value).append("%') ")
 					.append("OR pc.volume LIKE ('%").append(value).append("%')) ")
 					.append("ORDER BY r.received_code, pc.pallet_card_code ").toString();
-
+			
 			getAllForDryInPalletStatement = connection.prepareStatement(query);
 
 			ResultSet rs = getAllForDryInPalletStatement.executeQuery();
@@ -218,7 +218,7 @@ public class PalletCardDAO {
 		PalletCard palletCard = null;
 		try {
 			String query = new StringBuilder().append(getAllForDryInPalletQuery)
-					.append("WHERE pc.pallet_card_code NOT IN (SELECT pallet_card_code FROM dry_in_pallet) ")
+					.append("WHERE pc.pallet_card_code NOT IN (SELECT pallet_card_code FROM dry_in_pallet where deleted_date is null) ")
 					.append("AND pc.pallet_card_code = '").append(palletCardCode).append("' ")
 					.append("ORDER BY pc.pallet_card_code LIMIT 1").toString();
 
@@ -300,7 +300,7 @@ public class PalletCardDAO {
 					.append("INNER JOIN dry_in di ON di.dry_in_code = dip.dry_in_code ")
 					.append("WHERE pc.pallet_card_code = dip.pallet_card_code ").append("AND di.chamber_id = ")
 					.append(chamberId).append(" ").append("AND di.deleted_date is null AND dip.deleted_date is null) ")
-					.append("AND pc.pallet_card_code NOT IN (SELECT pallet_card_code FROM dry_out_pallet) ")
+					.append("AND pc.pallet_card_code NOT IN (SELECT pallet_card_code FROM dry_out_pallet where deleted_date is null) ")
 					.append("GROUP BY pallet_card_code )a ")
 					.append("WHERE STR_TO_DATE(a.received_date, '%Y-%m-%d') LIKE ('%").append(value).append("%') ")
 					.append("OR a.rit_no LIKE ('%").append(value).append("%') ")
@@ -347,7 +347,7 @@ public class PalletCardDAO {
 					.append("INNER JOIN dry_in di ON di.dry_in_code = dip.dry_in_code ")
 					.append("WHERE pc.pallet_card_code = dip.pallet_card_code ").append("AND di.chamber_id = ")
 					.append(chamberId).append(" ").append("AND di.deleted_date is null AND dip.deleted_date is null) ")
-					.append("AND pc.pallet_card_code NOT IN (SELECT pallet_card_code FROM dry_out_pallet) ")
+					.append("AND pc.pallet_card_code NOT IN (SELECT pallet_card_code FROM dry_out_pallet where deleted_date is null) ")
 					.append("GROUP BY pallet_card_code )a ").append("WHERE a.pallet_card_code = '")
 					.append(palletCardCode).append("' ").append("ORDER BY a.pallet_card_code LIMIT 1").toString();
 

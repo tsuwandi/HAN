@@ -36,6 +36,7 @@ import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.NumberFormat;
 import main.panel.MainPanel;
+import module.dryin.model.DryInPallet;
 import module.dryout.model.DryOut;
 import module.dryout.model.DryOutPallet;
 import module.dryout.ui.DryOutCreatePanel.DryOutPalletTableModel;
@@ -107,7 +108,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 	public DryOutEditPanel() {
 		dryOutEditPanel = this;
 
-		//setPreferredSize(new Dimension(1366, 725));
+		// setPreferredSize(new Dimension(1366, 725));
 		setLayout(null);
 
 		panel = new JPanel();
@@ -119,7 +120,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 		lblBreadcrumb.setBounds(50, 10, 320, 25);
 		panel.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("BUAT BARU");
+		lblHeader = new JLabel("Ubah");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 25);
 		panel.add(lblHeader);
@@ -380,7 +381,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		
+
 		txtRitNo.setNextFocusableComponent(txtOrdinal);
 
 		txtDate.addFocusListener(new FocusAdapter() {
@@ -425,7 +426,8 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 		txtOrdinal.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				txtOrdinal.setText(NumberFormat.onTypeNum(txtOrdinal.getText().length(), txtOrdinal.getText().toString()));
+				txtOrdinal.setText(
+						NumberFormat.onTypeNum(txtOrdinal.getText().length(), txtOrdinal.getText().toString()));
 
 				if (txtOrdinal.getText().length() > 3)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
@@ -439,12 +441,12 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 
 		makeDefaultDatePalletCardCode();
 		listOfDeletedDryOutPallet = new ArrayList<DryOutPallet>();
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
-		    @Override
-		    public void run() {
-		        dcDateOut.requestFocusInWindow();
-		    }
+			@Override
+			public void run() {
+				dcDateOut.requestFocusInWindow();
+			}
 		});
 	}
 
@@ -480,12 +482,12 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 				DateUtil.setTimeStamp(dcDateOut.getDate(), Integer.parseInt(cbDateInHour.getSelectedItem().toString()),
 						Integer.parseInt(cbDateInMinute.getSelectedItem().toString()), 0));
 		dryOut.setChamberId(cbChamber.getDataIndex().getId());
-		
-		if(!txtTotalVolume.getText().equals(""))
+
+		if (!txtTotalVolume.getText().equals(""))
 			dryOut.setTotalVolume(Double.parseDouble(txtTotalVolume.getText()));
 		else
 			dryOut.setTotalVolume(0);
-		
+
 		try {
 			ServiceFactory.getDryOutBL().update(dryOut, listOfDryOutPallet, listOfDeletedDryOutPallet);
 			DialogBox.showInsert();
@@ -575,6 +577,15 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 	protected void doDeleteDryOutPallet(DryOutPallet dryOutPallet) {
 		listOfDeletedDryOutPallet.add(dryOutPallet);
 		listOfDryOutPallet.remove(dryOutPallet);
+
+		int index = 0;
+		for (DryOutPallet tDryOutPallet : dryOutPallets) {
+			if (dryOutPallet.getPalletCardCode().equals(tDryOutPallet.getPalletCardCode())) {
+				dryOutPallet.getPalletCard().setFlag(false);
+				dryOutPallets.set(index, dryOutPallet);
+			}
+			index++;
+		}
 
 		refreshTableDryOutPallet();
 		countTotalVolumeDryOutPalletCard();
@@ -734,10 +745,26 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 		this.listOfDryOutPallet = listOfDryOutPallet;
 	}
 
+	List<DryOutPallet> dryOutPallets = new ArrayList<DryOutPallet>();
+
+	public List<DryOutPallet> getDryOutPallets() {
+		return dryOutPallets;
+	}
+
+	public void setDryOutPallets(List<DryOutPallet> dryOutPallets) {
+		this.dryOutPallets = dryOutPallets;
+	}
+
 	protected void loadData(Integer dryOutId) {
 		try {
 			dryOut = ServiceFactory.getDryOutBL().getDryOutById(dryOutId);
 			listOfDryOutPallet = ServiceFactory.getDryOutBL().getDryOutPalletByDryOutCode(dryOut.getDryOutCode());
+
+			// copy object
+			for (DryOutPallet dryOutPallet : listOfDryOutPallet) {
+				dryOutPallet.getPalletCard().setFlag(true);
+				dryOutPallets.add(dryOutPallet);
+			}
 
 			if (dryOut != null) {
 				txtDryOutCode.setText(dryOut.getDryOutCode());
