@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -114,6 +116,7 @@ public class PopUpInputMaterial extends JDialog{
 		
 		ritNoField = new NumberField(4);
 		ritNoField.setBounds(200, 100, 50, 20);
+		
 		add(ritNoField);
 		
 		firstSeparatorLbl = new JLabel("/BL/");
@@ -122,7 +125,6 @@ public class PopUpInputMaterial extends JDialog{
 		
 		dateField = new NumberField(2);
 		dateField.setBounds(280, 100, 50, 20);
-		dateField.setFocusable(false);
 		add(dateField);
 		
 		secondSeparatorLbl = new JLabel("/");
@@ -131,7 +133,6 @@ public class PopUpInputMaterial extends JDialog{
 		
 		monthField = new NumberField(2);
 		monthField.setBounds(340, 100, 50, 20);
-		monthField.setFocusable(false);
 		add(monthField);
 		
 		thirdSeparatorLbl = new JLabel("/");
@@ -140,7 +141,6 @@ public class PopUpInputMaterial extends JDialog{
 		
 		yearField = new NumberField(2);
 		yearField.setBounds(400, 100, 50, 20);
-		yearField.setFocusable(false);
 		add(yearField);
 		
 		sequenceField = new NumberField(4);
@@ -272,6 +272,7 @@ public class PopUpInputMaterial extends JDialog{
 		saveBtn = new JButton("Simpan");
 		saveBtn.setBounds(600,680,150,30);
 		add(saveBtn);
+		
 	}
 	
 	private void initData(JPanel parent){
@@ -286,6 +287,7 @@ public class PopUpInputMaterial extends JDialog{
 		totalLogField.setEnabled(false);
 		totalVolumeField.setEnabled(false);
 		palletCardField.setEnabled(false);
+		ritNoField.setNextFocusableComponent(sequenceField);
 		Date currentDate = new Date();
 		String date = new SimpleDateFormat("dd").format(currentDate);
 		String month = new SimpleDateFormat("MM").format(currentDate);
@@ -360,6 +362,18 @@ public class PopUpInputMaterial extends JDialog{
 				prod.setListOfProdRM(prodRms);
 				DialogBox.showInsert();
 				dispose();
+			}
+		});
+		
+		materialTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(materialTable.columnAtPoint(e.getPoint())==6){
+					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
+						prodRms.remove(materialTable.getSelectedRow());
+						materialTable.updateUI();
+					}
+				}
 			}
 		});
 	}

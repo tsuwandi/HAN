@@ -50,12 +50,12 @@ public class ListProductionPanel extends JPanel {
 		productionTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(productionTable.columnAtPoint(e.getPoint())==7){
+				/*if(productionTable.columnAtPoint(e.getPoint())==7){
 					if(!productions.get(productionTable.getSelectedRow()).getStatus().equals("Complete")){
 						MainPanel.changePanel("module.production.ui.CreateProductionPanel", productions.get(productionTable.getSelectedRow()));
 					}
-				}
-				if(productionTable.columnAtPoint(e.getPoint())==8){
+				}*/
+				if(productionTable.columnAtPoint(e.getPoint())==7){
 					MainPanel.changePanel("module.production.ui.ViewProductionPanel", productions.get(productionTable.getSelectedRow()));
 				}
 			}
@@ -165,20 +165,19 @@ public class ListProductionPanel extends JPanel {
 		TableColumn column5 = productionTable.getColumnModel().getColumn(4);
 		TableColumn column6 = productionTable.getColumnModel().getColumn(6);
 		TableColumn column7 = productionTable.getColumnModel().getColumn(7);
-		TableColumn column8 = productionTable.getColumnModel().getColumn(8);
 		
 		
 		column1.setPreferredWidth(0);
 		column1.setMinWidth(0);
 		column1.setMaxWidth(0);
 		
-		column2.setPreferredWidth(200);
-		column2.setMinWidth(200);
-		column2.setMaxWidth(200);
+		column2.setPreferredWidth(250);
+		column2.setMinWidth(250);
+		column2.setMaxWidth(250);
 		
-		column3.setPreferredWidth(150);
-		column3.setMinWidth(150);
-		column3.setMaxWidth(150);
+		column3.setPreferredWidth(200);
+		column3.setMinWidth(200);
+		column3.setMaxWidth(200);
 		
 		column4.setPreferredWidth(150);
 		column4.setMinWidth(150);
@@ -195,10 +194,6 @@ public class ListProductionPanel extends JPanel {
 		column7.setPreferredWidth(100);
 		column7.setMinWidth(100);
 		column7.setMaxWidth(100);
-		
-		column8.setPreferredWidth(100);
-		column8.setMinWidth(100);
-		column8.setMaxWidth(100);
 
 	}
 	
@@ -228,7 +223,7 @@ public class ListProductionPanel extends JPanel {
 	     * Method to get Column Count
 	     */
 	    public int getColumnCount() {
-	        return 9;
+	        return 8;
 	    }
 	    
 	    /**
@@ -255,8 +250,6 @@ public class ListProductionPanel extends JPanel {
 	            case 6 :
 	                return p.getStatus();
 	            case 7 :
-	                return "Edit";
-	            case 8 :
 	                return "View";
 	            default :
 	                return "";
@@ -289,8 +282,6 @@ public class ListProductionPanel extends JPanel {
 	            case 6 :
 	                return "Status";
 	            case 7 :
-	                return "Action";
-	            case 8 :
 	                return "Action";
 	            default :
 	                return "";

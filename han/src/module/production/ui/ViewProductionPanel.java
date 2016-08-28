@@ -48,6 +48,7 @@ public class ViewProductionPanel extends JPanel implements Bridging{
 	private JButton inputProductionResultBtn;
 	private JButton printBtn;
 	private JButton backBtn;
+	private JButton editBtn;
 	
 	private Production production;
 	private ViewProductionPanel parent;
@@ -93,6 +94,14 @@ public class ViewProductionPanel extends JPanel implements Bridging{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainPanel.changePanel("module.production.ui.ListProductionPanel");
+			}
+		});
+		
+		editBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.production.ui.CreateProductionPanel",production);
 			}
 		});
 	}
@@ -200,16 +209,20 @@ public class ViewProductionPanel extends JPanel implements Bridging{
 		
 		//TODO Button Area
 		inputMaterialBtn = new JButton("View Bahan Baku");
-		inputMaterialBtn.setBounds(630,550,150,30);
+		inputMaterialBtn.setBounds(470,550,150,30);
 		add(inputMaterialBtn);
 		
 		inputProductionResultBtn = new JButton("View Hasil Produksi");
-		inputProductionResultBtn.setBounds(790,550,150,30);
+		inputProductionResultBtn.setBounds(630,550,150,30);
 		add(inputProductionResultBtn);
 		
 		printBtn = new JButton("Cetak");
-		printBtn.setBounds(950,550,150,30);
+		printBtn.setBounds(790,550,150,30);
 		add(printBtn);
+		
+		editBtn = new JButton("Ubah");
+		editBtn.setBounds(950,550,150,30);
+		add(editBtn);
 		
 		backBtn = new JButton("Kembali");
 		backBtn.setBounds(30,550,150,30);
@@ -232,6 +245,10 @@ public class ViewProductionPanel extends JPanel implements Bridging{
 			groupShiftCmb.setEnabled(false);
 			shiftCmb.setEnabled(false);
 			lineCmb.setEnabled(false);	
+			
+			if(production.getStatus().equals("Final")){
+				editBtn.setEnabled(false);
+			}
 		}
 	}
 

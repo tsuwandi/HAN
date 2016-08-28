@@ -12,7 +12,9 @@ import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -110,6 +112,8 @@ public class PopUpProductionResult extends JDialog{
 	private List<ProductionResultDetail> listOfPrd;
 	private boolean editMode=false;
 	private int indexEdit=0;
+	private Map<Integer, Integer> pressMap;
+	
 	public PopUpProductionResult(JPanel parent){
 		super((JFrame)parent.getTopLevelAncestor());
 		createGUI();
@@ -124,6 +128,7 @@ public class PopUpProductionResult extends JDialog{
 		totalGoodResultAField.setEnabled(false);
 		totalGoodResultBField.setEnabled(false);
 		totalAllGoodResultField.setEnabled(false);
+		pressMap = new HashMap<>();
 	
 		listOfPrd = new ArrayList<>();
 		
@@ -157,6 +162,9 @@ public class PopUpProductionResult extends JDialog{
 			totalAllGoodResultField.setText(pr.getTotalFineResult()+"");
 			listOfPrd = pr.getListOfProductionResultDetail();
 			productionResultTable.setModel(new ProductionResultTableModel(listOfPrd));
+			for (ProductionResultDetail prd : listOfPrd) {
+				pressMap.put(prd.getPressedNo(), prd.getPressedNo());
+			}
 			productionResultTable.updateUI();
 			calculateTotal();
 		}
@@ -455,6 +463,7 @@ public class PopUpProductionResult extends JDialog{
 				}
 				if(productionResultTable.columnAtPoint(e.getPoint())==10){
 					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
+						pressMap.remove(listOfPrd.get(productionResultTable.getSelectedRow()).getPressedNo());
 						listOfPrd.remove(productionResultTable.getSelectedRow());
 						productionResultTable.updateUI();
 						calculateTotal();
@@ -479,8 +488,14 @@ public class PopUpProductionResult extends JDialog{
 			errorPressNoLbl.setText("<html><font color='red'>Pengepresan harus diisi !</font></html>");
 			error++;
 		}else{
-			errorPressNoLbl.setText("");
+			if(pressMap.containsKey(Integer.valueOf(pressNoField.getText()))){
+				errorPressNoLbl.setText("<html><font color='red'>No Pengepresan sudah ada!</font></html>");
+				error++;
+			}else{
+				errorPressNoLbl.setText("");
+			}
 		}
+		
 		if(hourField.getText().equals("")||minuteField.getText().equals("")){
 			errorTimeLbl.setText("<html><font color='red'>Jam Mulai harus diisi !</font></html>");
 			error++;
@@ -491,14 +506,14 @@ public class PopUpProductionResult extends JDialog{
 			errorTimeLbl.setText("<html><font color='red'>Format Jam mulai harus 00:00 !</font></html>");
 			error++;
 		}else{
-			errorTimeLbl.setText("");
+			if(Integer.valueOf(hourField.getText())>23||Integer.valueOf(minuteField.getText())>59){
+				errorTimeLbl.setText("<html><font color='red'>Format Jam Tidak boleh lebih dari 23:59 !</font></html>");
+				error++;
+			}else{
+				errorTimeLbl.setText("");
+			}
 		}
-		if(Integer.valueOf(hourField.getText())>23||Integer.valueOf(minuteField.getText())>59){
-			errorTimeLbl.setText("<html><font color='red'>Format Jam Tidak boleh lebih dari 23:59 !</font></html>");
-			error++;
-		}else{
-			errorTimeLbl.setText("");
-		}
+		
 		if(klemGradeAField.getText().equals("")){
 			errorKlemALbl.setText("<html><font color='red'>Repair Klem A harus diisi !</font></html>");
 			error++;
@@ -540,6 +555,7 @@ public class PopUpProductionResult extends JDialog{
 		if(error==0){
 			if(editMode){
 				ProductionResultDetail prd = listOfPrd.get(indexEdit);
+				int tempPressedNo = prd.getPressedNo();
 				prd.setPressedNo(Integer.parseInt(pressNoField.getText()));
 				prd.setStartTime(hourField.getText()+":"+minuteField.getText());
 				prd.setRepairKlemA(Integer.parseInt(klemGradeAField.getText()));
@@ -550,6 +566,8 @@ public class PopUpProductionResult extends JDialog{
 				prd.setFineB(Integer.parseInt(goodResultGradeBField.getText()));
 				int total = prd.getFineA()+prd.getFineB()+prd.getRepairKlemA()+prd.getRepairKlemB()+prd.getRepairProtolA()+prd.getRepairProtolB();
 				prd.setTotal(total);
+				if(tempPressedNo!=prd.getPressedNo()) pressMap.remove(tempPressedNo);
+				pressMap.put(prd.getPressedNo(),prd.getPressedNo());
 				productionResultTable.updateUI();
 				editMode=false;
 				indexEdit=0;
@@ -567,6 +585,7 @@ public class PopUpProductionResult extends JDialog{
 				int total = prd.getFineA()+prd.getFineB()+prd.getRepairKlemA()+prd.getRepairKlemB()+prd.getRepairProtolA()+prd.getRepairProtolB();
 				prd.setTotal(total);
 				listOfPrd.add(prd);
+				pressMap.put(prd.getPressedNo(),prd.getPressedNo());
 				productionResultTable.setModel(new ProductionResultTableModel(listOfPrd));
 				productionResultTable.updateUI();
 			}
