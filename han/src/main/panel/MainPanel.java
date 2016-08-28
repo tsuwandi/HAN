@@ -80,35 +80,19 @@ public class MainPanel extends JFrame {
 	 */
 	public MainPanel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//setPreferredSize(new Dimension(1366, 768));
 		setBounds(0, 0, 1366, 768);
 
 		setLayout(null);
-		setTitle("HAN Application");
-
-		// glassPane = new JPanel(){
-		// public void paintComponent(Graphics g){
-		// g.setColor(new Color(0,0,0,200));
-		// g.fillRect(0,0,1366,768);
-		// }
-		// };
-		// glassPane.setOpaque(false);
-		// setGlassPane(glassPane);
-		// glassPane.setVisible(true);
+		setTitle("PT. HAN");
 
 		headerPanel = new JPanel();
-		headerPanel.setBorder(new LineBorder(Color.BLACK, 2));
-		// headerPanel.setLayout(new BorderLayout(0, 0));
+		headerPanel.setBorder(new LineBorder(Color.BLACK, 1));
 		headerPanel.setBounds(0, 0, 1366, 100);
 		headerPanel.setBackground(Color.WHITE);
-		// contentPane.setBackground(Color.BLUE);
-		// setContentPane(headerPanel);
 
 		menuPanel = new MenuPanel();
-		menuPanel.setBorder(new LineBorder(Color.BLACK, 1));
 		menuPanel.setBounds(0, 100, 200, 630);
 
-		// add(glassPane);
 		add(headerPanel);
 		add(menuPanel);
 	}
@@ -121,6 +105,7 @@ public class MainPanel extends JFrame {
 			bodyPanel.revalidate();
 			bodyPanel.repaint();
 			classPane.setBounds(0, 0, 1366, 630);
+			classPane.setBorder(new LineBorder(Color.BLACK, 1));
 			bodyPanel.add(classPane);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -143,6 +128,7 @@ public class MainPanel extends JFrame {
 			bodyPanel.revalidate();
 			bodyPanel.repaint();
 			classPane.setBounds(0, 0, 1366, 630);
+			classPane.setBorder(new LineBorder(Color.BLACK, 1));
 			bodyPanel.add(classPane);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
