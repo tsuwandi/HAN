@@ -99,7 +99,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.production.ui.ListProductionPanel");
+				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)MainPanel.changePanel("module.production.ui.ListProductionPanel");
 			}
 		});
 		

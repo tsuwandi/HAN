@@ -265,7 +265,7 @@ public class PopUpInputMaterial extends JDialog{
 		totalVolumeField.setBounds(200, 650, 150, 20);
 		add(totalVolumeField);
 		
-		uomTotalVolumeLbl = new JLabel("m3");
+		uomTotalVolumeLbl = new JLabel("cm3");
 		uomTotalVolumeLbl.setBounds(352,650,20,20);
 		add(uomTotalVolumeLbl);
 		

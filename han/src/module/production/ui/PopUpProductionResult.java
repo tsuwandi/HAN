@@ -252,7 +252,7 @@ public class PopUpProductionResult extends JDialog{
 		borderPanel.add(minuteField);
 		
 		errorTimeLbl = new JLabel();
-		errorTimeLbl.setBounds(320,50,160,20);
+		errorTimeLbl.setBounds(320,50,250,20);
 		borderPanel.add(errorTimeLbl);
 		
 		//TODO klem Area
@@ -489,6 +489,12 @@ public class PopUpProductionResult extends JDialog{
 		}
 		if(hourField.getText().length()!=2||minuteField.getText().length()!=2){
 			errorTimeLbl.setText("<html><font color='red'>Format Jam mulai harus 00:00 !</font></html>");
+			error++;
+		}else{
+			errorTimeLbl.setText("");
+		}
+		if(Integer.valueOf(hourField.getText())>23||Integer.valueOf(minuteField.getText())>59){
+			errorTimeLbl.setText("<html><font color='red'>Format Jam Tidak boleh lebih dari 23:59 !</font></html>");
 			error++;
 		}else{
 			errorTimeLbl.setText("");
