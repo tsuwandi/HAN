@@ -19,13 +19,14 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
+
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 
 import main.component.NumberField;
+import main.component.TextField;
 import model.User;
 import module.pembelian.model.Employee;
 import module.pembelian.model.Grade;
@@ -74,11 +75,11 @@ public class ViewPopUpPalletCard extends JDialog{
 	NumberField thicknessField;
 	NumberField totalField;
 	
-	JTextField codePalletCardField;
-	JTextField volumeField;
-	JTextField totalLogField;
-	JTextField totalVolumeField;
-	JTextField productNameField;
+	TextField codePalletCardField;
+	TextField volumeField;
+	TextField totalLogField;
+	TextField totalVolumeField;
+	TextField productNameField;
 	
 	JTextArea descriptionArea;
 	
@@ -132,7 +133,7 @@ public class ViewPopUpPalletCard extends JDialog{
 		palletCardCodeLbl.setBounds(30,70,150,20);
 		add(palletCardCodeLbl);
 		
-		codePalletCardField = new JTextField();
+		codePalletCardField = new TextField();
 		codePalletCardField.setBounds(150, 70, 150, 20);
 		add(codePalletCardField);
 	
@@ -211,7 +212,7 @@ public class ViewPopUpPalletCard extends JDialog{
 		volumeLbl.setBounds(30,270,100,20);
 		add(volumeLbl);
 			
-		volumeField = new JTextField();
+		volumeField = new TextField();
 		volumeField.setBounds(150, 270, 150, 20);
 		add(volumeField);
 		
@@ -229,7 +230,7 @@ public class ViewPopUpPalletCard extends JDialog{
 		productNameLbl.setBounds(30,310,150,20);
 		add(productNameLbl);
 		
-		productNameField = new JTextField();
+		productNameField = new TextField();
 		productNameField.setBounds(150, 310, 150, 20);
 		add(productNameField);
 		
@@ -272,7 +273,7 @@ public class ViewPopUpPalletCard extends JDialog{
 		totalLogLbl.setBounds(30,580,150,20);
 		add(totalLogLbl);
 	
-		totalLogField =  new JTextField();
+		totalLogField =  new TextField();
 		totalLogField.setBounds(350, 580, 150, 20);
 		add(totalLogField);
 		
@@ -285,7 +286,7 @@ public class ViewPopUpPalletCard extends JDialog{
 		totalVolumeLbl.setBounds(30,620,150,20);
 		add(totalVolumeLbl);
 
-		totalVolumeField =  new JTextField();
+		totalVolumeField =  new TextField();
 		totalVolumeField.setBounds(350, 620, 150, 20);
 		add(totalVolumeField);
 		

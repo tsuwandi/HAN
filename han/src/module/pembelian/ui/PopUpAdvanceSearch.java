@@ -10,12 +10,13 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
+
 import javax.swing.table.AbstractTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
 import controller.ReceivedDAOFactory;
+import main.component.TextField;
 import model.User;
 import module.pembelian.model.Received;
 
@@ -26,12 +27,12 @@ public class PopUpAdvanceSearch extends JDialog{
 	JLabel supplierLbl;
 	JLabel docNoLbl;
 	
-	JTextField receivedCodeField;
+	TextField receivedCodeField;
 	JDateChooser startDateChooser;
 	JDateChooser endDateChooser;
-	JTextField licensePlateField;
-	JTextField supplierField;
-	JTextField docNoField;
+	TextField licensePlateField;
+	TextField supplierField;
+	TextField docNoField;
 	
 	JButton searchBtn;
 	
@@ -48,7 +49,7 @@ public class PopUpAdvanceSearch extends JDialog{
 		receivedCodeLbl.setBounds(40,40,120,20);
 		add(receivedCodeLbl);
 		
-		receivedCodeField = new JTextField();
+		receivedCodeField = new TextField();
 		receivedCodeField.setBounds(180, 40, 120, 20);
 		add(receivedCodeField);
 	
@@ -70,7 +71,7 @@ public class PopUpAdvanceSearch extends JDialog{
 		licensePlateLbl.setBounds(40,100,120,20);
 		add(licensePlateLbl);
 		
-		licensePlateField = new JTextField();
+		licensePlateField = new TextField();
 		licensePlateField.setBounds(180, 100, 120, 20);
 		add(licensePlateField);
 		
@@ -78,7 +79,7 @@ public class PopUpAdvanceSearch extends JDialog{
 		supplierLbl.setBounds(40,140,120,20);
 		add(supplierLbl);
 		
-		supplierField = new JTextField();
+		supplierField = new TextField();
 		supplierField.setBounds(180, 140, 120, 20);
 		add(supplierField);
 		
@@ -87,7 +88,7 @@ public class PopUpAdvanceSearch extends JDialog{
 		docNoLbl.setBounds(40,180,120,20);
 		add(docNoLbl);
 		
-		docNoField = new JTextField();
+		docNoField = new TextField();
 		docNoField.setBounds(180, 180, 120, 20);
 		add(docNoField);
 		

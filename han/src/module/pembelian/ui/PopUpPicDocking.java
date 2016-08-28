@@ -14,10 +14,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import controller.ReceivedDAOFactory;
+import main.component.TextField;
 import model.User;
 import module.pembelian.model.Employee;
 import module.pembelian.model.PicDocking;
@@ -30,7 +30,7 @@ public class PopUpPicDocking extends JDialog {
 	
 	JButton addBtn;
 	JButton searchBtn;
-	JTextField searchField;
+	TextField searchField;
 	AddReceivedDetailPanel addReceivedDetail;
 	JDialog dialog;
 	
@@ -45,7 +45,7 @@ public class PopUpPicDocking extends JDialog {
 		searchBtn.setBounds(270,20,100,30);
 		add(searchBtn);
 		
-		searchField = new JTextField();
+		searchField = new TextField();
 		searchField.setBounds(150,20,100,30);
 		add(searchField);
 		

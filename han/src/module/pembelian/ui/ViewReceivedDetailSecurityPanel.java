@@ -23,7 +23,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -34,6 +33,7 @@ import controller.ReceivedDAOFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
+import main.component.TextField;
 import main.panel.MainPanel;
 import module.pembelian.model.Delivery;
 import module.pembelian.model.DocumentType;
@@ -93,11 +93,11 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	NumberField totalLogField;
 	NumberField totalVolumeField;
 	
-	JTextField driverField;
-	JTextField woodDomicileField;
-	JTextField driverIDField;
-	JTextField docNoField;
-	JTextField licensePlateField;
+	TextField driverField;
+	TextField woodDomicileField;
+	TextField driverIDField;
+	TextField docNoField;
+	TextField licensePlateField;
 	
 	JTextArea supplierAddressArea;
 	
@@ -243,7 +243,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		licensePlateLbl.setBounds(50,340,150,20);
 		containerPnl.add(licensePlateLbl);
 		
-		licensePlateField = new JTextField();
+		licensePlateField = new TextField();
 		licensePlateField.setBounds(220,340,150,20);
 		containerPnl.add(licensePlateField);
 		
@@ -256,7 +256,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		driverLbl.setBounds(50,380,150,20);
 		containerPnl.add(driverLbl);
 		
-		driverField = new JTextField();
+		driverField = new TextField();
 		driverField.setBounds(220, 380, 150, 20);
 		containerPnl.add(driverField);
 		
@@ -269,7 +269,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		driverIDLbl.setBounds(50,420,150,20);
 		containerPnl.add(driverIDLbl);
 		
-		driverIDField = new JTextField();
+		driverIDField = new TextField();
 		driverIDField.setBounds(220, 420, 150, 20);
 		containerPnl.add(driverIDField);
 		
@@ -283,7 +283,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		docNoLbl.setBounds(550,70,150,20);
 		containerPnl.add(docNoLbl);
 		
-		docNoField = new JTextField();
+		docNoField = new TextField();
 		docNoField.setBounds(720, 70, 150, 20);
 		containerPnl.add(docNoField);
 		
@@ -311,7 +311,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		woodDomicileLbl.setBounds(550,150,150,20);
 		containerPnl.add(woodDomicileLbl);
 		
-		woodDomicileField = new JTextField();
+		woodDomicileField = new TextField();
 		woodDomicileField.setBounds(720, 150, 150, 20);
 		containerPnl.add(woodDomicileField);
 		

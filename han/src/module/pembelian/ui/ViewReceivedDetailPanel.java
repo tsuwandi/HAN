@@ -28,7 +28,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -41,6 +40,7 @@ import controller.ReceivedDAOFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
+import main.component.TextField;
 import main.panel.MainPanel;
 import model.User;
 import module.pembelian.dao.ReceivedDAO;
@@ -108,19 +108,19 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	NumberField receivedCodeMonthField;
 	NumberField receivedCodeYearField;
 	
-	JTextField ritNumberField;
-	JTextField dateField;
-	JTextField supplierField;
-	JTextField subSupplierField;
-	JTextField licensePlateField;
-	JTextField driverIDField;
-	JTextField driverField;
-	JTextField deliveryNoteField;
-	JTextField woodDomicileField;
-	JTextField woodResourceField;
-	JTextField woodTypeField;
-	JTextField totalVolumeField;
-	JTextField totalLogField;
+	TextField ritNumberField;
+	TextField dateField;
+	TextField supplierField;
+	TextField subSupplierField;
+	TextField licensePlateField;
+	TextField driverIDField;
+	TextField driverField;
+	TextField deliveryNoteField;
+	TextField woodDomicileField;
+	TextField woodResourceField;
+	TextField woodTypeField;
+	TextField totalVolumeField;
+	TextField totalLogField;
 	NumberField totalVolumeByAdminField;
 	
 	JTextArea supplierAddressArea;
@@ -219,7 +219,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		receivedDateLbl.setBounds(50,110,150,20);
 		containerPnl.add(receivedDateLbl);
 		
-		dateField = new JTextField();
+		dateField = new TextField();
 		dateField.setBounds(220,110,150,20);
 		containerPnl.add(dateField);
 		
@@ -228,7 +228,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		ritNumberLbl.setBounds(50,150,150,20);
 		containerPnl.add(ritNumberLbl);
 		
-		ritNumberField = new JTextField();
+		ritNumberField = new TextField();
 		ritNumberField.setBounds(220, 150, 150, 20);
 		containerPnl.add(ritNumberField);
 		
@@ -241,7 +241,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		supplierLbl.setBounds(50,190,150,20);
 		containerPnl.add(supplierLbl);
 		
-		supplierField = new JTextField();
+		supplierField = new TextField();
 		supplierField.setBounds(220,190,150,20);
 		containerPnl.add(supplierField);
 		
@@ -254,7 +254,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		supplierCPLbl.setBounds(50,230,150,20);
 		containerPnl.add(supplierCPLbl);
 		
-		subSupplierField = new JTextField();
+		subSupplierField = new TextField();
 		subSupplierField.setBounds(220,230,150,20);
 		containerPnl.add(subSupplierField);
 		
@@ -276,7 +276,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		licensePlateLbl.setBounds(50,340,150,20);
 		containerPnl.add(licensePlateLbl);
 		
-		licensePlateField = new JTextField();
+		licensePlateField = new TextField();
 		licensePlateField.setBounds(220,340,150,20);
 		containerPnl.add(licensePlateField);
 		
@@ -289,7 +289,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		driverLbl.setBounds(50,380,150,20);
 		containerPnl.add(driverLbl);
 		
-		driverField = new JTextField();
+		driverField = new TextField();
 		driverField.setBounds(220, 380, 150, 20);
 		containerPnl.add(driverField);
 		
@@ -302,7 +302,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		driverIDLbl.setBounds(50,420,150,20);
 		containerPnl.add(driverIDLbl);
 		
-		driverIDField = new JTextField();
+		driverIDField = new TextField();
 		driverIDField.setBounds(220, 420, 150, 20);
 		containerPnl.add(driverIDField);
 		
@@ -317,7 +317,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		docNoLbl.setBounds(550,70,150,20);
 		containerPnl.add(docNoLbl);
 		
-		deliveryNoteField = new JTextField();
+		deliveryNoteField = new TextField();
 		deliveryNoteField.setBounds(720, 70, 150, 20);
 		containerPnl.add(deliveryNoteField);
 		
@@ -331,7 +331,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		woodDomicileLbl.setBounds(550,110,150,20);
 		containerPnl.add(woodDomicileLbl);
 		
-		woodDomicileField = new JTextField();
+		woodDomicileField = new TextField();
 		woodDomicileField.setBounds(720, 110, 150, 20);
 		containerPnl.add(woodDomicileField);
 	
@@ -340,7 +340,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		woodResourceLbl.setBounds(550, 150, 150, 20);
 		containerPnl.add(woodResourceLbl);
 		
-		woodResourceField = new JTextField();
+		woodResourceField = new TextField();
 		woodResourceField.setBounds(720, 150, 150, 20);
 		containerPnl.add(woodResourceField);
 		
@@ -350,7 +350,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		woodTypeLbl.setBounds(550, 190, 150, 20);
 		containerPnl.add(woodTypeLbl);
 		
-		woodTypeField = new JTextField();
+		woodTypeField = new TextField();
 		woodTypeField.setBounds(720, 190, 150, 20);
 		containerPnl.add(woodTypeField);
 		
@@ -363,7 +363,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		totalLogLbl.setBounds(550,230,150,20);
 		containerPnl.add(totalLogLbl);
 		
-		totalLogField = new JTextField();
+		totalLogField = new TextField();
 		totalLogField.setBounds(720, 230, 150, 20);
 		containerPnl.add(totalLogField);
 		
@@ -376,7 +376,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		totalVolumeLbl.setBounds(550,270,150,20);
 		containerPnl.add(totalVolumeLbl);
 		
-		totalVolumeField = new JTextField();
+		totalVolumeField = new TextField();
 		totalVolumeField.setBounds(720, 270, 150, 20);
 		containerPnl.add(totalVolumeField);
 		

@@ -15,13 +15,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
 import controller.ReceivedDAOFactory;
 import main.component.DialogBox;
+import main.component.TextField;
 import main.panel.MainPanel;
 import model.User;
 import module.pembelian.model.Received;
@@ -32,7 +32,7 @@ public class ListReceivedSecurityPanel extends JPanel {
 	private JButton searchBtn;
 	private JButton createBtn;
 	private JButton deleteBtn;
-	private JTextField searchField;
+	private TextField searchField;
 	JTable receivedTable;
 	private JScrollPane scrollPane;
 	private JLabel titleLabel;
@@ -63,7 +63,7 @@ public class ListReceivedSecurityPanel extends JPanel {
 		searchBtn.setBounds(950,130,100,30);
 		add(searchBtn);
 		
-		searchField = new JTextField();
+		searchField = new TextField();
 		searchField.setBounds(800, 131, 150, 28);
 		add(searchField);
 		
