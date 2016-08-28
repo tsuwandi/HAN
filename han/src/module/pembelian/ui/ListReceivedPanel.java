@@ -19,6 +19,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import controller.ReceivedDAOFactory;
 import main.component.DialogBox;
 import main.component.TextField;
@@ -29,6 +32,7 @@ import module.pembelian.model.Received;
 
 
 public class ListReceivedPanel extends JPanel {
+	Logger log = LogManager.getLogger(ListReceivedPanel.class.getName());
 	private JButton searchBtn;
 	private TextField searchField;
 	JTable receivedTable;
@@ -93,6 +97,7 @@ public class ListReceivedPanel extends JPanel {
 			setTableSize();
 		} catch (SQLException e1) {
 			DialogBox.showError("Tidak Dapat Terhubung ke Database");
+			log.error(e1.getMessage());
 			e1.printStackTrace();
 		}
 		
@@ -117,6 +122,7 @@ public class ListReceivedPanel extends JPanel {
 					receivedTable.updateUI();
 					setTableSize();
 				} catch (SQLException e) {
+					log.error(e.getMessage());
 					e.printStackTrace();
 				}
 				

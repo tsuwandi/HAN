@@ -33,6 +33,9 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.toedter.calendar.JDateChooser;
 
 import controller.DataSourceFactory;
@@ -66,7 +69,7 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class ViewReceivedDetailPanel extends JPanel implements Bridging{
-	
+	Logger log = LogManager.getLogger(ViewReceivedDetailPanel.class.getName());
 	JLabel receivedCodeLbl;
 	JLabel receivedDateLbl;
 	JLabel ritNumberLbl;
@@ -485,6 +488,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			grades.add(0,new Grade("--Pilih--"));
 			gradeComboBox.setList(grades);
 		} catch (Exception e) {
+			log.error(e.getMessage());
 			DialogBox.showError("Tidak Dapat Terhubung ke Database");
 			e.printStackTrace();
 		}
@@ -533,6 +537,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 						ReceivedDAOFactory.getReceivedDAO().delete(received);
 						MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel",received);
 					} catch (Exception e2) {
+						log.error(e2.getMessage());
 						e2.printStackTrace();
 					}
 				}
@@ -567,6 +572,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 //					    JasperPrint jprintt = JasperFillManager.fillReport(jreprt,null,conn);
 //					    JasperViewer.viewReport(jprintt,false);
 				} catch (Exception ex) {
+					log.error(ex.getMessage());
 					ex.printStackTrace();
 					JOptionPane.showMessageDialog(null, "Gagal Membuka Laporan", "Cetak Laporan",
 							JOptionPane.ERROR_MESSAGE);
@@ -836,6 +842,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 				graderComboBox.setSelectedItem(emp.getEmployeeName());
 			}
 		} catch (SQLException e1) {
+			log.error(e1.getMessage());
 			e1.printStackTrace();
 		}
 		
@@ -848,6 +855,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			dockingPICTable.setModel(new PicDockingTableModel(picDockings));
 			dockingPICTable.updateUI();
 		} catch (SQLException e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 	

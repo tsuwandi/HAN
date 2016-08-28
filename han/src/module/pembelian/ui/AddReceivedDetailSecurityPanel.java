@@ -26,6 +26,9 @@ import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.toedter.calendar.JDateChooser;
 
 import controller.ReceivedDAOFactory;
@@ -45,6 +48,8 @@ import module.util.Bridging;
 import module.pembelian.model.SupplierCP;
 
 public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
+	
+	Logger log = LogManager.getLogger(AddReceivedDetailSecurityPanel.class.getName());
 	
 	JLabel receivedCodeLbl;
 	JLabel receivedDateLbl;
@@ -411,6 +416,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 			woodResourceComboBox.setList(woodResources);
 			
 		} catch (SQLException e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -452,6 +458,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 						supplierCPs.add(0,new SupplierCP("--Pilih--"));
 						supplierCPComboBox.setList(supplierCPs);
 					} catch (Exception e2) {
+						log.error(e2.getMessage());
 						e2.printStackTrace();
 					}
 				}
@@ -621,6 +628,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 							DialogBox.showInsert();
 							MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
 						} catch (Exception e) {
+							log.error(e.getMessage());
 							e.printStackTrace();
 						}
 					}
@@ -675,6 +683,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 				}
 			}
 		} catch (Exception e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 	}

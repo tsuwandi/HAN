@@ -19,6 +19,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import controller.ReceivedDAOFactory;
 import main.component.DialogBox;
 import main.component.TextField;
@@ -29,13 +32,12 @@ import module.pembelian.model.Received;
 
 
 public class ListReceivedSecurityPanel extends JPanel {
+	Logger log = LogManager.getLogger(ListReceivedSecurityPanel.class.getName());
 	private JButton searchBtn;
 	private JButton createBtn;
-	private JButton deleteBtn;
 	private TextField searchField;
 	JTable receivedTable;
 	private JScrollPane scrollPane;
-	private JLabel titleLabel;
 	private JButton advancedSearchBtn;
 	ReceivedTableModel receivedTableModel;
 	List<Received> receiveds;
@@ -44,10 +46,6 @@ public class ListReceivedSecurityPanel extends JPanel {
 	public ListReceivedSecurityPanel() {
 		setLayout(null);
 		parent = this;
-//		titleLabel = new JLabel("Penerimaan Balken");
-//		titleLabel.setBounds(400,30,300,80);
-//		titleLabel.setFont(new Font("Arial", 1, 30));
-//		add(titleLabel);
 		
 		JLabel lblBreadcrumb = new JLabel("ERP > Penerimaan Balken");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -111,6 +109,7 @@ public class ListReceivedSecurityPanel extends JPanel {
 			setTableSize();
 		} catch (SQLException e1) {
 			DialogBox.showError("Tidak Dapat Terhubung ke Database");
+			log.error(e1.getMessage());
 			e1.printStackTrace();
 		}
 		
@@ -135,6 +134,7 @@ public class ListReceivedSecurityPanel extends JPanel {
 					receivedTable.updateUI();
 					setTableSize();
 				} catch (SQLException e) {
+					log.error(e.getMessage());
 					e.printStackTrace();
 				}
 				

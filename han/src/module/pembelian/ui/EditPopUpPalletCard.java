@@ -25,6 +25,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import controller.ReceivedDAOFactory;
 import main.component.NumberField;
 import main.component.TextField;
@@ -37,7 +40,8 @@ import module.pembelian.model.ReceivedDetail;
 import module.pembelian.model.Thickness;
 
 public class EditPopUpPalletCard extends JDialog{
-
+	Logger log = LogManager.getLogger(EditPopUpPalletCard.class.getName());
+	
 	JLabel noPalletLbl;
 	JLabel palletCardCodeLbl;
 	JLabel gradeLbl;
@@ -360,6 +364,7 @@ public class EditPopUpPalletCard extends JDialog{
 			totalLogField.setText(total+"");
 			totalVolumeField.setText(volume+"");
 		} catch (SQLException e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 		longField.getDocument().addDocumentListener(new DocumentListener() {

@@ -16,6 +16,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import controller.ReceivedDAOFactory;
 import main.component.TextField;
 import model.User;
@@ -23,6 +26,7 @@ import module.pembelian.model.Employee;
 import module.pembelian.model.PicDocking;
 
 public class PopUpPicDocking extends JDialog {
+	Logger log = LogManager.getLogger(PopUpPicDocking.class.getName());
 	JTable picTable;
 	PicDockingTableModel picDockingTableModel;
 	List<PicDocking> picDockings;
@@ -53,6 +57,7 @@ public class PopUpPicDocking extends JDialog {
 			picDockings = ReceivedDAOFactory.getPICDockingDAO().getEmployeeBasedOnPosition("POS0001");
 			picDockingTableModel = new PicDockingTableModel(picDockings);
 		} catch (SQLException e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 		

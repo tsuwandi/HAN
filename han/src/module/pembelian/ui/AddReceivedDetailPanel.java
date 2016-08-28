@@ -30,6 +30,9 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import controller.ReceivedDAOFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
@@ -50,6 +53,7 @@ import module.util.Bridging;
 import main.component.TextField;
 
 public class AddReceivedDetailPanel extends JPanel implements Bridging{
+	Logger log = LogManager.getLogger(AddReceivedDetailPanel.class.getName());
 	
 	JLabel receivedCodeLbl;
 	JLabel receivedDateLbl;
@@ -619,6 +623,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 			grades.add(0,new Grade("--Pilih--"));
 			gradeComboBox.setList(grades);
 		} catch (SQLException e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -667,6 +672,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 							DialogBox.showInsert();
 							MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel");
 						} catch (Exception e) {
+							log.error(e.getMessage());
 							e.printStackTrace();
 						}
 					}
@@ -948,6 +954,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 				graderComboBox.setSelectedItem(emp.getEmployeeName());
 			}
 		} catch (SQLException e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 	

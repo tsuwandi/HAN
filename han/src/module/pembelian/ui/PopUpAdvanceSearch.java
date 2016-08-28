@@ -13,6 +13,9 @@ import javax.swing.JLabel;
 
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.toedter.calendar.JDateChooser;
 
 import controller.ReceivedDAOFactory;
@@ -21,6 +24,7 @@ import model.User;
 import module.pembelian.model.Received;
 
 public class PopUpAdvanceSearch extends JDialog{
+	Logger log = LogManager.getLogger(PopUpAdvanceSearch.class.getName());
 	JLabel receivedCodeLbl;
 	JLabel receivedDateLbl;
 	JLabel licensePlateLbl;
@@ -143,6 +147,7 @@ public class PopUpAdvanceSearch extends JDialog{
 					parent.setTableSize();
 					dispose();
 				} catch (Exception e2) {
+					log.error(e2.getMessage());
 					e2.printStackTrace();
 				}
 				
