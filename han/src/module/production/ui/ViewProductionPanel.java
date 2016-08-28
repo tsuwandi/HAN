@@ -12,12 +12,12 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
 import main.component.ComboBox;
+import main.component.TextField;
 import main.panel.MainPanel;
 import module.production.model.GroupShift;
 import module.production.model.Line;
@@ -38,7 +38,7 @@ public class ViewProductionPanel extends JPanel implements Bridging{
 	private JLabel errorLineLbl;
 	private JLabel errorShiftLbl;
 	
-	private JTextField productionCodeField;
+	private TextField productionCodeField;
 	private JDateChooser productionDateChooser;
 	private ComboBox<GroupShift> groupShiftCmb;
 	private ComboBox<Shift> shiftCmb;
@@ -145,7 +145,7 @@ public class ViewProductionPanel extends JPanel implements Bridging{
 		productionCodeLbl.setBounds(30,120,150,20);
 		add(productionCodeLbl);
 		
-		productionCodeField = new JTextField();
+		productionCodeField = new TextField();
 		productionCodeField.setBounds(190, 120, 150, 20);
 		add(productionCodeField);
 		
@@ -243,11 +243,11 @@ public class ViewProductionPanel extends JPanel implements Bridging{
 		this.production = production;
 	}
 
-	public JTextField getProductionCodeField() {
+	public TextField getProductionCodeField() {
 		return productionCodeField;
 	}
 
-	public void setProductionCodeField(JTextField productionCodeField) {
+	public void setProductionCodeField(TextField productionCodeField) {
 		this.productionCodeField = productionCodeField;
 	}
 	

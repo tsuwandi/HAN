@@ -11,13 +11,13 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import controller.ReceivedDAOFactory;
 import controller.ServiceFactory;
 import main.component.ComboBox;
+import main.component.TextField;
 import module.pembelian.ui.PopUpAdvanceSearch.ReceivedTableModel;
 import module.production.bl.ProductionBL;
 import module.production.model.GroupShift;
@@ -34,7 +34,7 @@ public class PopUpAdvancedSearch extends JDialog{
 	private JLabel shiftLbl;
 	private JLabel statusProductionLbl;
 	
-	private JTextField productionCodeField;
+	private TextField productionCodeField;
 	private JDateChooser startDateChooser;
 	private JDateChooser endDateChooser;
 	private ComboBox<GroupShift> groupShiftCmb;
@@ -66,7 +66,7 @@ public class PopUpAdvancedSearch extends JDialog{
 		productionCodeLbl.setBounds(30,120,150,20);
 		add(productionCodeLbl);
 		
-		productionCodeField = new JTextField();
+		productionCodeField = new TextField();
 		productionCodeField.setBounds(190, 120, 150, 20);
 		add(productionCodeField);
 		

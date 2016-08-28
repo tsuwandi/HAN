@@ -13,10 +13,10 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
+import main.component.TextField;
 import model.User;
 import module.production.model.ProdRM;
 
@@ -26,7 +26,7 @@ public class PopUpSearchMaterial extends JDialog{
 	JButton searchBtn;
 	JButton addBtn;
 	
-	JTextField searchField;
+	TextField searchField;
 	
 	JTable materialTable;
 	JScrollPane scrollPane;
@@ -48,7 +48,7 @@ public class PopUpSearchMaterial extends JDialog{
 		searchBtn.setBounds(555,20,100,30);
 		add(searchBtn);
 		
-		searchField = new JTextField();
+		searchField = new TextField();
 		searchField.setBounds(425,20,100,30);
 		add(searchField);
 		

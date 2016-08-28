@@ -23,7 +23,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import com.toedter.calendar.JDateChooser;
@@ -32,8 +31,8 @@ import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
+import main.component.TextField;
 import model.User;
-import module.pembelian.model.PalletCard;
 import module.production.model.Machine;
 import module.production.model.ProductionResult;
 import module.production.model.ProductionResultDetail;
@@ -73,7 +72,7 @@ public class PopUpProductionResult extends JDialog{
 	private JLabel errorGoodResultALbl;
 	private JLabel errorGoodResultBLbl;
 	
-	private JTextField prodResultCodeField;
+	private TextField prodResultCodeField;
 	
 	private JLabel timeSeparator;
 	
@@ -187,7 +186,7 @@ public class PopUpProductionResult extends JDialog{
 		prodResultCodeLbl.setBounds(50,50,150,20);
 		containerPnl.add(prodResultCodeLbl);
 		
-		prodResultCodeField = new JTextField();
+		prodResultCodeField = new TextField();
 		prodResultCodeField.setBounds(240,50,150,20);
 		containerPnl.add(prodResultCodeField);
 		

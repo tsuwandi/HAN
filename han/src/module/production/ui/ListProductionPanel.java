@@ -15,13 +15,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
+
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
+import main.component.TextField;
 import main.panel.MainPanel;
 import model.User;
 import module.production.model.Production;
@@ -29,7 +30,7 @@ import module.production.model.Production;
 public class ListProductionPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JButton searchBtn;
-	private JTextField searchField;
+	private TextField searchField;
 	JTable productionTable;
 	private JScrollPane scrollPane;
 	
@@ -132,7 +133,7 @@ public class ListProductionPanel extends JPanel {
 		searchBtn.setBounds(950,130,100,30);
 		add(searchBtn);
 		
-		searchField = new JTextField();
+		searchField = new TextField();
 		searchField.setBounds(800, 131, 150, 28);
 		add(searchField);
 		

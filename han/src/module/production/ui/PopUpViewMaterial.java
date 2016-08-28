@@ -18,11 +18,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import main.component.DialogBox;
 import main.component.NumberField;
+import main.component.TextField;
 import model.User;
 import module.production.model.ProdRM;
 
@@ -58,14 +58,14 @@ public class PopUpViewMaterial extends JDialog{
 	private NumberField monthField;
 	private NumberField yearField;
 	private NumberField sequenceField;
-	private JTextField lengthField;
-	private JTextField widthField;
-	private JTextField thickField;
-	private JTextField logField;
-	private JTextField volumeField;
-	private JTextField palletCardField;
-	private JTextField totalLogField;
-	private JTextField totalVolumeField;
+	private TextField lengthField;
+	private TextField widthField;
+	private TextField thickField;
+	private TextField logField;
+	private TextField volumeField;
+	private TextField palletCardField;
+	private TextField totalLogField;
+	private TextField totalVolumeField;
 	
 	private JButton searchPalletCardBtn;
 	private JButton addBtn;
@@ -147,7 +147,7 @@ public class PopUpViewMaterial extends JDialog{
 		lengthLbl.setBounds(50, 180, 150, 20);
 		add(lengthLbl);
 		
-		lengthField = new JTextField();
+		lengthField = new TextField();
 		lengthField.setBounds(200, 180, 150, 20);
 		add(lengthField);
 		
@@ -160,7 +160,7 @@ public class PopUpViewMaterial extends JDialog{
 		thickLbl.setBounds(50, 220, 150, 20);
 		add(thickLbl);
 		
-		thickField = new JTextField();
+		thickField = new TextField();
 		thickField.setBounds(200, 220, 150, 20);
 		add(thickField);
 		
@@ -173,7 +173,7 @@ public class PopUpViewMaterial extends JDialog{
 		widthLbl.setBounds(50, 260, 150, 20);
 		add(widthLbl);
 		
-		widthField = new JTextField();
+		widthField = new TextField();
 		widthField.setBounds(200, 260, 150, 20);
 		add(widthField);
 		
@@ -186,7 +186,7 @@ public class PopUpViewMaterial extends JDialog{
 		logLbl.setBounds(50, 300, 150, 20);
 		add(logLbl);
 		
-		logField = new JTextField();
+		logField = new TextField();
 		logField.setBounds(200, 300, 150, 20);
 		add(logField);
 		
@@ -199,7 +199,7 @@ public class PopUpViewMaterial extends JDialog{
 		volumeLbl.setBounds(50, 340, 150, 20);
 		add(volumeLbl);
 		
-		volumeField = new JTextField();
+		volumeField = new TextField();
 		volumeField.setBounds(200, 340, 150, 20);
 		add(volumeField);
 		
@@ -230,7 +230,7 @@ public class PopUpViewMaterial extends JDialog{
 		palletCardLbl.setBounds(50, 570, 150, 20);
 		add(palletCardLbl);
 		
-		palletCardField = new JTextField();
+		palletCardField = new TextField();
 		palletCardField.setBounds(200, 570, 150, 20);
 		add(palletCardField);
 		
@@ -243,7 +243,7 @@ public class PopUpViewMaterial extends JDialog{
 		totalLogLbl.setBounds(50, 610, 150, 20);
 		add(totalLogLbl);
 		
-		totalLogField = new JTextField();
+		totalLogField = new TextField();
 		totalLogField.setBounds(200, 610, 150, 20);
 		add(totalLogField);
 		
@@ -256,7 +256,7 @@ public class PopUpViewMaterial extends JDialog{
 		totalVolumeLbl.setBounds(50, 650, 150, 20);
 		add(totalVolumeLbl);
 		
-		totalVolumeField = new JTextField();
+		totalVolumeField = new TextField();
 		totalVolumeField.setBounds(200, 650, 150, 20);
 		add(totalVolumeField);
 		
