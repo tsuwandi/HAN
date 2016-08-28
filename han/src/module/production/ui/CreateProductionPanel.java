@@ -16,6 +16,9 @@ import javax.swing.JPanel;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
@@ -23,6 +26,7 @@ import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.TextField;
 import main.panel.MainPanel;
+import module.pembelian.ui.PopUpAdvanceSearchSecurity;
 import module.production.model.GroupShift;
 import module.production.model.Line;
 import module.production.model.Shift;
@@ -30,6 +34,7 @@ import module.util.Bridging;
 import module.production.model.Production;
 
 public class CreateProductionPanel extends JPanel implements Bridging{
+	Logger log = LogManager.getLogger(CreateProductionPanel.class.getName());
 	private static final long serialVersionUID = 1L;
 	
 	private JLabel productionCodeLbl;
@@ -136,6 +141,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			productionCodeField.setText(ServiceFactory.getProductionBL().getProductionLastCode()+"/PD/"+date+"/"+month+"/"+year);
 			productionDateChooser.setDate(currentDate);
 		} catch (SQLException e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -271,6 +277,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 					}
 					MainPanel.changePanel("module.production.ui.ListProductionPanel");
 				} catch (SQLException e) {
+					log.error(e.getMessage());
 					e.printStackTrace();
 				}
 			}

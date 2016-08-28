@@ -25,6 +25,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.component.NumberField;
@@ -35,7 +38,7 @@ import module.production.model.ProdRM;
 import module.production.model.Production;
 
 public class PopUpInputMaterial extends JDialog{
-
+	Logger log = LogManager.getLogger(PopUpInputMaterial.class.getName());
 	private static final long serialVersionUID = 1L;
 	private JLabel titleLbl;
 	private JLabel palletCardCodeLbl;
@@ -396,6 +399,7 @@ public class PopUpInputMaterial extends JDialog{
 					volumeField.setText(prodRM.getVolume()+"");
 				}
 			} catch (SQLException e) {
+				log.error(e.getMessage());
 				e.printStackTrace();
 			}
 		}

@@ -27,6 +27,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
@@ -40,7 +43,7 @@ import module.production.model.ProductionResult;
 import module.production.model.ProductionResultDetail;
 
 public class PopUpProductionResult extends JDialog{
-
+	Logger log = LogManager.getLogger(PopUpProductionResult.class.getName());
 	private static final long serialVersionUID = 1L;
 	private JLabel titleLbl;
 	private JLabel dateLbl;
@@ -144,6 +147,7 @@ public class PopUpProductionResult extends JDialog{
 			prodResultCodeField.setText(ServiceFactory.getProductionBL().getProductionResultLastCode()+"/PR/"+date+"/"+month+"/"+year);
 			resultDateChooser.setDate(currentDate);
 		} catch (Exception e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 		

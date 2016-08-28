@@ -15,13 +15,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import controller.ServiceFactory;
 import main.component.TextField;
 import model.User;
 import module.production.model.ProdRM;
 
 public class PopUpSearchMaterial extends JDialog{
-	
+	Logger log = LogManager.getLogger(PopUpSearchMaterial.class.getName());
 	private static final long serialVersionUID = 1L;
 	JButton searchBtn;
 	JButton addBtn;
@@ -56,6 +59,7 @@ public class PopUpSearchMaterial extends JDialog{
 			prodRms = ServiceFactory.getProductionBL().getSearchProdRM(popUpInputMaterial.getProdRms());
 			materialTableModel = new MaterialTableModel(prodRms);
 		} catch (SQLException e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 		

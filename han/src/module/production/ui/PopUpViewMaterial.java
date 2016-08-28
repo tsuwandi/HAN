@@ -20,6 +20,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.TextField;
@@ -27,7 +30,7 @@ import model.User;
 import module.production.model.ProdRM;
 
 public class PopUpViewMaterial extends JDialog{
-
+	Logger log = LogManager.getLogger(PopUpViewMaterial.class.getName());
 	private static final long serialVersionUID = 1L;
 	private JLabel titleLbl;
 	private JLabel palletCardCodeLbl;

@@ -20,6 +20,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.component.TextField;
@@ -28,6 +31,7 @@ import model.User;
 import module.production.model.Production;
 
 public class ListProductionPanel extends JPanel {
+	Logger log = LogManager.getLogger(ListProductionPanel.class.getName());
 	private static final long serialVersionUID = 1L;
 	private JButton searchBtn;
 	private TextField searchField;
@@ -89,6 +93,7 @@ public class ListProductionPanel extends JPanel {
 						List<Production> productions = ServiceFactory.getProductionBL().searchProduction(" AND production_code LIKE '%"+searchField.getText()+"%'");
 						updateTableData(productions);
 					} catch (SQLException e) {
+						log.error(e.getMessage());
 						e.printStackTrace();
 					}
 				}
@@ -110,6 +115,7 @@ public class ListProductionPanel extends JPanel {
 			productionTable.updateUI();
 			setTableSize();
 		} catch (SQLException e) {
+			log.error(e.getMessage());
 			DialogBox.showError("Tidak Dapat Terhubung ke Database");
 			e.printStackTrace();
 		}

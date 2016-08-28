@@ -12,6 +12,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.toedter.calendar.JDateChooser;
 
 import controller.ReceivedDAOFactory;
@@ -26,6 +29,7 @@ import module.production.model.Production;
 import module.production.model.Shift;
 
 public class PopUpAdvancedSearch extends JDialog{
+	Logger log = LogManager.getLogger(PopUpAdvancedSearch.class.getName());
 	private JLabel productionCodeLbl;
 	private JLabel startDateLbl;
 	private JLabel endDateLbl;
@@ -156,6 +160,7 @@ public class PopUpAdvancedSearch extends JDialog{
 			statusCmb.addItem("Completed");
 			statusCmb.addItem("Final");
 		}catch (Exception e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -212,6 +217,7 @@ public class PopUpAdvancedSearch extends JDialog{
 					parent.updateTableData(productions);
 					dispose();
 				} catch (Exception e2) {
+					log.error(e2.getMessage());
 					e2.printStackTrace();
 				}
 				

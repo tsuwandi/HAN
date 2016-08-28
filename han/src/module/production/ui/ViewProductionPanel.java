@@ -13,6 +13,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
@@ -27,7 +30,7 @@ import module.util.Bridging;
 
 public class ViewProductionPanel extends JPanel implements Bridging{
 	private static final long serialVersionUID = 1L;
-	
+	Logger log = LogManager.getLogger(ViewProductionPanel.class.getName());
 	private JLabel productionCodeLbl;
 	private JLabel productionDateLbl;
 	private JLabel groupShiftLbl;
@@ -131,6 +134,7 @@ public class ViewProductionPanel extends JPanel implements Bridging{
 			productionCodeField.setText(ServiceFactory.getProductionBL().getProductionLastCode()+"/PD/"+date+"/"+month+"/"+year);
 			productionDateChooser.setDate(currentDate);
 		} catch (SQLException e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 	}
