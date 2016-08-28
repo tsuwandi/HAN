@@ -17,18 +17,23 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
+
+import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
-import module.dryin.model.DryInPallet;
+import main.component.UppercaseDocumentFilter;
 import module.dryout.model.DryOutPallet;
-import module.pembelian.model.Pallet;
 import module.pembelian.model.PalletCard;
 import module.util.DateUtil;
 
 public class DryOutPalletDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = Logger.getLogger(DryOutPalletDialog.class);
 
 	JScrollPane scrollPanePalletCard;
 	JTable tblPalletCard;
@@ -47,6 +52,7 @@ public class DryOutPalletDialog extends JDialog {
 	public DryOutPalletDialog(DryOutCreatePanel dryOutCreatePanel, DryOutEditPanel dryOutEditPanel) {
 		this.dryOutCreatePanel = dryOutCreatePanel;
 		this.dryOutEditPanel = dryOutEditPanel;
+		DocumentFilter filter = new UppercaseDocumentFilter();
 
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -60,6 +66,7 @@ public class DryOutPalletDialog extends JDialog {
 
 		txtSearch = new JTextField();
 		txtSearch.setBounds(320, 10, 150, 25);
+		((AbstractDocument) txtSearch.getDocument()).setDocumentFilter(filter);
 		getContentPane().add(txtSearch);
 
 		btnSearch = new JButton("Search");
@@ -106,7 +113,7 @@ public class DryOutPalletDialog extends JDialog {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
 		}
 
@@ -207,7 +214,7 @@ public class DryOutPalletDialog extends JDialog {
 			}
 			refreshTablePalletCard();
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -216,7 +223,7 @@ public class DryOutPalletDialog extends JDialog {
 		try {
 			tblPalletCard.setModel(new PalletCardTableModel(listOfPalletCard));
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -290,6 +297,7 @@ public class DryOutPalletDialog extends JDialog {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int column) {
 			switch (column) {
 			case 0:

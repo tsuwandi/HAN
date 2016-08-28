@@ -65,7 +65,6 @@ public class SuppVehicleDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -85,7 +84,6 @@ public class SuppVehicleDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -103,7 +101,6 @@ public class SuppVehicleDAO {
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -118,7 +115,6 @@ public class SuppVehicleDAO {
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -134,7 +130,6 @@ public class SuppVehicleDAO {
 			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -150,7 +145,6 @@ public class SuppVehicleDAO {
 			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}

@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
-
 import module.pembelian.model.WoodType;
 import module.product.dao.ProductDAO;
 import module.product.model.Condition;
@@ -19,11 +17,8 @@ import module.sn.production.quality.dao.ProductionQualityDAO;
 import module.sn.production.quality.model.ProductionQuality;
 import module.sn.production.type.dao.ProductionTypeDAO;
 import module.sn.production.type.model.ProductionType;
-import module.supplier.dao.SupplierDAO;
 
 public class ProductBL {
-	private static final Logger LOGGER = Logger.getLogger(ProductBL.class);
-
 	private DataSource dataSource;
 
 	public ProductBL(DataSource dataSource) {
@@ -71,7 +66,6 @@ public class ProductBL {
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			LOGGER.error(e.getMessage());
 			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();
@@ -87,7 +81,6 @@ public class ProductBL {
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			LOGGER.error(e.getMessage());
 			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();
@@ -104,7 +97,6 @@ public class ProductBL {
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			LOGGER.error(e.getMessage());
 			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();
@@ -210,12 +202,12 @@ public class ProductBL {
 			con.close();
 		}
 	}
-	
-	public Product isProductExists(Product product) throws SQLException {
+
+	public Product isProductExists(Boolean isEdit, Product product) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProductDAO(con).isProductExists(product);
+			return new ProductDAO(con).isProductExists(isEdit, product);
 		} finally {
 			con.close();
 		}

@@ -2,7 +2,6 @@ package module.dailyclosing.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -65,8 +64,8 @@ public class DailyClosingBL {
 	final String DEBET = "D";
 	final String CREDIT = "C";
 
-	public void save(List<Received> listOfReceived, List<DryIn> listOfDryIn, List<DryOut> listOfDryOut, String confirmCode)
-			throws SQLException {
+	public void save(List<Received> listOfReceived, List<DryIn> listOfDryIn, List<DryOut> listOfDryOut,
+			String confirmCode) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -88,7 +87,7 @@ public class DailyClosingBL {
 				inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
 
 				new InventoryLogTempDAO(con).save(inventoryLogTemp);
-				
+
 				new ReceivedDAO(con).updateConfirmDate(received);
 			}
 
@@ -112,9 +111,9 @@ public class DailyClosingBL {
 				inventoryLogTempDebet.setConfirmCode(confirm.getConfirmCode());
 
 				new InventoryLogTempDAO(con).save(inventoryLogTempDebet);
-				
+
 				dryIn.setStatus(DryInType.FINAL.toString());
-				
+
 				new DryInDAO(con).updateDailyClosing(dryIn);
 			}
 
@@ -138,16 +137,15 @@ public class DailyClosingBL {
 				inventoryLogTempDebet.setConfirmCode(confirm.getConfirmCode());
 
 				new InventoryLogTempDAO(con).save(inventoryLogTempDebet);
-				
+
 				dryOut.setStatus(DryOutType.FINAL.toString());
-				
+
 				new DryOutDAO(con).updateDailyClosing(dryOut);
 			}
 
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();

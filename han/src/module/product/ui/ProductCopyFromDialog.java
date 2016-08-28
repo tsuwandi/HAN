@@ -27,7 +27,9 @@ import module.supplier.model.Supplier;
 public class ProductCopyFromDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
+	
 	private static final Logger LOGGER = Logger.getLogger(ProductCopyFromDialog.class);
+	
 	JScrollPane scrollPaneProduct;
 	JTable tblProduct;
 	JTextField txtSearch;
@@ -74,8 +76,8 @@ public class ProductCopyFromDialog extends JDialog {
 		try {
 			products = new ArrayList<Product>();
 			products = ServiceFactory.getProductBL().getAll();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
 		}
 

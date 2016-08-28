@@ -20,11 +20,12 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.Logger;
+
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.supplier.model.SuppAddress;
-import module.supplier.model.SuppCp;
 import module.supplier.model.SuppVehicle;
 import module.supplier.model.Supplier;
 import module.util.Bridging;
@@ -33,12 +34,12 @@ import module.util.JTextFieldLimit;
 public class SupplierViewPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = Logger.getLogger(SupplierViewPanel.class);
 
 	private Supplier supplier;
 	public List<SuppAddress> listOfSuppAddress = new ArrayList<SuppAddress>();
 	private SuppAddressTableModel suppAddressTableModel;
-//	public List<SuppCp> listOfSuppCp = new ArrayList<SuppCp>();
-//	private SuppCpTableModel suppCpTableModel;
 	public List<SuppVehicle> listOfSuppVehicle = new ArrayList<SuppVehicle>();
 	private SuppVehicleTableModel suppVehicleTableModel;
 
@@ -48,9 +49,6 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 	JLabel lblNpwp;
 	JLabel lblSuppType;
 	JLabel lblSuppStatus;
-//	JLabel lblAccountNo;
-//	JLabel lblBank;
-//	JLabel lblAccountName;
 	JLabel lblCurrency;
 	JLabel lblTop;
 	JLabel lblDefaultTax;
@@ -63,9 +61,6 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 	JTextField txtNpwp;
 	JComboBox<String> cbSuppType;
 	JComboBox<String> cbSuppStatus;
-//	JTextField txtAccountNo;
-//	JComboBox<String> cbBank;
-//	JTextField txtAccountName;
 	JComboBox<String> cbCurrency;
 	JTextField txtTop;
 	JTextField txtDefaultTax;
@@ -78,12 +73,6 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 	JTable tblSuppAddress;
 	JButton btnAddSuppAddress;
 	JButton btnDeleteSuppAddress;
-
-//	JLabel lblSuppCp;
-//	JScrollPane scrollPaneSuppCp;
-//	JTable tblSuppCp;
-//	JButton btnAddSuppCp;
-//	JButton btnDeleteSuppCp;
 
 	JLabel lblSuppVehicle;
 	JScrollPane scrollPaneSuppVehicle;
@@ -109,7 +98,6 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 	public SupplierViewPanel() {
 		setLayout(null);
 		panel = new JPanel();
-		// panel.setBounds(0, 0, 800, 600);
 		panel.setPreferredSize(
 				new Dimension(MainPanel.bodyPanel.getWidth() - 100, MainPanel.bodyPanel.getHeight() + 200));
 		panel.setLayout(null);
@@ -178,21 +166,6 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		lblErrorSuppType.setForeground(Color.RED);
 		lblErrorSuppType.setBounds(425, 200, 225, 25);
 		panel.add(lblErrorSuppType);
-
-//		lblSuppStatus = new JLabel("<html>Status Supplier <font color=\"red\">*</font></html>");
-//		lblSuppStatus.setBounds(50, 230, 150, 25);
-//		panel.add(lblSuppStatus);
-//
-//		cbSuppStatus = new JComboBox<String>();
-//		cbSuppStatus.setEnabled(false);
-//		cbSuppStatus.addItem("-- Pilih Status Supplier --");
-//		cbSuppStatus.setBounds(220, 230, 150, 25);
-//		panel.add(cbSuppStatus);
-//
-//		lblErrorSuppStatus = new JLabel();
-//		lblErrorSuppStatus.setForeground(Color.RED);
-//		lblErrorSuppStatus.setBounds(425, 230, 225, 25);
-//		panel.add(lblErrorSuppStatus);
 
 		lblBreadcrumb = new JLabel("ERP > Pembelian > Supplier");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -364,7 +337,6 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		try {
 			supplier = ServiceFactory.getSupplierBL().getSupplierById(supplierId);
 			listOfSuppAddress = ServiceFactory.getSupplierBL().getSuppAddressBySuppCode(supplier.getSuppCode());
-			//listOfSuppCp = ServiceFactory.getSupplierBL().getSuppCpBySuppCode(supplier.getSuppCode());
 			listOfSuppVehicle = ServiceFactory.getSupplierBL().getSuppVehicleBySuppCode(supplier.getSuppCode());
 
 			if (supplier != null) {
@@ -374,23 +346,16 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 				txtNpwp.setText(supplier.getNpwp());
 				cbSuppType.addItem(supplier.getSuppType().getSuppType());
 				cbSuppType.setSelectedIndex(1);
-				//cbSuppStatus.addItem(supplier.getSuppStatus());
-				//cbSuppStatus.setSelectedIndex(1);
-				txtDefaultTax.setText(String.valueOf(supplier.getDefaultTax()));
-//				txtAccountNo.setText(supplier.getAccountNo());
-//				cbBank.addItem(supplier.getBank().getBank());
-//				cbBank.setSelectedIndex(1);
-//				txtAccountName.setText(supplier.getAccountName());
+				txtDefaultTax.setText(String.valueOf(supplier.getDefaultTax()));			
 				cbCurrency.addItem(supplier.getCurrency().getCurrency());
 				cbCurrency.setSelectedIndex(1);
 				txtTop.setText(String.valueOf(supplier.getTop()));
 
 				refreshTableSuppAddress();
-				refreshTableSuppCp();
 				refreshTableSuppVehicle();
 			}
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -399,25 +364,16 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		try {
 			tblSuppAddress.setModel(new SuppAddressTableModel(listOfSuppAddress));
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
-	}
-
-	public void refreshTableSuppCp() {
-//		try {
-//			tblSuppCp.setModel(new SuppCpTableModel(listOfSuppCp));
-//		} catch (Exception e1) {
-//			e1.printStackTrace();
-//			DialogBox.showErrorException();
-//		}
 	}
 
 	public void refreshTableSuppVehicle() {
 		try {
 			tblSuppVehicle.setModel(new SuppVehicleTableModel(listOfSuppVehicle));
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -432,7 +388,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 			DialogBox.showDelete();
 			MainPanel.changePanel("module.supplier.ui.SupplierListPanel");
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -504,6 +460,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int column) {
 			switch (column) {
 			case 0:
@@ -556,117 +513,6 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 	}
 
 	/**
-	 * Class as TableModel for Supplier Contact Person table
-	 * 
-	 * @author TSI
-	 *
-	 */
-	class SuppCpTableModel extends AbstractTableModel {
-
-		private static final long serialVersionUID = 1L;
-
-		private List<SuppCp> listOfSuppCp;
-
-		public SuppCpTableModel(List<SuppCp> listOfSuppCp) {
-			this.listOfSuppCp = listOfSuppCp;
-		}
-
-		/**
-		 * Method to get row count
-		 * 
-		 * @return int
-		 */
-		public int getRowCount() {
-			return listOfSuppCp.size();
-		}
-
-		/**
-		 * Method to get Column Count
-		 */
-		public int getColumnCount() {
-			return 6;
-		}
-
-		/**
-		 * Method to get selected value
-		 * 
-		 * @param rowIndex
-		 *            rowIndex of selected table
-		 * @param columnIndex
-		 *            columnIndex of selected table
-		 * @return ({@link SupplierAddress}) Object
-		 */
-		public Object getValueAt(int rowIndex, int columnIndex) {
-			SuppCp p = listOfSuppCp.get(rowIndex);
-			switch (columnIndex) {
-			case 0:
-				return p.isFlag();
-			case 1:
-				return p.getName();
-			case 2:
-				return p.getDepartment();
-			case 3:
-				return p.getPhone();
-			case 4:
-				return p.getEmail();
-			case 5:
-				return "<html><u>View</u></html>";
-			default:
-				return "";
-			}
-		}
-
-		public boolean isCellEditable(int row, int column) {
-			return false;
-		}
-
-		public Class getColumnClass(int column) {
-			switch (column) {
-			case 0:
-				return Boolean.class;
-			case 1:
-				return String.class;
-			case 2:
-				return String.class;
-			case 3:
-				return String.class;
-			case 4:
-				return String.class;
-			case 5:
-				return String.class;
-			default:
-				return String.class;
-			}
-		}
-
-		/**
-		 * Method to getColumnName
-		 * 
-		 * @param column
-		 *            columnIndex
-		 * @return String column name
-		 */
-		public String getColumnName(int column) {
-			switch (column) {
-			case 0:
-				return "";
-			case 1:
-				return "Nama";
-			case 2:
-				return "Department";
-			case 3:
-				return "Telepon";
-			case 4:
-				return "Email";
-			case 5:
-				return "Tindakan";
-			default:
-				return "";
-			}
-		}
-	}
-
-	/**
 	 * Class as TableModel for Supp Vehicle table
 	 * 
 	 * @author TSI
@@ -702,6 +548,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int column) {
 			switch (column) {
 			case 0:

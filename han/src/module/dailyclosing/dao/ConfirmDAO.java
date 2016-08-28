@@ -28,7 +28,6 @@ public class ConfirmDAO {
 			insertStatement.setString(5, "timotius");
 			insertStatement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		}
 	}

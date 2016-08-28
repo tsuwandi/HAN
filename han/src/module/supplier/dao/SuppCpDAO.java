@@ -54,7 +54,6 @@ public class SuppCpDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -75,7 +74,6 @@ public class SuppCpDAO {
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -90,11 +88,10 @@ public class SuppCpDAO {
 			updateStatement.setDate(5, DateUtil.getCurrentDate());
 			updateStatement.setString(6, "timotius");
 			updateStatement.setInt(7, suppCp.getId());
-			
+
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -110,11 +107,10 @@ public class SuppCpDAO {
 			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
-	
+
 	public void deleteById(int id) throws SQLException {
 		try {
 			String query = new StringBuilder().append(deleteQuery).append("where id=? ").toString();
@@ -126,7 +122,6 @@ public class SuppCpDAO {
 			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}

@@ -31,7 +31,6 @@ public class InventoryLogTempDAO {
 			insertStatement.setString(8, "timotius");
 			insertStatement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		}
 	}

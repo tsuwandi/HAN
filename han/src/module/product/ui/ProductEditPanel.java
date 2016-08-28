@@ -22,6 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
 
 import org.apache.log4j.Logger;
 
@@ -29,6 +31,7 @@ import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
+import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
 import module.pembelian.model.WoodType;
 import module.product.ProductCategoryType;
@@ -43,9 +46,6 @@ import module.util.JTextFieldLimit;
 
 public class ProductEditPanel extends JPanel implements Bridging {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = Logger.getLogger(ProductEditPanel.class);
@@ -59,6 +59,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 	JLabel catLbl;
 	JLabel unitLbl;
 	JLabel maintainLbl;
+	JLabel attLbl;
 	JLabel typeLbl;
 	JLabel gradeLbl;
 	JLabel thickLbl;
@@ -103,6 +104,8 @@ public class ProductEditPanel extends JPanel implements Bridging {
 	public ProductEditPanel() {
 		setLayout(null);
 		setPreferredSize(new Dimension(1166, 620));
+		
+		DocumentFilter filter = new UppercaseDocumentFilter();
 
 		todayDate = new Date();
 		todayDate.getTime();
@@ -145,6 +148,10 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		maintainLbl = new JLabel("<html>Maintain Stock <font color=\"red\">*</font></html>");
 		maintainLbl.setBounds(50, 200, 100, 25);
 
+		attLbl = new JLabel("<html>Atribut Produk</html>");
+		attLbl.setBounds(50, 245, 100, 25);
+		attLbl.setFont(new Font(null, Font.BOLD, 12));
+		
 		typeLbl = new JLabel("Jenis Kayu");
 		typeLbl.setBounds(50, 290, 100, 25);
 
@@ -166,10 +173,12 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		idField = new JTextField();
 		idField.setEnabled(false);
 		idField.setBounds(220, 80, 150, 25);
+		((AbstractDocument) idField.getDocument()).setDocumentFilter(filter);
 
 		nameField = new JTextField();
 		nameField.setDocument(new JTextFieldLimit(50));
 		nameField.setBounds(220, 110, 150, 25);
+		((AbstractDocument) nameField.getDocument()).setDocumentFilter(filter);
 
 		///////////////////// Kategori Hasil Produksi
 		///////////////////// ///////////////////////////////
@@ -185,6 +194,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 			listOfProductionType.add(0, new ProductionType("-- Pilih Tipe Hasil Produksi --"));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 
 		cbProductionType = new ComboBox<ProductionType>();
@@ -228,6 +238,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 			categories.add(0, new ProductCategory("-- Pilih Kategori Produk --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 		catField = new ComboBox<ProductCategory>();
 		catField.addItemListener(new ItemListener() {
@@ -296,6 +307,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 			units.add(0, new Uom("-- Pilih Satuan Produk --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 		uomField = new ComboBox<Uom>();
 		uomField.setList(units);
@@ -328,6 +340,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 			grades.add(0, new Grade("-- Pilih Grade --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 		gradeField = new ComboBox<Grade>();
 		gradeField.setList(grades);
@@ -385,6 +398,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		add(uomField);
 		add(maintainYesField);
 		add(maintainNoField);
+		add(attLbl);
 		add(typeField);
 		add(gradeField);
 		add(thickField);
@@ -487,18 +501,31 @@ public class ProductEditPanel extends JPanel implements Bridging {
 				if (wideField.getText().length() > 0)
 					product.setWidth(Double.parseDouble(wideField.getText()));
 			}
+			
+			if(product.getProductCat() == ProductCategoryType.BALKEN_BASAH) {
+				product.setCondition(ProductCategoryType.BALKEN_BASAH);
+			} else if(product.getProductCat() == ProductCategoryType.BALKEN_KERING) {
+				product.setCondition(ProductCategoryType.BALKEN_KERING);
+			}
 
 			product.setProductionTypeId(cbProductionType.getDataIndex().getId());
 			product.setProductionQualityId(cbProductionQuality.getDataIndex().getId());
 
 			product.setMinQty(Integer.parseInt(minQtyField.getText()));
-
-			ServiceFactory.getProductBL().update(product);
-			DialogBox.showEdit();
-			MainPanel.changePanel("module.product.ui.ProductViewPanel", product);
-		} catch (Exception e) {
+			
+			Product checkProduct = ServiceFactory.getProductBL().isProductExists(Boolean.TRUE, product);
+			if (checkProduct.getIsExists() > 0) {
+				JOptionPane.showMessageDialog(null,
+						"Produk sudah pernah diinput dengan kode " + checkProduct.getProductCode(), "Warning",
+						JOptionPane.YES_NO_OPTION);
+			} else {
+				ServiceFactory.getProductBL().update(product);
+				DialogBox.showEdit();
+				MainPanel.changePanel("module.product.ui.ProductViewPanel", product);
+			}
+		} catch (SQLException e) {
+			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
-			e.printStackTrace();
 		}
 	}
 
@@ -630,7 +657,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 
 			}
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}

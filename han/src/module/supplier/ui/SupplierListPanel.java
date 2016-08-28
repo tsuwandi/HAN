@@ -6,14 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,23 +19,16 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
-import controller.DataSourceFactory;
+import org.apache.log4j.Logger;
+
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.supplier.model.Supplier;
-import module.util.JTextFieldLimit;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.design.JRDesignQuery;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.view.JasperViewer;
 
 public class SupplierListPanel extends JPanel {
+
+	private static final Logger LOGGER = Logger.getLogger(SupplierListPanel.class);
 
 	JButton btnCreateNew;
 	JButton btnExport;
@@ -102,36 +93,6 @@ public class SupplierListPanel extends JPanel {
 		});
 		btnAdvancedSearch.setBounds(900, 80, 150, 30);
 		add(btnAdvancedSearch);
-		
-//		JButton btnPrint = new JButton("Print");
-//		btnPrint.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				try {
-//					java.sql.Connection conn = DataSourceFactory.getDataSource().getConnection();
-//					JasperDesign jDesign = JRXmlLoader.load("src/module/pembelian/report/PurchaseReport.jrxml");
-//					String sql = "SELECT received_code, received_date, rit_no, license_plate, driver, delivery_note FROM received order by id desc";
-//					JRDesignQuery jDesignQuery = new JRDesignQuery();		
-//					jDesignQuery.setText(sql);
-//					jDesign.setQuery(jDesignQuery);
-//					JasperReport jreprt = JasperCompileManager.compileReport(jDesign);
-//					JasperPrint jprintt = JasperFillManager.fillReport(jreprt, null, conn);
-//					JasperViewer.viewReport(jprintt, false);
-//
-////					 String namafile= "src/module/pembelian/report/PurchaseReport.jasper"; 
-////					    File report = new File(namafile);
-////					    JasperReport jreprt = (JasperReport)JRLoader.loadObject(report.getPath());
-////					    JasperPrint jprintt = JasperFillManager.fillReport(jreprt,null,conn);
-////					    JasperViewer.viewReport(jprintt,false);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//					JOptionPane.showMessageDialog(null, "Gagal Membuka Laporan", "Cetak Laporan",
-//							JOptionPane.ERROR_MESSAGE);
-//				}
-//
-//			}
-//		});
-//		btnPrint.setBounds(50, 104, 89, 23);
-//		add(btnPrint);
 
 		txtSearch = new JTextField();
 		txtSearch.setBounds(800, 131, 150, 28);
@@ -177,7 +138,7 @@ public class SupplierListPanel extends JPanel {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -191,7 +152,7 @@ public class SupplierListPanel extends JPanel {
 		try {
 			tblSupplier.setModel(new SupplierTableModel(listOfSupplier));
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -202,7 +163,7 @@ public class SupplierListPanel extends JPanel {
 			listOfSupplier = ServiceFactory.getSupplierBL().getAllSupplierBySimpleSearch(value);
 			refreshTableSupplier();
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -253,6 +214,7 @@ public class SupplierListPanel extends JPanel {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int column) {
 			switch (column) {
 			case 0:

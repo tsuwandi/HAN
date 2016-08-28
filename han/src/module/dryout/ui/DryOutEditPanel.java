@@ -1,14 +1,11 @@
 package module.dryout.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -28,6 +25,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.Logger;
+
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
@@ -36,10 +35,8 @@ import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.NumberFormat;
 import main.panel.MainPanel;
-import module.dryin.model.DryInPallet;
 import module.dryout.model.DryOut;
 import module.dryout.model.DryOutPallet;
-import module.dryout.ui.DryOutCreatePanel.DryOutPalletTableModel;
 import module.pembelian.model.PalletCard;
 import module.sn.chamber.model.Chamber;
 import module.util.Bridging;
@@ -48,6 +45,8 @@ import module.util.DateUtil;
 public class DryOutEditPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = Logger.getLogger(DryOutEditPanel.class);
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
@@ -182,7 +181,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 			listOfChamber = ServiceFactory.getDryOutBL().getAllChamber();
 			listOfChamber.add(0, new Chamber("-- Pilih Chamber --"));
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 
@@ -285,10 +284,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 		btnInsertDryOutPallet = new JButton("Insert");
 		btnInsertDryOutPallet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// int response = DialogBox.showInsertChoice();
-				// if (response == JOptionPane.YES_OPTION) {
 				doInsertDryOutPallet();
-				// }
 			}
 		});
 		btnInsertDryOutPallet.setBounds(220, 345, 100, 25);
@@ -493,7 +489,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 			DialogBox.showInsert();
 			MainPanel.changePanel("module.dryout.ui.DryOutViewPanel", dryOut);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -542,7 +538,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 				palletCard = null;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -595,7 +591,6 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 	public void clearPalletCard() {
 		// clear
 		txtRitNo.setText("");
-		makeDefaultDatePalletCardCode();
 		txtOrdinal.setText("");
 		txtTotalVolumePalletCard.setText("");
 		lblErrorPalletCard.setText("");
@@ -685,6 +680,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int column) {
 			switch (column) {
 			case 1:
@@ -791,7 +787,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 				refreshTableDryOutPallet();
 			}
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}

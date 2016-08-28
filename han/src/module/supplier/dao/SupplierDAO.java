@@ -21,7 +21,6 @@ public class SupplierDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
-	private PreparedStatement getOrdinalOfCodeNumberStatement;
 
 	private String getAllQuery = "select s.id, s.supp_code, s.supp_name, s.pt, s.npwp, "
 			+ "s.supp_type_id, s.default_tax, s.account_no,"
@@ -43,8 +42,6 @@ public class SupplierDAO {
 			+ "edit_date=?, edited_by=? where supp_code=?";
 
 	private String deleteQuery = "update supplier set deleted_date=?, deleted_by=? where id=?";
-	
-	private String getOrdinalOfCodeNumberQuery = "SELECT SUBSTRING_INDEX(supp_code, 'BL', -1) AS ordinal FROM supplier ORDER BY ordinal DESC LIMIT 1 ";
 
 	public SupplierDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -153,7 +150,6 @@ public class SupplierDAO {
 				suppliers.add(supplier);
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -225,7 +221,6 @@ public class SupplierDAO {
 				suppliers.add(supplier);
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -245,7 +240,6 @@ public class SupplierDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -276,7 +270,6 @@ public class SupplierDAO {
 			insertStatement.executeUpdate();
 			
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -305,7 +298,6 @@ public class SupplierDAO {
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -318,7 +310,6 @@ public class SupplierDAO {
 			deleteStatement.setInt(3, id);
 			deleteStatement.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -367,28 +358,9 @@ public class SupplierDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
 		return supplier;
 	}
-	
-//	public int getOrdinalOfCodeNumber() throws SQLException {
-//		int ordinal = 0;
-//		try {
-//			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
-//
-//			ResultSet rs = getOrdinalOfCodeNumberStatement.executeQuery();
-//			while (rs.next()) {
-//				ordinal = rs.getInt("ordinal");
-//			}
-//
-//		} catch (SQLException ex) {
-//			ex.printStackTrace();
-//			throw new SQLException(ex.getMessage());
-//		}
-//
-//		return ordinal;
-//	}
 }

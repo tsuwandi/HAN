@@ -20,6 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.Logger;
+
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
@@ -39,6 +41,8 @@ public class DryInViewPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final Logger LOGGER = Logger.getLogger(DryInViewPanel.class);
+
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
 	JLabel lblDryInCode;
@@ -50,7 +54,6 @@ public class DryInViewPanel extends JPanel implements Bridging {
 	JLabel lblErrorChamber;
 	JLabel lblErrorPalletCard;
 
-	// JLabel lblPicTally;
 	JLabel lblPalletCardCode;
 	JLabel lblRitNo;
 	JLabel lblPalletCardCodeConstant;
@@ -77,11 +80,6 @@ public class DryInViewPanel extends JPanel implements Bridging {
 	JTextField txtTotalVolumePalletCard;
 	JTextField txtTotalVolume;
 
-	// JScrollPane scrollPanePicTally;
-	// JTable tblPicTally;
-	// JButton btnSearchPicTally;
-	// JButton btnDeletePicTally;
-
 	JScrollPane scrollPaneDryInPallet;
 	JTable tblDryInPallet;
 	JButton btnSearchPalletCard;
@@ -95,14 +93,11 @@ public class DryInViewPanel extends JPanel implements Bridging {
 	JPanel panel;
 	JScrollPane scrollPane;
 
-	// private PicTallyTableModel picTallyTableModel;
 	private DryInPalletTableModel dryInPalletTableModel;
-	// private List<PicTally> listOfPicTally;
 	private List<DryInPallet> listOfDryInPallet;
 	private DryIn dryIn;
 
 	public DryInViewPanel() {
-		// setPreferredSize(new Dimension(1366, 725));
 		setLayout(null);
 
 		panel = new JPanel();
@@ -174,33 +169,6 @@ public class DryInViewPanel extends JPanel implements Bridging {
 		cbChamber.setEnabled(false);
 		panel.add(cbChamber);
 
-		// lblPicTally = new JLabel("Pic Tally");
-		// lblPicTally.setFont(new Font("Tahoma", Font.BOLD, 14));
-		// lblPicTally.setBounds(50, 200, 150, 25);
-		// panel.add(lblPicTally);
-		//
-		// scrollPanePicTally = new JScrollPane();
-		// scrollPanePicTally.setBounds(50, 240, 975, 150);
-		// panel.add(scrollPanePicTally);
-		//
-		// listOfPicTally = new ArrayList<PicTally>();
-		// picTallyTableModel = new PicTallyTableModel(listOfPicTally);
-		// tblPicTally = new JTable(picTallyTableModel);
-		// tblPicTally.setFocusable(false);
-		// tblPicTally.setBorder(new EmptyBorder(5, 5, 5, 5));
-		// tblPicTally.setEnabled(false);
-		// scrollPanePicTally.setViewportView(tblPicTally);
-		//
-		// btnSearchPicTally = new JButton("Cari");
-		// btnSearchPicTally.setBounds(820, 200, 100, 25);
-		// btnSearchPicTally.setEnabled(false);
-		// panel.add(btnSearchPicTally);
-		//
-		// btnDeletePicTally = new JButton("Hapus");
-		// btnDeletePicTally.setBounds(925, 200, 100, 25);
-		// btnDeletePicTally.setEnabled(false);
-		// panel.add(btnDeletePicTally);
-
 		btnSearchPalletCard = new JButton("Cari Kartu Pallet");
 		btnSearchPalletCard.setBounds(49, 175, 150, 25);
 		btnSearchPalletCard.setEnabled(false);
@@ -209,6 +177,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 		lblPalletCardCode = new JLabel("Kode Kartu Pallet");
 		lblPalletCardCode.setBounds(50, 205, 150, 25);
 		panel.add(lblPalletCardCode);
+
 		//////////////////
 		lblRitNo = new JLabel("Rit No");
 		lblRitNo.setBounds(220, 205, 150, 25);
@@ -321,7 +290,6 @@ public class DryInViewPanel extends JPanel implements Bridging {
 
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		// scrollPane.setBounds(0, 0, 1155, 650);
 		scrollPane.setSize(MainPanel.bodyPanel.getSize());
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
@@ -375,8 +343,6 @@ public class DryInViewPanel extends JPanel implements Bridging {
 	protected void loadData(Integer dryInId) {
 		try {
 			dryIn = ServiceFactory.getDryInBL().getDryInById(dryInId);
-			// listOfPicTally =
-			// ServiceFactory.getDryInBL().getPicTallyByDryInCode(dryIn.getDryInCode());
 			listOfDryInPallet = ServiceFactory.getDryInBL().getDryInPalletByDryInCode(dryIn.getDryInCode());
 
 			if (dryIn != null) {
@@ -396,7 +362,6 @@ public class DryInViewPanel extends JPanel implements Bridging {
 				cbChamber.setSelectedIndex(1);
 				txtTotalVolume.setText(String.valueOf(dryIn.getTotalVolume()));
 
-				refreshTablePicTally();
 				refreshTableDryInPallet();
 
 				if (dryIn.getStatus().equals(DryInType.FINAL.toString())) {
@@ -406,14 +371,13 @@ public class DryInViewPanel extends JPanel implements Bridging {
 				}
 			}
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
 
 	private void doPrint() {
 		// TODO Auto-generated method stub
-
 	}
 
 	protected void doDelete() {
@@ -422,25 +386,16 @@ public class DryInViewPanel extends JPanel implements Bridging {
 			DialogBox.showDelete();
 			MainPanel.changePanel("module.dryin.ui.DryInListPanel");
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
-	}
-
-	public void refreshTablePicTally() {
-		// try {
-		// tblPicTally.setModel(new PicTallyTableModel(listOfPicTally));
-		// } catch (Exception e1) {
-		// e1.printStackTrace();
-		// DialogBox.showErrorException();
-		// }
 	}
 
 	public void refreshTableDryInPallet() {
 		try {
 			tblDryInPallet.setModel(new DryInPalletTableModel(listOfDryInPallet));
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -504,6 +459,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int column) {
 			switch (column) {
 			case 0:
@@ -603,6 +559,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int column) {
 			switch (column) {
 			case 1:
@@ -654,14 +611,6 @@ public class DryInViewPanel extends JPanel implements Bridging {
 
 		loadData(dryIn.getId());
 	}
-
-	// public List<PicTally> getListOfPicTally() {
-	// return listOfPicTally;
-	// }
-	//
-	// public void setListOfPicTally(List<PicTally> listOfPicTally) {
-	// this.listOfPicTally = listOfPicTally;
-	// }
 
 	public List<DryInPallet> getListOfDryInPallet() {
 		return listOfDryInPallet;

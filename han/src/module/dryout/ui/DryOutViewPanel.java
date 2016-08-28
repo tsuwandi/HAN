@@ -20,6 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.Logger;
+
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
@@ -36,6 +38,8 @@ import module.util.DateUtil;
 public class DryOutViewPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = Logger.getLogger(DryOutViewPanel.class);
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
@@ -91,7 +95,6 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 	private DryOut dryOut;
 	
 	public DryOutViewPanel() {
-		//setPreferredSize(new Dimension(1366, 725));
 		setLayout(null);
 
 		panel = new JPanel();
@@ -362,7 +365,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 				}
 			}
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -378,7 +381,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 			DialogBox.showDelete();
 			MainPanel.changePanel("module.dryout.ui.DryOutListPanel");
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -387,7 +390,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 		try {
 			tblDryOutPallet.setModel(new DryOutPalletTableModel(listOfDryOutPallet));
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -466,6 +469,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int column) {
 			switch (column) {
 			case 1:

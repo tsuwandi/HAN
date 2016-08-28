@@ -17,9 +17,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
+import main.component.UppercaseDocumentFilter;
 import module.dryin.model.DryInPallet;
 import module.pembelian.model.Pallet;
 import module.pembelian.model.PalletCard;
@@ -51,6 +54,8 @@ public class DryInPalletDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 600, 330);
 		getContentPane().setLayout(null);
+		
+		DocumentFilter filter = new UppercaseDocumentFilter();
 
 		lblError = new JLabel();
 		lblError.setForeground(Color.RED);
@@ -59,6 +64,7 @@ public class DryInPalletDialog extends JDialog {
 
 		txtSearch = new JTextField();
 		txtSearch.setBounds(320, 10, 150, 25);
+		((AbstractDocument) txtSearch.getDocument()).setDocumentFilter(filter);
 		getContentPane().add(txtSearch);
 
 		btnSearch = new JButton("Search");

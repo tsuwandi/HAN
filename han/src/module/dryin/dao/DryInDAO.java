@@ -24,7 +24,7 @@ public class DryInDAO {
 	private PreparedStatement updateDailyClosingStatement;
 	private PreparedStatement deleteStatement;
 
-	private String getAllQuery = "SELECT d.id, d.dry_in_code, d.date_in, d.chamber_id, d.total_volume, d.status, c.chamber "
+	private String getAllQuery = "SELECT d.id, d.dry_in_code, d.date_in, d.chamber_id, d.total_volume, d.status, c.chamber, d.status "
 			+ "FROM dry_in d INNER JOIN chamber c ON d.chamber_id = c.id ";
 	private String getOrdinalOfCodeNumberQuery = "SELECT SUBSTRING_INDEX(dry_in_code, '/', -1) AS ordinal FROM dry_in "
 			+ "WHERE SUBSTRING_INDEX(SUBSTRING_INDEX(dry_in_code, '/', 2), '/', -1) = ? "
@@ -60,6 +60,7 @@ public class DryInDAO {
 				dryIn.setDateIn(rs.getTimestamp("date_in"));
 				dryIn.setChamberId(rs.getInt("chamber_id"));
 				dryIn.setTotalVolume(rs.getDouble("total_volume"));
+				dryIn.setStatus(rs.getString("status"));
 
 				Chamber chamber = new Chamber();
 				chamber.setId(rs.getInt("chamber_id"));
@@ -70,7 +71,6 @@ public class DryInDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -98,7 +98,8 @@ public class DryInDAO {
 				dryIn.setDateIn(rs.getTimestamp("date_in"));
 				dryIn.setChamberId(rs.getInt("chamber_id"));
 				dryIn.setTotalVolume(rs.getDouble("total_volume"));
-
+				dryIn.setStatus(rs.getString("status"));
+				
 				Chamber chamber = new Chamber();
 				chamber.setId(rs.getInt("chamber_id"));
 				chamber.setChamber(rs.getString("chamber"));
@@ -108,7 +109,6 @@ public class DryInDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -127,7 +127,6 @@ public class DryInDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -147,7 +146,6 @@ public class DryInDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -167,7 +165,6 @@ public class DryInDAO {
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -185,7 +182,6 @@ public class DryInDAO {
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -198,7 +194,6 @@ public class DryInDAO {
 			deleteStatement.setInt(3, id);
 			deleteStatement.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -229,7 +224,6 @@ public class DryInDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -248,7 +242,7 @@ public class DryInDAO {
 		try {
 
 			String allDryInForDailyClosingQuery = "SELECT d.id, d.dry_in_code, d.date_in, d.chamber_id, d.total_volume, d.confirm_date, "
-					+ "pc.total, pc.volume, pc.product_code, pc.pallet_card_code, c.chamber, pd.product_name FROM dry_in d "
+					+ "pc.total, pc.volume, pc.product_code, pc.pallet_card_code, c.chamber, pd.product_name, d.status FROM dry_in d "
 					+ "INNER JOIN chamber c ON c.id = d.chamber_id "
 					+ "INNER JOIN dry_in_pallet dp ON d.dry_in_code = dp.dry_in_code "
 					+ "INNER JOIN pallet_card pc ON pc.pallet_card_code = dp.pallet_card_code "
@@ -267,6 +261,7 @@ public class DryInDAO {
 				dryIn.setChamberId(rs.getInt("chamber_id"));
 				dryIn.setTotalVolume(rs.getDouble("total_volume"));
 				dryIn.setConfirmDate(rs.getDate("confirm_date"));
+				dryIn.setStatus(rs.getString("status"));
 				
 				Chamber chamber = new Chamber();
 				chamber.setChamber(rs.getString("chamber"));
@@ -285,7 +280,6 @@ public class DryInDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		}
 
@@ -303,7 +297,6 @@ public class DryInDAO {
 			updateDailyClosingStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 

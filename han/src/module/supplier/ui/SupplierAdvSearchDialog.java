@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
 import main.component.ComboBox;
@@ -24,20 +24,20 @@ import module.util.JTextFieldLimit;
 public class SupplierAdvSearchDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = Logger.getLogger(SupplierAdvSearchDialog.class);
 
 	JPanel panel;
 
 	JLabel lblSuppName;
 	JLabel lblSuppCode;
 	JLabel lblSuppType;
-	//JLabel lblSuppStatus;
 	JLabel lblPt;
 	JLabel lblNpwp;
 
 	JTextField txtSuppName;
 	JTextField txtSuppCode;
 	ComboBox<SuppType> cbSuppType;
-	//JComboBox<String> cbSuppStatus;
 	JTextField txtPt;
 	JTextField txtNpwp;
 
@@ -107,18 +107,6 @@ public class SupplierAdvSearchDialog extends JDialog {
 		cbSuppType.setBounds(410, 15, 150, 25);
 		getContentPane().add(cbSuppType);
 
-//		lblSuppStatus = new JLabel("Status Supplier ");
-//		lblSuppStatus.setBounds(305, 45, 150, 25);
-//		getContentPane().add(lblSuppStatus);
-//
-//		cbSuppStatus = new JComboBox<String>();
-//		cbSuppStatus.addItem("-- Pilih Status Supplier --");
-//		cbSuppStatus.addItem("Aktif");
-//		cbSuppStatus.addItem("Nonaktif Sementara");
-//		cbSuppStatus.addItem("Nonaktif");
-//		cbSuppStatus.setBounds(410, 45, 150, 25);
-//		getContentPane().add(cbSuppStatus);
-
 		btnSearch = new JButton("Cari");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -141,13 +129,10 @@ public class SupplierAdvSearchDialog extends JDialog {
 				suppType.setSuppType(cbSuppType.getSelectedItem().toString());
 				supplier.setSuppType(suppType);
 			}
-//			if (cbSuppStatus.getSelectedIndex() != 0)
-//				supplier.setSuppStatus(cbSuppStatus.getSelectedItem().toString());
-
 			supplierList.listOfSupplier = ServiceFactory.getSupplierBL().getAllSupplierByAdvancedSearch(supplier);
 			closeDialog();
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 

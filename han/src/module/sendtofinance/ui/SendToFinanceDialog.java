@@ -21,6 +21,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import org.apache.log4j.Logger;
+
 import controller.ServiceFactory;
 import module.pembelian.model.Received;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -33,6 +35,8 @@ import net.sf.jasperreports.view.JasperViewer;
 public class SendToFinanceDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = Logger.getLogger(SendToFinanceDialog.class);
 
 	JPanel panel;
 
@@ -130,7 +134,7 @@ public class SendToFinanceDialog extends JDialog {
 					}
 
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					LOGGER.error(e1.getMessage());
 					JOptionPane.showMessageDialog(null, "Gagal Memproses Send To Finance", "Send To Finance",
 							JOptionPane.ERROR_MESSAGE);
 					dispose();

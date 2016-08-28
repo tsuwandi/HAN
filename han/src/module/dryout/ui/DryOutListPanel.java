@@ -18,14 +18,21 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
+
+import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
+import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
 import module.dryout.model.DryOut;
 import module.util.DateUtil;
 
 public class DryOutListPanel extends JPanel {
+	
+	private static final Logger LOGGER = Logger.getLogger(DryOutListPanel.class);
 
 	JButton btnCreateNew;
 	JButton btnExport;
@@ -53,6 +60,8 @@ public class DryOutListPanel extends JPanel {
 		setLayout(null);
 
 		setPreferredSize(new Dimension(1024, 768));
+		
+		DocumentFilter filter = new UppercaseDocumentFilter();
 
 		lblBreadcrumb = new JLabel("ERP > Pengeringan");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -93,6 +102,7 @@ public class DryOutListPanel extends JPanel {
 
 		txtSearch = new JTextField();
 		txtSearch.setBounds(800, 131, 150, 28);
+		((AbstractDocument) txtSearch.getDocument()).setDocumentFilter(filter);
 		add(txtSearch);
 
 		btnSearch = new JButton("Cari");
@@ -121,7 +131,7 @@ public class DryOutListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 4)
+					if (column == 5)
 						MainPanel.changePanel("module.dryout.ui.DryOutViewPanel", listOfDryOut.get(row));
 				}
 			}
@@ -132,7 +142,7 @@ public class DryOutListPanel extends JPanel {
 			listOfDryOut = ServiceFactory.getDryOutBL().getAllDryOut();
 			refreshTableDryOut();
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 
@@ -158,6 +168,7 @@ public class DryOutListPanel extends JPanel {
 			listOfDryOut = ServiceFactory.getDryOutBL().getAllDryOutBySimpleSearch(value);
 			refreshTableDryOut();
 		} catch (SQLException e1) {
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -166,11 +177,7 @@ public class DryOutListPanel extends JPanel {
 	 * Method to display add supp cp dialog
 	 */
 	protected void showAdvancedSearchDialog(DryOutListPanel dryOutListPanel) {
-		// DryOutAdvSearchDialog dryOutAdvSearchDialog = new
-		// DryOutAdvSearchDialog(dryOutListPanel);
-		// dryOutAdvSearchDialog.setTitle("Advanced Search");
-		// dryOutAdvSearchDialog.setLocationRelativeTo(null);
-		// dryOutAdvSearchDialog.setVisible(true);
+
 	}
 
 	/**
@@ -202,13 +209,14 @@ public class DryOutListPanel extends JPanel {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 5;
+			return 6;
 		}
 
 		public boolean isCellEditable(int row, int column) {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int column) {
 			switch (column) {
 			case 0:
@@ -220,6 +228,8 @@ public class DryOutListPanel extends JPanel {
 			case 3:
 				return String.class;
 			case 4:
+				return String.class;
+			case 5:
 				return String.class;
 			default:
 				return String.class;
@@ -247,6 +257,8 @@ public class DryOutListPanel extends JPanel {
 			case 3:
 				return p.getTotalVolume();
 			case 4:
+				return p.getStatus();
+			case 5:
 				return "<html><a><u>View</u></a></html>";
 			default:
 				return "";
@@ -271,6 +283,8 @@ public class DryOutListPanel extends JPanel {
 			case 3:
 				return "Total Volume";
 			case 4:
+				return "Status";
+			case 5:
 				return "Tindakan";
 			default:
 				return "";

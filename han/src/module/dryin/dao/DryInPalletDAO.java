@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import module.dryin.model.DryInPallet;
-import module.pembelian.model.Pallet;
 import module.pembelian.model.PalletCard;
-import module.pembelian.model.PalletCardDetail;
 import module.pembelian.model.Received;
 import module.util.DateUtil;
 
@@ -72,7 +70,6 @@ public class DryInPalletDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -89,7 +86,6 @@ public class DryInPalletDAO {
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -104,7 +100,6 @@ public class DryInPalletDAO {
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -120,7 +115,6 @@ public class DryInPalletDAO {
 			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -136,7 +130,6 @@ public class DryInPalletDAO {
 			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}

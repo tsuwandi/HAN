@@ -55,6 +55,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 	JLabel catLbl;
 	JLabel unitLbl;
 	JLabel maintainLbl;
+	JLabel attLbl;
 	JLabel typeLbl;
 	JLabel gradeLbl;
 	JLabel thickLbl;
@@ -124,7 +125,6 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		backBtn = new JButton("Kembali");
 		backBtn.setBounds(50, 550, 75, 25);
 		backBtn.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainPanel.changePanel("module.product.ui.ProductListPanel");
@@ -151,6 +151,10 @@ public class ProductViewPanel extends JPanel implements Bridging {
 
 		maintainLbl = new JLabel("<html>Maintain Stock <font color=\"red\">*</font></html>");
 		maintainLbl.setBounds(50, 200, 100, 25);
+		
+		attLbl = new JLabel("<html>Atribut Produk</html>");
+		attLbl.setBounds(50, 245, 100, 25);
+		attLbl.setFont(new Font(null, Font.BOLD, 12));
 
 		typeLbl = new JLabel("Jenis Kayu");
 		typeLbl.setBounds(50, 290, 100, 25);
@@ -192,6 +196,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 			listOfProductionType.add(0, new ProductionType("-- Pilih Tipe Hasil Produksi --"));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 
 		cbProductionType = new ComboBox<ProductionType>();
@@ -204,6 +209,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 			listOfProductionQuality.add(0, new ProductionQuality("-- Pilih Kualitas Produksi --"));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 
 		cbProductionQuality = new ComboBox<ProductionQuality>();
@@ -235,6 +241,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 			categories.add(0, new ProductCategory("-- Pilih Kategori Produk --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 		catField = new ComboBox<ProductCategory>();
 		catField.setList(categories);
@@ -246,6 +253,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 			units.add(0, new Uom("-- Pilih Satuan Produk --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 		uomField = new ComboBox<Uom>();
 		uomField.setList(units);
@@ -269,6 +277,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 			woodTypes.add(0, new WoodType("-- Pilih Jenis Kayu --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 		typeField = new ComboBox<WoodType>();
 		typeField.setList(woodTypes);
@@ -280,6 +289,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 			grades.add(0, new Grade("-- Pilih Grade --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 		gradeField = new ComboBox<Grade>();
 		gradeField.setList(grades);
@@ -355,6 +365,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		add(uomField);
 		add(maintainYesField);
 		add(maintainNoField);
+		add(attLbl);
 		add(typeField);
 		add(gradeField);
 		add(thickField);

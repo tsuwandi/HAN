@@ -1,14 +1,11 @@
 package module.dryin.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -28,6 +25,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.Logger;
+
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
@@ -39,16 +38,16 @@ import main.panel.MainPanel;
 import module.dryin.model.DryIn;
 import module.dryin.model.DryInPallet;
 import module.dryin.model.PicTally;
-import module.dryin.ui.DryInCreatePanel.DryInPalletTableModel;
 import module.pembelian.model.PalletCard;
 import module.sn.chamber.model.Chamber;
 import module.util.Bridging;
 import module.util.DateUtil;
-import module.util.JTextFieldLimit;
 
 public class DryInEditPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
+
+	private static final Logger LOGGER = Logger.getLogger(DryInEditPanel.class);
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
@@ -88,11 +87,6 @@ public class DryInEditPanel extends JPanel implements Bridging {
 	JTextField txtTotalVolumePalletCard;
 	JTextField txtTotalVolume;
 
-	// JScrollPane scrollPanePicTally;
-	// JTable tblPicTally;
-	// JButton btnSearchPicTally;
-	// JButton btnDeletePicTally;
-
 	JScrollPane scrollPaneDryInPallet;
 	JTable tblDryInPallet;
 	JButton btnSearchPalletCard;
@@ -104,22 +98,18 @@ public class DryInEditPanel extends JPanel implements Bridging {
 	JPanel panel;
 	JScrollPane scrollPane;
 
-	// private PicTallyTableModel picTallyTableModel;
 	private DryInPalletTableModel dryInPalletTableModel;
-	// private List<PicTally> listOfPicTally;
 	private List<DryInPallet> listOfDryInPallet;
 	private PalletCard palletCard;
 	private DryInEditPanel dryInCreatePanel;
 	private DryIn dryIn;
 	private List<Chamber> listOfChamber;
-	// public List<PicTally> listOfDeletedPicTally;
 	public List<DryInPallet> listOfDeletedDryInPallet;
 
 	@SuppressWarnings("deprecation")
 	public DryInEditPanel() {
 		dryInCreatePanel = this;
 
-		// setPreferredSize(new Dimension(1366, 725));
 		setLayout(null);
 
 		panel = new JPanel();
@@ -198,7 +188,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 			listOfChamber = ServiceFactory.getDryInBL().getAllChamber();
 			listOfChamber.add(0, new Chamber("-- Pilih Chamber --"));
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 
@@ -207,57 +197,6 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		cbChamber.setList(listOfChamber);
 		cbChamber.setBounds(220, 140, 150, 25);
 		panel.add(cbChamber);
-
-		/////// Table Pic Tally ///////
-		// lblPicTally = new JLabel("Pic Tally");
-		// lblPicTally.setFont(new Font("Tahoma", Font.BOLD, 14));
-		// lblPicTally.setBounds(50, 200, 150, 25);
-		// panel.add(lblPicTally);
-		//
-		// scrollPanePicTally = new JScrollPane();
-		// scrollPanePicTally.setBounds(50, 240, 975, 150);
-		// panel.add(scrollPanePicTally);
-		//
-		// listOfPicTally = new ArrayList<PicTally>();
-		// picTallyTableModel = new PicTallyTableModel(listOfPicTally);
-		// tblPicTally = new JTable(picTallyTableModel);
-		// tblPicTally.setFocusable(false);
-		// tblPicTally.setBorder(new EmptyBorder(5, 5, 5, 5));
-		// scrollPanePicTally.setViewportView(tblPicTally);
-		//
-		// tblPicTally.addMouseListener(new MouseAdapter() {
-		// @Override
-		// public void mouseClicked(MouseEvent e) {
-		// if (tblPicTally.getValueAt(tblPicTally.getSelectedRow(),
-		// 0).equals(true))
-		// listOfPicTally.get(tblPicTally.getSelectedRow()).setFlag(false);
-		// else
-		// listOfPicTally.get(tblPicTally.getSelectedRow()).setFlag(true);
-		//
-		// refreshTablePicTally();
-		// }
-		// });
-		//
-		// btnSearchPicTally = new JButton("Cari");
-		// btnSearchPicTally.addActionListener(new ActionListener() {
-		// public void actionPerformed(ActionEvent arg0) {
-		// showAddPicTallyDialog(dryInCreatePanel);
-		// }
-		// });
-		// btnSearchPicTally.setBounds(820, 200, 100, 25);
-		// panel.add(btnSearchPicTally);
-		//
-		// btnDeletePicTally = new JButton("Hapus");
-		// btnDeletePicTally.addActionListener(new ActionListener() {
-		// public void actionPerformed(ActionEvent arg0) {
-		// // int response = DialogBox.showDeleteChoice();
-		// // if (response == JOptionPane.YES_OPTION) {
-		// doDeletePicTally();
-		// // }
-		// }
-		// });
-		// btnDeletePicTally.setBounds(925, 200, 100, 25);
-		// panel.add(btnDeletePicTally);
 
 		btnSearchPalletCard = new JButton("Cari Kartu Pallet");
 		btnSearchPalletCard.addActionListener(new ActionListener() {
@@ -271,6 +210,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		lblPalletCardCode = new JLabel("Kode Kartu Pallet");
 		lblPalletCardCode.setBounds(50, 205, 150, 25);
 		panel.add(lblPalletCardCode);
+
 		//////////////////
 		lblRitNo = new JLabel("Rit No");
 		lblRitNo.setBounds(220, 205, 150, 25);
@@ -349,10 +289,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		btnInsertDryInPallet = new JButton("Insert");
 		btnInsertDryInPallet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// int response = DialogBox.showInsertChoice();
-				// if (response == JOptionPane.YES_OPTION) {
 				doInsertDryInPallet();
-				// }
 			}
 		});
 		btnInsertDryInPallet.setBounds(220, 345, 100, 25);
@@ -397,7 +334,6 @@ public class DryInEditPanel extends JPanel implements Bridging {
 
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		// scrollPane.setBounds(0, 0, 1155, 580);
 		scrollPane.setSize(MainPanel.bodyPanel.getSize());
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
@@ -508,7 +444,6 @@ public class DryInEditPanel extends JPanel implements Bridging {
 
 		makeDefaultDatePalletCardCode();
 
-		// listOfDeletedPicTally = new ArrayList<PicTally>();
 		listOfDeletedDryInPallet = new ArrayList<DryInPallet>();
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -562,7 +497,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 			DialogBox.showInsert();
 			MainPanel.changePanel("module.dryin.ui.DryInViewPanel", dryIn);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -578,41 +513,6 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		txtDate.setText(date);
 		txtMonth.setText(month);
 		txtYear.setText(year);
-	}
-
-	/**
-	 * Method to display add pic tally dialog
-	 */
-	// protected void showAddPicTallyDialog(DryInEditPanel dryInEditPanel) {
-	// PicTallyDialog picTallyDialog = new PicTallyDialog(null, dryInEditPanel);
-	// picTallyDialog.setTitle("Pic Tally");
-	// picTallyDialog.setLocationRelativeTo(null);
-	// picTallyDialog.setVisible(true);
-	// }
-	//
-	// protected void doDeletePicTally() {
-	// for (PicTally s : listOfPicTally) {
-	// if (Boolean.TRUE.equals(s.isFlag())) {
-	// listOfDeletedPicTally.add(s);
-	// }
-	// }
-	//
-	// if (Boolean.FALSE.equals(listOfDeletedPicTally.isEmpty())) {
-	// for (PicTally s : listOfDeletedPicTally) {
-	// listOfPicTally.remove(s);
-	// }
-	// refreshTablePicTally();
-	// DialogBox.showDelete();
-	// }
-	// }
-
-	public void refreshTablePicTally() {
-		// try {
-		// tblPicTally.setModel(new PicTallyTableModel(listOfPicTally));
-		// } catch (Exception e1) {
-		// e1.printStackTrace();
-		// DialogBox.showErrorException();
-		// }
 	}
 
 	/**
@@ -698,7 +598,6 @@ public class DryInEditPanel extends JPanel implements Bridging {
 	public void clearPalletCard() {
 		// clear
 		txtRitNo.setText("");
-		makeDefaultDatePalletCardCode();
 		txtOrdinal.setText("");
 		txtTotalVolumePalletCard.setText("");
 		palletCard = null;
@@ -781,6 +680,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int column) {
 			switch (column) {
 			case 0:
@@ -880,6 +780,7 @@ public class DryInEditPanel extends JPanel implements Bridging {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int column) {
 			switch (column) {
 			case 1:
@@ -932,14 +833,6 @@ public class DryInEditPanel extends JPanel implements Bridging {
 		loadData(dryIn.getId());
 	}
 
-	// public List<PicTally> getListOfPicTally() {
-	// return listOfPicTally;
-	// }
-	//
-	// public void setListOfPicTally(List<PicTally> listOfPicTally) {
-	// this.listOfPicTally = listOfPicTally;
-	// }
-
 	public List<DryInPallet> getListOfDryInPallet() {
 		return listOfDryInPallet;
 	}
@@ -991,11 +884,10 @@ public class DryInEditPanel extends JPanel implements Bridging {
 				cbChamber.setSelectedItem(dryIn.getChamber().getChamber());
 				txtTotalVolume.setText(String.valueOf(dryIn.getTotalVolume()));
 
-				refreshTablePicTally();
 				refreshTableDryInPallet();
 			}
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}

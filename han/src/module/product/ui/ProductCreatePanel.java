@@ -23,6 +23,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.AbstractDocument;
 
 import org.apache.log4j.Logger;
 
@@ -30,6 +32,7 @@ import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
+import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
 import module.pembelian.model.WoodType;
 import module.product.ProductCategoryType;
@@ -44,14 +47,8 @@ import module.util.JTextFieldLimit;
 
 public class ProductCreatePanel extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Create the panel.
-	 */
 	private static final Logger LOGGER = Logger.getLogger(ProductCreatePanel.class);
 
 	JLabel breadcrumb;
@@ -63,6 +60,7 @@ public class ProductCreatePanel extends JPanel {
 	JLabel catLbl;
 	JLabel unitLbl;
 	JLabel maintainLbl;
+	JLabel attLbl;
 	JLabel typeLbl;
 	JLabel gradeLbl;
 	JLabel thickLbl;
@@ -112,6 +110,8 @@ public class ProductCreatePanel extends JPanel {
 
 		setLayout(null);
 		setPreferredSize(new Dimension(1166, 620));
+		
+		DocumentFilter filter = new UppercaseDocumentFilter();
 
 		todayDate = new Date();
 		todayDate.getTime();
@@ -152,6 +152,10 @@ public class ProductCreatePanel extends JPanel {
 
 		maintainLbl = new JLabel("<html>Maintain Stock <font color=\"red\">*</font></html>");
 		maintainLbl.setBounds(50, 200, 100, 25);
+		
+		attLbl = new JLabel("<html>Atribut Produk</html>");
+		attLbl.setBounds(50, 245, 100, 25);
+		attLbl.setFont(new Font(null, Font.BOLD, 12));
 
 		typeLbl = new JLabel("Jenis Kayu");
 		typeLbl.setBounds(50, 290, 100, 25);
@@ -174,10 +178,12 @@ public class ProductCreatePanel extends JPanel {
 		idField = new JTextField();
 		idField.setDocument(new JTextFieldLimit(18));
 		idField.setBounds(220, 80, 150, 25);
+		((AbstractDocument) idField.getDocument()).setDocumentFilter(filter);
 
 		nameField = new JTextField();
 		nameField.setDocument(new JTextFieldLimit(50));
 		nameField.setBounds(220, 110, 150, 25);
+		((AbstractDocument) nameField.getDocument()).setDocumentFilter(filter);
 
 		///////////////////// Kategori Hasil Produksi
 		///////////////////// ///////////////////////////////
@@ -205,6 +211,7 @@ public class ProductCreatePanel extends JPanel {
 			listOfProductionQuality.add(0, new ProductionQuality("-- Pilih Kualitas Produksi --"));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 
 		cbProductionQuality = new ComboBox<ProductionQuality>();
@@ -236,6 +243,7 @@ public class ProductCreatePanel extends JPanel {
 			categories.add(0, new ProductCategory("-- Pilih Kategori Produk --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 		catField = new ComboBox<ProductCategory>();
 		catField.addItemListener(new ItemListener() {
@@ -304,6 +312,7 @@ public class ProductCreatePanel extends JPanel {
 			units.add(0, new Uom("-- Pilih Satuan Produk --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 		uomField = new ComboBox<Uom>();
 		uomField.setList(units);
@@ -326,6 +335,7 @@ public class ProductCreatePanel extends JPanel {
 			woodTypes.add(0, new WoodType("-- Pilih Jenis Kayu --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 		typeField = new ComboBox<WoodType>();
 		typeField.setList(woodTypes);
@@ -336,6 +346,7 @@ public class ProductCreatePanel extends JPanel {
 			grades.add(0, new Grade("-- Pilih Grade --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 
 		gradeField = new ComboBox<Grade>();
@@ -415,6 +426,7 @@ public class ProductCreatePanel extends JPanel {
 		add(catLbl);
 		add(unitLbl);
 		add(maintainLbl);
+		add(attLbl);
 		add(typeLbl);
 		add(gradeLbl);
 		add(thickLbl);
@@ -528,13 +540,19 @@ public class ProductCreatePanel extends JPanel {
 				if (wideField.getText().length() > 0)
 					product.setWidth(Double.parseDouble(wideField.getText()));
 			}
+			
+			if(product.getProductCat() == ProductCategoryType.BALKEN_BASAH) {
+				product.setCondition(ProductCategoryType.BALKEN_BASAH);
+			} else if(product.getProductCat() == ProductCategoryType.BALKEN_KERING) {
+				product.setCondition(ProductCategoryType.BALKEN_KERING);
+			}
 
 			product.setProductionTypeId(cbProductionType.getDataIndex().getId());
 			product.setProductionQualityId(cbProductionQuality.getDataIndex().getId());
 
 			product.setMinQty(Integer.parseInt(minQtyField.getText()));
 			
-			Product checkProduct = ServiceFactory.getProductBL().isProductExists(product);
+			Product checkProduct = ServiceFactory.getProductBL().isProductExists(Boolean.FALSE, product);
 			if (checkProduct.getIsExists() > 0) {
 				JOptionPane.showMessageDialog(null,
 						"Produk sudah pernah diinput dengan kode " + checkProduct.getProductCode(), "Warning",
@@ -544,11 +562,9 @@ public class ProductCreatePanel extends JPanel {
 				DialogBox.showInsert();
 				MainPanel.changePanel("module.product.ui.ProductListPanel");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
-			e.printStackTrace();
 		}
 	}
 
@@ -867,7 +883,7 @@ public class ProductCreatePanel extends JPanel {
 				}
 			}
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}

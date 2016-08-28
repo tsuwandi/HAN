@@ -10,14 +10,17 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
+
+import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
-import module.sn.chamber.model.Chamber;
+import main.component.UppercaseDocumentFilter;
 import module.sn.vehicletype.model.VehicleType;
 import module.supplier.model.SuppVehicle;
 import module.util.JTextFieldLimit;
@@ -25,6 +28,8 @@ import module.util.JTextFieldLimit;
 public class SuppVehicleDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = Logger.getLogger(SuppVehicleDialog.class);
 
 	JPanel panel;
 
@@ -69,6 +74,8 @@ public class SuppVehicleDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 600, 170);
 		getContentPane().setLayout(null);
+		
+		DocumentFilter filter = new UppercaseDocumentFilter();
 
 		lblLicensePlate = new JLabel("<html>No Kendaraan <font color=\"red\">*</font></html>");
 		lblLicensePlate.setBounds(25, 15, 150, 25);
@@ -79,6 +86,7 @@ public class SuppVehicleDialog extends JDialog {
 			txtLicensePlate.setEnabled(false);
 		txtLicensePlate.setBounds(150, 15, 150, 25);
 		txtLicensePlate.setDocument(new JTextFieldLimit(10));
+		((AbstractDocument) txtLicensePlate.getDocument()).setDocumentFilter(filter);
 		getContentPane().add(txtLicensePlate);
 
 		lblErrorLicensePlate = new JLabel();
@@ -95,7 +103,7 @@ public class SuppVehicleDialog extends JDialog {
 			listOfVehicleType = ServiceFactory.getSupplierBL().getAllVehicleType();
 			listOfVehicleType.add(0, new VehicleType("-- Pilih Tipe Kendaraan --"));
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 
@@ -116,10 +124,7 @@ public class SuppVehicleDialog extends JDialog {
 					return;
 				}
 				
-//				int response = DialogBox.showInsertChoice();
-//				if (response == JOptionPane.YES_OPTION) {
-					doInsert();
-//				}
+				doInsert();
 			}
 		});
 		btnInsert.setBounds(460, 80, 100, 25);
@@ -169,7 +174,7 @@ public class SuppVehicleDialog extends JDialog {
 					}
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				LOGGER.error(e.getMessage());
 				DialogBox.showErrorException();
 				isValid = false;
 			}
@@ -209,7 +214,7 @@ public class SuppVehicleDialog extends JDialog {
 
 			closeDialog();
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}

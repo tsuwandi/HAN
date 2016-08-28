@@ -120,12 +120,7 @@ public class DryInBL {
 			dryIn.setStatus(DryInType.COMPLETED.toString());
 			
 			new DryInDAO(con).save(dryIn);
-
-			// for (PicTally pc : listOfPicTally) {
-			// pc.setDryInCode(dryIn.getDryInCode());
-			// new PicTallyDAO(con).save(pc);
-			// }
-
+			
 			for (DryInPallet dip : listOfDryInPallet) {
 				dip.setDryInCode(dryIn.getDryInCode());
 				new DryInPalletDAO(con).save(dip);
@@ -134,7 +129,6 @@ public class DryInBL {
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();
@@ -150,20 +144,6 @@ public class DryInBL {
 			con.setAutoCommit(false);
 
 			new DryInDAO(con).update(dryIn);
-
-//			for (PicTally pc : listOfPicTally) {
-//				if (pc.getId() == 0) {
-//					pc.setDryInCode(dryIn.getDryInCode());
-//					new PicTallyDAO(con).save(pc);
-//				} else {
-//					new PicTallyDAO(con).update(pc);
-//				}
-//			}
-//
-//			for (PicTally s : listOfDeletedPicTally) {
-//				if (s.getId() != 0)
-//					new PicTallyDAO(con).deleteById(s.getId());
-//			}
 
 			for (DryInPallet dip : listOfDryInPallet) {
 				if (dip.getId() == 0) {
@@ -182,7 +162,6 @@ public class DryInBL {
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();
@@ -217,13 +196,11 @@ public class DryInBL {
 			con.setAutoCommit(false);
 
 			new DryInDAO(con).delete(dryIn.getId());
-			//new PicTallyDAO(con).deleteAll(dryIn.getDryInCode());
 			new DryInPalletDAO(con).deleteAll(dryIn.getDryInCode());
 
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();

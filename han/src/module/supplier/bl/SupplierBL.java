@@ -2,12 +2,10 @@ package module.supplier.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import module.dryin.dao.DryInDAO;
 import module.sn.bank.dao.BankDAO;
 import module.sn.bank.model.Bank;
 import module.sn.city.dao.CityDAO;
@@ -30,7 +28,6 @@ import module.supplier.model.SuppVehicle;
 import module.supplier.model.Supplier;
 
 public class SupplierBL {
-
 	private DataSource dataSource;
 
 	public SupplierBL(DataSource dataSource) {
@@ -117,8 +114,8 @@ public class SupplierBL {
 		}
 	}
 
-	public void save(Supplier supplier, List<SuppAddress> suppAddress,
-			List<SuppVehicle> suppVehicle) throws SQLException {
+	public void save(Supplier supplier, List<SuppAddress> suppAddress, List<SuppVehicle> suppVehicle)
+			throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -129,16 +126,11 @@ public class SupplierBL {
 			for (SuppAddress s : suppAddress) {
 				s.setSuppCode(supplier.getSuppCode());
 				s = new SuppAddressDAO(con).save(s);
-				
+
 				s.getSuppCp().setSuppAddressId(s.getId());
 				s.getSuppCp().setSuppCode(supplier.getSuppCode());
 				new SuppCpDAO(con).save(s.getSuppCp());
 			}
-
-//			for (SuppCp s : suppCp) {
-//				s.setSuppCode(supplier.getSuppCode());
-//				new SuppCpDAO(con).save(s);
-//			}
 
 			for (SuppVehicle s : suppVehicle) {
 				s.setSuppCode(supplier.getSuppCode());
@@ -148,7 +140,6 @@ public class SupplierBL {
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();
@@ -156,8 +147,7 @@ public class SupplierBL {
 	}
 
 	public void update(Supplier supplier, List<SuppAddress> suppAddress, List<SuppAddress> suppAddressDeleted,
-			List<SuppVehicle> suppVehicle,
-			List<SuppVehicle> suppVehicleDeleted) throws SQLException {
+			List<SuppVehicle> suppVehicle, List<SuppVehicle> suppVehicleDeleted) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -169,7 +159,7 @@ public class SupplierBL {
 				if (s.getId() == 0) {
 					s.setSuppCode(supplier.getSuppCode());
 					s = new SuppAddressDAO(con).save(s);
-					
+
 					s.getSuppCp().setSuppAddressId(s.getId());
 					s.getSuppCp().setSuppCode(supplier.getSuppCode());
 					new SuppCpDAO(con).save(s.getSuppCp());
@@ -185,20 +175,6 @@ public class SupplierBL {
 					new SuppCpDAO(con).deleteById(s.getSuppCp().getId());
 				}
 			}
-
-//			for (SuppCp s : suppCp) {
-//				if (s.getId() == 0) {
-//					s.setSuppCode(supplier.getSuppCode());
-//					new SuppCpDAO(con).save(s);
-//				} else {
-//					new SuppCpDAO(con).update(s);
-//				}
-//			}
-
-//			for (SuppCp s : suppCpDeleted) {
-//				if (s.getId() != 0)
-//					new SuppCpDAO(con).deleteById(s.getId());
-//			}
 
 			for (SuppVehicle s : suppVehicle) {
 				if (s.getId() == 0) {
@@ -217,7 +193,6 @@ public class SupplierBL {
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();
@@ -314,14 +289,4 @@ public class SupplierBL {
 			con.close();
 		}
 	}
-	
-//	public String getOrdinalOfCodeNumber() throws SQLException {
-//		Connection con = null;
-//		try {
-//			con = dataSource.getConnection();
-//			return String.format("%03d", new SupplierDAO(con).getOrdinalOfCodeNumber() + 1);
-//		} finally {
-//			con.close();
-//		}
-//	}
 }

@@ -17,12 +17,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
+
+import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
+import main.component.UppercaseDocumentFilter;
 import module.sn.city.model.City;
 import module.sn.province.model.Province;
 import module.supplier.model.SuppAddress;
@@ -32,6 +36,8 @@ import module.util.JTextFieldLimit;
 public class SuppAddressDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = Logger.getLogger(SuppAddressDialog.class);
 
 	JPanel panel;
 
@@ -97,6 +103,8 @@ public class SuppAddressDialog extends JDialog {
 		setBounds(100, 100, 600, 420);
 		getContentPane().setLayout(null);
 
+		DocumentFilter filter = new UppercaseDocumentFilter();
+
 		listOfProvince = new ArrayList<Province>();
 		listOfCity = new ArrayList<City>();
 
@@ -104,7 +112,7 @@ public class SuppAddressDialog extends JDialog {
 			listOfProvince = ServiceFactory.getSupplierBL().getAllProvince();
 			listOfProvince.add(0, new Province("-- Pilih Provinsi --"));
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 
@@ -135,6 +143,7 @@ public class SuppAddressDialog extends JDialog {
 		txtAddress.setColumns(3);
 		txtAddress.setBounds(150, 45, 150, 70);
 		txtAddress.setDocument(new JTextFieldLimit(200));
+		((AbstractDocument) txtAddress.getDocument()).setDocumentFilter(filter);
 		txtAddress.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -164,7 +173,6 @@ public class SuppAddressDialog extends JDialog {
 
 		txtZipCode = new NumberField(5);
 		txtZipCode.setBounds(150, 120, 150, 25);
-		// txtZipCode.setDocument(new JTextFieldLimit(5));
 		getContentPane().add(txtZipCode);
 
 		lblProvince = new JLabel("<html>Provinsi <font color=\"red\">*</font></html>");
@@ -236,6 +244,7 @@ public class SuppAddressDialog extends JDialog {
 		txtContactPerson = new JTextField();
 		txtContactPerson.setBounds(150, 210, 150, 25);
 		txtContactPerson.setDocument(new JTextFieldLimit(50));
+		((AbstractDocument) txtContactPerson.getDocument()).setDocumentFilter(filter);
 		getContentPane().add(txtContactPerson);
 
 		lblErrorContactPerson = new JLabel();
@@ -250,6 +259,7 @@ public class SuppAddressDialog extends JDialog {
 		txtEmail = new JTextField();
 		txtEmail.setBounds(150, 240, 150, 25);
 		txtEmail.setDocument(new JTextFieldLimit(50));
+		((AbstractDocument) txtEmail.getDocument()).setDocumentFilter(filter);
 		getContentPane().add(txtEmail);
 
 		lblErrorEmail = new JLabel();
@@ -263,7 +273,6 @@ public class SuppAddressDialog extends JDialog {
 
 		txtPhone = new NumberField(15);
 		txtPhone.setBounds(150, 270, 150, 25);
-		// txtPhone.setDocument(new JTextFieldLimit(15));
 		getContentPane().add(txtPhone);
 
 		lblFax = new JLabel("Fax");
@@ -272,7 +281,6 @@ public class SuppAddressDialog extends JDialog {
 
 		txtFax = new NumberField(15);
 		txtFax.setBounds(150, 300, 150, 25);
-		// txtFax.setDocument(new JTextFieldLimit(15));
 		getContentPane().add(txtFax);
 
 		btnInsert = new JButton("Insert");
@@ -311,7 +319,7 @@ public class SuppAddressDialog extends JDialog {
 			listOfCity = ServiceFactory.getSupplierBL().getAllCityByProvinceId(provinceId);
 			listOfCity.add(0, new City("-- Pilih Kota --"));
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -360,7 +368,6 @@ public class SuppAddressDialog extends JDialog {
 	}
 
 	protected void doInsert() {
-
 		// suppAddress = new SuppAddress();
 		suppAddress.setAddressType(String.valueOf(cbAddressType.getSelectedItem()));
 		suppAddress.setAddress(txtAddress.getText());
@@ -408,7 +415,7 @@ public class SuppAddressDialog extends JDialog {
 			closeDialog();
 
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}

@@ -45,7 +45,7 @@ public class SuppAddressDAO {
 
 		try {
 			getAllBySuppCodeStatement = connection.prepareStatement(getAllBySuppCodeQuery);
-			
+
 			getAllBySuppCodeStatement.setString(1, suppCode);
 
 			ResultSet rs = getAllBySuppCodeStatement.executeQuery();
@@ -71,7 +71,7 @@ public class SuppAddressDAO {
 				city.setProvince(province);
 
 				supplierAddress.setCity(city);
-				
+
 				SuppCp suppCp = new SuppCp();
 				suppCp.setId(rs.getInt("supp_cp_id"));
 				suppCp.setSuppCode(rs.getString("supp_cp_code"));
@@ -79,13 +79,12 @@ public class SuppAddressDAO {
 				suppCp.setName(rs.getString("name"));
 				suppCp.setEmail(rs.getString("email"));
 				supplierAddress.setSuppCp(suppCp);
-				
+
 				suppAddresses.add(supplierAddress);
-				
+
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -121,7 +120,6 @@ public class SuppAddressDAO {
 			return suppAddress;
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -145,7 +143,6 @@ public class SuppAddressDAO {
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -161,7 +158,6 @@ public class SuppAddressDAO {
 			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -177,7 +173,6 @@ public class SuppAddressDAO {
 			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}

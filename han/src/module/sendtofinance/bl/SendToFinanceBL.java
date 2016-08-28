@@ -40,7 +40,6 @@ public class SendToFinanceBL {
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			e.printStackTrace();
 			throw new SQLException(e.getMessage());
 		} finally {
 			con.close();

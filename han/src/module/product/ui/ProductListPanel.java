@@ -18,20 +18,20 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
 
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
+import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
 import module.product.model.Product;
 import module.supplier.model.Supplier;
 
 public class ProductListPanel extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = Logger.getLogger(ProductListPanel.class);
@@ -50,6 +50,8 @@ public class ProductListPanel extends JPanel {
 	
 	public ProductListPanel() {
 		setLayout(null);
+		
+		DocumentFilter filter = new UppercaseDocumentFilter();
 		
 		if(products!=null){
 			refreshTable();
@@ -99,11 +101,13 @@ public class ProductListPanel extends JPanel {
 
 		searchField = new JTextField();
 		searchField.setBounds(800, 131, 150, 28);
-
+		((AbstractDocument) searchField.getDocument()).setDocumentFilter(filter);
+		
 		try{
 			products = ServiceFactory.getProductBL().getAll();
 		}catch(SQLException e1){
 			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 		
 		productTableModel = new ProductTableModel(products);

@@ -25,6 +25,7 @@ import com.sun.istack.internal.logging.Logger;
 
 import controller.ServiceFactory;
 import module.pembelian.model.Received;
+import module.sendtofinance.ui.SendToFinanceDialog;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -38,6 +39,8 @@ import module.dryout.model.DryOut;
 public class DailyClosingDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = Logger.getLogger(DailyClosingDialog.class);
 
 	JPanel panel;
 

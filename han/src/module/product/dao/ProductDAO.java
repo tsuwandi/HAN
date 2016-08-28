@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import module.pembelian.model.WoodType;
 import module.product.model.Condition;
 import module.product.model.Grade;
@@ -18,7 +16,6 @@ import module.product.model.Uom;
 import module.util.DateUtil;
 
 public class ProductDAO {
-	private DataSource dataSource;
 	private Connection connection;
 	private PreparedStatement getAllProductStatement;
 	private PreparedStatement getProductIdStatement;
@@ -88,7 +85,6 @@ public class ProductDAO {
 			deleteProductStatement.setString(3, productCode);
 			deleteProductStatement.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -128,7 +124,11 @@ public class ProductDAO {
 			else
 				insertProductStatement.setDouble(11, product.getWidth());
 			
-			insertProductStatement.setInt(12, product.getCondition());
+			if(product.getCondition() == 0)
+				insertProductStatement.setNull(12, java.sql.Types.INTEGER);
+			else
+				insertProductStatement.setInt(12, product.getCondition());
+			
 			insertProductStatement.setInt(13, product.getMinQty());
 			insertProductStatement.setDate(14, DateUtil.getCurrentDate());
 			insertProductStatement.setString(15, "Timotius");
@@ -146,7 +146,6 @@ public class ProductDAO {
 			insertProductStatement.executeUpdate();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -208,7 +207,6 @@ public class ProductDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -228,7 +226,6 @@ public class ProductDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -304,7 +301,6 @@ public class ProductDAO {
 				products.add(product);
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -325,7 +321,6 @@ public class ProductDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -367,7 +362,6 @@ public class ProductDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -388,7 +382,6 @@ public class ProductDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -409,7 +402,6 @@ public class ProductDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -451,7 +443,11 @@ public class ProductDAO {
 			else
 				updateProductStatement.setDouble(10, product.getWidth());
 			
-			updateProductStatement.setInt(11, product.getCondition());
+			if(product.getCondition() == 0)
+				updateProductStatement.setNull(11, java.sql.Types.INTEGER);
+			else
+				updateProductStatement.setInt(11, product.getCondition());
+			
 			updateProductStatement.setInt(12, product.getMinQty());
 			updateProductStatement.setDate(13, DateUtil.getCurrentDate());
 			updateProductStatement.setString(14, "Timotius");
@@ -469,7 +465,6 @@ public class ProductDAO {
 			updateProductStatement.setInt(17, product.getProductId());
 			updateProductStatement.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 	}
@@ -534,7 +529,6 @@ public class ProductDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -557,7 +551,6 @@ public class ProductDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -580,7 +573,6 @@ public class ProductDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 
@@ -592,10 +584,11 @@ public class ProductDAO {
 			+ "where product_category_id = ? "
 			+ "and grade_id = ? and wood_type_id = ? and deleted_date is null ";
 
-	public Product isProductExists(Product pProduct) throws SQLException {
+	public Product isProductExists(Boolean isEdit, Product pProduct) throws SQLException {
 		Product product = null;
 		try {
 			StringBuilder sb = new StringBuilder(isProductExistsQuery);
+			
 			if(pProduct.getThickness() == null)
 				sb.append("and thickness is null ");
 			else
@@ -611,6 +604,9 @@ public class ProductDAO {
 			else
 				sb.append("and width = ? ");
 			
+			if(isEdit == Boolean.TRUE)
+				sb.append("and id != ? ");
+			
 			isProductExistsStatement = connection.prepareStatement(sb.toString());
 			isProductExistsStatement.setInt(1, pProduct.getProductCat());
 			isProductExistsStatement.setInt(2, pProduct.getGrade());
@@ -625,6 +621,9 @@ public class ProductDAO {
 			if(pProduct.getWidth() != null)
 				isProductExistsStatement.setDouble(6, pProduct.getWidth());
 			
+			if(isEdit == Boolean.TRUE)
+				isProductExistsStatement.setInt(7, pProduct.getProductId());
+			
 			ResultSet rs = isProductExistsStatement.executeQuery();
 
 			while (rs.next()) {
@@ -634,7 +633,6 @@ public class ProductDAO {
 			}
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
 

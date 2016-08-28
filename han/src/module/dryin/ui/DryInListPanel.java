@@ -12,22 +12,27 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
+
+import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
+import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
 import module.dryin.model.DryIn;
 import module.util.DateUtil;
-import module.util.JTextFieldLimit;
 
 public class DryInListPanel extends JPanel {
+
+	private static final Logger LOGGER = Logger.getLogger(DryInListPanel.class);
 
 	JButton btnCreateNew;
 	JButton btnExport;
@@ -46,15 +51,17 @@ public class DryInListPanel extends JPanel {
 
 	JTable tblDryIn;
 
-	private DryInListPanel dryInListPanel;
+	//private DryInListPanel dryInListPanel;
 
 	private static final long serialVersionUID = 1L;
 
 	public DryInListPanel() {
-		dryInListPanel = this;
+		//dryInListPanel = this;
 		setLayout(null);
 
 		setPreferredSize(new Dimension(1024, 768));
+
+		DocumentFilter filter = new UppercaseDocumentFilter();
 
 		lblBreadcrumb = new JLabel("ERP > Pengeringan");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -87,7 +94,7 @@ public class DryInListPanel extends JPanel {
 		btnAdvancedSearch = new JButton("Pencarian Lanjut");
 		btnAdvancedSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showAdvancedSearchDialog(dryInListPanel);
+				//showAdvancedSearchDialog(dryInListPanel);
 			}
 		});
 		btnAdvancedSearch.setBounds(900, 80, 150, 30);
@@ -95,6 +102,8 @@ public class DryInListPanel extends JPanel {
 
 		txtSearch = new JTextField();
 		txtSearch.setBounds(800, 131, 150, 28);
+		((AbstractDocument) txtSearch.getDocument()).setDocumentFilter(filter);
+
 		add(txtSearch);
 
 		btnSearch = new JButton("Cari");
@@ -123,7 +132,7 @@ public class DryInListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 4)
+					if (column == 5)
 						MainPanel.changePanel("module.dryin.ui.DryInViewPanel", listOfDryIn.get(row));
 				}
 			}
@@ -134,10 +143,10 @@ public class DryInListPanel extends JPanel {
 			listOfDryIn = ServiceFactory.getDryInBL().getAllDryIn();
 			refreshTableDryIn();
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -151,6 +160,7 @@ public class DryInListPanel extends JPanel {
 		try {
 			tblDryIn.setModel(new DryInTableModel(listOfDryIn));
 		} catch (Exception e1) {
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
@@ -161,18 +171,9 @@ public class DryInListPanel extends JPanel {
 			listOfDryIn = ServiceFactory.getDryInBL().getAllDryInBySimpleSearch(value);
 			refreshTableDryIn();
 		} catch (SQLException e1) {
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
-	}
-
-	/**
-	 * Method to display add supp cp dialog
-	 */
-	protected void showAdvancedSearchDialog(DryInListPanel dryInListPanel) {
-//		DryInAdvSearchDialog dryInAdvSearchDialog = new DryInAdvSearchDialog(dryInListPanel);
-//		dryInAdvSearchDialog.setTitle("Advanced Search");
-//		dryInAdvSearchDialog.setLocationRelativeTo(null);
-//		dryInAdvSearchDialog.setVisible(true);
 	}
 
 	/**
@@ -204,13 +205,14 @@ public class DryInListPanel extends JPanel {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 5;
+			return 6;
 		}
 
 		public boolean isCellEditable(int row, int column) {
 			return false;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int column) {
 			switch (column) {
 			case 0:
@@ -222,6 +224,8 @@ public class DryInListPanel extends JPanel {
 			case 3:
 				return String.class;
 			case 4:
+				return String.class;
+			case 5:
 				return String.class;
 			default:
 				return String.class;
@@ -249,6 +253,8 @@ public class DryInListPanel extends JPanel {
 			case 3:
 				return p.getTotalVolume();
 			case 4:
+				return p.getStatus();
+			case 5:
 				return "<html><a><u>View</u></a></html>";
 			default:
 				return "";
@@ -273,6 +279,8 @@ public class DryInListPanel extends JPanel {
 			case 3:
 				return "Total Volume";
 			case 4:
+				return "Status";
+			case 5:
 				return "Tindakan";
 			default:
 				return "";
