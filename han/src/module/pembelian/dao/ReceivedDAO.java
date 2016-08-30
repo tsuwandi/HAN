@@ -27,7 +27,7 @@ public class ReceivedDAO {
 	private PreparedStatement advancedSearchStatement;
 	private PreparedStatement updateStatusStatement;
 	private PreparedStatement udpdateEmpCodeStatement;
-	private PreparedStatement updateConfirmDateStatement;
+	private PreparedStatement updateDailyClosingStatement;
 	
 	private String insertQuery = "INSERT INTO received (received_code, received_date,"
 			+ " rit_no, license_plate, driver, delivery_note, wood_type_id, driver_id, received_status, supplier_code, supplier_cp_id, input_date, input_by) "
@@ -50,8 +50,8 @@ public class ReceivedDAO {
 
 	private String updateEmpCodeQuery = "UPDATE received SET emp_code = ? WHERE received_code = ?";
 	
-	private String updateConfirmDateQuery = "UPDATE received SET confirm_date = ?, "
-			+ "edit_date=?, edited_by=? WHERE received_code=? ";
+	private String updateDailyClosingQuery = "update received set confirm_date=?, status=?, "
+			+ "edit_date=?, edited_by=? where received_code=? ";
 
 	public ReceivedDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
@@ -501,15 +501,16 @@ public class ReceivedDAO {
 	 * (SQLException e) { } } }
 	 */
 
-	public void updateConfirmDate(Received received) throws SQLException {
+	public void updateDailyClosing(Received received) throws SQLException {
 		try {
-			updateConfirmDateStatement = connection.prepareStatement(updateConfirmDateQuery);
+			updateDailyClosingStatement = connection.prepareStatement(updateDailyClosingQuery);
 			
-			updateConfirmDateStatement.setDate(1, DateUtil.getCurrentDate());
-			updateConfirmDateStatement.setDate(2, DateUtil.getCurrentDate());
-			updateConfirmDateStatement.setString(3, "timotius");
-			updateConfirmDateStatement.setString(4, received.getReceivedCode());
-			updateConfirmDateStatement.executeUpdate();
+			updateDailyClosingStatement.setDate(1, DateUtil.getCurrentDate());
+			updateDailyClosingStatement.setString(2, received.getStatus());
+			updateDailyClosingStatement.setDate(2, DateUtil.getCurrentDate());
+			updateDailyClosingStatement.setString(3, "timotius");
+			updateDailyClosingStatement.setString(4, received.getReceivedCode());
+			updateDailyClosingStatement.executeUpdate();
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();

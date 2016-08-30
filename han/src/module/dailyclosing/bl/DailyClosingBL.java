@@ -16,6 +16,7 @@ import module.dryin.model.DryIn;
 import module.dryout.DryOutType;
 import module.dryout.dao.DryOutDAO;
 import module.dryout.model.DryOut;
+import module.pembelian.ReceivedType;
 import module.pembelian.dao.ReceivedDAO;
 import module.pembelian.model.Received;
 import module.util.DateUtil;
@@ -87,8 +88,10 @@ public class DailyClosingBL {
 				inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
 
 				new InventoryLogTempDAO(con).save(inventoryLogTemp);
+				
+				received.setStatus(ReceivedType.FINAL.toString());
 
-				new ReceivedDAO(con).updateConfirmDate(received);
+				new ReceivedDAO(con).updateDailyClosing(received);
 			}
 
 			for (DryIn dryIn : listOfDryIn) {
