@@ -149,6 +149,7 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 
 		dcDateIn = new JDateChooser(new Date());
 		dcDateIn.setBounds(220, 110, 150, 25);
+		dcDateIn.setDateFormatString("dd-MM-yyyy");
 		panel.add(dcDateIn);
 
 		Calendar cal = Calendar.getInstance();

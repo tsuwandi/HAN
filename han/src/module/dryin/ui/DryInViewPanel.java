@@ -134,6 +134,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 
 		dcDateIn = new JDateChooser();
 		dcDateIn.setBounds(220, 110, 150, 25);
+		dcDateIn.setDateFormatString("dd-MM-yyyy");
 		dcDateIn.setEnabled(false);
 		panel.add(dcDateIn);
 

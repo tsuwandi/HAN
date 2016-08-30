@@ -142,6 +142,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 
 		dcDateOut = new JDateChooser(new Date());
 		dcDateOut.setBounds(220, 110, 150, 25);
+		dcDateOut.setDateFormatString("dd-MM-yyyy");
 		panel.add(dcDateOut);
 
 		Calendar cal = Calendar.getInstance();
