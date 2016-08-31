@@ -1334,7 +1334,7 @@ CREATE TABLE inventory (
 	deleted_date DATE,
 	deleted_bu VARCHAR(25),
 	PRIMARY KEY (`id`)
-)
+);
 
 
 CREATE TABLE inventory_log
@@ -1356,7 +1356,7 @@ CREATE TABLE inventory_log
 	deleted_date DATE,
 	deleted_by VARCHAR(25),
 	PRIMARY KEY (`id`)
-)
+);
 
 CREATE TABLE inventory_log_temp
 ( 
@@ -1374,7 +1374,7 @@ CREATE TABLE inventory_log_temp
 	deleted_date DATE,
 	deleted_by VARCHAR(25),
 	PRIMARY KEY (`id`)
-)
+);
 
 CREATE TABLE confirm
 ( 
@@ -1389,5 +1389,23 @@ CREATE TABLE confirm
 	deleted_date DATE,
 	deleted_by VARCHAR(25),
 	PRIMARY KEY (`id`)
-)
+);
+
+ALTER TABLE  `production` ADD  `production_type_code` VARCHAR( 9 ) NOT NULL AFTER  `shift_code`;
+
+CREATE TABLE production_type
+( 
+	id INT(12) NOT NULL AUTO_INCREMENT,
+	production_type_code VARCHAR(9),
+	description varchar(200),
+	input_date DATE,
+	input_by VARCHAR(25),
+	edit_date DATE,
+	edited_by VARCHAR(25),
+	deleted_date DATE,
+	deleted_by VARCHAR(25),
+	PRIMARY KEY (`id`)
+);
+
+INSERT INTO `project`.`production_type` (`id`, `production_type_code`, `description`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES (NULL, 'PT0001', 'Production Langsung', NULL, NULL, NULL, NULL, NULL, NULL), (NULL, 'PT0002', 'Production Berkala', NULL, NULL, NULL, NULL, NULL, NULL);
 
