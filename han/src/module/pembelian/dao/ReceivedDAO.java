@@ -507,9 +507,9 @@ public class ReceivedDAO {
 			
 			updateDailyClosingStatement.setDate(1, DateUtil.getCurrentDate());
 			updateDailyClosingStatement.setString(2, received.getStatus());
-			updateDailyClosingStatement.setDate(2, DateUtil.getCurrentDate());
-			updateDailyClosingStatement.setString(3, "timotius");
-			updateDailyClosingStatement.setString(4, received.getReceivedCode());
+			updateDailyClosingStatement.setDate(3, DateUtil.getCurrentDate());
+			updateDailyClosingStatement.setString(4, "timotius");
+			updateDailyClosingStatement.setString(5, received.getReceivedCode());
 			updateDailyClosingStatement.executeUpdate();
 
 		} catch (SQLException ex) {
