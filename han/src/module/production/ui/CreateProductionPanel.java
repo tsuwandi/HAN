@@ -32,6 +32,7 @@ import module.production.model.Line;
 import module.production.model.Shift;
 import module.util.Bridging;
 import module.production.model.Production;
+import module.production.model.ProductionType;
 
 public class CreateProductionPanel extends JPanel implements Bridging{
 	Logger log = LogManager.getLogger(CreateProductionPanel.class.getName());
@@ -42,16 +43,19 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 	private JLabel groupShiftLbl;
 	private JLabel shiftLbl;
 	private JLabel lineLbl;
+	private JLabel productionTypeLbl;
 	
 	private JLabel errorGroupShiftLbl;
 	private JLabel errorLineLbl;
 	private JLabel errorShiftLbl;
+	private JLabel errorProductionTypeLbl;
 	
 	private TextField productionCodeField;
 	private JDateChooser productionDateChooser;
 	private ComboBox<GroupShift> groupShiftCmb;
 	private ComboBox<Shift> shiftCmb;
 	private ComboBox<Line> lineCmb;
+	private ComboBox<ProductionType> productionTypeCmb;
 	
 	private JButton inputMaterialBtn;
 	private JButton inputProductionResultBtn;
@@ -120,20 +124,25 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		List<Shift> shifts = new ArrayList<>();
 		List<Line> lines = new ArrayList<>();
 		List<GroupShift> groupShifts = new ArrayList<>();
+		List<ProductionType> productionTypes = new ArrayList<>();
 		
 		productionCodeField.setEnabled(false);
 		try {
 			lines = ServiceFactory.getProductionBL().getLine();
 			shifts = ServiceFactory.getProductionBL().getShift();
 			groupShifts = ServiceFactory.getProductionBL().getGroupShift();
+			productionTypes = ServiceFactory.getProductionBL().getProductionType();
 			
 			lines.add(0,new Line("--Pilih--"));
 			shifts.add(0,new Shift("--Pilih--"));
 			groupShifts.add(0,new GroupShift("--Pilih--"));
+			productionTypes.add(0,new ProductionType("--Pilih--"));
 			
 			lineCmb.setList(lines);
 			shiftCmb.setList(shifts);
 			groupShiftCmb.setList(groupShifts);
+			productionTypeCmb.setList(productionTypes);
+			
 			Date currentDate = new Date();
 			String date = new SimpleDateFormat("dd").format(currentDate);
 			String month = new SimpleDateFormat("MM").format(currentDate);
@@ -218,6 +227,19 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		errorLineLbl.setBounds(345,280,150,20);
 		add(errorLineLbl);
 		
+		//TODO Production Type Area
+		productionTypeLbl = new JLabel("<html>Tipe Produksi <font color='red'>*</font></html>");
+		productionTypeLbl.setBounds(30,320,150,20);
+		add(productionTypeLbl);
+		
+		productionTypeCmb = new ComboBox<>();
+		productionTypeCmb.setBounds(190,320,150,20);
+		add(productionTypeCmb);
+		
+		errorProductionTypeLbl = new JLabel();
+		errorProductionTypeLbl.setBounds(345,320,150,20);
+		add(errorProductionTypeLbl);
+		
 		//TODO Button Area
 		inputMaterialBtn = new JButton("Input Bahan Baku");
 		inputMaterialBtn.setBounds(630,550,150,30);
@@ -260,6 +282,13 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			errorLineLbl.setText("");
 		}
 		
+		if(productionTypeCmb.getSelectedIndex()==0){
+			errorProductionTypeLbl.setText("<html><font color='red'>Tipe Produksi harus dipilih !</font></html>");
+			error++;
+		}else{
+			errorProductionTypeLbl.setText("");
+		}
+		
 		if(error==0){
 			if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
 				try {
@@ -268,6 +297,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 					production.setShiftCode(shiftCmb.getDataIndex().getShiftCode());
 					production.setLineCode(lineCmb.getDataIndex().getLineCode());
 					production.setProductionDate(productionDateChooser.getDate());
+					production.setProductionTypeCode(productionTypeCmb.getDataIndex().getProductionTypeCode());
 					if(editMode){
 						ServiceFactory.getProductionBL().updateAll(production);
 						DialogBox.showEdit();
@@ -294,6 +324,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			groupShiftCmb.setSelectedItem(production.getGroupShiftDescription());
 			shiftCmb.setSelectedItem(production.getShiftName());
 			lineCmb.setSelectedItem(production.getLineDescription());
+			productionTypeCmb.setSelectedItem(production.getProductionTypeDescription());
 		}
 	}
 

@@ -20,18 +20,18 @@ public class ProductionDAO {
 	
 	private String getAllQuery = "SELECT a.id, production_code, a.group_shift_code, d.description AS group_shift_description, "
 			+ "a.line_code, b.description AS line_description, a.shift_code, c.shift_name, "
-			+ "production_date, information, total_pallet_card, total_log, total_volume, status "
+			+ "production_date, information, total_pallet_card, total_log, total_volume, status, a.production_type_code, e.description AS production_type_description "
 			+ "FROM production a INNER JOIN line b ON a.line_code = b.line_code "
 			+ "INNER JOIN shift c ON a.shift_code = c.shift_code INNER JOIN group_shift d ON a.group_shift_code = d.group_shift_code "
-			+ "WHERE a.deleted_date IS NULL";
+			+ "INNER JOIN production_type e ON a.production_type_code = e.production_type_code WHERE a.deleted_date IS NULL";
 	
 	private String getLastCodeQuery = "SELECT production_code FROM production WHERE deleted_date IS NULL ORDER BY id DESC LIMIT 1";
 	
 	private String insertQuery = "INSERT INTO production (production_code, group_shift_code, line_code, shift_code, "
-			+ "production_date, information, total_pallet_card, total_log, total_volume, status , input_by, input_date) "
-			+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+			+ "production_date, information, total_pallet_card, total_log, total_volume, status , input_by, input_date, production_type_code) "
+			+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	private String updateQuery = "UPDATE production SET group_shift_code =?, "
-			+ "line_code=?, shift_code=?, production_date=?, information=?, total_pallet_card=?, total_log=?, total_volume=?, status=?, edited_by=?, edited_date=?  "
+			+ "line_code=?, shift_code=?, production_date=?, information=?, total_pallet_card=?, total_log=?, total_volume=?, status=?, edited_by=?, edited_date=?, production_type_code=?  "
 			+ "WHERE production_code =?";
 	
 	public ProductionDAO(Connection connection) throws SQLException {
@@ -74,6 +74,8 @@ public class ProductionDAO {
 				production.setTotalLog(rs.getInt("total_log"));
 				production.setTotalVolume(rs.getDouble("total_volume"));
 				production.setStatus(rs.getString("status"));
+				production.setProductionTypeCode(rs.getString("production_type_code"));
+				production.setProductionTypeDescription(rs.getString("production_type_description"));
 				productions.add(production);
 			}
 
@@ -108,6 +110,8 @@ public class ProductionDAO {
 				production.setTotalLog(rs.getInt("total_log"));
 				production.setTotalVolume(rs.getDouble("total_volume"));
 				production.setStatus(rs.getString("status"));
+				production.setProductionTypeCode(rs.getString("production_type_code"));
+				production.setProductionTypeDescription(rs.getString("production_type_description"));
 				productions.add(production);
 			}
 
@@ -135,6 +139,7 @@ public class ProductionDAO {
 			insertStatement.setString(10, production.getStatus());
 			insertStatement.setString(11, "Michael");
 			insertStatement.setDate(12, new Date(new java.util.Date().getTime()));
+			insertStatement.setString(13, production.getProductionTypeCode());
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -158,7 +163,8 @@ public class ProductionDAO {
 			updateStatement.setString(9, production.getStatus());
 			updateStatement.setString(10, "Michael");
 			updateStatement.setDate(11, new Date(new java.util.Date().getTime()));
-			updateStatement.setString(12, production.getProductionCode());
+			updateStatement.setString(12, production.getProductionTypeCode());
+			updateStatement.setString(13, production.getProductionCode());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -208,6 +214,8 @@ public class ProductionDAO {
 				production.setTotalLog(rs.getInt("total_log"));
 				production.setTotalVolume(rs.getDouble("total_volume"));
 				production.setStatus(rs.getString("status"));
+				production.setProductionTypeCode(rs.getString("production_type_code"));
+				production.setProductionTypeDescription(rs.getString("production_type_description"));
 				productions.add(production);
 			}
 		} catch (SQLException ex) {

@@ -59,7 +59,7 @@ public class ListProductionPanel extends JPanel {
 						MainPanel.changePanel("module.production.ui.CreateProductionPanel", productions.get(productionTable.getSelectedRow()));
 					}
 				}*/
-				if(productionTable.columnAtPoint(e.getPoint())==7){
+				if(productionTable.columnAtPoint(e.getPoint())==8){
 					MainPanel.changePanel("module.production.ui.ViewProductionPanel", productions.get(productionTable.getSelectedRow()));
 				}
 			}
@@ -171,27 +171,31 @@ public class ListProductionPanel extends JPanel {
 		TableColumn column5 = productionTable.getColumnModel().getColumn(4);
 		TableColumn column6 = productionTable.getColumnModel().getColumn(6);
 		TableColumn column7 = productionTable.getColumnModel().getColumn(7);
+		TableColumn column8 = productionTable.getColumnModel().getColumn(8);
+		TableColumn column9 = productionTable.getColumnModel().getColumn(9);
+		TableColumn column10 = productionTable.getColumnModel().getColumn(10);
+		
 		
 		
 		column1.setPreferredWidth(0);
 		column1.setMinWidth(0);
 		column1.setMaxWidth(0);
 		
-		column2.setPreferredWidth(250);
-		column2.setMinWidth(250);
-		column2.setMaxWidth(250);
+		column2.setPreferredWidth(150);
+		column2.setMinWidth(150);
+		column2.setMaxWidth(150);
 		
-		column3.setPreferredWidth(200);
-		column3.setMinWidth(200);
-		column3.setMaxWidth(200);
+		column3.setPreferredWidth(100);
+		column3.setMinWidth(100);
+		column3.setMaxWidth(100);
 		
-		column4.setPreferredWidth(150);
-		column4.setMinWidth(150);
-		column4.setMaxWidth(150);
+		column4.setPreferredWidth(100);
+		column4.setMinWidth(100);
+		column4.setMaxWidth(100);
 		
-		column5.setPreferredWidth(150);
-		column5.setMinWidth(150);
-		column5.setMaxWidth(150);
+		column5.setPreferredWidth(100);
+		column5.setMinWidth(100);
+		column5.setMaxWidth(100);
 		
 		column6.setPreferredWidth(100);
 		column6.setMinWidth(100);
@@ -200,6 +204,18 @@ public class ListProductionPanel extends JPanel {
 		column7.setPreferredWidth(100);
 		column7.setMinWidth(100);
 		column7.setMaxWidth(100);
+		
+		column8.setPreferredWidth(100);
+		column8.setMinWidth(100);
+		column8.setMaxWidth(100);
+
+		column9.setPreferredWidth(100);
+		column9.setMinWidth(100);
+		column9.setMaxWidth(100);
+
+		column10.setPreferredWidth(100);
+		column10.setMinWidth(100);
+		column10.setMaxWidth(100);
 
 	}
 	
@@ -229,7 +245,7 @@ public class ListProductionPanel extends JPanel {
 	     * Method to get Column Count
 	     */
 	    public int getColumnCount() {
-	        return 8;
+	        return 11;
 	    }
 	    
 	    /**
@@ -254,8 +270,14 @@ public class ListProductionPanel extends JPanel {
 	            case 5 :
 	                return p.getLineDescription();
 	            case 6 :
-	                return p.getStatus();
+	                return p.getProductionTypeDescription();
 	            case 7 :
+	                return p.getTotalVolume();
+	            case 8 :
+	                return p.getProductionResult()!=null ? p.getProductionResult().getTotalOutput() : 0;
+	            case 9 :
+	                return p.getStatus();
+	            case 10 :
 	                return "View";
 	            default :
 	                return "";
@@ -286,8 +308,14 @@ public class ListProductionPanel extends JPanel {
 	            case 5 :
 	                return "Line";
 	            case 6 :
-	                return "Status";
+	                return "Tipe Produksi";
 	            case 7 :
+	                return "Total Bahan Baku(cm3)";
+	            case 8 :
+	                return "Total Hasil Produksi";
+	            case 9 :
+	                return "Status";
+	            case 10 :
 	                return "Action";
 	            default :
 	                return "";

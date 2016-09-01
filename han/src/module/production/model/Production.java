@@ -9,6 +9,7 @@ public class Production {
 	String groupShiftCode;
 	String lineCode;
 	String shiftCode;
+	String productionTypeCode;
 	Date productionDate;
 	String information;
 	int totalPalletCard;
@@ -17,6 +18,7 @@ public class Production {
 	String groupShiftDescription;
 	String lineDescription;
 	String shiftName;
+	String productionTypeDescription;
 	String status;
 	List<ProdRM> listOfProdRM;
 	ProductionResult productionResult;
@@ -119,6 +121,19 @@ public class Production {
 	public void setProductionResult(ProductionResult productionResult) {
 		this.productionResult = productionResult;
 	}
+	public String getProductionTypeCode() {
+		return productionTypeCode;
+	}
+	public void setProductionTypeCode(String productionTypeCode) {
+		this.productionTypeCode = productionTypeCode;
+	}
+	public String getProductionTypeDescription() {
+		return productionTypeDescription;
+	}
+	public void setProductionTypeDescription(String productionTypeDescription) {
+		this.productionTypeDescription = productionTypeDescription;
+	}
+
 	
 	
 }

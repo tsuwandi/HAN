@@ -13,6 +13,7 @@ import module.production.dao.ProdRMDAO;
 import module.production.dao.ProductionDAO;
 import module.production.dao.ProductionResultDAO;
 import module.production.dao.ProductionResultDetailDAO;
+import module.production.dao.ProductionTypeDAO;
 import module.production.dao.ShiftDAO;
 import module.production.model.GroupShift;
 import module.production.model.Line;
@@ -21,6 +22,7 @@ import module.production.model.ProdRM;
 import module.production.model.Production;
 import module.production.model.ProductionResult;
 import module.production.model.ProductionResultDetail;
+import module.production.model.ProductionType;
 import module.production.model.Shift;
 
 public class ProductionBL {
@@ -33,6 +35,7 @@ public class ProductionBL {
 	private ProductionDAO productionDAO;
 	private ProductionResultDAO productionResultDAO;
 	private ProductionResultDetailDAO productionResultDetailDAO;
+	private ProductionTypeDAO productionTypeDAO;
 	
 	public ProductionBL(DataSource dataSource) {
 		Connection con = null;
@@ -47,6 +50,7 @@ public class ProductionBL {
 			productionDAO = new ProductionDAO(con);
 			productionResultDAO = new ProductionResultDAO(con);
 			productionResultDetailDAO = new ProductionResultDetailDAO(con);
+			productionTypeDAO = new ProductionTypeDAO(con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -65,6 +69,9 @@ public class ProductionBL {
 	}
 	public List<GroupShift> getGroupShift() throws SQLException {
 		return groupShiftDAO.getAll();
+	}
+	public List<ProductionType> getProductionType() throws SQLException {
+		return productionTypeDAO.getAll();
 	}
 	
 	public String getProductionLastCode() throws SQLException{
