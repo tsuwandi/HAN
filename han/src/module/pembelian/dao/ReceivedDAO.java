@@ -50,7 +50,7 @@ public class ReceivedDAO {
 
 	private String updateEmpCodeQuery = "UPDATE received SET emp_code = ? WHERE received_code = ?";
 	
-	private String updateDailyClosingQuery = "update received set confirm_date=?, status=?, "
+	private String updateDailyClosingQuery = "update received set confirm_date=?, received_status=?, "
 			+ "edit_date=?, edited_by=? where received_code=? ";
 
 	public ReceivedDAO(DataSource dataSource) throws SQLException {
@@ -506,7 +506,7 @@ public class ReceivedDAO {
 			updateDailyClosingStatement = connection.prepareStatement(updateDailyClosingQuery);
 			
 			updateDailyClosingStatement.setDate(1, DateUtil.getCurrentDate());
-			updateDailyClosingStatement.setString(2, received.getStatus());
+			updateDailyClosingStatement.setString(2, received.getReceivedStatus());
 			updateDailyClosingStatement.setDate(3, DateUtil.getCurrentDate());
 			updateDailyClosingStatement.setString(4, "timotius");
 			updateDailyClosingStatement.setString(5, received.getReceivedCode());

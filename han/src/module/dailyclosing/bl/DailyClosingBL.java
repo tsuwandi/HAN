@@ -89,7 +89,7 @@ public class DailyClosingBL {
 
 				new InventoryLogTempDAO(con).save(inventoryLogTemp);
 				
-				received.setStatus(ReceivedType.FINAL.toString());
+				received.setReceivedStatus(ReceivedType.FINAL.toString());
 
 				new ReceivedDAO(con).updateDailyClosing(received);
 			}
