@@ -5,14 +5,22 @@ import module.util.ComboBoxProperties;
 public class ProductionType implements ComboBoxProperties {
 	int id;
 	String productionTypeCode;
+	String productionType;
+	public String getProductionType() {
+		return productionType;
+	}
+
+	public void setProductionType(String productionType) {
+		this.productionType = productionType;
+	}
 	String description;
 	
 	public ProductionType(){
 		
 	}
 	
-	public ProductionType(String description){
-		this.description = description;
+	public ProductionType(String productionType){
+		this.productionType = productionType;
 	}
 	
 	public int getId() {
@@ -35,7 +43,7 @@ public class ProductionType implements ComboBoxProperties {
 	}
 	@Override
 	public Object getField() {
-		return description;
+		return productionType;
 	}
 	
 	

@@ -13,7 +13,7 @@ public class ProductionTypeDAO {
 	private Connection connection;
 	private PreparedStatement getAllStatement;
 	
-	private String getAllQuery = "SELECT id, production_type_code, description FROM production_type WHERE deleted_date IS NULL ";
+	private String getAllQuery = "SELECT id, production_type, production_type_code, description FROM production_type WHERE deleted_date IS NULL ";
 	
 	public ProductionTypeDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -29,6 +29,7 @@ public class ProductionTypeDAO {
 			while (rs.next()) {
 				ProductionType pt = new ProductionType();
 				pt.setId(rs.getInt("id"));
+				pt.setProductionType(rs.getString("production_type"));
 				pt.setProductionTypeCode(rs.getString("production_type_code"));
 				pt.setDescription(rs.getString("description"));
 				productionTypes.add(pt);
