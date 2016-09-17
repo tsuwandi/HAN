@@ -122,6 +122,7 @@ public class DryInListPanel extends JPanel {
 		dryInTableModel = new DryInTableModel(new ArrayList<DryIn>());
 		tblDryIn = new JTable(dryInTableModel);
 		tblDryIn.setFocusable(false);
+		tblDryIn.setAutoCreateRowSorter(true);
 		scrollPaneDryIn.setViewportView(tblDryIn);
 
 		tblDryIn.addMouseListener(new MouseAdapter() {

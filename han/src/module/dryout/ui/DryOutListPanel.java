@@ -121,6 +121,7 @@ public class DryOutListPanel extends JPanel {
 		dryOutTableModel = new DryOutTableModel(new ArrayList<DryOut>());
 		tblDryOut = new JTable(dryOutTableModel);
 		tblDryOut.setFocusable(false);
+		tblDryOut.setAutoCreateRowSorter(true);
 		scrollPaneDryOut.setViewportView(tblDryOut);
 
 		tblDryOut.addMouseListener(new MouseAdapter() {

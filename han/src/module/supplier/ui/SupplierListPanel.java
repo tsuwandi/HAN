@@ -16,8 +16,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import org.apache.log4j.Logger;
 
@@ -114,7 +118,14 @@ public class SupplierListPanel extends JPanel {
 		supplierTableModel = new SupplierTableModel(new ArrayList<Supplier>());
 		tblSupplier = new JTable(supplierTableModel);
 		tblSupplier.setFocusable(false);
+		tblSupplier.setAutoCreateRowSorter(true);
 		scrollPaneSupplier.setViewportView(tblSupplier);
+
+		//
+		// List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+		// sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		// sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+		// sorter.setSortKeys(sortKeys);
 
 		tblSupplier.addMouseListener(new MouseAdapter() {
 			@Override
@@ -185,7 +196,7 @@ public class SupplierListPanel extends JPanel {
 	 *
 	 */
 	class SupplierTableModel extends AbstractTableModel {
-
+		
 		private static final long serialVersionUID = 1L;
 
 		private List<Supplier> listOfSupplier;
@@ -249,10 +260,10 @@ public class SupplierListPanel extends JPanel {
 			case 3:
 				return "<html><a><u>View</u></a></html>";
 			default:
-				return "";
-			}
+	            throw new IllegalArgumentException("Invalid column index");
+	        }
 		}
-
+		
 		/**
 		 * Method to getColumnName
 		 * 

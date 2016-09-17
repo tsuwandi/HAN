@@ -113,7 +113,7 @@ public class ProductListPanel extends JPanel {
 		productTableModel = new ProductTableModel(products);
 		productTable = new JTable(productTableModel);
 		productTable.setFocusable(false);
-
+		productTable.setAutoCreateRowSorter(true);
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
 
