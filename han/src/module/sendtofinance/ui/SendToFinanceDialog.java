@@ -17,13 +17,17 @@ import java.util.Map;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
+import module.dailyclosing.ui.DailyClosingDialog;
 import module.pembelian.model.Received;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -44,6 +48,7 @@ public class SendToFinanceDialog extends JDialog {
 	private JRadioButton rdbtnMonitor;
 	private JRadioButton rdbtnFile;
 	private JRadioButton rdbtnPrinter;
+	private JTextField filename = new JTextField(), dir = new JTextField();
 
 	public SendToFinanceDialog() {
 		setModal(true);
@@ -55,18 +60,6 @@ public class SendToFinanceDialog extends JDialog {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-
-					File file = new File("D:\\Output");
-					if (!file.exists()) {
-						file.mkdir();
-					}
-
-					SimpleDateFormat sdf = new SimpleDateFormat ("ddMMyyyyhhmmss");
-
-					String outputFile = "D:" + File.separatorChar + "SendToFinanceFile_"
-							+ sdf.format(new Date()).toString()
-							+ ".pdf";
-
 					List<Received> listOfReceived = ServiceFactory.getSendToFinanceBL()
 							.getAllBySendToFinanceDateIsNull();
 
@@ -119,18 +112,49 @@ public class SendToFinanceDialog extends JDialog {
 							dispose();
 						}
 					} else if (rdbtnFile.isSelected()) {
-						if (isValid(listOfReceived) == true) {
-							/* outputStream to create PDF */
-							OutputStream outputStream = new FileOutputStream(new File(outputFile));
-							/* Write content to PDF file */
-							JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+						JFileChooser c = new JFileChooser();
+						c.addChoosableFileFilter(new FileFilter() {
+						    public String getDescription() {
+						        return "PDF Documents (*.pdf)";
+						    }
+						 
+						    public boolean accept(File f) {
+						        if (f.isDirectory()) {
+						            return true;
+						        } else {
+						            return f.getName().toLowerCase().endsWith(".pdf");
+						        }
+						    }
+						});
+						// Demonstrate "Save" dialog:
+						int rVal = c.showSaveDialog(SendToFinanceDialog.this);
+						if (rVal == JFileChooser.APPROVE_OPTION) {
+							filename.setText(c.getSelectedFile().getName());
+							dir.setText(c.getCurrentDirectory().toString());
+							
+							SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyhhmmss");
 
-							update(listOfReceived);
-						} else {
-							JOptionPane.showMessageDialog(null, "Tidak ada data yang dikirim ke finance",
-									"Send To Finance", JOptionPane.INFORMATION_MESSAGE);
-							dispose();
+							String outputFile = dir.getText() + File.separatorChar + filename.getText()
+									+ sdf.format(new Date()).toString() + ".pdf";
+							
+							if (isValid(listOfReceived) == true) {
+								/* outputStream to create PDF */
+								OutputStream outputStream = new FileOutputStream(new File(outputFile));
+								/* Write content to PDF file */
+								JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+
+								update(listOfReceived);
+							} else {
+								JOptionPane.showMessageDialog(null, "Tidak ada data yang dikirim ke finance",
+										"Send To Finance", JOptionPane.INFORMATION_MESSAGE);
+								dispose();
+							}
 						}
+						if (rVal == JFileChooser.CANCEL_OPTION) {
+							filename.setText("You pressed cancel");
+							dir.setText("");
+						}
+						
 					}
 
 				} catch (Exception e1) {

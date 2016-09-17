@@ -17,9 +17,12 @@ import java.util.Map;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 
 import com.sun.istack.internal.logging.Logger;
 
@@ -48,6 +51,7 @@ public class DailyClosingDialog extends JDialog {
 	private JRadioButton rdbtnMonitor;
 	private JRadioButton rdbtnFile;
 	private JRadioButton rdbtnPrinter;
+	private JTextField filename = new JTextField(), dir = new JTextField();
 
 	public DailyClosingDialog() {
 		setModal(true);
@@ -59,16 +63,6 @@ public class DailyClosingDialog extends JDialog {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					File file = new File("D:\\Output");
-					if (!file.exists()) {
-						file.mkdir();
-					}
-					
-					SimpleDateFormat sdf = new SimpleDateFormat ("ddMMyyyyhhmmss");
-
-					String outputFile = "D:" + File.separatorChar + "DailyClosingFile_" + sdf.format(new Date()).toString()
-							+ ".pdf";
-
 					String confirmCode = DailyClosingBL.makeConfirmCode();
 					List<Received> listOfReceived = ServiceFactory.getDailyClosingBL().getAllReceivedForDailyClosing();
 					List<DryIn> listOfDryIn = ServiceFactory.getDailyClosingBL().getAllDryInForDailyClosing();
@@ -128,18 +122,49 @@ public class DailyClosingDialog extends JDialog {
 							dispose();
 						}
 					} else if (rdbtnFile.isSelected()) {
-						if (isValid(listOfReceived, listOfDryIn, listOfDryOut) == true) {
-							/* outputStream to create PDF */
-							OutputStream outputStream = new FileOutputStream(new File(outputFile));
-							/* Write content to PDF file */
-							JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+						JFileChooser c = new JFileChooser();
+						c.addChoosableFileFilter(new FileFilter() {
+						    public String getDescription() {
+						        return "PDF Documents (*.pdf)";
+						    }
+						 
+						    public boolean accept(File f) {
+						        if (f.isDirectory()) {
+						            return true;
+						        } else {
+						            return f.getName().toLowerCase().endsWith(".pdf");
+						        }
+						    }
+						});
+						// Demonstrate "Save" dialog:
+						int rVal = c.showSaveDialog(DailyClosingDialog.this);
+						if (rVal == JFileChooser.APPROVE_OPTION) {
+							filename.setText(c.getSelectedFile().getName());
+							dir.setText(c.getCurrentDirectory().toString());
+							
+							SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyhhmmss");
 
-							save(listOfReceived, listOfDryIn, listOfDryOut, confirmCode);
-						} else {
-							JOptionPane.showMessageDialog(null, "Tidak ada data yang diproses.",
-									"Tutup Harian", JOptionPane.INFORMATION_MESSAGE);
-							dispose();
+							String outputFile = dir.getText() + File.separatorChar + filename.getText()
+									+ sdf.format(new Date()).toString() + ".pdf";
+							
+							if (isValid(listOfReceived, listOfDryIn, listOfDryOut) == true) {
+								/* outputStream to create PDF */
+								OutputStream outputStream = new FileOutputStream(new File(outputFile));
+								/* Write content to PDF file */
+								JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+
+								save(listOfReceived, listOfDryIn, listOfDryOut, confirmCode);
+							} else {
+								JOptionPane.showMessageDialog(null, "Tidak ada data yang diproses.",
+										"Tutup Harian", JOptionPane.INFORMATION_MESSAGE);
+								dispose();
+							}
 						}
+						if (rVal == JFileChooser.CANCEL_OPTION) {
+							filename.setText("You pressed cancel");
+							dir.setText("");
+						}
+						
 					}
 
 				} catch (Exception e1) {
