@@ -24,10 +24,12 @@ import org.apache.log4j.Logger;
 
 import controller.ReceivedDAOFactory;
 import main.component.DialogBox;
+import main.component.PagingPanel;
 import main.component.TextField;
 import main.panel.MainPanel;
 import model.User;
 import module.pembelian.model.Received;
+import module.util.Pagination;
 
 
 
@@ -37,8 +39,10 @@ public class ListReceivedPanel extends JPanel {
 	private TextField searchField;
 	JTable receivedTable;
 	private JScrollPane scrollPane;
-//	private JLabel titleLabel;
+
 	private JButton advancedSearchBtn;
+	private PagingPanel<Received> pagingPanel;
+	
 	
 	ReceivedTableModel receivedTableModel;
 	List<Received> receiveds;
@@ -46,11 +50,7 @@ public class ListReceivedPanel extends JPanel {
 	public ListReceivedPanel() {
 		setLayout(null);
 		listReceivedPanel = this;
-//		titleLabel = new JLabel("Penerimaan Balken");
-//		titleLabel.setBounds(400,30,300,80);
-//		titleLabel.setFont(new Font("Arial", 1, 30));
-//		add(titleLabel);
-		
+
 		JLabel lblBreadcrumb = new JLabel("ERP > Penerimaan Balken");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
@@ -82,11 +82,13 @@ public class ListReceivedPanel extends JPanel {
 		scrollPane.setBounds(50,200,1000,300);
 		add(scrollPane);
 		
+		pagingPanel =new PagingPanel<>();
+		add(pagingPanel);
 		receivedTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(receivedTable.columnAtPoint(e.getPoint())==7)
-				MainPanel.changePanel("module.pembelian.ui.ViewReceivedDetailPanel", receiveds.get(receivedTable.getSelectedRow()));
+				MainPanel.changePanel("module.pembelian.ui.ViewReceivedDetailPanel", pagingPanel.getSubListData().get(receivedTable.getSelectedRow()));
 			}
 		});
 	
@@ -94,6 +96,15 @@ public class ListReceivedPanel extends JPanel {
 			receiveds = ReceivedDAOFactory.getReceivedDAO().getAll();
 			receivedTable.setModel(new ReceivedTableModel(receiveds));
 			receivedTable.updateUI();
+			
+			pagingPanel.setPage(1);
+			pagingPanel.setMaxDataPerPage(3);
+			pagingPanel.setData(receiveds);
+			pagingPanel.setTable(receivedTable);
+			pagingPanel.setTableModel(receivedTableModel);
+			pagingPanel.setBounds(450,510,130,50);
+			
+			
 			setTableSize();
 		} catch (SQLException e1) {
 			DialogBox.showError("Tidak Dapat Terhubung ke Database");
@@ -180,7 +191,7 @@ public class ListReceivedPanel extends JPanel {
 
 	}
 	
-	public class ReceivedTableModel extends AbstractTableModel {
+	public class ReceivedTableModel extends AbstractTableModel implements Pagination {
 	    private List<Received> receiveds;
 	    
 	    public ReceivedTableModel(List<Received> receiveds) {
@@ -263,6 +274,11 @@ public class ListReceivedPanel extends JPanel {
 	                return "";
 	        }
 	    }
+
+		@Override
+		public <T> void setList(List<T> list) {
+			receiveds = (List<Received>) list;
+		}
 
 	}
 }
