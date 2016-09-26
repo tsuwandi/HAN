@@ -501,22 +501,21 @@ public class PopUpProductionResult extends JDialog{
 		}
 		
 		if(hourField.getText().equals("")||minuteField.getText().equals("")){
-			errorTimeLbl.setText("<html><font color='red'>Jam Mulai harus diisi !</font></html>");
-			error++;
-		}else{
 			errorTimeLbl.setText("");
-		}
-		if(hourField.getText().length()!=2||minuteField.getText().length()!=2){
-			errorTimeLbl.setText("<html><font color='red'>Format Jam mulai harus 00:00 !</font></html>");
-			error++;
 		}else{
-			if(Integer.valueOf(hourField.getText())>23||Integer.valueOf(minuteField.getText())>59){
-				errorTimeLbl.setText("<html><font color='red'>Format Jam Tidak boleh lebih dari 23:59 !</font></html>");
+			if(hourField.getText().length()!=2||minuteField.getText().length()!=2){
+				errorTimeLbl.setText("<html><font color='red'>Format Jam mulai harus 00:00 !</font></html>");
 				error++;
 			}else{
-				errorTimeLbl.setText("");
+				if(Integer.valueOf(hourField.getText())>23||Integer.valueOf(minuteField.getText())>59){
+					errorTimeLbl.setText("<html><font color='red'>Format Jam Tidak boleh lebih dari 23:59 !</font></html>");
+					error++;
+				}else{
+					errorTimeLbl.setText("");
+				}
 			}
 		}
+	
 		
 		if(klemGradeAField.getText().equals("")){
 			errorKlemALbl.setText("<html><font color='red'>Repair Klem A harus diisi !</font></html>");
@@ -561,7 +560,11 @@ public class PopUpProductionResult extends JDialog{
 				ProductionResultDetail prd = listOfPrd.get(indexEdit);
 				int tempPressedNo = prd.getPressedNo();
 				prd.setPressedNo(Integer.parseInt(pressNoField.getText()));
-				prd.setStartTime(hourField.getText()+":"+minuteField.getText());
+				if(!hourField.getText().equals("")||!minuteField.getText().equals("")){
+					prd.setStartTime(hourField.getText()+":"+minuteField.getText());
+				}else{
+					prd.setStartTime("00:00");
+				}
 				prd.setRepairKlemA(Integer.parseInt(klemGradeAField.getText()));
 				prd.setRepairKlemB(Integer.parseInt(klemGradeBField.getText()));
 				prd.setRepairProtolA(Integer.parseInt(protolGradeAField.getText()));
@@ -579,7 +582,11 @@ public class PopUpProductionResult extends JDialog{
 				ProductionResultDetail prd = new ProductionResultDetail();
 				prd.setProdResultCode(prodResultCodeField.getText());
 				prd.setPressedNo(Integer.parseInt(pressNoField.getText()));
-				prd.setStartTime(hourField.getText()+":"+minuteField.getText());
+				if(!hourField.getText().equals("")||!minuteField.getText().equals("")){
+					prd.setStartTime(hourField.getText()+":"+minuteField.getText());
+				}else{
+					prd.setStartTime("00:00");
+				}
 				prd.setRepairKlemA(Integer.parseInt(klemGradeAField.getText()));
 				prd.setRepairKlemB(Integer.parseInt(klemGradeBField.getText()));
 				prd.setRepairProtolA(Integer.parseInt(protolGradeAField.getText()));
