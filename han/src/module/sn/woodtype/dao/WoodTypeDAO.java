@@ -133,6 +133,47 @@ public class WoodTypeDAO {
 
 		return woodType;
 	}
+	
+	public List<WoodType> getAllBySimpleSearch(String value) throws SQLException {
+		List<WoodType> woodTypes = new ArrayList<WoodType>();
+
+		try {
+			if (null != value && !"".equals(value)) {
+				String keyword = new StringBuilder().append("%").append(value).append("%").toString();
+				String query = new StringBuilder().append(getAllQuery).append(" where")
+						.append(" (lower(wg.wood_genus) like lower('%s')").append("or lower(wt.wood_type) like lower('%s')")
+						.append(" or lower(wt.id) like lower('%s')) and wt.deleted_date is null order by wt.id ").toString();
+				getAllStatement = connection.prepareStatement(String.format(query, keyword, keyword));
+			} else {
+				String query = new StringBuilder().append(getAllQuery).append("where wt.deleted_date is null order by wt.id ")
+						.toString();
+
+				getAllStatement = connection.prepareStatement(query);
+			}
+			
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				WoodType woodType = new WoodType();
+				woodType.setId(rs.getInt("id"));
+				woodType.setWoodType(rs.getString("wood_type"));
+				woodType.setWoodGenusId(rs.getInt("wood_genus_id"));
+
+				WoodGenus woodGenus = new WoodGenus();
+				woodGenus.setId(rs.getInt("wood_genus_id"));
+				woodGenus.setWoodGenus(rs.getString("wood_genus"));
+
+				woodType.setWoodGenus(woodGenus);
+
+				woodTypes.add(woodType);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return woodTypes;
+	}
 
 	// Vinci Soon To Be Deleted
 

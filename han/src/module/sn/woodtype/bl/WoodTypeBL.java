@@ -32,7 +32,7 @@ public class WoodTypeBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new WoodTypeDAO(con).getAll();
+			return new WoodTypeDAO(con).getAllBySimpleSearch(value);
 		} finally {
 			con.close();
 		}

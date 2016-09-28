@@ -120,6 +120,11 @@ public class WoodTypeEditPanel extends JPanel implements Bridging {
 		cbWoodGenus.setBounds(220, 140, 150, 25);
 		panel.add(cbWoodGenus);
 
+		lblErrorWoodGenus = new JLabel("");
+		lblErrorWoodGenus.setForeground(Color.RED);
+		lblErrorWoodGenus.setBounds(425, 140, 225, 25);
+		panel.add(lblErrorWoodGenus);
+		
 		lblBreadcrumb = new JLabel("ERP > Konfigurasi > Jenis Kayu");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 25);
