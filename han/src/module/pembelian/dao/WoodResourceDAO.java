@@ -10,7 +10,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import module.pembelian.model.WoodResource;
-import module.pembelian.model.WoodType;
 
 public class WoodResourceDAO {
 	private DataSource dataSource;

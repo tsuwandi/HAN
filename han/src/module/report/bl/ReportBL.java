@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import module.pembelian.dao.WoodTypeDAO;
+import module.sn.woodtype.dao.WoodTypeDAO;
 import module.pembelian.model.Thickness;
-import module.pembelian.model.WoodType;
+import module.sn.woodtype.model.WoodType;
 import module.pembelian.dao.GradeDAO;
 import module.pembelian.dao.ThicknessDAO;
 import module.pembelian.model.Grade;
@@ -25,7 +25,7 @@ public class ReportBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new WoodTypeDAO(dataSource).getWoodType();
+			return new WoodTypeDAO(con).getAll();
 		} finally {
 			con.close();
 		}

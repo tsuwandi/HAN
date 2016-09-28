@@ -28,7 +28,7 @@ import module.pembelian.model.Delivery;
 import module.pembelian.model.Employee;
 import module.pembelian.model.Pallet;
 import module.pembelian.model.SupplierVehicle;
-import module.pembelian.model.WoodType;
+import module.sn.woodtype.model.WoodType;
 import module.util.Bridging;
 
 public class EditReceivedDetail extends JPanel implements Bridging{

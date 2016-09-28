@@ -48,7 +48,7 @@ import module.pembelian.model.Received;
 import module.pembelian.model.ReceivedDetail;
 import module.pembelian.model.SupplierCP;
 import module.pembelian.model.SupplierVehicle;
-import module.pembelian.model.WoodType;
+import module.sn.woodtype.model.WoodType;
 import module.util.Bridging;
 import main.component.TextField;
 

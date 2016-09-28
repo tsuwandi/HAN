@@ -2,7 +2,6 @@ package module.report.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +12,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import controller.DataSourceFactory;
-import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import module.pembelian.model.Grade;
 import module.pembelian.model.Thickness;
-import module.pembelian.model.WoodType;
+import module.sn.woodtype.model.WoodType;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;

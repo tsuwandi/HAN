@@ -33,7 +33,7 @@ import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
-import module.pembelian.model.WoodType;
+import module.sn.woodtype.model.WoodType;
 import module.product.ProductCategoryType;
 import module.product.model.Grade;
 import module.product.model.Product;

@@ -409,7 +409,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 				if (doValidate() == false) {
 					return;
 				}
-				int response = DialogBox.showInsertChoice();
+				int response = DialogBox.showEditChoice();
 				if (response == JOptionPane.YES_OPTION) {
 					doSave();
 				}

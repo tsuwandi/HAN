@@ -207,11 +207,11 @@ public class DryInBL {
 		}
 	}
 
-	public DryIn getDryInById(Integer supplierId) throws SQLException {
+	public DryIn getDryInById(Integer dryInId) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new DryInDAO(con).getById(supplierId);
+			return new DryInDAO(con).getById(dryInId);
 		} finally {
 			con.close();
 		}

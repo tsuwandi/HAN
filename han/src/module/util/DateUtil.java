@@ -12,7 +12,7 @@ public class DateUtil {
 	}
 
 	public static String setFormatedDate(Date pDate) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		return sdf.format(pDate);
 	}
 	

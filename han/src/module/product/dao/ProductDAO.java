@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import module.pembelian.model.WoodType;
 import module.product.model.Condition;
 import module.product.model.Grade;
 import module.product.model.Product;
@@ -21,7 +20,6 @@ public class ProductDAO {
 	private PreparedStatement getProductIdStatement;
 	private PreparedStatement getAllProductCategory;
 	private PreparedStatement getAllGrade;
-	private PreparedStatement getAllWoodType;
 	private PreparedStatement getAllUom;
 	private PreparedStatement getAllCondition;
 	private PreparedStatement updateProductStatement;
@@ -50,8 +48,6 @@ public class ProductDAO {
 			+ "where 1=1 ";
 
 	private String productCatQuery = "select * from product_category order by id asc";
-
-	private String woodTypeQuery = "select * from wood_type order by id asc";
 
 	private String gradeQuery = "select * from grade order by id asc";
 
@@ -325,27 +321,6 @@ public class ProductDAO {
 		}
 
 		return categories;
-	}
-
-	public List<WoodType> getAllWoodType() throws SQLException {
-		List<WoodType> woodTypes = new ArrayList<WoodType>();
-
-		try {
-			getAllWoodType = connection.prepareStatement(woodTypeQuery);
-			ResultSet rs = getAllWoodType.executeQuery();
-			while (rs.next()) {
-				WoodType woodType = new WoodType();
-				woodType.setId(rs.getInt("id"));
-				woodType.setWoodType(rs.getString("wood_type"));
-				woodTypes.add(woodType);
-			}
-
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new SQLException(ex.getMessage());
-		}
-
-		return woodTypes;
 	}
 
 	public List<Grade> getAllGrade() throws SQLException {

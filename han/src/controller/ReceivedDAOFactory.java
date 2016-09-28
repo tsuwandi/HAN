@@ -20,8 +20,7 @@ import module.pembelian.dao.SupplierReceivedDAO;
 import module.pembelian.dao.SupplierVehicleDAO;
 import module.pembelian.dao.ThicknessDAO;
 import module.pembelian.dao.WoodResourceDAO;
-import module.pembelian.dao.WoodTypeDAO;
-import module.supplier.dao.SupplierDAO;
+import module.sn.woodtype.dao.WoodTypeDAO;
 
 public class ReceivedDAOFactory {
 	private static final Logger LOGGER = Logger.getLogger(ReceivedDAOFactory.class);

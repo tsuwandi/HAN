@@ -9,6 +9,8 @@ import module.production.bl.ProductionBL;
 import module.report.bl.ReportBL;
 import module.supplier.bl.SupplierBL;
 import module.sendtofinance.bl.SendToFinanceBL;
+import module.sn.woodgenus.bl.WoodGenusBL;
+import module.sn.woodtype.bl.WoodTypeBL;
 
 public class ServiceFactory {
 	// private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
@@ -20,7 +22,8 @@ public class ServiceFactory {
 	private static ProductBL productBL = null;
 	private static ReportBL reportBL = null;
 	private static ProductionBL productionBL = null;
-
+	private static WoodGenusBL woodGenusBL = null;
+	private static WoodTypeBL woodTypeBL = null;
 	private static SendToFinanceBL sendToFinanceBL = null;
 	private static DailyClosingBL dailyClosingBL = null;
 
@@ -105,5 +108,19 @@ public class ServiceFactory {
 			productionBL = new ProductionBL(DataSourceFactory.getDataSource());
 		}
 		return productionBL;
+	}
+
+	public static WoodGenusBL getWoodGenusBL() {
+		if (woodGenusBL == null) {
+			woodGenusBL = new WoodGenusBL(DataSourceFactory.getDataSource());
+		}
+		return woodGenusBL;
+	}
+	
+	public static WoodTypeBL getWoodTypeBL() {
+		if (woodTypeBL == null) {
+			woodTypeBL = new WoodTypeBL(DataSourceFactory.getDataSource());
+		}
+		return woodTypeBL;
 	}
 }

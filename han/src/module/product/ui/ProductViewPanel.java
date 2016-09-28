@@ -26,7 +26,7 @@ import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.pembelian.model.WoodType;
+import module.sn.woodtype.model.WoodType;
 import module.product.ProductCategoryType;
 import module.product.model.Condition;
 import module.product.model.Grade;

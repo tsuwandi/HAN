@@ -23,8 +23,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.text.DocumentFilter;
 import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
 
 import org.apache.log4j.Logger;
 
@@ -34,7 +34,6 @@ import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
-import module.pembelian.model.WoodType;
 import module.product.ProductCategoryType;
 import module.product.model.Grade;
 import module.product.model.Product;
@@ -42,6 +41,7 @@ import module.product.model.ProductCategory;
 import module.product.model.Uom;
 import module.sn.production.quality.model.ProductionQuality;
 import module.sn.production.type.model.ProductionType;
+import module.sn.woodtype.model.WoodType;
 import module.supplier.model.Supplier;
 import module.util.JTextFieldLimit;
 

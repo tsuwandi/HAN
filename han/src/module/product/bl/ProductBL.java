@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import module.pembelian.model.WoodType;
 import module.product.dao.ProductDAO;
 import module.product.model.Condition;
 import module.product.model.Grade;
@@ -17,6 +16,8 @@ import module.sn.production.quality.dao.ProductionQualityDAO;
 import module.sn.production.quality.model.ProductionQuality;
 import module.sn.production.type.dao.ProductionTypeDAO;
 import module.sn.production.type.model.ProductionType;
+import module.sn.woodtype.dao.WoodTypeDAO;
+import module.sn.woodtype.model.WoodType;
 
 public class ProductBL {
 	private DataSource dataSource;
@@ -127,7 +128,7 @@ public class ProductBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProductDAO(con).getAllWoodType();
+			return new WoodTypeDAO(con).getAll();
 		} finally {
 			con.close();
 		}

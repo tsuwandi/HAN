@@ -42,7 +42,7 @@ import module.pembelian.model.DocumentType;
 import module.pembelian.model.Received;
 import module.pembelian.model.SupplierVehicle;
 import module.pembelian.model.WoodResource;
-import module.pembelian.model.WoodType;
+import module.sn.woodtype.model.WoodType;
 import module.supplier.model.Supplier;
 import module.util.Bridging;
 import module.pembelian.model.SupplierCP;
