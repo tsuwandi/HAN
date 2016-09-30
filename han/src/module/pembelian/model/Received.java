@@ -22,6 +22,7 @@ public class Received {
 	String subSupplierName;
 	String empCode;
 	double totalVolume;
+	String receivedBy;
 
 	public String getWoodDomicile() {
 		return woodDomicile;
@@ -204,6 +205,15 @@ public class Received {
 		if (palletCard == null)
 			palletCard = new PalletCard();
 		return palletCard;
+	}
+	
+
+	public String getReceivedBy() {
+		return receivedBy;
+	}
+
+	public void setReceivedBy(String receivedBy) {
+		this.receivedBy = receivedBy;
 	}
 
 	public void setPalletCard(PalletCard palletCard) {

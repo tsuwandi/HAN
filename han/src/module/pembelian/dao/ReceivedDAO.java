@@ -36,7 +36,7 @@ public class ReceivedDAO {
 			+ " license_plate=?, driver=?, delivery_note=?, wood_type_id=?, supplier_code=?, supplier_cp_id=?, edit_date=?, edited_by=?"
 			+ " WHERE id=? AND received_code=?";
 	private String deleteQuery = "update received set deleted_date=? , " + "deleted_by=? where received_code=?";
-	private String getAllQuery = "select a.id, received_code, received_date, rit_no, a.license_plate, a.supplier_code, a.supplier_cp_id, s.name, "
+	private String getAllQuery = "select a.id, received_by, received_code, received_date, rit_no, a.license_plate, a.supplier_code, a.supplier_cp_id, s.name, "
 			+ "driver, a.delivery_note, a.wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource, a.emp_code, a.total_volume "
 			+ "FROM received a " + "INNER JOIN supplier c ON a.supplier_code = c.supp_code "
 			+ "INNER JOIN supp_cp s ON a.supplier_code = s.supp_code "
@@ -155,6 +155,7 @@ public class ReceivedDAO {
 				Received received = new Received();
 				received.setId(rs.getInt("id"));
 				received.setReceivedCode(rs.getString("received_code"));
+				received.setReceivedBy(rs.getString("received_by"));
 				received.setReceivedDate(rs.getDate("received_date"));
 				received.setRitNo(rs.getString("rit_no"));
 				received.setLicensePlate(rs.getString("license_plate"));
@@ -202,6 +203,7 @@ public class ReceivedDAO {
 				Received received = new Received();
 				received.setId(rs.getInt("id"));
 				received.setReceivedCode(rs.getString("received_code"));
+				received.setReceivedBy(rs.getString("received_by"));
 				received.setReceivedDate(rs.getDate("received_date"));
 				received.setRitNo(rs.getString("rit_no"));
 				received.setLicensePlate(rs.getString("license_plate"));
@@ -264,6 +266,7 @@ public class ReceivedDAO {
 				Received received = new Received();
 				received.setId(rs.getInt("id"));
 				received.setReceivedCode(rs.getString("received_code"));
+				received.setReceivedBy(rs.getString("received_by"));
 				received.setReceivedDate(rs.getDate("received_date"));
 				received.setRitNo(rs.getString("rit_no"));
 				received.setLicensePlate(rs.getString("license_plate"));

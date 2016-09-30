@@ -1414,3 +1414,4 @@ INSERT INTO `project`.`production_type` (`id`, `production_type_code`, `descript
 ALTER TABLE  `production_type` ADD  `production_type` VARCHAR( 55 ) NOT NULL AFTER  `production_type_code`;
 ALTER TABLE  `delivery` CHANGE  `document_type_id`  `document_type` VARCHAR( 50 ) NULL DEFAULT NULL;
 ALTER TABLE  `delivery` ADD  `doc_issued_date` DATE NOT NULL AFTER  `delivery_note`;
+ALTER TABLE  `received` ADD  `received_by` VARCHAR( 50 ) NOT NULL DEFAULT  ' ' AFTER  `total_volume`;
