@@ -161,7 +161,7 @@ public class AddPopUpPalletCard extends JDialog{
 		longField.setBounds(150, 110, 150, 20);
 		add(longField);
 		
-		uomLongLbl = new JLabel("cm");
+		uomLongLbl = new JLabel("m");
 		uomLongLbl.setBounds(302,110,15,20);
 		add(uomLongLbl);
 		
@@ -180,7 +180,7 @@ public class AddPopUpPalletCard extends JDialog{
 		thicknessField.setBounds(150, 150, 150, 20);
 		add(thicknessField);
 		
-		uomThickLbl = new JLabel("cm");
+		uomThickLbl = new JLabel("m");
 		uomThickLbl.setBounds(302,150,15,20);
 		add(uomThickLbl);
 		
@@ -197,7 +197,7 @@ public class AddPopUpPalletCard extends JDialog{
 		wideField.setBounds(150, 190, 150, 20);
 		add(wideField);
 		
-		uomWideLbl = new JLabel("cm");
+		uomWideLbl = new JLabel("m");
 		uomWideLbl.setBounds(302,190,15,20);
 		add(uomWideLbl);
 		
@@ -231,7 +231,7 @@ public class AddPopUpPalletCard extends JDialog{
 		volumeField.setBounds(150, 270, 150, 20);
 		add(volumeField);
 		
-		uomVolumeLbl = new JLabel("<html><span>cm&#179;</span></html>");
+		uomVolumeLbl = new JLabel("<html><span>m&#179;</span></html>");
 		uomVolumeLbl.setBounds(302,270,16,20);
 		add(uomVolumeLbl);
 		
@@ -310,7 +310,7 @@ public class AddPopUpPalletCard extends JDialog{
 		totalVolumeField.setBounds(600, 150, 150, 20);
 		add(totalVolumeField);
 		
-		uomTotalVolumeLbl = new JLabel("<html><span>cm&#179;</span></html>");
+		uomTotalVolumeLbl = new JLabel("<html><span>m&#179;</span></html>");
 		uomTotalVolumeLbl.setBounds(752,150,16,20);
 		add(uomTotalVolumeLbl);
 

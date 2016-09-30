@@ -1,5 +1,7 @@
 package module.pembelian.model;
 
+import java.util.Date;
+
 import module.util.ComboBoxProperties;
 
 public class Delivery implements ComboBoxProperties {
@@ -8,12 +10,12 @@ public class Delivery implements ComboBoxProperties {
 	String woodDomicile;
 	String woodResource;
 	int woodResourceId;
-	int documentTypeID;
 	int woodTypeID;
 	String documentType;
 	String woodType;
 	int totalLog;
 	double totalVolume;
+	Date docIssuedDate;
 	
 	
 	
@@ -30,12 +32,7 @@ public class Delivery implements ComboBoxProperties {
 	public void setWoodType(String woodType) {
 		this.woodType = woodType;
 	}
-	public int getDocumentTypeID() {
-		return documentTypeID;
-	}
-	public void setDocumentTypeID(int documentTypeID) {
-		this.documentTypeID = documentTypeID;
-	}
+	
 	public int getWoodTypeID() {
 		return woodTypeID;
 	}
@@ -60,8 +57,12 @@ public class Delivery implements ComboBoxProperties {
 		this.deliveryNote= deliveryNote;
 	}
 	
-	
-
+	public Date getDocIssuedDate() {
+		return docIssuedDate;
+	}
+	public void setDocIssuedDate(Date docIssuedDate) {
+		this.docIssuedDate = docIssuedDate;
+	}
 	public int getId() {
 		return id;
 	}

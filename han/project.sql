@@ -1409,3 +1409,8 @@ CREATE TABLE production_type
 
 INSERT INTO `project`.`production_type` (`id`, `production_type_code`, `description`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES (NULL, 'PT0001', 'Production Langsung', NULL, NULL, NULL, NULL, NULL, NULL), (NULL, 'PT0002', 'Production Berkala', NULL, NULL, NULL, NULL, NULL, NULL);
 
+
+--Update 30-9-2106
+ALTER TABLE  `production_type` ADD  `production_type` VARCHAR( 55 ) NOT NULL AFTER  `production_type_code`;
+ALTER TABLE  `delivery` CHANGE  `document_type_id`  `document_type` VARCHAR( 50 ) NULL DEFAULT NULL;
+ALTER TABLE  `delivery` ADD  `doc_issued_date` DATE NOT NULL AFTER  `delivery_note`;
