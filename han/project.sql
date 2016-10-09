@@ -1411,7 +1411,13 @@ INSERT INTO `project`.`production_type` (`id`, `production_type_code`, `descript
 
 
 --Update 30-9-2106
-ALTER TABLE  `production_type` ADD  `production_type` VARCHAR( 55 ) NOT NULL AFTER  `production_type_code`;
+--Perhatiin dulu untuk table production_type kalo udah ada column production_type nya gak perlu dijalanin
+ALTER TABLE  `production_type` ADD  `production_type` VARCHAR( 50 ) NOT NULL AFTER  `production_type_code`;
+
 ALTER TABLE  `delivery` CHANGE  `document_type_id`  `document_type` VARCHAR( 50 ) NULL DEFAULT NULL;
 ALTER TABLE  `delivery` ADD  `doc_issued_date` DATE NOT NULL AFTER  `delivery_note`;
 ALTER TABLE  `received` ADD  `received_by` VARCHAR( 50 ) NOT NULL DEFAULT  ' ' AFTER  `total_volume`;
+ALTER TABLE  `received` CHANGE  `license_plate`  `license_plate` VARCHAR( 25 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+UPDATE DELIVERY SET DOC_ISSUED_DATE = NOW();
+ALTER TABLE  `grade` ADD  `product_category_id` INT NOT NULL AFTER  `id`;
+UPDATE  GRADE SET PRODUCT_CATEGORY_ID = 1;
