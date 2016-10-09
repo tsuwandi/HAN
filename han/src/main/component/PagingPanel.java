@@ -54,15 +54,18 @@ public class PagingPanel<T> extends JPanel{
 	
 		prevBtn = new JButton("¢¸");
 		prevBtn.setBounds(0,0,width,height);
+		prevBtn.setFocusable(false);
 		add(prevBtn);
 		
 		pageNumber = new TextField();
 		pageNumber.setBounds(width,0,width,height);
 		pageNumber.setHorizontalAlignment(SwingConstants.CENTER);
+		pageNumber.setFocusable(false);
 		add(pageNumber);
 		
 		nextBtn = new JButton("¢º");
 		nextBtn.setBounds(width*2,0,width,height);
+		nextBtn.setFocusable(false);
 		add(nextBtn);
 	}
 	

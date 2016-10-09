@@ -24,10 +24,12 @@ import org.apache.log4j.Logger;
 
 import controller.ReceivedDAOFactory;
 import main.component.DialogBox;
+import main.component.PagingPanel;
 import main.component.TextField;
 import main.panel.MainPanel;
 import model.User;
 import module.pembelian.model.Received;
+import module.util.Pagination;
 
 
 
@@ -41,6 +43,7 @@ public class ListReceivedSecurityPanel extends JPanel {
 	private JButton advancedSearchBtn;
 	ReceivedTableModel receivedTableModel;
 	List<Received> receiveds;
+	private PagingPanel<Received> pagingPanel;
 	
 	ListReceivedSecurityPanel parent;
 	public ListReceivedSecurityPanel() {
@@ -84,13 +87,16 @@ public class ListReceivedSecurityPanel extends JPanel {
 		createBtn = new JButton("Buat Baru");
 		createBtn.setBounds(800,80,100,30);
 		add(createBtn);
+		
+		pagingPanel =new PagingPanel<>();
+		add(pagingPanel);
 
 		
 		receivedTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(receivedTable.columnAtPoint(e.getPoint())==7)
-				MainPanel.changePanel("module.pembelian.ui.ViewReceivedDetailSecurityPanel", receiveds.get(receivedTable.getSelectedRow()));
+				MainPanel.changePanel("module.pembelian.ui.ViewReceivedDetailSecurityPanel", pagingPanel.getSubListData().get(receivedTable.getSelectedRow()));
 			}
 		});
 		
@@ -105,6 +111,14 @@ public class ListReceivedSecurityPanel extends JPanel {
 		try {
 			receiveds = ReceivedDAOFactory.getReceivedDAO().getAll();
 			receivedTable.setModel(new ReceivedTableModel(receiveds));
+			
+			pagingPanel.setPage(1);
+			pagingPanel.setMaxDataPerPage(3);
+			pagingPanel.setData(receiveds);
+			pagingPanel.setTable(receivedTable);
+			pagingPanel.setTableModel(receivedTableModel);
+			pagingPanel.setBounds(450,510,130,50);
+			
 			receivedTable.updateUI();
 			setTableSize();
 		} catch (SQLException e1) {
@@ -191,7 +205,7 @@ public class ListReceivedSecurityPanel extends JPanel {
 
 	}
 	
-	class ReceivedTableModel extends AbstractTableModel {
+	class ReceivedTableModel extends AbstractTableModel implements Pagination {
 	    private List<Received> receiveds;
 	    
 	    public ReceivedTableModel(List<Received> receiveds) {
@@ -274,6 +288,11 @@ public class ListReceivedSecurityPanel extends JPanel {
 	                return "";
 	        }
 	    }
+
+		@Override
+		public <T> void setList(List<T> list) {
+			receiveds = (List<Received>) list;	
+		}
 
 	}
 }

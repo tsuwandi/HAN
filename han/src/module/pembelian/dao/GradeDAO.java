@@ -17,7 +17,7 @@ public class GradeDAO {
 	private PreparedStatement getAllStatement;
 
 	private String getAllQuery = "SELECT id, grade"
-			+ " FROM grade ";
+			+ " FROM grade WHERE product_category_id = 1 ";
 
 	public GradeDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;

@@ -25,10 +25,13 @@ import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
+import main.component.PagingPanel;
 import main.component.TextField;
 import main.panel.MainPanel;
 import model.User;
+import module.pembelian.model.Received;
 import module.production.model.Production;
+import module.util.Pagination;
 
 public class ListProductionPanel extends JPanel {
 	Logger log = LogManager.getLogger(ListProductionPanel.class.getName());
@@ -40,10 +43,12 @@ public class ListProductionPanel extends JPanel {
 	
 	private JButton advancedSearchBtn;
 	private JButton inputProductionBtn;
+	private PagingPanel<Production> pagingPanel;
 	
 	ProductionTableModel productionTableModel;
 	List<Production> productions;
 	ListProductionPanel listProductionPanel;
+
 	public ListProductionPanel() {
 		createGUI();
 		listener();
@@ -59,8 +64,8 @@ public class ListProductionPanel extends JPanel {
 						MainPanel.changePanel("module.production.ui.CreateProductionPanel", productions.get(productionTable.getSelectedRow()));
 					}
 				}*/
-				if(productionTable.columnAtPoint(e.getPoint())==8){
-					MainPanel.changePanel("module.production.ui.ViewProductionPanel", productions.get(productionTable.getSelectedRow()));
+				if(productionTable.columnAtPoint(e.getPoint())==10){
+					MainPanel.changePanel("module.production.ui.ViewProductionPanel", pagingPanel.getSubListData().get(productionTable.getSelectedRow()));
 				}
 			}
 		});
@@ -112,6 +117,14 @@ public class ListProductionPanel extends JPanel {
 		try {
 			productions = ServiceFactory.getProductionBL().getProduction();
 			productionTable.setModel(new ProductionTableModel(productions));
+			
+			pagingPanel.setPage(1);
+			pagingPanel.setMaxDataPerPage(3);
+			pagingPanel.setData(productions);
+			pagingPanel.setTable(productionTable);
+			pagingPanel.setTableModel(productionTableModel);
+			pagingPanel.setBounds(450,510,130,50);
+			
 			productionTable.updateUI();
 			setTableSize();
 		} catch (SQLException e) {
@@ -159,6 +172,9 @@ public class ListProductionPanel extends JPanel {
 		scrollPane =  new JScrollPane(productionTable);
 		scrollPane.setBounds(50,200,1000,300);
 		add(scrollPane);
+		
+		pagingPanel =new PagingPanel<>();
+		add(pagingPanel);
 		
 	}
 	public void setTableSize(){
@@ -225,7 +241,7 @@ public class ListProductionPanel extends JPanel {
 		setTableSize();
 	}
 	
-	public class ProductionTableModel extends AbstractTableModel {
+	public class ProductionTableModel extends AbstractTableModel implements Pagination{
 		private static final long serialVersionUID = 1L;
 		private List<Production> productions;
 	    
@@ -321,6 +337,11 @@ public class ListProductionPanel extends JPanel {
 	                return "";
 	        }
 	    }
+
+		@Override
+		public <T> void setList(List<T> list) {
+			productions = (List<Production>) list;
+		}
 
 	}
 }
