@@ -1,8 +1,13 @@
 package module.product.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Product {
+import module.util.ComboBoxProperties;
+
+public class Product implements Serializable, ComboBoxProperties {
+
+	private static final long serialVersionUID = 1L;
 
 	private int productId;
 	private String productCode;
@@ -730,4 +735,17 @@ public class Product {
 	}
 
 	private int isExists;
+	
+	@Override
+	public Object getField() {
+		return productName ;
+	}
+	
+	public Product() {
+		
+	}
+	
+	public Product(String productName) {
+		this.productName = productName;
+	}
 }
