@@ -127,7 +127,7 @@ public class ListPurchasingProductionPanel extends JPanel {
 			setTableSize();
 		} catch (SQLException e) {
 			log.error(e.getMessage());
-			DialogBox.showError("Tidak Dapat Terhubung ke Database");
+			DialogBox.showError(e.getMessage());
 			e.printStackTrace();
 		}
 	}

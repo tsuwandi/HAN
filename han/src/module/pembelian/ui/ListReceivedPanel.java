@@ -107,7 +107,7 @@ public class ListReceivedPanel extends JPanel {
 			
 			setTableSize();
 		} catch (SQLException e1) {
-			DialogBox.showError("Tidak Dapat Terhubung ke Database");
+			DialogBox.showError(e1.getMessage());
 			log.error(e1.getMessage());
 			e1.printStackTrace();
 		}

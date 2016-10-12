@@ -122,7 +122,7 @@ public class ListReceivedSecurityPanel extends JPanel {
 			receivedTable.updateUI();
 			setTableSize();
 		} catch (SQLException e1) {
-			DialogBox.showError("Tidak Dapat Terhubung ke Database");
+			DialogBox.showError(e1.getMessage());
 			log.error(e1.getMessage());
 			e1.printStackTrace();
 		}
