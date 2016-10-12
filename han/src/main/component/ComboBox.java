@@ -9,6 +9,8 @@ import module.util.ComboBoxProperties;
 
 public class ComboBox<E> extends JComboBox<Object> {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private List<E> list;
 	
 	public List<E> getList() {
