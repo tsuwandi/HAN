@@ -48,6 +48,12 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Konfigurasi", "Jenis Kayu", "Jenis Kayu", "module.sn.woodtype.ui.WoodTypeListPanel");
 		menu.calculateAvaiableSpace();
 		
+		menu.addNewMenu("Konfigurasi Sistem", "Konfigurasi Sistem");
+		menu.addNewLeafTo("Konfigurasi Sistem", "Group", "Group", "module.system.ui.GroupConfigPanel");
+		menu.addNewLeafTo("Konfigurasi Sistem", "User", "User", "module.system.ui.UserConfigPanel");
+		menu.addNewLeafTo("Konfigurasi Sistem", "Group Akses", "Group Akses", "module.system.ui.GroupAccessConfigPanel");
+		menu.calculateAvaiableSpace();
+		
 		setMouseAdapter(menu);
 
 		add(menu);
