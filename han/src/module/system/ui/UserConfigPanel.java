@@ -5,18 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import com.toedter.calendar.JDateChooser;
-
 import module.system.model.User;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-import javax.swing.JComboBox;
 
 public class UserConfigPanel extends JPanel {
 
@@ -26,6 +23,7 @@ public class UserConfigPanel extends JPanel {
 	private UserConfigTabelModel userConfigTabelModel;
 	private JTextField nameTxt;
 	private JTextField passwordTxt;
+	private JTextField textField;
 
 	public UserConfigPanel() {
 		setSize(1024, 630);
@@ -75,13 +73,13 @@ public class UserConfigPanel extends JPanel {
 		add(label_1);
 		
 		nameTxt = new JTextField();
-		nameTxt.setBounds(90, 45, 86, 30);
+		nameTxt.setBounds(90, 45, 150, 30);
 		add(nameTxt);
 		nameTxt.setColumns(10);
 		
 		passwordTxt = new JTextField();
 		passwordTxt.setColumns(10);
-		passwordTxt.setBounds(90, 85, 86, 30);
+		passwordTxt.setBounds(90, 85, 150, 30);
 		add(passwordTxt);
 		
 		JLabel groupLbl = new JLabel("Group User");
@@ -93,8 +91,29 @@ public class UserConfigPanel extends JPanel {
 		add(label_3);
 		
 		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(90, 125, 86, 30);
+		comboBox.setBounds(90, 125, 150, 30);
 		add(comboBox);
+		
+		JButton searchBtn = new JButton("Cari");
+		searchBtn.setBounds(939, 174, 75, 30);
+		add(searchBtn);
+		
+		textField = new JTextField();
+		textField.setBounds(779, 174, 150, 30);
+		add(textField);
+		textField.setColumns(10);
+		
+		JButton saveBtn = new JButton("Simpan");
+		saveBtn.setBounds(694, 174, 75, 30);
+		add(saveBtn);
+		
+		JButton editBtn = new JButton("Edit");
+		editBtn.setBounds(609, 174, 75, 30);
+		add(editBtn);
+		
+		JButton deleteBtn = new JButton("Hapus");
+		deleteBtn.setBounds(524, 174, 75, 30);
+		add(deleteBtn);
 	}
 
 	class UserConfigTabelModel extends AbstractTableModel {
