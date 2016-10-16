@@ -107,7 +107,6 @@ public class PurchaseProductResultBL  {
 			new PurchaseProdResultDAO(con).save(ppr);
 
 			for (PPRProduct s : pprProducts) {
-				System.out.println(s);
 				s.setPprCode(ppr.getPprCode());
 				new PPRProductDAO(con).save(s);
 			}

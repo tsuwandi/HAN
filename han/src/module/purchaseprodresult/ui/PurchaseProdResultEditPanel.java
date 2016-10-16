@@ -146,6 +146,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 	List<Currency> listOfCurrency = null;
 
 	List<PPRProduct> listOfPPRProduct = null;
+	public List<PPRProduct> listOfDeletedPPRProduct = new ArrayList<PPRProduct>();
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
@@ -400,7 +401,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 				if (doValidate() == false) {
 					return;
 				}
-				int response = DialogBox.showInsertChoice();
+				int response = DialogBox.showEditChoice();
 				if (response == JOptionPane.YES_OPTION) {
 					doSave();
 				}
@@ -414,7 +415,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 			public void actionPerformed(ActionEvent arg0) {
 				 int response = DialogBox.showCloseChoice();
 				 if (response == JOptionPane.YES_OPTION) {
-					 MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProductResultListPanel");
+					 MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProductResultViewPanel", purchaseProductResult);
 				 }
 			}
 		});
@@ -464,9 +465,9 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 			purchaseProductResult.setGrandTotal(0.00);
 
 		try {
-			ServiceFactory.getPurchaseProductResultBL().save(purchaseProductResult, listOfPPRProduct);
-			DialogBox.showInsert();
-			MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProductResultListPanel");
+			ServiceFactory.getPurchaseProductResultBL().update(purchaseProductResult, listOfPPRProduct, listOfDeletedPPRProduct);
+			DialogBox.showEdit();
+			MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProductResultViewPanel", purchaseProductResult);
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
@@ -543,6 +544,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 
 			if (Boolean.FALSE.equals(temp.isEmpty())) {
 				for (PPRProduct s : temp) {
+					listOfDeletedPPRProduct.add(s);
 					listOfPPRProduct.remove(s);
 				}
 				refreshTablePPRProduct();

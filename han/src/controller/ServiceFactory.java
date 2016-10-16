@@ -6,12 +6,13 @@ import module.dryout.bl.DryOutBL;
 import module.employee.bl.EmployeeBL;
 import module.product.bl.ProductBL;
 import module.production.bl.ProductionBL;
+import module.productionwaste.bl.ProductionWasteBL;
 import module.purchaseprodresult.bl.PurchaseProductResultBL;
 import module.report.bl.ReportBL;
-import module.supplier.bl.SupplierBL;
 import module.sendtofinance.bl.SendToFinanceBL;
 import module.sn.woodgenus.bl.WoodGenusBL;
 import module.sn.woodtype.bl.WoodTypeBL;
+import module.supplier.bl.SupplierBL;
 
 public class ServiceFactory {
 	// private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
@@ -28,7 +29,7 @@ public class ServiceFactory {
 	private static SendToFinanceBL sendToFinanceBL = null;
 	private static DailyClosingBL dailyClosingBL = null;
 	private static PurchaseProductResultBL purchaseProductResultBL = null;
-
+	private static ProductionWasteBL productionWasteBL = null;
 	/**
 	 * Method to init or return {@link SupplierBL}
 	 * 
@@ -132,5 +133,13 @@ public class ServiceFactory {
 		}
 		return purchaseProductResultBL;
 	}
+	
+	public static ProductionWasteBL getProductionWasteBL() {
+		if (productionWasteBL == null) {
+			productionWasteBL = new ProductionWasteBL(DataSourceFactory.getDataSource());
+		}
+		return productionWasteBL;
+	}
+
 	
 }

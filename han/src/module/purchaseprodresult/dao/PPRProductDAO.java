@@ -79,7 +79,6 @@ public class PPRProductDAO {
 			insertStatement.setDouble(5, pprProduct.getSubTotal());
 			insertStatement.setDate(6, DateUtil.getCurrentDate());
 			insertStatement.setString(7, "timotius");
-			System.out.println(insertStatement);
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {

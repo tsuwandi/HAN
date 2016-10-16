@@ -36,7 +36,7 @@ public class PurchaseProdResultDAO {
 			.append(" values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)").toString();
 
 	private String updateQuery = new StringBuilder().append("update purchase_prod_result set supp_code=?, purchase_note=?, purchase_date=?, ")
-			.append("due_date=?, currency_id=?, exchange_rate=?, status=?, total=?, discount=?, tax=?, grand_total=?")
+			.append("due_date=?, currency_id=?, exchange_rate=?, status=?, total=?, discount=?, tax=?, grand_total=?, ")
 			.append("edit_date=?, edited_by=? where ppr_code=?").toString();
 
 	private String deleteQuery = "update purchase_prod_result set deleted_date=?, deleted_by=? where id=?";

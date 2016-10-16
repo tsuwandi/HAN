@@ -1464,3 +1464,70 @@ CREATE TABLE `han20160830`.`ppr_product` (
 	`deleted_date` DATE NULL , 
 	`deleted_by` VARCHAR(25) NULL
 ) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `production_waste` (
+  `id` int(12) NOT NULL,
+  `pw_code` varchar(15) NOT NULL,
+  `production_date` date NOT NULL,
+  `group_shift_code` varchar(9) NOT NULL,
+  `shift_code` varchar(9) NOT NULL,
+  `line_code` varchar(9) NOT NULL,
+  `production_type_code` varchar(9) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `confirm_code` varchar(5) DEFAULT NULL,
+  `confirm_date` date DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for table `production_waste`
+--
+ALTER TABLE `production_waste`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `production_waste`
+--
+ALTER TABLE `production_waste`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE IF NOT EXISTS `pw_product` (
+  `id` int(11) NOT NULL,
+  `pw_code` varchar(15) NOT NULL,
+  `product_code` varchar(20) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for table `pw_product`
+--
+ALTER TABLE `pw_product`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `pw_product`
+--
+ALTER TABLE `pw_product`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  
+UPDATE `han20160830`.`production_type` SET `production_type_code` = 'BC' WHERE `production_type`.`id` = 1
+UPDATE `han20160830`.`production_type` SET `production_type_code` = 'PW' WHERE `production_type`.`id` = 2
