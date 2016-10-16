@@ -1421,3 +1421,46 @@ ALTER TABLE  `received` CHANGE  `license_plate`  `license_plate` VARCHAR( 25 ) C
 UPDATE DELIVERY SET DOC_ISSUED_DATE = NOW();
 ALTER TABLE  `grade` ADD  `product_category_id` INT NOT NULL AFTER  `id`;
 UPDATE  GRADE SET PRODUCT_CATEGORY_ID = 1;
+
+
+
+INSERT INTO `supp_type` (`id`, `supp_type`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES (NULL, 'Hasil Produksi', '2016-10-16', 'ADMIN', NULL, NULL, NULL, NULL);
+
+CREATE TABLE `purchase_prod_result` ( 
+	`id` INT(12) NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+	`ppr_code` VARCHAR(15) NOT NULL , 
+	`supp_code` VARCHAR(9) NOT NULL , 
+	`purchase_note` VARCHAR(50) NULL , 
+	`purchase_date` DATE NOT NULL , 
+	`due_date` DATE NOT NULL ,
+	`currency_id` INT(3) NOT NULL , 
+	`exchange_rate` DECIMAL(10,2) NULL DEFAULT '0.00' , 
+	`status` VARCHAR(20) NULL , 
+	`total` DECIMAL(10,2) NOT NULL DEFAULT '0.00' , 
+	`discount` DECIMAL(10,2) NOT NULL DEFAULT '0.00' , 
+	`tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00' , 
+	`grand_total` DECIMAL(10,2) NOT NULL DEFAULT '0.00' , 
+	`confirm_code` VARCHAR(5) NULL , 
+	`confirm_date` DATE NULL , 
+	`input_date` DATE NULL , 
+	`input_by` VARCHAR(25) NULL , 
+	`edit_date` DATE NULL , 
+	`edited_by` VARCHAR(25) NULL , 
+	`deleted_date` DATE NULL , 
+	`deleted_by` VARCHAR(25) NULL
+) ENGINE = InnoDB;
+
+CREATE TABLE `han20160830`.`ppr_product` ( 
+	`id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+	`ppr_code` VARCHAR(15) NOT NULL , 
+	`product_code` VARCHAR(20) NOT NULL , 
+	`qty` INT NOT NULL , 
+	`unit_price` DECIMAL(10,2) NULL DEFAULT '0.00' , 
+	`sub_total` DECIMAL(10,2) NOT NULL DEFAULT '0.00' , 
+	`input_date` DATE NULL , 
+	`input_by` VARCHAR(25) NULL , 
+	`edit_date` DATE NULL , 
+	`edited_by` VARCHAR(25) NULL , 
+	`deleted_date` DATE NULL , 
+	`deleted_by` VARCHAR(25) NULL
+) ENGINE = InnoDB;

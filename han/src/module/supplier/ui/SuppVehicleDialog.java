@@ -185,7 +185,6 @@ public class SuppVehicleDialog extends JDialog {
 
 	protected void doInsert() {
 
-		// suppVehicle = new SuppVehicle();
 		suppVehicle.setLicensePlate(txtLicensePlate.getText());
 		suppVehicle.setVehicleTypeId(cbVehicleType.getDataIndex().getId());
 		// add object vehicle type

@@ -1,20 +1,23 @@
-package module.purchaseproductresult.model;
+package module.purchaseprodresult.model;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class PurchaseProductResult implements Serializable {
+import module.sn.currency.model.Currency;
+import module.supplier.model.Supplier;
+
+public class PurchaseProdResult implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private int id;
 	private String pprCode;
-	private String supplierCode;
+	private String suppCode;
 	private String purchaseNote;
 	private Date purchaseDate;
 	private Date dueDate;
 	private int currencyId;
-	private String exchangeRate;
+	private Double exchangeRate;
 	private String status;
 	private Double total;
 	private Double discount;
@@ -43,12 +46,12 @@ public class PurchaseProductResult implements Serializable {
 		this.pprCode = pprCode;
 	}
 
-	public String getSupplierCode() {
-		return supplierCode;
+	public String getSuppCode() {
+		return suppCode;
 	}
 
-	public void setSupplierCode(String supplierCode) {
-		this.supplierCode = supplierCode;
+	public void setSuppCode(String suppCode) {
+		this.suppCode = suppCode;
 	}
 
 	public String getPurchaseNote() {
@@ -83,11 +86,11 @@ public class PurchaseProductResult implements Serializable {
 		this.currencyId = currencyId;
 	}
 
-	public String getExchangeRate() {
+	public Double getExchangeRate() {
 		return exchangeRate;
 	}
 
-	public void setExchangeRate(String exchangeRate) {
+	public void setExchangeRate(Double exchangeRate) {
 		this.exchangeRate = exchangeRate;
 	}
 
@@ -181,7 +184,7 @@ public class PurchaseProductResult implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PurchaseProductResult [id=" + id + ", pprCode=" + pprCode + ", supplierCode=" + supplierCode
+		return "PurchaseProductResult [id=" + id + ", pprCode=" + pprCode + ", suppCode=" + suppCode
 				+ ", purchaseNote=" + purchaseNote + ", purchaseDate=" + purchaseDate + ", dueDate=" + dueDate
 				+ ", currencyId=" + currencyId + ", exchangeRate=" + exchangeRate + ", status=" + status + ", total="
 				+ total + ", discount=" + discount + ", tax=" + tax + ", grandTotal=" + grandTotal + ", inputDate="
@@ -209,7 +212,7 @@ public class PurchaseProductResult implements Serializable {
 		result = prime * result + ((purchaseDate == null) ? 0 : purchaseDate.hashCode());
 		result = prime * result + ((purchaseNote == null) ? 0 : purchaseNote.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		result = prime * result + ((supplierCode == null) ? 0 : supplierCode.hashCode());
+		result = prime * result + ((suppCode == null) ? 0 : suppCode.hashCode());
 		result = prime * result + ((tax == null) ? 0 : tax.hashCode());
 		result = prime * result + ((total == null) ? 0 : total.hashCode());
 		return result;
@@ -223,7 +226,7 @@ public class PurchaseProductResult implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PurchaseProductResult other = (PurchaseProductResult) obj;
+		PurchaseProdResult other = (PurchaseProdResult) obj;
 		if (currencyId != other.currencyId)
 			return false;
 		if (deletedBy == null) {
@@ -298,10 +301,10 @@ public class PurchaseProductResult implements Serializable {
 				return false;
 		} else if (!status.equals(other.status))
 			return false;
-		if (supplierCode == null) {
-			if (other.supplierCode != null)
+		if (suppCode == null) {
+			if (other.suppCode != null)
 				return false;
-		} else if (!supplierCode.equals(other.supplierCode))
+		} else if (!suppCode.equals(other.suppCode))
 			return false;
 		if (tax == null) {
 			if (other.tax != null)
@@ -315,5 +318,32 @@ public class PurchaseProductResult implements Serializable {
 			return false;
 		return true;
 	}
+	
+	public Supplier getSupplier() {
+		if(supplier == null)
+			supplier = new Supplier();
+		return supplier;
+	}
+
+	public void setSupplier(Supplier supplier) {
+		if(supplier == null)
+			supplier = new Supplier();
+		this.supplier = supplier;
+	}
+
+	public Currency getCurrency() {
+		if(currency == null)
+			currency = new Currency();
+		return currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		if(currency == null)
+			currency = new Currency();
+		this.currency = currency;
+	}
+
+	private Supplier supplier;
+	private Currency currency;
 
 }

@@ -1,11 +1,11 @@
-package module.purchaseproductresult.model;
+package module.purchaseprodresult.model;
 
 import java.io.Serializable;
 import java.util.Date;
 
 import module.product.model.Product;
 
-public class PurchaseProductResultProduct implements Serializable {
+public class PPRProduct implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -127,7 +127,7 @@ public class PurchaseProductResultProduct implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PurchaseProductResultProduct other = (PurchaseProductResultProduct) obj;
+		PPRProduct other = (PPRProduct) obj;
 		if (deletedBy == null) {
 			if (other.deletedBy != null)
 				return false;
@@ -197,6 +197,14 @@ public class PurchaseProductResultProduct implements Serializable {
 	}
 
 	private Product product;
+	private boolean isFlag;
 	
+	public boolean isFlag() {
+		return isFlag;
+	}
+
+	public void setFlag(boolean isFlag) {
+		this.isFlag = isFlag;
+	}
 	
 }

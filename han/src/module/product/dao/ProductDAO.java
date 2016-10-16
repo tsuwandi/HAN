@@ -613,4 +613,30 @@ public class ProductDAO {
 
 		return product;
 	}
+	
+	private PreparedStatement getAllByProductCategoryIsProductionResultStatement;
+	private String getAllByProductCategoryIsProductionResultQuery = "select product_code, product_name from product where product_category_id = 3";
+
+	public List<Product> getAllByProductCategoryIsProductionResult() throws SQLException {
+		List<Product> products = new ArrayList<Product>();
+
+		try {
+			getAllByProductCategoryIsProductionResultStatement = connection.prepareStatement(getAllByProductCategoryIsProductionResultQuery);
+
+			ResultSet rs = getAllByProductCategoryIsProductionResultStatement.executeQuery();
+			while (rs.next()) {
+				Product product = new Product();
+				product.setProductCode(rs.getString("product_code"));
+				product.setProductName(rs.getString("product_name"));
+
+				products.add(product);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return products;
+	}
 }

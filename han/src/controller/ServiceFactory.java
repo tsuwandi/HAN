@@ -6,6 +6,7 @@ import module.dryout.bl.DryOutBL;
 import module.employee.bl.EmployeeBL;
 import module.product.bl.ProductBL;
 import module.production.bl.ProductionBL;
+import module.purchaseprodresult.bl.PurchaseProductResultBL;
 import module.report.bl.ReportBL;
 import module.supplier.bl.SupplierBL;
 import module.sendtofinance.bl.SendToFinanceBL;
@@ -26,6 +27,7 @@ public class ServiceFactory {
 	private static WoodTypeBL woodTypeBL = null;
 	private static SendToFinanceBL sendToFinanceBL = null;
 	private static DailyClosingBL dailyClosingBL = null;
+	private static PurchaseProductResultBL purchaseProductResultBL = null;
 
 	/**
 	 * Method to init or return {@link SupplierBL}
@@ -123,4 +125,12 @@ public class ServiceFactory {
 		}
 		return woodTypeBL;
 	}
+	
+	public static PurchaseProductResultBL getPurchaseProductResultBL() {
+		if (purchaseProductResultBL == null) {
+			purchaseProductResultBL = new PurchaseProductResultBL(DataSourceFactory.getDataSource());
+		}
+		return purchaseProductResultBL;
+	}
+	
 }

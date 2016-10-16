@@ -30,7 +30,7 @@ public class SupplierDAO {
 			+ "left join currency c on s.currency_id = c.id "
 			+ "where s.deleted_date is null and st.deleted_date is null "
 			+ "and b.deleted_date is null and c.deleted_date is null ";
-
+	
 	private String isSuppCodeExistsQuery = "select count(*) as is_exists from supplier where supp_code = ? and deleted_date is null ";
 
 	private String insertQuery = "insert into supplier (supp_code, supp_name, pt, npwp, "
@@ -362,5 +362,59 @@ public class SupplierDAO {
 		}
 
 		return supplier;
+	}
+
+	public List<Supplier> getAllSupplierBySuppTypeId(int suppTypeId) throws SQLException {
+		List<Supplier> suppliers = new ArrayList<Supplier>();
+		String query = new StringBuilder().append(getAllQuery).append(" and s.supp_type_id =?").toString();
+		
+		try {
+			getAllStatement = connection.prepareStatement(query);
+			getAllStatement.setInt(1, suppTypeId);
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				Supplier supplier = new Supplier();
+				supplier.setId(rs.getInt("id"));
+				supplier.setSuppCode(rs.getString("supp_code"));
+				supplier.setSuppName(rs.getString("supp_name"));
+				supplier.setPt(rs.getString("pt"));
+				supplier.setNpwp(rs.getString("npwp"));
+				supplier.setSuppTypeId(rs.getInt("supp_type_id"));
+				//supplier.setSuppStatus(rs.getString("supp_status"));
+				supplier.setDefaultTax(rs.getInt("default_tax"));
+				supplier.setAccountNo(rs.getString("account_no"));
+				supplier.setBankId(rs.getInt("bank_id"));
+				supplier.setAccountName(rs.getString("account_name"));
+				supplier.setCurrencyId(rs.getInt("currency_id"));
+				supplier.setTop(rs.getInt("top"));
+
+				SuppType suppType = new SuppType();
+				suppType.setId(rs.getInt("supp_type_id"));
+				suppType.setSuppType(rs.getString("supp_type"));
+
+				Bank bank = new Bank();
+				bank.setId(rs.getInt("bank_id"));
+				bank.setBankAbbr(rs.getString("bank_abbr"));
+				bank.setBank(rs.getString("bank"));
+
+				Currency currency = new Currency();
+				currency.setId(rs.getInt("currency_id"));
+				currency.setCurrencyAbbr(rs.getString("currency_abbr"));
+				currency.setCurrency(rs.getString("currency"));
+
+				supplier.setSuppType(suppType);
+				supplier.setBank(bank);
+				supplier.setCurrency(currency);
+
+				suppliers.add(supplier);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return suppliers;
 	}
 }

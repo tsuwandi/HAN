@@ -22,6 +22,10 @@ public class DateUtil {
 		return new Date(milliseconds);
 	}
 	
+	public static java.sql.Date toDate(Date date) {
+		return new java.sql.Date(date.getTime());
+	}
+	
 	public static Timestamp setTimeStamp() {
 		long time = System.currentTimeMillis();
 		return new java.sql.Timestamp(time);

@@ -40,7 +40,7 @@ public class MenuPanel extends JPanel {
 		
 		menu.addNewMenu("Produksi", "Produksi");
 		menu.addNewLeafTo("Produksi", "Produksi", "Produksi", "module.production.ui.ListProductionPanel");
-		menu.addNewLeafTo("Produksi", "Pembelian", "Pembelian", "module.purchaseproductresult.ui.PurchaseProductResultCreatePanel");
+		menu.addNewLeafTo("Produksi", "Pembelian", "Pembelian", "module.purchaseprodresult.ui.PurchaseProdResultListPanel");
 		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Konfigurasi", "Konfigurasi");
