@@ -331,7 +331,9 @@ public class AddPopUpPalletCard extends JDialog{
 		
 		try {
 			products = ReceivedDAOFactory.getProductDAO().getAllProduct(addReceivedDetail.received.getWoodTypeID(), addReceivedDetail.gradeComboBox.getDataIndex().getId());
+			Product productBroken = new Product();
 			for (Product product : products) {
+				if(product.getId()==1000) productBroken = product;
 				if(productMap.get(product.getLength())==null){
 					List<Map<Double, Map<Double, Product>>> lengthList = new ArrayList<>();
 					Map<Double, Map<Double, Product>> widthMap = new HashMap<>();
@@ -349,6 +351,14 @@ public class AddPopUpPalletCard extends JDialog{
 					widthMap.put(product.getWidth(), thicknessMap);
 					lengthList.add(widthMap);
 				}
+			}
+			if(addReceivedDetail.gradeComboBox.getDataIndex().getId()==100){
+				volumeField.setEnabled(true);
+				longField.setEnabled(false);
+				wideField.setEnabled(false);
+				thicknessField.setEnabled(false);
+				productNameField.setText(productBroken.getProductName());
+				productCode.setText(productBroken.getProductCode());
 			}
 		} catch (SQLException e) {
 			log.error(e.getMessage());
@@ -480,24 +490,28 @@ public class AddPopUpPalletCard extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int error=0;
-				if(thicknessField.getText().equals("")){
-					errorThickLbl.setText("<html><font color='red'>Tebal diisi</font></html>");
-					error++;
-				}else{
-					errorThickLbl.setText("");
-				}
 				
-				if(longField.getText().equals("")){
-					errorLongLbl.setText("<html><font color='red'>Panjang harus diisi !</font></html>");
-					error++;
-				}else{
-					errorLongLbl.setText("");
-				}
-				if(wideField.getText().equals("")){
-					errorWideLbl.setText("<html><font color='red'>Lebar harus diisi !</font></html>");
-					error++;
-				}else{
-					errorWideLbl.setText("");
+				if(addReceivedDetail.gradeComboBox.getDataIndex().getId()==100){}
+				else{
+					if(thicknessField.getText().equals("")){
+						errorThickLbl.setText("<html><font color='red'>Tebal diisi</font></html>");
+						error++;
+					}else{
+						errorThickLbl.setText("");
+					}
+					
+					if(longField.getText().equals("")){
+						errorLongLbl.setText("<html><font color='red'>Panjang harus diisi !</font></html>");
+						error++;
+					}else{
+						errorLongLbl.setText("");
+					}
+					if(wideField.getText().equals("")){
+						errorWideLbl.setText("<html><font color='red'>Lebar harus diisi !</font></html>");
+						error++;
+					}else{
+						errorWideLbl.setText("");
+					}
 				}
 				if(totalField.getText().equals("")){
 					errorTotalLbl.setText("<html><font color='red'>Total Kayu harus diisi !</font></html>");
@@ -531,9 +545,15 @@ public class AddPopUpPalletCard extends JDialog{
 					if(!editMode){
 						PalletCard pc = new PalletCard();
 						pc.setPalletCardCode(codePalletCardField.getText());
-						pc.setThickness(Double.valueOf(thicknessField.getText()));
-						pc.setLength(Double.valueOf(longField.getText()));
-						pc.setWidth(Double.valueOf(wideField.getText()));
+						if(addReceivedDetail.gradeComboBox.getDataIndex().getId()!=100){
+							pc.setThickness(Double.valueOf(thicknessField.getText()));
+							pc.setLength(Double.valueOf(longField.getText()));
+							pc.setWidth(Double.valueOf(wideField.getText()));
+						}else{
+							pc.setThickness(0);
+							pc.setLength(0);
+							pc.setWidth(0);
+						}
 						pc.setTotal(Integer.valueOf(totalField.getText()));
 						pc.setVolume(Double.valueOf(volumeField.getText()));
 						pc.setProductName(productNameField.getText());
@@ -556,12 +576,18 @@ public class AddPopUpPalletCard extends JDialog{
 					}else{
 						PalletCard pc = pcs.get(indexEdit);
 						pc.setPalletCardCode(codePalletCardField.getText());
-						pc.setThickness(Double.valueOf(thicknessField.getText()));
 						pc.setTotal(Integer.valueOf(totalField.getText()));
 						pc.setVolume(Double.valueOf(volumeField.getText()));
 						pc.setProductName(productNameField.getText());
-						pc.setLength(Double.valueOf(longField.getText()));
-						pc.setWidth(Double.valueOf(wideField.getText()));
+						if(addReceivedDetail.gradeComboBox.getDataIndex().getId()!=100){
+							pc.setThickness(Double.valueOf(thicknessField.getText()));
+							pc.setLength(Double.valueOf(longField.getText()));
+							pc.setWidth(Double.valueOf(wideField.getText()));
+						}else{
+							pc.setThickness(0);
+							pc.setLength(0);
+							pc.setWidth(0);
+						}
 						pc.setProductCode(productCode.getText());
 						pc.setDescription(descriptionArea.getText());
 						pcTable.updateUI();
@@ -626,8 +652,10 @@ public class AddPopUpPalletCard extends JDialog{
 		longField.setText("");
 		wideField.setText("");
 		thicknessField.setText("");
-		productCode.setText("");
-		productNameField.setText("");
+		if(addReceivedDetail.gradeComboBox.getDataIndex().getId()!=100){
+			productCode.setText("");
+			productNameField.setText("");
+		}
 		totalField.setText("");
 		volumeField.setText("");
 		descriptionArea.setText("");
