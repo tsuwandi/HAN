@@ -20,7 +20,7 @@ public class ProdPKMaterialDAO {
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 	
-	private String getAllQuery = "SELECT id, prod_pk_code, product_code, qty";
+	private String getAllQuery = "SELECT id, prod_pk_code, product_code, qty FROM prod_pk_material WHERE deleted_date IS NULL";
 	
 	
 	private String insertQuery = "INSERT INTO prod_pk_material (prod_pk_code, product_code, qty , input_by, input_date) "

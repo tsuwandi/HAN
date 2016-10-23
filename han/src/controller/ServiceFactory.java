@@ -6,6 +6,7 @@ import module.dryout.bl.DryOutBL;
 import module.employee.bl.EmployeeBL;
 import module.product.bl.ProductBL;
 import module.production.bl.ProductionBL;
+import module.productionpk.bl.ProdPKBL;
 import module.productionwaste.bl.ProductionWasteBL;
 import module.purchaseprodresult.bl.PurchaseProductResultBL;
 import module.report.bl.ReportBL;
@@ -30,6 +31,7 @@ public class ServiceFactory {
 	private static DailyClosingBL dailyClosingBL = null;
 	private static PurchaseProductResultBL purchaseProductResultBL = null;
 	private static ProductionWasteBL productionWasteBL = null;
+	private static ProdPKBL prodPKBL = null;
 	/**
 	 * Method to init or return {@link SupplierBL}
 	 * 
@@ -139,6 +141,13 @@ public class ServiceFactory {
 			productionWasteBL = new ProductionWasteBL(DataSourceFactory.getDataSource());
 		}
 		return productionWasteBL;
+	}
+	
+	public static ProdPKBL getProdPKBL() {
+		if (prodPKBL == null) {
+			prodPKBL = new ProdPKBL(DataSourceFactory.getDataSource());
+		}
+		return prodPKBL;
 	}
 
 	

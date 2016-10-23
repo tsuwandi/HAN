@@ -1551,7 +1551,7 @@ CREATE TABLE IF NOT EXISTS `prod_pk` (
   `total_material_protol` decimal(7,2),
   `total_material_klem` decimal(7,2),
   `status` varchar(10) NOT NULL,
-  `confirm_code`varchar(5)NOT NULL,
+  `confirm_code`varchar(5),
   `confirm_date`date,
   `input_date` date DEFAULT NULL,
   `input_by` varchar(25) DEFAULT NULL,

@@ -18,13 +18,16 @@ import module.production.dao.ShiftDAO;
 import module.production.model.GroupShift;
 import module.production.model.Line;
 import module.production.model.Machine;
+import module.production.model.ProdRM;
 import module.production.model.Production;
+import module.production.model.ProductionResultProduct;
 import module.production.model.ProductionType;
 import module.production.model.Shift;
 import module.productionpk.dao.ProdPKDAO;
 import module.productionpk.dao.ProdPKMaterialDAO;
 import module.productionpk.dao.ProdPKResultDAO;
 import module.productionpk.model.ProdPK;
+import module.productionpk.model.ProdPKMaterial;
 
 public class ProdPKBL {
 	private DataSource dataSource;
@@ -87,11 +90,89 @@ public class ProdPKBL {
 	
 	public List<ProdPK> getProduction() throws SQLException {
 		List<ProdPK> productions = prodPKDAO.getAll();
-//		for (ProdPK production : productions) {
+		for (ProdPK production : productions) {
 //			if(getProductionResultByCode(production.getProductionCode())!=null)production.setProductionResult(getProductionResultByCode(production.getProductionCode()));
-//			if(getProductRMByCode(production.getProductionCode())!=null)production.setListOfProdRM(getProductRMByCode(production.getProductionCode()));
-//		}
+			if(getProdPKMaterialByCode(production.getProdPKCode())!=null)production.setListPKMaterial(getProdPKMaterialByCode(production.getProdPKCode()));
+		}
 		return productions;
+	}
+	
+	private List<ProdPKMaterial> getProdPKMaterialByCode(String prodPKCode)throws SQLException{
+		return prodPKMaterialDAO.getAllByProdPKCode(prodPKCode);
+	}
+	
+	public void saveAll(ProdPK production)throws SQLException {
+		Connection cone = null;
+		boolean flagProductionResult=false;
+		boolean flagProductionRawMaterial=false;
+		try {
+			cone = dataSource.getConnection();
+			cone.setAutoCommit(false);
+//			if(ProdPK.getProductionResult()!=null){
+//				new ProductionResultDAO(cone).save(production.getProductionResult());
+//				for(ProductionResultProduct prd : production.getProductionResult().getListOfProductionResultDetail()){
+//					new ProductionResultDetailDAO(cone).save(prd);
+//				}
+//				flagProductionResult=true;
+//			}
+			if(production.getListPKMaterial()!=null){
+				if(production.getListPKMaterial().size()!=0){
+					for(ProdPKMaterial prodPKMaterial :production.getListPKMaterial()){
+						new ProdPKMaterialDAO(cone).save(prodPKMaterial);
+					}
+					flagProductionRawMaterial=true;
+				}
+				
+			}
+			if(flagProductionRawMaterial&&flagProductionResult)production.setStatus("Complete");	
+			else production.setStatus("InComplete");
+			new ProdPKDAO(cone).save(production);
+			cone.commit();
+		} catch (Exception e) {
+			cone.rollback();
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		}finally {
+			cone.close();
+		}
+	}
+	
+	public void updateAll(ProdPK production)throws SQLException {
+		Connection cone = null;
+		boolean flagProductionResult=false;
+		boolean flagProductionRawMaterial=false;
+		try {
+			cone = dataSource.getConnection();
+			cone.setAutoCommit(false);
+//			if(production.getProductionResult()!=null){
+//				if(getProductionResultByCode(production.getProductionCode())!=null)new ProductionResultDAO(cone).update(production.getProductionResult());
+//				else new ProductionResultDAO(cone).save(production.getProductionResult());
+//				new ProductionResultDetailDAO(cone).delete(production.getProductionResult().getProdResultCode());
+//				for(ProductionResultProduct prd : production.getProductionResult().getListOfProductionResultDetail()){
+//					new ProductionResultDetailDAO(cone).save(prd);
+//				}
+//				flagProductionResult=true;
+//			}
+			if(production.getListPKMaterial()!=null){
+				if(production.getListPKMaterial().size()!=0){
+					new ProdRMDAO(cone).delete(production.getProdPKCode());
+					for(ProdPKMaterial prodRM :production.getListPKMaterial()){
+						new ProdPKMaterialDAO(cone).save(prodRM);
+					}
+					flagProductionRawMaterial=true;
+				}
+			}
+			if(flagProductionRawMaterial&&flagProductionResult)production.setStatus("Complete");
+			else production.setStatus("InComplete");
+			new ProdPKDAO(cone).update(production);
+			cone.commit();
+		} catch (Exception e) {
+			cone.rollback();
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		}finally {
+			cone.close();
+		}
 	}
 	
 }

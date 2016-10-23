@@ -1,6 +1,7 @@
 package module.productionpk.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class ProdPK {
 	int id;
@@ -18,6 +19,7 @@ public class ProdPK {
 	String groupShiftDescription;
 	String lineDescription;
 	String shiftName;
+	List<ProdPKMaterial> listPKMaterial;
 	public int getId() {
 		return id;
 	}
@@ -108,6 +110,14 @@ public class ProdPK {
 	public void setShiftName(String shiftName) {
 		this.shiftName = shiftName;
 	}
+	public List<ProdPKMaterial> getListPKMaterial() {
+		return listPKMaterial;
+	}
+	public void setListPKMaterial(List<ProdPKMaterial> listPKMaterial) {
+		this.listPKMaterial = listPKMaterial;
+	}
+	
+	
 	
 	
 	

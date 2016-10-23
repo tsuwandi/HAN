@@ -24,7 +24,7 @@ public class ProdPKDAO {
 			+ "INNER JOIN shift c ON a.shift_code = c.shift_code INNER JOIN group_shift d ON a.group_shift_code = d.group_shift_code "
 			+ "WHERE a.deleted_date IS NULL";
 	
-	private String getLastCodeQuery = "SELECT prod_pk_code FROM production WHERE deleted_date IS NULL ORDER BY id DESC LIMIT 1";
+	private String getLastCodeQuery = "SELECT prod_pk_code FROM prod_pk WHERE deleted_date IS NULL ORDER BY id DESC LIMIT 1";
 	
 	private String insertQuery = "INSERT INTO prod_pk (prod_pk_code, group_shift_code, line_code, shift_code, "
 			+ "production_date, information, total_material_protol, total_material_klem, status , input_by, input_date) "
