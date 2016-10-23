@@ -21,7 +21,7 @@ import module.production.model.Machine;
 import module.production.model.ProdRM;
 import module.production.model.Production;
 import module.production.model.ProductionResult;
-import module.production.model.ProductionResultDetail;
+import module.production.model.ProductionResultProduct;
 import module.production.model.ProductionType;
 import module.production.model.Shift;
 
@@ -131,7 +131,7 @@ public class ProductionBL {
 			productionResult.setListOfProductionResultDetail(getProductionResultDetailByCode(productionResult.getProdResultCode()));
 		return productionResult;
 	}
-	private List<ProductionResultDetail> getProductionResultDetailByCode(String prodResultCode) throws SQLException {
+	private List<ProductionResultProduct> getProductionResultDetailByCode(String prodResultCode) throws SQLException {
 		return productionResultDetailDAO.getAllByProdResultCode(prodResultCode);
 	}
 	
@@ -176,7 +176,7 @@ public class ProductionBL {
 			cone.setAutoCommit(false);
 			if(production.getProductionResult()!=null){
 				new ProductionResultDAO(cone).save(production.getProductionResult());
-				for(ProductionResultDetail prd : production.getProductionResult().getListOfProductionResultDetail()){
+				for(ProductionResultProduct prd : production.getProductionResult().getListOfProductionResultDetail()){
 					new ProductionResultDetailDAO(cone).save(prd);
 				}
 				flagProductionResult=true;
@@ -214,7 +214,7 @@ public class ProductionBL {
 				if(getProductionResultByCode(production.getProductionCode())!=null)new ProductionResultDAO(cone).update(production.getProductionResult());
 				else new ProductionResultDAO(cone).save(production.getProductionResult());
 				new ProductionResultDetailDAO(cone).delete(production.getProductionResult().getProdResultCode());
-				for(ProductionResultDetail prd : production.getProductionResult().getListOfProductionResultDetail()){
+				for(ProductionResultProduct prd : production.getProductionResult().getListOfProductionResultDetail()){
 					new ProductionResultDetailDAO(cone).save(prd);
 				}
 				flagProductionResult=true;

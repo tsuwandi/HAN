@@ -1539,3 +1539,4 @@ UPDATE `han20160830`.`production_type` SET `production_type_code` = 'PW' WHERE `
 
 INSERT INTO `project`.`grade` (`id`, `product_category_id`, `grade`, `input_date`, `input_by`, `edit_date`, `edit_by`, `delete_date`, `delete_by`) VALUES ('100', '1', 'Broken', NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO PRODUCT VALUES(1000, 'PDC019', 'JATI RUSAK', 1, NULL, 1, 0, '', NULL, NULL, NULL, 1, 100, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016-08-31', 'Timotius', NULL, NULL, NULL, NULL, 0, '10.00000', '10.00000', '10.00000', NULL, NULL);
+

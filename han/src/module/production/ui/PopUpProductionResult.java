@@ -40,7 +40,7 @@ import main.component.TextField;
 import model.User;
 import module.production.model.Machine;
 import module.production.model.ProductionResult;
-import module.production.model.ProductionResultDetail;
+import module.production.model.ProductionResultProduct;
 
 public class PopUpProductionResult extends JDialog{
 	Logger log = LogManager.getLogger(PopUpProductionResult.class.getName());
@@ -67,7 +67,6 @@ public class PopUpProductionResult extends JDialog{
 	private JLabel totalAllGoodResultLbl;
 	private JLabel prodResultCodeLbl;
 	
-	private JLabel errorMachineLbl;
 	private JLabel errorPressNoLbl;
 	private JLabel errorTimeLbl;
 	private JLabel errorKlemALbl;
@@ -82,7 +81,6 @@ public class PopUpProductionResult extends JDialog{
 	private JLabel timeSeparator;
 	
 	private JDateChooser resultDateChooser;
-	private ComboBox<Machine> machineCmb;
 	
 	private NumberField pressNoField;
 	private NumberField hourField;
@@ -111,8 +109,7 @@ public class PopUpProductionResult extends JDialog{
 	private JPanel containerPnl;
 	private JPanel borderPanel;
 	private CreateProductionPanel createProductionPanel;
-	private List<Machine> machines;
-	private List<ProductionResultDetail> listOfPrd;
+	private List<ProductionResultProduct> listOfPrd;
 	private boolean editMode=false;
 	private int indexEdit=0;
 	private Map<Integer, Integer> pressMap;
@@ -136,10 +133,6 @@ public class PopUpProductionResult extends JDialog{
 		listOfPrd = new ArrayList<>();
 		
 		try {
-			machines = ServiceFactory.getProductionBL().getMachine();
-			machines.add(0,new Machine("--Pilih--"));
-			machineCmb.setList(machines);
-			
 			Date currentDate = new Date();
 			String date = new SimpleDateFormat("dd").format(currentDate);
 			String month = new SimpleDateFormat("MM").format(currentDate);
@@ -157,7 +150,6 @@ public class PopUpProductionResult extends JDialog{
 			ProductionResult pr = createProductionPanel.getProduction().getProductionResult();
 			prodResultCodeField.setText(pr.getProdResultCode());
 			resultDateChooser.setDate(pr.getProdResultDate());
-			machineCmb.setSelectedItem(pr.getMachineDescription());
 			totalOutputField.setText(pr.getTotalOutput()+"");
 			totalKlemField.setText(pr.getTotalRepairKlem()+"");
 			totalProtolField.setText(pr.getTotalRepairProtol()+"");
@@ -166,7 +158,7 @@ public class PopUpProductionResult extends JDialog{
 			totalAllGoodResultField.setText(pr.getTotalFineResult()+"");
 			listOfPrd = pr.getListOfProductionResultDetail();
 			productionResultTable.setModel(new ProductionResultTableModel(listOfPrd));
-			for (ProductionResultDetail prd : listOfPrd) {
+			for (ProductionResultProduct prd : listOfPrd) {
 				pressMap.put(prd.getPressedNo(), prd.getPressedNo());
 			}
 			productionResultTable.updateUI();
@@ -216,15 +208,6 @@ public class PopUpProductionResult extends JDialog{
 		machineLbl = new JLabel("No Mesin");
 		machineLbl.setBounds(50, 130,150,20);
 		containerPnl.add(machineLbl);
-		
-		machineCmb = new ComboBox<>();
-		machineCmb.setBounds(240,130,150,20);
-		machineCmb.setFocusable(false);
-		containerPnl.add(machineCmb);
-		
-		errorMachineLbl = new JLabel();
-		errorMachineLbl.setBounds(395, 130,150,20);
-		containerPnl.add(errorMachineLbl);
 		
 		//TODO borderPnl Area
 		borderPanel = new JPanel();
@@ -361,7 +344,7 @@ public class PopUpProductionResult extends JDialog{
 		
 		
 		//Table Area
-		productionResultTableModel = new ProductionResultTableModel(new ArrayList<ProductionResultDetail>());
+		productionResultTableModel = new ProductionResultTableModel(new ArrayList<ProductionResultProduct>());
 		productionResultTable = new JTable(productionResultTableModel);
 		productionResultTable.setFocusable(false);
 		
@@ -452,7 +435,7 @@ public class PopUpProductionResult extends JDialog{
 				if(productionResultTable.columnAtPoint(e.getPoint())==9){
 					editMode=true;
 					indexEdit=productionResultTable.getSelectedRow();
-					ProductionResultDetail prd = listOfPrd.get(productionResultTable.getSelectedRow());
+					ProductionResultProduct prd = listOfPrd.get(productionResultTable.getSelectedRow());
 					pressNoField.setText(prd.getPressedNo()+"");
 					String [] splitTime = prd.getStartTime().split(":");
 					hourField.setText(splitTime[0]);
@@ -557,7 +540,7 @@ public class PopUpProductionResult extends JDialog{
 		
 		if(error==0){
 			if(editMode){
-				ProductionResultDetail prd = listOfPrd.get(indexEdit);
+				ProductionResultProduct prd = listOfPrd.get(indexEdit);
 				int tempPressedNo = prd.getPressedNo();
 				prd.setPressedNo(Integer.parseInt(pressNoField.getText()));
 				if(!hourField.getText().equals("")||!minuteField.getText().equals("")){
@@ -579,7 +562,7 @@ public class PopUpProductionResult extends JDialog{
 				editMode=false;
 				indexEdit=0;
 			}else{
-				ProductionResultDetail prd = new ProductionResultDetail();
+				ProductionResultProduct prd = new ProductionResultProduct();
 				prd.setProdResultCode(prodResultCodeField.getText());
 				prd.setPressedNo(Integer.parseInt(pressNoField.getText()));
 				if(!hourField.getText().equals("")||!minuteField.getText().equals("")){
@@ -623,7 +606,7 @@ public class PopUpProductionResult extends JDialog{
 		int totalFineA=0;
 		int totalFineB=0;
 		int totalAllFine=0;
-		for (ProductionResultDetail prd : listOfPrd) {
+		for (ProductionResultProduct prd : listOfPrd) {
 			totalOutput+=prd.getTotal();
 			totalKlem+=(prd.getRepairKlemA()+prd.getRepairKlemB());
 			totalProtol+=(prd.getRepairProtolA()+prd.getRepairProtolB());
@@ -642,19 +625,11 @@ public class PopUpProductionResult extends JDialog{
 	
 	private void saveProductResult(){
 		int error=0;
-		if(machineCmb.getSelectedIndex()==0){
-			errorMachineLbl.setText("<html><font color='red'>Mesin harus dipilih !</font></html>");
-			error++;
-		}else{
-			errorMachineLbl.setText("");
-		}
 		if(error==0){
 			ProductionResult productionResult = new ProductionResult();
 			productionResult.setProductionCode(createProductionPanel.getProductionCodeField().getText());
 			productionResult.setProdResultCode(prodResultCodeField.getText());
 			productionResult.setProdResultDate(resultDateChooser.getDate());
-			productionResult.setMachineCode(machineCmb.getDataIndex().getMachineCode());
-			productionResult.setMachineDescription(machineCmb.getDataIndex().getDescription());
 			productionResult.setTotalOutput(Integer.parseInt(totalOutputField.getText()));
 			productionResult.setTotalFineA(Integer.parseInt(totalGoodResultAField.getText()));
 			productionResult.setTotalFineB(Integer.parseInt(totalGoodResultBField.getText()));
@@ -670,9 +645,9 @@ public class PopUpProductionResult extends JDialog{
 	
 	private class ProductionResultTableModel extends AbstractTableModel{
 		private static final long serialVersionUID = 1L;
-		private List<ProductionResultDetail> productionResults;
+		private List<ProductionResultProduct> productionResults;
 		    
-		    public ProductionResultTableModel(List<ProductionResultDetail> productionResults) {
+		    public ProductionResultTableModel(List<ProductionResultProduct> productionResults) {
 		        this.productionResults = productionResults;
 		    }
 		    
@@ -698,7 +673,7 @@ public class PopUpProductionResult extends JDialog{
 		     * @return ({@link User}) Object 
 		     */
 		    public Object getValueAt(int rowIndex, int columnIndex) {
-		    	ProductionResultDetail p = productionResults.get(rowIndex);
+		    	ProductionResultProduct p = productionResults.get(rowIndex);
 		        switch(columnIndex){
 		        	case 0:
 		        		return p.getPressedNo();

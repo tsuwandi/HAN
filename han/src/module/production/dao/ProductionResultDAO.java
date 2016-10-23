@@ -18,16 +18,16 @@ public class ProductionResultDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	
-	private String getAllQuery = "SELECT a.id, prod_result_code, production_code, prod_result_date, a.machine_code, description, total_output, total_repair_klem, total_repair_protol, total_fine_a, total_fine_b, total_fine_result "
-			+ "FROM prod_result a INNER JOIN machine b ON a.machine_code = b.machine_code WHERE a.deleted_date IS NULL";
+	private String getAllQuery = "SELECT id, prod_result_code, production_code, prod_result_date, total_output, total_repair_klem, total_repair_protol, total_fine_a, total_fine_b, total_fine_result "
+			+ "FROM prod_result WHERE deleted_date IS NULL";
 	
 	private String getLastCodeQuery = "SELECT prod_result_code FROM prod_result WHERE deleted_date IS NULL ORDER BY id DESC LIMIT 1";
 	
 	private String insertQuery = "INSERT INTO prod_result (prod_result_code, production_code, prod_result_date, "
-			+ "machine_code, total_output, total_repair_klem, total_repair_protol, total_fine_a, total_fine_b, total_fine_result, input_by, input_date) "
-			+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+			+ "total_output, total_repair_klem, total_repair_protol, total_fine_a, total_fine_b, total_fine_result, input_by, input_date) "
+			+ "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 	private String updateQuery = "UPDATE prod_result SET prod_result_date =?, "
-			+ "machine_code=?, total_output=?, total_repair_klem=?, total_repair_protol=?, total_fine_a=?, total_fine_b=?, total_fine_result=?, edited_by=?, edited_date=?  "
+			+ "total_output=?, total_repair_klem=?, total_repair_protol=?, total_fine_a=?, total_fine_b=?, total_fine_result=?, edited_by=?, edited_date=?  "
 			+ "WHERE prod_result_code = ? AND production_code =?";
 	
 	public ProductionResultDAO(Connection connection) throws SQLException {
@@ -60,8 +60,6 @@ public class ProductionResultDAO {
 				productionResult.setProdResultCode(rs.getString("prod_result_code"));
 				productionResult.setProductionCode(rs.getString("production_code"));
 				productionResult.setProdResultDate(rs.getDate("prod_result_date"));
-				productionResult.setMachineCode(rs.getString("machine_code"));
-				productionResult.setMachineDescription(rs.getString("description"));
 				productionResult.setTotalOutput(rs.getInt("total_output"));
 				productionResult.setTotalRepairKlem(rs.getInt("total_repair_klem"));
 				productionResult.setTotalRepairProtol(rs.getInt("total_repair_protol"));
@@ -95,8 +93,6 @@ public class ProductionResultDAO {
 				productionResult.setProdResultCode(rs.getString("prod_result_code"));
 				productionResult.setProductionCode(rs.getString("production_code"));
 				productionResult.setProdResultDate(rs.getDate("prod_result_date"));
-				productionResult.setMachineCode(rs.getString("machine_code"));
-				productionResult.setMachineDescription(rs.getString("description"));
 				productionResult.setTotalOutput(rs.getInt("total_output"));
 				productionResult.setTotalRepairKlem(rs.getInt("total_repair_klem"));
 				productionResult.setTotalRepairProtol(rs.getInt("total_repair_protol"));
@@ -119,15 +115,14 @@ public class ProductionResultDAO {
 			insertStatement.setString(1, productionResult.getProdResultCode());
 			insertStatement.setString(2, productionResult.getProductionCode());
 			insertStatement.setDate(3, new Date(productionResult.getProdResultDate().getTime()));
-			insertStatement.setString(4, productionResult.getMachineCode());
-			insertStatement.setInt(5, productionResult.getTotalOutput());
-			insertStatement.setInt(6, productionResult.getTotalRepairKlem());
-			insertStatement.setInt(7, productionResult.getTotalRepairProtol());
-			insertStatement.setInt(8, productionResult.getTotalFineA());
-			insertStatement.setInt(9, productionResult.getTotalFineB());
-			insertStatement.setInt(10, productionResult.getTotalFineResult());
-			insertStatement.setString(11, "Michael");
-			insertStatement.setDate(12, new Date(new java.util.Date().getTime()));
+			insertStatement.setInt(4, productionResult.getTotalOutput());
+			insertStatement.setInt(5, productionResult.getTotalRepairKlem());
+			insertStatement.setInt(6, productionResult.getTotalRepairProtol());
+			insertStatement.setInt(7, productionResult.getTotalFineA());
+			insertStatement.setInt(8, productionResult.getTotalFineB());
+			insertStatement.setInt(9, productionResult.getTotalFineResult());
+			insertStatement.setString(10, "Michael");
+			insertStatement.setDate(11, new Date(new java.util.Date().getTime()));
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -141,17 +136,16 @@ public class ProductionResultDAO {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setDate(1, new Date(productionResult.getProdResultDate().getTime()));
-			updateStatement.setString(2, productionResult.getMachineCode());
-			updateStatement.setInt(3, productionResult.getTotalOutput());
-			updateStatement.setInt(4, productionResult.getTotalRepairKlem());
-			updateStatement.setInt(5, productionResult.getTotalRepairProtol());
-			updateStatement.setInt(6, productionResult.getTotalFineA());
-			updateStatement.setInt(7, productionResult.getTotalFineB());
-			updateStatement.setInt(8, productionResult.getTotalFineResult());
-			updateStatement.setString(9, "Michael");
-			updateStatement.setDate(10, new Date(new java.util.Date().getTime()));
-			updateStatement.setString(11, productionResult.getProdResultCode());
-			updateStatement.setString(12, productionResult.getProductionCode());
+			updateStatement.setInt(2, productionResult.getTotalOutput());
+			updateStatement.setInt(3, productionResult.getTotalRepairKlem());
+			updateStatement.setInt(4, productionResult.getTotalRepairProtol());
+			updateStatement.setInt(5, productionResult.getTotalFineA());
+			updateStatement.setInt(6, productionResult.getTotalFineB());
+			updateStatement.setInt(7, productionResult.getTotalFineResult());
+			updateStatement.setString(8, "Michael");
+			updateStatement.setDate(9, new Date(new java.util.Date().getTime()));
+			updateStatement.setString(10, productionResult.getProdResultCode());
+			updateStatement.setString(11, productionResult.getProductionCode());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
