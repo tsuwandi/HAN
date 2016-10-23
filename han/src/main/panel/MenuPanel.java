@@ -18,11 +18,11 @@ public class MenuPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public MenuPanel() {
-		setPreferredSize(new Dimension(250, 630));
+		setPreferredSize(new Dimension(500, 630));
 		setLayout(null);
 
 		AccordionMenu menu = new AccordionMenu();
-		menu.setBounds(1, 0, 199, 220);
+		menu.setBounds(1, 0, 200, 260);
 		
 		menu.addNewMenu("Penerimaan", "Penerimaan");
 		menu.addNewLeafTo("Penerimaan", "Supplier", "Supplier", "module.supplier.ui.SupplierListPanel");
@@ -31,10 +31,10 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Penerimaan", "STTK", "STTK", "module.pembelian.ui.ListReceivedPanel");
 		menu.addNewLeafTo("Penerimaan", "Pengeringan In", "Pengeringan In", "module.dryin.ui.DryInListPanel");
 		menu.addNewLeafTo("Penerimaan", "Pengeringan Out", "Pengeringan Out", "module.dryout.ui.DryOutListPanel");
-	
+		menu.addNewLeafTo("Penerimaan", "Tutup Harian", "Tutup Harian", "module.dailyclosing.ui.DailyClosingReceivePanel");
+		
 		menu.addNewMenu("Tutup Harian", "Tutup Harian");
 		menu.addNewLeafTo("Tutup Harian", "Send To Finance", "Send To Finance", "module.sendtofinance.ui.SendToFinancePanel");
-		menu.addNewLeafTo("Tutup Harian", "Tutup Harian", "Tutup Harian", "module.dailyclosing.ui.DailyClosingPanel");
 		
 		menu.calculateAvaiableSpace();
 		
