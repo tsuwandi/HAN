@@ -1540,3 +1540,66 @@ UPDATE `han20160830`.`production_type` SET `production_type_code` = 'PW' WHERE `
 INSERT INTO `project`.`grade` (`id`, `product_category_id`, `grade`, `input_date`, `input_by`, `edit_date`, `edit_by`, `delete_date`, `delete_by`) VALUES ('100', '1', 'Broken', NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO PRODUCT VALUES(1000, 'PDC019', 'JATI RUSAK', 1, NULL, 1, 0, '', NULL, NULL, NULL, 1, 100, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016-08-31', 'Timotius', NULL, NULL, NULL, NULL, 0, '10.00000', '10.00000', '10.00000', NULL, NULL);
 
+CREATE TABLE IF NOT EXISTS `prod_pk` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `prod_pk_code` varchar(20) NOT NULL,
+  `group_shift_code` varchar(9) NOT NULL,
+  `line_code` varchar(9) NOT NULL,
+  `shift_code` varchar(9) NOT NULL,
+  `production_date` date NOT NULL,
+  `information` varchar(200) DEFAULT NULL,
+  `total_material_protol` int(5) NOT NULL,
+  `total_material_klem` int(5) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `confirm_code`varchar(5)NOT NULL,
+  `confirm_date`date,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edited_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`,`prod_pk_code`)
+ );
+  CREATE TABLE IF NOT EXISTS `prod_pk_material` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `prod_pk_code` varchar(20) NOT NULL,
+  `product_code` varchar(20) NOT NULL,
+  `qty` decimal(7,2),
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edited_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`,`prod_pk_code`)
+);
+CREATE TABLE IF NOT EXISTS `prod_pk_result_product` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `prod_pk_result_id` int NOT NULL,
+  `product_code` varchar(20) NOT NULL,
+  `qty` decimal(7,2),
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edited_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `prod_pk_result` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `prod_pk_code` varchar(20) NOT NULL,
+  `pressed_no` integer,
+  `start_time` varchar(10),
+  `total_protol` decimal(7,2),
+  `total_klem` decimal(7,2),
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edited_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`,`prod_pk_code`)
+);
