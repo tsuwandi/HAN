@@ -80,16 +80,16 @@ public class CreateProductionPKPanel extends JPanel implements Bridging{
 			}
 		});
 		
-		/*inputProductionResultBtn.addActionListener(new ActionListener() {
+		inputProductionResultBtn.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PopUpProductionResult pop = new PopUpProductionResult(parent);
+				PopUpProdPKResult pop = new PopUpProdPKResult(parent);
 				pop.show();
 				pop.setLocationRelativeTo(null);
 //				pop.setModal(true);
 			}
-		});*/
+		});
 		
 		saveBtn.addActionListener(new ActionListener() {
 			@Override

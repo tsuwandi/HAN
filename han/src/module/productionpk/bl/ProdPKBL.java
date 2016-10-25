@@ -26,8 +26,11 @@ import module.production.model.Shift;
 import module.productionpk.dao.ProdPKDAO;
 import module.productionpk.dao.ProdPKMaterialDAO;
 import module.productionpk.dao.ProdPKResultDAO;
+import module.productionpk.dao.ProdPKResultProductDAO;
 import module.productionpk.model.ProdPK;
 import module.productionpk.model.ProdPKMaterial;
+import module.productionpk.model.ProdPKResult;
+import module.productionpk.model.ProdPKResultProduct;
 
 public class ProdPKBL {
 	private DataSource dataSource;
@@ -37,6 +40,7 @@ public class ProdPKBL {
 	private ProdPKDAO prodPKDAO;
 	private ProdPKMaterialDAO prodPKMaterialDAO;
 	private ProdPKResultDAO prodPKResultDAO;
+	private ProdPKResultProductDAO prodPKResultProductDAO;
 	
 	public ProdPKBL(DataSource dataSource) {
 		Connection con = null;
@@ -49,6 +53,7 @@ public class ProdPKBL {
 			prodPKDAO = new ProdPKDAO(con);
 			prodPKMaterialDAO = new ProdPKMaterialDAO(con);
 			prodPKResultDAO = new ProdPKResultDAO(con);
+			prodPKResultProductDAO = new ProdPKResultProductDAO(con);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -88,10 +93,35 @@ public class ProdPKBL {
 		return lastCode;
 	}
 	
+	public int getLastProductPKResultID() throws SQLException {
+		return prodPKResultDAO.getLastID()+1;
+	}
+	
+	public List<ProdPKResult> getProductPKResult(String prodCode) throws SQLException{
+		List<ProdPKResult> prodPKResults = prodPKResultDAO.getAllByCode(prodCode);
+		if(prodPKResults!=null){
+			if(prodPKResults.size()>0){
+				for (ProdPKResult prodPKResult : prodPKResults) {
+					prodPKResult.setListProductPKResultProduct(getProductPKResultProduct(prodPKResult.getId()));
+				}
+				return prodPKResults;
+			}else{
+				return null;
+			}
+		}else{
+			return null;
+		}
+	}
+	
+	public List<ProdPKResultProduct> getProductPKResultProduct(int resultID) throws SQLException{
+		return prodPKResultProductDAO.getAllByProdPKResultID(resultID);
+	}
+	
+	
 	public List<ProdPK> getProduction() throws SQLException {
 		List<ProdPK> productions = prodPKDAO.getAll();
 		for (ProdPK production : productions) {
-//			if(getProductionResultByCode(production.getProductionCode())!=null)production.setProductionResult(getProductionResultByCode(production.getProductionCode()));
+			if(getProductPKResult(production.getProdPKCode())!=null)production.setListProdPKResult(getProductPKResult(production.getProdPKCode()));
 			if(getProdPKMaterialByCode(production.getProdPKCode())!=null)production.setListPKMaterial(getProdPKMaterialByCode(production.getProdPKCode()));
 		}
 		return productions;
@@ -108,13 +138,22 @@ public class ProdPKBL {
 		try {
 			cone = dataSource.getConnection();
 			cone.setAutoCommit(false);
-//			if(ProdPK.getProductionResult()!=null){
-//				new ProductionResultDAO(cone).save(production.getProductionResult());
-//				for(ProductionResultProduct prd : production.getProductionResult().getListOfProductionResultDetail()){
-//					new ProductionResultDetailDAO(cone).save(prd);
-//				}
-//				flagProductionResult=true;
-//			}
+			if(production.getListProdPKResult()!=null){
+				if(production.getListProdPKResult().size()!=0){
+					int id = getLastProductPKResultID();
+					for (ProdPKResult prodPK : production.getListProdPKResult()) {
+						prodPK.setId(id);
+						prodPK.setProdPKCode(production.getProdPKCode());
+						new ProdPKResultDAO(cone).save(prodPK);
+						for (ProdPKResultProduct prodResultProduct : prodPK.getListProductPKResultProduct()) {
+							prodResultProduct.setProdPKResultID(id);
+							new ProdPKResultProductDAO(cone).save(prodResultProduct);
+						}
+						id++;
+					}
+					flagProductionResult=true;
+				}
+			}
 			if(production.getListPKMaterial()!=null){
 				if(production.getListPKMaterial().size()!=0){
 					for(ProdPKMaterial prodPKMaterial :production.getListPKMaterial()){
@@ -145,15 +184,30 @@ public class ProdPKBL {
 		try {
 			cone = dataSource.getConnection();
 			cone.setAutoCommit(false);
-//			if(production.getProductionResult()!=null){
-//				if(getProductionResultByCode(production.getProductionCode())!=null)new ProductionResultDAO(cone).update(production.getProductionResult());
-//				else new ProductionResultDAO(cone).save(production.getProductionResult());
-//				new ProductionResultDetailDAO(cone).delete(production.getProductionResult().getProdResultCode());
-//				for(ProductionResultProduct prd : production.getProductionResult().getListOfProductionResultDetail()){
-//					new ProductionResultDetailDAO(cone).save(prd);
-//				}
-//				flagProductionResult=true;
-//			}
+			if(production.getListProdPKResult()!=null){
+				if(production.getListProdPKResult().size()!=0){
+					int id = getLastProductPKResultID();
+					for (ProdPKResult prodPK : production.getListProdPKResult()) {
+						if(prodPK.getId()==0){
+							prodPK.setId(id);
+							prodPK.setProdPKCode(production.getProdPKCode());
+							new ProdPKResultDAO(cone).save(prodPK);
+							for (ProdPKResultProduct prodResultProduct : prodPK.getListProductPKResultProduct()) {
+								prodResultProduct.setProdPKResultID(id);
+								new ProdPKResultProductDAO(cone).save(prodResultProduct);
+							}
+							id++;
+						}else{
+							new ProdPKResultDAO(cone).update(prodPK);
+							for (ProdPKResultProduct prodResultProduct : prodPK.getListProductPKResultProduct()) {
+								new ProdPKResultProductDAO(cone).update(prodResultProduct);
+							}
+						}
+						
+					}
+					flagProductionResult=true;
+				}
+			}
 			if(production.getListPKMaterial()!=null){
 				if(production.getListPKMaterial().size()!=0){
 					for(ProdPKMaterial prodPKMaterial :production.getListPKMaterial()){

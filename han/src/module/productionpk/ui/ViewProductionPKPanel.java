@@ -80,9 +80,9 @@ public class ViewProductionPKPanel extends JPanel implements Bridging{
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				PopUpViewProductionResult pop = new PopUpViewProductionResult(parent);
-//				pop.show();
-//				pop.setLocationRelativeTo(null);
+				PopUpViewProdPKResult pop = new PopUpViewProdPKResult(parent);
+				pop.show();
+				pop.setLocationRelativeTo(null);
 			}
 		});
 		

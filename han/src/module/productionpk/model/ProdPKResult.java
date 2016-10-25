@@ -1,5 +1,7 @@
 package module.productionpk.model;
 
+import java.util.List;
+
 public class ProdPKResult {
 	int id;
 	String prodPKCode;
@@ -7,6 +9,11 @@ public class ProdPKResult {
 	String startTime;
 	double totalProtol;
 	double totalKlem;
+	double totalFineA;
+	double totalFineB;
+	
+	List<ProdPKResultProduct> listProductPKResultProduct;
+	
 	public int getId() {
 		return id;
 	}
@@ -42,6 +49,24 @@ public class ProdPKResult {
 	}
 	public void setTotalKlem(double totalKlem) {
 		this.totalKlem = totalKlem;
+	}
+	public List<ProdPKResultProduct> getListProductPKResultProduct() {
+		return listProductPKResultProduct;
+	}
+	public void setListProductPKResultProduct(List<ProdPKResultProduct> listProductPKResultProduct) {
+		this.listProductPKResultProduct = listProductPKResultProduct;
+	}
+	public double getTotalFineA() {
+		return totalFineA;
+	}
+	public void setTotalFineA(double totalFineA) {
+		this.totalFineA = totalFineA;
+	}
+	public double getTotalFineB() {
+		return totalFineB;
+	}
+	public void setTotalFineB(double totalFineB) {
+		this.totalFineB = totalFineB;
 	}
 	
 	

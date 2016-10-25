@@ -1603,3 +1603,7 @@ CREATE TABLE IF NOT EXISTS `prod_pk_result` (
   `delete_by` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`id`,`prod_pk_code`)
 );
+
+
+ALTER TABLE  `prod_pk_result` ADD  `total_fine_a` DECIMAL( 7, 2 ) NOT NULL AFTER  `start_time` ,
+ADD  `total_fine_b` DECIMAL( 7, 2 ) NOT NULL AFTER  `total_fine_a`;

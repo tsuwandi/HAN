@@ -67,7 +67,7 @@ public class PopUpProdPKMaterial extends JDialog{
 
 	
 	static final String KA = "PDC009-3";
-	static final String KB = "PDC009-3";
+	static final String KB = "PDC009-4";
 	static final String PA = "PDC009-5";
 	static final String PB = "PDC009-6";
 	static final String NA = "PDC009";
@@ -126,7 +126,7 @@ public class PopUpProdPKMaterial extends JDialog{
 		klemGradeALbl.setBounds(40,130,150,20);
 		add(klemGradeALbl);
 		
-		klemGradeAField = new NumberField(5);
+		klemGradeAField = new NumberField(7);
 		klemGradeAField.setBounds(230,130,150,20);
 		add(klemGradeAField);
 		
@@ -138,7 +138,7 @@ public class PopUpProdPKMaterial extends JDialog{
 		klemGradeBLbl.setBounds(40,170,150,20);
 		add(klemGradeBLbl);
 		
-		klemGradeBField = new NumberField(5);
+		klemGradeBField = new NumberField(7);
 		klemGradeBField.setBounds(230,170,150,20);
 		add(klemGradeBField);
 		
@@ -155,7 +155,7 @@ public class PopUpProdPKMaterial extends JDialog{
 		protolGradeALbl.setBounds(40,250,150,20);
 		add(protolGradeALbl);
 		
-		protolGradeAField = new NumberField(5);
+		protolGradeAField = new NumberField(7);
 		protolGradeAField.setBounds(230,250,150,20);
 		add(protolGradeAField);
 		
@@ -167,7 +167,7 @@ public class PopUpProdPKMaterial extends JDialog{
 		protolGradeBLbl.setBounds(40,290,150,20);
 		add(protolGradeBLbl);
 		
-		protolGradeBField = new NumberField(5);
+		protolGradeBField = new NumberField(7);
 		protolGradeBField.setBounds(230,290,150,20);
 		add(protolGradeBField);
 		
