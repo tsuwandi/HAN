@@ -20,6 +20,7 @@ public class ProdPK {
 	String lineDescription;
 	String shiftName;
 	List<ProdPKMaterial> listPKMaterial;
+	List<ProdPKResult> listProdPKResult;
 	public int getId() {
 		return id;
 	}
@@ -116,10 +117,12 @@ public class ProdPK {
 	public void setListPKMaterial(List<ProdPKMaterial> listPKMaterial) {
 		this.listPKMaterial = listPKMaterial;
 	}
+	public List<ProdPKResult> getListProdPKResult() {
+		return listProdPKResult;
+	}
+	public void setListProdPKResult(List<ProdPKResult> listProdPKResult) {
+		this.listProdPKResult = listProdPKResult;
+	}
 	
-	
-	
-	
-	
-	
+
 }

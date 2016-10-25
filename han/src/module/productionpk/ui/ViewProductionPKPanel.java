@@ -70,9 +70,9 @@ public class ViewProductionPKPanel extends JPanel implements Bridging{
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				PopUpViewMaterial pop = new PopUpViewMaterial(parent);
-//				pop.show();
-//				pop.setLocationRelativeTo(null);
+				PopUpViewPKMaterial pop = new PopUpViewPKMaterial(parent);
+				pop.show();
+				pop.setLocationRelativeTo(null);
 			}
 		});
 		
@@ -105,7 +105,7 @@ public class ViewProductionPKPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.production.ui.CreateProductionPanel",production);
+				MainPanel.changePanel("module.productionpk.ui.CreateProductionPKPanel",production);
 			}
 		});
 	}
@@ -135,7 +135,7 @@ public class ViewProductionPKPanel extends JPanel implements Bridging{
 			String date = new SimpleDateFormat("dd").format(currentDate);
 			String month = new SimpleDateFormat("MM").format(currentDate);
 			String year = new SimpleDateFormat("yy").format(currentDate);
-			productionCodeField.setText(ServiceFactory.getProdPKBL().getProductionLastCode()+"/PD/"+date+"/"+month+"/"+year);
+			productionCodeField.setText(ServiceFactory.getProdPKBL().getProductionLastCode()+"/PK/"+date+"/"+month+"/"+year);
 			productionDateChooser.setDate(currentDate);
 		} catch (SQLException e) {
 			log.error(e.getMessage());

@@ -118,7 +118,8 @@ public class ProdPKBL {
 			if(production.getListPKMaterial()!=null){
 				if(production.getListPKMaterial().size()!=0){
 					for(ProdPKMaterial prodPKMaterial :production.getListPKMaterial()){
-						new ProdPKMaterialDAO(cone).save(prodPKMaterial);
+						if(prodPKMaterial.getId()==0)new ProdPKMaterialDAO(cone).save(prodPKMaterial);
+						else new ProdPKMaterialDAO(cone).update(prodPKMaterial);
 					}
 					flagProductionRawMaterial=true;
 				}
@@ -155,9 +156,9 @@ public class ProdPKBL {
 //			}
 			if(production.getListPKMaterial()!=null){
 				if(production.getListPKMaterial().size()!=0){
-					new ProdRMDAO(cone).delete(production.getProdPKCode());
-					for(ProdPKMaterial prodRM :production.getListPKMaterial()){
-						new ProdPKMaterialDAO(cone).save(prodRM);
+					for(ProdPKMaterial prodPKMaterial :production.getListPKMaterial()){
+						if(prodPKMaterial.getId()==0)new ProdPKMaterialDAO(cone).save(prodPKMaterial);
+						else new ProdPKMaterialDAO(cone).update(prodPKMaterial);
 					}
 					flagProductionRawMaterial=true;
 				}
