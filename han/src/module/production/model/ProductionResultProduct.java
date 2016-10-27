@@ -1,6 +1,6 @@
 package module.production.model;
 
-public class ProductionResultDetail {
+public class ProductionResultProduct {
 	int id;
 	String prodResultCode;
 	int pressedNo;

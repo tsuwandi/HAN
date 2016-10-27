@@ -1,4 +1,4 @@
-package module.purchasingproduction.ui;
+package module.productionpk.ui;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
@@ -28,11 +29,13 @@ import main.component.PagingPanel;
 import main.component.TextField;
 import main.panel.MainPanel;
 import model.User;
+import module.pembelian.model.Received;
 import module.production.model.Production;
+import module.productionpk.model.ProdPK;
 import module.util.Pagination;
 
-public class ListPurchasingProductionPanel extends JPanel {
-	Logger log = LogManager.getLogger(ListPurchasingProductionPanel.class.getName());
+public class ListProductionPKPanel extends JPanel {
+	Logger log = LogManager.getLogger(ListProductionPKPanel.class.getName());
 	private static final long serialVersionUID = 1L;
 	private JButton searchBtn;
 	private TextField searchField;
@@ -41,13 +44,13 @@ public class ListPurchasingProductionPanel extends JPanel {
 	
 	private JButton advancedSearchBtn;
 	private JButton inputProductionBtn;
-	private PagingPanel<Production> pagingPanel;
+	private PagingPanel<ProdPK> pagingPanel;
 	
 	ProductionTableModel productionTableModel;
-	List<Production> productions;
-	ListPurchasingProductionPanel listProductionPanel;
+	List<ProdPK> productions;
+	ListProductionPKPanel listProductionPKPanel;
 
-	public ListPurchasingProductionPanel() {
+	public ListProductionPKPanel() {
 		createGUI();
 		listener();
 		initData();
@@ -62,8 +65,8 @@ public class ListPurchasingProductionPanel extends JPanel {
 						MainPanel.changePanel("module.production.ui.CreateProductionPanel", productions.get(productionTable.getSelectedRow()));
 					}
 				}*/
-				if(productionTable.columnAtPoint(e.getPoint())==10){
-					MainPanel.changePanel("module.production.ui.ViewProductionPanel", pagingPanel.getSubListData().get(productionTable.getSelectedRow()));
+				if(productionTable.columnAtPoint(e.getPoint())==8){
+					MainPanel.changePanel("module.productionpk.ui.ViewProductionPKPanel", pagingPanel.getSubListData().get(productionTable.getSelectedRow()));
 				}
 			}
 		});
@@ -72,7 +75,7 @@ public class ListPurchasingProductionPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.production.ui.CreateProductionPanel");
+				MainPanel.changePanel("module.productionpk.ui.CreateProductionPKPanel");
 			}
 		});
 	
@@ -81,19 +84,19 @@ public class ListPurchasingProductionPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				PopUpAdvancedSearch pop = new PopUpAdvancedSearch(listProductionPanel);
+//				PopUpAdvancedSearch pop = new PopUpAdvancedSearch(listProductionPKPanel);
 //				pop.show();
 //				pop.setLocationRelativeTo(null);
 			}
 		});
 		
-		searchBtn.addActionListener(new ActionListener() {
+		/*searchBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(!searchField.getText().equals("")){
 					try {
-						List<Production> productions = ServiceFactory.getProductionBL().searchProduction(" AND production_code LIKE '%"+searchField.getText()+"%'");
+						List<ProdPK> productions = ServiceFactory.getProductionBL().searchProduction(" AND production_code LIKE '%"+searchField.getText()+"%'");
 						updateTableData(productions);
 					} catch (SQLException e) {
 						log.error(e.getMessage());
@@ -101,7 +104,7 @@ public class ListPurchasingProductionPanel extends JPanel {
 					}
 				}
 			}
-		});
+		});*/
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -113,7 +116,7 @@ public class ListPurchasingProductionPanel extends JPanel {
 	
 	private void initData(){
 		try {
-			productions = ServiceFactory.getProductionBL().getProduction();
+			productions = ServiceFactory.getProdPKBL().getProduction();
 			productionTable.setModel(new ProductionTableModel(productions));
 			
 			pagingPanel.setPage(1);
@@ -134,14 +137,14 @@ public class ListPurchasingProductionPanel extends JPanel {
 	
 	private void createGUI(){
 		setLayout(null);
-		listProductionPanel = this;
+		listProductionPKPanel = this;
 		
-		JLabel lblBreadcrumb = new JLabel("ERP > Produksi");
+		JLabel lblBreadcrumb = new JLabel("ERP > Produksi Protol Klem");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("PRODUKSI");
+		JLabel lblHeader = new JLabel("PRODUKSI PROTOL KLEM");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -186,8 +189,7 @@ public class ListPurchasingProductionPanel extends JPanel {
 		TableColumn column6 = productionTable.getColumnModel().getColumn(6);
 		TableColumn column7 = productionTable.getColumnModel().getColumn(7);
 		TableColumn column8 = productionTable.getColumnModel().getColumn(8);
-		TableColumn column9 = productionTable.getColumnModel().getColumn(9);
-		TableColumn column10 = productionTable.getColumnModel().getColumn(10);
+
 		
 		
 		
@@ -207,33 +209,26 @@ public class ListPurchasingProductionPanel extends JPanel {
 		column4.setMinWidth(100);
 		column4.setMaxWidth(100);
 		
-		column5.setPreferredWidth(100);
-		column5.setMinWidth(100);
-		column5.setMaxWidth(100);
+		column5.setPreferredWidth(150);
+		column5.setMinWidth(150);
+		column5.setMaxWidth(150);
 		
-		column6.setPreferredWidth(100);
-		column6.setMinWidth(100);
-		column6.setMaxWidth(100);
+		column6.setPreferredWidth(150);
+		column6.setMinWidth(150);
+		column6.setMaxWidth(150);
 		
-		column7.setPreferredWidth(100);
-		column7.setMinWidth(100);
-		column7.setMaxWidth(100);
+		column7.setPreferredWidth(150);
+		column7.setMinWidth(150);
+		column7.setMaxWidth(150);
 		
-		column8.setPreferredWidth(100);
-		column8.setMinWidth(100);
-		column8.setMaxWidth(100);
+		column8.setPreferredWidth(150);
+		column8.setMinWidth(150);
+		column8.setMaxWidth(150);
 
-		column9.setPreferredWidth(100);
-		column9.setMinWidth(100);
-		column9.setMaxWidth(100);
-
-		column10.setPreferredWidth(100);
-		column10.setMinWidth(100);
-		column10.setMaxWidth(100);
 
 	}
 	
-	public void updateTableData(List<Production> productions){
+	public void updateTableData(List<ProdPK> productions){
 		productionTable.setModel(new ProductionTableModel(productions));
 		productionTable.updateUI();
 		setTableSize();
@@ -241,9 +236,9 @@ public class ListPurchasingProductionPanel extends JPanel {
 	
 	public class ProductionTableModel extends AbstractTableModel implements Pagination{
 		private static final long serialVersionUID = 1L;
-		private List<Production> productions;
+		private List<ProdPK> productions;
 	    
-	    public ProductionTableModel(List<Production> productions) {
+	    public ProductionTableModel(List<ProdPK> productions) {
 	        this.productions = productions;
 	    }
 	    
@@ -259,7 +254,7 @@ public class ListPurchasingProductionPanel extends JPanel {
 	     * Method to get Column Count
 	     */
 	    public int getColumnCount() {
-	        return 11;
+	        return 9;
 	    }
 	    
 	    /**
@@ -269,12 +264,12 @@ public class ListPurchasingProductionPanel extends JPanel {
 	     * @return ({@link User}) Object 
 	     */
 	    public Object getValueAt(int rowIndex, int columnIndex) {
-	    	Production p = productions.get(rowIndex);
+	    	ProdPK p = productions.get(rowIndex);
 	        switch(columnIndex){
 	        	case 0 :
 	        		return p.getId();
 	            case 1 : 
-	                return p.getProductionCode();
+	                return p.getProdPKCode();
 	            case 2 :
 	                return new SimpleDateFormat("dd-MM-yyyy").format(p.getProductionDate());
 	            case 3 :
@@ -284,14 +279,10 @@ public class ListPurchasingProductionPanel extends JPanel {
 	            case 5 :
 	                return p.getLineDescription();
 	            case 6 :
-	                return p.getProductionTypeDescription();
+	                return p.getTotalMaterialKlem()+p.getTotalMaterialProtol();
 	            case 7 :
-	                return p.getTotalVolume();
-	            case 8 :
-	                return p.getProductionResult()!=null ? p.getProductionResult().getTotalOutput() : 0;
-	            case 9 :
 	                return p.getStatus();
-	            case 10 :
+	            case 8 :
 	                return "View";
 	            default :
 	                return "";
@@ -322,14 +313,10 @@ public class ListPurchasingProductionPanel extends JPanel {
 	            case 5 :
 	                return "Line";
 	            case 6 :
-	                return "Tipe Produksi";
+	                return "Total Bahan Baku";
 	            case 7 :
-	                return "Total Bahan Baku(cm3)";
-	            case 8 :
-	                return "Total Hasil Produksi";
-	            case 9 :
 	                return "Status";
-	            case 10 :
+	            case 8 :
 	                return "Action";
 	            default :
 	                return "";
@@ -338,7 +325,7 @@ public class ListPurchasingProductionPanel extends JPanel {
 
 		@Override
 		public <T> void setList(List<T> list) {
-			productions = (List<Production>) list;
+			productions = (List<ProdPK>) list;
 		}
 
 	}

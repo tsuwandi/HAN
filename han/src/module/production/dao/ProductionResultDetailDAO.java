@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import module.production.model.ProductionResultDetail;
+import module.production.model.ProductionResultProduct;
 
 public class ProductionResultDetailDAO {
 	private Connection connection;
@@ -30,15 +30,15 @@ public class ProductionResultDetailDAO {
 	}
 	
 	
-	public List<ProductionResultDetail> getAll() throws SQLException {
-		List<ProductionResultDetail> productionResultDetails = new ArrayList<ProductionResultDetail>();
+	public List<ProductionResultProduct> getAll() throws SQLException {
+		List<ProductionResultProduct> productionResultDetails = new ArrayList<ProductionResultProduct>();
 
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
-				ProductionResultDetail productionResultDetail = new ProductionResultDetail();
+				ProductionResultProduct productionResultDetail = new ProductionResultProduct();
 				productionResultDetail.setId(rs.getInt("id"));
 				productionResultDetail.setProdResultCode(rs.getString("prod_result_code"));
 				productionResultDetail.setPressedNo(rs.getInt("pressed_no"));
@@ -61,8 +61,8 @@ public class ProductionResultDetailDAO {
 		return productionResultDetails;
 	}
 	
-	public List<ProductionResultDetail> getAllByProdResultCode(String productionCode) throws SQLException {
-		List<ProductionResultDetail> productionResultDetails = new ArrayList<ProductionResultDetail>();
+	public List<ProductionResultProduct> getAllByProdResultCode(String productionCode) throws SQLException {
+		List<ProductionResultProduct> productionResultDetails = new ArrayList<ProductionResultProduct>();
 
 		try {
 			StringBuffer sb  = new StringBuffer(getAllQuery);
@@ -73,7 +73,7 @@ public class ProductionResultDetailDAO {
 			
 			ResultSet rs = getProdResultByProductionCodeStatement.executeQuery();
 			while (rs.next()) {
-				ProductionResultDetail productionResultDetail = new ProductionResultDetail();
+				ProductionResultProduct productionResultDetail = new ProductionResultProduct();
 				productionResultDetail.setId(rs.getInt("id"));
 				productionResultDetail.setProdResultCode(rs.getString("prod_result_code"));
 				productionResultDetail.setPressedNo(rs.getInt("pressed_no"));
@@ -100,7 +100,7 @@ public class ProductionResultDetailDAO {
 	/*id, prod_result_code, pressed_no, start_time, repair_klem_a, repair_klem_b, "
 	+ "repair_protol_a, repair_protol_b, fine_a, fine_b, total FROM prod_result_dtl*/
 
-	public void save(ProductionResultDetail productionResultDetail) throws SQLException {
+	public void save(ProductionResultProduct productionResultDetail) throws SQLException {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setString(1, productionResultDetail.getProdResultCode());

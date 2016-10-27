@@ -8,15 +8,13 @@ public class ProductionResult {
 	String prodResultCode;
 	String productionCode;
 	Date prodResultDate;
-	String machineCode;
-	String machineDescription;
 	int totalOutput;
 	int totalRepairKlem;
 	int totalRepairProtol;
 	int totalFineA;
 	int totalFineB;
 	int totalFineResult;
-	List<ProductionResultDetail> listOfProductionResultDetail;
+	List<ProductionResultProduct> listOfProductionResultDetail;
 	public int getId() {
 		return id;
 	}
@@ -42,18 +40,7 @@ public class ProductionResult {
 	public void setProdResultDate(Date prodResultDate) {
 		this.prodResultDate = prodResultDate;
 	}
-	public String getMachineCode() {
-		return machineCode;
-	}
-	public void setMachineCode(String machineCode) {
-		this.machineCode = machineCode;
-	}
-	public String getMachineDescription() {
-		return machineDescription;
-	}
-	public void setMachineDescription(String machineDescription) {
-		this.machineDescription = machineDescription;
-	}
+	
 	public int getTotalOutput() {
 		return totalOutput;
 	}
@@ -90,10 +77,10 @@ public class ProductionResult {
 	public void setTotalFineResult(int totalFineResult) {
 		this.totalFineResult = totalFineResult;
 	}
-	public List<ProductionResultDetail> getListOfProductionResultDetail() {
+	public List<ProductionResultProduct> getListOfProductionResultDetail() {
 		return listOfProductionResultDetail;
 	}
-	public void setListOfProductionResultDetail(List<ProductionResultDetail> listOfProductionResultDetail) {
+	public void setListOfProductionResultDetail(List<ProductionResultProduct> listOfProductionResultDetail) {
 		this.listOfProductionResultDetail = listOfProductionResultDetail;
 	}
 	
