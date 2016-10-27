@@ -35,6 +35,7 @@ public class MenuPanel extends JPanel {
 		
 		menu.addNewMenu("Tutup Harian", "Tutup Harian");
 		menu.addNewLeafTo("Tutup Harian", "Send To Finance", "Send To Finance", "module.sendtofinance.ui.SendToFinancePanel");
+		menu.addNewLeafTo("Tutup Harian", "Tutup Harian", "Tutup Harian", "module.dailyclosing.ui.DailyClosingPanel");
 		
 		menu.calculateAvaiableSpace();
 		

@@ -1,14 +1,22 @@
 package module.dailyclosing.bl;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
+
 import module.dailyclosing.dao.ConfirmDAO;
+import module.dailyclosing.dao.InventoryDAO;
+import module.dailyclosing.dao.InventoryLogDAO;
 import module.dailyclosing.dao.InventoryLogTempDAO;
 import module.dailyclosing.model.Confirm;
+import module.dailyclosing.model.Inventory;
+import module.dailyclosing.model.InventoryLog;
 import module.dailyclosing.model.InventoryLogTemp;
 import module.dryin.DryInType;
 import module.dryin.dao.DryInDAO;
@@ -22,6 +30,10 @@ import module.pembelian.model.Received;
 import module.util.DateUtil;
 
 public class DailyClosingBL {
+	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = Logger.getLogger(DailyClosingBL.class);
+
 	private DataSource dataSource;
 
 	public DailyClosingBL(DataSource dataSource) {
@@ -88,7 +100,7 @@ public class DailyClosingBL {
 				inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
 
 				new InventoryLogTempDAO(con).save(inventoryLogTemp);
-				
+
 				received.setReceivedStatus(ReceivedType.FINAL.toString());
 
 				new ReceivedDAO(con).updateDailyClosing(received);
@@ -165,4 +177,92 @@ public class DailyClosingBL {
 		}
 		return builder.toString();
 	}
+
+	public void doProcessDailyClosing() throws Exception {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			con.setAutoCommit(false);
+			List<InventoryLogTemp> inventoryLogTemps = new InventoryLogTempDAO(con).getAll();
+			
+			for(InventoryLogTemp inventoryLogTemp : inventoryLogTemps) {
+				double currStock = 0;
+				Inventory inventory = null;
+				inventory = new InventoryDAO(con).getInventoryByProductCodeAndWarehouse(inventoryLogTemp.getProductCode(), inventoryLogTemp.getWarehouse());
+				
+				InventoryLog inventoryLog = new InventoryLog();
+				inventoryLog.setProductCode(inventoryLogTemp.getProductCode());
+				inventoryLog.setWarehouse(inventoryLogTemp.getWarehouse());
+				inventoryLog.setConfirmCode(makeConfirmCode());
+				if(inventoryLogTemp.getMutasi().equals(DEBET)) {
+					inventoryLog.setPrevStock((double) 0);
+					inventoryLog.setPlusStock(inventoryLogTemp.getQty());
+					inventoryLog.setMinStock((double) 0);
+				} else if (inventoryLogTemp.getMutasi().equals(CREDIT)) {
+					inventoryLog.setPrevStock((double) 0);
+					inventoryLog.setMinStock(inventoryLogTemp.getQty());
+					inventoryLog.setPlusStock((double) 0);
+					//currStock = inventoryLog.getPrevStock() - inventoryLog.getMinStock();
+					//inventoryLog.setCurrStock(currStock);
+				} else {
+					LOGGER.error("NO DATA MUTASI.");
+					throw new Exception("Failed to Process Daily Closing.");
+				}
+				
+				if(inventory == null) {
+					currStock = inventoryLog.getPrevStock() + inventoryLog.getPlusStock() - inventoryLog.getMinStock();
+					inventoryLog.setCurrStock(currStock);
+					inventoryLog.setPrevStockDate(new Date());
+					inventoryLog.setCurrStockDate(new Date());
+					
+					inventoryLog = new InventoryLogDAO(con).save(inventoryLog);
+					currStock = inventoryLog.getPrevStock() + inventoryLog.getPlusStock()  - inventoryLog.getMinStock();
+					inventoryLog.setCurrStock(currStock);
+							
+					inventory = new Inventory();
+					inventory.setId(0);
+					inventory.setProductCode(inventoryLogTemp.getProductCode());
+					inventory.setQty(currStock);
+					inventory.setWarehouse(inventoryLogTemp.getWarehouse());
+					inventory.setStockDate(new Date());
+					inventory.setInventoryLogId(inventoryLog.getId());
+					
+					new InventoryDAO(con).save(inventory);
+				} else {
+					currStock = inventoryLog.getPrevStock() + inventoryLog.getPlusStock() - inventoryLog.getMinStock();
+					inventoryLog.setCurrStock(currStock);
+					inventoryLog.setPrevStock(inventory.getQty());
+					
+					//override curr_stock
+					inventoryLog.setCurrStock(inventory.getQty() + currStock);
+					
+					inventoryLog.setPrevStockDate(inventory.getStockDate());
+					inventoryLog.setCurrStockDate(new Date());
+					
+					inventoryLog = new InventoryLogDAO(con).save(inventoryLog);
+					currStock = inventoryLog.getPrevStock() + inventoryLog.getPlusStock() - inventoryLog.getMinStock();
+					inventoryLog.setCurrStock(currStock);
+					
+					inventory.setProductCode(inventoryLogTemp.getProductCode());
+					inventory.setQty(currStock);
+					inventory.setWarehouse(inventoryLogTemp.getWarehouse());
+					inventory.setStockDate(new Date());
+					inventory.setInventoryLogId(inventoryLog.getId());
+					
+					new InventoryDAO(con).update(inventory);
+				}
+				
+				new InventoryLogTempDAO(con).updateStatusConfirmDate(inventoryLogTemp);
+			}
+			
+			con.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			con.rollback();
+			throw new SQLException(e.getMessage());
+		} finally {
+			con.close();
+		}
+	}
+
 }
