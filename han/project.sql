@@ -1607,3 +1607,6 @@ CREATE TABLE IF NOT EXISTS `prod_pk_result` (
 
 ALTER TABLE  `prod_pk_result` ADD  `total_fine_a` DECIMAL( 7, 2 ) NOT NULL AFTER  `start_time` ,
 ADD  `total_fine_b` DECIMAL( 7, 2 ) NOT NULL AFTER  `total_fine_a`;
+
+ALTER TABLE `supp_address` CHANGE `city_id` `province_id` INT(9) NULL DEFAULT NULL;
+ALTER TABLE `supp_address` ADD `city` VARCHAR(150) NULL AFTER `province_id`;

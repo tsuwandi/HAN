@@ -22,17 +22,17 @@ public class SuppAddressDAO {
 	private PreparedStatement deleteStatement;
 
 	private String getAllBySuppCodeQuery = "select sa.id, sa.supp_code, sa.address_type, sa.address, sa.zip_code,"
-			+ "sa.city_id, sa.phone, sa.fax, c.id, c.city, c.province_id, p.id, p.province, sc.id as supp_cp_id, sc.supp_code as supp_cp_code, sc.supp_address_id, sc.name, sc.email "
-			+ "from supp_address sa left join city c on sa.city_id = c.id "
-			+ "left join province p on p.id = c.province_id "
+			+ "sa.city, sa.phone, sa.fax, sa.province_id, p.id, p.province, sc.id as supp_cp_id, sc.supp_code as supp_cp_code, sc.supp_address_id, sc.name, sc.email "
+			+ "from supp_address sa "
+			+ "left join province p on p.id = sa.province_id "
 			+ "inner join supp_cp sc on sa.id = sc.supp_address_id where sa.supp_code = ? "
-			+ "and sa.deleted_date is null and c.deleted_date is null and p.deleted_date is null";
+			+ "and sa.deleted_date is null and p.deleted_date is null";
 
 	private String insertQuery = "insert into supp_address (supp_code, address_type, address, zip_code, "
-			+ "city_id, phone, fax, input_date, input_by) values (?,?,?,?,?,?,?,?,?)";
+			+ "province_id, city, phone, fax, input_date, input_by) values (?,?,?,?,?,?,?,?,?,?)";
 
 	private String updateQuery = "update supp_address set address_type=?, address=?, zip_code=?, "
-			+ "city_id=?, phone=?, fax=?, edit_date=?, edited_by=? where id=?";
+			+ "province_id=?, city=?, phone=?, fax=?, edit_date=?, edited_by=? where id=?";
 
 	private String deleteQuery = "update supp_address set deleted_date=?, deleted_by=? ";
 
@@ -56,7 +56,8 @@ public class SuppAddressDAO {
 				supplierAddress.setAddressType(rs.getString("address_type"));
 				supplierAddress.setAddress(rs.getString("address"));
 				supplierAddress.setZipCode(rs.getString("zip_code"));
-				supplierAddress.setCityId(rs.getInt("city_id"));
+				supplierAddress.setProvinceId(rs.getInt("province_id"));
+				supplierAddress.setCity(rs.getString("city"));
 				supplierAddress.setPhone(rs.getString("phone"));
 				supplierAddress.setFax(rs.getString("fax"));
 
@@ -64,13 +65,7 @@ public class SuppAddressDAO {
 				province.setId(rs.getInt("province_id"));
 				province.setProvince(rs.getString("province"));
 
-				City city = new City();
-				city.setId(rs.getInt("city_id"));
-				city.setCity(rs.getString("city"));
-				city.setProvinceId(rs.getInt("province_id"));
-				city.setProvince(province);
-
-				supplierAddress.setCity(city);
+				supplierAddress.setProvince(province);
 
 				SuppCp suppCp = new SuppCp();
 				suppCp.setId(rs.getInt("supp_cp_id"));
@@ -100,15 +95,12 @@ public class SuppAddressDAO {
 			insertStatement.setString(2, suppAddress.getAddressType());
 			insertStatement.setString(3, suppAddress.getAddress());
 			insertStatement.setString(4, suppAddress.getZipCode());
-			if (suppAddress.getCityId() == 0) {
-				insertStatement.setNull(5, java.sql.Types.INTEGER);
-			} else {
-				insertStatement.setInt(5, suppAddress.getCityId());
-			}
-			insertStatement.setString(6, suppAddress.getPhone());
-			insertStatement.setString(7, suppAddress.getFax());
-			insertStatement.setDate(8, DateUtil.getCurrentDate());
-			insertStatement.setString(9, "timotius");
+			insertStatement.setInt(5, suppAddress.getProvinceId());
+			insertStatement.setString(6, suppAddress.getCity());
+			insertStatement.setString(7, suppAddress.getPhone());
+			insertStatement.setString(8, suppAddress.getFax());
+			insertStatement.setDate(9, DateUtil.getCurrentDate());
+			insertStatement.setString(10, "timotius");
 			insertStatement.executeUpdate();
 
 			generatedKeys = insertStatement.getGeneratedKeys();
@@ -130,16 +122,13 @@ public class SuppAddressDAO {
 			updateStatement.setString(1, suppAddress.getAddressType());
 			updateStatement.setString(2, suppAddress.getAddress());
 			updateStatement.setString(3, suppAddress.getZipCode());
-			if (suppAddress.getCityId() == 0) {
-				updateStatement.setNull(4, java.sql.Types.INTEGER);
-			} else {
-				updateStatement.setInt(4, suppAddress.getCityId());
-			}
-			updateStatement.setString(5, suppAddress.getPhone());
-			updateStatement.setString(6, suppAddress.getFax());
-			updateStatement.setDate(7, DateUtil.getCurrentDate());
-			updateStatement.setString(8, "timotius");
-			updateStatement.setInt(9, suppAddress.getId());
+			updateStatement.setInt(4, suppAddress.getProvinceId());
+			updateStatement.setString(5, suppAddress.getCity());
+			updateStatement.setString(6, suppAddress.getPhone());
+			updateStatement.setString(7, suppAddress.getFax());
+			updateStatement.setDate(8, DateUtil.getCurrentDate());
+			updateStatement.setString(9, "timotius");
+			updateStatement.setInt(10, suppAddress.getId());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {

@@ -53,7 +53,7 @@ public class SuppAddressDialog extends JDialog {
 	JTextArea txtAddress;
 	NumberField txtZipCode;
 	ComboBox<Province> cbProvince;
-	ComboBox<City> cbCity;
+	JTextField txtCity;
 	NumberField txtPhone;
 	NumberField txtFax;
 
@@ -193,49 +193,16 @@ public class SuppAddressDialog extends JDialog {
 		lblCity.setBounds(25, 180, 150, 25);
 		getContentPane().add(lblCity);
 
-		cbCity = new ComboBox<City>();
-		cbCity.setBounds(150, 180, 150, 25);
-
+		txtCity = new JTextField();
+		txtCity.setBounds(150, 180, 150, 25);
+		((AbstractDocument) txtCity.getDocument()).setDocumentFilter(filter);
 		lblErrorCity = new JLabel();
 		lblErrorCity.setForeground(Color.RED);
 		lblErrorCity.setBounds(335, 180, 200, 25);
 		getContentPane().add(lblErrorCity);
 
-		if (cbProvince.getSelectedIndex() != 0) {
-			int provinceId = cbProvince.getDataIndex().getId();
-			getAllCityByProvinceId(provinceId);
 
-			cbCity.removeAllItems();
-			cbCity.setList(listOfCity);
-			cbCity.updateUI();
-			lblCity.setText("<html>Kota <font color=\"red\">*</font></html>");
-		} else {
-			cbCity.removeAllItems();
-			getAllCityByProvinceId(0);
-			lblCity.setText("Kota");
-			lblErrorCity.setText("");
-		}
-
-		cbProvince.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (cbProvince.getSelectedIndex() != 0) {
-					int provinceId = cbProvince.getDataIndex().getId();
-					getAllCityByProvinceId(provinceId);
-
-					cbCity.removeAllItems();
-					cbCity.setList(listOfCity);
-					cbCity.updateUI();
-					lblCity.setText("<html>Kota <font color=\"red\">*</font></html>");
-				} else {
-					cbCity.removeAllItems();
-					getAllCityByProvinceId(0);
-					lblCity.setText("Kota");
-					lblErrorCity.setText("");
-				}
-			}
-		});
-
-		getContentPane().add(cbCity);
+		getContentPane().add(txtCity);
 
 		lblContactPerson = new JLabel("<html>Contact Person <font color=\"red\">*</font></html>");
 		lblContactPerson.setBounds(25, 210, 150, 25);
@@ -301,16 +268,11 @@ public class SuppAddressDialog extends JDialog {
 			txtZipCode.setText(suppAddress.getZipCode());
 			txtPhone.setText(suppAddress.getPhone());
 			txtFax.setText(suppAddress.getFax());
-
+			txtCity.setText(suppAddress.getCity());
 			txtContactPerson.setText(suppAddress.getSuppCp().getName());
 			txtEmail.setText(suppAddress.getSuppCp().getEmail());
-
-			if (suppAddress.getCityId() != 0) {
-				getAllCityByProvinceId(suppAddress.getCity().getProvinceId());
-				cbProvince.setSelectedItem(suppAddress.getCity().getProvince().getProvince());
-
-				cbCity.setSelectedItem(suppAddress.getCity().getCity());
-			}
+			cbProvince.setSelectedItem(suppAddress.getProvince().getProvince());
+			
 		}
 	}
 
@@ -347,8 +309,8 @@ public class SuppAddressDialog extends JDialog {
 			isValid = false;
 		}
 
-		if (cbCity.getSelectedItem() == null || cbCity.getSelectedIndex() == 0) {
-			lblErrorCity.setText("Combobox Kota harus dipilih.");
+		if (txtCity.getText() == null || txtCity.getText().length() == 0) {
+			lblErrorCity.setText("Textbox Kota harus dipilih.");
 			isValid = false;
 		}
 
@@ -372,21 +334,9 @@ public class SuppAddressDialog extends JDialog {
 		suppAddress.setAddressType(String.valueOf(cbAddressType.getSelectedItem()));
 		suppAddress.setAddress(txtAddress.getText());
 		suppAddress.setZipCode(txtZipCode.getText());
-
-		if (cbProvince.getSelectedIndex() != 0 && cbCity.getSelectedIndex() != 0) {
-			suppAddress.setCityId(cbCity.getDataIndex().getId());
-
-			Province province = new Province();
-			province.setId(cbProvince.getDataIndex().getId());
-			province.setProvince(cbProvince.getDataIndex().getProvince());
-
-			City city = new City();
-			city.setId(cbCity.getDataIndex().getId());
-			city.setCity(cbCity.getDataIndex().getCity());
-			city.setProvinceId(cbProvince.getDataIndex().getId());
-			city.setProvince(province);
-			suppAddress.setCity(city);
-		}
+		suppAddress.setProvinceId(cbProvince.getDataIndex().getId());
+		suppAddress.setCity(txtCity.getText());
+		
 
 		suppAddress.setPhone(txtPhone.getText());
 		suppAddress.setFax(txtFax.getText());

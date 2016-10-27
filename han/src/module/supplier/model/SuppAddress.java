@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import module.sn.city.model.City;
+import module.sn.province.model.Province;
 
 public class SuppAddress implements Serializable {
 
@@ -14,7 +15,8 @@ public class SuppAddress implements Serializable {
 	private String addressType;
 	private String address;
 	private String zipCode;
-	private int cityId;
+	private int provinceId;
+	private String city;
 	private String phone;
 	private String fax;
 	private Date inputDate;
@@ -24,7 +26,7 @@ public class SuppAddress implements Serializable {
 	private Date deletedDate;
 	private String deletedBy;
 	
-	private City city;
+	private Province province;
 	private boolean flag;
 	private SuppCp suppCp;
 
@@ -68,12 +70,20 @@ public class SuppAddress implements Serializable {
 		this.zipCode = zipCode;
 	}
 
-	public int getCityId() {
-		return cityId;
+	public int getProvinceId() {
+		return provinceId;
 	}
 
-	public void setCityId(int cityId) {
-		this.cityId = cityId;
+	public void setProvinceId(int provinceId) {
+		this.provinceId = provinceId;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getPhone() {
@@ -146,12 +156,13 @@ public class SuppAddress implements Serializable {
 		int result = 1;
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + ((addressType == null) ? 0 : addressType.hashCode());
-		result = prime * result + cityId;
+		result = prime * result + provinceId;
 		result = prime * result + ((deletedBy == null) ? 0 : deletedBy.hashCode());
 		result = prime * result + ((deletedDate == null) ? 0 : deletedDate.hashCode());
 		result = prime * result + ((editDate == null) ? 0 : editDate.hashCode());
 		result = prime * result + ((editedBy == null) ? 0 : editedBy.hashCode());
 		result = prime * result + ((fax == null) ? 0 : fax.hashCode());
+		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
@@ -180,7 +191,12 @@ public class SuppAddress implements Serializable {
 				return false;
 		} else if (!addressType.equals(other.addressType))
 			return false;
-		if (cityId != other.cityId)
+		if (provinceId != other.provinceId)
+			return false;
+		if (city == null) {
+			if (other.city != null)
+				return false;
+		} else if (!city.equals(other.city))
 			return false;
 		if (deletedBy == null) {
 			if (other.deletedBy != null)
@@ -246,21 +262,21 @@ public class SuppAddress implements Serializable {
 	@Override
 	public String toString() {
 		return "Supplier(id=" + id + ",suppCode=" + suppCode + ",addressType=" + addressType + ",address=" + address
-				+ ",zipCode=" + zipCode + ",cityId=" + cityId + ",phone=" + phone + ",fax=" + fax + ",inputDate="
+				+ ",zipCode=" + zipCode + ",provinceId=" + provinceId + ",phone=" + phone + ",fax=" + fax + ",inputDate="
 				+ inputDate + ",inputBy=" + inputBy + ",editDate=" + editDate + ",editedBy=" + editedBy
 				+ ",deletedDate=" + deletedDate + ",deletedBy=" + deletedBy + ')';
 	}
 
-	public City getCity() {
-		if(city == null)
-			city = new City();
-		return city;
+	public Province getProvince() {
+		if(province == null)
+			province = new Province();
+		return province;
 	}
 
-	public void setCity(City city) {
-		if(city == null)
-			city = new City();
-		this.city = city;
+	public void setProvince(Province province) {
+		if(province == null)
+			province = new Province();
+		this.province = province;
 	}
 	
 	public boolean isFlag() {
