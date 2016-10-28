@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import module.system.model.Group;
@@ -22,6 +23,8 @@ public class GroupAccessConfigPanel extends JPanel {
 	private JTable groupAccessTabel;
 	private List<Group> groups = new ArrayList<>();
 	private List<GroupScreen> groupScreens = new ArrayList<>();
+	private GroupAccessConfigTableModel groupAccessConfigTableModel;
+	private JTextField textField;
 
 	/**
 	 * Create the panel.
@@ -45,6 +48,8 @@ public class GroupAccessConfigPanel extends JPanel {
 		pnlTable.add(scrollPane);
 		
 		groupAccessTabel = new JTable();
+		groupAccessConfigTableModel = new GroupAccessConfigTableModel(groupScreens);
+		groupAccessTabel.setModel(groupAccessConfigTableModel);
 		scrollPane.setViewportView(groupAccessTabel);
 		
 		JButton btnCancel = new JButton("Tutup");
@@ -67,6 +72,27 @@ public class GroupAccessConfigPanel extends JPanel {
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(120, 45, 100, 30);
 		add(comboBox);
+		
+		JButton searchBtn = new JButton("Cari");
+		searchBtn.setBounds(939, 174, 75, 30);
+		add(searchBtn);
+		
+		textField = new JTextField();
+		textField.setBounds(779, 174, 150, 30);
+		add(textField);
+		textField.setColumns(10);
+		
+		JButton saveBtn = new JButton("Simpan");
+		saveBtn.setBounds(694, 174, 75, 30);
+		add(saveBtn);
+		
+		JButton editBtn = new JButton("Edit");
+		editBtn.setBounds(609, 174, 75, 30);
+		add(editBtn);
+		
+		JButton deleteBtn = new JButton("Hapus");
+		deleteBtn.setBounds(524, 174, 75, 30);
+		add(deleteBtn);
 	}
 
 	class GroupAccessConfigTableModel extends AbstractTableModel {
@@ -108,5 +134,23 @@ public class GroupAccessConfigPanel extends JPanel {
 			}
 		}
 		
+		@Override
+		public String getColumnName(int columnIndex) {
+			
+			switch (columnIndex) {
+			case 0:
+				return "Group Screen Id";
+			case 1:
+				return "Group Id";
+			case 2:
+				return "Screen Id";
+			case 3:
+				return "Screen Name";
+			case 4:
+				return "Access";
+			default:
+				return "";
+			}
+		}
 	}
 }
