@@ -1612,3 +1612,39 @@ ALTER TABLE `supp_address` CHANGE `city_id` `province_id` INT(9) NULL DEFAULT NU
 ALTER TABLE `supp_address` ADD `city` VARCHAR(150) NULL AFTER `province_id`;
 
 ALTER TABLE `grade` ADD `product_category_id` INT NOT NULL AFTER `id`, ADD INDEX (`product_category_id`) ;
+
+
+--Kalo table prod_result masih ada jalanin query drop
+DROP TABLE PROD_RESULT;
+
+CREATE TABLE IF NOT EXISTS `prod_result_product` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `prod_result_id` int NOT NULL,
+  `product_code` varchar(20) NOT NULL,
+  `qty` decimal(7,2),
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edited_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `prod_result` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `prod_code` varchar(20) NOT NULL,
+  `pressed_no` integer,
+  `start_time` varchar(10),
+  `total_fine_a` decimal(7,2),
+  `total_fine_b` decimal(7,2),
+  `total_protol` decimal(7,2),
+  `total_klem` decimal(7,2),
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edited_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`,`prod_code`)
+);

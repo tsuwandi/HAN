@@ -21,7 +21,7 @@ public class Production {
 	String productionTypeDescription;
 	String status;
 	List<ProdRM> listOfProdRM;
-	ProductionResult productionResult;
+	List<ProductionResult> productionResults;
 	
 	public int getId() {
 		return id;
@@ -115,11 +115,12 @@ public class Production {
 	public void setListOfProdRM(List<ProdRM> listOfProdRM) {
 		this.listOfProdRM = listOfProdRM;
 	}
-	public ProductionResult getProductionResult() {
-		return productionResult;
+	
+	public List<ProductionResult> getProductionResults() {
+		return productionResults;
 	}
-	public void setProductionResult(ProductionResult productionResult) {
-		this.productionResult = productionResult;
+	public void setProductionResults(List<ProductionResult> productionResults) {
+		this.productionResults = productionResults;
 	}
 	public String getProductionTypeCode() {
 		return productionTypeCode;

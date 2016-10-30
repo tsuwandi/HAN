@@ -1,87 +1,76 @@
 package module.production.model;
 
-import java.util.Date;
 import java.util.List;
 
 public class ProductionResult {
 	int id;
-	String prodResultCode;
-	String productionCode;
-	Date prodResultDate;
-	int totalOutput;
-	int totalRepairKlem;
-	int totalRepairProtol;
-	int totalFineA;
-	int totalFineB;
-	int totalFineResult;
-	List<ProductionResultProduct> listOfProductionResultDetail;
+	String prodCode;
+	int pressedNo;
+	String startTime;
+	double totalProtol;
+	double totalKlem;
+	double totalFineA;
+	double totalFineB;
+	
+	List<ProductionResultProduct> listProductionResultProduct;
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getProdResultCode() {
-		return prodResultCode;
+	
+	public int getPressedNo() {
+		return pressedNo;
 	}
-	public void setProdResultCode(String prodResultCode) {
-		this.prodResultCode = prodResultCode;
+	public void setPressedNo(int pressedNo) {
+		this.pressedNo = pressedNo;
 	}
-	public String getProductionCode() {
-		return productionCode;
+	public String getStartTime() {
+		return startTime;
 	}
-	public void setProductionCode(String productionCode) {
-		this.productionCode = productionCode;
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public double getTotalProtol() {
+		return totalProtol;
+	}
+	public void setTotalProtol(double totalProtol) {
+		this.totalProtol = totalProtol;
+	}
+	public double getTotalKlem() {
+		return totalKlem;
+	}
+	public void setTotalKlem(double totalKlem) {
+		this.totalKlem = totalKlem;
 	}
 	
-	public Date getProdResultDate() {
-		return prodResultDate;
+	public String getProdCode() {
+		return prodCode;
 	}
-	public void setProdResultDate(Date prodResultDate) {
-		this.prodResultDate = prodResultDate;
+	public void setProdCode(String prodCode) {
+		this.prodCode = prodCode;
 	}
-	
-	public int getTotalOutput() {
-		return totalOutput;
+	public List<ProductionResultProduct> getListProductionResultProduct() {
+		return listProductionResultProduct;
 	}
-	public void setTotalOutput(int totalOutput) {
-		this.totalOutput = totalOutput;
+	public void setListProductionResultProduct(List<ProductionResultProduct> listProductionResultProduct) {
+		this.listProductionResultProduct = listProductionResultProduct;
 	}
-	public int getTotalRepairKlem() {
-		return totalRepairKlem;
-	}
-	public void setTotalRepairKlem(int totalRepairKlem) {
-		this.totalRepairKlem = totalRepairKlem;
-	}
-	public int getTotalRepairProtol() {
-		return totalRepairProtol;
-	}
-	public void setTotalRepairProtol(int totalRepairProtol) {
-		this.totalRepairProtol = totalRepairProtol;
-	}
-	public int getTotalFineA() {
+	public double getTotalFineA() {
 		return totalFineA;
 	}
-	public void setTotalFineA(int totalFineA) {
+	public void setTotalFineA(double totalFineA) {
 		this.totalFineA = totalFineA;
 	}
-	public int getTotalFineB() {
+	public double getTotalFineB() {
 		return totalFineB;
 	}
-	public void setTotalFineB(int totalFineB) {
+	public void setTotalFineB(double totalFineB) {
 		this.totalFineB = totalFineB;
 	}
-	public int getTotalFineResult() {
-		return totalFineResult;
-	}
-	public void setTotalFineResult(int totalFineResult) {
-		this.totalFineResult = totalFineResult;
-	}
-	public List<ProductionResultProduct> getListOfProductionResultDetail() {
-		return listOfProductionResultDetail;
-	}
-	public void setListOfProductionResultDetail(List<ProductionResultProduct> listOfProductionResultDetail) {
-		this.listOfProductionResultDetail = listOfProductionResultDetail;
-	}
+	
+	
 	
 }

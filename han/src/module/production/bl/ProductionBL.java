@@ -24,6 +24,10 @@ import module.production.model.ProductionResult;
 import module.production.model.ProductionResultProduct;
 import module.production.model.ProductionType;
 import module.production.model.Shift;
+import module.productionpk.dao.ProdPKResultDAO;
+import module.productionpk.dao.ProdPKResultProductDAO;
+import module.productionpk.model.ProdPKResult;
+import module.productionpk.model.ProdPKResultProduct;
 
 public class ProductionBL {
 	private DataSource dataSource;
@@ -95,46 +99,39 @@ public class ProductionBL {
 		return lastCode;
 	}
 	
-	public String getProductionResultLastCode() throws SQLException{
-		String lastCode = productionResultDAO.getLastCode();
-		if(lastCode==null){
-			lastCode = ("0001");
-		}else{
-			String [] splittedCode = lastCode.split("/");
-			int tempIntCode = Integer.valueOf(splittedCode[0])+1;
-			String textTemp = String.valueOf(tempIntCode);
-			if(textTemp.length()==1){
-				lastCode ="000"+textTemp;
-			}else if(textTemp.length()==2){
-				lastCode="00"+textTemp;
-			}else if(textTemp.length()==3){
-				lastCode="0"+textTemp;
+	public List<ProductionResult> getProductResult(String prodCode) throws SQLException{
+		List<ProductionResult> prodPKResults = productionResultDAO.getAllByCode(prodCode);
+		if(prodPKResults!=null){
+			if(prodPKResults.size()>0){
+				for (ProductionResult prodPKResult : prodPKResults) {
+					prodPKResult.setListProductionResultProduct(getProductPKResultProduct(prodPKResult.getId()));
+				}
+				return prodPKResults;
 			}else{
-				lastCode=textTemp;
+				return null;
 			}
+		}else{
+			return null;
 		}
-		return lastCode;
+	}
+	
+	public List<ProductionResultProduct> getProductPKResultProduct(int resultID) throws SQLException{
+		return productionResultDetailDAO.getAllByProdPKResultID(resultID);
 	}
 	
 	public List<Production> getProduction() throws SQLException {
 		List<Production> productions = productionDAO.getAll();
 		for (Production production : productions) {
-			if(getProductionResultByCode(production.getProductionCode())!=null)production.setProductionResult(getProductionResultByCode(production.getProductionCode()));
+			if(getProductResult(production.getProductionCode())!=null)production.setProductionResults(getProductResult(production.getProductionCode()));
 			if(getProductRMByCode(production.getProductionCode())!=null)production.setListOfProdRM(getProductRMByCode(production.getProductionCode()));
 		}
 		return productions;
 	}
 	
-	private ProductionResult getProductionResultByCode(String productionCode) throws SQLException {
-		ProductionResult productionResult = productionResultDAO.getAllByProductionCode(productionCode);
-		if(productionResult!=null)
-			productionResult.setListOfProductionResultDetail(getProductionResultDetailByCode(productionResult.getProdResultCode()));
-		return productionResult;
+	public int getLastProductPKResultID() throws SQLException {
+		return productionResultDAO.getLastID()+1;
 	}
-	private List<ProductionResultProduct> getProductionResultDetailByCode(String prodResultCode) throws SQLException {
-		return productionResultDetailDAO.getAllByProdResultCode(prodResultCode);
-	}
-	
+
 	private List<ProdRM> getProductRMByCode(String productionCode)throws SQLException{
 		return prodRMDAO.getAllByProductionCode(productionCode);
 	}
@@ -174,12 +171,21 @@ public class ProductionBL {
 		try {
 			cone = dataSource.getConnection();
 			cone.setAutoCommit(false);
-			if(production.getProductionResult()!=null){
-				new ProductionResultDAO(cone).save(production.getProductionResult());
-				for(ProductionResultProduct prd : production.getProductionResult().getListOfProductionResultDetail()){
-					new ProductionResultDetailDAO(cone).save(prd);
+			if(production.getProductionResults()!=null){
+				if(production.getProductionResults().size()!=0){
+					int id = getLastProductPKResultID();
+					for (ProductionResult prodPK : production.getProductionResults()) {
+						prodPK.setId(id);
+						prodPK.setProdCode(production.getProductionCode());
+						new ProductionResultDAO(cone).save(prodPK);
+						for (ProductionResultProduct prodResultProduct : prodPK.getListProductionResultProduct()) {
+							prodResultProduct.setProdResultID(id);
+							new ProductionResultDetailDAO(cone).save(prodResultProduct);
+						}
+						id++;
+					}
+					flagProductionResult=true;
 				}
-				flagProductionResult=true;
 			}
 			if(production.getListOfProdRM()!=null){
 				if(production.getListOfProdRM().size()!=0){
@@ -210,14 +216,29 @@ public class ProductionBL {
 		try {
 			cone = dataSource.getConnection();
 			cone.setAutoCommit(false);
-			if(production.getProductionResult()!=null){
-				if(getProductionResultByCode(production.getProductionCode())!=null)new ProductionResultDAO(cone).update(production.getProductionResult());
-				else new ProductionResultDAO(cone).save(production.getProductionResult());
-				new ProductionResultDetailDAO(cone).delete(production.getProductionResult().getProdResultCode());
-				for(ProductionResultProduct prd : production.getProductionResult().getListOfProductionResultDetail()){
-					new ProductionResultDetailDAO(cone).save(prd);
+			if(production.getProductionResults()!=null){
+				if(production.getProductionResults().size()!=0){
+					int id = getLastProductPKResultID();
+					for (ProductionResult prodPK : production.getProductionResults()) {
+						if(prodPK.getId()==0){
+							prodPK.setId(id);
+							prodPK.setProdCode(production.getProductionCode());
+							new ProductionResultDAO(cone).save(prodPK);
+							for (ProductionResultProduct prodResultProduct : prodPK.getListProductionResultProduct()) {
+								prodResultProduct.setProdResultID(id);
+								new ProductionResultDetailDAO(cone).save(prodResultProduct);
+							}
+							id++;
+						}else{
+							new ProductionResultDAO(cone).update(prodPK);
+							for (ProductionResultProduct prodResultProduct : prodPK.getListProductionResultProduct()) {
+								new ProductionResultDetailDAO(cone).update(prodResultProduct);
+							}
+						}
+						
+					}
+					flagProductionResult=true;
 				}
-				flagProductionResult=true;
 			}
 			if(production.getListOfProdRM()!=null){
 				if(production.getListOfProdRM().size()!=0){

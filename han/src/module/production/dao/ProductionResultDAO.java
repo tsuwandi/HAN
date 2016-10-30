@@ -9,64 +9,94 @@ import java.util.ArrayList;
 import java.util.List;
 
 import module.production.model.ProductionResult;
+import module.productionpk.model.ProdPKResult;
 
 public class ProductionResultDAO {
 	private Connection connection;
 	private PreparedStatement getAllStatement;
 	private PreparedStatement getProdResultByProductionCodeStatement;
-	private PreparedStatement getLastCodeStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
+	private PreparedStatement getLastIDStatement;
 	
-	private String getAllQuery = "SELECT id, prod_result_code, production_code, prod_result_date, total_output, total_repair_klem, total_repair_protol, total_fine_a, total_fine_b, total_fine_result "
+	private String getAllQuery = "SELECT id, prod_code, pressed_no, start_time, total_fine_a, total_fine_b, total_protol, total_klem "
 			+ "FROM prod_result WHERE deleted_date IS NULL";
-	
-	private String getLastCodeQuery = "SELECT prod_result_code FROM prod_result WHERE deleted_date IS NULL ORDER BY id DESC LIMIT 1";
-	
-	private String insertQuery = "INSERT INTO prod_result (prod_result_code, production_code, prod_result_date, "
-			+ "total_output, total_repair_klem, total_repair_protol, total_fine_a, total_fine_b, total_fine_result, input_by, input_date) "
-			+ "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-	private String updateQuery = "UPDATE prod_result SET prod_result_date =?, "
-			+ "total_output=?, total_repair_klem=?, total_repair_protol=?, total_fine_a=?, total_fine_b=?, total_fine_result=?, edited_by=?, edited_date=?  "
-			+ "WHERE prod_result_code = ? AND production_code =?";
+	private String getLastIDQuery = "SELECT id FROM prod_result ORDER BY id DESC LIMIT 1";
+	private String insertQuery = "INSERT INTO prod_result (prod_code,pressed_no, start_time, total_fine_a, total_fine_b, total_protol, total_klem , input_by, input_date) "
+			+ "VALUES (?,?,?,?,?,?,?,?,?)";
+	private String updateQuery = "UPDATE prod_result SET pressed_no =?, "
+			+ "start_time=?, total_fine_a=?, total_fine_b=?, total_protol=?,total_klem=?, edited_by=?, edited_date=?  "
+			+ "WHERE prod_code =? AND id=?";
 	
 	public ProductionResultDAO(Connection connection) throws SQLException {
 		this.connection = connection;
 	}
 	
-	public String getLastCode() throws SQLException{
-		String lastCode = null;
+	public int getLastID() throws SQLException{
+		int id = 0;
 		try {
-			getLastCodeStatement = connection.prepareStatement(getLastCodeQuery);
-			ResultSet rs = getLastCodeStatement.executeQuery();
-			if(rs.next()) lastCode =  rs.getString("prod_result_code");
+			getLastIDStatement = connection.prepareStatement(getLastIDQuery);
+			ResultSet rs = getLastIDStatement.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
-		return lastCode;
+		return id;
+	}
+	
+	public List<ProductionResult> getAllByCode(String prodCode) throws SQLException {
+		List<ProductionResult> prodPKResults = new ArrayList<ProductionResult>();
+		try {
+			StringBuffer sb  = new StringBuffer(getAllQuery);
+			sb.append(" AND prod_code = ?");
+			
+			getProdResultByProductionCodeStatement = connection.prepareStatement(sb.toString());
+			getProdResultByProductionCodeStatement.setString(1, prodCode);
+			
+
+			ResultSet rs = getProdResultByProductionCodeStatement.executeQuery();
+			while (rs.next()) {
+				ProductionResult prodPKResult = new ProductionResult();
+				prodPKResult.setId(rs.getInt("id"));
+				prodPKResult.setProdCode(rs.getString("prod_code"));
+				prodPKResult.setPressedNo(rs.getInt("pressed_no"));
+				prodPKResult.setStartTime(rs.getString("start_time"));
+				prodPKResult.setTotalFineA(rs.getDouble("total_fine_a"));
+				prodPKResult.setTotalFineB(rs.getDouble("total_fine_b"));
+				prodPKResult.setTotalProtol(rs.getDouble("total_protol"));
+				prodPKResult.setTotalKlem(rs.getDouble("total_klem"));
+				prodPKResults.add(prodPKResult);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return prodPKResults;
 	}
 	
 	public List<ProductionResult> getAll() throws SQLException {
-		List<ProductionResult> productionResults = new ArrayList<ProductionResult>();
+		List<ProductionResult> prodPKResults = new ArrayList<ProductionResult>();
 
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
-				ProductionResult productionResult = new ProductionResult();
-				productionResult.setId(rs.getInt("id"));
-				productionResult.setProdResultCode(rs.getString("prod_result_code"));
-				productionResult.setProductionCode(rs.getString("production_code"));
-				productionResult.setProdResultDate(rs.getDate("prod_result_date"));
-				productionResult.setTotalOutput(rs.getInt("total_output"));
-				productionResult.setTotalRepairKlem(rs.getInt("total_repair_klem"));
-				productionResult.setTotalRepairProtol(rs.getInt("total_repair_protol"));
-				productionResult.setTotalFineA(rs.getInt("total_fine_a"));
-				productionResult.setTotalFineB(rs.getInt("total_fine_b"));
-				productionResult.setTotalFineResult(rs.getInt("total_fine_result"));
-				productionResults.add(productionResult);
+				ProductionResult prodPKResult = new ProductionResult();
+				prodPKResult.setId(rs.getInt("id"));
+				prodPKResult.setProdCode(rs.getString("prod_code"));
+				prodPKResult.setPressedNo(rs.getInt("pressed_no"));
+				prodPKResult.setStartTime(rs.getString("start_time"));
+				prodPKResult.setTotalFineA(rs.getDouble("total_fine_a"));
+				prodPKResult.setTotalFineB(rs.getDouble("total_fine_b"));
+				prodPKResult.setTotalProtol(rs.getDouble("total_protol"));
+				prodPKResult.setTotalKlem(rs.getDouble("total_klem"));
+				prodPKResults.add(prodPKResult);
 			}
 
 		} catch (SQLException ex) {
@@ -74,55 +104,21 @@ public class ProductionResultDAO {
 			throw new SQLException(ex.getMessage());
 		}
 
-		return productionResults;
+		return prodPKResults;
 	}
 	
-	public ProductionResult getAllByProductionCode(String productionCode) throws SQLException {
-		ProductionResult productionResult = null;
-		try {
-			StringBuffer sb  = new StringBuffer(getAllQuery);
-			sb.append(" AND production_code = ?");
-			
-			getProdResultByProductionCodeStatement = connection.prepareStatement(sb.toString());
-			getProdResultByProductionCodeStatement.setString(1, productionCode);
-			
-			ResultSet rs = getProdResultByProductionCodeStatement.executeQuery();
-			if(rs.next()){
-				productionResult = new ProductionResult();
-				productionResult.setId(rs.getInt("id"));
-				productionResult.setProdResultCode(rs.getString("prod_result_code"));
-				productionResult.setProductionCode(rs.getString("production_code"));
-				productionResult.setProdResultDate(rs.getDate("prod_result_date"));
-				productionResult.setTotalOutput(rs.getInt("total_output"));
-				productionResult.setTotalRepairKlem(rs.getInt("total_repair_klem"));
-				productionResult.setTotalRepairProtol(rs.getInt("total_repair_protol"));
-				productionResult.setTotalFineA(rs.getInt("total_fine_a"));
-				productionResult.setTotalFineB(rs.getInt("total_fine_b"));
-				productionResult.setTotalFineResult(rs.getInt("total_fine_result"));
-			}
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new SQLException(ex.getMessage());
-		}
-
-		return productionResult;
-	}
-	
-
 	public void save(ProductionResult productionResult) throws SQLException {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
-			insertStatement.setString(1, productionResult.getProdResultCode());
-			insertStatement.setString(2, productionResult.getProductionCode());
-			insertStatement.setDate(3, new Date(productionResult.getProdResultDate().getTime()));
-			insertStatement.setInt(4, productionResult.getTotalOutput());
-			insertStatement.setInt(5, productionResult.getTotalRepairKlem());
-			insertStatement.setInt(6, productionResult.getTotalRepairProtol());
-			insertStatement.setInt(7, productionResult.getTotalFineA());
-			insertStatement.setInt(8, productionResult.getTotalFineB());
-			insertStatement.setInt(9, productionResult.getTotalFineResult());
-			insertStatement.setString(10, "Michael");
-			insertStatement.setDate(11, new Date(new java.util.Date().getTime()));
+			insertStatement.setString(1, productionResult.getProdCode());
+			insertStatement.setInt(2, productionResult.getPressedNo());
+			insertStatement.setString(3, productionResult.getStartTime());
+			insertStatement.setDouble(4, productionResult.getTotalFineA());
+			insertStatement.setDouble(5, productionResult.getTotalFineB());
+			insertStatement.setDouble(6, productionResult.getTotalProtol());
+			insertStatement.setDouble(7, productionResult.getTotalKlem());
+			insertStatement.setString(8, "Michael");
+			insertStatement.setDate(9, new Date(new java.util.Date().getTime()));
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -135,17 +131,16 @@ public class ProductionResultDAO {
 	public void update(ProductionResult productionResult) throws SQLException {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
-			updateStatement.setDate(1, new Date(productionResult.getProdResultDate().getTime()));
-			updateStatement.setInt(2, productionResult.getTotalOutput());
-			updateStatement.setInt(3, productionResult.getTotalRepairKlem());
-			updateStatement.setInt(4, productionResult.getTotalRepairProtol());
-			updateStatement.setInt(5, productionResult.getTotalFineA());
-			updateStatement.setInt(6, productionResult.getTotalFineB());
-			updateStatement.setInt(7, productionResult.getTotalFineResult());
-			updateStatement.setString(8, "Michael");
-			updateStatement.setDate(9, new Date(new java.util.Date().getTime()));
-			updateStatement.setString(10, productionResult.getProdResultCode());
-			updateStatement.setString(11, productionResult.getProductionCode());
+			updateStatement.setInt(1, productionResult.getPressedNo());
+			updateStatement.setString(2, productionResult.getStartTime());
+			updateStatement.setDouble(3, productionResult.getTotalFineA());
+			updateStatement.setDouble(4, productionResult.getTotalFineB());
+			updateStatement.setDouble(5, productionResult.getTotalProtol());
+			updateStatement.setDouble(6, productionResult.getTotalKlem());
+			updateStatement.setString(7, "Michael");
+			updateStatement.setDate(8, new Date(new java.util.Date().getTime()));
+			updateStatement.setString(9, productionResult.getProdCode());
+			updateStatement.setInt(10, productionResult.getId());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -155,4 +150,3 @@ public class ProductionResultDAO {
 
 	}
 }
-

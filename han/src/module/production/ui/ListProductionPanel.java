@@ -290,7 +290,7 @@ public class ListProductionPanel extends JPanel {
 	            case 7 :
 	                return p.getTotalVolume();
 	            case 8 :
-	                return p.getProductionResult()!=null ? p.getProductionResult().getTotalOutput() : 0;
+	                return p.getProductionResults()!=null ? p.getProductionResults().size() : 0;
 	            case 9 :
 	                return p.getStatus();
 	            case 10 :

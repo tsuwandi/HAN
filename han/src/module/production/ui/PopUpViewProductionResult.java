@@ -12,7 +12,9 @@ import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -23,7 +25,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
 import javax.swing.table.AbstractTableModel;
 
 import org.apache.log4j.LogManager;
@@ -37,17 +38,17 @@ import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.TextField;
 import model.User;
-import module.pembelian.model.PalletCard;
 import module.production.model.Machine;
 import module.production.model.ProductionResult;
 import module.production.model.ProductionResultProduct;
+import module.productionpk.model.ProdPKMaterial;
+import module.productionpk.model.ProdPKResult;
+import module.productionpk.model.ProdPKResultProduct;
 
 public class PopUpViewProductionResult extends JDialog{
 	Logger log = LogManager.getLogger(PopUpViewProductionResult.class.getName());
 	private static final long serialVersionUID = 1L;
 	private JLabel titleLbl;
-	private JLabel dateLbl;
-	private JLabel machineLbl;
 	private JLabel pressNoLbl;
 	private JLabel startTimeLbl;
 	private JLabel klemLbl;
@@ -65,7 +66,6 @@ public class PopUpViewProductionResult extends JDialog{
 	private JLabel totalGoodResultALbl;
 	private JLabel totalGoodResultBLbl;
 	private JLabel totalAllGoodResultLbl;
-	private JLabel prodResultCodeLbl;
 	
 	private JLabel errorPressNoLbl;
 	private JLabel errorTimeLbl;
@@ -75,13 +75,8 @@ public class PopUpViewProductionResult extends JDialog{
 	private JLabel errorProtolBLbl;
 	private JLabel errorGoodResultALbl;
 	private JLabel errorGoodResultBLbl;
-	
-	private TextField prodResultCodeField;
-	
 	private JLabel timeSeparator;
-	
-	private JDateChooser resultDateChooser;
-	
+
 	private NumberField pressNoField;
 	private NumberField hourField;
 	private NumberField minuteField;
@@ -91,26 +86,36 @@ public class PopUpViewProductionResult extends JDialog{
 	private NumberField protolGradeBField;
 	private NumberField goodResultGradeAField;
 	private NumberField goodResultGradeBField;
-	private NumberField totalOutputField;
-	private NumberField totalKlemField;
-	private NumberField totalProtolField;
-	private NumberField totalGoodResultAField;
-	private NumberField totalGoodResultBField;
-	private NumberField totalAllGoodResultField;
+	private TextField totalOutputField;
+	private TextField totalKlemField;
+	private TextField totalProtolField;
+	private TextField totalGoodResultAField;
+	private TextField totalGoodResultBField;
+	private TextField totalAllGoodResultField;
 	
 	private JButton addBtn;
-	private JButton printBtn;
+	private JButton saveBtn;
 
 	private JTable productionResultTable;
-	private ProductionResultTableModel productionResultTableModel;
+	private ResultTableModel productionResultTableModel;
 	private JScrollPane scrollPane;
 	
 	private JScrollPane containerScrollPane;
 	private JPanel containerPnl;
 	private JPanel borderPanel;
-	private ViewProductionPanel viewProductionPanel;
-	private List<ProductionResultProduct> listOfPrd;
-
+	private ViewProductionPanel createProductionPKPanel;
+	private List<ProductionResult> listOfPrd;
+	private boolean editMode=false;
+	private int indexEdit=0;
+	private Map<Integer, Integer> pressMap;
+	
+	static final String KA = "PDC009-3";
+	static final String KB = "PDC009-4";
+	static final String PA = "PDC009-5";
+	static final String PB = "PDC009-6";
+	static final String NA = "PDC009";
+	static final String NB = "PDC009-2";
+	
 	public PopUpViewProductionResult(JPanel parent){
 		super((JFrame)parent.getTopLevelAncestor());
 		createGUI();
@@ -118,61 +123,42 @@ public class PopUpViewProductionResult extends JDialog{
 		listener();
 	}
 	private void initData(JPanel parent){
-		prodResultCodeField.setEnabled(false);
 		totalOutputField.setEnabled(false);
 		totalKlemField.setEnabled(false);
 		totalProtolField.setEnabled(false);
 		totalGoodResultAField.setEnabled(false);
 		totalGoodResultBField.setEnabled(false);
 		totalAllGoodResultField.setEnabled(false);
+		pressNoField.setEnabled(false);
+		minuteField.setEnabled(false);
+		hourField.setEnabled(false);
+		klemGradeAField.setEnabled(false);
+		klemGradeBField.setEnabled(false);
+		protolGradeAField.setEnabled(false);
+		protolGradeBField.setEnabled(false);
+		goodResultGradeAField.setEnabled(false);
+		goodResultGradeBField.setEnabled(false);
+		addBtn.setEnabled(false);
+		saveBtn.setVisible(false);
+		pressMap = new HashMap<>();
+	
 		listOfPrd = new ArrayList<>();
-		
-		try {
-			Date currentDate = new Date();
-			String date = new SimpleDateFormat("dd").format(currentDate);
-			String month = new SimpleDateFormat("MM").format(currentDate);
-			String year = new SimpleDateFormat("yy").format(currentDate);
-			prodResultCodeField.setText(ServiceFactory.getProductionBL().getProductionResultLastCode()+"/PR/"+date+"/"+month+"/"+year);
-			resultDateChooser.setDate(currentDate);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			e.printStackTrace();
-		}
-		
-		
-		viewProductionPanel = (ViewProductionPanel) parent;
-		if(viewProductionPanel.getProduction().getProductionResult()!=null){
-			ProductionResult pr = viewProductionPanel.getProduction().getProductionResult();
-			prodResultCodeField.setText(pr.getProdResultCode());
-			resultDateChooser.setDate(pr.getProdResultDate());
-			totalOutputField.setText(pr.getTotalOutput()+"");
-			totalKlemField.setText(pr.getTotalRepairKlem()+"");
-			totalProtolField.setText(pr.getTotalRepairProtol()+"");
-			totalGoodResultAField.setText(pr.getTotalFineA()+"");
-			totalGoodResultBField.setText(pr.getTotalFineB()+"");
-			totalAllGoodResultField.setText(pr.getTotalFineResult()+"");
-			listOfPrd = pr.getListOfProductionResultDetail();
-			productionResultTable.setModel(new ProductionResultTableModel(listOfPrd));
+
+		createProductionPKPanel = (ViewProductionPanel) parent;
+		if(createProductionPKPanel.getProduction().getProductionResults()!=null){
+			listOfPrd = createProductionPKPanel.getProduction().getProductionResults();
+			productionResultTable.setModel(new ResultTableModel(listOfPrd));
+			for (ProductionResult prd : listOfPrd) {
+				pressMap.put(prd.getPressedNo(), prd.getPressedNo());
+			}
 			productionResultTable.updateUI();
 			calculateTotal();
-			
-			resultDateChooser.setEnabled(false);
-			pressNoField.setEnabled(false);
-			hourField.setEnabled(false);
-			minuteField.setEnabled(false);
-			klemGradeAField.setEnabled(false);
-			klemGradeBField.setEnabled(false);
-			protolGradeAField.setEnabled(false);
-			protolGradeBField.setEnabled(false);
-			goodResultGradeAField.setEnabled(false);
-			goodResultGradeBField.setEnabled(false);
-			addBtn.setEnabled(false);
 		}
 	}
 	private void createGUI(){
 		setLayout(null);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		setTitle("View Hasil Produksi");
+		setTitle("Input Hasil Produksi");
 		setSize(1020, 750);
 		
 		containerPnl = new JPanel();
@@ -184,38 +170,16 @@ public class PopUpViewProductionResult extends JDialog{
 		containerScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(containerScrollPane);
 		
-		titleLbl = new JLabel("View Hasil Produksi");
+		titleLbl = new JLabel("Input Hasil Produksi");
 		titleLbl.setBounds(50,10,200,30);
 		titleLbl.setFont(new Font("Arial", 1, 18));
 		containerPnl.add(titleLbl);
-		
-		//TODO prodResultCode Area
-		prodResultCodeLbl = new JLabel("Production Result Code");
-		prodResultCodeLbl.setBounds(50,50,150,20);
-		containerPnl.add(prodResultCodeLbl);
-		
-		prodResultCodeField = new TextField();
-		prodResultCodeField.setBounds(240,50,150,20);
-		containerPnl.add(prodResultCodeField);
-		
-		//TODO date Area
-		dateLbl = new JLabel("Tanggal");
-		dateLbl.setBounds(50,90,150,20);
-		containerPnl.add(dateLbl);
-		
-		resultDateChooser = new JDateChooser();
-		resultDateChooser.setBounds(240,90,150,20);
-		containerPnl.add(resultDateChooser);
-		
-		//TODO machine Area
-		machineLbl = new JLabel("No Mesin");
-		machineLbl.setBounds(50, 130,150,20);
-		containerPnl.add(machineLbl);
-		
+
+	
 		//TODO borderPnl Area
 		borderPanel = new JPanel();
 		borderPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		borderPanel.setBounds(40,170,900,500);
+		borderPanel.setBounds(40,90,900,500);
 		borderPanel.setLayout(null);
 		containerPnl.add(borderPanel);
 		
@@ -250,7 +214,7 @@ public class PopUpViewProductionResult extends JDialog{
 		borderPanel.add(minuteField);
 		
 		errorTimeLbl = new JLabel();
-		errorTimeLbl.setBounds(270,50,150,20);
+		errorTimeLbl.setBounds(320,50,250,20);
 		borderPanel.add(errorTimeLbl);
 		
 		//TODO klem Area
@@ -262,7 +226,7 @@ public class PopUpViewProductionResult extends JDialog{
 		klemGradeALbl.setBounds(10,130,150,20);
 		borderPanel.add(klemGradeALbl);
 		
-		klemGradeAField = new NumberField(5);
+		klemGradeAField = new NumberField(7);
 		klemGradeAField.setBounds(200,130,150,20);
 		borderPanel.add(klemGradeAField);
 		
@@ -274,7 +238,7 @@ public class PopUpViewProductionResult extends JDialog{
 		klemGradeBLbl.setBounds(10,170,150,20);
 		borderPanel.add(klemGradeBLbl);
 		
-		klemGradeBField = new NumberField(5);
+		klemGradeBField = new NumberField(7);
 		klemGradeBField.setBounds(200,170,150,20);
 		borderPanel.add(klemGradeBField);
 		
@@ -291,7 +255,7 @@ public class PopUpViewProductionResult extends JDialog{
 		protolGradeALbl.setBounds(10,250,150,20);
 		borderPanel.add(protolGradeALbl);
 		
-		protolGradeAField = new NumberField(5);
+		protolGradeAField = new NumberField(7);
 		protolGradeAField.setBounds(200,250,150,20);
 		borderPanel.add(protolGradeAField);
 		
@@ -303,7 +267,7 @@ public class PopUpViewProductionResult extends JDialog{
 		protolGradeBLbl.setBounds(10,290,150,20);
 		borderPanel.add(protolGradeBLbl);
 		
-		protolGradeBField = new NumberField(5);
+		protolGradeBField = new NumberField(7);
 		protolGradeBField.setBounds(200,290,150,20);
 		borderPanel.add(protolGradeBField);
 		
@@ -320,7 +284,7 @@ public class PopUpViewProductionResult extends JDialog{
 		goodResultGradeALbl.setBounds(10,370,150,20);
 		borderPanel.add(goodResultGradeALbl);
 		
-		goodResultGradeAField = new NumberField(5);
+		goodResultGradeAField = new NumberField(7);
 		goodResultGradeAField.setBounds(200,370,150,20);
 		borderPanel.add(goodResultGradeAField);
 		
@@ -332,7 +296,7 @@ public class PopUpViewProductionResult extends JDialog{
 		goodResultGradeBLbl.setBounds(10,410,150,20);
 		borderPanel.add(goodResultGradeBLbl);
 		
-		goodResultGradeBField = new NumberField(5);
+		goodResultGradeBField = new NumberField(7);
 		goodResultGradeBField.setBounds(200,410,150,20);
 		borderPanel.add(goodResultGradeBField);
 		
@@ -347,8 +311,9 @@ public class PopUpViewProductionResult extends JDialog{
 		
 		
 		//Table Area
-		productionResultTableModel = new ProductionResultTableModel(new ArrayList<ProductionResultProduct>());
+		productionResultTableModel = new ResultTableModel(new ArrayList<ProductionResult>());
 		productionResultTable = new JTable(productionResultTableModel);
+		productionResultTable.setFocusable(false);
 		
 		scrollPane = new JScrollPane(productionResultTable);
 		scrollPane.setBounds(40,700,900,150);
@@ -359,7 +324,7 @@ public class PopUpViewProductionResult extends JDialog{
 		totalOutputLbl.setBounds(50,870,150,20);
 		containerPnl.add(totalOutputLbl);
 		
-		totalOutputField = new NumberField(5);
+		totalOutputField = new TextField();
 		totalOutputField.setBounds(240,870,150,20);
 		containerPnl.add(totalOutputField);
 		
@@ -368,7 +333,7 @@ public class PopUpViewProductionResult extends JDialog{
 		totalKlemLbl.setBounds(50,910,150,20);
 		containerPnl.add(totalKlemLbl);
 		
-		totalKlemField = new NumberField(5);
+		totalKlemField = new TextField();
 		totalKlemField.setBounds(240,910,150,20);
 		containerPnl.add(totalKlemField);
 		
@@ -377,7 +342,7 @@ public class PopUpViewProductionResult extends JDialog{
 		totalProtolLbl.setBounds(50,950,150,20);
 		containerPnl.add(totalProtolLbl);
 		
-		totalProtolField = new NumberField(5);
+		totalProtolField = new TextField();
 		totalProtolField.setBounds(240,950,150,20);
 		containerPnl.add(totalProtolField);
 		
@@ -386,7 +351,7 @@ public class PopUpViewProductionResult extends JDialog{
 		totalGoodResultALbl.setBounds(50,990,200,20);
 		containerPnl.add(totalGoodResultALbl);
 		
-		totalGoodResultAField = new NumberField(5);
+		totalGoodResultAField = new TextField();
 		totalGoodResultAField.setBounds(240,990,150,20);
 		containerPnl.add(totalGoodResultAField);
 		
@@ -395,7 +360,7 @@ public class PopUpViewProductionResult extends JDialog{
 		totalGoodResultBLbl.setBounds(50,1030,200,20);
 		containerPnl.add(totalGoodResultBLbl);
 		
-		totalGoodResultBField = new NumberField(5);
+		totalGoodResultBField = new TextField();
 		totalGoodResultBField.setBounds(240,1030,150,20);
 		containerPnl.add(totalGoodResultBField);
 		
@@ -404,13 +369,14 @@ public class PopUpViewProductionResult extends JDialog{
 		totalAllGoodResultLbl.setBounds(50,1070,200,20);
 		containerPnl.add(totalAllGoodResultLbl);
 		
-		totalAllGoodResultField = new NumberField(5);
+		totalAllGoodResultField = new TextField();
 		totalAllGoodResultField.setBounds(240,1070,150,20);
 		containerPnl.add(totalAllGoodResultField);
 		
-		printBtn = new JButton("Cetak");
-		printBtn.setBounds(750,1110,150,30);
-		containerPnl.add(printBtn);
+		saveBtn = new JButton("Simpan");
+		saveBtn.setBounds(750,1110,150,30);
+		saveBtn.setFocusable(false);
+		containerPnl.add(saveBtn);
 	}
 	
 	
@@ -418,21 +384,264 @@ public class PopUpViewProductionResult extends JDialog{
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				dispose();
+				if(DialogBox.showCloseChoice()==JOptionPane.YES_OPTION) dispose();
 			}
 		});
 		
-		printBtn.addActionListener(new ActionListener() {
+		addBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				validatingDetail();
+			}
+		});
+		
+		productionResultTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(productionResultTable.columnAtPoint(e.getPoint())==6){
+					editMode=true;
+					indexEdit=productionResultTable.getSelectedRow();
+					ProductionResult prd = listOfPrd.get(productionResultTable.getSelectedRow());
+					pressNoField.setText(prd.getPressedNo()+"");
+					String [] splitTime = prd.getStartTime().split(":");
+					hourField.setText(splitTime[0]);
+					minuteField.setText(splitTime[1]);
+					for (ProductionResultProduct pkpr : prd.getListProductionResultProduct()) {
+						if(pkpr.getProductCode().equals(KA)){
+							klemGradeAField.setText(pkpr.getQty()+"");
+						}
+						if(pkpr.getProductCode().equals(KB)){
+							klemGradeBField.setText(pkpr.getQty()+"");
+						}
+						if(pkpr.getProductCode().equals(PA)){
+							protolGradeAField.setText(pkpr.getQty()+"");
+						}
+						if(pkpr.getProductCode().equals(PB)){
+							protolGradeBField.setText(pkpr.getQty()+"");
+						}
+						if(pkpr.getProductCode().equals(NA)){
+							goodResultGradeAField.setText(pkpr.getQty()+"");
+						}
+						if(pkpr.getProductCode().equals(NB)){
+							goodResultGradeBField.setText(pkpr.getQty()+"");
+						}
+					}		
+				}
+//				if(productionResultTable.columnAtPoint(e.getPoint())==10){
+//					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
+//						pressMap.remove(listOfPrd.get(productionResultTable.getSelectedRow()).getPressedNo());
+//						listOfPrd.remove(productionResultTable.getSelectedRow());
+//						productionResultTable.updateUI();
+//						calculateTotal();
+//					}
+//				}
+			}
+		});
+		
+		saveBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveProductResult();
 			}
 		});
 	}
 	
 
-
+	private void validatingDetail(){
+		int error = 0;
+		if(pressNoField.getText().equals("")){
+			errorPressNoLbl.setText("<html><font color='red'>Pengepresan harus diisi !</font></html>");
+			error++;
+		}else{
+			if(!editMode){
+				if(pressMap.containsKey(Integer.valueOf(pressNoField.getText()))){
+					errorPressNoLbl.setText("<html><font color='red'>No Pengepresan sudah ada!</font></html>");
+					error++;
+				}else{
+					errorPressNoLbl.setText("");
+				}
+			}
+		}
+		
+		if(hourField.getText().equals("")||minuteField.getText().equals("")){
+			errorTimeLbl.setText("");
+		}else{
+			if(hourField.getText().length()!=2||minuteField.getText().length()!=2){
+				errorTimeLbl.setText("<html><font color='red'>Format Jam mulai harus 00:00 !</font></html>");
+				error++;
+			}else{
+				if(Integer.valueOf(hourField.getText())>23||Integer.valueOf(minuteField.getText())>59){
+					errorTimeLbl.setText("<html><font color='red'>Format Jam Tidak boleh lebih dari 23:59 !</font></html>");
+					error++;
+				}else{
+					errorTimeLbl.setText("");
+				}
+			}
+		}
+	
+		
+		/*if(klemGradeAField.getText().equals("")){
+			errorKlemALbl.setText("<html><font color='red'>Repair Klem A harus diisi !</font></html>");
+			error++;
+		}else{
+			errorKlemALbl.setText("");
+		}
+		if(klemGradeBField.getText().equals("")){
+			errorKlemBLbl.setText("<html><font color='red'>Repair Klem B harus diisi !</font></html>");
+			error++;
+		}else{
+			errorKlemBLbl.setText("");
+		}
+		
+		if(protolGradeAField.getText().equals("")){
+			errorProtolALbl.setText("<html><font color='red'>Repair Protol A harus diisi !</font></html>");
+			error++;
+		}else{
+			errorProtolALbl.setText("");
+		}
+		if(protolGradeBField.getText().equals("")){
+			errorProtolBLbl.setText("<html><font color='red'>Repair Protol B harus diisi !</font></html>");
+			error++;
+		}else{
+			errorProtolBLbl.setText("");
+		}
+		if(goodResultGradeAField.getText().equals("")){
+			errorGoodResultALbl.setText("<html><font color='red'>Hasil Baik A harus diisi !</font></html>");
+			error++;
+		}else{
+			errorGoodResultALbl.setText("");
+		}
+		if(goodResultGradeBField.getText().equals("")){
+			errorGoodResultBLbl.setText("<html><font color='red'>Hasil Baik B harus diisi !</font></html>");
+			error++;
+		}else{
+			errorGoodResultBLbl.setText("");
+		}*/
+		
+		if(error==0){
+			if(editMode){
+				ProductionResult prd = listOfPrd.get(indexEdit);
+				int tempPressedNo = prd.getPressedNo();
+				prd.setPressedNo(Integer.parseInt(pressNoField.getText()));
+				if(!hourField.getText().equals("")||!minuteField.getText().equals("")){
+					prd.setStartTime(hourField.getText()+":"+minuteField.getText());
+				}else{
+					prd.setStartTime("00:00");
+				}
+				
+				double klemA = klemGradeAField.getText().equals("")?0:Double.valueOf(klemGradeAField.getText());
+				double klemB = klemGradeBField.getText().equals("")?0:Double.valueOf(klemGradeBField.getText());
+				double protolA = protolGradeAField.getText().equals("")?0:Double.valueOf(protolGradeAField.getText());
+				double protolB = protolGradeBField.getText().equals("")?0:Double.valueOf(protolGradeBField.getText());
+				double fineA = goodResultGradeAField.getText().equals("")?0:Double.valueOf(goodResultGradeAField.getText());
+				double fineB = goodResultGradeBField.getText().equals("")?0:Double.valueOf(goodResultGradeBField.getText());
+				
+				prd.setTotalKlem(klemA+klemB);
+				prd.setTotalProtol(protolA+protolB);
+				prd.setTotalFineA(fineA);
+				prd.setTotalFineB(fineB);
+				
+				if(prd.getListProductionResultProduct().size()>0){
+					for (ProductionResultProduct prodPKResultProduct : prd.getListProductionResultProduct()) {
+						if(prodPKResultProduct.getProductCode().equals(KA)){
+							prodPKResultProduct.setQty(klemA);
+						}
+						if(prodPKResultProduct.getProductCode().equals(KB)){
+							prodPKResultProduct.setQty(klemB);
+						}
+						if(prodPKResultProduct.getProductCode().equals(PA)){
+							prodPKResultProduct.setQty(protolA);
+						}
+						if(prodPKResultProduct.getProductCode().equals(PB)){
+							prodPKResultProduct.setQty(protolB);
+						}
+						if(prodPKResultProduct.getProductCode().equals(NA)){
+							prodPKResultProduct.setQty(fineA);
+						}
+						if(prodPKResultProduct.getProductCode().equals(NB)){
+							prodPKResultProduct.setQty(fineB);
+						}
+					}
+				}
+				
+				if(tempPressedNo!=prd.getPressedNo()) pressMap.remove(tempPressedNo);
+				pressMap.put(prd.getPressedNo(),prd.getPressedNo());
+				productionResultTable.updateUI();
+				editMode=false;
+				indexEdit=0;
+			}else{
+				ProductionResult prd = new ProductionResult();
+				prd.setPressedNo(Integer.parseInt(pressNoField.getText()));
+				if(!hourField.getText().equals("")||!minuteField.getText().equals("")){
+					prd.setStartTime(hourField.getText()+":"+minuteField.getText());
+				}else{
+					prd.setStartTime("00:00");
+				}
+				double klemA = klemGradeAField.getText().equals("")?0:Double.valueOf(klemGradeAField.getText());
+				double klemB = klemGradeBField.getText().equals("")?0:Double.valueOf(klemGradeBField.getText());
+				double protolA = protolGradeAField.getText().equals("")?0:Double.valueOf(protolGradeAField.getText());
+				double protolB = protolGradeBField.getText().equals("")?0:Double.valueOf(protolGradeBField.getText());
+				double fineA = goodResultGradeAField.getText().equals("")?0:Double.valueOf(goodResultGradeAField.getText());
+				double fineB = goodResultGradeBField.getText().equals("")?0:Double.valueOf(goodResultGradeBField.getText());
+				
+				prd.setTotalKlem(klemA+klemB);
+				prd.setTotalProtol(protolA+protolB);
+				prd.setTotalFineA(fineA);
+				prd.setTotalFineB(fineB);
+				
+				List<ProductionResultProduct> prodPKResultProducts = new ArrayList<>();
+				for(int i=0;i<6;i++){
+					ProductionResultProduct prodPK = new ProductionResultProduct();
+					if(i==0){
+						prodPK.setProductCode(KA);
+						prodPK.setQty(Double.valueOf(klemA));
+					}
+					if(i==1){
+						prodPK.setProductCode(KB);
+						prodPK.setQty(Double.valueOf(klemB));
+					}
+					if(i==2){
+						prodPK.setProductCode(PA);
+						prodPK.setQty(Double.valueOf(protolA));
+					}
+					if(i==3){
+						prodPK.setProductCode(PB);
+						prodPK.setQty(Double.valueOf(protolB));
+					}
+					if(i==4){
+						prodPK.setProductCode(NA);
+						prodPK.setQty(Double.valueOf(fineA));
+					}
+					if(i==5){
+						prodPK.setProductCode(NB);
+						prodPK.setQty(Double.valueOf(fineB));
+					}
+					prodPKResultProducts.add(prodPK);
+				}
+				prd.setListProductionResultProduct(prodPKResultProducts);
+				listOfPrd.add(prd);
+				pressMap.put(prd.getPressedNo(),prd.getPressedNo());
+				productionResultTable.setModel(new ResultTableModel(listOfPrd));
+				productionResultTable.updateUI();
+			}
+			calculateTotal();
+			clearDetail();
+		}
+	}
+	
+	private void clearDetail(){
+		pressNoField.setText("");
+		hourField.setText("");
+		minuteField.setText("");
+		goodResultGradeAField.setText("");
+		goodResultGradeBField.setText("");
+		protolGradeAField.setText("");
+		protolGradeBField.setText("");
+		klemGradeAField.setText("");
+		klemGradeBField.setText("");
+	}
 	private void calculateTotal(){
 		int totalOutput=0;
 		int totalKlem=0;
@@ -440,13 +649,13 @@ public class PopUpViewProductionResult extends JDialog{
 		int totalFineA=0;
 		int totalFineB=0;
 		int totalAllFine=0;
-		for (ProductionResultProduct prd : listOfPrd) {
-			totalOutput+=prd.getTotal();
-			totalKlem+=(prd.getRepairKlemA()+prd.getRepairKlemB());
-			totalProtol+=(prd.getRepairProtolA()+prd.getRepairProtolB());
-			totalFineA+=prd.getFineA();
-			totalFineB+=prd.getFineB();
-			totalAllFine+=(prd.getFineA()+prd.getFineB());
+		for (ProductionResult prd : listOfPrd) {	
+			totalKlem+=(prd.getTotalKlem());
+			totalProtol+=(prd.getTotalProtol());
+			totalFineA+=prd.getTotalFineA();
+			totalFineB+=prd.getTotalFineB();
+			totalAllFine+=(prd.getTotalFineA()+prd.getTotalFineB());
+			totalOutput+=totalAllFine+totalKlem+totalProtol;
 		}
 		
 		totalOutputField.setText(totalOutput+"");
@@ -457,12 +666,19 @@ public class PopUpViewProductionResult extends JDialog{
 		totalAllGoodResultField.setText(totalAllFine+"");
 	}
 	
+	private void saveProductResult(){
+		if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
+			createProductionPKPanel.getProduction().setProductionResults(listOfPrd);
+			DialogBox.showInsert();
+			dispose();
+		}
+	}
 	
-	private class ProductionResultTableModel extends AbstractTableModel{
+	private class ResultTableModel extends AbstractTableModel{
 		private static final long serialVersionUID = 1L;
-		private List<ProductionResultProduct> productionResults;
+		private List<ProductionResult> productionResults;
 		    
-		    public ProductionResultTableModel(List<ProductionResultProduct> productionResults) {
+		    public ResultTableModel(List<ProductionResult> productionResults) {
 		        this.productionResults = productionResults;
 		    }
 		    
@@ -478,7 +694,7 @@ public class PopUpViewProductionResult extends JDialog{
 		     * Method to get Column Count
 		     */
 		    public int getColumnCount() {
-		        return 11;
+		        return 8;
 		    }
 		    
 		    /**
@@ -488,29 +704,23 @@ public class PopUpViewProductionResult extends JDialog{
 		     * @return ({@link User}) Object 
 		     */
 		    public Object getValueAt(int rowIndex, int columnIndex) {
-		    	ProductionResultProduct p = productionResults.get(rowIndex);
+		    	ProductionResult p = productionResults.get(rowIndex);
 		        switch(columnIndex){
 		        	case 0:
 		        		return p.getPressedNo();
 		            case 1 : 
 		                return p.getStartTime();
 		            case 2 :
-		                return p.getTotal();
+		                return p.getTotalKlem();
 		            case 3 :
-		                return p.getRepairKlemA();
+		                return p.getTotalProtol();
 		            case 4 :
-		                return p.getRepairKlemB();
+		                return p.getTotalFineA();
 		            case 5 :
-		                return p.getRepairProtolA();
+		                return p.getTotalFineB();
 		            case 6 :
-		                return p.getRepairProtolB();
-		            case 7 :
-		                return p.getFineA();
-		            case 8 :
-		                return p.getFineB();
-		            case 9 :
 		            	return "Edit";
-		            case 10 :
+		            case 7 :
 		            	return "Delete";
 		            default :
 		                return "";
@@ -529,22 +739,16 @@ public class PopUpViewProductionResult extends JDialog{
 		            case 1 :
 		                return "Jam Mulai";
 		            case 2 :
-		                return "Total Output";
+		            	return "Total Klem";
 		            case 3 :
-		            	return "Repair Klem A";
+		                return "Total Protol";
 		            case 4 :
-		                return "Repair Klem B";
-		            case 5 :
-		                return "Repair Protol A";
-		            case 6 :
-		                return "Repair Protol B";
-		            case 7 :
 		                return "Hasil Baik A";
-		            case 8 :
+		            case 5 :
 		                return "Hasil Baik B";
-		            case 9 :
+		            case 6 :
 		                return "Action";
-		            case 10 :
+		            case 7 :
 		                return "Action";
 		            default :
 		                return "";
