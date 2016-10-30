@@ -144,15 +144,15 @@ public class ProductBL {
 		}
 	}
 	
-//	public List<Grade> getAllGradeByCategoryProductId(int productCategoryId) throws SQLException {
-//		Connection con = null;
-//		try {
-//			con = dataSource.getConnection();
-//			return new ProductDAO(con).getAllGrade();
-//		} finally {
-//			con.close();
-//		}
-//	}
+	public List<Grade> getAllGradeByCategoryProductId(int productCategoryId) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductDAO(con).getAllGradeByCategoryProductId(productCategoryId);
+		} finally {
+			con.close();
+		}
+	}
 
 	public List<Uom> getAllUom() throws SQLException {
 		Connection con = null;

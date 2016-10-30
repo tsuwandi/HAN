@@ -468,10 +468,10 @@ public class ProductViewPanel extends JPanel implements Bridging {
 			if (product != null) {
 				idField.setText(product.getProductCode());
 				nameField.setText(product.getProductName());
-				catField.setSelectedIndex(product.getProductCat());
-				uomField.setSelectedIndex(product.getProductUom());
-				typeField.setSelectedIndex(product.getWoodType());
-				gradeField.setSelectedIndex(product.getGrade());
+				catField.setSelectedItem(product.getProductCatName());
+				uomField.setSelectedItem(product.getUnitName());
+				typeField.setSelectedItem(product.getWoodTypeName());
+				gradeField.setSelectedItem(product.getGradeName());
 
 				if (product.getThickness() != 0.00)
 					thickField.setText(String.valueOf(product.getThickness()));

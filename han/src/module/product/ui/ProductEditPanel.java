@@ -232,7 +232,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		add(productionTypeLblError);
 
 		////////////////////////////////////////////////////////////////////////////////////
-
+		grades = new ArrayList<Grade>();
 		try {
 			categories = ServiceFactory.getProductBL().getAllProductCategory();
 			categories.add(0, new ProductCategory("-- Pilih Kategori Produk --"));
@@ -299,6 +299,25 @@ public class ProductEditPanel extends JPanel implements Bridging {
 				}
 			}
 		});
+		
+		catField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (catField.getSelectedIndex() != 0) {
+					int productCategoryId = catField.getDataIndex().getId();
+					getAllGradeByProductCategoryId(productCategoryId);
+
+					gradeField.removeAllItems();
+					gradeField.setList(grades);
+					gradeField.updateUI();
+				} else {
+					gradeField.removeAllItems();
+					getAllGradeByProductCategoryId(0);
+					gradeLblError.setText("");
+				}
+			}
+		});
+		catField.setList(categories);
+		
 		catField.setList(categories);
 		catField.setBounds(220, 140, 150, 25);
 
@@ -335,13 +354,8 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		typeField.setList(woodTypes);
 		typeField.setBounds(220, 290, 150, 25);
 
-		try {
-			grades = ServiceFactory.getProductBL().getAllGrade();
-			grades.add(0, new Grade("-- Pilih Grade --"));
-		} catch (SQLException e1) {
-			LOGGER.error(e1.getMessage());
-			DialogBox.showErrorException();
-		}
+		grades.add(0, new Grade("-- Pilih Grade --"));
+		
 		gradeField = new ComboBox<Grade>();
 		gradeField.setList(grades);
 		gradeField.setBounds(220, 380, 150, 25);
@@ -470,6 +484,17 @@ public class ProductEditPanel extends JPanel implements Bridging {
 			}
 		});
 	}
+	
+	public void getAllGradeByProductCategoryId(int productCategoryId) {
+		try {
+			grades = ServiceFactory.getProductBL().getAllGradeByCategoryProductId(productCategoryId);
+			grades.add(0, new Grade("-- Pilih Grade --"));
+		} catch (SQLException e) {
+			LOGGER.error(e.getMessage());
+			DialogBox.showErrorException();
+		}
+	}
+
 
 	public void doEdit() {
 		try {
@@ -629,10 +654,10 @@ public class ProductEditPanel extends JPanel implements Bridging {
 				id = product.getProductId();
 				idField.setText(product.getProductCode());
 				nameField.setText(product.getProductName());
-				catField.setSelectedIndex(product.getProductCat());
-				uomField.setSelectedIndex(product.getProductUom());
-				typeField.setSelectedIndex(product.getWoodType());
-				gradeField.setSelectedIndex(product.getGrade());
+				catField.setSelectedItem(product.getProductCatName());
+				uomField.setSelectedItem(product.getUnitName());
+				typeField.setSelectedItem(product.getWoodTypeName());
+				gradeField.setSelectedItem(product.getGradeName());
 
 				if (product.getThickness() != 0.00)
 					thickField.setText(String.valueOf(product.getThickness()));

@@ -26,7 +26,7 @@ public class ProductDAO {
 	private PreparedStatement deleteProductStatement;
 	private PreparedStatement insertProductStatement;
 
-	private String selectAllQuery = "select a.id, product_code, product_name, product_category_id, "
+	private String selectAllQuery = "select a.id, product_code, product_name, a.product_category_id, "
 			+ "product_status, product_uom_id, is_maintain_stock, image_path, brand, barcode, description, "
 			+ "wood_type_id, grade_id, thickness, length, width, condition_id, minqty, is_has_serial, is_fixed_asset, warranty, "
 			+ "netto, netto_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, "
@@ -37,14 +37,15 @@ public class ProductDAO {
 			+ "inner join uom e on a.product_uom_id = e.id "
 			+ "where 1=1 and a.deleted_date is null and a.deleted_by is null ";
 
-	private String getAllNoOrder = "select a.id, product_code, product_name, product_category_id, "
+	private String getAllNoOrder = "select a.id, product_code, product_name, a.product_category_id, "
 			+ "product_status, product_uom_id, is_maintain_stock, image_path, brand, barcode, description, "
 			+ "wood_type_id, grade_id, thickness, length, width, condition_id, minqty, is_has_serial, is_fixed_asset, warranty, "
 			+ "netto, netto_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, "
 			+ "expense_acc_id, main_supp_code, manufacturer, is_sales_item, is_service_item, sell_cost_center_id, "
 			+ "income_acc_id, max_disc, a.input_date, a.input_by, a.edit_date, a.edited_by, "
-			+ "b.wood_type, c.grade, d.product_category, production_quality_id, production_type_id " + "from product a left join wood_type b on a.wood_type_id = b.id "
+			+ "b.wood_type, c.grade, d.product_category, production_quality_id, production_type_id, e.uom " + "from product a left join wood_type b on a.wood_type_id = b.id "
 			+ "left join grade c on a.grade_id = c.id " + "inner join product_category d on a.product_category_id = d.id "
+			+ "inner join uom e on a.product_uom_id = e.id "
 			+ "where 1=1 ";
 
 	private String productCatQuery = "select * from product_category order by id asc";
@@ -344,32 +345,31 @@ public class ProductDAO {
 		return grades;
 	}
 	
-//	public List<Grade> getAllGradeByCategoryProductId(int productCategoryId) throws SQLException {
-//		List<Grade> grades = new ArrayList<Grade>();
-//
-//		try {
-//			getAllGrade = connection.prepareStatement(gradeQuery);
-//
-//			StringBuilder query = new StringBuilder().append(gradeQuery);
-//			query.append(" where product");
-//				getAllProductStatement = connection.prepareStatement(query.toString());
-//			}
-//			
-//			
-//			ResultSet rs = getAllGrade.executeQuery();
-//			while (rs.next()) {
-//				Grade grade = new Grade();
-//				grade.setId(rs.getInt("id"));
-//				grade.setGrade(rs.getString("grade"));
-//				grades.add(grade);
-//			}
-//
-//		} catch (SQLException ex) {
-//			throw new SQLException(ex.getMessage());
-//		}
-//
-//		return grades;
-//	}
+	public List<Grade> getAllGradeByCategoryProductId(int productCategoryId) throws SQLException {
+		List<Grade> grades = new ArrayList<Grade>();
+
+		try {
+			
+			String query = new StringBuilder().append(gradeQuery).append(" where product_category_id = ? order by id").toString();
+			
+			getAllGrade = connection.prepareStatement(query);
+			getAllGrade.setInt(1, productCategoryId);
+			
+			ResultSet rs = getAllGrade.executeQuery();
+			while (rs.next()) {
+				Grade grade = new Grade();
+				grade.setId(rs.getInt("id"));
+				grade.setProductCategoryId(rs.getInt("product_category_id"));
+				grade.setGrade(rs.getString("grade"));
+				grades.add(grade);
+			}
+
+		} catch (SQLException ex) {
+			throw new SQLException(ex.getMessage());
+		}
+
+		return grades;
+	}
 
 	public List<Uom> getAllUom() throws SQLException {
 		List<Uom> units = new ArrayList<Uom>();
@@ -529,6 +529,7 @@ public class ProductDAO {
 				p.setProductCatName(rs.getString("d.product_category"));
 				p.setProductionTypeId(rs.getInt("production_type_id"));
 				p.setProductionQualityId(rs.getInt("production_quality_id"));
+				p.setUnitName(rs.getString("uom"));
 			}
 
 		} catch (SQLException ex) {
