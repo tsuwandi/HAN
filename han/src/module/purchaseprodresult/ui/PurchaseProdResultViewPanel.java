@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
@@ -106,8 +108,11 @@ public class PurchaseProdResultViewPanel extends JPanel implements Bridging {
 	PurchaseProdResultViewPanel pprCreatePanel;
 	
 	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
+	
+	private PurchaseProdResultViewPanel pprViewPanel;
 
 	public PurchaseProdResultViewPanel() {
+		pprViewPanel = this;
 		purchaseProductResult = new PurchaseProdResult();
 
 		pprCreatePanel = this;
@@ -269,6 +274,20 @@ public class PurchaseProdResultViewPanel extends JPanel implements Bridging {
 		pprTableTableModel = new PPRProductTableModel(listOfPPRProduct);
 		tblPPRProduct = new JTable(pprTableTableModel);
 		tblPPRProduct.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tblPPRProduct.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					JTable target = (JTable) e.getSource();
+					int row = target.getSelectedRow();
+					int column = target.getSelectedColumn();
+
+					if (column == 5) {
+						showViewPPRProductDialog(listOfPPRProduct.get(row), pprViewPanel, row);
+					}
+				}
+			}
+		});
 		scrollPanePPRProduct.setViewportView(tblPPRProduct);
 
 		lblTotal = new JLabel("Total");
@@ -361,6 +380,14 @@ public class PurchaseProdResultViewPanel extends JPanel implements Bridging {
 
 		add(scrollPane);
 
+	}
+	
+	protected void showViewPPRProductDialog(PPRProduct pprProduct,
+			PurchaseProdResultViewPanel pprViewPanel, Integer index) {
+		PPRProductDialog pprProductDialog = new PPRProductDialog(true, pprProduct, pprViewPanel, index);
+		pprProductDialog.setTitle("Barang");
+		pprProductDialog.setLocationRelativeTo(null);
+		pprProductDialog.setVisible(true);
 	}
 	
 	protected void doDelete() {

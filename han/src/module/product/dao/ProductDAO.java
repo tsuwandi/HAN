@@ -49,7 +49,7 @@ public class ProductDAO {
 
 	private String productCatQuery = "select * from product_category order by id asc";
 
-	private String gradeQuery = "select * from grade order by id asc";
+	private String gradeQuery = "select * from grade ";
 
 	private String uomQuery = "select * from uom order by id asc";
 
@@ -327,7 +327,8 @@ public class ProductDAO {
 		List<Grade> grades = new ArrayList<Grade>();
 
 		try {
-			getAllGrade = connection.prepareStatement(gradeQuery);
+			String query = new StringBuilder().append(gradeQuery).append(" order by id asc").toString();
+			getAllGrade = connection.prepareStatement(query);
 			ResultSet rs = getAllGrade.executeQuery();
 			while (rs.next()) {
 				Grade grade = new Grade();
@@ -342,6 +343,33 @@ public class ProductDAO {
 
 		return grades;
 	}
+	
+//	public List<Grade> getAllGradeByCategoryProductId(int productCategoryId) throws SQLException {
+//		List<Grade> grades = new ArrayList<Grade>();
+//
+//		try {
+//			getAllGrade = connection.prepareStatement(gradeQuery);
+//
+//			StringBuilder query = new StringBuilder().append(gradeQuery);
+//			query.append(" where product");
+//				getAllProductStatement = connection.prepareStatement(query.toString());
+//			}
+//			
+//			
+//			ResultSet rs = getAllGrade.executeQuery();
+//			while (rs.next()) {
+//				Grade grade = new Grade();
+//				grade.setId(rs.getInt("id"));
+//				grade.setGrade(rs.getString("grade"));
+//				grades.add(grade);
+//			}
+//
+//		} catch (SQLException ex) {
+//			throw new SQLException(ex.getMessage());
+//		}
+//
+//		return grades;
+//	}
 
 	public List<Uom> getAllUom() throws SQLException {
 		List<Uom> units = new ArrayList<Uom>();

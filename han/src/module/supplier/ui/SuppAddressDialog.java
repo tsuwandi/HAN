@@ -65,9 +65,11 @@ public class SuppAddressDialog extends JDialog {
 	JLabel lblErrorCity;
 
 	private boolean isEdit;
+	private boolean isView;
 	private SuppAddress suppAddress;
 	private SupplierCreatePanel supplierCreate;
 	private SupplierEditPanel supplierEdit;
+	private SupplierViewPanel supplierView;
 
 	List<Province> listOfProvince;
 	List<City> listOfCity;
@@ -83,6 +85,7 @@ public class SuppAddressDialog extends JDialog {
 
 	public SuppAddressDialog(boolean edit, SuppAddress suppAddress, SupplierCreatePanel supplierCreate, Integer index) {
 		this.isEdit = edit;
+		this.isView = false;
 		this.suppAddress = suppAddress;
 		this.supplierCreate = supplierCreate;
 		this.index = index;
@@ -91,8 +94,18 @@ public class SuppAddressDialog extends JDialog {
 
 	public SuppAddressDialog(boolean edit, SuppAddress suppAddress, SupplierEditPanel supplierEdit, Integer index) {
 		this.isEdit = edit;
+		this.isView = false;
 		this.suppAddress = suppAddress;
 		this.supplierEdit = supplierEdit;
+		this.index = index;
+		init();
+	}
+	
+	public SuppAddressDialog(boolean view, SuppAddress suppAddress, SupplierViewPanel supplierView, Integer index) {
+		this.isEdit = true;
+		this.isView = view;
+		this.suppAddress = suppAddress;
+		this.supplierView = supplierView;
 		this.index = index;
 		init();
 	}
@@ -273,6 +286,19 @@ public class SuppAddressDialog extends JDialog {
 			txtEmail.setText(suppAddress.getSuppCp().getEmail());
 			cbProvince.setSelectedItem(suppAddress.getProvince().getProvince());
 			
+		}
+		
+		if(isView == true) {
+			txtAddress.setEnabled(false);
+			txtZipCode.setEnabled(false);
+			cbAddressType.setEnabled(false);
+			cbProvince.setEnabled(false);
+			txtCity.setEnabled(false);
+			txtContactPerson.setEnabled(false);
+			txtEmail.setEnabled(false);
+			txtFax.setEnabled(false);
+			txtPhone.setEnabled(false);
+			btnInsert.setEnabled(false);
 		}
 	}
 

@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,8 +96,11 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 	JLabel lblErrorSuppStatus;
 	JLabel lblErrorTop;
 	JLabel lblErrorDefaultTax;
+	
+	private SupplierViewPanel supplierView;
 
 	public SupplierViewPanel() {
+		supplierView = this;
 		setLayout(null);
 		panel = new JPanel();
 		panel.setPreferredSize(
@@ -189,10 +194,23 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 
 		suppAddressTableModel = new SuppAddressTableModel(new ArrayList<SuppAddress>());
 		tblSuppAddress = new JTable(suppAddressTableModel);
-		tblSuppAddress.setEnabled(false);
 		tblSuppAddress.setBorder(new EmptyBorder(5, 5, 5, 5));
 		tblSuppAddress.setFocusable(false);
 		scrollPaneSuppAddress.setViewportView(tblSuppAddress);
+		
+		tblSuppAddress.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					JTable target = (JTable) e.getSource();
+					int row = target.getSelectedRow();
+					int column = target.getSelectedColumn();
+
+					if (column == 6)
+						showViewSuppAddressDialog(listOfSuppAddress.get(row), supplierView, row);
+				}
+			}
+		});
 
 		btnAddSuppAddress = new JButton("Tambah");
 		btnAddSuppAddress.setEnabled(false);
@@ -217,10 +235,24 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 
 		suppVehicleTableModel = new SuppVehicleTableModel(new ArrayList<SuppVehicle>());
 		tblSuppVehicle = new JTable(suppVehicleTableModel);
-		tblSuppVehicle.setEnabled(false);
+		tblSuppVehicle.setEnabled(true);
 		tblSuppVehicle.setBorder(new EmptyBorder(5, 5, 5, 5));
 		tblSuppVehicle.setFocusable(false);
 		scrollPaneSuppVehicle.setViewportView(tblSuppVehicle);
+		
+		tblSuppVehicle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					JTable target = (JTable) e.getSource();
+					int row = target.getSelectedRow();
+					int column = target.getSelectedColumn();
+
+					if (column == 3)
+						showViewSuppVehicleDialog(listOfSuppVehicle.get(row), supplierView, row);
+				}
+			}
+		});
 
 		btnAddSuppVehicle = new JButton("Tambah");
 		btnAddSuppVehicle.setEnabled(false);
@@ -331,6 +363,20 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 		btnCancel.setBounds(50, 760, 100, 25);
 		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
+	}
+	
+	protected void showViewSuppAddressDialog(SuppAddress suppAddress, SupplierViewPanel supplierView, Integer index) {
+		SuppAddressDialog suppAddressDialog = new SuppAddressDialog(true, suppAddress, supplierView, index);
+		suppAddressDialog.setTitle("Alamat");
+		suppAddressDialog.setLocationRelativeTo(null);
+		suppAddressDialog.setVisible(true);
+	}
+	
+	protected void showViewSuppVehicleDialog(SuppVehicle suppVehicle, SupplierViewPanel supplierView, Integer index) {
+		SuppVehicleDialog suppVehicleDialog = new SuppVehicleDialog(true, suppVehicle, supplierView, index);
+		suppVehicleDialog.setTitle("Kendaraan");
+		suppVehicleDialog.setLocationRelativeTo(null);
+		suppVehicleDialog.setVisible(true);
 	}
 
 	protected void loadData(Integer supplierId) {

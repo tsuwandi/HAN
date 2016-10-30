@@ -253,7 +253,6 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 
 		btnInsert = new JButton("Tambah");
 		btnInsert.setBounds(820, 300, 100, 25);
-		btnInsert.setFocusable(false);
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				showAddPPRProductDialog(pprCreatePanel);
@@ -278,6 +277,7 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 		pprTableTableModel = new PPRProductTableModel(listOfPPRProduct);
 		tblPPRProduct = new JTable(pprTableTableModel);
 		tblPPRProduct.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tblPPRProduct.setFocusable(false);
 		tblPPRProduct.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -398,7 +398,10 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 		purchaseProductResult.setPurchaseDate(dcPurchaseDate.getDate());
 		purchaseProductResult.setDueDate(dcDueDate.getDate());
 		purchaseProductResult.setCurrencyId(cbCurrency.getDataIndex().getId());
-		purchaseProductResult.setExchangeRate(Double.valueOf(txtExchangeRate.getText()));
+		if (!"".equals(txtExchangeRate.getText()))
+			purchaseProductResult.setExchangeRate(Double.valueOf(txtExchangeRate.getText()));
+		else
+			purchaseProductResult.setExchangeRate(0.00);
 
 		if (!"".equals(txtTotal.getText()))
 			purchaseProductResult.setTotal(Double.valueOf(txtTotal.getText()));
@@ -423,8 +426,8 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 		try {
 			ServiceFactory.getPurchaseProductResultBL().save(purchaseProductResult, listOfPPRProduct);
 			DialogBox.showInsert();
-			MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProductResultListPanel");
-		} catch (SQLException e) {
+			MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultListPanel");
+		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
 		}

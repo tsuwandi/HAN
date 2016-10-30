@@ -51,25 +51,19 @@ public class PPRProductDialog extends JDialog {
 	JButton btnInsert;
 
 	private boolean isEdit;
+	private boolean isView;
 	private PPRProduct pprProduct;
 	private PurchaseProdResultCreatePanel pprCreatePanel;
 	private PurchaseProdResultEditPanel pprEditPanel;
+	private PurchaseProdResultViewPanel pprViewPanel;
 	List<Product> listOfProduct = null;
 
 	private Integer index;
 
-	// public SuppVehicleDialog(boolean edit, SuppVehicle suppVehicle,
-	// SupplierEditPanel supplierEdit, Integer index) {
-	// this.isEdit = edit;
-	// this.suppVehicle = suppVehicle;
-	// this.supplierEdit = supplierEdit;
-	// this.index = index;
-	// init();
-	// }
-
 	public PPRProductDialog(boolean edit, PPRProduct pprProduct, PurchaseProdResultCreatePanel pprCreatePanel,
 			Integer index) {
 		this.isEdit = edit;
+		this.isView = false;
 		this.pprProduct = pprProduct;
 		this.pprCreatePanel = pprCreatePanel;
 		this.index = index;
@@ -79,8 +73,19 @@ public class PPRProductDialog extends JDialog {
 	public PPRProductDialog(boolean edit, PPRProduct pprProduct, PurchaseProdResultEditPanel pprEditPanel,
 			Integer index) {
 		this.isEdit = edit;
+		this.isView = false;
 		this.pprProduct = pprProduct;
 		this.pprEditPanel = pprEditPanel;
+		this.index = index;
+		init();
+	}
+	
+	public PPRProductDialog(boolean view, PPRProduct pprProduct, PurchaseProdResultViewPanel pprViewPanel,
+			Integer index) {
+		this.isEdit = true;
+		this.isView = view;
+		this.pprProduct = pprProduct;
+		this.pprViewPanel = pprViewPanel;
 		this.index = index;
 		init();
 	}
@@ -185,9 +190,17 @@ public class PPRProductDialog extends JDialog {
 			cbProduct.setSelectedItem(pprProduct.getProduct().getProductName());
 			txtSubTotal.setText(String.valueOf(this.getSubTotal()));
 		}
+		
+		if(isView == true) {
+			txtQty.setEnabled(false);
+			txtUnitPrice.setEnabled(false);
+			cbProduct.setEnabled(false);
+			txtSubTotal.setEnabled(false);
+			btnInsert.setEnabled(false);
+		}
 	}
 
-	public int getSubTotal() {
+	public double getSubTotal() {
 		if ("".equals(txtQty.getText()))
 			return 0;
 
@@ -195,7 +208,7 @@ public class PPRProductDialog extends JDialog {
 			return 0;
 
 		int qty = Integer.valueOf(txtQty.getText());
-		int unitPrice = Integer.valueOf(txtUnitPrice.getText());
+		double unitPrice = Double.valueOf(txtUnitPrice.getText());
 
 		return qty * unitPrice;
 	}

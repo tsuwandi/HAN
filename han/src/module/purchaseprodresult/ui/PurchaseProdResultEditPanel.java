@@ -299,7 +299,6 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 
 		btnInsert = new JButton("Tambah");
 		btnInsert.setBounds(820, 300, 100, 25);
-		btnInsert.setFocusable(false);
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				showAddPPRProductDialog(pprEditPanel);
@@ -324,6 +323,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		pprTableTableModel = new PPRProductTableModel(listOfPPRProduct);
 		tblPPRProduct = new JTable(pprTableTableModel);
 		tblPPRProduct.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tblPPRProduct.setFocusable(false);
 		tblPPRProduct.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

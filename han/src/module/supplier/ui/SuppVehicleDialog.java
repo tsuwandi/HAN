@@ -45,9 +45,11 @@ public class SuppVehicleDialog extends JDialog {
 	JLabel lblErrorVehicleType;
 
 	private boolean isEdit;
+	private boolean isView;
 	private SuppVehicle suppVehicle;
 	private SupplierCreatePanel supplierCreate;
 	private SupplierEditPanel supplierEdit;
+	private SupplierViewPanel supplierView;
 
 	List<VehicleType> listOfVehicleType;
 
@@ -55,6 +57,7 @@ public class SuppVehicleDialog extends JDialog {
 
 	public SuppVehicleDialog(boolean edit, SuppVehicle suppVehicle, SupplierEditPanel supplierEdit, Integer index) {
 		this.isEdit = edit;
+		this.isView = false;
 		this.suppVehicle = suppVehicle;
 		this.supplierEdit = supplierEdit;
 		this.index = index;
@@ -63,8 +66,18 @@ public class SuppVehicleDialog extends JDialog {
 
 	public SuppVehicleDialog(boolean edit, SuppVehicle suppVehicle, SupplierCreatePanel supplierCreate, Integer index) {
 		this.isEdit = edit;
+		this.isView = false;
 		this.suppVehicle = suppVehicle;
 		this.supplierCreate = supplierCreate;
+		this.index = index;
+		init();
+	}
+	
+	public SuppVehicleDialog(boolean view, SuppVehicle suppVehicle, SupplierViewPanel supplierView, Integer index) {
+		this.isEdit = true;
+		this.isView = view;
+		this.suppVehicle = suppVehicle;
+		this.supplierView = supplierView;
 		this.index = index;
 		init();
 	}
@@ -133,6 +146,12 @@ public class SuppVehicleDialog extends JDialog {
 		if (isEdit == true) {
 			txtLicensePlate.setText(suppVehicle.getLicensePlate());
 			cbVehicleType.setSelectedItem(suppVehicle.getVehicleType().getVehicleType());
+		}
+		
+		if (isView == true) {
+			txtLicensePlate.setEnabled(false);
+			cbVehicleType.setEnabled(false);
+			btnInsert.setEnabled(false);
 		}
 	}
 
