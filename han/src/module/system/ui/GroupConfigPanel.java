@@ -13,6 +13,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ServiceFactory;
+import module.system.bl.SystemBL;
 import module.system.model.Group;
 
 import javax.swing.JTextField;
@@ -60,6 +62,13 @@ public class GroupConfigPanel extends JPanel {
 
 		JButton btnSave = new JButton("OK");
 		btnSave.setBounds(925, 589, 89, 30);
+		btnSave.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		add(btnSave);
 		
 		JLabel groupNameLbl = new JLabel("Nama Group");
@@ -94,6 +103,13 @@ public class GroupConfigPanel extends JPanel {
 		
 		JButton saveBtn = new JButton("Simpan");
 		saveBtn.setBounds(694, 174, 75, 30);
+		saveBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				save();
+			}
+		});
 		add(saveBtn);
 		
 		saveBtn.addActionListener(new ActionListener() {
@@ -134,6 +150,15 @@ public class GroupConfigPanel extends JPanel {
 				groupDescTxt.setEnabled(true);				
 			}
 		});
+	}
+
+	protected void save() {
+		Group group = new Group();
+		group.setGroupName(groupNameTxt.getText());
+		group.setGroupDesc(groupDescTxt.getText());
+		System.out.println("save");
+		ServiceFactory.getSystemBL().saveGroup(group);
+		System.out.println("done");
 	}
 
 	class GroupConfigTabelModel extends AbstractTableModel {
