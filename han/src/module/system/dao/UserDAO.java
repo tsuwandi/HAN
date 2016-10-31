@@ -69,7 +69,7 @@ public class UserDAO {
 	
 	public void updateUser(User user) {
 		try {
-			updateStatement = connection.prepareStatement(insertQuery);
+			updateStatement = connection.prepareStatement(updateQuery);
 			
 			updateStatement.setInt(1, user.getUserId());
 			updateStatement.setString(1, user.getUserName());
@@ -85,7 +85,7 @@ public class UserDAO {
 	
 	public void deleteUser(User user) {
 		try {
-			deleteStatement = connection.prepareStatement(insertQuery);
+			deleteStatement = connection.prepareStatement(deleteQuery);
 			
 			deleteStatement.setInt(1, user.getUserId());
 			deleteStatement.setString(1, user.getUserName());
