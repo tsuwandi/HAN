@@ -3,6 +3,9 @@ package module.system.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,14 +14,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
-import module.system.bl.SystemBL;
 import module.system.model.Group;
-
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
 
 public class GroupConfigPanel extends JPanel {
 
@@ -52,9 +53,17 @@ public class GroupConfigPanel extends JPanel {
 		pnlTable.add(scrollPane);
 
 		groupConfigTable = new JTable();
-		groupConfigTabelModel = new GroupConfigTabelModel(groups);
-		groupConfigTable.setModel(groupConfigTabelModel);
+		groupConfigTable.setFocusable(false);
+		groupConfigTable.setAutoCreateRowSorter(true);
 		scrollPane.setViewportView(groupConfigTable);
+		
+		groupConfigTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				getSelectedData();
+			}
+			
+		});
 
 		JButton btnCancel = new JButton("Tutup");
 		btnCancel.setBounds(10, 589, 89, 30);
@@ -85,7 +94,6 @@ public class GroupConfigPanel extends JPanel {
 		groupNameTxt.setEditable(false);
 		groupNameTxt.setEnabled(false);
 		add(groupNameTxt);
-		
 		
 		JLabel lblDeskripsiGroup = new JLabel("Deskripsi Group");
 		lblDeskripsiGroup.setBounds(10, 85, 100, 30);
@@ -130,6 +138,13 @@ public class GroupConfigPanel extends JPanel {
 		
 		JButton searchBtn = new JButton("Cari");
 		searchBtn.setBounds(939, 174, 75, 30);
+		searchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				search();
+			}
+		});
 		add(searchBtn);
 		
 		JButton editBtn = new JButton("Edit");
@@ -150,6 +165,30 @@ public class GroupConfigPanel extends JPanel {
 				groupDescTxt.setEnabled(true);				
 			}
 		});
+		
+		getGroupData();
+	}
+
+	protected Group getSelectedData() {
+		int row = groupConfigTable.getSelectedRow();
+		int column = groupConfigTable.getSelectedColumn();
+		return (Group) groupConfigTable.getValueAt(row, column);
+	}
+	
+	protected void updateData() {
+		groupNameTxt.setText(getSelectedData().getGroupName());
+		groupDescTxt.setText(getSelectedData().getGroupDesc());
+	}
+
+	private void getGroupData() {
+		groups.clear();
+		groups = ServiceFactory.getSystemBL().getAllGroup();
+		groupConfigTabelModel = new GroupConfigTabelModel(groups);
+		groupConfigTable.setModel(groupConfigTabelModel);
+	}
+
+	protected void search() {
+		
 	}
 
 	protected void save() {
@@ -212,10 +251,10 @@ public class GroupConfigPanel extends JPanel {
 		}
 
 		@Override
-		public Class getColumnClass(int columnIndex) {
+		public Class<?> getColumnClass(int columnIndex) {
 			switch (columnIndex) {
 			case 0:
-				return String.class;
+				return Integer.class;
 			case 1:
 				return String.class;
 			case 2:

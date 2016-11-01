@@ -36,9 +36,9 @@ public class GroupDAO {
 			
 			while (resultSet.next()) {
 				Group group = new Group();
-				group.setGroupId(resultSet.getInt(""));
-				group.setGroupName(resultSet.getString(""));
-				group.setGroupDesc(resultSet.getString(""));
+				group.setGroupId(resultSet.getInt("id"));
+				group.setGroupName(resultSet.getString("name"));
+				group.setGroupDesc(resultSet.getString("description"));
 				groups.add(group);
 			}
 		} catch (SQLException e) {
