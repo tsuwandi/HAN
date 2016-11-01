@@ -14,6 +14,7 @@ import module.sendtofinance.bl.SendToFinanceBL;
 import module.sn.woodgenus.bl.WoodGenusBL;
 import module.sn.woodtype.bl.WoodTypeBL;
 import module.supplier.bl.SupplierBL;
+import module.system.bl.SystemBL;
 
 public class ServiceFactory {
 	// private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
@@ -32,6 +33,7 @@ public class ServiceFactory {
 	private static PurchaseProductResultBL purchaseProductResultBL = null;
 	private static ProductionWasteBL productionWasteBL = null;
 	private static ProdPKBL prodPKBL = null;
+	private static SystemBL systemBL = null;
 	/**
 	 * Method to init or return {@link SupplierBL}
 	 * 
@@ -150,5 +152,10 @@ public class ServiceFactory {
 		return prodPKBL;
 	}
 
-	
+	public static SystemBL getSystemBL() {
+		if (systemBL == null) {
+			systemBL = new SystemBL(DataSourceFactory.getDataSource());
+		}
+		return systemBL;
+	}
 }
