@@ -227,7 +227,7 @@ public class PopUpViewPKMaterial extends JDialog{
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				if(DialogBox.showCloseChoice()==JOptionPane.YES_OPTION) dispose();
+				/*if(DialogBox.showCloseChoice()==JOptionPane.YES_OPTION)*/ dispose();
 			}
 		});
 		
