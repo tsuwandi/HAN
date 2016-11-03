@@ -635,6 +635,13 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 					errorSupplierCPLbl.setText("");
 				}
 				
+				if(error==0){
+					PopUpPrintRitNum pop = new PopUpPrintRitNum(parent);
+					pop.show();
+					pop.setLocationRelativeTo(null);
+					pop.setModal(true);
+				}
+				
 				/*if(totalLogField.getText().equals("")){
 					errorTotalLogLbl.setText("<html><font color='red'>Total Kayu harus diisi !</font></html>");
 					error++;
@@ -647,48 +654,6 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 				}else{
 					errorTotalVolumeLbl.setText("");
 				}*/
-				
-				if(error==0){
-					if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
-						Received rec = new Received();
-						String code = receivedCodeField.getText()+firstCodeSeparator.getText()
-								+receivedCodeDateField.getText()+secondCodeSeparator.getText()
-								+receivedCodeMonthField.getText()+thirdCodeSeparator.getText()+receivedCodeYearField.getText();
-						rec.setDeliveryNote(docNoField.getText());
-						rec.setDriver(driverField.getText());
-						rec.setLicensePlate(licensePlateField.getText());
-						rec.setReceivedCode(code);
-						rec.setRitNo(ritNumberField.getText());
-						rec.setSupplier(supplierComboBox.getDataIndex().getSuppName());
-						rec.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
-						rec.setReceivedDate(receivedDateChooser.getDate());
-						rec.setDriverID(driverIDField.getText());
-						rec.setSupplierCode(supplierComboBox.getDataIndex().getSuppCode());
-						rec.setSupplierCpID(supplierCPComboBox.getDataIndex().getId());
-						
-						Delivery del = new Delivery();
-						del.setDeliveryNote(docNoField.getText());
-						del.setDocumentType(docTypeField.getText());
-						del.setDocIssuedDate(docDateChooser.getDate());
-						del.setWoodDomicile(woodDomicileField.getText());
-						del.setWoodResourceId(woodResourceComboBox.getDataIndex().getId());
-						del.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
-						if(totalLogField.getText().equals("")) del.setTotalLog(0);
-						else del.setTotalLog(Integer.valueOf(totalLogField.getText()));
-						if(totalVolumeField.getText().equals("")) del.setTotalVolume(0);
-						else del.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
-						try {
-							ReceivedDAOFactory.getReceivedDAO().save(rec);
-							ReceivedDAOFactory.getDeliveryDAO().save(del);
-							DialogBox.showInsert();
-							MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
-						} catch (Exception e) {
-							log.error(e.getMessage());
-							e.printStackTrace();
-						}
-					}
-					
-				}
 				
 				//Print
 				/*JTextPane jtp = new JTextPane();
@@ -713,8 +678,60 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	
 	}
 	
+	public void save(){
+		
+//		if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
+			Received rec = new Received();
+			String code = receivedCodeField.getText()+firstCodeSeparator.getText()
+					+receivedCodeDateField.getText()+secondCodeSeparator.getText()
+					+receivedCodeMonthField.getText()+thirdCodeSeparator.getText()+receivedCodeYearField.getText();
+			rec.setDeliveryNote(docNoField.getText());
+			rec.setDriver(driverField.getText());
+			rec.setLicensePlate(licensePlateField.getText());
+			rec.setReceivedCode(code);
+			rec.setRitNo(ritNumberField.getText());
+			rec.setSupplier(supplierComboBox.getDataIndex().getSuppName());
+			rec.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
+			rec.setReceivedDate(receivedDateChooser.getDate());
+			rec.setDriverID(driverIDField.getText());
+			rec.setSupplierCode(supplierComboBox.getDataIndex().getSuppCode());
+			rec.setSupplierCpID(supplierCPComboBox.getDataIndex().getId());
+			
+			Delivery del = new Delivery();
+			del.setDeliveryNote(docNoField.getText());
+			del.setDocumentType(docTypeField.getText());
+			del.setDocIssuedDate(docDateChooser.getDate());
+			del.setWoodDomicile(woodDomicileField.getText());
+			del.setWoodResourceId(woodResourceComboBox.getDataIndex().getId());
+			del.setWoodTypeID(woodTypeComboBox.getDataIndex().getId());
+			if(totalLogField.getText().equals("")) del.setTotalLog(0);
+			else del.setTotalLog(Integer.valueOf(totalLogField.getText()));
+			if(totalVolumeField.getText().equals("")) del.setTotalVolume(0);
+			else del.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
+			try {
+				ReceivedDAOFactory.getReceivedDAO().save(rec);
+				ReceivedDAOFactory.getDeliveryDAO().save(del);
+				DialogBox.showInsert();
+				MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
+			} catch (Exception e) {
+				log.error(e.getMessage());
+				e.printStackTrace();
+			}
+//		}	
+	}
+	
 	@Override
 	public void invokeObjects(Object... objects) {
 	
 	}
+
+	public NumberField getRitNumberField() {
+		return ritNumberField;
+	}
+
+	public void setRitNumberField(NumberField ritNumberField) {
+		this.ritNumberField = ritNumberField;
+	}
+	
+	
 }
