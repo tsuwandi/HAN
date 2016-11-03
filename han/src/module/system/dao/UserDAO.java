@@ -1,6 +1,7 @@
 package module.system.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,10 +19,10 @@ public class UserDAO {
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 	
-	private String getAllUserQuery;
-	private String insertQuery;
-	private String updateQuery;
-	private String deleteQuery;
+	private String getAllUserQuery = "select * from user";
+	private String insertQuery = "insert into user (group, name, password, last_login, last_change) values (?, ?, ?, ?, ?)";
+	private String updateQuery = "update user set group = ?, name = ?, password = ?, last_login = ?, last_change = ? where id = ?";
+	private String deleteQuery = "delete from user where id = ?";
 	
 	public UserDAO(Connection connection) {
 		this.connection = connection;
@@ -37,11 +38,12 @@ public class UserDAO {
 			
 			while (resultSet.next()) {
 				User user = new User();
-				user.setUserId(resultSet.getInt(""));
-				user.setUserName(resultSet.getString(""));
-				user.setUserPassword(resultSet.getString(""));
-				user.setLastChanged(resultSet.getDate(""));
-				user.setLastLogin(resultSet.getDate(""));
+				user.setUserId(resultSet.getInt("id"));
+				user.setGroupId(resultSet.getInt("group"));
+				user.setUserName(resultSet.getString("name"));
+				user.setUserPassword(resultSet.getString("password"));
+				user.setLastChanged(resultSet.getDate("last_change"));
+				user.setLastLogin(resultSet.getDate("last_login"));
 				
 				users.add(user);
 			}
@@ -55,11 +57,11 @@ public class UserDAO {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 			
-			insertStatement.setInt(1, user.getUserId());
-			insertStatement.setString(1, user.getUserName());
-			insertStatement.setString(1, user.getUserPassword());
-			//insertStatement.setDate(1, user.getLastChanged());
-			//insertStatement.setDate(1, user.getLastLogin());
+			insertStatement.setInt(1, user.getGroupId());
+			insertStatement.setString(2, user.getUserName());
+			insertStatement.setString(3, user.getUserPassword());
+			insertStatement.setDate(4, (Date) user.getLastChanged());
+			insertStatement.setDate(5, (Date) user.getLastLogin());
 			
 			insertStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -71,11 +73,12 @@ public class UserDAO {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 			
-			updateStatement.setInt(1, user.getUserId());
-			updateStatement.setString(1, user.getUserName());
-			updateStatement.setString(1, user.getUserPassword());
-			//insertStatement.setDate(1, user.getLastChanged());
-			//insertStatement.setDate(1, user.getLastLogin());
+			updateStatement.setInt(1, user.getGroupId());
+			updateStatement.setString(2, user.getUserName());
+			updateStatement.setString(3, user.getUserPassword());
+			updateStatement.setDate(4, (Date) user.getLastChanged());
+			updateStatement.setDate(5, (Date) user.getLastLogin());
+			updateStatement.setInt(6, user.getUserId());
 			
 			updateStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -88,10 +91,6 @@ public class UserDAO {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			
 			deleteStatement.setInt(1, user.getUserId());
-			deleteStatement.setString(1, user.getUserName());
-			deleteStatement.setString(1, user.getUserPassword());
-			//insertStatement.setDate(1, user.getLastChanged());
-			//insertStatement.setDate(1, user.getLastLogin());
 			
 			deleteStatement.executeUpdate();
 		} catch (SQLException e) {

@@ -5,6 +5,7 @@ import java.util.Date;
 public class User {
 	
 	Integer userId;
+	Integer groupId;
 	String userName;
 	String userPassword;
 	Date lastChanged;
@@ -15,6 +16,12 @@ public class User {
 	}
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+	public Integer getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
 	}
 	public String getUserName() {
 		return userName;
