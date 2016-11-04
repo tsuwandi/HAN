@@ -1,9 +1,12 @@
 package module.system.ui;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -13,18 +16,24 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import module.system.model.Group;
 import module.system.model.User;
+import controller.ServiceFactory;
 
 public class UserConfigPanel extends JPanel {
 
 	private static final long serialVersionUID = 4653177447116577211L;
 	private JTable userConfigTabel;
 	private List<User> users = new ArrayList<>();
+	private List<Group> groups = new ArrayList<>();
 	private UserConfigTabelModel userConfigTabelModel;
 	private JTextField nameTxt;
 	private JTextField passwordTxt;
 	private JTextField textField;
+	@SuppressWarnings("rawtypes")
+	private JComboBox comboBox;
 
+	@SuppressWarnings("rawtypes")
 	public UserConfigPanel() {
 		setSize(1024, 630);
 		setLayout(null);
@@ -90,9 +99,10 @@ public class UserConfigPanel extends JPanel {
 		label_3.setBounds(80, 125, 10, 30);
 		add(label_3);
 		
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox();
 		comboBox.setBounds(90, 125, 150, 30);
 		add(comboBox);
+		getGroupData();
 		
 		JButton searchBtn = new JButton("Cari");
 		searchBtn.setBounds(939, 174, 75, 30);
@@ -105,6 +115,13 @@ public class UserConfigPanel extends JPanel {
 		
 		JButton saveBtn = new JButton("Simpan");
 		saveBtn.setBounds(694, 174, 75, 30);
+		saveBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				save();
+			}
+		});
 		add(saveBtn);
 		
 		JButton editBtn = new JButton("Edit");
@@ -114,6 +131,21 @@ public class UserConfigPanel extends JPanel {
 		JButton deleteBtn = new JButton("Hapus");
 		deleteBtn.setBounds(524, 174, 75, 30);
 		add(deleteBtn);
+	}
+
+	protected void save() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void getGroupData(){
+		groups = ServiceFactory.getSystemBL().getAllGroup();
+		DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel();
+		for (Group group : groups) {
+			comboBoxModel.addElement(group.getGroupName());
+		}
+		comboBox.setModel(comboBoxModel);
 	}
 
 	class UserConfigTabelModel extends AbstractTableModel {
@@ -156,6 +188,7 @@ public class UserConfigPanel extends JPanel {
 			}
 		}
 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		@Override
 		public Class getColumnClass(int columnIndex) {
 			switch (columnIndex) {

@@ -172,6 +172,12 @@ public class GroupConfigPanel extends JPanel {
 	protected Group getSelectedData() {
 		int row = groupConfigTable.getSelectedRow();
 		int column = groupConfigTable.getSelectedColumn();
+		
+		Group group = new Group();
+		group.setGroupId(Integer.parseInt(groupConfigTable.getValueAt(row, 0).toString()));
+		group.setGroupName(groupConfigTable.getValueAt(row, 1).toString());
+		group.setGroupDesc(groupConfigTable.getValueAt(row, 2).toString());
+		
 		return (Group) groupConfigTable.getValueAt(row, column);
 	}
 	
