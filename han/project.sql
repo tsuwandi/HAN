@@ -1648,3 +1648,99 @@ CREATE TABLE IF NOT EXISTS `prod_result` (
   `delete_by` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`id`,`prod_code`)
 );
+
+
+--
+-- Struktur dari tabel `wood_type`
+--
+
+CREATE TABLE IF NOT EXISTS `wood_type` (
+  `id` int(11) NOT NULL,
+  `wood_type` varchar(50) NOT NULL,
+  `wood_genus_id` int(3) NOT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `wood_type`
+--
+
+INSERT INTO `wood_type` (`id`, `wood_type`, `wood_genus_id`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'JATI', 0, '2016-05-10', 'ADMIN', NULL, NULL, NULL, NULL),
+(2, 'MERANTI', 0, '2016-05-10', 'ADMIN', NULL, NULL, NULL, NULL),
+(3, 'GHGGF', 2, '2016-09-28', 'timotius', NULL, NULL, '2016-09-28', 'timotius'),
+(4, 'DFSDFS243', 2, '2016-09-28', 'timotius', '2016-09-28', 'timotius', NULL, NULL);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `wood_type`
+--
+ALTER TABLE `wood_type`
+  ADD PRIMARY KEY (`id`), ADD KEY `wood_genus_id` (`wood_genus_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `wood_type`
+--
+ALTER TABLE `wood_type`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--
+-- Struktur dari tabel `wood_genus`
+--
+
+CREATE TABLE IF NOT EXISTS `wood_genus` (
+  `id` int(11) NOT NULL,
+  `wood_genus` varchar(50) NOT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `wood_genus`
+--
+
+INSERT INTO `wood_genus` (`id`, `wood_genus`, `input_date`, `input_by`, `edit_date`, `edited_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'DFFDDSF', '2016-09-28', 'timotius', NULL, NULL, '2016-09-28', 'timotius'),
+(2, 'CVXCVXXCV', '2016-09-28', 'timotius', '2016-09-28', 'timotius', NULL, NULL);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `wood_genus`
+--
+ALTER TABLE `wood_genus`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `wood_genus`
+--
+ALTER TABLE `wood_genus`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
