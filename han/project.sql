@@ -1744,3 +1744,71 @@ ALTER TABLE `wood_genus`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `username` varchar(25) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `last_change` date NOT NULL,
+  `last_login` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  
+  
+--
+-- Table structure for table `system_group`
+--
+
+CREATE TABLE `system_group` (
+  `id` int(11) NOT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `system_group`
+--
+
+INSERT INTO `system_group` (`id`, `name`, `description`) VALUES
+(2, 'admin', 'admin group'),
+(3, 'admin 2', 'Admin group 2');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `system_group`
+--
+ALTER TABLE `system_group`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `system_group`
+--
+ALTER TABLE `system_group`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
