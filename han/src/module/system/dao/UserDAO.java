@@ -20,8 +20,8 @@ public class UserDAO {
 	private PreparedStatement deleteStatement;
 	
 	private String getAllUserQuery = "select * from user";
-	private String insertQuery = "insert into user (group, name, password, last_login, last_change) values (?, ?, ?, ?, ?)";
-	private String updateQuery = "update user set group = ?, name = ?, password = ?, last_login = ?, last_change = ? where id = ?";
+	private String insertQuery = "insert into user (name, password, group_id, last_change, last_login) values (?, ?, ?, ?, ?)";
+	private String updateQuery = "update user set name = ?, password = ?, group = ?,last_login = ?, last_change = ? where id = ?";
 	private String deleteQuery = "delete from user where id = ?";
 	
 	public UserDAO(Connection connection) {
@@ -57,11 +57,12 @@ public class UserDAO {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 			
-			insertStatement.setInt(1, user.getGroupId());
-			insertStatement.setString(2, user.getUserName());
-			insertStatement.setString(3, user.getUserPassword());
-			insertStatement.setDate(4, (Date) user.getLastChanged());
-			insertStatement.setDate(5, (Date) user.getLastLogin());
+			insertStatement.setString(1, user.getUserName());
+			insertStatement.setString(2, user.getUserPassword());
+			insertStatement.setInt(3, user.getGroupId());
+			
+			insertStatement.setDate(4, user.getLastChanged());
+			insertStatement.setDate(5, user.getLastLogin());
 			
 			insertStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -73,9 +74,9 @@ public class UserDAO {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 			
-			updateStatement.setInt(1, user.getGroupId());
-			updateStatement.setString(2, user.getUserName());
-			updateStatement.setString(3, user.getUserPassword());
+			updateStatement.setString(1, user.getUserName());
+			updateStatement.setString(2, user.getUserPassword());
+			updateStatement.setInt(3, user.getGroupId());
 			updateStatement.setDate(4, (Date) user.getLastChanged());
 			updateStatement.setDate(5, (Date) user.getLastLogin());
 			updateStatement.setInt(6, user.getUserId());

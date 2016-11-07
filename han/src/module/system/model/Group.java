@@ -24,6 +24,8 @@ public class Group {
 	public void setGroupDesc(String groupDesc) {
 		this.groupDesc = groupDesc;
 	}
-	
-	
+	@Override
+	public String toString() {
+		return "Group [groupId=" + groupId + ", groupName=" + groupName + ", groupDesc=" + groupDesc + "]";
+	}
 }

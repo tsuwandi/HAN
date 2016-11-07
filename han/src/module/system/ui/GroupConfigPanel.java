@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,9 +59,8 @@ public class GroupConfigPanel extends JPanel {
 		groupConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				getSelectedData();
+				updateData();
 			}
-			
 		});
 
 		JButton btnCancel = new JButton("Tutup");
@@ -165,23 +163,22 @@ public class GroupConfigPanel extends JPanel {
 				groupDescTxt.setEnabled(true);				
 			}
 		});
-		
 		getGroupData();
 	}
 
 	protected Group getSelectedData() {
 		int row = groupConfigTable.getSelectedRow();
-		int column = groupConfigTable.getSelectedColumn();
 		
 		Group group = new Group();
 		group.setGroupId(Integer.parseInt(groupConfigTable.getValueAt(row, 0).toString()));
 		group.setGroupName(groupConfigTable.getValueAt(row, 1).toString());
 		group.setGroupDesc(groupConfigTable.getValueAt(row, 2).toString());
 		
-		return (Group) groupConfigTable.getValueAt(row, column);
+		return group;
 	}
 	
 	protected void updateData() {
+		System.out.println(getSelectedData());
 		groupNameTxt.setText(getSelectedData().getGroupName());
 		groupDescTxt.setText(getSelectedData().getGroupDesc());
 	}

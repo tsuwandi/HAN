@@ -71,4 +71,20 @@ public class SystemBL {
 		}
 		return users;
 	}
+	
+	public void saveUser(User user) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new UserDAO(connection).insertUser(user);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

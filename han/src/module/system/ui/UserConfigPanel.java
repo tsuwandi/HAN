@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -11,14 +12,15 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ServiceFactory;
 import module.system.model.Group;
 import module.system.model.User;
-import controller.ServiceFactory;
 
 public class UserConfigPanel extends JPanel {
 
@@ -28,10 +30,11 @@ public class UserConfigPanel extends JPanel {
 	private List<Group> groups = new ArrayList<>();
 	private UserConfigTabelModel userConfigTabelModel;
 	private JTextField nameTxt;
-	private JTextField passwordTxt;
+	private JPasswordField passwordTxt;
 	private JTextField textField;
 	@SuppressWarnings("rawtypes")
 	private JComboBox comboBox;
+	private Integer groupId;
 
 	@SuppressWarnings("rawtypes")
 	public UserConfigPanel() {
@@ -86,7 +89,7 @@ public class UserConfigPanel extends JPanel {
 		add(nameTxt);
 		nameTxt.setColumns(10);
 		
-		passwordTxt = new JTextField();
+		passwordTxt = new JPasswordField();
 		passwordTxt.setColumns(10);
 		passwordTxt.setBounds(90, 85, 150, 30);
 		add(passwordTxt);
@@ -103,6 +106,13 @@ public class UserConfigPanel extends JPanel {
 		comboBox.setBounds(90, 125, 150, 30);
 		add(comboBox);
 		getGroupData();
+		comboBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				groupId = groups.get(comboBox.getSelectedIndex()).getGroupId();
+			}
+		});
 		
 		JButton searchBtn = new JButton("Cari");
 		searchBtn.setBounds(939, 174, 75, 30);
@@ -131,11 +141,30 @@ public class UserConfigPanel extends JPanel {
 		JButton deleteBtn = new JButton("Hapus");
 		deleteBtn.setBounds(524, 174, 75, 30);
 		add(deleteBtn);
+		
+		getUserData();
+	}
+
+	private void getUserData() {
+		users.clear();
+		users = ServiceFactory.getSystemBL().getAllUser();
+		userConfigTabelModel = new UserConfigTabelModel(users);
+		userConfigTabel.setModel(userConfigTabelModel);
 	}
 
 	protected void save() {
-		// TODO Auto-generated method stub
+		User user = new User();
+		System.out.println(groupId);
+		user.setGroupId(groupId);
+		user.setUserName(nameTxt.getText());
+		user.setUserPassword(new String(passwordTxt.getPassword()));
+		java.sql.Date date = new java.sql.Date(new Date().getTime());
+		user.setLastLogin(date);
+		user.setLastChanged(date);
 		
+		ServiceFactory.getSystemBL().saveUser(user);
+		
+		getUserData();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -165,7 +194,7 @@ public class UserConfigPanel extends JPanel {
 
 		@Override
 		public int getRowCount() {
-			return users.size();
+			return users == null? 0 : users.size() ;
 		}
 
 		@Override
