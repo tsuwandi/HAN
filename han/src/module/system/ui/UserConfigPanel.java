@@ -56,8 +56,8 @@ public class UserConfigPanel extends JPanel {
 		pnlTable.add(scrollPane);
 
 		userConfigTabel = new JTable();
-		userConfigTabelModel = new UserConfigTabelModel(users);
-		userConfigTabel.setModel(userConfigTabelModel);
+		userConfigTabel.setFocusable(false);
+		userConfigTabel.setAutoCreateRowSorter(true);
 		scrollPane.setViewportView(userConfigTabel);
 
 		JButton btnCancel = new JButton("Tutup");
