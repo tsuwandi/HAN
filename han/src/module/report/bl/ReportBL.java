@@ -9,17 +9,21 @@ import javax.sql.DataSource;
 import module.dailyclosing.dao.InventoryLogDAO;
 import module.dailyclosing.model.InventoryLog;
 import module.pembelian.dao.GradeDAO;
+import module.pembelian.dao.ReceivedDAO;
 import module.pembelian.dao.ThicknessDAO;
 import module.pembelian.model.Grade;
+import module.pembelian.model.Received;
 import module.pembelian.model.Thickness;
+import module.report.dao.ReceivedReportDAO;
 import module.report.model.DryStockFlow;
+import module.report.model.ReceivedReport;
 import module.sn.woodtype.dao.WoodTypeDAO;
 import module.sn.woodtype.model.WoodType;
 
 public class ReportBL {
 
 	private DataSource dataSource;
-
+	
 	public ReportBL(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
@@ -63,4 +67,14 @@ public class ReportBL {
 			con.close();
 		}
 	}
+	
+	public List<ReceivedReport> getReceivedReport(String sql, List<Object> objects) throws SQLException{
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ReceivedReportDAO(con).getAll(sql, objects);
+		} finally {
+			con.close();
+		}
+	} 
 }

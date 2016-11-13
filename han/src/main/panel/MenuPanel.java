@@ -37,6 +37,7 @@ public class MenuPanel extends JPanel {
 		
 		menu.addNewMenu("Laporan Penerimaan", "Laporan Penerimaan");
 		menu.addNewLeafTo("Laporan Penerimaan", "Stok Flow Basah", "Stok Flow Basah", "module.report.ui.DryStokFlowReportPanel");
+		menu.addNewLeafTo("Laporan Penerimaan", "Stok Detail Penerimaan", "Stok Detail Penerimaan", "module.report.ui.ReceivedReportPanel");
 	
 		menu.calculateAvaiableSpace();
 		
