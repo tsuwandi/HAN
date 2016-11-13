@@ -22,7 +22,7 @@ public class MenuPanel extends JPanel {
 		setLayout(null);
 
 		AccordionMenu menu = new AccordionMenu();
-		menu.setBounds(1, 0, 200, 260);
+		menu.setBounds(1, 0, 200, 280);
 		
 		menu.addNewMenu("Penerimaan", "Penerimaan");
 		menu.addNewLeafTo("Penerimaan", "Supplier", "Supplier", "module.supplier.ui.SupplierListPanel");
@@ -33,11 +33,20 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Penerimaan", "Pengeringan Out", "Pengeringan Out", "module.dryout.ui.DryOutListPanel");
 		menu.addNewLeafTo("Penerimaan", "Tutup Harian", "Tutup Harian", "module.dailyclosing.ui.DailyClosingReceivePanel");
 		
+		menu.calculateAvaiableSpace();
+		
+		menu.addNewMenu("Laporan Penerimaan", "Laporan Penerimaan");
+		menu.addNewLeafTo("Laporan Penerimaan", "Stok Flow Basah", "Stok Flow Basah", "module.report.ui.DryStokFlowReportPanel");
+	
+		menu.calculateAvaiableSpace();
+		
 		menu.addNewMenu("Tutup Harian", "Tutup Harian");
 		menu.addNewLeafTo("Tutup Harian", "Send To Finance", "Send To Finance", "module.sendtofinance.ui.SendToFinancePanel");
 		menu.addNewLeafTo("Tutup Harian", "Tutup Harian", "Tutup Harian", "module.dailyclosing.ui.DailyClosingPanel");
 		
 		menu.calculateAvaiableSpace();
+		
+		
 		
 		menu.addNewMenu("Produksi", "Produksi");
 		menu.addNewLeafTo("Produksi", "Produksi", "Produksi", "module.production.ui.ListProductionPanel");

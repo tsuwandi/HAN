@@ -85,7 +85,7 @@ public class DailyClosingReceiveDialog extends JDialog {
 					 * generate PDF
 					 */
 					JasperPrint jasperPrint = JasperFillManager.fillReport(
-							"src/module/dailyclosing/jasper/DailyClosing.jasper", parameters, new JREmptyDataSource());
+							"src/module/dailyclosing/jasper/DailyClosingReceive.jasper", parameters, new JREmptyDataSource());
 
 					if (rdbtnMonitor.isSelected()) {
 						if (isValid(listOfReceived, listOfDryIn, listOfDryOut) == true) {

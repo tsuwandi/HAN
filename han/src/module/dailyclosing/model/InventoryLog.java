@@ -1,7 +1,6 @@
 package module.dailyclosing.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class InventoryLog implements Serializable {
@@ -237,5 +236,13 @@ public class InventoryLog implements Serializable {
 		return true;
 	}
 
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	private String productName;
 	
 }
