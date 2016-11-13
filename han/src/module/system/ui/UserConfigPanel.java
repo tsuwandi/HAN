@@ -3,6 +3,8 @@ package module.system.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,9 +58,15 @@ public class UserConfigPanel extends JPanel {
 		pnlTable.add(scrollPane);
 
 		userConfigTabel = new JTable();
-		userConfigTabelModel = new UserConfigTabelModel(users);
-		userConfigTabel.setModel(userConfigTabelModel);
+		userConfigTabel.setFocusable(false);
+		userConfigTabel.setAutoCreateRowSorter(true);
 		scrollPane.setViewportView(userConfigTabel);
+		userConfigTabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				updateData();
+			}
+		});
 
 		JButton btnCancel = new JButton("Tutup");
 		btnCancel.setBounds(10, 589, 89, 30);
@@ -143,6 +151,24 @@ public class UserConfigPanel extends JPanel {
 		add(deleteBtn);
 		
 		getUserData();
+	}
+
+	protected void updateData() {
+		nameTxt.setText(getSelectedData().getUserName());
+		passwordTxt.setText(getSelectedData().getUserPassword());
+	}
+
+	private User getSelectedData() {
+		int row = userConfigTabel.getSelectedRow();
+		
+		User user = new User();
+		user.setUserId(Integer.parseInt(userConfigTabel.getValueAt(row, 0).toString()));
+		//user.setGroupId(Integer.parseInt(userConfigTabel.getValueAt(row, 1).toString()));
+		user.setUserName(userConfigTabel.getValueAt(row, 1).toString());
+		user.setUserPassword(userConfigTabel.getValueAt(row, 2).toString());
+		//user.setLastLogin( userConfigTabel.getValueAt(row, 4).toString());
+		//user.setLastChanged(userConfigTabel.getValueAt(row, 5).toString());
+		return user;
 	}
 
 	private void getUserData() {

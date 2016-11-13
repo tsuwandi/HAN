@@ -178,7 +178,6 @@ public class GroupConfigPanel extends JPanel {
 	}
 	
 	protected void updateData() {
-		System.out.println(getSelectedData());
 		groupNameTxt.setText(getSelectedData().getGroupName());
 		groupDescTxt.setText(getSelectedData().getGroupDesc());
 	}

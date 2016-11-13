@@ -20,8 +20,8 @@ public class UserDAO {
 	private PreparedStatement deleteStatement;
 	
 	private String getAllUserQuery = "select * from user";
-	private String insertQuery = "insert into user (name, password, group_id, last_change, last_login) values (?, ?, ?, ?, ?)";
-	private String updateQuery = "update user set name = ?, password = ?, group = ?,last_login = ?, last_change = ? where id = ?";
+	private String insertQuery = "insert into user (username, password, group_id, last_change, last_login) values (?, ?, ?, ?, ?)";
+	private String updateQuery = "update user set username = ?, password = ?, group = ?,last_login = ?, last_change = ? where id = ?";
 	private String deleteQuery = "delete from user where id = ?";
 	
 	public UserDAO(Connection connection) {
@@ -39,8 +39,8 @@ public class UserDAO {
 			while (resultSet.next()) {
 				User user = new User();
 				user.setUserId(resultSet.getInt("id"));
-				user.setGroupId(resultSet.getInt("group"));
-				user.setUserName(resultSet.getString("name"));
+				user.setGroupId(resultSet.getInt("group_id"));
+				user.setUserName(resultSet.getString("username"));
 				user.setUserPassword(resultSet.getString("password"));
 				user.setLastChanged(resultSet.getDate("last_change"));
 				user.setLastLogin(resultSet.getDate("last_login"));
@@ -50,7 +50,7 @@ public class UserDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return users;
 	}
 	
 	public void insertUser(User user) {
