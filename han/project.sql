@@ -1332,7 +1332,7 @@ CREATE TABLE inventory (
 	edit_date DATE,
 	edited_by VARCHAR(25),
 	deleted_date DATE,
-	deleted_bu VARCHAR(25),
+	deleted_by VARCHAR(25),
 	PRIMARY KEY (`id`)
 );
 
