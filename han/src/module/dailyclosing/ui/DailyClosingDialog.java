@@ -167,12 +167,14 @@ public class DailyClosingDialog extends JDialog {
 						ServiceFactory.getDailyClosingBL().doProcessDailyClosing();
 						JOptionPane.showMessageDialog(null, "Sukses Memproses Tutup Harian", "Tutup Harian",
 								JOptionPane.INFORMATION_MESSAGE);
+						setVisible(false);
 					}
 
 				} catch (Exception e1) {
 					e1.printStackTrace();
 					JOptionPane.showMessageDialog(null, "Gagal Memproses Tutup Harian", "Tutup Harian",
 							JOptionPane.ERROR_MESSAGE);
+					setVisible(false);
 				}
 
 			}
