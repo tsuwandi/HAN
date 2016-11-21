@@ -1812,3 +1812,10 @@ ALTER TABLE `system_group`
 --
 ALTER TABLE `system_group`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  
+  
+  /* sugi alter table - 20161121*/
+  
+
+/*[9:37:52 PM][1062 ms]*/ ALTER TABLE `project`.`inventory_log` CHANGE `prev_stock` `prev_stock` DECIMAL(12,5) NULL , CHANGE `min_stock` `min_stock` DECIMAL(12,5) NULL , CHANGE `curr_stock` `curr_stock` DECIMAL(12,5) NULL ;
+/*[9:35:51 PM][ 546 ms]*/ ALTER TABLE `project`.`inventory_log` CHANGE `plus_stock` `plus_stock` DECIMAL(12,5) NULL ;
