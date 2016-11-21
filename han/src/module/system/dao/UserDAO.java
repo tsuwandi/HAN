@@ -98,4 +98,13 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public User selectUser(User user) {
+		for (User user2 : getAllUser()) {
+			if (user.getUserName().equals(user2.getUserName()) && user.getUserPassword().equals(user2.getUserPassword())) {
+				return user2;
+			}
+		}
+		return null;
+	}
 }

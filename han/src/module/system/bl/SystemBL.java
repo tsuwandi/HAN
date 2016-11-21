@@ -87,4 +87,17 @@ public class SystemBL {
 			}
 		}
 	}
+	
+	public boolean validateUser(User user){
+		Connection connection = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			System.out.println("user : "+new UserDAO(connection).selectUser(user));
+			return new UserDAO(connection).selectUser(user) == null ? false : true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }
