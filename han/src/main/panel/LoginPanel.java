@@ -16,8 +16,10 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import controller.DataSourceFactory;
+import controller.ServiceFactory;
 import main.component.DialogBox;
 import model.User;
+import module.system.bl.SystemBL;
 
 public class LoginPanel extends JPanel {
 
@@ -41,14 +43,14 @@ public class LoginPanel extends JPanel {
 		usernameLbl.setBounds(30, 40, 150, 30);
 		usernameLbl.setFont(new Font(null, Font.BOLD, 24));
 
-		usernameField = new JTextField("admin");
+		usernameField = new JTextField();
 		usernameField.setBounds(200, 40, 230, 30);
 
 		passwordLbl = new JLabel("Password");
 		passwordLbl.setBounds(30, 120, 150, 30);
 		passwordLbl.setFont(new Font(null, Font.BOLD, 24));
 
-		passwordField = new JPasswordField("admin");
+		passwordField = new JPasswordField();
 		passwordField.setBounds(200, 120, 230, 30);
 
 		submitBtn = new JButton("Submit");
@@ -57,8 +59,8 @@ public class LoginPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				doLogin();
-
+				//doLogin();
+				login();
 			}
 		});
 		setLayout(null);
@@ -124,4 +126,18 @@ public class LoginPanel extends JPanel {
 		this.user = user;
 	}
 
+	public void login() {
+		module.system.model.User user = new module.system.model.User();
+		user.setUserName(usernameField.getText());
+		user.setUserPassword(new String(passwordField.getPassword()));
+		
+		if (ServiceFactory.getSystemBL().validateUser(user)) {
+			System.out.println("Login Berhasil");
+			setVisible(false);
+			MainPanel.glassPane.setVisible(false);
+		} else {
+			System.out.println("Login Gagal");
+		}
+		
+	}
 }
