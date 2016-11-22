@@ -34,7 +34,7 @@ public class CreateUserPanel extends JPanel {
 		
 		JLabel breadCrumbLbl = new JLabel("Konfigurasi > Sistem > Pengguna");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
-		breadCrumbLbl.setBounds(50, 10, 1004, 25);
+		breadCrumbLbl.setBounds(50, 10, 214, 25);
 		add(breadCrumbLbl);
 		
 		JButton btnSimpan = new JButton("Simpan");
@@ -95,7 +95,7 @@ public class CreateUserPanel extends JPanel {
 			}
 		});
 		
-		JLabel lblHeader = new JLabel("BUAT BARU");
+		JLabel lblHeader = new JLabel("BUAT USER BARU");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 46, 150, 25);
 		add(lblHeader);

@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,10 +17,10 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
-import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.system.model.Group;
 import module.system.model.User;
+import controller.ServiceFactory;
 
 public class UserConfigPanel extends JPanel {
 

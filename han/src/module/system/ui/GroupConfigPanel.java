@@ -1,8 +1,6 @@
 package module.system.ui;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -17,8 +15,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import controller.ServiceFactory;
 import module.system.model.Group;
+import controller.ServiceFactory;
 
 public class GroupConfigPanel extends JPanel {
 
@@ -27,8 +25,8 @@ public class GroupConfigPanel extends JPanel {
 	private List<Group> groups = new ArrayList<>();
 	private GroupConfigTabelModel groupConfigTabelModel;
 	private JTextField groupNameTxt;
-	private JTextField searchTxt;
 	private JTextArea groupDescTxt;
+	private JTextField textField;
 
 	/**
 	 * Create the panel.
@@ -62,21 +60,6 @@ public class GroupConfigPanel extends JPanel {
 				updateData();
 			}
 		});
-
-		JButton btnCancel = new JButton("Tutup");
-		btnCancel.setBounds(10, 589, 89, 30);
-		add(btnCancel);
-
-		JButton btnSave = new JButton("OK");
-		btnSave.setBounds(925, 589, 89, 30);
-		btnSave.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		add(btnSave);
 		
 		JLabel groupNameLbl = new JLabel("Nama Group");
 		groupNameLbl.setBounds(10, 45, 100, 30);
@@ -107,62 +90,26 @@ public class GroupConfigPanel extends JPanel {
 		groupDescTxt.setEnabled(false);
 		add(groupDescTxt);
 		
-		JButton saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(694, 174, 75, 30);
-		saveBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				save();
-			}
-		});
-		add(saveBtn);
+		JButton button = new JButton("Buat Baru");
+		button.setBounds(724, 100, 90, 30);
+		add(button);
 		
-		saveBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				groupNameTxt.setEditable(false);
-				groupNameTxt.setEnabled(false);
-				groupDescTxt.setEditable(false);
-				groupDescTxt.setEnabled(false);
-			}
-		});
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBounds(724, 140, 190, 30);
+		add(textField);
 		
-		searchTxt = new JTextField();
-		searchTxt.setBounds(779, 174, 150, 30);
-		add(searchTxt);
-		searchTxt.setColumns(10);
+		JButton button_1 = new JButton("Export");
+		button_1.setBounds(824, 100, 90, 30);
+		add(button_1);
 		
-		JButton searchBtn = new JButton("Cari");
-		searchBtn.setBounds(939, 174, 75, 30);
-		searchBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				search();
-			}
-		});
-		add(searchBtn);
+		JButton button_2 = new JButton("<html>Pencarian<br/>Lanjut</html>");
+		button_2.setBounds(924, 100, 90, 30);
+		add(button_2);
 		
-		JButton editBtn = new JButton("Edit");
-		editBtn.setBounds(609, 174, 75, 30);
-		add(editBtn);
-		
-		JButton deleteBtn = new JButton("Hapus");
-		deleteBtn.setBounds(524, 174, 75, 30);
-		add(deleteBtn);
-		
-		editBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				groupNameTxt.setEditable(true);
-				groupNameTxt.setEnabled(true);
-				groupDescTxt.setEditable(true);
-				groupDescTxt.setEnabled(true);				
-			}
-		});
+		JButton button_3 = new JButton("Pencarian");
+		button_3.setBounds(924, 140, 90, 30);
+		add(button_3);
 		getGroupData();
 	}
 
@@ -187,19 +134,6 @@ public class GroupConfigPanel extends JPanel {
 		groups = ServiceFactory.getSystemBL().getAllGroup();
 		groupConfigTabelModel = new GroupConfigTabelModel(groups);
 		groupConfigTable.setModel(groupConfigTabelModel);
-	}
-
-	protected void search() {
-		
-	}
-
-	protected void save() {
-		Group group = new Group();
-		group.setGroupName(groupNameTxt.getText());
-		group.setGroupDesc(groupDescTxt.getText());
-		System.out.println("save");
-		ServiceFactory.getSystemBL().saveGroup(group);
-		System.out.println("done");
 	}
 
 	class GroupConfigTabelModel extends AbstractTableModel {
