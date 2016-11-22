@@ -42,7 +42,7 @@ public class UserConfigPanel extends JPanel {
 		breadCrumbLbl.setBounds(50, 10, 134, 25);
 		add(breadCrumbLbl);
 		
-		JLabel lblHeader = new JLabel("DAFTAR USERNAME");
+		JLabel lblHeader = new JLabel("DAFTAR PENGGUNA");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 46, 150, 25);
 		add(lblHeader);
@@ -63,8 +63,8 @@ public class UserConfigPanel extends JPanel {
 		userConfigTabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(userConfigTabel.columnAtPoint(e.getPoint())==7) {
-					// load layar edit
+				if(userConfigTabel.columnAtPoint(e.getPoint())==5) {
+					MainPanel.changePanel("module.system.ui.EditUserPanel");
 				}
 			}
 		});
@@ -115,25 +115,25 @@ public class UserConfigPanel extends JPanel {
 		column1.setMinWidth(15);
 		column1.setMinWidth(25);
 		
-		column2.setPreferredWidth(30);
-		column2.setMinWidth(25);
-		column2.setMinWidth(35);
+		column2.setPreferredWidth(70);
+		column2.setMinWidth(60);
+		column2.setMinWidth(80);
 		
-		column3.setPreferredWidth(30);
-		column3.setMinWidth(25);
-		column3.setMinWidth(35);
+		column3.setPreferredWidth(70);
+		column3.setMinWidth(60);
+		column3.setMinWidth(80);
 		
-		column4.setPreferredWidth(50);
-		column4.setMinWidth(40);
+		column4.setPreferredWidth(70);
 		column4.setMinWidth(60);
+		column4.setMinWidth(80);
 		
-		column5.setPreferredWidth(50);
-		column5.setMinWidth(40);
+		column5.setPreferredWidth(70);
 		column5.setMinWidth(60);
+		column5.setMinWidth(80);
 		
-		column6.setPreferredWidth(20);
-		column6.setMinWidth(15);
-		column6.setMinWidth(25);
+		column6.setPreferredWidth(70);
+		column6.setMinWidth(60);
+		column6.setMinWidth(80);
 	}
 
 	private User getSelectedData() {
@@ -192,7 +192,7 @@ public class UserConfigPanel extends JPanel {
 			case 4:
 				return user.getLastLogin();
 			case 5:
-				return "View";
+				return "Ubah";
 			default:
 				return "";
 			}
@@ -233,7 +233,7 @@ public class UserConfigPanel extends JPanel {
 			case 4:
 				return "Last Login";
 			case 5:
-				return "Action";
+				return "Aksi";
 			default:
 				return "";
 			}
