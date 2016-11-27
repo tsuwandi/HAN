@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-11-13T15:28:42 -->
+<!-- 2016-11-28T00:18:33 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DailyClosing" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="95b2a938-121a-4c3f-8fab-14a4576ec553">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
@@ -145,6 +145,7 @@
 		<field name="plusStock" class="java.lang.Double"/>
 		<field name="warehouse" class="java.lang.Integer"/>
 		<field name="currStock" class="java.lang.Double"/>
+		<field name="minStock" class="java.lang.Double"/>
 	</subDataset>
 	<parameter name="ItemDataSourceResults" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="startFrom" class="java.lang.String"/>
@@ -247,11 +248,11 @@
 					<datasetRun subDataset="ItemDatasetResults" uuid="f7895bab-9a08-4715-b8b0-d59528777753">
 						<dataSourceExpression><![CDATA[$P{ItemDataSourceResults}]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="79" uuid="e88022c1-2838-456f-b7c6-f88e78c84175">
+					<jr:column width="68" uuid="e88022c1-2838-456f-b7c6-f88e78c84175">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 						<jr:tableHeader style="Table 3_TH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="79" height="30" uuid="511bb614-af94-4212-bcfe-cbe7d7550cc7"/>
+								<reportElement x="0" y="0" width="68" height="30" uuid="511bb614-af94-4212-bcfe-cbe7d7550cc7"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="SansSerif"/>
 								</textElement>
@@ -260,111 +261,128 @@
 						</jr:tableHeader>
 						<jr:detailCell style="Table 3_TD" height="30">
 							<textField pattern="dd-MMM-yyyy">
-								<reportElement x="0" y="0" width="79" height="30" uuid="d9229797-c935-44e5-bfdc-c899aec52f26"/>
+								<reportElement x="0" y="0" width="68" height="30" uuid="d9229797-c935-44e5-bfdc-c899aec52f26"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{inputDate}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="79" uuid="d5ac03b2-ba55-4e02-b3ad-4c426e0e4a8d">
+					<jr:column width="71" uuid="d5ac03b2-ba55-4e02-b3ad-4c426e0e4a8d">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
 						<jr:tableHeader style="Table 3_TH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="79" height="30" uuid="5e3af8d7-a9f2-4367-9fd1-bd3b4ade363e"/>
+								<reportElement x="0" y="0" width="71" height="30" uuid="5e3af8d7-a9f2-4367-9fd1-bd3b4ade363e"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<text><![CDATA[Kd Product]]></text>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell style="Table 3_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="79" height="30" uuid="ce58a6f7-adf7-4dae-bf29-9935ec6bfa38"/>
+								<reportElement x="0" y="0" width="71" height="30" uuid="ce58a6f7-adf7-4dae-bf29-9935ec6bfa38"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{productCode}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="80" uuid="d38fd285-ed9a-439e-8940-dd13039bdbbf">
+					<jr:column width="71" uuid="d38fd285-ed9a-439e-8940-dd13039bdbbf">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
 						<jr:tableHeader style="Table 3_TH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="80" height="30" uuid="ff51823b-9029-42f7-81a0-5f34708fade2"/>
+								<reportElement x="0" y="0" width="71" height="30" uuid="ff51823b-9029-42f7-81a0-5f34708fade2"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<text><![CDATA[Nama Product]]></text>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell style="Table 3_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="80" height="30" uuid="3f61022c-1401-4ee7-bab0-f066502240b4"/>
+								<reportElement x="0" y="0" width="71" height="30" uuid="3f61022c-1401-4ee7-bab0-f066502240b4"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{productName}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="79" uuid="66d6e1cf-f142-44a7-9211-31d26ac50bb5">
+					<jr:column width="68" uuid="66d6e1cf-f142-44a7-9211-31d26ac50bb5">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
 						<jr:tableHeader style="Table 3_TH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="79" height="30" uuid="63cc3ca1-58a6-4664-99e4-8d2eb990d83a"/>
+								<reportElement x="0" y="0" width="68" height="30" uuid="63cc3ca1-58a6-4664-99e4-8d2eb990d83a"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<text><![CDATA[Stock Awal]]></text>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell style="Table 3_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="79" height="30" uuid="ae5423b3-0746-4182-8271-77e7790d3f63"/>
+								<reportElement x="0" y="0" width="68" height="30" uuid="ae5423b3-0746-4182-8271-77e7790d3f63"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{prevStock}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="79" uuid="962cc381-251a-449f-aedc-f5c547fd3494">
+					<jr:column width="69" uuid="962cc381-251a-449f-aedc-f5c547fd3494">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
 						<jr:tableHeader style="Table 3_TH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="79" height="30" uuid="8948b84b-1b94-45b3-8c07-76b8264e937f"/>
+								<reportElement x="0" y="0" width="69" height="30" uuid="8948b84b-1b94-45b3-8c07-76b8264e937f"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Penerimaan]]></text>
+								<text><![CDATA[IN]]></text>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell style="Table 3_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="79" height="30" uuid="86bde844-2769-43b2-86c4-884f2cef5788"/>
+								<reportElement x="0" y="0" width="69" height="30" uuid="86bde844-2769-43b2-86c4-884f2cef5788"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{plusStock}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="79" uuid="7ac667bd-7174-4028-97fa-0f6e3804e994">
+					<jr:column width="71" uuid="7ac667bd-7174-4028-97fa-0f6e3804e994">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
 						<jr:tableHeader style="Table 3_TH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="79" height="30" uuid="0d31f4df-5199-41a0-b604-496edd9cfce8"/>
+								<reportElement x="0" y="0" width="71" height="30" uuid="0d31f4df-5199-41a0-b604-496edd9cfce8"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Chamber IN]]></text>
+								<text><![CDATA[OUT]]></text>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell style="Table 3_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="79" height="30" uuid="e68d9b22-4be9-46e9-b25b-b968e53782b8"/>
+								<reportElement x="0" y="0" width="71" height="30" uuid="30bfe8a5-f62c-4552-b74b-3b2656b671d0"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{warehouse}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{minStock}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="80" uuid="2bfde571-2b09-4696-bb38-e9ad4332e255">
+					<jr:column width="69" uuid="2bfde571-2b09-4696-bb38-e9ad4332e255">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
 						<jr:tableHeader style="Table 3_TH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="80" height="30" uuid="1be9677a-efca-4610-9200-d723fd06b730"/>
+								<reportElement x="0" y="0" width="69" height="30" uuid="1be9677a-efca-4610-9200-d723fd06b730"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<text><![CDATA[Stock Akhir]]></text>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell style="Table 3_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="80" height="30" uuid="97da1b34-22c0-41f7-957e-d77744760663"/>
+								<reportElement x="0" y="0" width="69" height="30" uuid="97da1b34-22c0-41f7-957e-d77744760663"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{currStock}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="68" uuid="5d1419be-b00b-416e-ad34-6cd41f08d34c">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
+						<jr:tableHeader style="Table 3_TH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="68" height="30" uuid="cd9f8631-6831-4c97-a3fe-bcfec1e39e01"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Warehouse]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="68" height="30" uuid="e68d9b22-4be9-46e9-b25b-b968e53782b8"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{warehouse}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
