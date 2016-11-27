@@ -3,6 +3,8 @@ package module.productionpk.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -110,6 +112,25 @@ public class CreateProductionPKPanel extends JPanel implements Bridging{
 			@Override
 			public void run() {
 				productionDateLbl.requestFocusInWindow();
+			}
+		});
+		
+		productionDateChooser.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				try {	
+					if(evt.getPropertyName()=="date"){
+						Date currentDate = (Date)evt.getNewValue();
+						String date = new SimpleDateFormat("dd").format(currentDate);
+						String month = new SimpleDateFormat("MM").format(currentDate);
+						String year = new SimpleDateFormat("yy").format(currentDate);
+						productionCodeField.setText(ServiceFactory.getProdPKBL().getProductionLastCode()+"/PD/"+date+"/"+month+"/"+year);
+					}
+				} catch (SQLException e1) {
+					log.error(e1.getMessage());
+					e1.printStackTrace();
+				}
 			}
 		});
 	}

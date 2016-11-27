@@ -1,6 +1,7 @@
 package module.report.model;
 
 public class ReceivedReport {
+	private String receivedCode;
 	private String receivedDate;
 	private String supplierName;
 	private String productName;
@@ -11,6 +12,13 @@ public class ReceivedReport {
 	private double thick;
 	private double volume;
 	
+	
+	public String getReceivedCode() {
+		return receivedCode;
+	}
+	public void setReceivedCode(String receivedCode) {
+		this.receivedCode = receivedCode;
+	}
 	public String getReceivedDate() {
 		return receivedDate;
 	}

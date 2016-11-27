@@ -162,7 +162,7 @@ public class PopUpViewProductionResult extends JDialog{
 		setSize(1020, 750);
 		
 		containerPnl = new JPanel();
-		containerPnl.setPreferredSize(new Dimension(1000,1200));	
+		containerPnl.setPreferredSize(new Dimension(1000,1100));	
 		containerPnl.setLayout(null);
 		
 		containerScrollPane = new JScrollPane(containerPnl);
@@ -305,7 +305,7 @@ public class PopUpViewProductionResult extends JDialog{
 		borderPanel.add(errorGoodResultBLbl);
 		
 		//TODO add BTN Area
-		addBtn = new JButton("Tambah");
+		addBtn = new JButton("OK");
 		addBtn.setBounds(740,450,150,30);
 		borderPanel.add(addBtn);
 		
@@ -316,65 +316,65 @@ public class PopUpViewProductionResult extends JDialog{
 		productionResultTable.setFocusable(false);
 		
 		scrollPane = new JScrollPane(productionResultTable);
-		scrollPane.setBounds(40,700,900,150);
+		scrollPane.setBounds(40,600,900,150);
 		containerPnl.add(scrollPane);
 		
 		//TODO totalOutput Area
 		totalOutputLbl = new JLabel("Total Output");
-		totalOutputLbl.setBounds(50,870,150,20);
+		totalOutputLbl.setBounds(50,770,150,20);
 		containerPnl.add(totalOutputLbl);
 		
 		totalOutputField = new TextField();
-		totalOutputField.setBounds(240,870,150,20);
+		totalOutputField.setBounds(240,770,150,20);
 		containerPnl.add(totalOutputField);
 		
 		//TODO totalKlem Area
 		totalKlemLbl = new JLabel("Total Repair(Klem)");
-		totalKlemLbl.setBounds(50,910,150,20);
+		totalKlemLbl.setBounds(50,810,150,20);
 		containerPnl.add(totalKlemLbl);
 		
 		totalKlemField = new TextField();
-		totalKlemField.setBounds(240,910,150,20);
+		totalKlemField.setBounds(240,810,150,20);
 		containerPnl.add(totalKlemField);
 		
 		//TODO totalProtol Area
 		totalProtolLbl = new JLabel("Total Repair(Protol)");
-		totalProtolLbl.setBounds(50,950,150,20);
+		totalProtolLbl.setBounds(50,850,150,20);
 		containerPnl.add(totalProtolLbl);
 		
 		totalProtolField = new TextField();
-		totalProtolField.setBounds(240,950,150,20);
+		totalProtolField.setBounds(240,850,150,20);
 		containerPnl.add(totalProtolField);
 		
 		//TODO totalGoodResultA Area
 		totalGoodResultALbl = new JLabel("Total Hasil Produk Baik Grade(A)");
-		totalGoodResultALbl.setBounds(50,990,200,20);
+		totalGoodResultALbl.setBounds(50,890,200,20);
 		containerPnl.add(totalGoodResultALbl);
 		
 		totalGoodResultAField = new TextField();
-		totalGoodResultAField.setBounds(240,990,150,20);
+		totalGoodResultAField.setBounds(240,890,150,20);
 		containerPnl.add(totalGoodResultAField);
 		
 		//TODO totalGoodResultB Area
 		totalGoodResultBLbl = new JLabel("Total Hasil Produk Baik Grade(B)");
-		totalGoodResultBLbl.setBounds(50,1030,200,20);
+		totalGoodResultBLbl.setBounds(50,930,200,20);
 		containerPnl.add(totalGoodResultBLbl);
 		
 		totalGoodResultBField = new TextField();
-		totalGoodResultBField.setBounds(240,1030,150,20);
+		totalGoodResultBField.setBounds(240,930,150,20);
 		containerPnl.add(totalGoodResultBField);
 		
 		//TODO totalAllGoodResult Area
 		totalAllGoodResultLbl = new JLabel("Total Hasil Produk Baik");
-		totalAllGoodResultLbl.setBounds(50,1070,200,20);
+		totalAllGoodResultLbl.setBounds(50,970,200,20);
 		containerPnl.add(totalAllGoodResultLbl);
 		
 		totalAllGoodResultField = new TextField();
-		totalAllGoodResultField.setBounds(240,1070,150,20);
+		totalAllGoodResultField.setBounds(240,970,150,20);
 		containerPnl.add(totalAllGoodResultField);
 		
 		saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(750,1110,150,30);
+		saveBtn.setBounds(750,1010,150,30);
 		saveBtn.setFocusable(false);
 		containerPnl.add(saveBtn);
 	}

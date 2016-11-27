@@ -208,7 +208,7 @@ public class PopUpProdPKMaterial extends JDialog{
 		totalOutputField.setBounds(230,450,150,20);
 		add(totalOutputField);
 		
-		saveBtn = new JButton("Simpan");
+		saveBtn = new JButton("OK");
 		saveBtn.setBounds(550,490,150,30);
 		saveBtn.setFocusable(false);
 		add(saveBtn);

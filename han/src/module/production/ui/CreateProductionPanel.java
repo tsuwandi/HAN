@@ -3,6 +3,8 @@ package module.production.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -118,6 +120,26 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 				productionDateLbl.requestFocusInWindow();
 			}
 		});
+		
+		productionDateChooser.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent e) {
+				try {
+					
+					if(e.getPropertyName()=="date"){
+						Date currentDate = (Date)e.getNewValue();
+						String date = new SimpleDateFormat("dd").format(currentDate);
+						String month = new SimpleDateFormat("MM").format(currentDate);
+						String year = new SimpleDateFormat("yy").format(currentDate);
+						productionCodeField.setText(ServiceFactory.getProductionBL().getProductionLastCode()+"/PD/"+date+"/"+month+"/"+year);
+					}
+				} catch (SQLException e1) {
+					log.error(e1.getMessage());
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
 	
 	private void initData(){
@@ -142,6 +164,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			shiftCmb.setList(shifts);
 			groupShiftCmb.setList(groupShifts);
 			productionTypeCmb.setList(productionTypes);
+			productionTypeCmb.setSelectedItem("Barecore");
 			
 			Date currentDate = new Date();
 			String date = new SimpleDateFormat("dd").format(currentDate);
