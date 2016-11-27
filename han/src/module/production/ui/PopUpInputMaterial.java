@@ -272,7 +272,7 @@ public class PopUpInputMaterial extends JDialog{
 		uomTotalVolumeLbl.setBounds(352,650,20,20);
 		add(uomTotalVolumeLbl);
 		
-		saveBtn = new JButton("Simpan");
+		saveBtn = new JButton("OK");
 		saveBtn.setBounds(600,680,150,30);
 		add(saveBtn);
 		

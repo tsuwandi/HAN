@@ -305,7 +305,7 @@ public class PopUpViewProductionResult extends JDialog{
 		borderPanel.add(errorGoodResultBLbl);
 		
 		//TODO add BTN Area
-		addBtn = new JButton("Tambah");
+		addBtn = new JButton("OK");
 		addBtn.setBounds(740,450,150,30);
 		borderPanel.add(addBtn);
 		
