@@ -20,7 +20,7 @@ public class ProductionDAO {
 	
 	private String getAllQuery = "SELECT a.id, production_code, a.group_shift_code, d.description AS group_shift_description, "
 			+ "a.line_code, b.description AS line_description, a.shift_code, c.shift_name, "
-			+ "production_date, information, total_pallet_card, total_log, total_volume, status, a.production_type_code, e.description AS production_type_description "
+			+ "production_date, information, total_pallet_card, total_log, total_volume, status, a.production_type_code, e.production_type AS production_type_description "
 			+ "FROM production a INNER JOIN line b ON a.line_code = b.line_code "
 			+ "INNER JOIN shift c ON a.shift_code = c.shift_code INNER JOIN group_shift d ON a.group_shift_code = d.group_shift_code "
 			+ "INNER JOIN production_type e ON a.production_type_code = e.production_type_code WHERE a.deleted_date IS NULL";
