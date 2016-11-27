@@ -2,10 +2,12 @@ package module.productionwaste.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import module.dryin.dao.DryInDAO;
 import module.production.dao.GroupShiftDAO;
 import module.production.dao.LineDAO;
 import module.production.dao.ProductionTypeDAO;
@@ -180,6 +182,18 @@ public class ProductionWasteBL  {
 		try {
 			con = dataSource.getConnection();
 			return new ProductionWasteDAO(con).isPWCodeExists(pwCode);
+		} finally {
+			con.close();
+		}
+	}
+	
+	public String getOrdinalOfCodeNumber(int year) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return String.format("%04d",
+					new ProductionWasteDAO(con).getOrdinalOfCodeNumberByYear(year) + 1);
+
 		} finally {
 			con.close();
 		}

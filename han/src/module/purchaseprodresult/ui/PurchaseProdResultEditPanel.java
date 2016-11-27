@@ -54,12 +54,13 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 
 		loadData(purchaseProductResult.getId());
 	}
-	
+
 	protected void loadData(Integer pprId) {
 		try {
 			purchaseProductResult = ServiceFactory.getPurchaseProductResultBL().getPPRById(pprId);
-			listOfPPRProduct = ServiceFactory.getPurchaseProductResultBL().getPPRProductByPPRCode(purchaseProductResult.getPprCode());
-		
+			listOfPPRProduct = ServiceFactory.getPurchaseProductResultBL()
+					.getPPRProductByPPRCode(purchaseProductResult.getPprCode());
+
 			if (purchaseProductResult != null) {
 				txtPurchaseProductResultCode.setText(purchaseProductResult.getPprCode());
 				cbSupplier.setSelectedItem(purchaseProductResult.getSupplier().getSuppName());
@@ -73,7 +74,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 					txtTotal.setText(String.valueOf(purchaseProductResult.getTotal()));
 				else
 					txtTotal.setText("0.00");
-				
+
 				if (!"".equals(purchaseProductResult.getDiscount()))
 					txtDiscount.setText(String.valueOf(purchaseProductResult.getDiscount()));
 				else
@@ -83,12 +84,12 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 					txtTax.setText(String.valueOf(purchaseProductResult.getTax()));
 				else
 					txtTax.setText("0.00");
-				
+
 				if (!"".equals(purchaseProductResult.getGrandTotal()))
 					txtGrandTotal.setText(String.valueOf(purchaseProductResult.getGrandTotal()));
 				else
 					txtGrandTotal.setText("0.00");
-				
+
 				tblPPRProduct.setModel(new PPRProductTableModel(listOfPPRProduct));
 			}
 		} catch (SQLException e1) {
@@ -157,7 +158,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 	PPRProductTableModel pprTableTableModel = null;
 
 	PurchaseProdResultEditPanel pprEditPanel;
-	
+
 	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
 
 	public PurchaseProdResultEditPanel() {
@@ -190,7 +191,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		((AbstractDocument) txtPurchaseProductResultCode.getDocument()).setDocumentFilter(filter);
 		txtPurchaseProductResultCode.setEnabled(false);
 		panel.add(txtPurchaseProductResultCode);
-		
+
 		lblErrorPurchaseProductResultCode = new JLabel();
 		lblErrorPurchaseProductResultCode.setForeground(Color.RED);
 		lblErrorPurchaseProductResultCode.setBounds(425, 80, 225, 25);
@@ -200,7 +201,6 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		lblSupplier.setBounds(50, 110, 150, 25);
 		panel.add(lblSupplier);
 
-		
 		listOfSupplier = new ArrayList<Supplier>();
 		try {
 			listOfSupplier = ServiceFactory.getPurchaseProductResultBL().getAllSupplierBySuppTypeId(3);
@@ -280,9 +280,9 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		lblErrorCurrency.setForeground(Color.RED);
 		lblErrorCurrency.setBounds(425, 230, 225, 25);
 		panel.add(lblErrorCurrency);
-		
+
 		cbSupplier.addPropertyChangeListener(new PropertyChangeListener() {
-			
+
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				cbCurrency.setSelectedItem(cbSupplier.getDataIndex().getCurrency().getCurrency());
@@ -306,15 +306,6 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		});
 		panel.add(btnInsert);
 
-		btnDelete = new JButton("Hapus");
-		btnDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				doDeletePPRProduct();
-			}
-		});
-		btnDelete.setBounds(925, 300, 100, 25);
-		panel.add(btnDelete);
-
 		scrollPanePPRProduct = new JScrollPane();
 		scrollPanePPRProduct.setBounds(50, 340, 975, 150);
 		panel.add(scrollPanePPRProduct);
@@ -333,7 +324,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 					listOfPPRProduct.get(tblPPRProduct.getSelectedRow()).setFlag(true);
 
 				tblPPRProduct.updateUI();
-				
+
 				if (e.getClickCount() == 2) {
 					JTable target = (JTable) e.getSource();
 					int row = target.getSelectedRow();
@@ -413,15 +404,31 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		btnCancel = new JButton("Kembali");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 int response = DialogBox.showCloseChoice();
-				 if (response == JOptionPane.YES_OPTION) {
-					 MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProductResultViewPanel", purchaseProductResult);
-				 }
+				int response = DialogBox.showCloseChoice();
+				if (response == JOptionPane.YES_OPTION) {
+					MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProductResultViewPanel",
+							purchaseProductResult);
+				}
 			}
 		});
 		btnCancel.setBounds(50, 640, 100, 25);
 		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
+
+		btnDelete = new JButton("Hapus");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				txtTotal.setText("");
+				txtGrandTotal.setText("");
+				doDeletePPRProduct();
+				txtTotal.setText(String.valueOf(getTotal()));
+				txtGrandTotal.setText(String.valueOf(getGrandTotal()));
+				//txtTotal.updateUI();
+				//txtGrandTotal.updateUI();
+			}
+		});
+		btnDelete.setBounds(925, 300, 100, 25);
+		panel.add(btnDelete);
 
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -435,7 +442,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		add(scrollPane);
 
 	}
-	
+
 	protected void doSave() {
 		purchaseProductResult.setSuppCode(cbSupplier.getDataIndex().getSuppCode());
 		purchaseProductResult.setPurchaseNote(txtPurchaseNote.getText());
@@ -448,7 +455,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 			purchaseProductResult.setTotal(Double.valueOf(txtTotal.getText()));
 		else
 			purchaseProductResult.setTotal(0.00);
-		
+
 		if (!"".equals(txtDiscount.getText()))
 			purchaseProductResult.setDiscount(Double.valueOf(txtDiscount.getText()));
 		else
@@ -458,22 +465,23 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 			purchaseProductResult.setTax(Double.valueOf(txtTax.getText()));
 		else
 			purchaseProductResult.setTax(0.00);
-		
+
 		if (!"".equals(txtGrandTotal.getText()))
 			purchaseProductResult.setGrandTotal(Double.valueOf(txtGrandTotal.getText()));
 		else
 			purchaseProductResult.setGrandTotal(0.00);
 
 		try {
-			ServiceFactory.getPurchaseProductResultBL().update(purchaseProductResult, listOfPPRProduct, listOfDeletedPPRProduct);
+			ServiceFactory.getPurchaseProductResultBL().update(purchaseProductResult, listOfPPRProduct,
+					listOfDeletedPPRProduct);
 			DialogBox.showEdit();
-			MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProductResultViewPanel", purchaseProductResult);
+			MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultViewPanel", purchaseProductResult);
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
-	
+
 	protected boolean doValidate() {
 		boolean isValid = true;
 
@@ -482,40 +490,39 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		lblErrorPurchaseDate.setText("");
 		lblErrorDueDate.setText("");
 		lblErrorCurrency.setText("");
-	
+
 		if (cbSupplier.getSelectedItem() == null || cbSupplier.getSelectedIndex() == 0) {
 			lblErrorSupplier.setText("Combobox Supplier harus dipilih.");
 			isValid = false;
-		} 
+		}
 
 		if (dcPurchaseDate.getDate() == null) {
 			lblErrorPurchaseDate.setText("Tanggal Pembelian harus dipilih.");
 			isValid = false;
 		}
-		
+
 		if (dcDueDate.getDate() == null) {
 			lblErrorDueDate.setText("Tanggal Jatuh Tempo harus dipilih.");
 			isValid = false;
 		}
-		
+
 		if (cbCurrency.getSelectedItem() == null || cbCurrency.getSelectedIndex() == 0) {
 			lblErrorCurrency.setText("Combobox Kurs harus dipilih.");
 			isValid = false;
 		}
-		
+
 		return isValid;
 	}
 
 	protected void showAddPPRProductDialog(PurchaseProdResultEditPanel pprEditPanel) {
-		PPRProductDialog pprProductDialog = new PPRProductDialog(false, new PPRProduct(),
-				pprEditPanel, null);
+		PPRProductDialog pprProductDialog = new PPRProductDialog(false, new PPRProduct(), pprEditPanel, null);
 		pprProductDialog.setTitle("Barang");
 		pprProductDialog.setLocationRelativeTo(null);
 		pprProductDialog.setVisible(true);
 	}
 
-	protected void showEditPPRProductDialog(PPRProduct pprProduct,
-			PurchaseProdResultEditPanel pprEditPanel, Integer index) {
+	protected void showEditPPRProductDialog(PPRProduct pprProduct, PurchaseProdResultEditPanel pprEditPanel,
+			Integer index) {
 		PPRProductDialog pprProductDialog = new PPRProductDialog(true, pprProduct, pprEditPanel, index);
 		pprProductDialog.setTitle("Barang");
 		pprProductDialog.setLocationRelativeTo(null);
@@ -675,28 +682,34 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 			DialogBox.showErrorException();
 		}
 	}
-	
+
 	public int getTotal() {
 		int total = 0;
-		
+
 		for (PPRProduct p : listOfPPRProduct)
 			total += (p.getQty() * p.getUnitPrice());
 
-        return total;
+		return Integer.valueOf(total);
+
 	}
-	
+
 	public int getGrandTotal() {
 		if ("".equals(txtDiscount.getText())) {
-			if("".equals(txtTax.getText()))
+			if ("".equals(txtTax.getText()))
 				return getTotal();
 			else
 				return getTotal() + Integer.valueOf(txtTax.getText());
-		}else if ("".equals(txtTax.getText())) {
-			if("".equals(txtDiscount.getText()))
+		} else if ("".equals(txtTax.getText())) {
+			if ("".equals(txtDiscount.getText()))
 				return getTotal();
 			else
 				return getTotal() - Integer.valueOf(txtDiscount.getText());
-		} else 
-			return getTotal() - Integer.valueOf(txtDiscount.getText()) + Integer.valueOf(txtTax.getText());
+		} else {
+			int discount = Integer.valueOf(txtDiscount.getText().replace(".0", ""));
+			int tax = Integer.valueOf(txtTax.getText().replace(".0", ""));
+			int total = this.getTotal();
+			int grandTotal = (total - discount + tax);
+			return grandTotal;
+		}
 	}
 }

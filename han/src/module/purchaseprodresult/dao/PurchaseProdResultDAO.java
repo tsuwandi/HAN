@@ -16,6 +16,7 @@ public class PurchaseProdResultDAO {
 	private Connection connection;
 	
 	private PreparedStatement getAllStatement;
+	private PreparedStatement getOrdinalOfCodeNumberStatement;
 	private PreparedStatement isPPRCodeExistsStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
@@ -40,6 +41,10 @@ public class PurchaseProdResultDAO {
 			.append("edit_date=?, edited_by=? where ppr_code=?").toString();
 
 	private String deleteQuery = "update purchase_prod_result set deleted_date=?, deleted_by=? where id=?";
+	
+	private String getOrdinalOfCodeNumberQuery = "SELECT SUBSTRING_INDEX(ppr_code, '/', 1) AS ordinal FROM purchase_prod_result "
+			+ "WHERE SUBSTRING_INDEX(ppr_code, '/', -1) = ? "
+			+ "ORDER BY ordinal DESC LIMIT 1 ";
 	
 	public PurchaseProdResultDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -266,5 +271,23 @@ public class PurchaseProdResultDAO {
 		}
 
 		return ppr;
+	}
+	
+	public int getOrdinalOfCodeNumberByYear(int year) throws SQLException {
+		int ordinal = 0;
+		try {
+			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
+			getOrdinalOfCodeNumberStatement.setInt(1, year);
+
+			ResultSet rs = getOrdinalOfCodeNumberStatement.executeQuery();
+			while (rs.next()) {
+				ordinal = rs.getInt("ordinal");
+			}
+
+		} catch (SQLException ex) {
+			throw new SQLException(ex.getMessage());
+		}
+
+		return ordinal;
 	}
 }

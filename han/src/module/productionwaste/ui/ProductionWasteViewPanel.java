@@ -340,7 +340,7 @@ public class ProductionWasteViewPanel extends JPanel implements Bridging {
 		txtRepairProtolTotalGradeB.setEnabled(false);
 		panel.add(txtRepairProtolTotalGradeB);
 
-		lblRepairNormal = new JLabel("Repair (Protol)");
+		lblRepairNormal = new JLabel("Hasil Baik");
 		lblRepairNormal.setBounds(50, 440, 150, 25);
 		lblRepairNormal.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel.add(lblRepairNormal);

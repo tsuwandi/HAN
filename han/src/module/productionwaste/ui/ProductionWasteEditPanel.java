@@ -132,7 +132,13 @@ public class ProductionWasteEditPanel extends JPanel implements Bridging {
 	JLabel lblErrorShift;
 	JLabel lblErrorLine;
 	JLabel lblErrorProductionType;
-
+	JLabel lblErrorTxtRepairKlemTotalGradeA;
+	JLabel lblErrorTxtRepairKlemTotalGradeB;
+	JLabel lblErrorTxtRepairProtolTotalGradeA;
+	JLabel lblErrorTxtRepairProtolTotalGradeB;
+	JLabel lblErrorTxtRepairNormalTotalGradeA;
+	JLabel lblErrorTxtRepairNormalTotalGradeB;
+	
 	ProductionWaste productionWaste;
 	DocumentFilter filter = new UppercaseDocumentFilter();
 
@@ -289,6 +295,36 @@ public class ProductionWasteEditPanel extends JPanel implements Bridging {
 		lblErrorProductionType.setBounds(425, 230, 225, 25);
 		panel.add(lblErrorProductionType);
 		
+		lblErrorTxtRepairKlemTotalGradeA = new JLabel();
+		lblErrorTxtRepairKlemTotalGradeA.setForeground(Color.RED);
+		lblErrorTxtRepairKlemTotalGradeA.setBounds(425, 290, 225, 25);
+		panel.add(lblErrorTxtRepairKlemTotalGradeA);
+		
+		lblErrorTxtRepairKlemTotalGradeB = new JLabel();
+		lblErrorTxtRepairKlemTotalGradeB.setForeground(Color.RED);
+		lblErrorTxtRepairKlemTotalGradeB.setBounds(425, 320, 225, 25);
+		panel.add(lblErrorTxtRepairKlemTotalGradeB);
+		
+		lblErrorTxtRepairProtolTotalGradeA = new JLabel();
+		lblErrorTxtRepairProtolTotalGradeA.setForeground(Color.RED);
+		lblErrorTxtRepairProtolTotalGradeA.setBounds(425, 380, 225, 25);
+		panel.add(lblErrorTxtRepairProtolTotalGradeA);
+		
+		lblErrorTxtRepairProtolTotalGradeB = new JLabel(); 
+		lblErrorTxtRepairProtolTotalGradeB.setForeground(Color.RED);
+		lblErrorTxtRepairProtolTotalGradeB.setBounds(425, 410, 225, 25);
+		panel.add(lblErrorTxtRepairProtolTotalGradeB);
+		
+		lblErrorTxtRepairNormalTotalGradeA = new JLabel();
+		lblErrorTxtRepairNormalTotalGradeA.setForeground(Color.RED);
+		lblErrorTxtRepairNormalTotalGradeA.setBounds(425, 470, 225, 25);
+		panel.add(lblErrorTxtRepairNormalTotalGradeA);
+		
+		lblErrorTxtRepairNormalTotalGradeB = new JLabel();
+		lblErrorTxtRepairNormalTotalGradeB.setForeground(Color.RED);
+		lblErrorTxtRepairNormalTotalGradeB.setBounds(425, 500, 225, 25);
+		panel.add(lblErrorTxtRepairNormalTotalGradeB);
+		
 		lblRepairKlem = new JLabel("Repair (Klem)");
 		lblRepairKlem.setBounds(50, 260, 150, 25);
 		lblRepairKlem.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -331,7 +367,7 @@ public class ProductionWasteEditPanel extends JPanel implements Bridging {
 		txtRepairProtolTotalGradeB.setBounds(220, 410, 150, 25);
 		panel.add(txtRepairProtolTotalGradeB);
 		
-		lblRepairNormal = new JLabel("Repair (Protol)");
+		lblRepairNormal = new JLabel("Hasil Baik");
 		lblRepairNormal.setBounds(50, 440, 150, 25);
 		lblRepairNormal.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel.add(lblRepairNormal);
@@ -372,7 +408,7 @@ public class ProductionWasteEditPanel extends JPanel implements Bridging {
 			public void actionPerformed(ActionEvent arg0) {
 				 int response = DialogBox.showCloseChoice();
 				 if (response == JOptionPane.YES_OPTION) {
-					 MainPanel.changePanel("module.productionwaste.ui.ProductionWasteViewPanel");
+					 MainPanel.changePanel("module.productionwaste.ui.ProductionWasteViewPanel", productionWaste);
 				 }
 			}
 		});
@@ -443,7 +479,12 @@ public class ProductionWasteEditPanel extends JPanel implements Bridging {
 		lblErrorShift.setText("");
 		lblErrorLine.setText("");
 		lblErrorProductionType.setText("");
-		
+		lblErrorTxtRepairKlemTotalGradeA.setText("");
+		lblErrorTxtRepairKlemTotalGradeB.setText("");
+		lblErrorTxtRepairProtolTotalGradeA.setText("");
+		lblErrorTxtRepairProtolTotalGradeB.setText("");
+		lblErrorTxtRepairNormalTotalGradeA.setText("");
+		lblErrorTxtRepairNormalTotalGradeB.setText("");
 
 		if (cbGroupShift.getSelectedItem() == null || cbGroupShift.getSelectedIndex() == 0) {
 			lblErrorGroupShift.setText("Combobox Group Shift harus dipilih.");
@@ -467,6 +508,36 @@ public class ProductionWasteEditPanel extends JPanel implements Bridging {
 		
 		if (cbProductionType.getSelectedItem() == null || cbProductionType.getSelectedIndex() == 0) {
 			lblErrorProductionType.setText("Combobox Tipe Produksi harus dipilih.");
+			isValid = false;
+		}
+		
+		if (txtRepairKlemTotalGradeA.getText() == null || txtRepairKlemTotalGradeA.getText().length() == 0) {
+			lblErrorTxtRepairKlemTotalGradeA.setText("Textbox Jumlah Grade A harus diisi.");
+			isValid = false;
+		}
+		
+		if (txtRepairKlemTotalGradeB.getText() == null || txtRepairKlemTotalGradeB.getText().length() == 0) {
+			lblErrorTxtRepairKlemTotalGradeB.setText("Textbox Jumlah Grade B harus diisi.");
+			isValid = false;
+		}
+		
+		if (txtRepairProtolTotalGradeA.getText() == null || txtRepairProtolTotalGradeA.getText().length() == 0) {
+			lblErrorTxtRepairProtolTotalGradeA.setText("Textbox Jumlah Grade A harus diisi.");
+			isValid = false;
+		}
+		
+		if (txtRepairProtolTotalGradeB.getText() == null || txtRepairProtolTotalGradeB.getText().length() == 0) {
+			lblErrorTxtRepairProtolTotalGradeB.setText("Textbox Jumlah Grade B harus diisi.");
+			isValid = false;
+		}
+		
+		if (txtRepairNormalTotalGradeA.getText() == null || txtRepairNormalTotalGradeA.getText().length() == 0) {
+			lblErrorTxtRepairNormalTotalGradeA.setText("Textbox Jumlah Grade A harus diisi.");
+			isValid = false;
+		}
+		
+		if (txtRepairNormalTotalGradeB.getText() == null || txtRepairNormalTotalGradeB.getText().length() == 0) {
+			lblErrorTxtRepairNormalTotalGradeB.setText("Textbox Jumlah Grade B harus diisi.");
 			isValid = false;
 		}
 		

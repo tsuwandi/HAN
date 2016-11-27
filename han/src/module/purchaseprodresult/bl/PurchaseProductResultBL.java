@@ -2,10 +2,12 @@ package module.purchaseprodresult.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import module.dryin.dao.DryInDAO;
 import module.product.dao.ProductDAO;
 import module.product.model.Product;
 import module.purchaseprodresult.dao.PPRProductDAO;
@@ -182,4 +184,15 @@ public class PurchaseProductResultBL  {
 		}
 	}
 	
+	public String getOrdinalOfCodeNumber(int year) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return String.format("%04d",
+					new PurchaseProdResultDAO(con).getOrdinalOfCodeNumberByYear(year) + 1);
+
+		} finally {
+			con.close();
+		}
+	}
 }

@@ -13,6 +13,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -143,6 +145,7 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 		txtPurchaseProductResultCode.setBounds(220, 80, 150, 25);
 		txtPurchaseProductResultCode.setDocument(new JTextFieldLimit(15));
 		((AbstractDocument) txtPurchaseProductResultCode.getDocument()).setDocumentFilter(filter);
+		txtPurchaseProductResultCode.setEnabled(false);
 		panel.add(txtPurchaseProductResultCode);
 		
 		lblErrorPurchaseProductResultCode = new JLabel();
@@ -188,9 +191,20 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 		lblPurchaseDate.setBounds(50, 170, 150, 25);
 		panel.add(lblPurchaseDate);
 
-		dcPurchaseDate = new JDateChooser();
+		dcPurchaseDate = new JDateChooser(new Date());
 		dcPurchaseDate.setBounds(220, 170, 150, 25);
 		dcPurchaseDate.setDateFormatString("dd-MM-yyyy");
+		
+		dcPurchaseDate.getDateEditor().addPropertyChangeListener(
+			    new PropertyChangeListener() {
+			        @Override
+			        public void propertyChange(PropertyChangeEvent e) {
+			            if ("date".equals(e.getPropertyName())) {
+			               makeCodeNumber(dcPurchaseDate.getDate());
+			            }
+			        }
+			    });
+		  makeCodeNumber(dcPurchaseDate.getDate());
 		panel.add(dcPurchaseDate);
 
 		lblErrorPurchaseDate = new JLabel();
@@ -665,13 +679,36 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 			if("".equals(txtTax.getText()))
 				return getTotal();
 			else
-				return getTotal() + Integer.valueOf(txtTax.getText());
+				return getTotal() + Integer.parseInt(txtTax.getText());
 		}else if ("".equals(txtTax.getText())) {
 			if("".equals(txtDiscount.getText()))
 				return getTotal();
 			else
-				return getTotal() - Integer.valueOf(txtDiscount.getText());
+				return getTotal() - Integer.parseInt(txtDiscount.getText());
 		} else 
-			return getTotal() - Integer.valueOf(txtDiscount.getText()) + Integer.valueOf(txtTax.getText());
+			return getTotal() - Integer.parseInt(txtDiscount.getText()) + Integer.parseInt(txtTax.getText());
+	}
+	
+	public void makeCodeNumber(Date producationDate) {
+		final String constant = "PB";
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(producationDate);
+		
+		String date = String.valueOf(cal.get(Calendar.DATE));
+		String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
+		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
+
+		String ordinal = null;
+		try {
+			ordinal = ServiceFactory.getPurchaseProductResultBL().getOrdinalOfCodeNumber(Integer.valueOf(year));
+		} catch (SQLException e) {
+			LOGGER.error(e.getMessage());
+			DialogBox.showErrorException();
+		}
+		
+		txtPurchaseProductResultCode.setText(new StringBuilder().append(ordinal).append("/").append(constant)
+				.append("/").append(date).append("/").append(month)
+				.append("/").append(year).toString());
 	}
 }

@@ -130,8 +130,8 @@ public class PPRProductDialog extends JDialog {
 		txtQty.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				txtSubTotal.setText(String.valueOf(getSubTotal()));
-				txtSubTotal.updateUI();
+//				txtSubTotal.setText(String.valueOf(getSubTotal()));
+//				txtSubTotal.updateUI();
 			}
 		});
 		txtQty.setBounds(150, 45, 150, 25);
@@ -151,8 +151,8 @@ public class PPRProductDialog extends JDialog {
 		txtUnitPrice.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				txtSubTotal.setText(String.valueOf(getSubTotal()));
-				txtSubTotal.updateUI();
+//				txtSubTotal.setText(String.valueOf(getSubTotal()));
+//				txtSubTotal.updateUI();
 			}
 		});
 		getContentPane().add(txtUnitPrice);
@@ -162,14 +162,14 @@ public class PPRProductDialog extends JDialog {
 		lblErrorUnitPrice.setBounds(335, 75, 225, 25);
 		getContentPane().add(lblErrorUnitPrice);
 
-		lblSubTotal = new JLabel("Sub Total");
-		lblSubTotal.setBounds(25, 105, 150, 25);
-		getContentPane().add(lblSubTotal);
+//		lblSubTotal = new JLabel("Sub Total");
+//		lblSubTotal.setBounds(25, 105, 150, 25);
+//		getContentPane().add(lblSubTotal);
 
-		txtSubTotal = new NumberField(10);
-		txtSubTotal.setEnabled(false);
-		txtSubTotal.setBounds(150, 105, 150, 25);
-		getContentPane().add(txtSubTotal);
+//		txtSubTotal = new NumberField(10);
+//		txtSubTotal.setEnabled(false);
+//		txtSubTotal.setBounds(150, 105, 150, 25);
+//		getContentPane().add(txtSubTotal);
 
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
@@ -188,14 +188,14 @@ public class PPRProductDialog extends JDialog {
 			txtQty.setText(String.valueOf(pprProduct.getQty()));
 			txtUnitPrice.setText(String.valueOf(pprProduct.getUnitPrice()));
 			cbProduct.setSelectedItem(pprProduct.getProduct().getProductName());
-			txtSubTotal.setText(String.valueOf(this.getSubTotal()));
+			//txtSubTotal.setText(String.valueOf(this.getSubTotal()));
 		}
 		
 		if(isView == true) {
 			txtQty.setEnabled(false);
 			txtUnitPrice.setEnabled(false);
 			cbProduct.setEnabled(false);
-			txtSubTotal.setEnabled(false);
+			//txtSubTotal.setEnabled(false);
 			btnInsert.setEnabled(false);
 		}
 	}

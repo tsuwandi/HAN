@@ -18,6 +18,7 @@ public class ProductionWasteDAO {
 	private Connection connection;
 
 	private PreparedStatement getAllStatement;
+	private PreparedStatement getOrdinalOfCodeNumberStatement;
 	private PreparedStatement isPWCodeExistsStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
@@ -46,6 +47,10 @@ public class ProductionWasteDAO {
 			.append("production_type_code=?, status=?, edit_date=?, edited_by=? where pw_code=?").toString();
 
 	private String deleteQuery = "update production_waste set deleted_date=?, deleted_by=? where id=?";
+	
+	private String getOrdinalOfCodeNumberQuery = "SELECT SUBSTRING_INDEX(pw_code, '/', 1) AS ordinal FROM production_waste "
+			+ "WHERE SUBSTRING_INDEX(pw_code, '/', -1) = ? "
+			+ "ORDER BY ordinal DESC LIMIT 1 ";
 
 	public ProductionWasteDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -277,5 +282,23 @@ public class ProductionWasteDAO {
 		}
 
 		return ppr;
+	}
+	
+	public int getOrdinalOfCodeNumberByYear(int year) throws SQLException {
+		int ordinal = 0;
+		try {
+			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
+			getOrdinalOfCodeNumberStatement.setInt(1, year);
+
+			ResultSet rs = getOrdinalOfCodeNumberStatement.executeQuery();
+			while (rs.next()) {
+				ordinal = rs.getInt("ordinal");
+			}
+
+		} catch (SQLException ex) {
+			throw new SQLException(ex.getMessage());
+		}
+
+		return ordinal;
 	}
 }
