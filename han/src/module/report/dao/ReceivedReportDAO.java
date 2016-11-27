@@ -14,7 +14,7 @@ import module.report.model.ReceivedReport;
 public class ReceivedReportDAO {
 	private Connection connection;
 	private PreparedStatement getAllStatement;
-	private String queryGetAll = "SELECT A.RECEIVED_DATE, C.SUPP_NAME, F.PRODUCT_NAME, B.WOOD_TYPE, "
+	private String queryGetAll = "SELECT A.RECEIVED_DATE, A.RECEIVED_CODE, C.SUPP_NAME, F.PRODUCT_NAME, B.WOOD_TYPE, "
 			+ "G.GRADE, E.LENGTH, E.WIDTH, E.THICKNESS, E.VOLUME FROM RECEIVED A "
 			+ "INNER JOIN WOOD_TYPE B ON A.WOOD_TYPE_ID = B.ID "
 			+ "INNER JOIN SUPPLIER C ON A.SUPPLIER_CODE = C.SUPP_CODE "
@@ -49,6 +49,7 @@ public class ReceivedReportDAO {
 			ResultSet rs = getAllStatement.executeQuery();
 			while(rs.next()){
 				ReceivedReport receivedReport = new ReceivedReport();
+				receivedReport.setReceivedCode(rs.getString("RECEIVED_CODE"));
 				receivedReport.setReceivedDate(new SimpleDateFormat("dd-MM-yyyy").format(rs.getDate("RECEIVED_DATE")));
 				receivedReport.setSupplierName(rs.getString("SUPP_NAME"));
 				receivedReport.setProductName(rs.getString("PRODUCT_NAME"));
