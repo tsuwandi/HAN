@@ -120,7 +120,7 @@ public class DailyClosingBL {
 				InventoryLogTemp inventoryLogTempDebet = new InventoryLogTemp();
 				inventoryLogTempDebet.setProductCode(dryIn.getPalletCard().getProductCode());
 				inventoryLogTempDebet.setWarehouse(dryIn.getChamberId());
-				inventoryLogTempCredit.setQty(dryIn.getPalletCard().getTotal());
+				inventoryLogTempDebet.setQty(dryIn.getPalletCard().getTotal());
 				inventoryLogTempDebet.setMutasi(DEBET);
 				inventoryLogTempDebet.setSrcTable(DRY_IN);
 				inventoryLogTempDebet.setConfirmCode(confirm.getConfirmCode());
@@ -146,7 +146,7 @@ public class DailyClosingBL {
 				InventoryLogTemp inventoryLogTempDebet = new InventoryLogTemp();
 				inventoryLogTempDebet.setProductCode(dryOut.getPalletCard().getProductCode());
 				inventoryLogTempDebet.setWarehouse(dryOut.getChamberId());
-				inventoryLogTempCredit.setQty(dryOut.getPalletCard().getTotal());
+				inventoryLogTempDebet.setQty(dryOut.getPalletCard().getTotal());
 				inventoryLogTempDebet.setMutasi(DEBET);
 				inventoryLogTempDebet.setSrcTable(DRY_OUT);
 				inventoryLogTempDebet.setConfirmCode(confirm.getConfirmCode());

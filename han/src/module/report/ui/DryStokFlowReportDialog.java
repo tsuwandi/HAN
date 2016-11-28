@@ -151,7 +151,7 @@ private static final long serialVersionUID = 1L;
 								JDialog dialog = new JDialog();
 								dialog.setContentPane(jasperViewer.getContentPane());
 								dialog.setSize(jasperViewer.getSize());
-								dialog.setTitle("Laporan Tutup Harian");
+								dialog.setTitle("Laporan Stock Flow Basah");
 								dialog.setVisible(true);
 	
 								setVisible(false);

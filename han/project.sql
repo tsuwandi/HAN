@@ -1819,3 +1819,12 @@ ALTER TABLE `system_group`
 
 /*[9:37:52 PM][1062 ms]*/ ALTER TABLE `project`.`inventory_log` CHANGE `prev_stock` `prev_stock` DECIMAL(12,5) NULL , CHANGE `min_stock` `min_stock` DECIMAL(12,5) NULL , CHANGE `curr_stock` `curr_stock` DECIMAL(12,5) NULL ;
 /*[9:35:51 PM][ 546 ms]*/ ALTER TABLE `project`.`inventory_log` CHANGE `plus_stock` `plus_stock` DECIMAL(12,5) NULL ;
+
+
+// timotius_start 11/27/2016
+ALTER TABLE `production_waste` CHANGE `pw_code` `pw_code` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `pw_product` CHANGE `pw_code` `pw_code` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `purchase_prod_result` CHANGE `ppr_code` `ppr_code` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `ppr_product` CHANGE `ppr_code` `ppr_code` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+ALTER TABLE `inventory_log_temp` CHANGE `qty` `qty` DECIMAL(12,5) NULL DEFAULT NULL;

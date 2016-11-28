@@ -3,6 +3,8 @@ package module.system.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,8 +20,9 @@ import javax.swing.JTextField;
 import controller.ServiceFactory;
 import module.system.model.Group;
 import module.system.model.User;
+import module.util.Bridging;
 
-public class EditUserPanel extends JPanel{
+public class EditUserPanel extends JPanel implements Bridging{
 
 	private static final long serialVersionUID = 2090225881350809172L;
 	
@@ -28,6 +31,7 @@ public class EditUserPanel extends JPanel{
 	private JComboBox groupUserCombobox;
 	private List<Group> groups = new ArrayList<>();
 	private Integer groupId;
+	private User user;
 
 	public EditUserPanel() {
 		setSize(1024, 630);
@@ -100,6 +104,21 @@ public class EditUserPanel extends JPanel{
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 46, 150, 25);
 		add(lblHeader);
+		
+		JButton showBtn = new JButton("Show");
+		showBtn.setBounds(280, 138, 60, 30);
+		add(showBtn);
+		showBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				passwordField.setText("You get fool");
+			};
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				passwordField.setEchoChar('*');
+			}
+		});
 	}
 
 	protected void save() {
@@ -122,5 +141,21 @@ public class EditUserPanel extends JPanel{
 			comboBoxModel.addElement(group.getGroupName());
 		}
 		groupUserCombobox.setModel(comboBoxModel);
+	}
+
+	@Override
+	public void invokeObjects(Object... objects) {
+		user = (User) objects[0];
+		System.out.println(user);
+		getUsernameField().setText(user.getUserName());
+		getPasswordField().setText(user.getUserPassword());
+	}
+
+	public JTextField getUsernameField() {
+		return usernameField;
+	}
+
+	public JPasswordField getPasswordField() {
+		return passwordField;
 	}
 }
