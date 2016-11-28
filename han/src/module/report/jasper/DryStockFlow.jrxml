@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-11-28T00:18:33 -->
+<!-- 2016-11-28T22:45:52 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DailyClosing" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="95b2a938-121a-4c3f-8fab-14a4576ec553">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
@@ -143,7 +143,7 @@
 		<field name="productName" class="java.lang.String"/>
 		<field name="prevStock" class="java.lang.Double"/>
 		<field name="plusStock" class="java.lang.Double"/>
-		<field name="warehouse" class="java.lang.Integer"/>
+		<field name="warehouseName" class="java.lang.String"/>
 		<field name="currStock" class="java.lang.Double"/>
 		<field name="minStock" class="java.lang.Double"/>
 	</subDataset>
@@ -382,7 +382,7 @@
 							<textField>
 								<reportElement x="0" y="0" width="68" height="30" uuid="e68d9b22-4be9-46e9-b25b-b968e53782b8"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{warehouse}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{warehouseName}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
