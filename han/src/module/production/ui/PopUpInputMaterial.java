@@ -15,7 +15,9 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -90,6 +92,7 @@ public class PopUpInputMaterial extends JDialog{
 	
 	private CreateProductionPanel createProductionPanel;
 	private List<ProdRM> prodRms;
+	private Map<String,ProdRM> deletedProdRms;
 	private ProdRM tempProdRM;
 	private PopUpInputMaterial parentDialog;
 	
@@ -281,6 +284,7 @@ public class PopUpInputMaterial extends JDialog{
 	}
 	
 	private void initData(JPanel parent){
+		deletedProdRms = new HashMap<>();
 		prodRms = new ArrayList<>();
 		parentDialog = this;
 		createProductionPanel = (CreateProductionPanel) parent;
@@ -344,6 +348,7 @@ public class PopUpInputMaterial extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(tempProdRM!=null){
+					if(deletedProdRms.get(tempProdRM.getPalletCardCode())!=null) deletedProdRms.remove(tempProdRM.getPalletCardCode());
 					prodRms.add(tempProdRM);
 					materialTable.setModel(new MaterialTableModel(prodRms));
 					materialTable.updateUI();
@@ -364,7 +369,11 @@ public class PopUpInputMaterial extends JDialog{
 				for (ProdRM prodRM : prodRms) {
 					prodRM.setProductionCode(createProductionPanel.getProductionCodeField().getText());
 				}
+				for(ProdRM prodRM : deletedProdRms.values()){
+					prodRM.setProductionCode(createProductionPanel.getProductionCodeField().getText());
+				}
 				prod.setListOfProdRM(prodRms);
+				prod.setDeletedProdRMs(deletedProdRms);
 				DialogBox.showInsert();
 				dispose();
 			}
@@ -375,6 +384,7 @@ public class PopUpInputMaterial extends JDialog{
 			public void mouseClicked(MouseEvent e) {
 				if(materialTable.columnAtPoint(e.getPoint())==6){
 					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
+						deletedProdRms.put(prodRms.get(materialTable.getSelectedRow()).getPalletCardCode(), prodRms.get(materialTable.getSelectedRow()));
 						prodRms.remove(materialTable.getSelectedRow());
 						materialTable.updateUI();
 					}
@@ -450,6 +460,7 @@ public class PopUpInputMaterial extends JDialog{
 	}
 	
 	public void updateTableFromSearch(List<ProdRM> prodRMs){
+		for(ProdRM pr : prodRMs) if(deletedProdRms.get(pr.getPalletCardCode())!=null)deletedProdRms.remove(pr.getPalletCardCode());
 		this.prodRms.addAll(prodRMs);
 		materialTable.setModel(new MaterialTableModel(prodRms));
 		materialTable.updateUI();
@@ -464,6 +475,15 @@ public class PopUpInputMaterial extends JDialog{
 		this.prodRms = prodRms;
 	}
 	
+	
+	public Map<String, ProdRM> getDeletedProdRms() {
+		return deletedProdRms;
+	}
+	public void setDeletedProdRms(Map<String, ProdRM> deletedProdRms) {
+		this.deletedProdRms = deletedProdRms;
+	}
+
+
 	private class MaterialTableModel extends AbstractTableModel{
 		
 		private static final long serialVersionUID = 1L;

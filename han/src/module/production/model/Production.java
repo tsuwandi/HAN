@@ -2,6 +2,7 @@ package module.production.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Production {
 	int id;
@@ -21,6 +22,7 @@ public class Production {
 	String productionTypeDescription;
 	String status;
 	List<ProdRM> listOfProdRM;
+	Map<String, ProdRM> deletedProdRMs;
 	List<ProductionResult> productionResults;
 	
 	public int getId() {
@@ -134,7 +136,13 @@ public class Production {
 	public void setProductionTypeDescription(String productionTypeDescription) {
 		this.productionTypeDescription = productionTypeDescription;
 	}
-
+	public Map<String, ProdRM> getDeletedProdRMs() {
+		return deletedProdRMs;
+	}
+	public void setDeletedProdRMs(Map<String, ProdRM> deletedProdRMs) {
+		this.deletedProdRMs = deletedProdRMs;
+	}
+	
 	
 	
 }

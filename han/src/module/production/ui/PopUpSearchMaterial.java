@@ -56,7 +56,7 @@ public class PopUpSearchMaterial extends JDialog{
 		add(searchField);
 		
 		try {
-			prodRms = ServiceFactory.getProductionBL().getSearchProdRM(popUpInputMaterial.getProdRms());
+			prodRms = ServiceFactory.getProductionBL().getSearchProdRM(popUpInputMaterial.getProdRms(),popUpInputMaterial.getDeletedProdRms());
 			materialTableModel = new MaterialTableModel(prodRms);
 		} catch (SQLException e) {
 			log.error(e.getMessage());

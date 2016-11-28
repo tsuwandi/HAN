@@ -3,6 +3,7 @@ package module.production.bl;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -136,7 +137,7 @@ public class ProductionBL {
 		return prodRMDAO.getAllByProductionCode(productionCode);
 	}
 	
-	public List<ProdRM> getSearchProdRM(List<ProdRM> prodRMs)throws SQLException{
+	public List<ProdRM> getSearchProdRM(List<ProdRM> prodRMs,Map<String, ProdRM> deletedProdRms)throws SQLException{
 		StringBuffer sqlQuery = new StringBuffer();
 		if(prodRMs.size()!=0){
 			sqlQuery.append(" AND b.pallet_card_code NOT IN (");
@@ -144,6 +145,15 @@ public class ProductionBL {
 				ProdRM pr = prodRMs.get(i);
 				if(i==0)sqlQuery.append("'"+pr.getPalletCardCode()+"'");
 				else sqlQuery.append(",'"+pr.getPalletCardCode()+"'");
+			}
+			sqlQuery.append(") ");
+		}
+		if(deletedProdRms.size()!=0){
+			sqlQuery.append(" AND b.pallet_card_code IN (");
+			int i = 0;
+			for(String code : deletedProdRms.keySet()) {
+				if(i==0)sqlQuery.append("'"+code+"'");
+				else sqlQuery.append(",'"+code+"'");
 			}
 			sqlQuery.append(") ");
 		}
