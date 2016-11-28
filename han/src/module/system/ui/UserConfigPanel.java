@@ -64,7 +64,7 @@ public class UserConfigPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(userConfigTabel.columnAtPoint(e.getPoint())==5) {
-					MainPanel.changePanel("module.system.ui.EditUserPanel");
+					MainPanel.changePanel("module.system.ui.EditUserPanel", getSelectedData());
 				}
 			}
 		});
@@ -146,6 +146,9 @@ public class UserConfigPanel extends JPanel {
 		user.setUserPassword(userConfigTabel.getValueAt(row, 2).toString());
 		//user.setLastLogin( userConfigTabel.getValueAt(row, 4).toString());
 		//user.setLastChanged(userConfigTabel.getValueAt(row, 5).toString());
+		
+		System.out.println("execute");
+		
 		return user;
 	}
 
