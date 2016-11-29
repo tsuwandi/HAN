@@ -243,6 +243,15 @@ public class InventoryLog implements Serializable {
 		this.productName = productName;
 	}
 
+	public String getWarehouseName() {
+		return warehouseName;
+	}
+	public void setWarehouseName(String warehouseName) {
+		this.warehouseName = warehouseName;
+	}
+
 	private String productName;
+
+	private String warehouseName;
 	
 }

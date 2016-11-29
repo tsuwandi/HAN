@@ -86,14 +86,14 @@ public class UserConfigPanel extends JPanel {
 		btnExport.setBounds(824, 100, 90, 30);
 		add(btnExport);
 		
-		JButton createNewBtn = new JButton("Buat Baru");
-		createNewBtn.addActionListener(new ActionListener() {
+		JButton newUserBtn = new JButton("Buat Baru");
+		newUserBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MainPanel.changePanel("module.system.ui.CreateUserPanel");
 			}
 		});
-		createNewBtn.setBounds(724, 100, 90, 30);
-		add(createNewBtn);
+		newUserBtn.setBounds(724, 100, 90, 30);
+		add(newUserBtn);
 		
 		getUserData();
 		
