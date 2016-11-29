@@ -120,7 +120,7 @@ public class ListProductionPKPanel extends JPanel {
 			productionTable.setModel(new ProductionTableModel(productions));
 			
 			pagingPanel.setPage(1);
-			pagingPanel.setMaxDataPerPage(3);
+			pagingPanel.setMaxDataPerPage(20);
 			pagingPanel.setData(productions);
 			pagingPanel.setTable(productionTable);
 			pagingPanel.setTableModel(productionTableModel);
