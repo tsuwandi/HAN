@@ -56,8 +56,6 @@ public class CreateGroupPanel extends JPanel{
 		add(groupDescField);
 		
 		groupNameField = new JTextField();
-		groupNameField.setEnabled(false);
-		groupNameField.setEditable(false);
 		groupNameField.setColumns(10);
 		groupNameField.setBounds(140, 80, 200, 30);
 		add(groupNameField);

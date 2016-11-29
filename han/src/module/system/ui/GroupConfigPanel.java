@@ -1,6 +1,8 @@
 package module.system.ui;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -11,12 +13,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import module.system.model.Group;
 import controller.ServiceFactory;
+import main.panel.MainPanel;
+import module.system.model.Group;
 
 public class GroupConfigPanel extends JPanel {
 
@@ -24,8 +26,6 @@ public class GroupConfigPanel extends JPanel {
 	private JTable groupConfigTable;
 	private List<Group> groups = new ArrayList<>();
 	private GroupConfigTabelModel groupConfigTabelModel;
-	private JTextField groupNameTxt;
-	private JTextArea groupDescTxt;
 	private JTextField textField;
 
 	/**
@@ -37,8 +37,13 @@ public class GroupConfigPanel extends JPanel {
 
 		JLabel breadCrumbLbl = new JLabel("Konfigurasi > Group");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
-		breadCrumbLbl.setBounds(10, 10, 1004, 25);
+		breadCrumbLbl.setBounds(50, 10, 134, 25);
 		add(breadCrumbLbl);
+		
+		JLabel lblHeader = new JLabel("DAFTAR GROUP");
+		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblHeader.setBounds(50, 46, 150, 25);
+		add(lblHeader);
 
 		JPanel pnlTable = new JPanel();
 		pnlTable.setLayout(null);
@@ -57,42 +62,22 @@ public class GroupConfigPanel extends JPanel {
 		groupConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				updateData();
+				if(groupConfigTable.columnAtPoint(e.getPoint())==3) {
+					MainPanel.changePanel("module.system.ui.EditGroupPanel", getSelectedData());
+				}
 			}
 		});
 		
-		JLabel groupNameLbl = new JLabel("Nama Group");
-		groupNameLbl.setBounds(10, 45, 100, 30);
-		add(groupNameLbl);
-		
-		JLabel label = new JLabel(":");
-		label.setBounds(110, 45, 10, 30);
-		add(label);
-		
-		groupNameTxt = new JTextField();
-		groupNameTxt.setBounds(120, 45, 200, 30);
-		groupNameTxt.setColumns(10);
-		groupNameTxt.setEditable(false);
-		groupNameTxt.setEnabled(false);
-		add(groupNameTxt);
-		
-		JLabel lblDeskripsiGroup = new JLabel("Deskripsi Group");
-		lblDeskripsiGroup.setBounds(10, 85, 100, 30);
-		add(lblDeskripsiGroup);
-		
-		JLabel label_1 = new JLabel(":");
-		label_1.setBounds(110, 86, 10, 30);
-		add(label_1);
-		
-		groupDescTxt = new JTextArea();
-		groupDescTxt.setBounds(120, 88, 200, 90);
-		groupDescTxt.setEditable(false);
-		groupDescTxt.setEnabled(false);
-		add(groupDescTxt);
-		
-		JButton button = new JButton("Buat Baru");
-		button.setBounds(724, 100, 90, 30);
-		add(button);
+		JButton newGroupBtn = new JButton("Buat Baru");
+		newGroupBtn.setBounds(724, 100, 90, 30);
+		add(newGroupBtn);
+		newGroupBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.system.ui.CreateGroupPanel");
+			}
+		});
 		
 		textField = new JTextField();
 		textField.setColumns(10);
@@ -123,11 +108,6 @@ public class GroupConfigPanel extends JPanel {
 		
 		return group;
 	}
-	
-	protected void updateData() {
-		groupNameTxt.setText(getSelectedData().getGroupName());
-		groupDescTxt.setText(getSelectedData().getGroupDesc());
-	}
 
 	private void getGroupData() {
 		groups.clear();
@@ -148,7 +128,7 @@ public class GroupConfigPanel extends JPanel {
 
 		@Override
 		public int getColumnCount() {
-			return 3;
+			return 4;
 		}
 
 		@Override
@@ -167,6 +147,8 @@ public class GroupConfigPanel extends JPanel {
 				return group.getGroupName();
 			case 2:
 				return group.getGroupDesc();
+			case 3:
+				return "<html><u>ubah</u></html>";
 			default:
 				return "";
 			}
@@ -181,6 +163,8 @@ public class GroupConfigPanel extends JPanel {
 				return "Nama";
 			case 2:
 				return "Deskripsi";
+			case 3:
+				return "Aksi";
 			default:
 				return "";
 			}
@@ -194,6 +178,8 @@ public class GroupConfigPanel extends JPanel {
 			case 1:
 				return String.class;
 			case 2:
+				return String.class;
+			case 3:
 				return String.class;
 			default:
 				return String.class;
