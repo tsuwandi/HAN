@@ -113,7 +113,7 @@ public class ListReceivedSecurityPanel extends JPanel {
 			receivedTable.setModel(new ReceivedTableModel(receiveds));
 			
 			pagingPanel.setPage(1);
-			pagingPanel.setMaxDataPerPage(3);
+			pagingPanel.setMaxDataPerPage(20);
 			pagingPanel.setData(receiveds);
 			pagingPanel.setTable(receivedTable);
 			pagingPanel.setTableModel(receivedTableModel);
