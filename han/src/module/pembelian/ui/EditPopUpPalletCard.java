@@ -584,7 +584,7 @@ public class EditPopUpPalletCard extends JDialog{
 						PalletCard pc = pcs.get(indexEdit);
 						pc.setPalletCardCode(codePalletCardField.getText());
 						
-						pc.setTotal(Integer.valueOf(totalField.getText()));
+						pc.setTotal(Double.valueOf(totalField.getText()));
 						pc.setVolume(Double.valueOf(volumeField.getText()));
 						pc.setProductName(productNameField.getText());
 						if(addReceivedDetail.receivedDetails.get(index).getGradeID()!=100){
