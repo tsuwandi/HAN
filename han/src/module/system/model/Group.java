@@ -1,10 +1,18 @@
 package module.system.model;
 
+import java.sql.Date;
+
 public class Group {
 	
 	Integer groupId;
 	String groupName;
 	String groupDesc;
+	Date inputDate;
+	String inputBy;
+	Date editDate;
+	String editedBy;
+	Date deletedDate;
+	String deletedBy;
 	
 	public Integer getGroupId() {
 		return groupId;
@@ -24,8 +32,40 @@ public class Group {
 	public void setGroupDesc(String groupDesc) {
 		this.groupDesc = groupDesc;
 	}
-	@Override
-	public String toString() {
-		return "Group [groupId=" + groupId + ", groupName=" + groupName + ", groupDesc=" + groupDesc + "]";
+	public Date getInputDate() {
+		return inputDate;
+	}
+	public void setInputDate(Date inputDate) {
+		this.inputDate = inputDate;
+	}
+	public String getInputBy() {
+		return inputBy;
+	}
+	public void setInputBy(String inputBy) {
+		this.inputBy = inputBy;
+	}
+	public Date getEditDate() {
+		return editDate;
+	}
+	public void setEditDate(Date editDate) {
+		this.editDate = editDate;
+	}
+	public String getEditedBy() {
+		return editedBy;
+	}
+	public void setEditedBy(String editedBy) {
+		this.editedBy = editedBy;
+	}
+	public Date getDeletedDate() {
+		return deletedDate;
+	}
+	public void setDeletedDate(Date deletedDate) {
+		this.deletedDate = deletedDate;
+	}
+	public String getDeletedBy() {
+		return deletedBy;
+	}
+	public void setDeletedBy(String deletedBy) {
+		this.deletedBy = deletedBy;
 	}
 }

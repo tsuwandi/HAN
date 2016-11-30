@@ -19,9 +19,9 @@ public class GroupDAO {
 	private PreparedStatement deleteStatement;
 	
 	private String getAllGroupQuery = "select * from system_group";
-	private String insertQuery = "insert into system_group (name, description) values (?, ?)";
-	private String updateQuery = "update system_group set name = ? , description = ? where id = ?";
-	private String deleteQuery = "delete from system_group where id = ?";
+	private String insertQuery = "insert into system_group (name, description, input_date, input_by, edit_date, edit_by) values (?, ?, ?, ?, ?, ?)";
+	private String updateQuery = "update system_group set name = ? , description = ?, edit_date = ?, edit_by = ? where id = ?";
+	private String deleteQuery = "update system_group set delete_date = ?, delete_by = ? where id = ?";
 	
 	public GroupDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -55,6 +55,8 @@ public class GroupDAO {
 			
 			insertStatement.setString(1, group.getGroupName());
 			insertStatement.setString(2, group.getGroupDesc());
+			insertStatement.setDate(3, group.getInputDate());
+			insertStatement.setString(4, group.getInputBy());
 			
 			insertStatement.executeUpdate();
 		} catch (SQLException e) {

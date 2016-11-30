@@ -10,6 +10,12 @@ public class User {
 	String userPassword;
 	Date lastChanged;
 	Date lastLogin;
+	Date inputDate;
+	String inputBy;
+	Date editDate;
+	String editedBy;
+	Date deletedDate;
+	String deletedBy;
 	
 	public Integer getUserId() {
 		return userId;
@@ -46,5 +52,41 @@ public class User {
 	}
 	public void setLastLogin(Date lastLogin) {
 		this.lastLogin = lastLogin;
+	}
+	public Date getInputDate() {
+		return inputDate;
+	}
+	public void setInputDate(Date inputDate) {
+		this.inputDate = inputDate;
+	}
+	public String getInputBy() {
+		return inputBy;
+	}
+	public void setInputBy(String inputBy) {
+		this.inputBy = inputBy;
+	}
+	public Date getEditDate() {
+		return editDate;
+	}
+	public void setEditDate(Date editDate) {
+		this.editDate = editDate;
+	}
+	public String getEditedBy() {
+		return editedBy;
+	}
+	public void setEditedBy(String editedBy) {
+		this.editedBy = editedBy;
+	}
+	public Date getDeletedDate() {
+		return deletedDate;
+	}
+	public void setDeletedDate(Date deletedDate) {
+		this.deletedDate = deletedDate;
+	}
+	public String getDeletedBy() {
+		return deletedBy;
+	}
+	public void setDeletedBy(String deletedBy) {
+		this.deletedBy = deletedBy;
 	}
 }
