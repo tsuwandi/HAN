@@ -457,6 +457,25 @@ public class EditPopUpPalletCard extends JDialog{
 				changePallet();
 			}
 		});
+		totalField.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				calculateVolume();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				calculateVolume();
+				
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				calculateVolume();
+				
+			}
+		});
 	
 		pcTable.addMouseListener(new MouseAdapter() {
 			@Override
@@ -713,8 +732,8 @@ public class EditPopUpPalletCard extends JDialog{
 	}
 	
 	public void calculateVolume(){
-		if(!longField.getText().equals("")&&!wideField.getText().equals("")&&!thicknessField.getText().equals("")){
-			double volume = Double.valueOf(longField.getText())*Double.valueOf(wideField.getText())*Double.valueOf(thicknessField.getText());
+		if(!longField.getText().equals("")&&!wideField.getText().equals("")&&!thicknessField.getText().equals("")&&!totalField.getText().equals("")){
+			double volume = Double.valueOf(longField.getText())*Double.valueOf(wideField.getText())*Double.valueOf(thicknessField.getText())*Double.valueOf(totalField.getText());
 			volumeField.setText(volume+"");
 		}
 	}
