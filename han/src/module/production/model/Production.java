@@ -1,6 +1,7 @@
 package module.production.model;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +23,9 @@ public class Production {
 	String productionTypeDescription;
 	String status;
 	List<ProdRM> listOfProdRM;
-	Map<String, ProdRM> deletedProdRMs;
+	Map<String, ProdRM> deletedProdRMs = new HashMap<>();
 	List<ProductionResult> productionResults;
-	
+	Map<Integer, ProductionResult> deletedProductionResult= new HashMap<>();
 	public int getId() {
 		return id;
 	}
@@ -141,6 +142,12 @@ public class Production {
 	}
 	public void setDeletedProdRMs(Map<String, ProdRM> deletedProdRMs) {
 		this.deletedProdRMs = deletedProdRMs;
+	}
+	public Map<Integer, ProductionResult> getDeletedProductionResult() {
+		return deletedProductionResult;
+	}
+	public void setDeletedProductionResult(Map<Integer, ProductionResult> deletedProductionResult) {
+		this.deletedProductionResult = deletedProductionResult;
 	}
 	
 	

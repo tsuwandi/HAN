@@ -16,14 +16,16 @@ public class ProductionResultDAO {
 	private PreparedStatement getAllStatement;
 	private PreparedStatement getProdResultByProductionCodeStatement;
 	private PreparedStatement insertStatement;
+	private PreparedStatement deleteStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement getLastIDStatement;
 	
 	private String getAllQuery = "SELECT id, prod_code, pressed_no, start_time, total_fine_a, total_fine_b, total_protol, total_klem "
 			+ "FROM prod_result WHERE deleted_date IS NULL";
 	private String getLastIDQuery = "SELECT id FROM prod_result ORDER BY id DESC LIMIT 1";
-	private String insertQuery = "INSERT INTO prod_result (prod_code,pressed_no, start_time, total_fine_a, total_fine_b, total_protol, total_klem , input_by, input_date) "
-			+ "VALUES (?,?,?,?,?,?,?,?,?)";
+	private String insertQuery = "INSERT INTO prod_result (prod_code,pressed_no, start_time, total_fine_a, total_fine_b, total_protol, total_klem , input_by, input_date,id) "
+			+ "VALUES (?,?,?,?,?,?,?,?,?,?)";
+	private String deleteQuery = "UPDATE prod_result SET deleted_date = ? , delete_by=? WHERE prod_code = ? AND id=?";
 	private String updateQuery = "UPDATE prod_result SET pressed_no =?, "
 			+ "start_time=?, total_fine_a=?, total_fine_b=?, total_protol=?,total_klem=?, edited_by=?, edited_date=?  "
 			+ "WHERE prod_code =? AND id=?";
@@ -119,6 +121,7 @@ public class ProductionResultDAO {
 			insertStatement.setDouble(7, productionResult.getTotalKlem());
 			insertStatement.setString(8, "Michael");
 			insertStatement.setDate(9, new Date(new java.util.Date().getTime()));
+			insertStatement.setInt(10, productionResult.getId());
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -142,6 +145,22 @@ public class ProductionResultDAO {
 			updateStatement.setString(9, productionResult.getProdCode());
 			updateStatement.setInt(10, productionResult.getId());
 			updateStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+	}
+	
+	public void delete(ProductionResult productionResult) throws SQLException {
+		try {
+			deleteStatement = connection.prepareStatement(deleteQuery);
+			deleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
+			deleteStatement.setString(2, "Michael");
+			deleteStatement.setString(3, productionResult.getProdCode());
+			deleteStatement.setInt(4, productionResult.getId());
+			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();

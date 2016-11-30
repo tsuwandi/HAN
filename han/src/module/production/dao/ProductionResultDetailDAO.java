@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import module.production.model.ProdRM;
+import module.production.model.ProductionResult;
 import module.production.model.ProductionResultProduct;
 import module.productionpk.model.ProdPK;
 import module.productionpk.model.ProdPKMaterial;
@@ -21,9 +22,11 @@ public class ProductionResultDetailDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
+	private PreparedStatement updateDeleteStatement;
 	
 	private String getAllQuery = "SELECT id, prod_result_id, product_code, qty FROM prod_result_product WHERE deleted_date IS NULL";
 	
+	private String updateDeleteQuery = "UPDATE prod_result_product SET deleted_date = ? , delete_by=? WHERE prod_result_id = ? AND id=?";
 	
 	private String insertQuery = "INSERT INTO prod_result_product (prod_result_id, product_code, qty , input_by, input_date) "
 			+ "VALUES (?,?,?,?,?)";
@@ -130,6 +133,23 @@ public class ProductionResultDetailDAO {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			deleteStatement.setInt(1, prodResultId);
 			deleteStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+	}
+	
+	public void updateDelete(ProductionResultProduct productionResultProduct) throws SQLException {
+		try {
+			updateDeleteStatement = connection.prepareStatement(updateDeleteQuery);
+			System.out.println("Data : "+productionResultProduct.getProdResultID() +" "+ productionResultProduct.getId());
+			updateDeleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
+			updateDeleteStatement.setString(2, "Michael");
+			updateDeleteStatement.setInt(3, productionResultProduct.getProdResultID());
+			updateDeleteStatement.setInt(4, productionResultProduct.getId());
+			updateDeleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();

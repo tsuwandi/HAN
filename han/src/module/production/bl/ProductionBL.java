@@ -223,27 +223,38 @@ public class ProductionBL {
 			cone = dataSource.getConnection();
 			cone.setAutoCommit(false);
 			if(production.getProductionResults()!=null){
+				ProductionResultDAO prd = new ProductionResultDAO(cone);
+				ProductionResultDetailDAO prdd = new ProductionResultDetailDAO(cone);
 				if(production.getProductionResults().size()!=0){
 					int id = getLastProductPKResultID();
 					for (ProductionResult prodPK : production.getProductionResults()) {
 						if(prodPK.getId()==0){
 							prodPK.setId(id);
 							prodPK.setProdCode(production.getProductionCode());
-							new ProductionResultDAO(cone).save(prodPK);
+							prd.save(prodPK);
 							for (ProductionResultProduct prodResultProduct : prodPK.getListProductionResultProduct()) {
 								prodResultProduct.setProdResultID(id);
-								new ProductionResultDetailDAO(cone).save(prodResultProduct);
+								prdd.save(prodResultProduct);
 							}
 							id++;
 						}else{
-							new ProductionResultDAO(cone).update(prodPK);
+							prd.update(prodPK);
 							for (ProductionResultProduct prodResultProduct : prodPK.getListProductionResultProduct()) {
-								new ProductionResultDetailDAO(cone).update(prodResultProduct);
+								prdd.update(prodResultProduct);
 							}
 						}
 						
 					}
 					flagProductionResult=true;
+				}
+				if(production.getDeletedProductionResult().size()!=0){
+					for(ProductionResult pr : production.getDeletedProductionResult().values()){
+						prd.delete(pr);
+						System.out.println("Size PR :"+pr.getListProductionResultProduct().size());
+						for (ProductionResultProduct prp : pr.getListProductionResultProduct()) {
+							prdd.updateDelete(prp);
+						}
+					}
 				}
 			}
 			if(production.getListOfProdRM()!=null){

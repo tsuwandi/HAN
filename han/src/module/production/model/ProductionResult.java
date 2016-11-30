@@ -1,6 +1,7 @@
 package module.production.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class ProductionResult {
 	int id;
@@ -11,6 +12,7 @@ public class ProductionResult {
 	double totalKlem;
 	double totalFineA;
 	double totalFineB;
+	
 	
 	List<ProductionResultProduct> listProductionResultProduct;
 	

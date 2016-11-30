@@ -319,6 +319,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 					production.setProductionDate(productionDateChooser.getDate());
 					production.setProductionTypeCode(productionTypeCmb.getDataIndex().getProductionTypeCode());
 					if(editMode){
+						System.out.println(production.getDeletedProductionResult().size());
 						ServiceFactory.getProductionBL().updateAll(production);
 						DialogBox.showEdit();
 					}else {
