@@ -15,6 +15,7 @@ public class ProdRMDAO {
 	private PreparedStatement getAllStatement;
 	private PreparedStatement getProdResultByProductionCodeStatement;
 	private PreparedStatement insertStatement;
+	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 	private PreparedStatement getAllForSearchStatement;
 	private PreparedStatement getAllForSearchByPalletCardCodeStatement;
@@ -24,10 +25,14 @@ public class ProdRMDAO {
 	
 	private String insertQuery = "INSERT INTO prod_rm (production_code, pallet_card_code, input_by, input_date) "
 			+ "VALUES (?,?,?,?)";
+
 	private String deleteQuery = "DELETE FROM prod_rm WHERE production_code = ?";
 	
+	private String updateDeletedQuery = "UPDATE prod_rm SET deleted_date = ? , delete_by = ? WHERE production_code = ? AND pallet_card_code = ?";
+	
 	private String getAllForSearchQuery = "SELECT a.id, a.input_date, b.pallet_card_code, b.length, b.width, b.thickness, b.total, b.volume  FROM dry_out_pallet a "
-			+ "INNER JOIN pallet_card b ON a.pallet_card_code = b.pallet_card_code WHERE NOT EXISTS(SELECT c.pallet_card_code FROM prod_rm c WHERE b.pallet_card_code = c.pallet_card_code ) "
+			+ "INNER JOIN pallet_card b ON a.pallet_card_code = b.pallet_card_code WHERE NOT EXISTS"
+			+ "(SELECT c.pallet_card_code FROM prod_rm c WHERE b.pallet_card_code = c.pallet_card_code AND c.production_code != ? AND c.deleted_date IS NULL ) "
 			+ "AND a.deleted_date IS NULL";
 	
 	public ProdRMDAO(Connection connection) throws SQLException {
@@ -62,11 +67,12 @@ public class ProdRMDAO {
 		return prodRMs;
 	}
 	
-	public List<ProdRM> getAllSearch(String query) throws SQLException {
+	public List<ProdRM> getAllSearch(String query, String productionCode) throws SQLException {
 		List<ProdRM> prodRMs = new ArrayList<ProdRM>();
 
 		try {
 			getAllForSearchStatement = connection.prepareStatement(getAllForSearchQuery+query);
+			getAllForSearchStatement.setString(1, productionCode);
 
 			ResultSet rs = getAllForSearchStatement.executeQuery();
 			while (rs.next()) {
@@ -158,6 +164,23 @@ public class ProdRMDAO {
 			insertStatement.setString(3, "Michael");
 			insertStatement.setDate(4, new Date(new java.util.Date().getTime()));
 			insertStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+	}
+	
+	public void update(ProdRM productionResultDetail) throws SQLException {
+		try {
+			updateStatement = connection.prepareStatement(updateDeletedQuery);
+			updateStatement.setDate(1, new Date(new java.util.Date().getTime()));
+			updateStatement.setString(2, "Michael");
+			updateStatement.setString(3, productionResultDetail.getProductionCode());
+			updateStatement.setString(4, productionResultDetail.getPalletCardCode());
+			updateStatement.executeUpdate();
+
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();

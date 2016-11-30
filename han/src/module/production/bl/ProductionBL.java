@@ -2,6 +2,7 @@ package module.production.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -137,27 +138,22 @@ public class ProductionBL {
 		return prodRMDAO.getAllByProductionCode(productionCode);
 	}
 	
-	public List<ProdRM> getSearchProdRM(List<ProdRM> prodRMs,Map<String, ProdRM> deletedProdRms)throws SQLException{
+	public List<ProdRM> getSearchProdRM(List<ProdRM> prodRMs,Map<String, ProdRM> deletedProdRms,String productionCode)throws SQLException{
 		StringBuffer sqlQuery = new StringBuffer();
 		if(prodRMs.size()!=0){
 			sqlQuery.append(" AND b.pallet_card_code NOT IN (");
-			for (int i=0;i<prodRMs.size();i++) {
-				ProdRM pr = prodRMs.get(i);
-				if(i==0)sqlQuery.append("'"+pr.getPalletCardCode()+"'");
-				else sqlQuery.append(",'"+pr.getPalletCardCode()+"'");
-			}
-			sqlQuery.append(") ");
-		}
-		if(deletedProdRms.size()!=0){
-			sqlQuery.append(" AND b.pallet_card_code IN (");
 			int i = 0;
-			for(String code : deletedProdRms.keySet()) {
-				if(i==0)sqlQuery.append("'"+code+"'");
-				else sqlQuery.append(",'"+code+"'");
+			for (ProdRM pr:prodRMs) {
+				if(deletedProdRms.get(pr.getPalletCardCode())==null){
+					if(i==0)sqlQuery.append("'"+pr.getPalletCardCode()+"'");
+					else sqlQuery.append(",'"+pr.getPalletCardCode()+"'");
+					i++;
+				}
 			}
 			sqlQuery.append(") ");
 		}
-		return prodRMDAO.getAllSearch(sqlQuery.toString());				
+		
+		return prodRMDAO.getAllSearch(sqlQuery.toString(),productionCode);				
 	}
 	
 	public ProdRM getSearchProdRMByPalletCard(String palletCardCode,List<ProdRM> prodRMs)throws SQLException{
@@ -252,11 +248,21 @@ public class ProductionBL {
 			}
 			if(production.getListOfProdRM()!=null){
 				if(production.getListOfProdRM().size()!=0){
-					new ProdRMDAO(cone).delete(production.getProductionCode());
+					List<ProdRM> prodRMs = prodRMDAO.getAllByProductionCode(production.getProductionCode());
+					Map<String, ProdRM> tempMap = new HashMap<>();
+					for (ProdRM prodRM : prodRMs) {
+						tempMap.put(prodRM.getPalletCardCode(), prodRM);
+					}
 					for(ProdRM prodRM :production.getListOfProdRM()){
-						new ProdRMDAO(cone).save(prodRM);
+						if(tempMap.get(prodRM.getPalletCardCode())==null)new ProdRMDAO(cone).save(prodRM);
+						
 					}
 					flagProductionRawMaterial=true;
+				}
+				if(production.getDeletedProdRMs().size()!=0){
+					for (ProdRM prodRM : production.getDeletedProdRMs().values()) {
+						new ProdRMDAO(cone).update(prodRM);
+					}
 				}
 			}
 			if(flagProductionRawMaterial&&flagProductionResult)production.setStatus("Complete");

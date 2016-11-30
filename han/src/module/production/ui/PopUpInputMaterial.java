@@ -95,6 +95,7 @@ public class PopUpInputMaterial extends JDialog{
 	private Map<String,ProdRM> deletedProdRms;
 	private ProdRM tempProdRM;
 	private PopUpInputMaterial parentDialog;
+	private String productionCode;
 	
 	public PopUpInputMaterial(JPanel parent){
 		super((JFrame)parent.getTopLevelAncestor());
@@ -297,6 +298,7 @@ public class PopUpInputMaterial extends JDialog{
 		totalVolumeField.setEnabled(false);
 		palletCardField.setEnabled(false);
 		ritNoField.setNextFocusableComponent(sequenceField);
+		productionCode=createProductionPanel.getProductionCodeField().getText();
 		Date currentDate = new Date();
 		String date = new SimpleDateFormat("dd").format(currentDate);
 		String month = new SimpleDateFormat("MM").format(currentDate);
@@ -325,6 +327,7 @@ public class PopUpInputMaterial extends JDialog{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Deleted Size :"+ deletedProdRms.size());
 				PopUpSearchMaterial pop = new PopUpSearchMaterial(parentDialog);
 				pop.show();
 				pop.setLocationRelativeTo(null);
@@ -367,10 +370,10 @@ public class PopUpInputMaterial extends JDialog{
 				prod.setTotalPalletCard(Integer.parseInt(totalLogField.getText()));
 				prod.setTotalVolume(Double.parseDouble(totalVolumeField.getText()));
 				for (ProdRM prodRM : prodRms) {
-					prodRM.setProductionCode(createProductionPanel.getProductionCodeField().getText());
+					prodRM.setProductionCode(productionCode);
 				}
 				for(ProdRM prodRM : deletedProdRms.values()){
-					prodRM.setProductionCode(createProductionPanel.getProductionCodeField().getText());
+					prodRM.setProductionCode(productionCode);
 				}
 				prod.setListOfProdRM(prodRms);
 				prod.setDeletedProdRMs(deletedProdRms);
@@ -482,6 +485,16 @@ public class PopUpInputMaterial extends JDialog{
 	public void setDeletedProdRms(Map<String, ProdRM> deletedProdRms) {
 		this.deletedProdRms = deletedProdRms;
 	}
+
+	
+
+	public String getProductionCode() {
+		return productionCode;
+	}
+	public void setProductionCode(String productionCode) {
+		this.productionCode = productionCode;
+	}
+
 
 
 	private class MaterialTableModel extends AbstractTableModel{
