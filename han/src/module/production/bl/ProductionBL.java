@@ -250,7 +250,6 @@ public class ProductionBL {
 				if(production.getDeletedProductionResult().size()!=0){
 					for(ProductionResult pr : production.getDeletedProductionResult().values()){
 						prd.delete(pr);
-						System.out.println("Size PR :"+pr.getListProductionResultProduct().size());
 						for (ProductionResultProduct prp : pr.getListProductionResultProduct()) {
 							prdd.updateDelete(prp);
 						}

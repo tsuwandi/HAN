@@ -366,6 +366,7 @@ public class PopUpProdPKMaterial extends JDialog{
 					listProdPK.add(prodPK);
 				}
 			}
+			createProductionPKPanel.getProduction().setListPKMaterial(listProdPK);
 			DialogBox.showInsert();
 			dispose();
 		}

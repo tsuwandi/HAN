@@ -27,7 +27,6 @@ public class ProdPKResultProductDAO {
 	
 	private String updateDeleteQuery = "UPDATE prod_pk_result_product SET deleted_date = ? , delete_by=? WHERE prod_pk_result_id = ? AND id=?";
 	
-	
 	private String insertQuery = "INSERT INTO prod_pk_result_product (prod_pk_result_id, product_code, qty , input_by, input_date) "
 			+ "VALUES (?,?,?,?,?)";
 	private String updateQuery = "UPDATE prod_pk_result_product SET product_code=?, qty=?, edited_by=?, edited_date=? "

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import module.production.model.Production;
 import module.productionpk.model.ProdPK;
 
 public class ProdPKDAO {
@@ -16,6 +17,7 @@ public class ProdPKDAO {
 	private PreparedStatement getLastCodeStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
+	private PreparedStatement deleteStatement;
 	
 	private String getAllQuery = "SELECT a.id, prod_pk_code, a.group_shift_code, d.description AS group_shift_description, "
 			+ "a.line_code, b.description AS line_description, a.shift_code, c.shift_name, "
@@ -32,6 +34,9 @@ public class ProdPKDAO {
 	private String updateQuery = "UPDATE prod_pk SET group_shift_code =?, "
 			+ "line_code=?, shift_code=?, production_date=?, information=?, total_material_protol=?, total_material_klem=?, status=?, edited_by=?, edited_date=? "
 			+ "WHERE prod_pk_code =?";
+	
+	private String deleteQuery = "UPDATE prod_pk SET deleted_date = ? , delete_by=? WHERE prod_pk_code=?";
+	
 	
 	public ProdPKDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -213,5 +218,20 @@ public class ProdPKDAO {
 			throw new SQLException(ex.getMessage());
 		}
 		return productions;
+	}
+	
+	public void delete(ProdPK production) throws SQLException {
+		try {
+			deleteStatement = connection.prepareStatement(deleteQuery);
+			deleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
+			deleteStatement.setString(2, "Michael");
+			deleteStatement.setString(3, production.getProdPKCode());
+			deleteStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
 	}
 }

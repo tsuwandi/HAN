@@ -418,7 +418,7 @@ public class PopUpProdPKResult extends JDialog{
 						}
 					}		
 				}
-				if(productionResultTable.columnAtPoint(e.getPoint())==10){
+				if(productionResultTable.columnAtPoint(e.getPoint())==7){
 					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
 						pressMap.remove(listOfPrd.get(productionResultTable.getSelectedRow()).getPressedNo());
 						ProdPKResult pr = listOfPrd.get(productionResultTable.getSelectedRow());

@@ -11,6 +11,7 @@ import java.util.List;
 import module.production.model.ProdRM;
 import module.productionpk.model.ProdPK;
 import module.productionpk.model.ProdPKMaterial;
+import module.productionpk.model.ProdPKResultProduct;
 
 public class ProdPKMaterialDAO {
 	private Connection connection;
@@ -19,6 +20,7 @@ public class ProdPKMaterialDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
+	private PreparedStatement updateDeleteStatement;
 	
 	private String getAllQuery = "SELECT id, prod_pk_code, product_code, qty FROM prod_pk_material WHERE deleted_date IS NULL";
 	
@@ -29,6 +31,8 @@ public class ProdPKMaterialDAO {
 			+ "WHERE prod_pk_code =? AND id=?";
 	
 	private String deleteQuery = "DELETE FROM prod_pk_material WHERE prod_pk_code = ?";
+	
+	private String deleteUpdateQuery = "UPDATE prod_pk_material SET deleted_date = ? , delete_by=? WHERE prod_pk_code = ? AND id=?";
 	
 	public ProdPKMaterialDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -128,6 +132,21 @@ public class ProdPKMaterialDAO {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			deleteStatement.setString(1, prodPKCode);
 			deleteStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+	}
+	public void updateDelete(ProdPKMaterial prodPkMaterial) throws SQLException {
+		try {
+			updateDeleteStatement = connection.prepareStatement(deleteUpdateQuery);
+			updateDeleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
+			updateDeleteStatement.setString(2, "Michael");
+			updateDeleteStatement.setString(3, prodPkMaterial.getProdPKCode());
+			updateDeleteStatement.setInt(4, prodPkMaterial.getId());
+			updateDeleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
