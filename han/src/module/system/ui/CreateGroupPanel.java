@@ -3,6 +3,7 @@ package module.system.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,6 +13,7 @@ import javax.swing.JTextField;
 
 import module.system.model.Group;
 import controller.ServiceFactory;
+import main.component.DialogBox;
 
 public class CreateGroupPanel extends JPanel{
 
@@ -50,8 +52,6 @@ public class CreateGroupPanel extends JPanel{
 		add(label_3);
 		
 		groupDescField = new JTextArea();
-		groupDescField.setEnabled(false);
-		groupDescField.setEditable(false);
 		groupDescField.setBounds(140, 120, 200, 90);
 		add(groupDescField);
 		
@@ -77,13 +77,23 @@ public class CreateGroupPanel extends JPanel{
 		
 		Group group = new Group();
 		
-		if (groupNameField.getText()==null) {
+		if (!groupNameField.getText().equals(null)) {
 			group.setGroupName(groupNameField.getText());
 		} else {
-			// muncul pop up
+			DialogBox.showError("Nama Group tidak boleh kosong");
 		}
 		group.setGroupDesc(groupDescField.getText());
+		group.setInputDate(new Date());
+		group.setInputBy("");
+		group.setEditDate(new Date());
+		group.setEditedBy("");
 		
-		ServiceFactory.getSystemBL().saveGroup(group);
+		try {
+			ServiceFactory.getSystemBL().saveGroup(group);
+		} catch (Exception e) {
+			e.printStackTrace();
+			DialogBox.showError("Group baru tidak berhasil disimpan");
+		}
+		
 	}
 }

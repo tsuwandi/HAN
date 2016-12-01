@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import module.system.model.Group;
+import module.util.DateUtil;
 
 public class GroupDAO {
 
@@ -42,7 +43,6 @@ public class GroupDAO {
 				groups.add(group);
 			}
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
 		return groups;
@@ -55,8 +55,10 @@ public class GroupDAO {
 			
 			insertStatement.setString(1, group.getGroupName());
 			insertStatement.setString(2, group.getGroupDesc());
-			insertStatement.setDate(3, group.getInputDate());
+			insertStatement.setDate(3, DateUtil.toDate(group.getInputDate()));
 			insertStatement.setString(4, group.getInputBy());
+			insertStatement.setDate(5, DateUtil.toDate(group.getEditDate()));
+			insertStatement.setString(6, group.getEditedBy());
 			
 			insertStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -68,9 +70,11 @@ public class GroupDAO {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 			
-			updateStatement.setInt(1, group.getGroupId());
-			updateStatement.setString(2, group.getGroupName());
-			updateStatement.setString(3, group.getGroupDesc());
+			updateStatement.setString(1, group.getGroupName());
+			updateStatement.setString(2, group.getGroupDesc());
+			updateStatement.setDate(3, DateUtil.toDate(group.getEditDate()));
+			updateStatement.setString(4, group.getEditedBy());
+			updateStatement.setInt(5, group.getGroupId());
 			
 			updateStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -82,9 +86,9 @@ public class GroupDAO {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			
-			deleteStatement.setInt(1, group.getGroupId());
-			deleteStatement.setString(2, group.getGroupName());
-			deleteStatement.setString(3, group.getGroupDesc());
+			deleteStatement.setDate(1, DateUtil.toDate(group.getDeletedDate()));
+			deleteStatement.setString(2, group.getDeletedBy());
+			deleteStatement.setInt(3, group.getGroupId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
