@@ -24,6 +24,7 @@ public class ProdPKResultDAO {
 	private String getLastIDQuery = "SELECT id FROM prod_pk_result ORDER BY id DESC LIMIT 1";
 	private String insertQuery = "INSERT INTO prod_pk_result (prod_pk_code,pressed_no, start_time, total_fine_a, total_fine_b, total_protol, total_klem , input_by, input_date) "
 			+ "VALUES (?,?,?,?,?,?,?,?,?)";
+	private String deleteQuery = "UPDATE prod_pk_result SET deleted_date = ? , delete_by=? WHERE prod_code = ? AND id=?";
 	private String updateQuery = "UPDATE prod_pk_result SET pressed_no =?, "
 			+ "start_time=?, total_fine_a=?, total_fine_b=?, total_protol=?,total_klem=?, edited_by=?, edited_date=?  "
 			+ "WHERE prod_pk_code =? AND id=?";

@@ -108,6 +108,7 @@ public class PopUpProdPKResult extends JDialog{
 	private boolean editMode=false;
 	private int indexEdit=0;
 	private Map<Integer, Integer> pressMap;
+	private Map<Integer, ProdPKResult> deletedProdResult;
 	
 	static final String KA = "PDC009-3";
 	static final String KB = "PDC009-4";
@@ -130,7 +131,7 @@ public class PopUpProdPKResult extends JDialog{
 		totalGoodResultBField.setEnabled(false);
 		totalAllGoodResultField.setEnabled(false);
 		pressMap = new HashMap<>();
-	
+		deletedProdResult = new HashMap<>();
 		listOfPrd = new ArrayList<>();
 
 		createProductionPKPanel = (CreateProductionPKPanel) parent;
@@ -417,14 +418,16 @@ public class PopUpProdPKResult extends JDialog{
 						}
 					}		
 				}
-//				if(productionResultTable.columnAtPoint(e.getPoint())==10){
-//					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
-//						pressMap.remove(listOfPrd.get(productionResultTable.getSelectedRow()).getPressedNo());
-//						listOfPrd.remove(productionResultTable.getSelectedRow());
-//						productionResultTable.updateUI();
-//						calculateTotal();
-//					}
-//				}
+				if(productionResultTable.columnAtPoint(e.getPoint())==10){
+					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
+						pressMap.remove(listOfPrd.get(productionResultTable.getSelectedRow()).getPressedNo());
+						ProdPKResult pr = listOfPrd.get(productionResultTable.getSelectedRow());
+						if(pr.getId()!=0)deletedProdResult.put(pr.getId(), pr);
+						listOfPrd.remove(productionResultTable.getSelectedRow());
+						productionResultTable.updateUI();
+						calculateTotal();
+					}
+				}
 			}
 		});
 		
@@ -658,6 +661,7 @@ public class PopUpProdPKResult extends JDialog{
 	private void saveProductResult(){
 		if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
 			createProductionPKPanel.getProduction().setListProdPKResult(listOfPrd);
+			createProductionPKPanel.getProduction().setDeletedProdResult(deletedProdResult);
 			DialogBox.showInsert();
 			dispose();
 		}

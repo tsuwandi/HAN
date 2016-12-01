@@ -144,7 +144,6 @@ public class ProductionResultDetailDAO {
 	public void updateDelete(ProductionResultProduct productionResultProduct) throws SQLException {
 		try {
 			updateDeleteStatement = connection.prepareStatement(updateDeleteQuery);
-			System.out.println("Data : "+productionResultProduct.getProdResultID() +" "+ productionResultProduct.getId());
 			updateDeleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
 			updateDeleteStatement.setString(2, "Michael");
 			updateDeleteStatement.setInt(3, productionResultProduct.getProdResultID());

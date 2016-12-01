@@ -44,7 +44,7 @@ public class ReceivedDAO {
 			+ "INNER JOIN delivery f ON a.delivery_note = f.delivery_note "
 			+ "INNER JOIN wood_resource e ON f.wood_resource_id = e.id WHERE 1=1 AND a.deleted_date IS NULL";
 
-	private String lastID = "SELECT received_code FROM received ORDER BY ID DESC LIMIT 1";
+	private String lastID = "SELECT received_code FROM received WHERE MONTH(received_date)=MONTH(NOW()) ORDER BY ID DESC LIMIT 1";
 
 	private String updateStatusQuery = "UPDATE received SET received_status = 'Completed', total_volume=?, emp_code=? WHERE received_code = ?";
 

@@ -136,28 +136,24 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	
 	public void getLastCode(){
 		try {
-			Date date = new Date();
-			if(date.getDate()==1){
+			String codeTemp = ReceivedDAOFactory.getReceivedDAO().getLastCode();
+			if(codeTemp==null){
 				receivedCodeField.setText("0001");
 			}else{
-				String codeTemp = ReceivedDAOFactory.getReceivedDAO().getLastCode();
-				if(codeTemp==null){
-					receivedCodeField.setText("0001");
+				String [] splittedCode = codeTemp.split("/");
+				int tempIntCode = Integer.valueOf(splittedCode[0])+1;
+				String textTemp = String.valueOf(tempIntCode);
+				if(textTemp.length()==1){
+					receivedCodeField.setText("000"+textTemp);
+				}else if(textTemp.length()==2){
+					receivedCodeField.setText("00"+textTemp);
+				}else if(textTemp.length()==3){
+					receivedCodeField.setText("0"+textTemp);
 				}else{
-					String [] splittedCode = codeTemp.split("/");
-					int tempIntCode = Integer.valueOf(splittedCode[0])+1;
-					String textTemp = String.valueOf(tempIntCode);
-					if(textTemp.length()==1){
-						receivedCodeField.setText("000"+textTemp);
-					}else if(textTemp.length()==2){
-						receivedCodeField.setText("00"+textTemp);
-					}else if(textTemp.length()==3){
-						receivedCodeField.setText("0"+textTemp);
-					}else{
-						receivedCodeField.setText(textTemp);
-					}
+					receivedCodeField.setText(textTemp);
 				}
 			}
+			
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			e.printStackTrace();
