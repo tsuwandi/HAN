@@ -17,6 +17,7 @@ public class ProductionDAO {
 	private PreparedStatement getLastCodeStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
+	private PreparedStatement deleteStatement;
 	
 	private String getAllQuery = "SELECT a.id, production_code, a.group_shift_code, d.description AS group_shift_description, "
 			+ "a.line_code, b.description AS line_description, a.shift_code, c.shift_name, "
@@ -33,6 +34,8 @@ public class ProductionDAO {
 	private String updateQuery = "UPDATE production SET group_shift_code =?, "
 			+ "line_code=?, shift_code=?, production_date=?, information=?, total_pallet_card=?, total_log=?, total_volume=?, status=?, edited_by=?, edited_date=?, production_type_code=?  "
 			+ "WHERE production_code =?";
+	
+	private String deleteQuery = "UPDATE production SET deleted_date = ? , delete_by=? WHERE production_code=?";
 	
 	public ProductionDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -141,6 +144,21 @@ public class ProductionDAO {
 			insertStatement.setDate(12, new Date(new java.util.Date().getTime()));
 			insertStatement.setString(13, production.getProductionTypeCode());
 			insertStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+	}
+	
+	public void delete(Production production) throws SQLException {
+		try {
+			deleteStatement = connection.prepareStatement(deleteQuery);
+			deleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
+			deleteStatement.setString(2, "Michael");
+			deleteStatement.setString(3, production.getProductionCode());
+			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();

@@ -296,4 +296,40 @@ public class ProductionBL {
 	public List<Production> searchProduction(String sql) throws SQLException{
 		return productionDAO.getSearchAll(sql);
 	}
+	
+	public void delete(Production production) throws SQLException{
+		Connection cone = null;
+		try {
+			cone = dataSource.getConnection();
+			cone.setAutoCommit(false);
+			if(production.getProductionResults()!=null){
+				ProductionResultDAO prd = new ProductionResultDAO(cone);
+				ProductionResultDetailDAO prdd = new ProductionResultDetailDAO(cone);
+				if(production.getProductionResults().size()!=0){
+					for (ProductionResult prodPK : production.getProductionResults()) {
+						prd.delete(prodPK);
+						for (ProductionResultProduct prodResultProduct : prodPK.getListProductionResultProduct()) {
+							prdd.updateDelete(prodResultProduct);
+						}
+					}
+				}
+			}
+			if(production.getListOfProdRM()!=null){
+				if(production.getListOfProdRM().size()!=0){
+					ProdRMDAO prodRMDAO = new ProdRMDAO(cone);
+					for(ProdRM prodRM :production.getListOfProdRM()){
+						prodRMDAO.update(prodRM);
+					}
+				}
+			}
+			new ProductionDAO(cone).delete(production);
+			cone.commit();
+		} catch (Exception e) {
+			cone.rollback();
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		}finally {
+			cone.close();
+		}
+	}
 }
