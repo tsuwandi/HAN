@@ -406,7 +406,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 			public void actionPerformed(ActionEvent arg0) {
 				int response = DialogBox.showCloseChoice();
 				if (response == JOptionPane.YES_OPTION) {
-					MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProductResultViewPanel",
+					MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultViewPanel",
 							purchaseProductResult);
 				}
 			}
