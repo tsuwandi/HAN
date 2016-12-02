@@ -1,7 +1,9 @@
 package module.productionpk.model;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProdPK {
 	int id;
@@ -21,6 +23,7 @@ public class ProdPK {
 	String shiftName;
 	List<ProdPKMaterial> listPKMaterial;
 	List<ProdPKResult> listProdPKResult;
+	Map<Integer, ProdPKResult> deletedProdResult = new HashMap<>();
 	public int getId() {
 		return id;
 	}
@@ -122,6 +125,12 @@ public class ProdPK {
 	}
 	public void setListProdPKResult(List<ProdPKResult> listProdPKResult) {
 		this.listProdPKResult = listProdPKResult;
+	}
+	public Map<Integer, ProdPKResult> getDeletedProdResult() {
+		return deletedProdResult;
+	}
+	public void setDeletedProdResult(Map<Integer, ProdPKResult> deletedProdResult) {
+		this.deletedProdResult = deletedProdResult;
 	}
 	
 

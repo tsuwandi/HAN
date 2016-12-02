@@ -132,11 +132,10 @@ public class LoginPanel extends JPanel {
 		user.setUserPassword(new String(passwordField.getPassword()));
 		
 		if (ServiceFactory.getSystemBL().validateUser(user)) {
-			System.out.println("Login Berhasil");
 			setVisible(false);
 			MainPanel.glassPane.setVisible(false);
 		} else {
-			System.out.println("Login Gagal");
+			DialogBox.showError("username atau password tidak sesuai");
 		}
 		
 	}

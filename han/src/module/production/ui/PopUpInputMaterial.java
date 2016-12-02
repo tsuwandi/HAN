@@ -15,7 +15,9 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -90,8 +92,10 @@ public class PopUpInputMaterial extends JDialog{
 	
 	private CreateProductionPanel createProductionPanel;
 	private List<ProdRM> prodRms;
+	private Map<String,ProdRM> deletedProdRms;
 	private ProdRM tempProdRM;
 	private PopUpInputMaterial parentDialog;
+	private String productionCode;
 	
 	public PopUpInputMaterial(JPanel parent){
 		super((JFrame)parent.getTopLevelAncestor());
@@ -281,6 +285,7 @@ public class PopUpInputMaterial extends JDialog{
 	}
 	
 	private void initData(JPanel parent){
+		deletedProdRms = new HashMap<>();
 		prodRms = new ArrayList<>();
 		parentDialog = this;
 		createProductionPanel = (CreateProductionPanel) parent;
@@ -293,6 +298,7 @@ public class PopUpInputMaterial extends JDialog{
 		totalVolumeField.setEnabled(false);
 		palletCardField.setEnabled(false);
 		ritNoField.setNextFocusableComponent(sequenceField);
+		productionCode=createProductionPanel.getProductionCodeField().getText();
 		Date currentDate = new Date();
 		String date = new SimpleDateFormat("dd").format(currentDate);
 		String month = new SimpleDateFormat("MM").format(currentDate);
@@ -321,6 +327,7 @@ public class PopUpInputMaterial extends JDialog{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Deleted Size :"+ deletedProdRms.size());
 				PopUpSearchMaterial pop = new PopUpSearchMaterial(parentDialog);
 				pop.show();
 				pop.setLocationRelativeTo(null);
@@ -344,6 +351,7 @@ public class PopUpInputMaterial extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(tempProdRM!=null){
+					if(deletedProdRms.get(tempProdRM.getPalletCardCode())!=null) deletedProdRms.remove(tempProdRM.getPalletCardCode());
 					prodRms.add(tempProdRM);
 					materialTable.setModel(new MaterialTableModel(prodRms));
 					materialTable.updateUI();
@@ -362,9 +370,13 @@ public class PopUpInputMaterial extends JDialog{
 				prod.setTotalPalletCard(Integer.parseInt(totalLogField.getText()));
 				prod.setTotalVolume(Double.parseDouble(totalVolumeField.getText()));
 				for (ProdRM prodRM : prodRms) {
-					prodRM.setProductionCode(createProductionPanel.getProductionCodeField().getText());
+					prodRM.setProductionCode(productionCode);
+				}
+				for(ProdRM prodRM : deletedProdRms.values()){
+					prodRM.setProductionCode(productionCode);
 				}
 				prod.setListOfProdRM(prodRms);
+				prod.setDeletedProdRMs(deletedProdRms);
 				DialogBox.showInsert();
 				dispose();
 			}
@@ -375,6 +387,7 @@ public class PopUpInputMaterial extends JDialog{
 			public void mouseClicked(MouseEvent e) {
 				if(materialTable.columnAtPoint(e.getPoint())==6){
 					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
+						deletedProdRms.put(prodRms.get(materialTable.getSelectedRow()).getPalletCardCode(), prodRms.get(materialTable.getSelectedRow()));
 						prodRms.remove(materialTable.getSelectedRow());
 						materialTable.updateUI();
 					}
@@ -450,6 +463,7 @@ public class PopUpInputMaterial extends JDialog{
 	}
 	
 	public void updateTableFromSearch(List<ProdRM> prodRMs){
+		for(ProdRM pr : prodRMs) if(deletedProdRms.get(pr.getPalletCardCode())!=null)deletedProdRms.remove(pr.getPalletCardCode());
 		this.prodRms.addAll(prodRMs);
 		materialTable.setModel(new MaterialTableModel(prodRms));
 		materialTable.updateUI();
@@ -464,6 +478,25 @@ public class PopUpInputMaterial extends JDialog{
 		this.prodRms = prodRms;
 	}
 	
+	
+	public Map<String, ProdRM> getDeletedProdRms() {
+		return deletedProdRms;
+	}
+	public void setDeletedProdRms(Map<String, ProdRM> deletedProdRms) {
+		this.deletedProdRms = deletedProdRms;
+	}
+
+	
+
+	public String getProductionCode() {
+		return productionCode;
+	}
+	public void setProductionCode(String productionCode) {
+		this.productionCode = productionCode;
+	}
+
+
+
 	private class MaterialTableModel extends AbstractTableModel{
 		
 		private static final long serialVersionUID = 1L;

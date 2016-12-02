@@ -67,6 +67,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 	private Production production;
 	private CreateProductionPanel parent;
 	private boolean editMode=false;
+	private String lastProductionCode;
 	
 	public CreateProductionPanel(){
 		parent = this;
@@ -125,18 +126,12 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void propertyChange(PropertyChangeEvent e) {
-				try {
-					
-					if(e.getPropertyName()=="date"){
-						Date currentDate = (Date)e.getNewValue();
-						String date = new SimpleDateFormat("dd").format(currentDate);
-						String month = new SimpleDateFormat("MM").format(currentDate);
-						String year = new SimpleDateFormat("yy").format(currentDate);
-						productionCodeField.setText(ServiceFactory.getProductionBL().getProductionLastCode()+"/PD/"+date+"/"+month+"/"+year);
-					}
-				} catch (SQLException e1) {
-					log.error(e1.getMessage());
-					e1.printStackTrace();
+				if(e.getPropertyName()=="date"){
+					Date currentDate = (Date)e.getNewValue();
+					String date = new SimpleDateFormat("dd").format(currentDate);
+					String month = new SimpleDateFormat("MM").format(currentDate);
+					String year = new SimpleDateFormat("yy").format(currentDate);
+					productionCodeField.setText(lastProductionCode+"/PD/"+date+"/"+month+"/"+year);
 				}
 			}
 		});
@@ -166,11 +161,13 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			productionTypeCmb.setList(productionTypes);
 			productionTypeCmb.setSelectedItem("Barecore");
 			
+			lastProductionCode = ServiceFactory.getProductionBL().getProductionLastCode();
+			
 			Date currentDate = new Date();
 			String date = new SimpleDateFormat("dd").format(currentDate);
 			String month = new SimpleDateFormat("MM").format(currentDate);
 			String year = new SimpleDateFormat("yy").format(currentDate);
-			productionCodeField.setText(ServiceFactory.getProductionBL().getProductionLastCode()+"/PD/"+date+"/"+month+"/"+year);
+			productionCodeField.setText(lastProductionCode+"/PD/"+date+"/"+month+"/"+year);
 			productionDateChooser.setDate(currentDate);
 		} catch (SQLException e) {
 			log.error(e.getMessage());
@@ -322,6 +319,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 					production.setProductionDate(productionDateChooser.getDate());
 					production.setProductionTypeCode(productionTypeCmb.getDataIndex().getProductionTypeCode());
 					if(editMode){
+						System.out.println(production.getDeletedProductionResult().size());
 						ServiceFactory.getProductionBL().updateAll(production);
 						DialogBox.showEdit();
 					}else {
@@ -342,6 +340,9 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		if(objects.length!=0)production = (Production)objects[0];
 		if(production!=null){
 			editMode=true;
+			productionDateChooser.setEnabled(false);
+			lastProductionCode=production.getProductionCode().split("/")[0];
+			System.out.println(lastProductionCode);
 			productionCodeField.setText(production.getProductionCode());
 			productionDateChooser.setDate(production.getProductionDate());
 			groupShiftCmb.setSelectedItem(production.getGroupShiftDescription());

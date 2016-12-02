@@ -2,7 +2,9 @@ package module.production.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -136,18 +138,22 @@ public class ProductionBL {
 		return prodRMDAO.getAllByProductionCode(productionCode);
 	}
 	
-	public List<ProdRM> getSearchProdRM(List<ProdRM> prodRMs)throws SQLException{
+	public List<ProdRM> getSearchProdRM(List<ProdRM> prodRMs,Map<String, ProdRM> deletedProdRms,String productionCode)throws SQLException{
 		StringBuffer sqlQuery = new StringBuffer();
 		if(prodRMs.size()!=0){
 			sqlQuery.append(" AND b.pallet_card_code NOT IN (");
-			for (int i=0;i<prodRMs.size();i++) {
-				ProdRM pr = prodRMs.get(i);
-				if(i==0)sqlQuery.append("'"+pr.getPalletCardCode()+"'");
-				else sqlQuery.append(",'"+pr.getPalletCardCode()+"'");
+			int i = 0;
+			for (ProdRM pr:prodRMs) {
+				if(deletedProdRms.get(pr.getPalletCardCode())==null){
+					if(i==0)sqlQuery.append("'"+pr.getPalletCardCode()+"'");
+					else sqlQuery.append(",'"+pr.getPalletCardCode()+"'");
+					i++;
+				}
 			}
 			sqlQuery.append(") ");
 		}
-		return prodRMDAO.getAllSearch(sqlQuery.toString());				
+		
+		return prodRMDAO.getAllSearch(sqlQuery.toString(),productionCode);				
 	}
 	
 	public ProdRM getSearchProdRMByPalletCard(String palletCardCode,List<ProdRM> prodRMs)throws SQLException{
@@ -217,36 +223,56 @@ public class ProductionBL {
 			cone = dataSource.getConnection();
 			cone.setAutoCommit(false);
 			if(production.getProductionResults()!=null){
+				ProductionResultDAO prd = new ProductionResultDAO(cone);
+				ProductionResultDetailDAO prdd = new ProductionResultDetailDAO(cone);
 				if(production.getProductionResults().size()!=0){
 					int id = getLastProductPKResultID();
 					for (ProductionResult prodPK : production.getProductionResults()) {
 						if(prodPK.getId()==0){
 							prodPK.setId(id);
 							prodPK.setProdCode(production.getProductionCode());
-							new ProductionResultDAO(cone).save(prodPK);
+							prd.save(prodPK);
 							for (ProductionResultProduct prodResultProduct : prodPK.getListProductionResultProduct()) {
 								prodResultProduct.setProdResultID(id);
-								new ProductionResultDetailDAO(cone).save(prodResultProduct);
+								prdd.save(prodResultProduct);
 							}
 							id++;
 						}else{
-							new ProductionResultDAO(cone).update(prodPK);
+							prd.update(prodPK);
 							for (ProductionResultProduct prodResultProduct : prodPK.getListProductionResultProduct()) {
-								new ProductionResultDetailDAO(cone).update(prodResultProduct);
+								prdd.update(prodResultProduct);
 							}
 						}
 						
 					}
 					flagProductionResult=true;
 				}
+				if(production.getDeletedProductionResult().size()!=0){
+					for(ProductionResult pr : production.getDeletedProductionResult().values()){
+						prd.delete(pr);
+						for (ProductionResultProduct prp : pr.getListProductionResultProduct()) {
+							prdd.updateDelete(prp);
+						}
+					}
+				}
 			}
 			if(production.getListOfProdRM()!=null){
 				if(production.getListOfProdRM().size()!=0){
-					new ProdRMDAO(cone).delete(production.getProductionCode());
+					List<ProdRM> prodRMs = prodRMDAO.getAllByProductionCode(production.getProductionCode());
+					Map<String, ProdRM> tempMap = new HashMap<>();
+					for (ProdRM prodRM : prodRMs) {
+						tempMap.put(prodRM.getPalletCardCode(), prodRM);
+					}
 					for(ProdRM prodRM :production.getListOfProdRM()){
-						new ProdRMDAO(cone).save(prodRM);
+						if(tempMap.get(prodRM.getPalletCardCode())==null)new ProdRMDAO(cone).save(prodRM);
+						
 					}
 					flagProductionRawMaterial=true;
+				}
+				if(production.getDeletedProdRMs().size()!=0){
+					for (ProdRM prodRM : production.getDeletedProdRMs().values()) {
+						new ProdRMDAO(cone).update(prodRM);
+					}
 				}
 			}
 			if(flagProductionRawMaterial&&flagProductionResult)production.setStatus("Complete");
@@ -268,5 +294,41 @@ public class ProductionBL {
 	
 	public List<Production> searchProduction(String sql) throws SQLException{
 		return productionDAO.getSearchAll(sql);
+	}
+	
+	public void delete(Production production) throws SQLException{
+		Connection cone = null;
+		try {
+			cone = dataSource.getConnection();
+			cone.setAutoCommit(false);
+			if(production.getProductionResults()!=null){
+				ProductionResultDAO prd = new ProductionResultDAO(cone);
+				ProductionResultDetailDAO prdd = new ProductionResultDetailDAO(cone);
+				if(production.getProductionResults().size()!=0){
+					for (ProductionResult prodPK : production.getProductionResults()) {
+						prd.delete(prodPK);
+						for (ProductionResultProduct prodResultProduct : prodPK.getListProductionResultProduct()) {
+							prdd.updateDelete(prodResultProduct);
+						}
+					}
+				}
+			}
+			if(production.getListOfProdRM()!=null){
+				if(production.getListOfProdRM().size()!=0){
+					ProdRMDAO prodRMDAO = new ProdRMDAO(cone);
+					for(ProdRM prodRM :production.getListOfProdRM()){
+						prodRMDAO.update(prodRM);
+					}
+				}
+			}
+			new ProductionDAO(cone).delete(production);
+			cone.commit();
+		} catch (Exception e) {
+			cone.rollback();
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		}finally {
+			cone.close();
+		}
 	}
 }

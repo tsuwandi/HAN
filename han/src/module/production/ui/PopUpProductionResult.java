@@ -103,11 +103,12 @@ public class PopUpProductionResult extends JDialog{
 	private JScrollPane containerScrollPane;
 	private JPanel containerPnl;
 	private JPanel borderPanel;
-	private CreateProductionPanel createProductionPKPanel;
+	private CreateProductionPanel createProductionPanel;
 	private List<ProductionResult> listOfPrd;
 	private boolean editMode=false;
 	private int indexEdit=0;
 	private Map<Integer, Integer> pressMap;
+	private Map<Integer, ProductionResult> deletedProdResult;
 	
 	static final String KA = "PDC009-3";
 	static final String KB = "PDC009-4";
@@ -130,12 +131,12 @@ public class PopUpProductionResult extends JDialog{
 		totalGoodResultBField.setEnabled(false);
 		totalAllGoodResultField.setEnabled(false);
 		pressMap = new HashMap<>();
-	
+		deletedProdResult = new HashMap<>();
 		listOfPrd = new ArrayList<>();
 
-		createProductionPKPanel = (CreateProductionPanel) parent;
-		if(createProductionPKPanel.getProduction().getProductionResults()!=null){
-			listOfPrd = createProductionPKPanel.getProduction().getProductionResults();
+		createProductionPanel = (CreateProductionPanel) parent;
+		if(createProductionPanel.getProduction().getProductionResults()!=null){
+			listOfPrd = createProductionPanel.getProduction().getProductionResults();
 			productionResultTable.setModel(new ResultTableModel(listOfPrd));
 			for (ProductionResult prd : listOfPrd) {
 				pressMap.put(prd.getPressedNo(), prd.getPressedNo());
@@ -417,14 +418,16 @@ public class PopUpProductionResult extends JDialog{
 						}
 					}		
 				}
-//				if(productionResultTable.columnAtPoint(e.getPoint())==10){
-//					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
-//						pressMap.remove(listOfPrd.get(productionResultTable.getSelectedRow()).getPressedNo());
-//						listOfPrd.remove(productionResultTable.getSelectedRow());
-//						productionResultTable.updateUI();
-//						calculateTotal();
-//					}
-//				}
+				if(productionResultTable.columnAtPoint(e.getPoint())==7){
+					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
+						pressMap.remove(listOfPrd.get(productionResultTable.getSelectedRow()).getPressedNo());
+						ProductionResult pr = listOfPrd.get(productionResultTable.getSelectedRow());
+						if(pr.getId()!=0)deletedProdResult.put(pr.getId(), pr);
+						listOfPrd.remove(productionResultTable.getSelectedRow());
+						productionResultTable.updateUI();
+						calculateTotal();
+					}
+				}
 			}
 		});
 		
@@ -657,7 +660,8 @@ public class PopUpProductionResult extends JDialog{
 	
 	private void saveProductResult(){
 		if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
-			createProductionPKPanel.getProduction().setProductionResults(listOfPrd);
+			createProductionPanel.getProduction().setProductionResults(listOfPrd);
+			createProductionPanel.getProduction().setDeletedProductionResult(deletedProdResult);
 			DialogBox.showInsert();
 			dispose();
 		}

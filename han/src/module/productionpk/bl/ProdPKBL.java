@@ -20,6 +20,7 @@ import module.production.model.Line;
 import module.production.model.Machine;
 import module.production.model.ProdRM;
 import module.production.model.Production;
+import module.production.model.ProductionResult;
 import module.production.model.ProductionResultProduct;
 import module.production.model.ProductionType;
 import module.production.model.Shift;
@@ -185,27 +186,37 @@ public class ProdPKBL {
 			cone = dataSource.getConnection();
 			cone.setAutoCommit(false);
 			if(production.getListProdPKResult()!=null){
+				ProdPKResultDAO prd = new ProdPKResultDAO(cone);
+				ProdPKResultProductDAO prdd = new ProdPKResultProductDAO(cone);
 				if(production.getListProdPKResult().size()!=0){
 					int id = getLastProductPKResultID();
 					for (ProdPKResult prodPK : production.getListProdPKResult()) {
 						if(prodPK.getId()==0){
 							prodPK.setId(id);
 							prodPK.setProdPKCode(production.getProdPKCode());
-							new ProdPKResultDAO(cone).save(prodPK);
+							prd.save(prodPK);
 							for (ProdPKResultProduct prodResultProduct : prodPK.getListProductPKResultProduct()) {
 								prodResultProduct.setProdPKResultID(id);
-								new ProdPKResultProductDAO(cone).save(prodResultProduct);
+								prdd.save(prodResultProduct);
 							}
 							id++;
 						}else{
-							new ProdPKResultDAO(cone).update(prodPK);
+							prd.update(prodPK);
 							for (ProdPKResultProduct prodResultProduct : prodPK.getListProductPKResultProduct()) {
-								new ProdPKResultProductDAO(cone).update(prodResultProduct);
+								prdd.update(prodResultProduct);
 							}
 						}
 						
 					}
 					flagProductionResult=true;
+				}
+				if(production.getDeletedProdResult().size()!=0){
+					for(ProdPKResult pr : production.getDeletedProdResult().values()){
+						prd.delete(pr);
+						for (ProdPKResultProduct prp : pr.getListProductPKResultProduct()) {
+							prdd.updateDelete(prp);
+						}
+					}
 				}
 			}
 			if(production.getListPKMaterial()!=null){
@@ -230,4 +241,38 @@ public class ProdPKBL {
 		}
 	}
 	
+	public void delete(ProdPK production) throws SQLException{
+		Connection cone = null;
+		try {
+			cone = dataSource.getConnection();
+			cone.setAutoCommit(false);
+			if(production.getListProdPKResult()!=null){
+				ProdPKResultDAO prd = new ProdPKResultDAO(cone);
+				ProdPKResultProductDAO prdd = new ProdPKResultProductDAO(cone);
+				if(production.getListProdPKResult().size()!=0){
+					for (ProdPKResult prodPK : production.getListProdPKResult()) {
+						prd.delete(prodPK);
+						for (ProdPKResultProduct prodResultProduct : prodPK.getListProductPKResultProduct()) {
+							prdd.updateDelete(prodResultProduct);
+						}
+					}
+				}
+			}
+			if(production.getListPKMaterial()!=null){
+				if(production.getListPKMaterial().size()!=0){
+					for(ProdPKMaterial prodPKMaterial :production.getListPKMaterial()){
+						new ProdPKMaterialDAO(cone).updateDelete(prodPKMaterial);
+					}
+				}
+			}
+			new ProdPKDAO(cone).delete(production);
+			cone.commit();
+		} catch (Exception e) {
+			cone.rollback();
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		}finally {
+			cone.close();
+		}
+	}
 }

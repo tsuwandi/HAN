@@ -14,7 +14,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.ServiceFactory;
@@ -27,7 +26,7 @@ public class EditUserPanel extends JPanel implements Bridging{
 	private static final long serialVersionUID = 2090225881350809172L;
 	
 	private JTextField usernameField;
-	private JPasswordField passwordField;
+	private JTextField passwordField;
 	private JComboBox groupUserCombobox;
 	private List<Group> groups = new ArrayList<>();
 	private Integer groupId;
@@ -75,7 +74,7 @@ public class EditUserPanel extends JPanel implements Bridging{
 		label_3.setBounds(110, 138, 10, 30);
 		add(label_3);
 		
-		passwordField = new JPasswordField();
+		passwordField = new JTextField();
 		passwordField.setColumns(10);
 		passwordField.setBounds(120, 138, 150, 30);
 		add(passwordField);
@@ -116,7 +115,7 @@ public class EditUserPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				passwordField.setEchoChar('*');
+				passwordField.setText("Release");
 			}
 		});
 	}
@@ -126,7 +125,7 @@ public class EditUserPanel extends JPanel implements Bridging{
 		
 		user.setGroupId(groupId);
 		user.setUserName(usernameField.getText());
-		user.setUserPassword(new String(passwordField.getPassword()));
+		user.setUserPassword(passwordField.getText());
 		java.sql.Date date = new java.sql.Date(new Date().getTime());
 		user.setLastLogin(date);
 		user.setLastChanged(date);
@@ -155,7 +154,7 @@ public class EditUserPanel extends JPanel implements Bridging{
 		return usernameField;
 	}
 
-	public JPasswordField getPasswordField() {
+	public JTextField getPasswordField() {
 		return passwordField;
 	}
 }

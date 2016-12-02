@@ -53,6 +53,7 @@ public class ViewProductionPKPanel extends JPanel implements Bridging{
 	private JButton printBtn;
 	private JButton backBtn;
 	private JButton editBtn;
+	private JButton deleteBtn;
 	
 	private ProdPK production;
 	private ViewProductionPKPanel parent;
@@ -106,6 +107,21 @@ public class ViewProductionPKPanel extends JPanel implements Bridging{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainPanel.changePanel("module.productionpk.ui.CreateProductionPKPanel",production);
+			}
+		});
+		
+		deleteBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ServiceFactory.getProdPKBL().delete(production);
+					MainPanel.changePanel("module.productionpk.ui.ListProductionPKPanel");
+				} catch (SQLException e1) {
+					log.error(e1.getMessage());
+					e1.printStackTrace();
+				}
+				
 			}
 		});
 	}
@@ -236,6 +252,10 @@ public class ViewProductionPKPanel extends JPanel implements Bridging{
 		backBtn = new JButton("Kembali");
 		backBtn.setBounds(30,550,150,30);
 		add(backBtn);
+		
+		deleteBtn = new JButton("Hapus");
+		deleteBtn.setBounds(310,550,150,30);
+		add(deleteBtn);
 	}
 	
 	
@@ -257,6 +277,7 @@ public class ViewProductionPKPanel extends JPanel implements Bridging{
 			
 			if(production.getStatus().equals("Final")){
 				editBtn.setEnabled(false);
+				deleteBtn.setVisible(false);
 			}
 		}
 	}

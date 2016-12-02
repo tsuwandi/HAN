@@ -18,12 +18,14 @@ public class ProdPKResultDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement getLastIDStatement;
+	private PreparedStatement deleteStatement;
 	
 	private String getAllQuery = "SELECT id, prod_pk_code, pressed_no, start_time, total_fine_a, total_fine_b, total_protol, total_klem "
 			+ "FROM prod_pk_result WHERE deleted_date IS NULL";
 	private String getLastIDQuery = "SELECT id FROM prod_pk_result ORDER BY id DESC LIMIT 1";
 	private String insertQuery = "INSERT INTO prod_pk_result (prod_pk_code,pressed_no, start_time, total_fine_a, total_fine_b, total_protol, total_klem , input_by, input_date) "
 			+ "VALUES (?,?,?,?,?,?,?,?,?)";
+	private String deleteQuery = "UPDATE prod_pk_result SET deleted_date = ? , delete_by=? WHERE prod_pk_code = ? AND id=?";
 	private String updateQuery = "UPDATE prod_pk_result SET pressed_no =?, "
 			+ "start_time=?, total_fine_a=?, total_fine_b=?, total_protol=?,total_klem=?, edited_by=?, edited_date=?  "
 			+ "WHERE prod_pk_code =? AND id=?";
@@ -142,6 +144,22 @@ public class ProdPKResultDAO {
 			updateStatement.setString(9, productionResult.getProdPKCode());
 			updateStatement.setInt(10, productionResult.getId());
 			updateStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+	}
+	
+	public void delete(ProdPKResult productionResult) throws SQLException {
+		try {
+			deleteStatement = connection.prepareStatement(deleteQuery);
+			deleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
+			deleteStatement.setString(2, "Michael");
+			deleteStatement.setString(3, productionResult.getProdPKCode());
+			deleteStatement.setInt(4, productionResult.getId());
+			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
