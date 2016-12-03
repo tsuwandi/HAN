@@ -192,8 +192,7 @@ public class WoodTypeDAO {
 		ArrayList<WoodType> woodTypes = new ArrayList<WoodType>();
 
 		try {
-			con = dataSource.getConnection();
-			getWoodTypeStatement = con.prepareStatement(getWoodTypeQuery);
+			getWoodTypeStatement = connection.prepareStatement(getWoodTypeQuery);
 
 			ResultSet rs = getWoodTypeStatement.executeQuery();
 			while (rs.next()) {
