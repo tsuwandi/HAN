@@ -209,4 +209,26 @@ public class WoodTypeDAO {
 
 		return woodTypes;
 	}
+
+	public List<WoodType> getWoodType1() throws SQLException {
+		ArrayList<WoodType> woodTypes = new ArrayList<WoodType>();
+
+		try {
+			getWoodTypeStatement = connection.prepareStatement(getWoodTypeQuery);
+
+			ResultSet rs = getWoodTypeStatement.executeQuery();
+			while (rs.next()) {
+				WoodType woodType = new WoodType();
+				woodType.setId(rs.getInt("id"));
+				woodType.setWoodType(rs.getString("wood_type"));
+				woodTypes.add(woodType);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return woodTypes;
+	}
 }
