@@ -128,7 +128,7 @@ public class ProductBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new WoodTypeDAO(con).getWoodType();
+			return new WoodTypeDAO(con).getWoodType1();
 		} finally {
 			con.close();
 		}
