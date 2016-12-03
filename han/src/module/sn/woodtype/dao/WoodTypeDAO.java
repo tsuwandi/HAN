@@ -188,11 +188,11 @@ public class WoodTypeDAO {
 	private String getWoodTypeQuery = "SELECT id, wood_type FROM wood_type WHERE 1 = 1 ";
 
 	public List<WoodType> getWoodType() throws SQLException {
-		Connection con = null;
+		Connection con = dataSource.getConnection();
 		ArrayList<WoodType> woodTypes = new ArrayList<WoodType>();
 
 		try {
-			getWoodTypeStatement = connection.prepareStatement(getWoodTypeQuery);
+			getWoodTypeStatement = con.prepareStatement(getWoodTypeQuery);
 
 			ResultSet rs = getWoodTypeStatement.executeQuery();
 			while (rs.next()) {
