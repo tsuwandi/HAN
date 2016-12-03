@@ -187,7 +187,7 @@ public class WoodTypeDAO {
 
 	private String getWoodTypeQuery = "SELECT id, wood_type FROM wood_type WHERE 1 = 1 ";
 
-	public List<WoodType> getWoodType() throws SQLException {
+	public List<WoodType> getWoodType1() throws SQLException {
 		Connection con = null;
 		ArrayList<WoodType> woodTypes = new ArrayList<WoodType>();
 
@@ -205,6 +205,36 @@ public class WoodTypeDAO {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
+		}
+
+		return woodTypes;
+	}
+	
+	
+	public List<WoodType> getWoodType() throws SQLException {
+		Connection con = null;
+		ArrayList<WoodType> woodTypes = new ArrayList<WoodType>();
+
+		try {
+			con = dataSource.getConnection();
+			getWoodTypeStatement = con.prepareStatement(getWoodTypeQuery);
+
+			ResultSet rs = getWoodTypeStatement.executeQuery();
+			while (rs.next()) {
+				WoodType woodType = new WoodType();
+				woodType.setId(rs.getInt("id"));
+				woodType.setWoodType(rs.getString("wood_type"));
+				woodTypes.add(woodType);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		} finally {
+			try {
+				con.close();
+			catch (SQLException e1){
+			}
 		}
 
 		return woodTypes;
