@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import module.system.model.Group;
 import controller.ServiceFactory;
 import main.component.DialogBox;
+import main.panel.MainPanel;
 
 public class CreateGroupPanel extends JPanel{
 
@@ -90,10 +91,19 @@ public class CreateGroupPanel extends JPanel{
 		
 		try {
 			ServiceFactory.getSystemBL().saveGroup(group);
+			DialogBox.showInsert();
+			clearField();
+			MainPanel.changePanel("module.system.ui.GroupConfigPanel");
 		} catch (Exception e) {
 			e.printStackTrace();
 			DialogBox.showError("Group baru tidak berhasil disimpan");
 		}
-		
 	}
+
+	private void clearField() {
+		groupNameField.setText("");
+		groupDescField.setText("");
+	}
+	
+	
 }

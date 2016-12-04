@@ -16,6 +16,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.ServiceFactory;
+import main.component.DialogBox;
+import main.panel.MainPanel;
 import module.system.model.Group;
 import module.system.model.User;
 
@@ -91,7 +93,7 @@ public class CreateUserPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				groupId = groups.get(groupUserCombobox.getSelectedIndex()).getGroupId();
+				setGroupId();
 			}
 		});
 		
@@ -104,14 +106,31 @@ public class CreateUserPanel extends JPanel {
 	protected void save() {
 		User user = new User();
 		
-		user.setGroupId(groupId);
-		user.setUserName(usernameField.getText());
-		user.setUserPassword(new String(passwordField.getPassword()));
-		java.sql.Date date = new java.sql.Date(new Date().getTime());
-		user.setLastLogin(date);
-		user.setLastChanged(date);
+		user.setGroupId(setGroupId());
+		user.setUsername(usernameField.getText());
+		user.setPassword(new String(passwordField.getPassword()));
+		user.setLastLogin(new Date());
+		user.setInputDate(new Date());
+		user.setEmployeeId("");
+		user.setInputBy("");
+		user.setEditDate(new Date());
+		user.setEditedBy("");
 		
-		ServiceFactory.getSystemBL().saveUser(user);
+		try {
+			ServiceFactory.getSystemBL().saveUser(user);
+			DialogBox.showInsert();
+			clearField();
+			MainPanel.changePanel("module.system.ui.UserConfigPanel");
+		} catch (Exception e) {
+			e.printStackTrace();
+			DialogBox.showError("User baru tidak berhasil disimpan");
+		}
+		
+	}
+
+	private void clearField() {
+		usernameField.setText("");
+		passwordField.setText("");
 	}
 
 	private void getGroupData() {
@@ -121,5 +140,9 @@ public class CreateUserPanel extends JPanel {
 			comboBoxModel.addElement(group.getGroupName());
 		}
 		groupUserCombobox.setModel(comboBoxModel);
+	}
+
+	public Integer setGroupId() {
+		return groups.get(groupUserCombobox.getSelectedIndex()).getGroupId();
 	}
 }

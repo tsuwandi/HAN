@@ -17,10 +17,11 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
+import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.system.model.Group;
 import module.system.model.User;
-import controller.ServiceFactory;
+import module.util.DateUtil;
 
 public class UserConfigPanel extends JPanel {
 
@@ -140,10 +141,10 @@ public class UserConfigPanel extends JPanel {
 		int row = userConfigTabel.getSelectedRow();
 		
 		User user = new User();
-		user.setUserId(Integer.parseInt(userConfigTabel.getValueAt(row, 0).toString()));
+		user.setId(Integer.parseInt(userConfigTabel.getValueAt(row, 0).toString()));
 		//user.setGroupId(Integer.parseInt(userConfigTabel.getValueAt(row, 1).toString()));
-		user.setUserName(userConfigTabel.getValueAt(row, 1).toString());
-		user.setUserPassword(userConfigTabel.getValueAt(row, 2).toString());
+		user.setUsername(userConfigTabel.getValueAt(row, 1).toString());
+		user.setPassword(userConfigTabel.getValueAt(row, 2).toString());
 		//user.setLastLogin( userConfigTabel.getValueAt(row, 4).toString());
 		//user.setLastChanged(userConfigTabel.getValueAt(row, 5).toString());
 		
@@ -185,17 +186,19 @@ public class UserConfigPanel extends JPanel {
 
 			switch (columnIndex) {
 			case 0:
-				return user.getUserId();
+				return user.getId();
 			case 1:
-				return user.getUserName();
+				return user.getGroupId();
 			case 2:
-				return user.getUserPassword();
+				return user.getUsername();
 			case 3:
-				return user.getLastChanged();
+				return user.getPassword();
 			case 4:
-				return user.getLastLogin();
+				return user.getEmployeeId();
 			case 5:
-				return "Ubah";
+				return DateUtil.setFormatedDate(user.getLastLogin());
+			case 6:
+				return "<html><u>ubah</u></html>";
 			default:
 				return "";
 			}
@@ -206,9 +209,9 @@ public class UserConfigPanel extends JPanel {
 		public Class getColumnClass(int columnIndex) {
 			switch (columnIndex) {
 			case 0:
-				return String.class;
+				return Integer.class;
 			case 1:
-				return String.class;
+				return Integer.class;
 			case 2:
 				return String.class;
 			case 3:
@@ -216,6 +219,8 @@ public class UserConfigPanel extends JPanel {
 			case 4:
 				return String.class;
 			case 5:
+				return String.class;
+			case 6:
 				return String.class;
 			default:
 				return String.class;
@@ -226,17 +231,19 @@ public class UserConfigPanel extends JPanel {
 		public String getColumnName(int columnIndex) {
 			switch (columnIndex) {
 			case 0:
-				return "ID";
+				return "id";
 			case 1:
-				return "Nama";
+				return "group id";
 			case 2:
-				return "Password";
+				return "username";
 			case 3:
-				return "Last Changed";
+				return "password";
 			case 4:
-				return "Last Login";
+				return "employee id";
 			case 5:
-				return "Aksi";
+				return "last login";
+			case 6:
+				return "aksi";
 			default:
 				return "";
 			}
