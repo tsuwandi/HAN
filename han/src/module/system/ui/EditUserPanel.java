@@ -124,11 +124,11 @@ public class EditUserPanel extends JPanel implements Bridging{
 		User user = new User();
 		
 		user.setGroupId(groupId);
-		user.setUserName(usernameField.getText());
-		user.setUserPassword(passwordField.getText());
+		user.setUsername(usernameField.getText());
+		user.setPassword(passwordField.getText());
 		java.sql.Date date = new java.sql.Date(new Date().getTime());
 		user.setLastLogin(date);
-		user.setLastChanged(date);
+		//user.setLastChanged(date);
 		
 		ServiceFactory.getSystemBL().saveUser(user);
 	}
@@ -146,8 +146,8 @@ public class EditUserPanel extends JPanel implements Bridging{
 	public void invokeObjects(Object... objects) {
 		user = (User) objects[0];
 		System.out.println(user);
-		getUsernameField().setText(user.getUserName());
-		getPasswordField().setText(user.getUserPassword());
+		getUsernameField().setText(user.getUsername());
+		getPasswordField().setText(user.getPassword());
 	}
 
 	public JTextField getUsernameField() {

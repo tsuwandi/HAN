@@ -105,11 +105,11 @@ public class CreateUserPanel extends JPanel {
 		User user = new User();
 		
 		user.setGroupId(groupId);
-		user.setUserName(usernameField.getText());
-		user.setUserPassword(new String(passwordField.getPassword()));
+		user.setUsername(usernameField.getText());
+		user.setPassword(new String(passwordField.getPassword()));
 		java.sql.Date date = new java.sql.Date(new Date().getTime());
 		user.setLastLogin(date);
-		user.setLastChanged(date);
+		//user.setLastChanged(date);
 		
 		ServiceFactory.getSystemBL().saveUser(user);
 	}

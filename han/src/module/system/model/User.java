@@ -1,14 +1,14 @@
 package module.system.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class User {
 	
-	Integer userId;
+	Integer id;
 	Integer groupId;
-	String userName;
-	String userPassword;
-	Date lastChanged;
+	String username;
+	String password;
+	String employeeId;
 	Date lastLogin;
 	Date inputDate;
 	String inputBy;
@@ -17,11 +17,11 @@ public class User {
 	Date deletedDate;
 	String deletedBy;
 	
-	public Integer getUserId() {
-		return userId;
+	public Integer getId() {
+		return id;
 	}
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	public Integer getGroupId() {
 		return groupId;
@@ -29,23 +29,23 @@ public class User {
 	public void setGroupId(Integer groupId) {
 		this.groupId = groupId;
 	}
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
-	public String getUserPassword() {
-		return userPassword;
+	public String getPassword() {
+		return password;
 	}
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	public Date getLastChanged() {
-		return lastChanged;
+	public String getEmployeeId() {
+		return employeeId;
 	}
-	public void setLastChanged(Date lastChanged) {
-		this.lastChanged = lastChanged;
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
 	}
 	public Date getLastLogin() {
 		return lastLogin;
