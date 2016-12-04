@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
 
 import controller.ServiceFactory;
 import main.panel.MainPanel;
@@ -26,7 +27,7 @@ public class GroupConfigPanel extends JPanel {
 	private JTable groupConfigTable;
 	private List<Group> groups = new ArrayList<>();
 	private GroupConfigTabelModel groupConfigTabelModel;
-	private JTextField textField;
+	private JTextField searchField;
 
 	/**
 	 * Create the panel.
@@ -79,10 +80,10 @@ public class GroupConfigPanel extends JPanel {
 			}
 		});
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(724, 140, 190, 30);
-		add(textField);
+		searchField = new JTextField();
+		searchField.setColumns(10);
+		searchField.setBounds(724, 140, 190, 30);
+		add(searchField);
 		
 		JButton button_1 = new JButton("Export");
 		button_1.setBounds(824, 100, 90, 30);
@@ -96,6 +97,8 @@ public class GroupConfigPanel extends JPanel {
 		button_3.setBounds(924, 140, 90, 30);
 		add(button_3);
 		getGroupData();
+		
+		updateTableSize();
 	}
 
 	protected Group getSelectedData() {
@@ -185,5 +188,31 @@ public class GroupConfigPanel extends JPanel {
 				return String.class;
 			}
 		}
+	}
+	
+	private void updateTableSize() {
+		groupConfigTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		groupConfigTable.getTableHeader().setResizingAllowed(false);
+		
+		TableColumn column1 = groupConfigTable.getColumnModel().getColumn(0);
+		TableColumn column2 = groupConfigTable.getColumnModel().getColumn(1);
+		TableColumn column3 = groupConfigTable.getColumnModel().getColumn(2);
+		TableColumn column4 = groupConfigTable.getColumnModel().getColumn(3);
+		
+		column1.setPreferredWidth(20);
+		column1.setMinWidth(15);
+		column1.setMinWidth(25);
+		
+		column2.setPreferredWidth(70);
+		column2.setMinWidth(60);
+		column2.setMinWidth(80);
+		
+		column3.setPreferredWidth(200);
+		column3.setMinWidth(150);
+		column3.setMinWidth(250);
+		
+		column4.setPreferredWidth(70);
+		column4.setMinWidth(60);
+		column4.setMinWidth(80);
 	}
 }
