@@ -1828,3 +1828,81 @@ ALTER TABLE `purchase_prod_result` CHANGE `ppr_code` `ppr_code` VARCHAR(50) CHAR
 ALTER TABLE `ppr_product` CHANGE `ppr_code` `ppr_code` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 
 ALTER TABLE `inventory_log_temp` CHANGE `qty` `qty` DECIMAL(12,5) NULL DEFAULT NULL;
+
+/* syaiful start */
+/* tabel user yang baru, yang lama silahkan dihapus */
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `password` varchar(512) NOT NULL,
+  `employee_id` varchar(10) NOT NULL,
+  `last_login` date NOT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(30) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(30) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `user` (`id`, `group_id`, `username`, `password`, `employee_id`, `last_login`, `input_date`, `input_by`, `edit_date`, `edit_by`, `delete_date`, `delete_by`) VALUES
+(0, 1, 'admin', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', '1', '2016-12-02', NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 2, 'syaiful', '7a8bf2249d0363dd25ba6c93b9a0a1918de72dfca7ed01b34617af493e99bd634c4888c460acea10be682207788c3e68637d61727f7047fdb82be9eed37fb22a', '', '2016-12-02', '2016-12-02', '', '2016-12-02', '', NULL, NULL),
+(3, 3, 'micin', 'b52534cd3bcea78a8d019926365094707e5184bffecb8111d08065235dcafdc2c1f1432cfe11d78ae9b0e5a1831141403113f498b83ddea06a79eb435db831a0', '', '2016-12-02', '2016-12-02', '', '2016-12-02', '', NULL, NULL),
+(4, 4, 'admin2', '661bb43140229ad4dc3e762e7bdd68cc14bb9093c158c386bd989fea807acd9bd7f805ca4736b870b6571594d0d8fcfc57b98431143dfb770e083fa9be89bc72', '', '2016-12-02', '2016-12-02', '', '2016-12-02', '', NULL, NULL);
+
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `user`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+CREATE TABLE `system_group` (
+  `id` int(11) NOT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(25) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `system_group` (`id`, `name`, `description`, `input_date`, `input_by`, `edit_date`, `edit_by`, `delete_date`, `delete_by`) VALUES
+(2, 'admin', 'admin group', '0000-00-00', '', '0000-00-00', '', '0000-00-00', ''),
+(3, 'admin 2', 'Admin group 2', '0000-00-00', '', '0000-00-00', '', '0000-00-00', ''),
+(4, 'administrator', 'hak akses paling tinggi', '2016-12-01', '', '2016-12-01', '', NULL, NULL),
+(5, 'programmer', 'yang ngoding', '2016-12-01', '', '2016-12-01', '', NULL, NULL);
+
+ALTER TABLE `system_group`
+  ADD PRIMARY KEY (`id`);
+  
+ALTER TABLE `system_group`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  
+CREATE TABLE `division` (
+  `id` varchar(10) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(30) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(30) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `division` (`id`, `name`, `input_date`, `input_by`, `edit_date`, `edit_by`, `delete_date`, `delete_by`) VALUES
+('2', 'IT', '2016-12-04', '', '2016-12-04', '', '2016-12-04', ''),
+('3', 'IT Department', '2016-12-04', '', '2016-12-04', '', NULL, NULL),
+('4', 'IT', '2016-12-04', '', '2016-12-04', '', NULL, NULL),
+('5', 'IT', '2016-12-04', '', '2016-12-04', '', NULL, NULL),
+('6', 'IT', '2016-12-04', '', '2016-12-04', '', NULL, NULL),
+('7', 'IT', '2016-12-04', '', '2016-12-04', '', NULL, NULL),
+('8', 'IT', '2016-12-04', '', '2016-12-04', '', '2016-12-04', ''),
+('DIV0001', 'Divisi 1', NULL, NULL, NULL, NULL, NULL, NULL);
+
+ALTER TABLE `division`
+  ADD PRIMARY KEY (`id`);
+/* syaiful end*/
