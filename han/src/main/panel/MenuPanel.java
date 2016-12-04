@@ -32,22 +32,17 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Penerimaan", "Pengeringan In", "Pengeringan In", "module.dryin.ui.DryInListPanel");
 		menu.addNewLeafTo("Penerimaan", "Pengeringan Out", "Pengeringan Out", "module.dryout.ui.DryOutListPanel");
 		menu.addNewLeafTo("Penerimaan", "Tutup Harian", "Tutup Harian", "module.dailyclosing.ui.DailyClosingReceivePanel");
-		
 		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Laporan Penerimaan", "Laporan Penerimaan");
 		menu.addNewLeafTo("Laporan Penerimaan", "Stok Flow Basah", "Stok Flow Basah", "module.report.ui.DryStokFlowReportPanel");
 		menu.addNewLeafTo("Laporan Penerimaan", "Stok Detail Penerimaan", "Stok Detail Penerimaan", "module.report.ui.ReceivedReportPanel");
-	
 		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Tutup Harian", "Tutup Harian");
 		menu.addNewLeafTo("Tutup Harian", "Send To Finance", "Send To Finance", "module.sendtofinance.ui.SendToFinancePanel");
 		menu.addNewLeafTo("Tutup Harian", "Tutup Harian", "Tutup Harian", "module.dailyclosing.ui.DailyClosingPanel");
-		
 		menu.calculateAvaiableSpace();
-		
-		
 		
 		menu.addNewMenu("Produksi", "Produksi");
 		menu.addNewLeafTo("Produksi", "Produksi", "Produksi", "module.production.ui.ListProductionPanel");
@@ -60,6 +55,9 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Konfigurasi", "Nama Latin Kayu", "Nama Latin Kayu", "module.sn.woodgenus.ui.WoodGenusListPanel");
 		menu.addNewLeafTo("Konfigurasi", "Jenis Kayu", "Jenis Kayu", "module.sn.woodtype.ui.WoodTypeListPanel");
 		menu.calculateAvaiableSpace();
+		
+		menu.addNewMenu("Personalia", "Personalia");
+		menu.addNewLeafTo("Personalia", "Divisi", "Divisi", "module.personalia.ui.DivisionConfigPanel");
 		
 		menu.addNewMenu("Konfigurasi Sistem", "Konfigurasi Sistem");
 		menu.addNewLeafTo("Konfigurasi Sistem", "Group", "Group", "module.system.ui.GroupConfigPanel");
