@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -19,7 +21,6 @@ import controller.DataSourceFactory;
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import model.User;
-import module.system.bl.SystemBL;
 
 public class LoginPanel extends JPanel {
 
@@ -52,6 +53,25 @@ public class LoginPanel extends JPanel {
 
 		passwordField = new JPasswordField();
 		passwordField.setBounds(200, 120, 230, 30);
+		passwordField.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					login();
+				}
+			}
+		});
 
 		submitBtn = new JButton("Submit");
 		submitBtn.setBounds(325, 200, 100, 30);
@@ -128,8 +148,8 @@ public class LoginPanel extends JPanel {
 
 	public void login() {
 		module.system.model.User user = new module.system.model.User();
-		user.setUserName(usernameField.getText());
-		user.setUserPassword(new String(passwordField.getPassword()));
+		user.setUsername(usernameField.getText());
+		user.setPassword(new String(passwordField.getPassword()));
 		
 		if (ServiceFactory.getSystemBL().validateUser(user)) {
 			setVisible(false);
