@@ -140,10 +140,10 @@ public class UserConfigPanel extends JPanel {
 		int row = userConfigTabel.getSelectedRow();
 		
 		User user = new User();
-		user.setId(Integer.parseInt(userConfigTabel.getValueAt(row, 0).toString()));
+		user.setUserId(Integer.parseInt(userConfigTabel.getValueAt(row, 0).toString()));
 		//user.setGroupId(Integer.parseInt(userConfigTabel.getValueAt(row, 1).toString()));
-		user.setUsername(userConfigTabel.getValueAt(row, 1).toString());
-		user.setPassword(userConfigTabel.getValueAt(row, 2).toString());
+		user.setUserName(userConfigTabel.getValueAt(row, 1).toString());
+		user.setUserPassword(userConfigTabel.getValueAt(row, 2).toString());
 		//user.setLastLogin( userConfigTabel.getValueAt(row, 4).toString());
 		//user.setLastChanged(userConfigTabel.getValueAt(row, 5).toString());
 		
@@ -185,13 +185,13 @@ public class UserConfigPanel extends JPanel {
 
 			switch (columnIndex) {
 			case 0:
-				return user.getId();
+				return user.getUserId();
 			case 1:
-				return user.getUsername();
+				return user.getUserName();
 			case 2:
-				return user.getPassword();
+				return user.getUserPassword();
 			case 3:
-				return null; //user.getLastChanged();
+				return user.getLastChanged();
 			case 4:
 				return user.getLastLogin();
 			case 5:
