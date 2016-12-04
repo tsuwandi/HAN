@@ -4,6 +4,7 @@ import module.dailyclosing.bl.DailyClosingBL;
 import module.dryin.bl.DryInBL;
 import module.dryout.bl.DryOutBL;
 import module.employee.bl.EmployeeBL;
+import module.personalia.bl.PersonaliaBL;
 import module.product.bl.ProductBL;
 import module.production.bl.ProductionBL;
 import module.productionpk.bl.ProdPKBL;
@@ -34,6 +35,7 @@ public class ServiceFactory {
 	private static ProductionWasteBL productionWasteBL = null;
 	private static ProdPKBL prodPKBL = null;
 	private static SystemBL systemBL = null;
+	private static PersonaliaBL personaliaBL = null;
 	/**
 	 * Method to init or return {@link SupplierBL}
 	 * 
@@ -157,5 +159,12 @@ public class ServiceFactory {
 			systemBL = new SystemBL(DataSourceFactory.getDataSource());
 		}
 		return systemBL;
+	}
+	
+	public static PersonaliaBL getPersonaliaBL() {
+		if (personaliaBL == null) {
+			personaliaBL = new PersonaliaBL(DataSourceFactory.getDataSource());
+		}
+		return personaliaBL;
 	}
 }
