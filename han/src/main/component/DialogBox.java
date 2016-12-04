@@ -65,4 +65,8 @@ public class DialogBox extends JOptionPane {
 	public static void showChooseChamberForSearchPalletInDryOut() {
 		JOptionPane.showMessageDialog(null, "Silahkan pilih Chamber terlebih dahulu.", "Peringatan", JOptionPane.WARNING_MESSAGE);
 	}
+	
+	public static int showAfterChoiceInsert() {
+		return JOptionPane.showConfirmDialog(null, "Data Berhasil disimpan. Apakah anda ingin menginput data lainnya ?", "Informasi", JOptionPane.YES_NO_OPTION);
+	}
 }
