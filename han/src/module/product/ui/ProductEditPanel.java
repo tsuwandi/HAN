@@ -507,6 +507,8 @@ public class ProductEditPanel extends JPanel implements Bridging {
 			product.setProductUom(uomField.getDataIndex().getId());
 			product.setWoodType(typeField.getDataIndex().getId());
 			product.setGrade(gradeField.getDataIndex().getId());
+			product.setProductionTypeId(cbProductionType.getDataIndex().getId());
+			product.setProductionQualityId(cbProductionQuality.getDataIndex().getId());
 
 			if (maintainYesField.isSelected())
 				product.setIsMaintain(0);
@@ -533,9 +535,7 @@ public class ProductEditPanel extends JPanel implements Bridging {
 				product.setCondition(ProductCategoryType.BALKEN_KERING);
 			}
 
-			product.setProductionTypeId(cbProductionType.getDataIndex().getId());
-			product.setProductionQualityId(cbProductionQuality.getDataIndex().getId());
-
+		
 			product.setMinQty(Integer.parseInt(minQtyField.getText()));
 			
 			Product checkProduct = ServiceFactory.getProductBL().isProductExists(Boolean.TRUE, product);
@@ -657,7 +657,12 @@ public class ProductEditPanel extends JPanel implements Bridging {
 				catField.setSelectedItem(product.getProductCatName());
 				uomField.setSelectedItem(product.getUnitName());
 				typeField.setSelectedItem(product.getWoodTypeName());
-				gradeField.setSelectedItem(product.getGradeName());
+				if(!"".equals(product.getGradeName())) {
+					gradeField.setSelectedItem(product.getGradeName());
+				} else {
+					gradeField.setSelectedIndex(0);
+				}
+				
 
 				if (product.getThickness() != 0.00)
 					thickField.setText(String.valueOf(product.getThickness()));
@@ -676,8 +681,8 @@ public class ProductEditPanel extends JPanel implements Bridging {
 				}
 
 				if (product.getProductCat() == ProductCategoryType.HASIL_PRODUKSI) {
-					cbProductionQuality.setSelectedIndex(product.getProductionQualityId());
-					cbProductionType.setSelectedIndex(product.getProductionTypeId());
+					cbProductionQuality.setSelectedItem(product.getProductionQuality());
+					cbProductionType.setSelectedItem(product.getProductionType());
 				}
 
 			}

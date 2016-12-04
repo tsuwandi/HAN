@@ -471,7 +471,11 @@ public class ProductViewPanel extends JPanel implements Bridging {
 				catField.setSelectedItem(product.getProductCatName());
 				uomField.setSelectedItem(product.getUnitName());
 				typeField.setSelectedItem(product.getWoodTypeName());
-				gradeField.setSelectedItem(product.getGradeName());
+				if(!"".equals(product.getGradeName())) {
+					gradeField.setSelectedItem(product.getGradeName());
+				} else {
+					gradeField.setSelectedIndex(0);
+				}
 
 				if (product.getThickness() != 0.00)
 					thickField.setText(String.valueOf(product.getThickness()));
@@ -488,7 +492,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 				} else {
 					maintainNoField.setSelected(true);
 				}
-
+				
 				switch (catField.getDataIndex().getId()) {
 				case ProductCategoryType.BALKEN_BASAH:
 					typeLbl.setText("<html>Jenis Kayu <font color=\"red\">*</font></html>");
@@ -516,8 +520,9 @@ public class ProductViewPanel extends JPanel implements Bridging {
 					wideLbl.setText("Lebar");
 					lblProductionType.setText("<html>Tipe Hasil Produksi<font color=\"red\">*</font></html>");
 					lblProductionQuality.setText("<html>Kualitas Produksi<font color=\"red\">*</font></html>");
-					cbProductionQuality.setSelectedIndex(product.getProductionQualityId());
-					cbProductionType.setSelectedIndex(product.getProductionTypeId());
+					
+					cbProductionQuality.setSelectedItem(product.getProductionQuality());
+					cbProductionType.setSelectedItem(product.getProductionType());
 					break;
 				case ProductCategoryType.BARANG_PENDUKUNG:
 					typeLbl.setText("Jenis Kayu");

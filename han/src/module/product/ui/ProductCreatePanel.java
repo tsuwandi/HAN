@@ -544,6 +544,8 @@ public class ProductCreatePanel extends JPanel {
 			product.setProductUom(uomField.getDataIndex().getId());
 			product.setWoodType(typeField.getDataIndex().getId());
 			product.setGrade(gradeField.getDataIndex().getId());
+			product.setProductionTypeId(cbProductionType.getDataIndex().getId());
+			product.setProductionQualityId(cbProductionQuality.getDataIndex().getId());
 
 			if (maintainYesField.isSelected())
 				product.setIsMaintain(0);
@@ -569,10 +571,7 @@ public class ProductCreatePanel extends JPanel {
 			} else if(product.getProductCat() == ProductCategoryType.BALKEN_KERING) {
 				product.setCondition(ProductCategoryType.BALKEN_KERING);
 			}
-
-			product.setProductionTypeId(cbProductionType.getDataIndex().getId());
-			product.setProductionQualityId(cbProductionQuality.getDataIndex().getId());
-
+			
 			product.setMinQty(Integer.parseInt(minQtyField.getText()));
 			
 			Product checkProduct = ServiceFactory.getProductBL().isProductExists(Boolean.FALSE, product);

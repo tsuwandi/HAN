@@ -748,4 +748,23 @@ public class Product implements Serializable, ComboBoxProperties {
 	public Product(String productName) {
 		this.productName = productName;
 	}
+	
+	public String getProductionType() {
+		return productionType;
+	}
+
+	public void setProductionType(String productionType) {
+		this.productionType = productionType;
+	}
+
+	public String getProductionQuality() {
+		return productionQuality;
+	}
+
+	public void setProductionQuality(String productionQuality) {
+		this.productionQuality = productionQuality;
+	}
+
+	private String productionType;
+	private String productionQuality;
 }
