@@ -105,7 +105,7 @@ public class ViewDivisionPanel extends JPanel implements Bridging{
 		if (DialogBox.showDeleteChoice()==0) {
 			division.setDelete_date(new Date());
 			division.setDelete_by("");
-			ServiceFactory.getPersonaliaBL().delete(division);
+			ServiceFactory.getPersonaliaBL().deleteDivision(division);
 			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
 		} else {
 			
@@ -120,7 +120,7 @@ public class ViewDivisionPanel extends JPanel implements Bridging{
 		division.setEdit_by("");
 		
 		try {
-			ServiceFactory.getPersonaliaBL().update(division);
+			ServiceFactory.getPersonaliaBL().updateDivision(division);
 			DialogBox.showEdit();
 			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
 		} catch (Exception e) {

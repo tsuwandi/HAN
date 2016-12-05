@@ -7,7 +7,9 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import module.personalia.dao.DepartementDAO;
 import module.personalia.dao.DivisionDAO;
+import module.personalia.model.Departement;
 import module.personalia.model.Division;
 
 public class PersonaliaBL {
@@ -18,12 +20,12 @@ public class PersonaliaBL {
 		this.dataSource = dataSource;
 	}
 	
-	public List<Division> getAllDivision() {
+	public List<Division> getAllDivision(String query) {
 		List<Division> divisions = new ArrayList<Division>();
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
-			divisions = new DivisionDAO(connection).getAllData();
+			divisions = new DivisionDAO(connection).getAllData(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -36,7 +38,7 @@ public class PersonaliaBL {
 		return divisions;
 	}
 
-	public void save(Division division) {
+	public void saveDivision(Division division) {
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
@@ -52,7 +54,7 @@ public class PersonaliaBL {
 		}
 	}
 	
-	public void update(Division division) {
+	public void updateDivision(Division division) {
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
@@ -68,7 +70,7 @@ public class PersonaliaBL {
 		}
 	}
 	
-	public void delete(Division division) {
+	public void deleteDivision(Division division) {
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
@@ -84,11 +86,88 @@ public class PersonaliaBL {
 		}
 	}
 	
-	public Integer getLastId() {
+	public Integer getLastIdDivision() {
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
 			return new DivisionDAO(connection).getLastId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Departement> getDepartements(String query) {
+		List<Departement> departements = new ArrayList<Departement>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			departements = new DepartementDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return departements;
+	}
+
+	public void saveDepartement(Departement departement) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new DepartementDAO(connection).insert(departement);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateDepartement(Departement departement) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new DepartementDAO(connection).update(departement);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteDepartement(Departement departement) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new DepartementDAO(connection).delete(departement);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Integer getLastIdDepartement() {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			return new DepartementDAO(connection).getLastId();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

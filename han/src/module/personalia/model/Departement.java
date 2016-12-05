@@ -2,19 +2,18 @@ package module.personalia.model;
 
 import java.util.Date;
 
-import module.util.ComboBoxProperties;
-
-public class Division implements ComboBoxProperties{
+public class Departement{
 
 	String id;
 	String name;
+	String divisionId;
 	Date input_date;
 	String input_by;
 	Date edit_date;
 	String edit_by;
 	Date delete_date;
 	String delete_by;
-	
+		
 	public String getId() {
 		return id;
 	}
@@ -26,6 +25,12 @@ public class Division implements ComboBoxProperties{
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getDivisionId() {
+		return divisionId;
+	}
+	public void setDivisionId(String divisionId) {
+		this.divisionId = divisionId;
 	}
 	public Date getInput_date() {
 		return input_date;
@@ -62,9 +67,5 @@ public class Division implements ComboBoxProperties{
 	}
 	public void setDelete_by(String delete_by) {
 		this.delete_by = delete_by;
-	}
-	@Override
-	public Object getField() {
-		return name;
-	}
+	}	
 }

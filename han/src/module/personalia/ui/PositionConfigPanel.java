@@ -16,28 +16,30 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import main.panel.MainPanel;
-import module.personalia.model.Division;
 import controller.ServiceFactory;
+import main.panel.MainPanel;
+import module.personalia.model.Departement;
+import module.personalia.model.Division;
+import module.personalia.model.Position;
 
-public class DivisionConfigPanel extends JPanel {
+public class PositionConfigPanel extends JPanel{
 
-	private static final long serialVersionUID = -3127283027621703632L;
-	private JTable divisionConfigTable;
+	private static final long serialVersionUID = 4318234045211155813L;
+	private JTable departementConfigTable;
 	private JTextField searchField;
-	private List<Division> divisions = new ArrayList<>();
-	private DivisionConfigTableModel divisionConfigTableModel;
-
-	public DivisionConfigPanel() {
+	private List<Position> positions = new ArrayList<>();
+	private PositionConfigTableModel positionConfigTableModel;
+	
+	public PositionConfigPanel() {
 		setSize(1024, 630);
 		setLayout(null);
-
-		JLabel breadCrumbLbl = new JLabel("Personalia > Divisi");
+		
+		JLabel breadCrumbLbl = new JLabel("Personalia > Departemen");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 134, 25);
 		add(breadCrumbLbl);
 
-		JLabel lblHeader = new JLabel("DAFTAR DIVISI");
+		JLabel lblHeader = new JLabel("DAFTAR DEPARTEMEN");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 46, 150, 25);
 		add(lblHeader);
@@ -51,14 +53,14 @@ public class DivisionConfigPanel extends JPanel {
 		scrollPane.setBounds(0, 0, 1004, 363);
 		pnlTable.add(scrollPane);
 
-		divisionConfigTable = new JTable();
-		divisionConfigTable.setFocusable(false);
-		divisionConfigTable.setAutoCreateRowSorter(true);
-		scrollPane.setViewportView(divisionConfigTable);
-		divisionConfigTable.addMouseListener(new MouseAdapter() {
+		departementConfigTable = new JTable();
+		departementConfigTable.setFocusable(false);
+		departementConfigTable.setAutoCreateRowSorter(true);
+		scrollPane.setViewportView(departementConfigTable);
+		departementConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (divisionConfigTable.columnAtPoint(e.getPoint())==3) {
+				if (departementConfigTable.columnAtPoint(e.getPoint())==3) {
 					MainPanel.changePanel("module.personalia.ui.ViewDivisionPanel", getSelectedData());
 				}
 			}
@@ -94,31 +96,31 @@ public class DivisionConfigPanel extends JPanel {
 
 		getUserData();
 	}
-
+	
 	protected Division getSelectedData() {
-		int row = divisionConfigTable.getSelectedRow();
+		int row = departementConfigTable.getSelectedRow();
 
 		Division division = new Division();
-		division.setId(divisionConfigTable.getValueAt(row, 1).toString());
-		division.setName(divisionConfigTable.getValueAt(row, 2).toString());
+		division.setId(departementConfigTable.getValueAt(row, 1).toString());
+		division.setName(departementConfigTable.getValueAt(row, 2).toString());
 
 		return division;
 	}
 
 	private void getUserData() {
-		divisions.clear();
-		divisions = ServiceFactory.getPersonaliaBL().getAllDivision("");
-		divisionConfigTableModel = new DivisionConfigTableModel(divisions);
-		divisionConfigTable.setModel(divisionConfigTableModel);
+		positions.clear();
+		//departements = ServiceFactory.getPersonaliaBL().getDepartements("");
+		//divisionConfigTableModel = new PositionConfigTableModel(departements);
+		//departementConfigTable.setModel(divisionConfigTableModel);
 	}
 
-	class DivisionConfigTableModel extends AbstractTableModel {
+	class PositionConfigTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = -5786040815921137590L;
-		private List<Division> divisions;
+		private List<Position> positions;
 
-		public DivisionConfigTableModel(List<Division> divisions) {
-			this.divisions = divisions;
+		public PositionConfigTableModel(List<Position> positions) {
+			this.positions = positions;
 		}
 
 		@Override
@@ -128,21 +130,17 @@ public class DivisionConfigPanel extends JPanel {
 
 		@Override
 		public int getRowCount() {
-			return divisions == null ? 0 : divisions.size();
+			return positions == null ? 0 : positions.size();
 		}
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			Division division = divisions.get(rowIndex);
+			Position departement = positions.get(rowIndex);
 
 			switch (columnIndex) {
 			case 0:
-				return divisions.indexOf(division) + 1;
-			case 1:
-				return division.getId();
-			case 2:
-				return division.getName();
-			case 3:
+				return positions.indexOf(departement) + 1;
+			case 4:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
@@ -160,6 +158,8 @@ public class DivisionConfigPanel extends JPanel {
 				return String.class;
 			case 3:
 				return String.class;
+			case 4:
+				return String.class;
 			default:
 				return String.class;
 			}
@@ -171,10 +171,12 @@ public class DivisionConfigPanel extends JPanel {
 			case 0:
 				return "No";
 			case 1:
-				return "ID Divisi";
+				return "ID Departement";
 			case 2:
-				return "Nama Divisi";
+				return "Nama Departement";
 			case 3:
+				return "Divisi";
+			case 4:
 				return "Action";
 			default:
 				return "";

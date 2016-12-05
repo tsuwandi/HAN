@@ -1,0 +1,124 @@
+package module.personalia.ui;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import main.component.ComboBox;
+import module.personalia.model.Division;
+
+import javax.swing.JButton;
+
+import controller.ServiceFactory;
+
+
+public class SearchDepartementPanel extends JPanel {
+
+	private static final long serialVersionUID = 2708997445150245596L;
+	private JTextField departmentNameField;
+	private JTextField departementIdField;
+	private ComboBox<Division> divisionCmbBox;
+	private List<Division> divisions;
+	
+	public SearchDepartementPanel() {
+		setSize(500, 200);
+		setLayout(null);
+		
+		JLabel lblHeader = new JLabel("PENCARIAN DEPARTEMEN");
+		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblHeader.setBounds(10, 10, 180, 25);
+		add(lblHeader);
+		
+		JLabel label = new JLabel("ID Departemen");
+		label.setBounds(10, 40, 110, 30);
+		add(label);
+
+		JLabel label_1 = new JLabel(":");
+		label_1.setBounds(130, 40, 10, 30);
+		add(label_1);
+
+		JLabel label_2 = new JLabel("<html>Nama Departement<font color='red'> * </font></html>");
+		label_2.setBounds(10, 80, 110, 30);
+		add(label_2);
+
+		JLabel label_3 = new JLabel(":");
+		label_3.setBounds(130, 80, 10, 30);
+		add(label_3);
+		
+		JLabel label_4 = new JLabel("<html>Divisi<font color='red'> * </font></html>");
+		label_4.setBounds(10, 120, 110, 30);
+		add(label_4);
+
+		JLabel label_5 = new JLabel(":");
+		label_5.setBounds(130, 120, 10, 30);
+		add(label_5);
+
+		departmentNameField = new JTextField();
+		departmentNameField.setBounds(140, 80, 200, 30);
+		add(departmentNameField);
+
+		departementIdField = new JTextField();
+		departementIdField.setBounds(140, 40, 200, 30);
+		departementIdField.setEditable(false);
+		departementIdField.setEnabled(false);
+		add(departementIdField);
+		
+		divisionCmbBox = new ComboBox<Division>();
+		divisionCmbBox.setBounds(140, 120, 200, 30);
+		add(divisionCmbBox);
+		
+		JButton resetBtn = new JButton("Reset");
+		resetBtn.setBounds(400, 160, 90, 30);
+		add(resetBtn);
+		
+		resetBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				resetMode();
+			}
+		});
+		
+		JButton searchBtn = new JButton("Cari");
+		searchBtn.setBounds(300, 160, 90, 30);
+		add(searchBtn);
+		
+		searchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				search();
+			}
+		});
+		
+		getData();
+	}
+
+	private void getData() {
+		divisionCmbBox.setList(ServiceFactory.getPersonaliaBL().getAllDivision(""));
+	}
+
+	protected void search() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" and id = ");
+		sb.append(departementIdField.getText()==null? "" : departementIdField.getText());
+		sb.append(" and name = ");
+		sb.append(departmentNameField.getText());
+		sb.append(" and division_di = ");
+		sb.append(divisionCmbBox.getDataIndex().getId());
+		
+		ServiceFactory.getPersonaliaBL().getAllDivision(sb.toString());
+	}
+
+	protected void resetMode() {
+		departementIdField.setText("");
+		departmentNameField.setText("");
+		divisionCmbBox.setSelectedIndex(0);
+	}
+}

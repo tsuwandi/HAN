@@ -28,11 +28,11 @@ public class DivisionDAO {
 		this.connection = connection;
 	}
 
-	public List<Division> getAllData(){
+	public List<Division> getAllData(String query){
 		List<Division> divisions = new ArrayList<>();
 
 		try {
-			getAllStatement = connection.prepareStatement(getAllQuery);
+			getAllStatement = connection.prepareStatement(getAllQuery+query);
 
 			ResultSet resultSet = getAllStatement.executeQuery();
 
@@ -97,6 +97,6 @@ public class DivisionDAO {
 	}
 
 	public Integer getLastId() {
-		return getAllData().size()+1;
+		return getAllData("").size()+1;
 	}
 }

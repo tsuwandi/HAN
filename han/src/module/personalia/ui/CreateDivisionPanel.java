@@ -77,7 +77,7 @@ public class CreateDivisionPanel extends JPanel {
 	}
 
 	private void getLastID() {
-		divisionIdField.setText(ServiceFactory.getPersonaliaBL().getLastId().toString());
+		divisionIdField.setText(ServiceFactory.getPersonaliaBL().getLastIdDivision().toString());
 	}
 
 	protected void save() {
@@ -90,7 +90,7 @@ public class CreateDivisionPanel extends JPanel {
 		division.setEdit_by("");
 		
 		try {
-			ServiceFactory.getPersonaliaBL().save(division);
+			ServiceFactory.getPersonaliaBL().saveDivision(division);
 			option();
 		} catch (Exception e) {
 			e.printStackTrace();
