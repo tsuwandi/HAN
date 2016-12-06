@@ -119,14 +119,14 @@ public class ViewDepartementPanel extends JPanel implements Bridging{
 	}
 	
 	private void getData() {
-		divisionCmbBox.setList(ServiceFactory.getPersonaliaBL().getAllDivision(""));
+		divisionCmbBox.setList(ServiceFactory.getPersonaliaBL().getDivisions(""));
 		
 	}
 
 	protected void delete() {
 		if (DialogBox.showDeleteChoice()==0) {
-			departement.setDelete_date(new Date());
-			departement.setDelete_by("");
+			departement.setDeleteDate(new Date());
+			departement.setDeleteBy("");
 			ServiceFactory.getPersonaliaBL().deleteDepartement(departement);
 			MainPanel.changePanel("module.personalia.ui.DepartementConfigPanel");
 		} else {
@@ -139,8 +139,8 @@ public class ViewDepartementPanel extends JPanel implements Bridging{
 		departement.setId(departementIdField.getText());
 		departement.setName(departementNameField.getText());
 		departement.setDivisionId(divisionCmbBox.getDataIndex().getId());
-		departement.setEdit_date(new Date());
-		departement.setEdit_by("");
+		departement.setEditDate(new Date());
+		departement.setEditBy("");
 		
 		try {
 			ServiceFactory.getPersonaliaBL().updateDepartement(departement);

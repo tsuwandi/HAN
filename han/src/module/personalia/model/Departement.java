@@ -7,12 +7,12 @@ public class Departement{
 	String id;
 	String name;
 	String divisionId;
-	Date input_date;
-	String input_by;
-	Date edit_date;
-	String edit_by;
-	Date delete_date;
-	String delete_by;
+	Date inputDate;
+	String inputBy;
+	Date editDate;
+	String editBy;
+	Date deleteDate;
+	String deleteBy;
 		
 	public String getId() {
 		return id;
@@ -32,40 +32,40 @@ public class Departement{
 	public void setDivisionId(String divisionId) {
 		this.divisionId = divisionId;
 	}
-	public Date getInput_date() {
-		return input_date;
+	public Date getInputDate() {
+		return inputDate;
 	}
-	public void setInput_date(Date input_date) {
-		this.input_date = input_date;
+	public void setInputDate(Date inputDate) {
+		this.inputDate = inputDate;
 	}
-	public String getInput_by() {
-		return input_by;
+	public String getInputBy() {
+		return inputBy;
 	}
-	public void setInput_by(String input_by) {
-		this.input_by = input_by;
+	public void setInputBy(String inputBy) {
+		this.inputBy = inputBy;
 	}
-	public Date getEdit_date() {
-		return edit_date;
+	public Date getEditDate() {
+		return editDate;
 	}
-	public void setEdit_date(Date edit_date) {
-		this.edit_date = edit_date;
+	public void setEditDate(Date editDate) {
+		this.editDate = editDate;
 	}
-	public String getEdit_by() {
-		return edit_by;
+	public String getEditBy() {
+		return editBy;
 	}
-	public void setEdit_by(String edit_by) {
-		this.edit_by = edit_by;
+	public void setEditBy(String editBy) {
+		this.editBy = editBy;
 	}
-	public Date getDelete_date() {
-		return delete_date;
+	public Date getDeleteDate() {
+		return deleteDate;
 	}
-	public void setDelete_date(Date delete_date) {
-		this.delete_date = delete_date;
+	public void setDeleteDate(Date deleteDate) {
+		this.deleteDate = deleteDate;
 	}
-	public String getDelete_by() {
-		return delete_by;
+	public String getDeleteBy() {
+		return deleteBy;
 	}
-	public void setDelete_by(String delete_by) {
-		this.delete_by = delete_by;
+	public void setDeleteBy(String deleteBy) {
+		this.deleteBy = deleteBy;
 	}	
 }

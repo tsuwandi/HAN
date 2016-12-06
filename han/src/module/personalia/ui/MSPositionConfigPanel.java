@@ -18,28 +18,26 @@ import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
 import main.panel.MainPanel;
-import module.personalia.model.Departement;
-import module.personalia.model.Division;
-import module.personalia.model.Position;
+import module.personalia.model.MSPosition;
 
-public class PositionConfigPanel extends JPanel{
+public class MSPositionConfigPanel extends JPanel{
 
 	private static final long serialVersionUID = 4318234045211155813L;
-	private JTable departementConfigTable;
+	private JTable msPositionConfigTable;
 	private JTextField searchField;
-	private List<Position> positions = new ArrayList<>();
-	private PositionConfigTableModel positionConfigTableModel;
+	private List<MSPosition> msPositions = new ArrayList<>();
+	private MSPositionConfigTableModel msPositionConfigTableModel;
 	
-	public PositionConfigPanel() {
+	public MSPositionConfigPanel() {
 		setSize(1024, 630);
 		setLayout(null);
 		
-		JLabel breadCrumbLbl = new JLabel("Personalia > Departemen");
+		JLabel breadCrumbLbl = new JLabel("Personalia > Jabatan");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 134, 25);
 		add(breadCrumbLbl);
 
-		JLabel lblHeader = new JLabel("DAFTAR DEPARTEMEN");
+		JLabel lblHeader = new JLabel("DAFTAR JABATAN");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 46, 150, 25);
 		add(lblHeader);
@@ -53,15 +51,15 @@ public class PositionConfigPanel extends JPanel{
 		scrollPane.setBounds(0, 0, 1004, 363);
 		pnlTable.add(scrollPane);
 
-		departementConfigTable = new JTable();
-		departementConfigTable.setFocusable(false);
-		departementConfigTable.setAutoCreateRowSorter(true);
-		scrollPane.setViewportView(departementConfigTable);
-		departementConfigTable.addMouseListener(new MouseAdapter() {
+		msPositionConfigTable = new JTable();
+		msPositionConfigTable.setFocusable(false);
+		msPositionConfigTable.setAutoCreateRowSorter(true);
+		scrollPane.setViewportView(msPositionConfigTable);
+		msPositionConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (departementConfigTable.columnAtPoint(e.getPoint())==3) {
-					MainPanel.changePanel("module.personalia.ui.ViewDivisionPanel", getSelectedData());
+				if (msPositionConfigTable.columnAtPoint(e.getPoint())==3) {
+					MainPanel.changePanel("module.personalia.ui.ViewMSPositionPanel", getSelectedData());
 				}
 			}
 		});
@@ -78,7 +76,7 @@ public class PositionConfigPanel extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.personalia.ui.CreateDivisionPanel");
+				MainPanel.changePanel("module.personalia.ui.CreateMSPositionPanel");
 			}
 		});
 
@@ -94,53 +92,63 @@ public class PositionConfigPanel extends JPanel{
 		search.setBounds(924, 140, 90, 30);
 		add(search);
 
-		getUserData();
+		getData();
 	}
 	
-	protected Division getSelectedData() {
-		int row = departementConfigTable.getSelectedRow();
+	protected MSPosition getSelectedData() {
+		int row = msPositionConfigTable.getSelectedRow();
 
-		Division division = new Division();
-		division.setId(departementConfigTable.getValueAt(row, 1).toString());
-		division.setName(departementConfigTable.getValueAt(row, 2).toString());
+		MSPosition msPosition = new MSPosition();
+		msPosition.setId(msPositionConfigTable.getValueAt(row, 1).toString());
+		msPosition.setName(msPositionConfigTable.getValueAt(row, 2).toString());
+		msPosition.setDepartementName(msPositionConfigTable.getValueAt(row, 3).toString());
+		msPosition.setDivisionName(msPositionConfigTable.getValueAt(row, 4).toString());
 
-		return division;
+		return msPosition;
 	}
 
-	private void getUserData() {
-		positions.clear();
-		//departements = ServiceFactory.getPersonaliaBL().getDepartements("");
-		//divisionConfigTableModel = new PositionConfigTableModel(departements);
-		//departementConfigTable.setModel(divisionConfigTableModel);
+	private void getData() {
+		msPositions.clear();
+		msPositions = ServiceFactory.getPersonaliaBL().getMSPositions("");
+		msPositionConfigTableModel = new MSPositionConfigTableModel(msPositions);
+		msPositionConfigTable.setModel(msPositionConfigTableModel);
 	}
 
-	class PositionConfigTableModel extends AbstractTableModel {
+	class MSPositionConfigTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = -5786040815921137590L;
-		private List<Position> positions;
+		private List<MSPosition> msPositions;
 
-		public PositionConfigTableModel(List<Position> positions) {
-			this.positions = positions;
+		public MSPositionConfigTableModel(List<MSPosition> msPositions) {
+			this.msPositions = msPositions;
 		}
 
 		@Override
 		public int getColumnCount() {
-			return 4;
+			return 6;
 		}
 
 		@Override
 		public int getRowCount() {
-			return positions == null ? 0 : positions.size();
+			return msPositions == null ? 0 : msPositions.size();
 		}
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			Position departement = positions.get(rowIndex);
+			MSPosition msPosition = msPositions.get(rowIndex);
 
 			switch (columnIndex) {
 			case 0:
-				return positions.indexOf(departement) + 1;
+				return msPositions.indexOf(msPosition) + 1;
+			case 1:
+				return msPosition.getId();
+			case 2:
+				return msPosition.getName();
+			case 3:
+				return msPosition.getDepartementName();
 			case 4:
+				return msPosition.getDivisionName();
+			case 5:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
@@ -160,6 +168,8 @@ public class PositionConfigPanel extends JPanel{
 				return String.class;
 			case 4:
 				return String.class;
+			case 5:
+				return String.class;
 			default:
 				return String.class;
 			}
@@ -171,12 +181,14 @@ public class PositionConfigPanel extends JPanel{
 			case 0:
 				return "No";
 			case 1:
-				return "ID Departement";
+				return "ID Jabatan";
 			case 2:
-				return "Nama Departement";
+				return "Nama Jabatan";
 			case 3:
-				return "Divisi";
+				return "Departemen";
 			case 4:
+				return "Divisi";
+			case 5:
 				return "Action";
 			default:
 				return "";

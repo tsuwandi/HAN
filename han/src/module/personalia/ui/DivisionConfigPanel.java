@@ -107,7 +107,7 @@ public class DivisionConfigPanel extends JPanel {
 
 	private void getUserData() {
 		divisions.clear();
-		divisions = ServiceFactory.getPersonaliaBL().getAllDivision("");
+		divisions = ServiceFactory.getPersonaliaBL().getDivisions("");
 		divisionConfigTableModel = new DivisionConfigTableModel(divisions);
 		divisionConfigTable.setModel(divisionConfigTableModel);
 	}

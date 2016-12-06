@@ -56,10 +56,10 @@ public class DivisionDAO {
 
 			insertStatement.setString(1, division.getId());
 			insertStatement.setString(2, division.getName());
-			insertStatement.setDate(3, DateUtil.toDate(division.getInput_date()));
-			insertStatement.setString(4, division.getInput_by());
-			insertStatement.setDate(5, DateUtil.toDate(division.getEdit_date()));
-			insertStatement.setString(6, division.getEdit_by());
+			insertStatement.setDate(3, DateUtil.toDate(division.getInputDate()));
+			insertStatement.setString(4, division.getInputBy());
+			insertStatement.setDate(5, DateUtil.toDate(division.getEditDate()));
+			insertStatement.setString(6, division.getEditBy());
 
 			insertStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -72,8 +72,8 @@ public class DivisionDAO {
 			updateStatement = connection.prepareStatement(updateQuery);
 
 			updateStatement.setString(1, division.getName());
-			updateStatement.setDate(2, DateUtil.toDate(division.getEdit_date()));
-			updateStatement.setString(3, division.getEdit_by());
+			updateStatement.setDate(2, DateUtil.toDate(division.getEditDate()));
+			updateStatement.setString(3, division.getEditBy());
 			updateStatement.setString(4, division.getId());
 
 			updateStatement.executeUpdate();
@@ -86,8 +86,8 @@ public class DivisionDAO {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 
-			deleteStatement.setDate(1, DateUtil.toDate(division.getDelete_date()));
-			deleteStatement.setString(2, division.getDelete_by());
+			deleteStatement.setDate(1, DateUtil.toDate(division.getDeleteDate()));
+			deleteStatement.setString(2, division.getDeleteBy());
 			deleteStatement.setString(3, division.getId());
 
 			deleteStatement.executeUpdate();

@@ -94,7 +94,7 @@ public class CreateDepartementPanel extends JPanel {
 	}
 	
 	private void getData() {
-		divisionCmbBox.setList(ServiceFactory.getPersonaliaBL().getAllDivision(""));
+		divisionCmbBox.setList(ServiceFactory.getPersonaliaBL().getDivisions(""));
 	}
 
 	private void getLastID() {

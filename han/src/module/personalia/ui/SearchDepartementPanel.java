@@ -3,19 +3,16 @@ package module.personalia.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import controller.ServiceFactory;
 import main.component.ComboBox;
 import module.personalia.model.Division;
-
-import javax.swing.JButton;
-
-import controller.ServiceFactory;
 
 
 public class SearchDepartementPanel extends JPanel {
@@ -101,7 +98,7 @@ public class SearchDepartementPanel extends JPanel {
 	}
 
 	private void getData() {
-		divisionCmbBox.setList(ServiceFactory.getPersonaliaBL().getAllDivision(""));
+		divisionCmbBox.setList(ServiceFactory.getPersonaliaBL().getDivisions(""));
 	}
 
 	protected void search() {
@@ -113,7 +110,7 @@ public class SearchDepartementPanel extends JPanel {
 		sb.append(" and division_di = ");
 		sb.append(divisionCmbBox.getDataIndex().getId());
 		
-		ServiceFactory.getPersonaliaBL().getAllDivision(sb.toString());
+		ServiceFactory.getPersonaliaBL().getDivisions(sb.toString());
 	}
 
 	protected void resetMode() {

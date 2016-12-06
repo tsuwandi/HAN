@@ -57,10 +57,10 @@ public class DepartementDAO {
 			insertStatement.setString(1, departement.getId());
 			insertStatement.setString(2, departement.getName());
 			insertStatement.setString(3, departement.getDivisionId());
-			insertStatement.setDate(4, DateUtil.toDate(departement.getInput_date()));
-			insertStatement.setString(5, departement.getInput_by());
-			insertStatement.setDate(6, DateUtil.toDate(departement.getEdit_date()));
-			insertStatement.setString(7, departement.getEdit_by());
+			insertStatement.setDate(4, DateUtil.toDate(departement.getInputDate()));
+			insertStatement.setString(5, departement.getInputBy());
+			insertStatement.setDate(6, DateUtil.toDate(departement.getEditDate()));
+			insertStatement.setString(7, departement.getEditBy());
 
 			insertStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -74,8 +74,8 @@ public class DepartementDAO {
 		
 			updateStatement.setString(1, departement.getName());
 			updateStatement.setString(2, departement.getDivisionId());
-			updateStatement.setDate(3, DateUtil.toDate(departement.getEdit_date()));
-			updateStatement.setString(4, departement.getEdit_by());
+			updateStatement.setDate(3, DateUtil.toDate(departement.getEditDate()));
+			updateStatement.setString(4, departement.getEditBy());
 			updateStatement.setString(5, departement.getId());
 			
 			updateStatement.executeUpdate();
@@ -87,8 +87,8 @@ public class DepartementDAO {
 	public void delete(Departement departement) {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
-			deleteStatement.setDate(1, DateUtil.toDate(departement.getDelete_date()));
-			deleteStatement.setString(2, departement.getDelete_by());
+			deleteStatement.setDate(1, DateUtil.toDate(departement.getDeleteDate()));
+			deleteStatement.setString(2, departement.getDeleteBy());
 			deleteStatement.setString(3, departement.getId());
 
 			deleteStatement.executeUpdate();

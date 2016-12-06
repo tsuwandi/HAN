@@ -16,10 +16,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.personalia.model.Departement;
-import module.personalia.model.Division;
-import controller.ServiceFactory;
 
 public class DepartementConfigPanel extends JPanel {
 
@@ -35,7 +34,7 @@ public class DepartementConfigPanel extends JPanel {
 
 		JLabel breadCrumbLbl = new JLabel("Personalia > Departemen");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
-		breadCrumbLbl.setBounds(50, 10, 134, 25);
+		breadCrumbLbl.setBounds(50, 10, 200, 25);
 		add(breadCrumbLbl);
 
 		JLabel lblHeader = new JLabel("DAFTAR DEPARTEMEN");
@@ -59,8 +58,8 @@ public class DepartementConfigPanel extends JPanel {
 		departementConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (departementConfigTable.columnAtPoint(e.getPoint())==3) {
-					MainPanel.changePanel("module.personalia.ui.ViewDivisionPanel", getSelectedData());
+				if (departementConfigTable.columnAtPoint(e.getPoint())==5) {
+					MainPanel.changePanel("module.personalia.ui.ViewDepartementPanel", getSelectedData());
 				}
 			}
 		});
@@ -77,7 +76,7 @@ public class DepartementConfigPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.personalia.ui.CreateDivisionPanel");
+				MainPanel.changePanel("module.personalia.ui.CreateDepartementPanel");
 			}
 		});
 
@@ -96,14 +95,15 @@ public class DepartementConfigPanel extends JPanel {
 		getUserData();
 	}
 	
-	protected Division getSelectedData() {
+	protected Departement getSelectedData() {
 		int row = departementConfigTable.getSelectedRow();
 
-		Division division = new Division();
-		division.setId(departementConfigTable.getValueAt(row, 1).toString());
-		division.setName(departementConfigTable.getValueAt(row, 2).toString());
+		Departement departement = new Departement();
+		departement.setId(departementConfigTable.getValueAt(row, 1).toString());
+		departement.setName(departementConfigTable.getValueAt(row, 2).toString());
+		departement.setDivisionId(departementConfigTable.getValueAt(row, 3).toString());
 
-		return division;
+		return departement;
 	}
 
 	private void getUserData() {
@@ -124,7 +124,7 @@ public class DepartementConfigPanel extends JPanel {
 
 		@Override
 		public int getColumnCount() {
-			return 4;
+			return 5;
 		}
 
 		@Override

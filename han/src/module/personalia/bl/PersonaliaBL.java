@@ -9,8 +9,12 @@ import javax.sql.DataSource;
 
 import module.personalia.dao.DepartementDAO;
 import module.personalia.dao.DivisionDAO;
+import module.personalia.dao.EmployeeTypeDAO;
+import module.personalia.dao.MSPositionDAO;
 import module.personalia.model.Departement;
 import module.personalia.model.Division;
+import module.personalia.model.EmployeeType;
+import module.personalia.model.MSPosition;
 
 public class PersonaliaBL {
 	
@@ -20,7 +24,7 @@ public class PersonaliaBL {
 		this.dataSource = dataSource;
 	}
 	
-	public List<Division> getAllDivision(String query) {
+	public List<Division> getDivisions(String query) {
 		List<Division> divisions = new ArrayList<Division>();
 		Connection connection = null;
 		try {
@@ -168,6 +172,160 @@ public class PersonaliaBL {
 		try {
 			connection = dataSource.getConnection();
 			return new DepartementDAO(connection).getLastId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<MSPosition> getMSPositions(String query) {
+		List<MSPosition> msPositions = new ArrayList<MSPosition>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			msPositions = new MSPositionDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return msPositions;
+	}
+	
+	public void saveMSPosition(MSPosition msPosition) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new MSPositionDAO(connection).insert(msPosition);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateMSPosition(MSPosition msPosition) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new MSPositionDAO(connection).update(msPosition);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteMSPosition(MSPosition msPosition) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new MSPositionDAO(connection).delete(msPosition);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Integer getLastIdMSPosition() {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			return new MSPositionDAO(connection).getLastId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<EmployeeType> getEmployeeTypes(String query) {
+		List<EmployeeType> employeeTypes = new ArrayList<EmployeeType>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			employeeTypes = new EmployeeTypeDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return employeeTypes;
+	}
+	
+	public void saveEmployeeType(EmployeeType employeeType) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new EmployeeTypeDAO(connection).insert(employeeType);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateEmployeeType(EmployeeType employeeType) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new EmployeeTypeDAO(connection).update(employeeType);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteEmployeeType(EmployeeType employeeType) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new EmployeeTypeDAO(connection).delete(employeeType);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Integer getLastIdEmployeeType() {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			return new EmployeeTypeDAO(connection).getLastId();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
