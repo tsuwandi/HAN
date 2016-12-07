@@ -26,7 +26,7 @@ public class MSPositionConfigPanel extends JPanel{
 	private JTable msPositionConfigTable;
 	private JTextField searchField;
 	private List<MSPosition> msPositions = new ArrayList<>();
-	private MSPositionConfigTableModel msPositionConfigTableModel;
+	private EmployeeTypeConfigTableModel msPositionConfigTableModel;
 	
 	public MSPositionConfigPanel() {
 		setSize(1024, 630);
@@ -110,16 +110,16 @@ public class MSPositionConfigPanel extends JPanel{
 	private void getData() {
 		msPositions.clear();
 		msPositions = ServiceFactory.getPersonaliaBL().getMSPositions("");
-		msPositionConfigTableModel = new MSPositionConfigTableModel(msPositions);
+		msPositionConfigTableModel = new EmployeeTypeConfigTableModel(msPositions);
 		msPositionConfigTable.setModel(msPositionConfigTableModel);
 	}
 
-	class MSPositionConfigTableModel extends AbstractTableModel {
+	class EmployeeTypeConfigTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = -5786040815921137590L;
 		private List<MSPosition> msPositions;
 
-		public MSPositionConfigTableModel(List<MSPosition> msPositions) {
+		public EmployeeTypeConfigTableModel(List<MSPosition> msPositions) {
 			this.msPositions = msPositions;
 		}
 

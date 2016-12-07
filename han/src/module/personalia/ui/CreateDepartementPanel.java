@@ -24,7 +24,7 @@ public class CreateDepartementPanel extends JPanel {
 	private ComboBox<Division> divisionCmbBox;
 
 	public CreateDepartementPanel() {
-
+		
 		setSize(1024, 630);
 		setLayout(null);
 
