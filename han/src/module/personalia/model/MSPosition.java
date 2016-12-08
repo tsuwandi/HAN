@@ -10,12 +10,15 @@ public class MSPosition {
 	String departementName;
 	String divisionId;
 	String divisionName;
+	Integer salaryMin;
+	Integer salaryMax;
 	Date inputDate;
 	String inputBy;
 	Date editDate;
 	String editBy;
 	Date deleteDate;
 	String deleteBy;
+	
 	public String getId() {
 		return id;
 	}
@@ -54,6 +57,18 @@ public class MSPosition {
 	}
 	public Date getInputDate() {
 		return inputDate;
+	}
+	public Integer getSalaryMin() {
+		return salaryMin;
+	}
+	public void setSalaryMin(Integer salaryMin) {
+		this.salaryMin = salaryMin;
+	}
+	public Integer getSalaryMax() {
+		return salaryMax;
+	}
+	public void setSalaryMax(Integer salaryMax) {
+		this.salaryMax = salaryMax;
 	}
 	public void setInputDate(Date inputDate) {
 		this.inputDate = inputDate;
