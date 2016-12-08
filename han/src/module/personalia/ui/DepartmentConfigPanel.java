@@ -18,17 +18,17 @@ import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
 import main.panel.MainPanel;
-import module.personalia.model.Departement;
+import module.personalia.model.Department;
 
-public class DepartementConfigPanel extends JPanel {
+public class DepartmentConfigPanel extends JPanel {
 
 	private static final long serialVersionUID = -523978922179504555L;
 	private JTable departementConfigTable;
 	private JTextField searchField;
-	private List<Departement> departements = new ArrayList<>();
+	private List<Department> departements = new ArrayList<>();
 	private DepartementConfigTableModel divisionConfigTableModel;
 
-	public DepartementConfigPanel() {
+	public DepartmentConfigPanel() {
 		setSize(1024, 630);
 		setLayout(null);
 
@@ -95,10 +95,10 @@ public class DepartementConfigPanel extends JPanel {
 		getUserData();
 	}
 	
-	protected Departement getSelectedData() {
+	protected Department getSelectedData() {
 		int row = departementConfigTable.getSelectedRow();
 
-		Departement departement = new Departement();
+		Department departement = new Department();
 		departement.setId(departementConfigTable.getValueAt(row, 1).toString());
 		departement.setName(departementConfigTable.getValueAt(row, 2).toString());
 		departement.setDivisionId(departementConfigTable.getValueAt(row, 3).toString());
@@ -108,7 +108,7 @@ public class DepartementConfigPanel extends JPanel {
 
 	private void getUserData() {
 		departements.clear();
-		departements = ServiceFactory.getPersonaliaBL().getDepartements("");
+		departements = ServiceFactory.getPersonaliaBL().getDepartments("");
 		divisionConfigTableModel = new DepartementConfigTableModel(departements);
 		departementConfigTable.setModel(divisionConfigTableModel);
 	}
@@ -116,9 +116,9 @@ public class DepartementConfigPanel extends JPanel {
 	class DepartementConfigTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = -5786040815921137590L;
-		private List<Departement> departements;
+		private List<Department> departements;
 
-		public DepartementConfigTableModel(List<Departement> departements) {
+		public DepartementConfigTableModel(List<Department> departements) {
 			this.departements = departements;
 		}
 
@@ -134,7 +134,7 @@ public class DepartementConfigPanel extends JPanel {
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			Departement departement = departements.get(rowIndex);
+			Department departement = departements.get(rowIndex);
 
 			switch (columnIndex) {
 			case 0:

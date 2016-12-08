@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import module.personalia.model.Departement;
+import module.personalia.model.Department;
 import module.personalia.model.Division;
 import module.personalia.model.MSPosition;
 import module.util.DateUtil;
@@ -46,16 +46,16 @@ public class MSPositionDAO {
 		return division;
 	}
 
-	public Departement getDepartement(String id) {
+	public Department getDepartement(String id) {
 		String query = "select * from departement where id = ";
-		Departement departement = null;
+		Department departement = null;
 		try {
 			PreparedStatement selectDepartement = connection.prepareStatement(query+id);
 			
 			ResultSet resultSet = selectDepartement.executeQuery();
 			
 			while (resultSet.next()) {
-				departement = new Departement();
+				departement = new Department();
 				departement.setId(resultSet.getString("id"));
 				departement.setName(resultSet.getString("name"));
 			}

@@ -13,7 +13,7 @@ import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.personalia.model.Departement;
+import module.personalia.model.Department;
 import module.personalia.model.Division;
 import module.personalia.model.MSPosition;
 
@@ -22,7 +22,7 @@ public class CreateMSPositionPanel extends JPanel {
 	private static final long serialVersionUID = -7130979348188499012L;
 	private JTextField msPositionNameField;
 	private JTextField msPositionIdField;
-	private ComboBox<Departement> departemenCmbBox;
+	private ComboBox<Department> departemenCmbBox;
 	private ComboBox<Division> divisionCmbBox;
 	private JTextField salaryMinField;
 	private JTextField salaryMaxField;
@@ -100,7 +100,7 @@ public class CreateMSPositionPanel extends JPanel {
 		msPositionNameField.setBounds(140, 120, 200, 30);
 		add(msPositionNameField);
 
-		departemenCmbBox = new ComboBox<Departement>();
+		departemenCmbBox = new ComboBox<Department>();
 		departemenCmbBox.setBounds(140, 160, 200, 30);
 		add(departemenCmbBox);
 		
@@ -134,7 +134,7 @@ public class CreateMSPositionPanel extends JPanel {
 	}
 	
 	private void getData() {
-		departemenCmbBox.setList(ServiceFactory.getPersonaliaBL().getDepartements(""));
+		departemenCmbBox.setList(ServiceFactory.getPersonaliaBL().getDepartments(""));
 		divisionCmbBox.setList(ServiceFactory.getPersonaliaBL().getDivisions(""));
 	}
 

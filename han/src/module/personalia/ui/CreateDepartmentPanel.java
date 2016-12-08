@@ -12,18 +12,18 @@ import javax.swing.JTextField;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.personalia.model.Departement;
+import module.personalia.model.Department;
 import module.personalia.model.Division;
 import controller.ServiceFactory;
 
-public class CreateDepartementPanel extends JPanel {
+public class CreateDepartmentPanel extends JPanel {
 
 	private static final long serialVersionUID = -9009351103530748031L;
 	private JTextField departmentNameField;
 	private JTextField departementIdField;
 	private ComboBox<Division> divisionCmbBox;
 
-	public CreateDepartementPanel() {
+	public CreateDepartmentPanel() {
 		
 		setSize(1024, 630);
 		setLayout(null);
@@ -102,10 +102,10 @@ public class CreateDepartementPanel extends JPanel {
 	}
 
 	protected void save() {
-		Departement departement = new Departement();
+		Department departement = new Department();
 
 		try {
-			ServiceFactory.getPersonaliaBL().saveDepartement(departement);
+			ServiceFactory.getPersonaliaBL().saveDepartment(departement);
 			option();
 		} catch (Exception e) {
 			e.printStackTrace();

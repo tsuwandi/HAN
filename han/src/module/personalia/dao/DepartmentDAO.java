@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import module.personalia.model.Departement;
+import module.personalia.model.Department;
 import module.util.DateUtil;
 
-public class DepartementDAO {
+public class DepartmentDAO {
 
 	private Connection connection;
 
@@ -19,17 +19,17 @@ public class DepartementDAO {
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 
-	private String getAllQuery = "select * from departement where delete_date is null and delete_by is null";
-	private String insertQuery = "insert into departement (id, name, division_id, input_date, input_by, edit_date, edit_by) values (?, ?, ?, ?, ?, ?, ?)";
-	private String updateQuery = "update departement set name = ?, division_id = ?, edit_date = ?, edit_by = ? where id = ?";
-	private String deleteQuery = "update departement set delete_date = ?, delete_by = ? where id = ?";
+	private String getAllQuery = "select * from department where delete_date is null and delete_by is null";
+	private String insertQuery = "insert into department (id, name, division_id, input_date, input_by, edit_date, edit_by) values (?, ?, ?, ?, ?, ?, ?)";
+	private String updateQuery = "update department set name = ?, division_id = ?, edit_date = ?, edit_by = ? where id = ?";
+	private String deleteQuery = "update department set delete_date = ?, delete_by = ? where id = ?";
 	
-	public DepartementDAO(Connection connection) {
+	public DepartmentDAO(Connection connection) {
 		this.connection = connection;
 	}
 	
-	public List<Departement> getAllData(String query){
-		List<Departement> departements = new ArrayList<>();
+	public List<Department> getAllData(String query){
+		List<Department> departements = new ArrayList<>();
 
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery+query);
@@ -37,7 +37,7 @@ public class DepartementDAO {
 			ResultSet resultSet = getAllStatement.executeQuery();
 
 			while (resultSet.next()) {
-				Departement departement = new Departement();
+				Department departement = new Department();
 				departement.setId(resultSet.getString("id"));
 				departement.setName(resultSet.getString("name"));
 				departement.setDivisionId(resultSet.getString("division_id"));
@@ -51,7 +51,7 @@ public class DepartementDAO {
 		return departements;
 	}
 
-	public void insert(Departement departement) {
+	public void insert(Department departement) {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setString(1, departement.getId());
@@ -68,7 +68,7 @@ public class DepartementDAO {
 		}
 	}
 
-	public void update(Departement departement) {
+	public void update(Department departement) {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 		
@@ -84,7 +84,7 @@ public class DepartementDAO {
 		}
 	}
 
-	public void delete(Departement departement) {
+	public void delete(Department departement) {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			deleteStatement.setDate(1, DateUtil.toDate(departement.getDeleteDate()));

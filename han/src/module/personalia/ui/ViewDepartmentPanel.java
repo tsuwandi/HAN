@@ -13,22 +13,22 @@ import javax.swing.JTextField;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.personalia.model.Departement;
+import module.personalia.model.Department;
 import module.personalia.model.Division;
 import module.util.Bridging;
 import controller.ServiceFactory;
 
-public class ViewDepartementPanel extends JPanel implements Bridging{
+public class ViewDepartmentPanel extends JPanel implements Bridging{
 
 	private static final long serialVersionUID = 6956229404383584838L;
 	private JTextField departementNameField;
 	private JTextField departementIdField;
 	private ComboBox<Division> divisionCmbBox;
 	private JButton editBtn;
-	private Departement departement;
+	private Department departement;
 	private boolean editMode = false;
 	
-	public ViewDepartementPanel() {
+	public ViewDepartmentPanel() {
 		setSize(1024, 630);
 		setLayout(null);
 		
@@ -127,7 +127,7 @@ public class ViewDepartementPanel extends JPanel implements Bridging{
 		if (DialogBox.showDeleteChoice()==0) {
 			departement.setDeleteDate(new Date());
 			departement.setDeleteBy("");
-			ServiceFactory.getPersonaliaBL().deleteDepartement(departement);
+			ServiceFactory.getPersonaliaBL().deleteDepartment(departement);
 			MainPanel.changePanel("module.personalia.ui.DepartementConfigPanel");
 		} else {
 			
@@ -135,7 +135,7 @@ public class ViewDepartementPanel extends JPanel implements Bridging{
 	}
 
 	protected void update() {
-		Departement departement = new Departement();
+		Department departement = new Department();
 		departement.setId(departementIdField.getText());
 		departement.setName(departementNameField.getText());
 		departement.setDivisionId(divisionCmbBox.getDataIndex().getId());
@@ -143,7 +143,7 @@ public class ViewDepartementPanel extends JPanel implements Bridging{
 		departement.setEditBy("");
 		
 		try {
-			ServiceFactory.getPersonaliaBL().updateDepartement(departement);
+			ServiceFactory.getPersonaliaBL().updateDepartment(departement);
 			DialogBox.showEdit();
 			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
 		} catch (Exception e) {
@@ -154,7 +154,7 @@ public class ViewDepartementPanel extends JPanel implements Bridging{
 
 	@Override
 	public void invokeObjects(Object... objects) {
-		departement = (Departement) objects[0];
+		departement = (Department) objects[0];
 		
 		departementIdField.setText(departement.getId());
 		departementNameField.setText(departement.getName());

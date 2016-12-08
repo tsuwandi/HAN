@@ -15,7 +15,7 @@ import main.component.ComboBox;
 import module.personalia.model.Division;
 
 
-public class SearchDepartementPanel extends JPanel {
+public class SearchDepartmentPanel extends JPanel {
 
 	private static final long serialVersionUID = 2708997445150245596L;
 	private JTextField departmentNameField;
@@ -23,7 +23,7 @@ public class SearchDepartementPanel extends JPanel {
 	private ComboBox<Division> divisionCmbBox;
 	private List<Division> divisions;
 	
-	public SearchDepartementPanel() {
+	public SearchDepartmentPanel() {
 		setSize(500, 200);
 		setLayout(null);
 		

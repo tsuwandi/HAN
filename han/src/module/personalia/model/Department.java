@@ -2,7 +2,9 @@ package module.personalia.model;
 
 import java.util.Date;
 
-public class Departement{
+import module.util.ComboBoxProperties;
+
+public class Department implements ComboBoxProperties{
 
 	String id;
 	String name;
@@ -67,5 +69,9 @@ public class Departement{
 	}
 	public void setDeleteBy(String deleteBy) {
 		this.deleteBy = deleteBy;
+	}
+	@Override
+	public Object getField() {
+		return name;
 	}	
 }
