@@ -23,7 +23,7 @@ import module.personalia.model.Department;
 public class DepartmentConfigPanel extends JPanel {
 
 	private static final long serialVersionUID = -523978922179504555L;
-	private JTable departementConfigTable;
+	private JTable departmentConfigTable;
 	private JTextField searchField;
 	private List<Department> departements = new ArrayList<>();
 	private DepartementConfigTableModel divisionConfigTableModel;
@@ -51,15 +51,15 @@ public class DepartmentConfigPanel extends JPanel {
 		scrollPane.setBounds(0, 0, 1004, 363);
 		pnlTable.add(scrollPane);
 
-		departementConfigTable = new JTable();
-		departementConfigTable.setFocusable(false);
-		departementConfigTable.setAutoCreateRowSorter(true);
-		scrollPane.setViewportView(departementConfigTable);
-		departementConfigTable.addMouseListener(new MouseAdapter() {
+		departmentConfigTable = new JTable();
+		departmentConfigTable.setFocusable(false);
+		departmentConfigTable.setAutoCreateRowSorter(true);
+		scrollPane.setViewportView(departmentConfigTable);
+		departmentConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (departementConfigTable.columnAtPoint(e.getPoint())==5) {
-					MainPanel.changePanel("module.personalia.ui.ViewDepartementPanel", getSelectedData());
+				if (departmentConfigTable.columnAtPoint(e.getPoint())==4) {
+					MainPanel.changePanel("module.personalia.ui.ViewDepartmentPanel", getSelectedData());
 				}
 			}
 		});
@@ -76,7 +76,7 @@ public class DepartmentConfigPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.personalia.ui.CreateDepartementPanel");
+				MainPanel.changePanel("module.personalia.ui.CreateDepartmentPanel");
 			}
 		});
 
@@ -96,12 +96,12 @@ public class DepartmentConfigPanel extends JPanel {
 	}
 	
 	protected Department getSelectedData() {
-		int row = departementConfigTable.getSelectedRow();
+		int row = departmentConfigTable.getSelectedRow();
 
 		Department departement = new Department();
-		departement.setId(departementConfigTable.getValueAt(row, 1).toString());
-		departement.setName(departementConfigTable.getValueAt(row, 2).toString());
-		departement.setDivisionId(departementConfigTable.getValueAt(row, 3).toString());
+		departement.setId(departmentConfigTable.getValueAt(row, 1).toString());
+		departement.setName(departmentConfigTable.getValueAt(row, 2).toString());
+		departement.setDivisionId(departmentConfigTable.getValueAt(row, 3).toString());
 
 		return departement;
 	}
@@ -110,7 +110,7 @@ public class DepartmentConfigPanel extends JPanel {
 		departements.clear();
 		departements = ServiceFactory.getPersonaliaBL().getDepartments("");
 		divisionConfigTableModel = new DepartementConfigTableModel(departements);
-		departementConfigTable.setModel(divisionConfigTableModel);
+		departmentConfigTable.setModel(divisionConfigTableModel);
 	}
 
 	class DepartementConfigTableModel extends AbstractTableModel {

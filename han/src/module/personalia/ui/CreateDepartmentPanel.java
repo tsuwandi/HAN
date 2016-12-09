@@ -3,6 +3,7 @@ package module.personalia.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,6 +15,7 @@ import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.personalia.model.Department;
 import module.personalia.model.Division;
+import module.util.DateUtil;
 import controller.ServiceFactory;
 
 public class CreateDepartmentPanel extends JPanel {
@@ -98,11 +100,18 @@ public class CreateDepartmentPanel extends JPanel {
 	}
 
 	private void getLastID() {
-		departementIdField.setText(ServiceFactory.getPersonaliaBL().getLastIdDivision().toString());
+		departementIdField.setText(ServiceFactory.getPersonaliaBL().getLastIdDepartment().toString());
 	}
 
 	protected void save() {
 		Department departement = new Department();
+		departement.setId(departementIdField.getText());
+		departement.setName(departmentNameField.getText());
+		departement.setDivisionId(divisionCmbBox.getDataIndex().getId());
+		departement.setInputDate(DateUtil.toDate(new Date()));
+		departement.setInputBy("");
+		departement.setEditDate(DateUtil.toDate(new Date()));
+		departement.setEditBy("");
 
 		try {
 			ServiceFactory.getPersonaliaBL().saveDepartment(departement);
@@ -118,7 +127,7 @@ public class CreateDepartmentPanel extends JPanel {
 		if (DialogBox.showAfterChoiceInsert()==0) {
 			clear();
 		} else {
-			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
+			MainPanel.changePanel("module.personalia.ui.DepartmentConfigPanel");
 		}
 	}
 

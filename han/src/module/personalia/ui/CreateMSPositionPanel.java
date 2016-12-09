@@ -3,6 +3,7 @@ package module.personalia.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,6 +17,7 @@ import main.panel.MainPanel;
 import module.personalia.model.Department;
 import module.personalia.model.Division;
 import module.personalia.model.MSPosition;
+import module.util.DateUtil;
 
 public class CreateMSPositionPanel extends JPanel {
 
@@ -28,7 +30,6 @@ public class CreateMSPositionPanel extends JPanel {
 	private JTextField salaryMaxField;
 
 	public CreateMSPositionPanel() {
-
 		setSize(1024, 630);
 		setLayout(null);
 
@@ -150,6 +151,10 @@ public class CreateMSPositionPanel extends JPanel {
 		msPosition.setDivisionId(divisionCmbBox.getDataIndex().getId());
 		msPosition.setSalaryMin(Integer.parseInt(salaryMinField.getText()));
 		msPosition.setSalaryMax(Integer.parseInt(salaryMaxField.getText()));
+		msPosition.setInputDate(DateUtil.toDate(new Date()));
+		msPosition.setInputBy("");
+		msPosition.setEditDate(DateUtil.toDate(new Date()));
+		msPosition.setEditBy("");
 		
 		try {
 			ServiceFactory.getPersonaliaBL().saveMSPosition(msPosition);

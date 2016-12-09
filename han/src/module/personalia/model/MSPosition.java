@@ -8,8 +8,10 @@ public class MSPosition {
 	String name;
 	String departementId;
 	String departementName;
+	Department department;
 	String divisionId;
 	String divisionName;
+	Division division;
 	Integer salaryMin;
 	Integer salaryMax;
 	Date inputDate;
@@ -102,5 +104,17 @@ public class MSPosition {
 	}
 	public void setDeleteBy(String deleteBy) {
 		this.deleteBy = deleteBy;
+	}
+	public Department getDepartment() {
+		return department;
+	}
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+	public Division getDivision() {
+		return division;
+	}
+	public void setDivision(Division division) {
+		this.division = division;
 	}
 }

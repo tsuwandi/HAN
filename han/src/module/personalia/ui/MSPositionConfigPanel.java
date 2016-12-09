@@ -27,11 +27,11 @@ public class MSPositionConfigPanel extends JPanel{
 	private JTextField searchField;
 	private List<MSPosition> msPositions = new ArrayList<>();
 	private EmployeeTypeConfigTableModel msPositionConfigTableModel;
-	
+
 	public MSPositionConfigPanel() {
 		setSize(1024, 630);
 		setLayout(null);
-		
+
 		JLabel breadCrumbLbl = new JLabel("Personalia > Jabatan");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 134, 25);
@@ -54,15 +54,16 @@ public class MSPositionConfigPanel extends JPanel{
 		msPositionConfigTable = new JTable();
 		msPositionConfigTable.setFocusable(false);
 		msPositionConfigTable.setAutoCreateRowSorter(true);
-		scrollPane.setViewportView(msPositionConfigTable);
 		msPositionConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (msPositionConfigTable.columnAtPoint(e.getPoint())==3) {
+				if (msPositionConfigTable.columnAtPoint(e.getPoint())==7) {
 					MainPanel.changePanel("module.personalia.ui.ViewMSPositionPanel", getSelectedData());
 				}
 			}
 		});
+		
+		scrollPane.setViewportView(msPositionConfigTable);
 
 		searchField = new JTextField();
 		searchField.setColumns(10);
@@ -93,8 +94,15 @@ public class MSPositionConfigPanel extends JPanel{
 		add(search);
 
 		getData();
+		
+		msPositionConfigTable.getColumnModel().getColumn(5).setPreferredWidth(0);
+		msPositionConfigTable.getColumnModel().getColumn(5).setMaxWidth(0);
+		msPositionConfigTable.getColumnModel().getColumn(5).setMinWidth(0);
+		msPositionConfigTable.getColumnModel().getColumn(6).setPreferredWidth(0);
+		msPositionConfigTable.getColumnModel().getColumn(6).setMaxWidth(0);
+		msPositionConfigTable.getColumnModel().getColumn(6).setMinWidth(0);
 	}
-	
+
 	protected MSPosition getSelectedData() {
 		int row = msPositionConfigTable.getSelectedRow();
 
@@ -103,6 +111,8 @@ public class MSPositionConfigPanel extends JPanel{
 		msPosition.setName(msPositionConfigTable.getValueAt(row, 2).toString());
 		msPosition.setDepartementName(msPositionConfigTable.getValueAt(row, 3).toString());
 		msPosition.setDivisionName(msPositionConfigTable.getValueAt(row, 4).toString());
+		msPosition.setSalaryMin((Integer) msPositionConfigTable.getValueAt(row, 5));
+		msPosition.setSalaryMax((Integer) msPositionConfigTable.getValueAt(row, 6));
 
 		return msPosition;
 	}
@@ -125,7 +135,7 @@ public class MSPositionConfigPanel extends JPanel{
 
 		@Override
 		public int getColumnCount() {
-			return 6;
+			return 8;
 		}
 
 		@Override
@@ -149,6 +159,10 @@ public class MSPositionConfigPanel extends JPanel{
 			case 4:
 				return msPosition.getDivisionName();
 			case 5:
+				return msPosition.getSalaryMin();
+			case 6:
+				return msPosition.getSalaryMax();
+			case 7:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
@@ -169,6 +183,10 @@ public class MSPositionConfigPanel extends JPanel{
 			case 4:
 				return String.class;
 			case 5:
+				return Integer.class;
+			case 6:
+				return Integer.class;
+			case 7:
 				return String.class;
 			default:
 				return String.class;
@@ -189,6 +207,10 @@ public class MSPositionConfigPanel extends JPanel{
 			case 4:
 				return "Divisi";
 			case 5:
+				return "";
+			case 6:
+				return "";
+			case 7:
 				return "Action";
 			default:
 				return "";
