@@ -1906,3 +1906,46 @@ INSERT INTO `division` (`id`, `name`, `input_date`, `input_by`, `edit_date`, `ed
 ALTER TABLE `division`
   ADD PRIMARY KEY (`id`);
 /* syaiful end*/
+/* Master Karyawan*/
+  CREATE TABLE `department` (
+  `id` varchar(10) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `division_id` varchar(10) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(30) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(30) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `department`
+  ADD PRIMARY KEY (`id`);
+
+  INSERT INTO `department` (`id`, `name`, `division_id`, `input_date`, `input_by`, `edit_date`, `edit_by`, `delete_date`, `delete_by`) VALUES
+('3', 'Programmer', NULL, '2016-12-08', '', '2016-12-08', '', NULL, NULL),
+('4', 'Senior Programmer', NULL, '2016-12-08', '', '2016-12-08', '', NULL, NULL),
+('7', 'Quality Control', NULL, '2016-12-08', '', '2016-12-08', '', NULL, NULL),
+('DEPT0001', 'Departemen 1', '3', NULL, NULL, '2016-12-08', '', NULL, NULL);
+
+
+CREATE TABLE `ms_position` (
+  `id` varchar(10) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `min_salary` int(11) DEFAULT NULL,
+  `max_salary` int(11) DEFAULT NULL,
+  `department_id` varchar(10) DEFAULT NULL,
+  `division_id` varchar(10) NOT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(30) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(30) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `ms_position`
+  ADD PRIMARY KEY (`id`);
+
+INSERT INTO `ms_position` (`id`, `name`, `min_salary`, `max_salary`, `department_id`, `division_id`, `input_date`, `input_by`, `edit_date`, `edit_by`, `delete_date`, `delete_by`) VALUES
+('POS0001', 'Posisi 1', 5000000, 10000000, 'DEPT0001', '3', NULL, NULL, NULL, NULL, NULL, NULL);
