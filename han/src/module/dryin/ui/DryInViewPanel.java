@@ -232,7 +232,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 		lblC.setBounds(530, 230, 150, 25);
 		panel.add(lblC);
 
-		lblOrdinal = new JLabel("Sequence");
+		lblOrdinal = new JLabel("No Pallet");
 		lblOrdinal.setBounds(220, 255, 150, 25);
 		panel.add(lblOrdinal);
 

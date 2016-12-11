@@ -1,4 +1,4 @@
-package module.purchaseprodresult.ui;
+package module.purchaseprodresultpayment.ui;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -24,7 +24,7 @@ import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import module.product.model.Product;
-import module.purchaseprodresult.model.PPRProduct;
+import module.purchaseprodresultpayment.model.PPRProduct;
 
 public class PPRProductDialog extends JDialog {
 
@@ -36,12 +36,17 @@ public class PPRProductDialog extends JDialog {
 
 	JLabel lblProduct;
 	JLabel lblQty;
+	JLabel lblUnitPrice;
+	JLabel lblSubTotal;
 
 	ComboBox<Product> cbProduct;
 	JTextField txtQty;
+	JTextField txtUnitPrice;
+	JTextField txtSubTotal;
 
 	JLabel lblErrorProduct;
 	JLabel lblErrorQty;
+	JLabel lblErrorUnitPrice;
 
 	JButton btnInsert;
 
@@ -54,9 +59,6 @@ public class PPRProductDialog extends JDialog {
 	List<Product> listOfProduct = null;
 
 	private Integer index;
-	
-	final String PRODUCT_CODE_NORMAL_A = "PDC009";
-	final String PRODUCT_CODE_NORMAL_B = "PDC009-2";
 
 	public PPRProductDialog(boolean edit, PPRProduct pprProduct, PurchaseProdResultCreatePanel pprCreatePanel,
 			Integer index) {
@@ -92,7 +94,7 @@ public class PPRProductDialog extends JDialog {
 
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 600, 165);
+		setBounds(100, 100, 600, 225);
 		getContentPane().setLayout(null);
 
 		DocumentFilter filter = new UppercaseDocumentFilter();
@@ -103,7 +105,7 @@ public class PPRProductDialog extends JDialog {
 
 		listOfProduct = new ArrayList<Product>();
 		try {
-			listOfProduct = ServiceFactory.getPurchaseProductResultBL().getAllByProductCode(PRODUCT_CODE_NORMAL_A, PRODUCT_CODE_NORMAL_B);
+			listOfProduct = ServiceFactory.getPurchaseProductResultPaymentBL().getAllPrdctByPrdtCtgryIsPrdctnRslt();
 			listOfProduct.add(0, new Product("-- Pilih Produk --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
@@ -125,6 +127,13 @@ public class PPRProductDialog extends JDialog {
 		getContentPane().add(lblQty);
 
 		txtQty = new NumberField(5);
+		txtQty.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+//				txtSubTotal.setText(String.valueOf(getSubTotal()));
+//				txtSubTotal.updateUI();
+			}
+		});
 		txtQty.setBounds(150, 45, 150, 25);
 		getContentPane().add(txtQty);
 
@@ -133,7 +142,35 @@ public class PPRProductDialog extends JDialog {
 		lblErrorQty.setBounds(335, 45, 225, 25);
 		getContentPane().add(lblErrorQty);
 
-		
+		lblUnitPrice = new JLabel("<html>Harga Satuan <font color=\"red\">*</font></html>");
+		lblUnitPrice.setBounds(25, 75, 150, 25);
+		getContentPane().add(lblUnitPrice);
+
+		txtUnitPrice = new NumberField(10);
+		txtUnitPrice.setBounds(150, 75, 150, 25);
+		txtUnitPrice.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+//				txtSubTotal.setText(String.valueOf(getSubTotal()));
+//				txtSubTotal.updateUI();
+			}
+		});
+		getContentPane().add(txtUnitPrice);
+
+		lblErrorUnitPrice = new JLabel();
+		lblErrorUnitPrice.setForeground(Color.RED);
+		lblErrorUnitPrice.setBounds(335, 75, 225, 25);
+		getContentPane().add(lblErrorUnitPrice);
+
+//		lblSubTotal = new JLabel("Sub Total");
+//		lblSubTotal.setBounds(25, 105, 150, 25);
+//		getContentPane().add(lblSubTotal);
+
+//		txtSubTotal = new NumberField(10);
+//		txtSubTotal.setEnabled(false);
+//		txtSubTotal.setBounds(150, 105, 150, 25);
+//		getContentPane().add(txtSubTotal);
+
 		btnInsert = new JButton("Insert");
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -144,19 +181,36 @@ public class PPRProductDialog extends JDialog {
 				doInsert();
 			}
 		});
-		btnInsert.setBounds(460, 75, 100, 25);
+		btnInsert.setBounds(460, 135, 100, 25);
 		getContentPane().add(btnInsert);
 
 		if (isEdit == true) {
 			txtQty.setText(String.valueOf(pprProduct.getQty()));
+			txtUnitPrice.setText(String.valueOf(pprProduct.getUnitPrice()));
 			cbProduct.setSelectedItem(pprProduct.getProduct().getProductName());
+			//txtSubTotal.setText(String.valueOf(this.getSubTotal()));
 		}
 		
 		if(isView == true) {
 			txtQty.setEnabled(false);
+			txtUnitPrice.setEnabled(false);
 			cbProduct.setEnabled(false);
+			//txtSubTotal.setEnabled(false);
 			btnInsert.setEnabled(false);
 		}
+	}
+
+	public double getSubTotal() {
+		if ("".equals(txtQty.getText()))
+			return 0;
+
+		if ("".equals(txtUnitPrice.getText()))
+			return 0;
+
+		int qty = Integer.valueOf(txtQty.getText());
+		double unitPrice = Double.valueOf(txtUnitPrice.getText());
+
+		return qty * unitPrice;
 	}
 
 	protected boolean doValidate() {
@@ -164,7 +218,8 @@ public class PPRProductDialog extends JDialog {
 
 		lblErrorProduct.setText("");
 		lblErrorQty.setText("");
-		
+		lblErrorUnitPrice.setText("");
+
 		if (cbProduct.getSelectedItem() == null || cbProduct.getSelectedIndex() == 0) {
 			lblErrorProduct.setText("Combobox Product harus dipilih.");
 			isValid = false;
@@ -175,13 +230,22 @@ public class PPRProductDialog extends JDialog {
 			isValid = false;
 		}
 
+		if (txtUnitPrice.getText() == null || txtUnitPrice.getText().length() == 0) {
+			lblErrorQty.setText("Textbox Harga Satuan harus diisi.");
+			isValid = false;
+		}
+
 		return isValid;
 	}
 
 	protected void doInsert() {
+
+		// suppVehicle = new SuppVehicle();
 		pprProduct.setProductCode(cbProduct.getDataIndex().getProductCode());
 		pprProduct.setQty(Integer.valueOf(txtQty.getText()));
-		
+		pprProduct.setUnitPrice(Double.valueOf(txtUnitPrice.getText()));
+		pprProduct.setSubTotal(Double.valueOf(getSubTotal()));
+		// add object vehicle type
 		Product product = new Product();
 		product.setProductCode(cbProduct.getDataIndex().getProductCode());
 		product.setProductName(cbProduct.getDataIndex().getProductName());

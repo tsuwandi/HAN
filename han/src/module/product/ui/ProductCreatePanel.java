@@ -9,6 +9,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -179,6 +180,7 @@ public class ProductCreatePanel extends JPanel {
 		idField.setDocument(new JTextFieldLimit(18));
 		idField.setBounds(220, 80, 150, 25);
 		((AbstractDocument) idField.getDocument()).setDocumentFilter(filter);
+		idField.setEnabled(false);
 
 		nameField = new JTextField();
 		nameField.setDocument(new JTextFieldLimit(50));
@@ -315,6 +317,8 @@ public class ProductCreatePanel extends JPanel {
 					gradeField.removeAllItems();
 					gradeField.setList(grades);
 					gradeField.updateUI();
+					
+					makeCodeNumber(catField.getDataIndex().getProductCategory());
 				} else {
 					gradeField.removeAllItems();
 					getAllGradeByProductCategoryId(0);
@@ -574,16 +578,23 @@ public class ProductCreatePanel extends JPanel {
 			
 			product.setMinQty(Integer.parseInt(minQtyField.getText()));
 			
-			Product checkProduct = ServiceFactory.getProductBL().isProductExists(Boolean.FALSE, product);
-			if (checkProduct.getIsExists() > 0) {
-				JOptionPane.showMessageDialog(null,
-						"Produk sudah pernah diinput dengan kode " + checkProduct.getProductCode(), "Warning",
-						JOptionPane.YES_NO_OPTION);
+			if(!ProductCategory.HASIL_PRODUKSI.equalsIgnoreCase(catField.getDataIndex().getProductCategory())) {
+				Product checkProduct = ServiceFactory.getProductBL().isProductExists(Boolean.FALSE, product);
+				if (checkProduct.getIsExists() > 0) {
+					JOptionPane.showMessageDialog(null,
+							"Produk sudah pernah diinput dengan kode " + checkProduct.getProductCode(), "Warning",
+							JOptionPane.YES_NO_OPTION);
+				} else {
+					ServiceFactory.getProductBL().save(product);
+					DialogBox.showInsert();
+					MainPanel.changePanel("module.product.ui.ProductListPanel");
+				}
 			} else {
 				ServiceFactory.getProductBL().save(product);
 				DialogBox.showInsert();
 				MainPanel.changePanel("module.product.ui.ProductListPanel");
 			}
+			
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
@@ -908,6 +919,31 @@ public class ProductCreatePanel extends JPanel {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
+	}
+	
+	public void makeCodeNumber(String productCategory) {
+		String constantProductCategory = "";
+		
+		if(ProductCategory.BALKEN_BASAH.equalsIgnoreCase(productCategory)) {
+			constantProductCategory = ProductCategory.BALKEN_BASAH_CD;
+		}else if(ProductCategory.BALKEN_KERING.equalsIgnoreCase(productCategory)) {
+			constantProductCategory = ProductCategory.BALKEN_KERING_CD;
+		}else if(ProductCategory.HASIL_PRODUKSI.equalsIgnoreCase(productCategory)) {
+			constantProductCategory = ProductCategory.HASIL_PRODUKSI_CD;
+		}else if(ProductCategory.BARANG_PENDUKUNG.equalsIgnoreCase(productCategory)) {
+			constantProductCategory = ProductCategory.BARANG_PENDUKUNG_CD;
+		}
+		
+		String ordinal = null;
+		try {
+			ordinal = ServiceFactory.getProductBL().getOrdinalOfCodeNumber(productCategory);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			LOGGER.error(e.getMessage());
+			DialogBox.showErrorException();
+		}
+
+		idField.setText(new StringBuilder().append(constantProductCategory).append("-").append(ordinal).toString());
 	}
 
 }

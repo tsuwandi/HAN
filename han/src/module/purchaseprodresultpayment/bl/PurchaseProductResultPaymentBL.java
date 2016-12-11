@@ -1,38 +1,34 @@
-package module.purchaseprodresult.bl;
+package module.purchaseprodresultpayment.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import module.dryin.dao.DryInDAO;
 import module.product.dao.ProductDAO;
 import module.product.model.Product;
-import module.purchaseprodresult.dao.PPRNoteDAO;
-import module.purchaseprodresult.dao.PPRProductDAO;
-import module.purchaseprodresult.dao.PurchaseProdResultDAO;
-import module.purchaseprodresult.model.PPRNote;
-import module.purchaseprodresult.model.PPRProduct;
-import module.purchaseprodresult.model.PurchaseProdResult;
+import module.purchaseprodresultpayment.dao.PPRProductDAO;
+import module.purchaseprodresultpayment.dao.PurchaseProdResultDAO;
+import module.purchaseprodresultpayment.model.PPRProduct;
+import module.purchaseprodresultpayment.model.PurchaseProdResult;
 import module.sn.currency.dao.CurrencyDAO;
 import module.sn.currency.model.Currency;
 import module.supplier.dao.SupplierDAO;
 import module.supplier.model.Supplier;
 
-public class PurchaseProductResultBL  {
+public class PurchaseProductResultPaymentBL  {
 	private DataSource dataSource;
 
-	public PurchaseProductResultBL(DataSource dataSource) {
+	public PurchaseProductResultPaymentBL(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
 	
-	public List<Product> getAllByProductCode(String productCodeNormalA, String productCodeNormalB) throws SQLException {
+	public List<Product> getAllPrdctByPrdtCtgryIsPrdctnRslt() throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProductDAO(con).getAllByProductCode(productCodeNormalA, productCodeNormalB);
+			return null; // new ProductDAO(con).getAllByProductCategoryIsProductionResult();
 		} finally {
 			con.close();
 		}
@@ -99,7 +95,7 @@ public class PurchaseProductResultBL  {
 	}
 	
 	private static final String STATUS = "COMPLETED";
-	public void save(PurchaseProdResult ppr, List<PPRProduct> pprProducts, List<PPRNote> pprNotes)
+	public void save(PurchaseProdResult ppr, List<PPRProduct> pprProducts)
 			throws SQLException {
 		Connection con = null;
 		try {
@@ -115,11 +111,6 @@ public class PurchaseProductResultBL  {
 				new PPRProductDAO(con).save(s);
 			}
 			
-			for (PPRNote s : pprNotes) {
-				s.setPprCode(ppr.getPprCode());
-				new PPRNoteDAO(con).save(s);
-			}
-			
 			con.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -130,8 +121,7 @@ public class PurchaseProductResultBL  {
 		}
 	}
 	
-	public void update(PurchaseProdResult ppr, List<PPRProduct> pprProducts, List<PPRProduct> pprProductsDeleted,
-			List<PPRNote> pprNotes, List<PPRNote> pprNotesDeleted)
+	public void update(PurchaseProdResult ppr, List<PPRProduct> pprProducts, List<PPRProduct> pprProductsDeleted)
 			throws SQLException {
 		Connection con = null;
 		try {
@@ -154,20 +144,6 @@ public class PurchaseProductResultBL  {
 					new PPRProductDAO(con).deleteById(s.getId());
 			}
 			
-			for (PPRNote s : pprNotes) {
-				if (s.getId() == 0) {
-					s.setPprCode(ppr.getPprCode());
-					new PPRNoteDAO(con).save(s);
-				} else {
-					new PPRNoteDAO(con).update(s);
-				}
-			}
-
-			for (PPRNote s : pprNotesDeleted) {
-				if (s.getId() != 0)
-					new PPRNoteDAO(con).deleteById(s.getId());
-			}
-			
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
@@ -185,7 +161,6 @@ public class PurchaseProductResultBL  {
 
 			new PurchaseProdResultDAO(con).delete(ppr.getId());
 			new PPRProductDAO(con).deleteAll(ppr.getPprCode());
-			new PPRNoteDAO(con).deleteAll(ppr.getPprCode());
 
 			con.commit();
 		} catch (SQLException e) {
@@ -214,16 +189,6 @@ public class PurchaseProductResultBL  {
 			return String.format("%04d",
 					new PurchaseProdResultDAO(con).getOrdinalOfCodeNumberByYear(year) + 1);
 
-		} finally {
-			con.close();
-		}
-	}
-	
-	public List<PPRNote> getPPRNoteByPPRCode(String pprCode) throws SQLException {
-		Connection con = null;
-		try {
-			con = dataSource.getConnection();
-			return new PPRNoteDAO(con).getAllByPPRCode(pprCode);
 		} finally {
 			con.close();
 		}

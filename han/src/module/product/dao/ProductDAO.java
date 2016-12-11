@@ -659,16 +659,18 @@ public class ProductDAO {
 		return product;
 	}
 	
-	private PreparedStatement getAllByProductCategoryIsProductionResultStatement;
-	private String getAllByProductCategoryIsProductionResultQuery = "select product_code, product_name from product where product_category_id = 3";
+	private PreparedStatement getAllByProductCodeStatement;
+	private String getAllByProductCodeQuery = "select product_code, product_name from product where product_code IN (?,?)";
 
-	public List<Product> getAllByProductCategoryIsProductionResult() throws SQLException {
+	public List<Product> getAllByProductCode(String normal1, String normal2) throws SQLException {
 		List<Product> products = new ArrayList<Product>();
 
 		try {
-			getAllByProductCategoryIsProductionResultStatement = connection.prepareStatement(getAllByProductCategoryIsProductionResultQuery);
-
-			ResultSet rs = getAllByProductCategoryIsProductionResultStatement.executeQuery();
+			getAllByProductCodeStatement = connection.prepareStatement(getAllByProductCodeQuery);
+			getAllByProductCodeStatement.setString(1, normal1);
+			getAllByProductCodeStatement.setString(2, normal2);
+			
+			ResultSet rs = getAllByProductCodeStatement.executeQuery();
 			while (rs.next()) {
 				Product product = new Product();
 				product.setProductCode(rs.getString("product_code"));
@@ -683,5 +685,30 @@ public class ProductDAO {
 		}
 
 		return products;
+	}
+	
+	private PreparedStatement getOrdinalOfCodeNumberStatement;
+	
+	private String getOrdinalOfCodeNumberQuery = "SELECT SUBSTRING_INDEX(p.product_code, '-', -1) AS ordinal FROM product p "
+			+ "INNER JOIN product_category pc ON pc.id = p.product_category_id "
+			+ "WHERE pc.product_category = ? "
+			+ "ORDER BY ordinal DESC LIMIT 1 ";
+	
+	public int getOrdinalOfCodeNumber(String productCategory) throws SQLException {
+		int ordinal = 0;
+		try {
+			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
+			getOrdinalOfCodeNumberStatement.setString(1, productCategory);
+			
+			ResultSet rs = getOrdinalOfCodeNumberStatement.executeQuery();
+			while (rs.next()) {
+				ordinal = rs.getInt("ordinal");
+			}
+
+		} catch (SQLException ex) {
+			throw new SQLException(ex.getMessage());
+		}
+
+		return ordinal;
 	}
 }

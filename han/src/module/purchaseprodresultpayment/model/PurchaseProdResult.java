@@ -1,4 +1,4 @@
-package module.purchaseprodresult.model;
+package module.purchaseprodresultpayment.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,9 +13,16 @@ public class PurchaseProdResult implements Serializable {
 	private int id;
 	private String pprCode;
 	private String suppCode;
+	private String purchaseNote;
 	private Date purchaseDate;
 	private Date dueDate;
+	private int currencyId;
+	private Double exchangeRate;
 	private String status;
+	private Double total;
+	private Double discount;
+	private Double tax;
+	private Double grandTotal;
 	private Date inputDate;
 	private String inputBy;
 	private Date editDate;
@@ -47,6 +54,14 @@ public class PurchaseProdResult implements Serializable {
 		this.suppCode = suppCode;
 	}
 
+	public String getPurchaseNote() {
+		return purchaseNote;
+	}
+
+	public void setPurchaseNote(String purchaseNote) {
+		this.purchaseNote = purchaseNote;
+	}
+
 	public Date getPurchaseDate() {
 		return purchaseDate;
 	}
@@ -63,12 +78,60 @@ public class PurchaseProdResult implements Serializable {
 		this.dueDate = dueDate;
 	}
 
+	public int getCurrencyId() {
+		return currencyId;
+	}
+
+	public void setCurrencyId(int currencyId) {
+		this.currencyId = currencyId;
+	}
+
+	public Double getExchangeRate() {
+		return exchangeRate;
+	}
+
+	public void setExchangeRate(Double exchangeRate) {
+		this.exchangeRate = exchangeRate;
+	}
+
 	public String getStatus() {
 		return status;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+
+	public Double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Double discount) {
+		this.discount = discount;
+	}
+
+	public Double getTax() {
+		return tax;
+	}
+
+	public void setTax(Double tax) {
+		this.tax = tax;
+	}
+
+	public Double getGrandTotal() {
+		return grandTotal;
+	}
+
+	public void setGrandTotal(Double grandTotal) {
+		this.grandTotal = grandTotal;
 	}
 
 	public Date getInputDate() {
@@ -120,21 +183,38 @@ public class PurchaseProdResult implements Serializable {
 	}
 
 	@Override
+	public String toString() {
+		return "PurchaseProductResult [id=" + id + ", pprCode=" + pprCode + ", suppCode=" + suppCode
+				+ ", purchaseNote=" + purchaseNote + ", purchaseDate=" + purchaseDate + ", dueDate=" + dueDate
+				+ ", currencyId=" + currencyId + ", exchangeRate=" + exchangeRate + ", status=" + status + ", total="
+				+ total + ", discount=" + discount + ", tax=" + tax + ", grandTotal=" + grandTotal + ", inputDate="
+				+ inputDate + ", inputBy=" + inputBy + ", editDate=" + editDate + ", editedBy=" + editedBy
+				+ ", deletedDate=" + deletedDate + ", deletedBy=" + deletedBy + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + currencyId;
 		result = prime * result + ((deletedBy == null) ? 0 : deletedBy.hashCode());
 		result = prime * result + ((deletedDate == null) ? 0 : deletedDate.hashCode());
+		result = prime * result + ((discount == null) ? 0 : discount.hashCode());
 		result = prime * result + ((dueDate == null) ? 0 : dueDate.hashCode());
 		result = prime * result + ((editDate == null) ? 0 : editDate.hashCode());
 		result = prime * result + ((editedBy == null) ? 0 : editedBy.hashCode());
+		result = prime * result + ((exchangeRate == null) ? 0 : exchangeRate.hashCode());
+		result = prime * result + ((grandTotal == null) ? 0 : grandTotal.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
 		result = prime * result + ((pprCode == null) ? 0 : pprCode.hashCode());
 		result = prime * result + ((purchaseDate == null) ? 0 : purchaseDate.hashCode());
+		result = prime * result + ((purchaseNote == null) ? 0 : purchaseNote.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((suppCode == null) ? 0 : suppCode.hashCode());
+		result = prime * result + ((tax == null) ? 0 : tax.hashCode());
+		result = prime * result + ((total == null) ? 0 : total.hashCode());
 		return result;
 	}
 
@@ -147,6 +227,8 @@ public class PurchaseProdResult implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		PurchaseProdResult other = (PurchaseProdResult) obj;
+		if (currencyId != other.currencyId)
+			return false;
 		if (deletedBy == null) {
 			if (other.deletedBy != null)
 				return false;
@@ -156,6 +238,11 @@ public class PurchaseProdResult implements Serializable {
 			if (other.deletedDate != null)
 				return false;
 		} else if (!deletedDate.equals(other.deletedDate))
+			return false;
+		if (discount == null) {
+			if (other.discount != null)
+				return false;
+		} else if (!discount.equals(other.discount))
 			return false;
 		if (dueDate == null) {
 			if (other.dueDate != null)
@@ -171,6 +258,16 @@ public class PurchaseProdResult implements Serializable {
 			if (other.editedBy != null)
 				return false;
 		} else if (!editedBy.equals(other.editedBy))
+			return false;
+		if (exchangeRate == null) {
+			if (other.exchangeRate != null)
+				return false;
+		} else if (!exchangeRate.equals(other.exchangeRate))
+			return false;
+		if (grandTotal == null) {
+			if (other.grandTotal != null)
+				return false;
+		} else if (!grandTotal.equals(other.grandTotal))
 			return false;
 		if (id != other.id)
 			return false;
@@ -194,6 +291,11 @@ public class PurchaseProdResult implements Serializable {
 				return false;
 		} else if (!purchaseDate.equals(other.purchaseDate))
 			return false;
+		if (purchaseNote == null) {
+			if (other.purchaseNote != null)
+				return false;
+		} else if (!purchaseNote.equals(other.purchaseNote))
+			return false;
 		if (status == null) {
 			if (other.status != null)
 				return false;
@@ -204,14 +306,19 @@ public class PurchaseProdResult implements Serializable {
 				return false;
 		} else if (!suppCode.equals(other.suppCode))
 			return false;
-		if (supplier == null) {
-			if (other.supplier != null)
+		if (tax == null) {
+			if (other.tax != null)
 				return false;
-		} else if (!supplier.equals(other.supplier))
+		} else if (!tax.equals(other.tax))
+			return false;
+		if (total == null) {
+			if (other.total != null)
+				return false;
+		} else if (!total.equals(other.total))
 			return false;
 		return true;
 	}
-
+	
 	public Supplier getSupplier() {
 		if(supplier == null)
 			supplier = new Supplier();
@@ -224,6 +331,19 @@ public class PurchaseProdResult implements Serializable {
 		this.supplier = supplier;
 	}
 
+	public Currency getCurrency() {
+		if(currency == null)
+			currency = new Currency();
+		return currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		if(currency == null)
+			currency = new Currency();
+		this.currency = currency;
+	}
+
 	private Supplier supplier;
+	private Currency currency;
 
 }

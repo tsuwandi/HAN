@@ -2,10 +2,12 @@ package module.product.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import module.dryin.dao.DryInDAO;
 import module.product.dao.ProductDAO;
 import module.product.model.Condition;
 import module.product.model.Grade;
@@ -143,7 +145,7 @@ public class ProductBL {
 			con.close();
 		}
 	}
-	
+
 	public List<Grade> getAllGradeByCategoryProductId(int productCategoryId) throws SQLException {
 		Connection con = null;
 		try {
@@ -219,6 +221,22 @@ public class ProductBL {
 		try {
 			con = dataSource.getConnection();
 			return new ProductDAO(con).isProductExists(isEdit, product);
+		} finally {
+			con.close();
+		}
+	}
+
+	public String getOrdinalOfCodeNumber(String productCategory) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+
+			if (ProductCategory.HASIL_PRODUKSI.equalsIgnoreCase(productCategory)) {
+				return String.format("%01d", new ProductDAO(con).getOrdinalOfCodeNumber(productCategory) + 1);
+			} else {
+				return String.format("%04d", new ProductDAO(con).getOrdinalOfCodeNumber(productCategory) + 1);
+			}
+
 		} finally {
 			con.close();
 		}

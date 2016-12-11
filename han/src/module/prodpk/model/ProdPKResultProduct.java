@@ -1,16 +1,16 @@
-package module.purchaseprodresult.model;
+package module.prodpk.model;
 
 import java.io.Serializable;
 import java.util.Date;
 
 import module.product.model.Product;
 
-public class PPRProduct implements Serializable {
+public class ProdPKResultProduct implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private int id;
-	private String pprCode;
+	private String prodPKCode;
 	private String productCode;
 	private int qty;
 	private Date inputDate;
@@ -19,74 +19,87 @@ public class PPRProduct implements Serializable {
 	private String editedBy;
 	private Date deletedDate;
 	private String deletedBy;
-	
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getPprCode() {
-		return pprCode;
+
+	public String getProdPKCode() {
+		return prodPKCode;
 	}
-	public void setPprCode(String pprCode) {
-		this.pprCode = pprCode;
+
+	public void setProdPKCode(String prodPKCode) {
+		this.prodPKCode = prodPKCode;
 	}
+
 	public String getProductCode() {
 		return productCode;
 	}
+
 	public void setProductCode(String productCode) {
 		this.productCode = productCode;
 	}
+
 	public int getQty() {
 		return qty;
 	}
+
 	public void setQty(int qty) {
 		this.qty = qty;
 	}
+
 	public Date getInputDate() {
 		return inputDate;
 	}
+
 	public void setInputDate(Date inputDate) {
 		this.inputDate = inputDate;
 	}
+
 	public String getInputBy() {
 		return inputBy;
 	}
+
 	public void setInputBy(String inputBy) {
 		this.inputBy = inputBy;
 	}
+
 	public Date getEditDate() {
 		return editDate;
 	}
+
 	public void setEditDate(Date editDate) {
 		this.editDate = editDate;
 	}
+
 	public String getEditedBy() {
 		return editedBy;
 	}
+
 	public void setEditedBy(String editedBy) {
 		this.editedBy = editedBy;
 	}
+
 	public Date getDeletedDate() {
 		return deletedDate;
 	}
+
 	public void setDeletedDate(Date deletedDate) {
 		this.deletedDate = deletedDate;
 	}
+
 	public String getDeletedBy() {
 		return deletedBy;
 	}
+
 	public void setDeletedBy(String deletedBy) {
 		this.deletedBy = deletedBy;
 	}
-	@Override
-	public String toString() {
-		return "PurchaseProductResultProduct [id=" + id + ", pprCode=" + pprCode + ", productCode=" + productCode
-				+ ", qty=" + qty + ", inputDate=" + inputDate
-				+ ", inputBy=" + inputBy + ", editDate=" + editDate + ", editedBy=" + editedBy + ", deletedDate="
-				+ deletedDate + ", deletedBy=" + deletedBy + "]";
-	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -98,11 +111,12 @@ public class PPRProduct implements Serializable {
 		result = prime * result + id;
 		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
-		result = prime * result + ((pprCode == null) ? 0 : pprCode.hashCode());
 		result = prime * result + ((productCode == null) ? 0 : productCode.hashCode());
+		result = prime * result + ((prodPKCode == null) ? 0 : prodPKCode.hashCode());
 		result = prime * result + qty;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -111,7 +125,7 @@ public class PPRProduct implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PPRProduct other = (PPRProduct) obj;
+		ProdPKResultProduct other = (ProdPKResultProduct) obj;
 		if (deletedBy == null) {
 			if (other.deletedBy != null)
 				return false;
@@ -144,19 +158,26 @@ public class PPRProduct implements Serializable {
 				return false;
 		} else if (!inputDate.equals(other.inputDate))
 			return false;
-		if (pprCode == null) {
-			if (other.pprCode != null)
-				return false;
-		} else if (!pprCode.equals(other.pprCode))
-			return false;
 		if (productCode == null) {
 			if (other.productCode != null)
 				return false;
 		} else if (!productCode.equals(other.productCode))
 			return false;
+		if (prodPKCode == null) {
+			if (other.prodPKCode != null)
+				return false;
+		} else if (!prodPKCode.equals(other.prodPKCode))
+			return false;
 		if (qty != other.qty)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "PWProduct [id=" + id + ", prodPKCode=" + prodPKCode + ", productCode=" + productCode + ", qty=" + qty
+				+ ", inputDate=" + inputDate + ", inputBy=" + inputBy + ", editDate=" + editDate + ", editedBy="
+				+ editedBy + ", deletedDate=" + deletedDate + ", deletedBy=" + deletedBy + "]";
 	}
 	
 	public Product getProduct() {
@@ -164,6 +185,7 @@ public class PPRProduct implements Serializable {
 			product = new Product();
 		return product;
 	}
+
 	public void setProduct(Product product) {
 		if(product == null)
 			product = new Product();
@@ -171,14 +193,5 @@ public class PPRProduct implements Serializable {
 	}
 
 	private Product product;
-	private boolean isFlag;
-	
-	public boolean isFlag() {
-		return isFlag;
-	}
 
-	public void setFlag(boolean isFlag) {
-		this.isFlag = isFlag;
-	}
-	
 }

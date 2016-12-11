@@ -1,4 +1,4 @@
-package module.purchaseprodresult.dao;
+package module.purchaseprodresultpayment.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import module.product.model.Product;
-import module.purchaseprodresult.model.PPRProduct;
+import module.purchaseprodresultpayment.model.PPRProduct;
 import module.util.DateUtil;
 
 public class PPRProductDAO {
@@ -20,15 +20,15 @@ public class PPRProductDAO {
 
 	private String getAllByPPRCodeQuery = new StringBuilder()
 			.append("select pp.id, pp.ppr_code, pp.product_code, pp.qty, ")
-			.append("p.product_name, p.id as product_id from ppr_product pp ")
+			.append("pp.unit_price, pp.sub_total, p.product_name, p.id as product_id from ppr_product pp ")
 			.append("inner join product p on pp.product_code = p.product_code ")
 			.append("where pp.ppr_code = ? and pp.deleted_date is null and p.deleted_date is null ").toString();
 
 	private String insertQuery = new StringBuilder()
-			.append("insert into ppr_product (ppr_code, product_code, qty, ")
-			.append("input_date, input_by) values (?,?,?,?,?)").toString();
+			.append("insert into ppr_product (ppr_code, product_code, qty, unit_price, sub_total, ")
+			.append("input_date, input_by) values (?,?,?,?,?,?,?)").toString();
 
-	private String updateQuery = "update ppr_product set product_code=?, qty=?, edit_date=?, edited_by=? where id=?";
+	private String updateQuery = "update ppr_product set product_code=?, qty=?, unit_price=?, sub_total=?, edit_date=?, edited_by=? where id=?";
 
 	private String deleteQuery = "update ppr_product set deleted_date=?, deleted_by=? ";
 	
@@ -51,6 +51,8 @@ public class PPRProductDAO {
 				pprProduct.setPprCode(rs.getString("ppr_code"));
 				pprProduct.setProductCode(rs.getString("product_code"));
 				pprProduct.setQty(rs.getInt("qty"));
+				pprProduct.setUnitPrice(rs.getDouble("unit_price"));
+				pprProduct.setSubTotal(rs.getDouble("sub_total"));
 				
 				Product	product = new Product();
 				product.setProductCode(rs.getString("product_code"));
@@ -73,8 +75,10 @@ public class PPRProductDAO {
 			insertStatement.setString(1, pprProduct.getPprCode());
 			insertStatement.setString(2, pprProduct.getProductCode());
 			insertStatement.setInt(3, pprProduct.getQty());
-			insertStatement.setDate(4, DateUtil.getCurrentDate());
-			insertStatement.setString(5, "timotius");
+			insertStatement.setDouble(4, pprProduct.getUnitPrice());
+			insertStatement.setDouble(5, pprProduct.getSubTotal());
+			insertStatement.setDate(6, DateUtil.getCurrentDate());
+			insertStatement.setString(7, "timotius");
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -87,9 +91,11 @@ public class PPRProductDAO {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, pprProduct.getProductCode());
 			updateStatement.setInt(2, pprProduct.getQty());
-			updateStatement.setDate(3, DateUtil.getCurrentDate());
-			updateStatement.setString(4, "timotius");
-			updateStatement.setInt(5, pprProduct.getId());
+			updateStatement.setDouble(3, pprProduct.getUnitPrice());
+			updateStatement.setDouble(4, pprProduct.getSubTotal());
+			updateStatement.setDate(5, DateUtil.getCurrentDate());
+			updateStatement.setString(6, "timotius");
+			updateStatement.setInt(7, pprProduct.getId());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {

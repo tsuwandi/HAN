@@ -259,7 +259,7 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		lblC.setBounds(530, 230, 150, 25);
 		panel.add(lblC);
 
-		lblOrdinal = new JLabel("Sequence");
+		lblOrdinal = new JLabel("No Pallet");
 		lblOrdinal.setBounds(220, 255, 150, 25);
 		panel.add(lblOrdinal);
 
@@ -387,6 +387,14 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		txtDate.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
+				if(txtDate.getText().length() > 0) {
+					int formatTxtDate = Integer.valueOf(txtDate.getText());
+					
+					if(formatTxtDate < 10) {
+						txtDate.setText(String.format("%02d",formatTxtDate));
+					}
+				}
+				
 				if (txtDate.getText().length() > 1)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
 							txtOrdinal.getText());
@@ -400,6 +408,14 @@ public class DryOutCreatePanel extends JPanel implements Bridging {
 		txtMonth.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
+				if(txtMonth.getText().length() > 0) {
+					int formatTxtMonth = Integer.valueOf(txtMonth.getText());
+					
+					if(formatTxtMonth < 10) {
+						txtMonth.setText(String.format("%02d",formatTxtMonth));
+					}
+				}
+				
 				if (txtMonth.getText().length() > 1)
 					searchPalletCardByCode(txtRitNo.getText(), txtDate.getText(), txtMonth.getText(), txtYear.getText(),
 							txtOrdinal.getText());

@@ -10,6 +10,7 @@ import module.production.bl.ProductionBL;
 import module.productionpk.bl.ProdPKBL;
 import module.productionwaste.bl.ProductionWasteBL;
 import module.purchaseprodresult.bl.PurchaseProductResultBL;
+import module.purchaseprodresultpayment.bl.PurchaseProductResultPaymentBL;
 import module.report.bl.ReportBL;
 import module.sendtofinance.bl.SendToFinanceBL;
 import module.sn.woodgenus.bl.WoodGenusBL;
@@ -36,6 +37,9 @@ public class ServiceFactory {
 	private static ProdPKBL prodPKBL = null;
 	private static SystemBL systemBL = null;
 	private static PersonaliaBL personaliaBL = null;
+	private static PurchaseProductResultPaymentBL purchaseProductResultPaymentBL = null;
+	private static module.prodpk.bl.ProdPKBL productionPKBL = null;
+	
 	/**
 	 * Method to init or return {@link SupplierBL}
 	 * 
@@ -166,5 +170,19 @@ public class ServiceFactory {
 			personaliaBL = new PersonaliaBL(DataSourceFactory.getDataSource());
 		}
 		return personaliaBL;
+	}
+	
+	public static PurchaseProductResultPaymentBL getPurchaseProductResultPaymentBL() {
+		if (purchaseProductResultPaymentBL == null) {
+			purchaseProductResultPaymentBL = new PurchaseProductResultPaymentBL(DataSourceFactory.getDataSource());
+		}
+		return purchaseProductResultPaymentBL;
+	}
+	
+	public static module.prodpk.bl.ProdPKBL getProductionPKBL() {
+		if (productionPKBL == null) {
+			productionPKBL = new module.prodpk.bl.ProdPKBL(DataSourceFactory.getDataSource());
+		}
+		return productionPKBL;
 	}
 }

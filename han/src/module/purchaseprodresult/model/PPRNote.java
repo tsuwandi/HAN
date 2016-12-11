@@ -5,14 +5,13 @@ import java.util.Date;
 
 import module.product.model.Product;
 
-public class PPRProduct implements Serializable {
+public class PPRNote implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	private int id;
 	private String pprCode;
-	private String productCode;
-	private int qty;
+	private String note;
 	private Date inputDate;
 	private String inputBy;
 	private Date editDate;
@@ -32,17 +31,11 @@ public class PPRProduct implements Serializable {
 	public void setPprCode(String pprCode) {
 		this.pprCode = pprCode;
 	}
-	public String getProductCode() {
-		return productCode;
+	public String getNote() {
+		return note;
 	}
-	public void setProductCode(String productCode) {
-		this.productCode = productCode;
-	}
-	public int getQty() {
-		return qty;
-	}
-	public void setQty(int qty) {
-		this.qty = qty;
+	public void setNote(String note) {
+		this.note = note;
 	}
 	public Date getInputDate() {
 		return inputDate;
@@ -82,8 +75,8 @@ public class PPRProduct implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "PurchaseProductResultProduct [id=" + id + ", pprCode=" + pprCode + ", productCode=" + productCode
-				+ ", qty=" + qty + ", inputDate=" + inputDate
+		return "PurchaseProductResultProduct [id=" + id + ", pprCode=" + pprCode + ", note=" + note
+				+ ", inputDate=" + inputDate
 				+ ", inputBy=" + inputBy + ", editDate=" + editDate + ", editedBy=" + editedBy + ", deletedDate="
 				+ deletedDate + ", deletedBy=" + deletedBy + "]";
 	}
@@ -99,8 +92,7 @@ public class PPRProduct implements Serializable {
 		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
 		result = prime * result + ((pprCode == null) ? 0 : pprCode.hashCode());
-		result = prime * result + ((productCode == null) ? 0 : productCode.hashCode());
-		result = prime * result + qty;
+		result = prime * result + ((note == null) ? 0 : note.hashCode());
 		return result;
 	}
 	@Override
@@ -111,7 +103,7 @@ public class PPRProduct implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PPRProduct other = (PPRProduct) obj;
+		PPRNote other = (PPRNote) obj;
 		if (deletedBy == null) {
 			if (other.deletedBy != null)
 				return false;
@@ -149,28 +141,14 @@ public class PPRProduct implements Serializable {
 				return false;
 		} else if (!pprCode.equals(other.pprCode))
 			return false;
-		if (productCode == null) {
-			if (other.productCode != null)
+		if (note == null) {
+			if (other.note != null)
 				return false;
-		} else if (!productCode.equals(other.productCode))
-			return false;
-		if (qty != other.qty)
+		} else if (!note.equals(other.note))
 			return false;
 		return true;
 	}
-	
-	public Product getProduct() {
-		if(product == null)
-			product = new Product();
-		return product;
-	}
-	public void setProduct(Product product) {
-		if(product == null)
-			product = new Product();
-		this.product = product;
-	}
 
-	private Product product;
 	private boolean isFlag;
 	
 	public boolean isFlag() {

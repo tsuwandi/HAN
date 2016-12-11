@@ -538,11 +538,17 @@ public class ProductEditPanel extends JPanel implements Bridging {
 		
 			product.setMinQty(Integer.parseInt(minQtyField.getText()));
 			
+			if(!ProductCategory.HASIL_PRODUKSI.equalsIgnoreCase(catField.getDataIndex().getProductCategory())) {
 			Product checkProduct = ServiceFactory.getProductBL().isProductExists(Boolean.TRUE, product);
-			if (checkProduct.getIsExists() > 0) {
-				JOptionPane.showMessageDialog(null,
-						"Produk sudah pernah diinput dengan kode " + checkProduct.getProductCode(), "Warning",
-						JOptionPane.YES_NO_OPTION);
+				if (checkProduct.getIsExists() > 0) {
+					JOptionPane.showMessageDialog(null,
+							"Produk sudah pernah diinput dengan kode " + checkProduct.getProductCode(), "Warning",
+							JOptionPane.YES_NO_OPTION);
+				} else {
+					ServiceFactory.getProductBL().update(product);
+					DialogBox.showEdit();
+					MainPanel.changePanel("module.product.ui.ProductViewPanel", product);
+				}
 			} else {
 				ServiceFactory.getProductBL().update(product);
 				DialogBox.showEdit();

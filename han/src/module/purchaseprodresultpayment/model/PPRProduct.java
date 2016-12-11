@@ -1,4 +1,4 @@
-package module.purchaseprodresult.model;
+package module.purchaseprodresultpayment.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +13,8 @@ public class PPRProduct implements Serializable {
 	private String pprCode;
 	private String productCode;
 	private int qty;
+	private Double unitPrice;
+	private Double subTotal;
 	private Date inputDate;
 	private String inputBy;
 	private Date editDate;
@@ -43,6 +45,18 @@ public class PPRProduct implements Serializable {
 	}
 	public void setQty(int qty) {
 		this.qty = qty;
+	}
+	public Double getUnitPrice() {
+		return unitPrice;
+	}
+	public void setUnitPrice(Double unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+	public Double getSubTotal() {
+		return subTotal;
+	}
+	public void setSubTotal(Double subTotal) {
+		this.subTotal = subTotal;
 	}
 	public Date getInputDate() {
 		return inputDate;
@@ -83,7 +97,7 @@ public class PPRProduct implements Serializable {
 	@Override
 	public String toString() {
 		return "PurchaseProductResultProduct [id=" + id + ", pprCode=" + pprCode + ", productCode=" + productCode
-				+ ", qty=" + qty + ", inputDate=" + inputDate
+				+ ", qty=" + qty + ", unitPrice=" + unitPrice + ", subTotal=" + subTotal + ", inputDate=" + inputDate
 				+ ", inputBy=" + inputBy + ", editDate=" + editDate + ", editedBy=" + editedBy + ", deletedDate="
 				+ deletedDate + ", deletedBy=" + deletedBy + "]";
 	}
@@ -101,6 +115,8 @@ public class PPRProduct implements Serializable {
 		result = prime * result + ((pprCode == null) ? 0 : pprCode.hashCode());
 		result = prime * result + ((productCode == null) ? 0 : productCode.hashCode());
 		result = prime * result + qty;
+		result = prime * result + ((subTotal == null) ? 0 : subTotal.hashCode());
+		result = prime * result + ((unitPrice == null) ? 0 : unitPrice.hashCode());
 		return result;
 	}
 	@Override
@@ -155,6 +171,16 @@ public class PPRProduct implements Serializable {
 		} else if (!productCode.equals(other.productCode))
 			return false;
 		if (qty != other.qty)
+			return false;
+		if (subTotal == null) {
+			if (other.subTotal != null)
+				return false;
+		} else if (!subTotal.equals(other.subTotal))
+			return false;
+		if (unitPrice == null) {
+			if (other.unitPrice != null)
+				return false;
+		} else if (!unitPrice.equals(other.unitPrice))
 			return false;
 		return true;
 	}
