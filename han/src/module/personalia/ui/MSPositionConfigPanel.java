@@ -95,6 +95,9 @@ public class MSPositionConfigPanel extends JPanel{
 
 		getData();
 		
+		msPositionConfigTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		msPositionConfigTable.getTableHeader().setResizingAllowed(false);
+		
 		msPositionConfigTable.getColumnModel().getColumn(5).setPreferredWidth(0);
 		msPositionConfigTable.getColumnModel().getColumn(5).setMaxWidth(0);
 		msPositionConfigTable.getColumnModel().getColumn(5).setMinWidth(0);
