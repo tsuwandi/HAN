@@ -18,11 +18,13 @@ public class EmployeeTypeDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
+	private PreparedStatement getLastIdStatement;
 
 	private String getAllQuery = "select * from employee_type where delete_date is null and delete_by is null";
 	private String insertQuery = "insert into employee_type (id, name, input_date, input_by, edit_date, edit_by) values (?, ?, ?, ?, ?, ?)";
 	private String updateQuery = "update employee_type set name = ?, edit_date = ?, edit_by = ? where id = ?";
 	private String deleteQuery = "update employee_type set delete_date = ?, delete_by = ? where id = ?";
+	private String getLastIdQuery = "select * from employee_type group by id desc limit 1";
 
 	public EmployeeTypeDAO(Connection connection) {
 		this.connection = connection;
@@ -94,6 +96,21 @@ public class EmployeeTypeDAO {
 	}
 
 	public Integer getLastId() {
-		return getAllData("").size()+1;
+		List<EmployeeType> employeeTypes = null;
+		try {
+			employeeTypes = new ArrayList<>();
+			getLastIdStatement = connection.prepareStatement(getLastIdQuery);
+			
+			ResultSet resultSet = getLastIdStatement.executeQuery();
+			while (resultSet.next()) {
+				EmployeeType employeeType = new EmployeeType();
+				employeeType.setId(resultSet.getString("id"));
+				employeeType.setName(resultSet.getString("name"));
+				employeeTypes.add(employeeType);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return employeeTypes == null? 1 : Integer.parseInt(employeeTypes.get(0).getId())  + 1;
 	}
 }

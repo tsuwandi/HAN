@@ -14,11 +14,13 @@ public class DivisionDAO {
 
 	private Connection connection;
 
+	private PreparedStatement getLastIdStatment;
 	private PreparedStatement getAllStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 
+	private String getLastIdQuery = "select * from division order by id desc limit 1";
 	private String getAllQuery = "select * from division where delete_date is null and delete_by is null";
 	private String insertQuery = "insert into division (id, name, input_date, input_by, edit_date, edit_by) values (?, ?, ?, ?, ?, ?)";
 	private String updateQuery = "update division set name = ?, edit_date = ?, edit_by = ? where id = ?";
@@ -97,6 +99,27 @@ public class DivisionDAO {
 	}
 
 	public Integer getLastId() {
-		return getAllData("").size()+1;
+		List<Division> divisions = null;
+		
+		try {
+			divisions = new ArrayList<>();
+			
+			getLastIdStatment = connection.prepareStatement(getLastIdQuery);
+			
+			ResultSet resultSet = getLastIdStatment.executeQuery();
+			
+			while (resultSet.next()) {
+				Division division = new Division();
+				division.setId(resultSet.getString("id"));
+				division.setName(resultSet.getString("name"));
+
+				divisions.add(division);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+		return divisions == null ? 1 : Integer.parseInt(divisions.get(0).getId())+1;
 	}
 }

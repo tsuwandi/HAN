@@ -18,18 +18,20 @@ public class DepartmentDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
+	private PreparedStatement getLastIdStatement;
 
 	private String getAllQuery = "select * from department where delete_date is null and delete_by is null";
 	private String insertQuery = "insert into department (id, name, division_id, input_date, input_by, edit_date, edit_by) values (?, ?, ?, ?, ?, ?, ?)";
 	private String updateQuery = "update department set name = ?, division_id = ?, edit_date = ?, edit_by = ? where id = ?";
 	private String deleteQuery = "update department set delete_date = ?, delete_by = ? where id = ?";
+	private String getLastIdQuery = "select * from department group by id desc limit 1";
 	
 	public DepartmentDAO(Connection connection) {
 		this.connection = connection;
 	}
 	
 	public List<Department> getAllData(String query){
-		List<Department> departements = new ArrayList<>();
+		List<Department> departments = new ArrayList<>();
 
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery+query);
@@ -42,13 +44,13 @@ public class DepartmentDAO {
 				departement.setName(resultSet.getString("name"));
 				departement.setDivisionId(resultSet.getString("division_id"));
 				
-				departements.add(departement);
+				departments.add(departement);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return departements;
+		return departments;
 	}
 
 	public void insert(Department departement) {
@@ -98,6 +100,24 @@ public class DepartmentDAO {
 	}
 
 	public Integer getLastId() {
-		return getAllData("").size()+1;
+		List<Department> departments = null;
+		try {
+			departments = new ArrayList<>();
+			getLastIdStatement = connection.prepareStatement(getLastIdQuery);
+
+			ResultSet resultSet = getLastIdStatement.executeQuery();
+			while (resultSet.next()) {
+				Department department = new Department();
+				department.setId(resultSet.getString("id"));
+				department.setName(resultSet.getString("name"));
+				department.setDivisionId(resultSet.getString("division_id"));
+				
+				departments.add(department);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return departments == null ? 1 : Integer.parseInt(departments.get(0).getId()) + 1; 
 	}
 }

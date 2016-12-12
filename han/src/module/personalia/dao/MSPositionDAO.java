@@ -20,11 +20,13 @@ public class MSPositionDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
+	private PreparedStatement getLastIdStatement;
 
 	private String getAllQuery = "select * from ms_position where delete_date is null and delete_by is null";
 	private String insertQuery = "insert into ms_position (id, name, department_id, division_id, min_salary, max_salary, input_date, input_by, edit_date, edit_by) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private String updateQuery = "update ms_position set name = ?, department_id = ?, division_id = ?, min_salary = ?, max_salary = ?, edit_date = ?, edit_by = ? where id = ?";
 	private String deleteQuery = "update ms_position set delete_date = ?, delete_by = ? where id = ?";
+	private String getLastIdQuery = "select * from ms_position group by id desc limit 1";
 	
 	public Division getDivision(String id) {
 		String query = "select * from division where id = ?";
@@ -158,6 +160,32 @@ public class MSPositionDAO {
 	}
 	
 	public Integer getLastId() {
-		return getAllData("").size()+1;
+		List<MSPosition> msPositions = null;
+		try {
+			getLastIdStatement = connection.prepareStatement(getLastIdQuery);
+			ResultSet resultSet = getLastIdStatement.executeQuery();
+			
+			while (resultSet.next()) {
+				MSPosition msPosition = new MSPosition();
+				msPosition.setId(resultSet.getString("id"));
+				msPosition.setName(resultSet.getString("name"));
+				msPosition.setDepartementId(resultSet.getString("department_id"));
+				msPosition.setDepartementName(getDepartement(msPosition.getDepartementId()).getName());
+				msPosition.setDepartment(getDepartement(msPosition.getDepartementId()));
+				//System.out.println(msPosition.getDepartment());
+				msPosition.setDivisionId(resultSet.getString("division_id"));
+				msPosition.setDivisionName(getDivision(msPosition.getDivisionId()).getName());
+				msPosition.setDivision(getDivision(msPosition.getDivisionId()));
+				//System.out.println(msPosition.getDivision());
+				msPosition.setSalaryMin(resultSet.getInt("min_salary"));
+				msPosition.setSalaryMax(resultSet.getInt("max_salary"));
+
+				msPositions.add(msPosition);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return msPositions == null ? 1 : Integer.parseInt(msPositions.get(0).getId()) + 1;
 	}
 }
