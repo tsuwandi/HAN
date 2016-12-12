@@ -2,6 +2,7 @@ package module.purchaseprodresultpayment.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -377,7 +378,7 @@ public class PurchaseProdResultPaymentEditPanel extends JPanel implements Bridgi
 		lblTotal.setBounds(640, 670, 150, 25);
 		panel.add(lblTotal);
 
-		txtTotal = new NumberField(10);
+		txtTotal = new JTextField();
 		txtTotal.setEnabled(false);
 		txtTotal.setBounds(700, 670, 150, 25);
 		panel.add(txtTotal);
@@ -416,7 +417,7 @@ public class PurchaseProdResultPaymentEditPanel extends JPanel implements Bridgi
 		lblGrandTotal.setBounds(640, 760, 150, 25);
 		panel.add(lblGrandTotal);
 
-		txtGrandTotal = new NumberField(10);
+		txtGrandTotal = new JTextField();
 		txtGrandTotal.setEnabled(false);
 		txtGrandTotal.setBounds(700, 760, 150, 25);
 		panel.add(txtGrandTotal);
@@ -686,12 +687,8 @@ public class PurchaseProdResultPaymentEditPanel extends JPanel implements Bridgi
 		try {
 			tblPPRProduct.setModel(new PPRProductTableModel(listOfPPRProduct));
 			
-			//txtGrandTotal.setText(String.valueOf(getGrandTotal()));
-			
-//			txtTotal.updateUI();
-//			txtTax.updateUI();
-//			txtDiscount.updateUI();
-//			txtGrandTotal.updateUI();
+			txtTotal.setText(String.valueOf(getTotal()));
+ 			txtGrandTotal.setText(String.valueOf(getGrandTotal()));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
