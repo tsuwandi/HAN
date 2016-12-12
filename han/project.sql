@@ -1949,3 +1949,22 @@ ALTER TABLE `ms_position`
 
 INSERT INTO `ms_position` (`id`, `name`, `min_salary`, `max_salary`, `department_id`, `division_id`, `input_date`, `input_by`, `edit_date`, `edit_by`, `delete_date`, `delete_by`) VALUES
 ('POS0001', 'Posisi 1', 5000000, 10000000, 'DEPT0001', '3', NULL, NULL, NULL, NULL, NULL, NULL);
+
+CREATE TABLE `employee_type` (
+  `id` varchar(10) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(30) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(30) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `employee_type`
+  ADD PRIMARY KEY (`id`);
+
+INSERT INTO `employee_type` (`id`, `name`, `input_date`, `input_by`, `edit_date`, `edit_by`, `delete_date`, `delete_by`) VALUES
+('EMPTYP01', 'Tipe Karyawan 1', NULL, NULL, '2016-12-12', '', NULL, NULL),
+('EMPTYP02', 'Employee Type 2', NULL, NULL, NULL, NULL, NULL, NULL),
+('POS0002', 'GRADER', NULL, NULL, NULL, NULL, NULL, NULL);
