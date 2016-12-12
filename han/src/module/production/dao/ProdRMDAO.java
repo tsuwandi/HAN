@@ -127,7 +127,7 @@ public class ProdRMDAO {
 		return prodRMs;
 	}
 	
-	public ProdRM getProdRMByPalletCard(String palletCardCode,String query) throws SQLException {
+	public ProdRM getProdRMByPalletCard(String palletCardCode,String query,String productionCode) throws SQLException {
 		ProdRM prodRM = null;
 		try {
 			StringBuffer sb  = new StringBuffer(getAllForSearchQuery);
@@ -135,7 +135,8 @@ public class ProdRMDAO {
 			sb.append(query);
 			
 			getAllForSearchByPalletCardCodeStatement = connection.prepareStatement(sb.toString());
-			getAllForSearchByPalletCardCodeStatement.setString(1, palletCardCode);
+			getAllForSearchByPalletCardCodeStatement.setString(1, productionCode);
+			getAllForSearchByPalletCardCodeStatement.setString(2, palletCardCode);
 			ResultSet rs = getAllForSearchByPalletCardCodeStatement.executeQuery();
 			if(rs.next()){
 				prodRM = new ProdRM();

@@ -413,6 +413,25 @@ public class PopUpInputMaterial extends JDialog{
 				}
 			}
 		});
+		
+		sequenceField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(!sequenceField.getText().equals("")){
+					switch (sequenceField.getText().length()) {
+					case 1:
+						sequenceField.setText("000"+sequenceField.getText());
+						break;
+					case 2:
+						sequenceField.setText("00"+sequenceField.getText());
+						break;
+					case 3:
+						sequenceField.setText("0"+sequenceField.getText());
+						break;
+					}
+				}
+			}
+		});
 	}
 	
 	private void checkPallet(){
@@ -421,8 +440,21 @@ public class PopUpInputMaterial extends JDialog{
 			DialogBox.showError("Rit No dan sequence harus diisi !");
 		}else{
 			try {
+				if(!sequenceField.getText().equals("")){
+					switch (sequenceField.getText().length()) {
+					case 1:
+						sequenceField.setText("000"+sequenceField.getText());
+						break;
+					case 2:
+						sequenceField.setText("00"+sequenceField.getText());
+						break;
+					case 3:
+						sequenceField.setText("0"+sequenceField.getText());
+						break;
+					}
+				}
 				palletCardCode = ritNoField.getText()+"/BL/"+dateField.getText()+"/"+monthField.getText()+"/"+yearField.getText()+"/"+sequenceField.getText();
-				ProdRM prodRM = ServiceFactory.getProductionBL().getSearchProdRMByPalletCard(palletCardCode, prodRms);
+				ProdRM prodRM = ServiceFactory.getProductionBL().getSearchProdRMByPalletCard(palletCardCode, prodRms, productionCode);
 				if(prodRM==null)DialogBox.showError("Pallet Card tidak ditemukan");
 				else{
 					tempProdRM = prodRM;

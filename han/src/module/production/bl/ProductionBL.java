@@ -156,7 +156,7 @@ public class ProductionBL {
 		return prodRMDAO.getAllSearch(sqlQuery.toString(),productionCode);				
 	}
 	
-	public ProdRM getSearchProdRMByPalletCard(String palletCardCode,List<ProdRM> prodRMs)throws SQLException{
+	public ProdRM getSearchProdRMByPalletCard(String palletCardCode,List<ProdRM> prodRMs, String productionCode)throws SQLException{
 		StringBuffer sqlQuery = new StringBuffer();
 		if(prodRMs.size()!=0){
 			sqlQuery.append(" AND b.pallet_card_code NOT IN (");
@@ -167,7 +167,7 @@ public class ProductionBL {
 			}
 			sqlQuery.append(") ");
 		}
-		return prodRMDAO.getProdRMByPalletCard(palletCardCode,sqlQuery.toString());				
+		return prodRMDAO.getProdRMByPalletCard(palletCardCode,sqlQuery.toString(), productionCode);				
 	}
 	
 	public void saveAll(Production production)throws SQLException {
