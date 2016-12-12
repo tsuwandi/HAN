@@ -8,10 +8,12 @@ import javax.sql.DataSource;
 
 import module.product.dao.ProductDAO;
 import module.product.model.Product;
-import module.purchaseprodresultpayment.dao.PPRProductDAO;
-import module.purchaseprodresultpayment.dao.PurchaseProdResultDAO;
-import module.purchaseprodresultpayment.model.PPRProduct;
-import module.purchaseprodresultpayment.model.PurchaseProdResult;
+import module.purchaseprodresult.dao.PPRNoteDAO;
+import module.purchaseprodresult.dao.PPRProductDAO;
+import module.purchaseprodresult.dao.PurchaseProdResultDAO;
+import module.purchaseprodresult.model.PPRNote;
+import module.purchaseprodresult.model.PPRProduct;
+import module.purchaseprodresult.model.PurchaseProdResult;
 import module.sn.currency.dao.CurrencyDAO;
 import module.sn.currency.model.Currency;
 import module.supplier.dao.SupplierDAO;
@@ -24,11 +26,11 @@ public class PurchaseProductResultPaymentBL  {
 		this.dataSource = dataSource;
 	}
 	
-	public List<Product> getAllPrdctByPrdtCtgryIsPrdctnRslt() throws SQLException {
+	public List<Product> getAllByProductCode(String productCodeNormalA, String productCodeNormalB) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return null; // new ProductDAO(con).getAllByProductCategoryIsProductionResult();
+			return new ProductDAO(con).getAllByProductCode(productCodeNormalA, productCodeNormalB);
 		} finally {
 			con.close();
 		}
@@ -74,28 +76,28 @@ public class PurchaseProductResultPaymentBL  {
 		}
 	}
 	
-	public List<PurchaseProdResult> getAllPurchaseProdResult() throws SQLException {
+	public List<PurchaseProdResult> getAllPurchaseProdResult(String status) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PurchaseProdResultDAO(con).getAll();
+			return new PurchaseProdResultDAO(con).getAll(status);
 		} finally {
 			con.close();
 		}
 	}
 
-	public List<PurchaseProdResult> getAllPurchaseProdResultBySimpleSearch(String value) throws SQLException {
+	public List<PurchaseProdResult> getAllPurchaseProdResultBySimpleSearch(String value, String status) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PurchaseProdResultDAO(con).getAllBySimpleSearch(value);
+			return new PurchaseProdResultDAO(con).getAllBySimpleSearch(value, status);
 		} finally {
 			con.close();
 		}
 	}
 	
 	private static final String STATUS = "COMPLETED";
-	public void save(PurchaseProdResult ppr, List<PPRProduct> pprProducts)
+	public void save(PurchaseProdResult ppr, List<PPRProduct> pprProducts, List<PPRNote> pprNotes)
 			throws SQLException {
 		Connection con = null;
 		try {
@@ -111,6 +113,11 @@ public class PurchaseProductResultPaymentBL  {
 				new PPRProductDAO(con).save(s);
 			}
 			
+			for (PPRNote s : pprNotes) {
+				s.setPprCode(ppr.getPprCode());
+				new PPRNoteDAO(con).save(s);
+			}
+			
 			con.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -121,7 +128,8 @@ public class PurchaseProductResultPaymentBL  {
 		}
 	}
 	
-	public void update(PurchaseProdResult ppr, List<PPRProduct> pprProducts, List<PPRProduct> pprProductsDeleted)
+	public void update(PurchaseProdResult ppr, List<PPRProduct> pprProducts, List<PPRProduct> pprProductsDeleted,
+			List<PPRNote> pprNotes, List<PPRNote> pprNotesDeleted)
 			throws SQLException {
 		Connection con = null;
 		try {
@@ -144,8 +152,23 @@ public class PurchaseProductResultPaymentBL  {
 					new PPRProductDAO(con).deleteById(s.getId());
 			}
 			
+			for (PPRNote s : pprNotes) {
+				if (s.getId() == 0) {
+					s.setPprCode(ppr.getPprCode());
+					new PPRNoteDAO(con).save(s);
+				} else {
+					new PPRNoteDAO(con).update(s);
+				}
+			}
+
+			for (PPRNote s : pprNotesDeleted) {
+				if (s.getId() != 0)
+					new PPRNoteDAO(con).deleteById(s.getId());
+			}
+			
 			con.commit();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			con.rollback();
 			throw new SQLException(e.getMessage());
 		} finally {
@@ -161,6 +184,7 @@ public class PurchaseProductResultPaymentBL  {
 
 			new PurchaseProdResultDAO(con).delete(ppr.getId());
 			new PPRProductDAO(con).deleteAll(ppr.getPprCode());
+			new PPRNoteDAO(con).deleteAll(ppr.getPprCode());
 
 			con.commit();
 		} catch (SQLException e) {
@@ -189,6 +213,16 @@ public class PurchaseProductResultPaymentBL  {
 			return String.format("%04d",
 					new PurchaseProdResultDAO(con).getOrdinalOfCodeNumberByYear(year) + 1);
 
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<PPRNote> getPPRNoteByPPRCode(String pprCode) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new PPRNoteDAO(con).getAllByPPRCode(pprCode);
 		} finally {
 			con.close();
 		}

@@ -188,7 +188,7 @@ public class PurchaseProdResultViewPanel extends JPanel implements Bridging {
 		panel.add(lblErrorDueDate);
 
 		btnInsertPPRProduct = new JButton("Tambah");
-		btnInsertPPRProduct.setBounds(820, 220, 100, 25);
+		btnInsertPPRProduct.setBounds(820, 430, 100, 25);
 		btnInsertPPRProduct.setFocusable(false);
 		btnInsertPPRProduct.setEnabled(false);
 		panel.add(btnInsertPPRProduct);
@@ -196,11 +196,11 @@ public class PurchaseProdResultViewPanel extends JPanel implements Bridging {
 		btnDeletePPRProduct = new JButton("Hapus");
 		btnDeletePPRProduct.setFocusable(false);
 		btnDeletePPRProduct.setEnabled(false);
-		btnDeletePPRProduct.setBounds(925, 220, 100, 25);
+		btnDeletePPRProduct.setBounds(925, 430, 100, 25);
 		panel.add(btnDeletePPRProduct);
 
 		scrollPanePPRProduct = new JScrollPane();
-		scrollPanePPRProduct.setBounds(50, 260, 975, 150);
+		scrollPanePPRProduct.setBounds(50, 470, 975, 150);
 		panel.add(scrollPanePPRProduct);
 
 		listOfPPRProduct = new ArrayList<PPRProduct>();
@@ -225,7 +225,7 @@ public class PurchaseProdResultViewPanel extends JPanel implements Bridging {
 		scrollPanePPRProduct.setViewportView(tblPPRProduct);
 		
 		btnInsertPPRNote = new JButton("Tambah");
-		btnInsertPPRNote.setBounds(820, 430, 100, 25);
+		btnInsertPPRNote.setBounds(820, 220, 100, 25);
 		btnInsertPPRNote.setFocusable(false);
 		btnInsertPPRNote.setEnabled(false);
 		panel.add(btnInsertPPRNote);
@@ -233,11 +233,11 @@ public class PurchaseProdResultViewPanel extends JPanel implements Bridging {
 		btnDeletePPRNote = new JButton("Hapus");
 		btnDeletePPRNote.setFocusable(false);
 		btnDeletePPRNote.setEnabled(false);
-		btnDeletePPRNote.setBounds(925, 430, 100, 25);
+		btnDeletePPRNote.setBounds(925, 220, 100, 25);
 		panel.add(btnDeletePPRNote);
 		
 		scrollPanePPRNote = new JScrollPane();
-		scrollPanePPRNote.setBounds(50, 470, 975, 150);
+		scrollPanePPRNote.setBounds(50, 260, 975, 150);
 		panel.add(scrollPanePPRNote);
 		
 		listOfPPRNote = new ArrayList<PPRNote>();

@@ -50,6 +50,8 @@ public class PurchaseProdResultListPanel extends JPanel {
 	private PurchaseProdResultListPanel purchaseProdResultListPanel;
 
 	private static final long serialVersionUID = 1L;
+	
+	public static final String COMPLETED = "COMPLETED";
 
 	public PurchaseProdResultListPanel() {
 		purchaseProdResultListPanel = this;
@@ -133,7 +135,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 
 		try {
 			listOfPurchaseProdResult = new ArrayList<PurchaseProdResult>();
-			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResult();
+			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResult(COMPLETED);
 			refreshTablePurchaseProdResult();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -162,7 +164,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 	public void doSearch(String value) {
 		try {
 			listOfPurchaseProdResult = new ArrayList<PurchaseProdResult>();
-			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResultBySimpleSearch(value);
+			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResultBySimpleSearch(value, COMPLETED);
 			refreshTablePurchaseProdResult();
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());

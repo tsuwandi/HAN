@@ -197,17 +197,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		dcPurchaseDate = new JDateChooser(new Date());
 		dcPurchaseDate.setBounds(220, 140, 150, 25);
 		dcPurchaseDate.setDateFormatString("dd-MM-yyyy");
-		
-		dcPurchaseDate.getDateEditor().addPropertyChangeListener(
-			    new PropertyChangeListener() {
-			        @Override
-			        public void propertyChange(PropertyChangeEvent e) {
-			            if ("date".equals(e.getPropertyName())) {
-			               makeCodeNumber(dcPurchaseDate.getDate());
-			            }
-			        }
-			    });
-		  makeCodeNumber(dcPurchaseDate.getDate());
+		dcPurchaseDate.setEnabled(false);
 		panel.add(dcPurchaseDate);
 
 		lblErrorPurchaseDate = new JLabel();
@@ -230,7 +220,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		panel.add(lblErrorDueDate);
 
 		btnInsertPPRProduct = new JButton("Tambah");
-		btnInsertPPRProduct.setBounds(820, 220, 100, 25);
+		btnInsertPPRProduct.setBounds(820, 430, 100, 25);
 		btnInsertPPRProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				showAddPPRProductDialog(pprEditPanel);
@@ -244,11 +234,11 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 				doDeletePPRProduct();
 			}
 		});
-		btnDeletePPRProduct.setBounds(925, 220, 100, 25);
+		btnDeletePPRProduct.setBounds(925, 430, 100, 25);
 		panel.add(btnDeletePPRProduct);
 
 		scrollPanePPRProduct = new JScrollPane();
-		scrollPanePPRProduct.setBounds(50, 260, 975, 150);
+		scrollPanePPRProduct.setBounds(50, 470, 975, 150);
 		panel.add(scrollPanePPRProduct);
 
 		listOfPPRProduct = new ArrayList<PPRProduct>();
@@ -280,7 +270,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		scrollPanePPRProduct.setViewportView(tblPPRProduct);
 		
 		btnInsertPPRNote = new JButton("Tambah");
-		btnInsertPPRNote.setBounds(820, 430, 100, 25);
+		btnInsertPPRNote.setBounds(820, 220, 100, 25);
 		btnInsertPPRNote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				showAddPPRNoteDialog(pprEditPanel);
@@ -294,11 +284,11 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 				doDeletePPRNote();
 			}
 		});
-		btnDeletePPRNote.setBounds(925, 430, 100, 25);
+		btnDeletePPRNote.setBounds(925, 220, 100, 25);
 		panel.add(btnDeletePPRNote);
 		
 		scrollPanePPRNote = new JScrollPane();
-		scrollPanePPRNote.setBounds(50, 470, 975, 150);
+		scrollPanePPRNote.setBounds(50, 260, 975, 150);
 		panel.add(scrollPanePPRNote);
 		
 		listOfPPRNote = new ArrayList<PPRNote>();
@@ -381,6 +371,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 			DialogBox.showEdit();
 			MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultViewPanel", purchaseProductResult);
 		} catch (Exception e) {
+			e.printStackTrace();
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
 		}
@@ -397,18 +388,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		if (txtPurchaseProductResultCode.getText() == null || txtPurchaseProductResultCode.getText().length() == 0) {
 			lblErrorPurchaseProductResultCode.setText("Textbox Kode Pembelian harus diisi.");
 			isValid = false;
-		} else {
-			try {
-				if (ServiceFactory.getPurchaseProductResultBL().isPPRCodeExists(txtPurchaseProductResultCode.getText()) > 0) {
-					lblErrorPurchaseProductResultCode.setText("Kode Pembelian sudah pernah diinput.");
-					isValid = false;
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				DialogBox.showErrorException();
-				isValid = false;
-			}
-		}
+		} 
 
 		if (cbSupplier.getSelectedItem() == null || cbSupplier.getSelectedIndex() == 0) {
 			lblErrorSupplier.setText("Combobox Supplier harus dipilih.");
@@ -584,28 +564,28 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		}
 	}
 	
-	public void makeCodeNumber(Date producationDate) {
-		final String constant = "STTB";
-
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(producationDate);
-		
-		String date = String.valueOf(cal.get(Calendar.DATE));
-		String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
-		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
-
-		String ordinal = null;
-		try {
-			ordinal = ServiceFactory.getPurchaseProductResultBL().getOrdinalOfCodeNumber(Integer.valueOf(year));
-		} catch (SQLException e) {
-			LOGGER.error(e.getMessage());
-			DialogBox.showErrorException();
-		}
-		
-		txtPurchaseProductResultCode.setText(new StringBuilder().append(ordinal).append("/").append(constant)
-				.append("/").append(date).append("/").append(month)
-				.append("/").append(year).toString());
-	}
+//	public void makeCodeNumber(Date producationDate) {
+//		final String constant = "STTB";
+//
+//		Calendar cal = Calendar.getInstance();
+//		cal.setTime(producationDate);
+//		
+//		String date = String.valueOf(cal.get(Calendar.DATE));
+//		String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
+//		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
+//
+//		String ordinal = null;
+//		try {
+//			ordinal = ServiceFactory.getPurchaseProductResultBL().getOrdinalOfCodeNumber(Integer.valueOf(year));
+//		} catch (SQLException e) {
+//			LOGGER.error(e.getMessage());
+//			DialogBox.showErrorException();
+//		}
+//		
+//		txtPurchaseProductResultCode.setText(new StringBuilder().append(ordinal).append("/").append(constant)
+//				.append("/").append(date).append("/").append(month)
+//				.append("/").append(year).toString());
+//	}
 	
 	protected void showAddPPRNoteDialog(PurchaseProdResultEditPanel pprEditPanel) {
 		PPRNoteDialog pprNoteDialog = new PPRNoteDialog(false, new PPRNote(),

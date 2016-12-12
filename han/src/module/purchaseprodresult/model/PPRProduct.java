@@ -181,4 +181,19 @@ public class PPRProduct implements Serializable {
 		this.isFlag = isFlag;
 	}
 	
+	private Double unitPrice;
+	private Double subTotal;
+	
+	public Double getUnitPrice() {
+		return unitPrice;
+	}
+	public void setUnitPrice(Double unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+	public Double getSubTotal() {
+		return subTotal;
+	}
+	public void setSubTotal(Double subTotal) {
+		this.subTotal = subTotal;
+	}
 }

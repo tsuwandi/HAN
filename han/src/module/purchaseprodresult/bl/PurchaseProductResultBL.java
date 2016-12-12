@@ -78,21 +78,21 @@ public class PurchaseProductResultBL  {
 		}
 	}
 	
-	public List<PurchaseProdResult> getAllPurchaseProdResult() throws SQLException {
+	public List<PurchaseProdResult> getAllPurchaseProdResult(String status) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PurchaseProdResultDAO(con).getAll();
+			return new PurchaseProdResultDAO(con).getAll(status);
 		} finally {
 			con.close();
 		}
 	}
 
-	public List<PurchaseProdResult> getAllPurchaseProdResultBySimpleSearch(String value) throws SQLException {
+	public List<PurchaseProdResult> getAllPurchaseProdResultBySimpleSearch(String value, String status) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PurchaseProdResultDAO(con).getAllBySimpleSearch(value);
+			return new PurchaseProdResultDAO(con).getAllBySimpleSearch(value, status);
 		} finally {
 			con.close();
 		}
@@ -170,6 +170,7 @@ public class PurchaseProductResultBL  {
 			
 			con.commit();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			con.rollback();
 			throw new SQLException(e.getMessage());
 		} finally {
