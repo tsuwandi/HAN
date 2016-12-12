@@ -225,5 +225,51 @@ public class PurchaseProdResult implements Serializable {
 	}
 
 	private Supplier supplier;
+	
+	private Double total;
+	private Double discount;
+	private Double tax;
+	private Double grandTotal;
+	private Date paymentDate;
+	
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+
+	public Double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Double discount) {
+		this.discount = discount;
+	}
+
+	public Double getTax() {
+		return tax;
+	}
+
+	public void setTax(Double tax) {
+		this.tax = tax;
+	}
+
+	public Double getGrandTotal() {
+		return grandTotal;
+	}
+
+	public void setGrandTotal(Double grandTotal) {
+		this.grandTotal = grandTotal;
+	}
+
+	public Date getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(Date paymentDate) {
+		this.paymentDate = paymentDate;
+	}
 
 }

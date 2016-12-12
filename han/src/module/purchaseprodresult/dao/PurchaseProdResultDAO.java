@@ -22,21 +22,21 @@ public class PurchaseProdResultDAO {
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 	
-	private String getAllQuery = new StringBuilder().append("select p.id, p.ppr_code, p.supp_code, ")
-			.append("p.purchase_date, p.due_date, p.status, ")
-			.append("s.id as supp_id, s.supp_name from purchase_prod_result p ")
+	private String getAllQuery = new StringBuilder().append("select p.id, p.ppr_code, p.supp_code, p.purchase_note, ")
+			.append("p.purchase_date, p.due_date, p.payment_date , p.status, p.total, p.discount, p.tax, ")
+			.append("p.grand_total, s.id as supp_id, s.supp_name from purchase_prod_result p ")
 			.append("inner join supplier s on p.supp_code = s.supp_code ")
 			.append("where s.deleted_date is null and p.deleted_date is null ").toString();
 	
 	private String isPPRCodeExistsQuery = "select count(*) as is_exists from purchase_prod_result where ppr_code = ? and deleted_date is null ";
 
 	private String insertQuery = new StringBuilder().append("insert into purchase_prod_result (ppr_code, supp_code, purchase_date, due_date, ")
-			.append(" status, input_date, input_by) ")
+			.append("status, input_date, input_by) ")
 			.append(" values (?,?,?,?,?,?,?)").toString();
 
 	private String updateQuery = new StringBuilder().append("update purchase_prod_result set supp_code=?, purchase_date=?, ")
-			.append("due_date=?, status=?, ")
-			.append("edit_date=?, edited_by=? where ppr_code=?").toString();
+			.append("due_date=?, status=?, total=?, discount=?, tax=?, grand_total=?, ")
+			.append("edit_date=?, edited_by=?, payment_date=? where ppr_code=?").toString();
 
 	private String deleteQuery = "update purchase_prod_result set deleted_date=?, deleted_by=? where id=?";
 	
@@ -48,11 +48,14 @@ public class PurchaseProdResultDAO {
 		this.connection = connection;
 	}
 
-	public List<PurchaseProdResult> getAll() throws SQLException {
+	public List<PurchaseProdResult> getAll(String status) throws SQLException {
 		List<PurchaseProdResult> pprs = new ArrayList<PurchaseProdResult>();
 
+		String query = new StringBuilder().append(getAllQuery).append("and status = ? ").toString();
+		
 		try {
-			getAllStatement = connection.prepareStatement(getAllQuery);
+			getAllStatement = connection.prepareStatement(query);
+			getAllStatement.setString(1, status);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
@@ -63,6 +66,11 @@ public class PurchaseProdResultDAO {
 				ppr.setPurchaseDate(rs.getDate("purchase_date"));
 				ppr.setDueDate(rs.getDate("due_date"));
 				ppr.setStatus(rs.getString("status"));
+				ppr.setTotal(rs.getDouble("total"));
+				ppr.setDiscount(rs.getDouble("discount"));
+				ppr.setTax(rs.getDouble("tax"));
+				ppr.setGrandTotal(rs.getDouble("grand_total"));
+				ppr.setPaymentDate(rs.getDate("payment_date"));
 				
 				Supplier supplier = new Supplier();
 				supplier.setId(rs.getInt("supp_id"));
@@ -82,19 +90,23 @@ public class PurchaseProdResultDAO {
 		return pprs;
 	}
 	
-	public List<PurchaseProdResult> getAllBySimpleSearch(String value) throws SQLException {
+	public List<PurchaseProdResult> getAllBySimpleSearch(String value, String status) throws SQLException {
 		List<PurchaseProdResult> pprs = new ArrayList<PurchaseProdResult>();
 		try {
+			
+			
 			if (null != value && !"".equals(value)) {
 				String keyword = new StringBuilder().append("%").append(value).append("%").toString();
-				String query = new StringBuilder().append(getAllQuery).append(" and")
+				String query = new StringBuilder().append("and status = '%s'").append(" and")
 						.append(" (lower(p.ppr_code) like lower('%s')")
 						.append(" or lower(p.supp_code) like lower('%s')")
 						.append(" or lower(s.supp_name) like lower('%s')")
 						.append(" or lower(p.status) like lower('%s'))").toString();
-				getAllStatement = connection.prepareStatement(String.format(query, keyword, keyword, keyword, keyword));
+				getAllStatement = connection.prepareStatement(String.format(query, status,keyword, keyword, keyword, keyword));
 			} else {
-				getAllStatement = connection.prepareStatement(getAllQuery);
+				String query = new StringBuilder().append(getAllQuery).append("and status = ? ").toString();
+				getAllStatement = connection.prepareStatement(query);
+				getAllStatement.setString(1, status);
 			}
 
 			ResultSet rs = getAllStatement.executeQuery();
@@ -106,6 +118,11 @@ public class PurchaseProdResultDAO {
 				ppr.setPurchaseDate(rs.getDate("purchase_date"));
 				ppr.setDueDate(rs.getDate("due_date"));
 				ppr.setStatus(rs.getString("status"));
+				ppr.setTotal(rs.getDouble("total"));
+				ppr.setDiscount(rs.getDouble("discount"));
+				ppr.setTax(rs.getDouble("tax"));
+				ppr.setGrandTotal(rs.getDouble("grand_total"));
+				ppr.setPaymentDate(rs.getDate("payment_date"));
 				
 				Supplier supplier = new Supplier();
 				supplier.setId(rs.getInt("supp_id"));
@@ -171,9 +188,19 @@ public class PurchaseProdResultDAO {
 			updateStatement.setDate(2, DateUtil.toDate(ppr.getPurchaseDate()));
 			updateStatement.setDate(3, DateUtil.toDate(ppr.getDueDate()));
 			updateStatement.setString(4, ppr.getStatus());
-			updateStatement.setDate(5, DateUtil.getCurrentDate());
-			updateStatement.setString(6, "timotius");
-			updateStatement.setString(7, ppr.getPprCode());
+			updateStatement.setDouble(5, ppr.getTotal());
+			updateStatement.setDouble(6, ppr.getDiscount());
+			updateStatement.setDouble(7, ppr.getTax());
+			updateStatement.setDouble(8, ppr.getGrandTotal());
+			updateStatement.setDate(9, DateUtil.getCurrentDate());
+			updateStatement.setString(10, "timotius");
+			if(ppr.getPaymentDate() == null) {
+				updateStatement.setNull(11, java.sql.Types.DATE);
+			} else {
+				updateStatement.setDate(11, DateUtil.toDate(ppr.getPaymentDate()));
+			}
+			updateStatement.setString(12, ppr.getPprCode());
+			
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -209,7 +236,11 @@ public class PurchaseProdResultDAO {
 				ppr.setPurchaseDate(rs.getDate("purchase_date"));
 				ppr.setDueDate(rs.getDate("due_date"));
 				ppr.setStatus(rs.getString("status"));
-				
+				ppr.setTotal(rs.getDouble("total"));
+				ppr.setDiscount(rs.getDouble("discount"));
+				ppr.setTax(rs.getDouble("tax"));
+				ppr.setGrandTotal(rs.getDouble("grand_total"));
+				ppr.setPaymentDate(rs.getDate("payment_date"));
 				Supplier supplier = new Supplier();
 				supplier.setId(rs.getInt("supp_id"));
 				supplier.setSuppCode(rs.getString("supp_code"));

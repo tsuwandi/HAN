@@ -26,11 +26,11 @@ import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.purchaseprodresult.model.PurchaseProdResult;
 
-public class PurchaseProdResultListPanel extends JPanel {
+public class PurchaseProdResultPaymentListPanel extends JPanel {
 
-	private static final Logger LOGGER = Logger.getLogger(PurchaseProdResultListPanel.class);
+	private static final Logger LOGGER = Logger.getLogger(PurchaseProdResultPaymentListPanel.class);
 
-	JButton btnCreateNew;
+	//JButton btnCreateNew;
 	JButton btnExport;
 	JButton btnAdvancedSearch;
 	JButton btnSearch;
@@ -47,11 +47,13 @@ public class PurchaseProdResultListPanel extends JPanel {
 
 	JTable tblPurchaseProdResult;
 
-	private PurchaseProdResultListPanel purchaseProdResultListPanel;
+	private PurchaseProdResultPaymentListPanel purchaseProdResultListPanel;
 
 	private static final long serialVersionUID = 1L;
+	
+	public static final String FINAL = "FINAL";
 
-	public PurchaseProdResultListPanel() {
+	public PurchaseProdResultPaymentListPanel() {
 		purchaseProdResultListPanel = this;
 		setLayout(null);
 
@@ -67,14 +69,14 @@ public class PurchaseProdResultListPanel extends JPanel {
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
 
-		btnCreateNew = new JButton("Buat Baru");
-		btnCreateNew.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultCreatePanel");
-			}
-		});
-		btnCreateNew.setBounds(700, 80, 100, 30);
-		add(btnCreateNew);
+//		btnCreateNew = new JButton("Buat Baru");
+//		btnCreateNew.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultCreatePanel");
+//			}
+//		});
+//		btnCreateNew.setBounds(700, 80, 100, 30);
+//		add(btnCreateNew);
 
 		btnExport = new JButton("Export");
 		btnExport.addActionListener(new ActionListener() {
@@ -126,14 +128,14 @@ public class PurchaseProdResultListPanel extends JPanel {
 					int column = target.getSelectedColumn();
 
 					if (column == 4)
-						MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultViewPanel", listOfPurchaseProdResult.get(row));
+						MainPanel.changePanel("module.purchaseprodresultpayment.ui.PurchaseProdResultPaymentViewPanel", listOfPurchaseProdResult.get(row));
 				}
 			}
 		});
 
 		try {
 			listOfPurchaseProdResult = new ArrayList<PurchaseProdResult>();
-			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResult();
+			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultPaymentBL().getAllPurchaseProdResult(FINAL);
 			refreshTablePurchaseProdResult();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -144,7 +146,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				btnCreateNew.requestFocusInWindow();
+				btnExport.requestFocusInWindow();
 			}
 		});
 
@@ -162,7 +164,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 	public void doSearch(String value) {
 		try {
 			listOfPurchaseProdResult = new ArrayList<PurchaseProdResult>();
-			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResultBySimpleSearch(value);
+			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultPaymentBL().getAllPurchaseProdResultBySimpleSearch(value, FINAL);
 			refreshTablePurchaseProdResult();
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
@@ -173,7 +175,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 	/**
 	 * Method to display advanced search dialog
 	 */
-	protected void showAdvancedSearchDialog(PurchaseProdResultListPanel purchaseProdResultListPanel) {
+	protected void showAdvancedSearchDialog(PurchaseProdResultPaymentListPanel purchaseProdResultListPanel) {
 		
 	}
 

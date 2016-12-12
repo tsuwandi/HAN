@@ -22,7 +22,7 @@ public class MenuPanel extends JPanel {
 		setLayout(null);
 
 		AccordionMenu menu = new AccordionMenu();
-		menu.setBounds(1, 0, 200, 300);
+		menu.setBounds(1, 0, 200, 320);
 		
 		menu.addNewMenu("Penerimaan", "Penerimaan");
 		menu.addNewLeafTo("Penerimaan", "Supplier", "Supplier", "module.supplier.ui.SupplierListPanel");
@@ -49,6 +49,10 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Produksi", "Pembelian", "Pembelian", "module.purchaseprodresult.ui.PurchaseProdResultListPanel");
 		menu.addNewLeafTo("Produksi", "Sisa Produksi", "Sisa Produksi", "module.productionwaste.ui.ProductionWasteListPanel");
 		menu.addNewLeafTo("Produksi", "Produksi PK", "Hasil Klem (Produksi PK)", "module.prodpk.ui.ProdPKListPanel");
+		menu.calculateAvaiableSpace();
+		
+		menu.addNewMenu("Finance", "Finance");
+		menu.addNewLeafTo("Finance", "Finance", "Finance", "module.purchaseprodresultpayment.ui.PurchaseProdResultPaymentListPanel");
 		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Konfigurasi", "Konfigurasi");

@@ -24,7 +24,7 @@ import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import module.product.model.Product;
-import module.purchaseprodresultpayment.model.PPRProduct;
+import module.purchaseprodresult.model.PPRProduct;
 
 public class PPRProductDialog extends JDialog {
 
@@ -53,24 +53,13 @@ public class PPRProductDialog extends JDialog {
 	private boolean isEdit;
 	private boolean isView;
 	private PPRProduct pprProduct;
-	private PurchaseProdResultCreatePanel pprCreatePanel;
-	private PurchaseProdResultEditPanel pprEditPanel;
-	private PurchaseProdResultViewPanel pprViewPanel;
+	private PurchaseProdResultPaymentEditPanel pprEditPanel;
+	private PurchaseProdResultPaymentViewPanel pprViewPanel;
 	List<Product> listOfProduct = null;
 
 	private Integer index;
 
-	public PPRProductDialog(boolean edit, PPRProduct pprProduct, PurchaseProdResultCreatePanel pprCreatePanel,
-			Integer index) {
-		this.isEdit = edit;
-		this.isView = false;
-		this.pprProduct = pprProduct;
-		this.pprCreatePanel = pprCreatePanel;
-		this.index = index;
-		init();
-	}
-
-	public PPRProductDialog(boolean edit, PPRProduct pprProduct, PurchaseProdResultEditPanel pprEditPanel,
+	public PPRProductDialog(boolean edit, PPRProduct pprProduct, PurchaseProdResultPaymentEditPanel pprEditPanel,
 			Integer index) {
 		this.isEdit = edit;
 		this.isView = false;
@@ -80,7 +69,7 @@ public class PPRProductDialog extends JDialog {
 		init();
 	}
 	
-	public PPRProductDialog(boolean view, PPRProduct pprProduct, PurchaseProdResultViewPanel pprViewPanel,
+	public PPRProductDialog(boolean view, PPRProduct pprProduct, PurchaseProdResultPaymentViewPanel pprViewPanel,
 			Integer index) {
 		this.isEdit = true;
 		this.isView = view;
@@ -89,6 +78,9 @@ public class PPRProductDialog extends JDialog {
 		this.index = index;
 		init();
 	}
+	
+	final String PRODUCT_CODE_NORMAL_A = "PDC009";
+	final String PRODUCT_CODE_NORMAL_B = "PDC009-2";
 
 	public void init() {
 
@@ -105,7 +97,7 @@ public class PPRProductDialog extends JDialog {
 
 		listOfProduct = new ArrayList<Product>();
 		try {
-			listOfProduct = ServiceFactory.getPurchaseProductResultPaymentBL().getAllPrdctByPrdtCtgryIsPrdctnRslt();
+			listOfProduct = ServiceFactory.getPurchaseProductResultPaymentBL().getAllByProductCode(PRODUCT_CODE_NORMAL_A, PRODUCT_CODE_NORMAL_B);
 			listOfProduct.add(0, new Product("-- Pilih Produk --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
@@ -135,6 +127,7 @@ public class PPRProductDialog extends JDialog {
 			}
 		});
 		txtQty.setBounds(150, 45, 150, 25);
+		txtQty.setEnabled(false);
 		getContentPane().add(txtQty);
 
 		lblErrorQty = new JLabel();
@@ -252,17 +245,13 @@ public class PPRProductDialog extends JDialog {
 		pprProduct.setProduct(product);
 		try {
 			if (isEdit == false) {
-				if (pprCreatePanel != null) {
-					pprCreatePanel.listOfPPRProduct.add(pprProduct);
-				} else if (pprEditPanel != null) {
+				if (pprEditPanel != null) {
 					pprEditPanel.listOfPPRProduct.add(pprProduct);
 				}
 
 				DialogBox.showInsert();
 			} else {
-				if (pprCreatePanel != null) {
-					pprCreatePanel.listOfPPRProduct.set(index, pprProduct);
-				} else if (pprEditPanel != null) {
+				if (pprEditPanel != null) {
 					pprEditPanel.listOfPPRProduct.set(index, pprProduct);
 				}
 
@@ -277,10 +266,9 @@ public class PPRProductDialog extends JDialog {
 	}
 
 	protected void closeDialog() {
-		if (pprCreatePanel != null)
-			pprCreatePanel.refreshTablePPRProduct();
-		 else if (pprEditPanel != null)
+		if (pprEditPanel != null) {
 			 pprEditPanel.refreshTablePPRProduct();
+		}
 
 		dispose();
 	}

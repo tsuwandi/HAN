@@ -207,7 +207,7 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 		panel.add(lblErrorDueDate);
 
 		btnInsertPPRProduct = new JButton("Tambah");
-		btnInsertPPRProduct.setBounds(820, 220, 100, 25);
+		btnInsertPPRProduct.setBounds(820, 430, 100, 25);
 		btnInsertPPRProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				showAddPPRProductDialog(pprCreatePanel);
@@ -221,11 +221,11 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 				doDeletePPRProduct();
 			}
 		});
-		btnDeletePPRProduct.setBounds(925, 220, 100, 25);
+		btnDeletePPRProduct.setBounds(925, 430, 100, 25);
 		panel.add(btnDeletePPRProduct);
 
 		scrollPanePPRProduct = new JScrollPane();
-		scrollPanePPRProduct.setBounds(50, 260, 975, 150);
+		scrollPanePPRProduct.setBounds(50, 470, 975, 150);
 		panel.add(scrollPanePPRProduct);
 
 		listOfPPRProduct = new ArrayList<PPRProduct>();
@@ -257,7 +257,7 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 		scrollPanePPRProduct.setViewportView(tblPPRProduct);
 		
 		btnInsertPPRNote = new JButton("Tambah");
-		btnInsertPPRNote.setBounds(820, 430, 100, 25);
+		btnInsertPPRNote.setBounds(820, 220, 100, 25);
 		btnInsertPPRNote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				showAddPPRNoteDialog(pprCreatePanel);
@@ -271,11 +271,11 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 				doDeletePPRNote();
 			}
 		});
-		btnDeletePPRNote.setBounds(925, 430, 100, 25);
+		btnDeletePPRNote.setBounds(925, 220, 100, 25);
 		panel.add(btnDeletePPRNote);
 		
 		scrollPanePPRNote = new JScrollPane();
-		scrollPanePPRNote.setBounds(50, 470, 975, 150);
+		scrollPanePPRNote.setBounds(50, 260, 975, 150);
 		panel.add(scrollPanePPRNote);
 		
 		listOfPPRNote = new ArrayList<PPRNote>();
@@ -359,6 +359,7 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 			DialogBox.showInsert();
 			MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultListPanel");
 		} catch (Exception e) {
+			e.printStackTrace();
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
 		}
