@@ -363,7 +363,7 @@ public class PopUpProductionResult extends JDialog{
 		totalAllGoodResultField.setBounds(240,970,150,20);
 		containerPnl.add(totalAllGoodResultField);
 		
-		saveBtn = new JButton("Simpan");
+		saveBtn = new JButton("OK");
 		saveBtn.setBounds(750,1010,150,30);
 		saveBtn.setFocusable(false);
 		containerPnl.add(saveBtn);

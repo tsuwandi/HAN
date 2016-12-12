@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.apache.log4j.LogManager;
@@ -20,6 +21,7 @@ import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
 import main.component.ComboBox;
+import main.component.DialogBox;
 import main.component.TextField;
 import main.panel.MainPanel;
 import module.production.model.GroupShift;
@@ -117,8 +119,10 @@ public class ViewProductionPanel extends JPanel implements Bridging{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					ServiceFactory.getProductionBL().delete(production);
-					MainPanel.changePanel("module.production.ui.ListProductionPanel");
+					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
+						ServiceFactory.getProductionBL().delete(production);
+						MainPanel.changePanel("module.production.ui.ListProductionPanel");
+					}
 				} catch (SQLException e1) {
 					log.error(e1.getMessage());
 					e1.printStackTrace();
