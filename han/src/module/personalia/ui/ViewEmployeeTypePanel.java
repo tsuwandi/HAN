@@ -14,32 +14,33 @@ import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.personalia.model.Division;
+import module.personalia.model.EmployeeType;
 import module.util.Bridging;
 
 public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 
 	private static final long serialVersionUID = 5085049929139496641L;
-	private JTextField divisionNameField;
-	private JTextField divisionIdField;
+	private JTextField employeeTypeNameField;
+	private JTextField employeeTypeIdField;
 	private JButton editBtn;
-	private Division division;
+	private EmployeeType employeeType;
 	private boolean editMode = false;
 
 	public ViewEmployeeTypePanel() {
 		setSize(1024, 630);
 		setLayout(null);
 
-		JLabel breadCrumbLbl = new JLabel("Personalia > Divisi > Edit Divisi");
+		JLabel breadCrumbLbl = new JLabel("Personalia > Tipe Karyawan > Edit Tipe Karyawan");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
-		breadCrumbLbl.setBounds(50, 10, 290, 25);
+		breadCrumbLbl.setBounds(50, 10, 330, 25);
 		add(breadCrumbLbl);
 
-		JLabel lblHeader = new JLabel("VIEW DIVISI");
+		JLabel lblHeader = new JLabel("VIEW TIPE KARYAWAN");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 46, 150, 25);
 		add(lblHeader);
 
-		JLabel label = new JLabel("ID Divisi");
+		JLabel label = new JLabel("ID Tipe Karyawan");
 		label.setBounds(30, 80, 100, 30);
 		add(label);
 
@@ -47,7 +48,7 @@ public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 		label_1.setBounds(130, 80, 10, 30);
 		add(label_1);
 
-		JLabel label_2 = new JLabel("<html>Nama Divisi<font color='red'> * </font></html>");
+		JLabel label_2 = new JLabel("<html>Tipe Karyawan<font color='red'> * </font></html>");
 		label_2.setBounds(30, 120, 100, 30);
 		add(label_2);
 
@@ -55,17 +56,17 @@ public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 		label_3.setBounds(130, 120, 10, 30);
 		add(label_3);
 
-		divisionNameField = new JTextField();
-		divisionNameField.setBounds(140, 120, 200, 30);
-		divisionNameField.setEditable(false);
-		divisionNameField.setEnabled(false);
-		add(divisionNameField);
+		employeeTypeNameField = new JTextField();
+		employeeTypeNameField.setBounds(140, 120, 200, 30);
+		employeeTypeNameField.setEditable(false);
+		employeeTypeNameField.setEnabled(false);
+		add(employeeTypeNameField);
 
-		divisionIdField = new JTextField();
-		divisionIdField.setBounds(140, 80, 200, 30);
-		divisionIdField.setEditable(false);
-		divisionIdField.setEnabled(false);
-		add(divisionIdField);
+		employeeTypeIdField = new JTextField();
+		employeeTypeIdField.setBounds(140, 80, 200, 30);
+		employeeTypeIdField.setEditable(false);
+		employeeTypeIdField.setEnabled(false);
+		add(employeeTypeIdField);
 
 		editBtn = new JButton("Edit");
 		editBtn.setBounds(924, 589, 90, 30);
@@ -74,7 +75,6 @@ public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(isEditMode());
 				if (isEditMode()==false) {
 					setEditMode(true);
 				}
@@ -103,9 +103,9 @@ public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 	
 	protected void delete() {
 		if (DialogBox.showDeleteChoice()==0) {
-			division.setDeleteDate(new Date());
-			division.setDeleteBy("");
-			ServiceFactory.getPersonaliaBL().deleteDivision(division);
+			employeeType.setDeleteDate(new Date());
+			employeeType.setDeleteBy("");
+			ServiceFactory.getPersonaliaBL().deleteEmployeeType(employeeType);
 			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
 		} else {
 
@@ -113,16 +113,16 @@ public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 	}
 
 	protected void update() {
-		Division division = new Division();
-		division.setId(divisionIdField.getText());
-		division.setName(divisionNameField.getText());
-		division.setEditDate(new Date());
-		division.setEditBy("");
+		EmployeeType employeeType = new EmployeeType();
+		employeeType.setId(employeeTypeIdField.getText());
+		employeeType.setName(employeeTypeNameField.getText());
+		employeeType.setEditDate(new Date());
+		employeeType.setEditBy("");
 
 		try {
-			ServiceFactory.getPersonaliaBL().updateDivision(division);
+			ServiceFactory.getPersonaliaBL().updateEmployeeType(employeeType);
 			DialogBox.showEdit();
-			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
+			MainPanel.changePanel("module.personalia.ui.EmployeeTypeConfigPanel");
 		} catch (Exception e) {
 			e.printStackTrace();
 			DialogBox.showError("Data tidak berhasil disimpan");
@@ -131,10 +131,10 @@ public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 
 	@Override
 	public void invokeObjects(Object... objects) {
-		division = (Division) objects[0];
+		employeeType = (EmployeeType) objects[0];
 
-		divisionIdField.setText(division.getId());
-		divisionNameField.setText(division.getName());
+		employeeTypeIdField.setText(employeeType.getId());
+		employeeTypeNameField.setText(employeeType.getName());
 	}
 
 	public boolean isEditMode() {
@@ -143,10 +143,10 @@ public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
-		divisionIdField.setEditable(true);
-		divisionIdField.setEnabled(true);
-		divisionNameField.setEditable(true);
-		divisionNameField.setEnabled(true);
+		employeeTypeIdField.setEditable(true);
+		employeeTypeIdField.setEnabled(true);
+		employeeTypeNameField.setEditable(true);
+		employeeTypeNameField.setEnabled(true);
 
 		editBtn.setText("Simpan");
 		editBtn.updateUI();
