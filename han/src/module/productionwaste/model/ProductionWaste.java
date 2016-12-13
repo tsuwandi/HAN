@@ -2,6 +2,8 @@ package module.productionwaste.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import module.production.model.GroupShift;
 import module.production.model.Line;
@@ -28,7 +30,9 @@ public class ProductionWaste implements Serializable {
 	private String editedBy;
 	private Date deletedDate;
 	private String deletedBy;
-
+	
+	List<ProductionResultWaste> productionResultWastes;
+	Map<Integer, ProductionResultWaste> deletedProductResultWaste;
 	public int getId() {
 		return id;
 	}
@@ -157,128 +161,25 @@ public class ProductionWaste implements Serializable {
 		this.deletedBy = deletedBy;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((confirmCode == null) ? 0 : confirmCode.hashCode());
-		result = prime * result + ((confirmDate == null) ? 0 : confirmDate.hashCode());
-		result = prime * result + ((deletedBy == null) ? 0 : deletedBy.hashCode());
-		result = prime * result + ((deletedDate == null) ? 0 : deletedDate.hashCode());
-		result = prime * result + ((editDate == null) ? 0 : editDate.hashCode());
-		result = prime * result + ((editedBy == null) ? 0 : editedBy.hashCode());
-		result = prime * result + ((groupShiftCode == null) ? 0 : groupShiftCode.hashCode());
-		result = prime * result + id;
-		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
-		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
-		result = prime * result + ((lineCode == null) ? 0 : lineCode.hashCode());
-		result = prime * result + ((productionDate == null) ? 0 : productionDate.hashCode());
-		result = prime * result + ((productionTypeCode == null) ? 0 : productionTypeCode.hashCode());
-		result = prime * result + ((pwCode == null) ? 0 : pwCode.hashCode());
-		result = prime * result + ((shiftCode == null) ? 0 : shiftCode.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ProductionWaste other = (ProductionWaste) obj;
-		if (confirmCode == null) {
-			if (other.confirmCode != null)
-				return false;
-		} else if (!confirmCode.equals(other.confirmCode))
-			return false;
-		if (confirmDate == null) {
-			if (other.confirmDate != null)
-				return false;
-		} else if (!confirmDate.equals(other.confirmDate))
-			return false;
-		if (deletedBy == null) {
-			if (other.deletedBy != null)
-				return false;
-		} else if (!deletedBy.equals(other.deletedBy))
-			return false;
-		if (deletedDate == null) {
-			if (other.deletedDate != null)
-				return false;
-		} else if (!deletedDate.equals(other.deletedDate))
-			return false;
-		if (editDate == null) {
-			if (other.editDate != null)
-				return false;
-		} else if (!editDate.equals(other.editDate))
-			return false;
-		if (editedBy == null) {
-			if (other.editedBy != null)
-				return false;
-		} else if (!editedBy.equals(other.editedBy))
-			return false;
-		if (groupShiftCode == null) {
-			if (other.groupShiftCode != null)
-				return false;
-		} else if (!groupShiftCode.equals(other.groupShiftCode))
-			return false;
-		if (id != other.id)
-			return false;
-		if (inputBy == null) {
-			if (other.inputBy != null)
-				return false;
-		} else if (!inputBy.equals(other.inputBy))
-			return false;
-		if (inputDate == null) {
-			if (other.inputDate != null)
-				return false;
-		} else if (!inputDate.equals(other.inputDate))
-			return false;
-		if (lineCode == null) {
-			if (other.lineCode != null)
-				return false;
-		} else if (!lineCode.equals(other.lineCode))
-			return false;
-		if (productionDate == null) {
-			if (other.productionDate != null)
-				return false;
-		} else if (!productionDate.equals(other.productionDate))
-			return false;
-		if (productionTypeCode == null) {
-			if (other.productionTypeCode != null)
-				return false;
-		} else if (!productionTypeCode.equals(other.productionTypeCode))
-			return false;
-		if (pwCode == null) {
-			if (other.pwCode != null)
-				return false;
-		} else if (!pwCode.equals(other.pwCode))
-			return false;
-		if (shiftCode == null) {
-			if (other.shiftCode != null)
-				return false;
-		} else if (!shiftCode.equals(other.shiftCode))
-			return false;
-		if (status == null) {
-			if (other.status != null)
-				return false;
-		} else if (!status.equals(other.status))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "ProductionWaste [id=" + id + ", pwCode=" + pwCode + ", productionDate=" + productionDate
-				+ ", groupShiftCode=" + groupShiftCode + ", shiftCode=" + shiftCode + ", lineCode=" + lineCode
-				+ ", productionTypeCode=" + productionTypeCode + ", status=" + status + ", confirmCode=" + confirmCode
-				+ ", confirmDate=" + confirmDate + ", inputDate=" + inputDate + ", inputBy=" + inputBy + ", editDate="
-				+ editDate + ", editedBy=" + editedBy + ", deletedDate=" + deletedDate + ", deletedBy=" + deletedBy
-				+ "]";
-	}
 	
+	public List<ProductionResultWaste> getProductionResultWastes() {
+		return productionResultWastes;
+	}
+
+	public void setProductionResultWastes(List<ProductionResultWaste> productionResultWastes) {
+		this.productionResultWastes = productionResultWastes;
+	}
+
+
+	public Map<Integer, ProductionResultWaste> getDeletedProductResultWaste() {
+		return deletedProductResultWaste;
+	}
+
+	public void setDeletedProductResultWaste(Map<Integer, ProductionResultWaste> deletedProductResultWaste) {
+		this.deletedProductResultWaste = deletedProductResultWaste;
+	}
+
+
 	private GroupShift groupShift;
 	private Line line;
 	private Shift shift;
