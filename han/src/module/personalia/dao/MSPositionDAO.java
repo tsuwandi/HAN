@@ -162,6 +162,7 @@ public class MSPositionDAO {
 	public Integer getLastId() {
 		List<MSPosition> msPositions = null;
 		try {
+			msPositions = new ArrayList<>();
 			getLastIdStatement = connection.prepareStatement(getLastIdQuery);
 			ResultSet resultSet = getLastIdStatement.executeQuery();
 			
@@ -186,6 +187,6 @@ public class MSPositionDAO {
 			e.printStackTrace();
 		}
 		
-		return msPositions == null ? 1 : Integer.parseInt(msPositions.get(0).getId()) + 1;
+		return msPositions.size() < 1 ? 1 : Integer.parseInt(msPositions.get(0).getId()) + 1;
 	}
 }

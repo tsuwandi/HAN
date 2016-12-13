@@ -95,15 +95,14 @@ public class MSPositionConfigPanel extends JPanel{
 
 		getData();
 		
-		msPositionConfigTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		msPositionConfigTable.getTableHeader().setResizingAllowed(false);
-		
-		msPositionConfigTable.getColumnModel().getColumn(5).setPreferredWidth(0);
-		msPositionConfigTable.getColumnModel().getColumn(5).setMaxWidth(0);
-		msPositionConfigTable.getColumnModel().getColumn(5).setMinWidth(0);
-		msPositionConfigTable.getColumnModel().getColumn(6).setPreferredWidth(0);
-		msPositionConfigTable.getColumnModel().getColumn(6).setMaxWidth(0);
-		msPositionConfigTable.getColumnModel().getColumn(6).setMinWidth(0);
+		if(msPositionConfigTable.getColumnModel().getColumnCount()>1) {
+			msPositionConfigTable.getColumnModel().getColumn(5).setPreferredWidth(0);
+			msPositionConfigTable.getColumnModel().getColumn(5).setMaxWidth(0);
+			msPositionConfigTable.getColumnModel().getColumn(5).setMinWidth(0);
+			msPositionConfigTable.getColumnModel().getColumn(6).setPreferredWidth(0);
+			msPositionConfigTable.getColumnModel().getColumn(6).setMaxWidth(0);
+			msPositionConfigTable.getColumnModel().getColumn(6).setMinWidth(0);
+		}
 	}
 
 	protected MSPosition getSelectedData() {
