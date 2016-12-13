@@ -118,6 +118,6 @@ public class DepartmentDAO {
 			e.printStackTrace();
 		}
 		
-		return departments == null ? 1 : Integer.parseInt(departments.get(0).getId()) + 1; 
+		return departments.size() < 1 ? 1 : Integer.parseInt(departments.get(0).getId()) + 1; 
 	}
 }
