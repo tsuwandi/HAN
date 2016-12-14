@@ -336,7 +336,7 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 		productionWaste.setProductionTypeCode(cbProductionType.getDataIndex().getProductionTypeCode());
 		
 		try {
-			ServiceFactory.getProductionWasteBL().save(productionWaste, listOfPWProduct);
+			ServiceFactory.getProductionWasteBL().save(productionWaste);
 			DialogBox.showInsert();
 			MainPanel.changePanel("module.productionwaste.ui.ProductionWasteListPanel");
 		} catch (SQLException e) {
