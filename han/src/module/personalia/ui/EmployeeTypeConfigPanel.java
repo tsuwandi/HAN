@@ -18,9 +18,10 @@ import javax.swing.table.AbstractTableModel;
 
 import main.panel.MainPanel;
 import module.personalia.model.EmployeeType;
+import module.util.Bridging;
 import controller.ServiceFactory;
 
-public class EmployeeTypeConfigPanel extends JPanel {
+public class EmployeeTypeConfigPanel extends JPanel implements Bridging{
 
 	private static final long serialVersionUID = 5857002598291577322L;
 	private JTable employeeTypeConfigTable;
@@ -87,6 +88,13 @@ public class EmployeeTypeConfigPanel extends JPanel {
 		JButton explicitSearchBtn = new JButton("<html>Pencarian<br/>Lanjut</html>");
 		explicitSearchBtn.setBounds(924, 100, 90, 30);
 		add(explicitSearchBtn);
+		explicitSearchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.personalia.ui.SearchEmployeeTypePanel");
+			}
+		});
 
 		JButton search = new JButton("Pencarian");
 		search.setBounds(924, 140, 90, 30);
@@ -180,5 +188,13 @@ public class EmployeeTypeConfigPanel extends JPanel {
 				return "";
 			}
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void invokeObjects(Object... objects) {
+		employeeTypes = (List<EmployeeType>) objects[0];
+		employeeTypeConfigTableModel = new EmployeeTypeConfigTableModel(employeeTypes);
+		employeeTypeConfigTable.setModel(employeeTypeConfigTableModel);
 	}
 }

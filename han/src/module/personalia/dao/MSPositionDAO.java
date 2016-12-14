@@ -168,16 +168,15 @@ public class MSPositionDAO {
 			
 			while (resultSet.next()) {
 				MSPosition msPosition = new MSPosition();
+				
 				msPosition.setId(resultSet.getString("id"));
 				msPosition.setName(resultSet.getString("name"));
 				msPosition.setDepartementId(resultSet.getString("department_id"));
 				msPosition.setDepartementName(getDepartement(msPosition.getDepartementId()).getName());
 				msPosition.setDepartment(getDepartement(msPosition.getDepartementId()));
-				//System.out.println(msPosition.getDepartment());
 				msPosition.setDivisionId(resultSet.getString("division_id"));
 				msPosition.setDivisionName(getDivision(msPosition.getDivisionId()).getName());
 				msPosition.setDivision(getDivision(msPosition.getDivisionId()));
-				//System.out.println(msPosition.getDivision());
 				msPosition.setSalaryMin(resultSet.getInt("min_salary"));
 				msPosition.setSalaryMax(resultSet.getInt("max_salary"));
 
@@ -186,7 +185,6 @@ public class MSPositionDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		return msPositions.size() < 1 ? 1 : Integer.parseInt(msPositions.get(0).getId()) + 1;
+		return msPositions.size() < 1 ? 1 : Integer.parseInt(msPositions.get(0).getId().substring(3)) + 1;
 	}
 }

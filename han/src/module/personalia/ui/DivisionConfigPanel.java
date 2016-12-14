@@ -18,9 +18,10 @@ import javax.swing.table.AbstractTableModel;
 
 import main.panel.MainPanel;
 import module.personalia.model.Division;
+import module.util.Bridging;
 import controller.ServiceFactory;
 
-public class DivisionConfigPanel extends JPanel {
+public class DivisionConfigPanel extends JPanel implements Bridging{
 
 	private static final long serialVersionUID = -3127283027621703632L;
 	private JTable divisionConfigTable;
@@ -87,6 +88,13 @@ public class DivisionConfigPanel extends JPanel {
 		JButton explicitSearchBtn = new JButton("<html>Pencarian<br/>Lanjut</html>");
 		explicitSearchBtn.setBounds(924, 100, 90, 30);
 		add(explicitSearchBtn);
+		explicitSearchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.personalia.ui.SearchDivisionPanel");
+			}
+		});
 
 		JButton search = new JButton("Pencarian");
 		search.setBounds(924, 140, 90, 30);
@@ -180,5 +188,13 @@ public class DivisionConfigPanel extends JPanel {
 				return "";
 			}
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void invokeObjects(Object... objects) {
+		divisions = (List<Division>) objects[0];
+		divisionConfigTableModel = new DivisionConfigTableModel(divisions);
+		divisionConfigTable.setModel(divisionConfigTableModel);
 	}
 }

@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.personalia.model.Division;
 import module.personalia.model.EmployeeType;
 
 public class CreateEmployeeTypePanel extends JPanel {
@@ -23,7 +22,6 @@ public class CreateEmployeeTypePanel extends JPanel {
 	private JTextField employeeTypeIdField;
 
 	public CreateEmployeeTypePanel() {
-
 		setSize(1024, 630);
 		setLayout(null);
 
@@ -80,7 +78,10 @@ public class CreateEmployeeTypePanel extends JPanel {
 	
 
 	private void getLastID() {
-		employeeTypeIdField.setText(ServiceFactory.getPersonaliaBL().getLastIdEmployeeType().toString());
+		StringBuffer lastId = new StringBuffer();
+		lastId.append("EMPT");
+		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdEmployeeType()));
+		employeeTypeIdField.setText(lastId.toString());
 	}
 
 	protected void save() {

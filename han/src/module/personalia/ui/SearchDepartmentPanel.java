@@ -12,6 +12,8 @@ import javax.swing.JTextField;
 
 import controller.ServiceFactory;
 import main.component.ComboBox;
+import main.panel.MainPanel;
+import module.personalia.model.Department;
 import module.personalia.model.Division;
 
 
@@ -19,15 +21,14 @@ public class SearchDepartmentPanel extends JPanel {
 
 	private static final long serialVersionUID = 2708997445150245596L;
 	private JTextField departmentNameField;
-	private JTextField departementIdField;
+	private JTextField departmentIdField;
 	private ComboBox<Division> divisionCmbBox;
-	private List<Division> divisions;
 	
 	public SearchDepartmentPanel() {
 		setSize(500, 200);
 		setLayout(null);
 		
-		JLabel lblHeader = new JLabel("PENCARIAN DEPARTEMEN");
+		JLabel lblHeader = new JLabel("SEARCH DEPARTEMEN");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(10, 10, 180, 25);
 		add(lblHeader);
@@ -60,18 +61,18 @@ public class SearchDepartmentPanel extends JPanel {
 		departmentNameField.setBounds(140, 80, 200, 30);
 		add(departmentNameField);
 
-		departementIdField = new JTextField();
-		departementIdField.setBounds(140, 40, 200, 30);
-		departementIdField.setEditable(false);
-		departementIdField.setEnabled(false);
-		add(departementIdField);
+		departmentIdField = new JTextField();
+		departmentIdField.setBounds(140, 40, 200, 30);
+		departmentIdField.setEditable(false);
+		departmentIdField.setEnabled(false);
+		add(departmentIdField);
 		
 		divisionCmbBox = new ComboBox<Division>();
 		divisionCmbBox.setBounds(140, 120, 200, 30);
 		add(divisionCmbBox);
 		
 		JButton resetBtn = new JButton("Reset");
-		resetBtn.setBounds(400, 160, 90, 30);
+		resetBtn.setBounds(250, 160, 90, 30);
 		add(resetBtn);
 		
 		resetBtn.addActionListener(new ActionListener() {
@@ -83,7 +84,7 @@ public class SearchDepartmentPanel extends JPanel {
 		});
 		
 		JButton searchBtn = new JButton("Cari");
-		searchBtn.setBounds(300, 160, 90, 30);
+		searchBtn.setBounds(150, 160, 90, 30);
 		add(searchBtn);
 		
 		searchBtn.addActionListener(new ActionListener() {
@@ -103,18 +104,28 @@ public class SearchDepartmentPanel extends JPanel {
 
 	protected void search() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(" and id = ");
-		sb.append(departementIdField.getText()==null? "" : departementIdField.getText());
-		sb.append(" and name = ");
-		sb.append(departmentNameField.getText());
+		
+		if(!"".equals(departmentIdField.getText())) {
+			sb.append(" and id like '%");
+			sb.append(departmentIdField.getText());
+			sb.append("%'");
+		}
+		if(!"".equals(departmentNameField.getText())) {
+			sb.append(" and name like '%");
+			sb.append(departmentNameField.getText());
+			sb.append("%'");
+		}
+		
 		sb.append(" and division_di = ");
 		sb.append(divisionCmbBox.getDataIndex().getId());
 		
-		ServiceFactory.getPersonaliaBL().getDivisions(sb.toString());
+		List<Department> departments = ServiceFactory.getPersonaliaBL().getDepartments(sb.toString());
+		
+		MainPanel.changePanel("module.personalia.ui.DepartmentConfigPanel",departments);
 	}
 
 	protected void resetMode() {
-		departementIdField.setText("");
+		departmentIdField.setText("");
 		departmentNameField.setText("");
 		divisionCmbBox.setSelectedIndex(0);
 	}

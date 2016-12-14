@@ -140,7 +140,10 @@ public class CreateMSPositionPanel extends JPanel {
 	}
 
 	private void getLastID() {
-		msPositionIdField.setText(ServiceFactory.getPersonaliaBL().getLastIdDivision().toString());
+		StringBuffer lastId = new StringBuffer();
+		lastId.append("POS");
+		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdDivision()));
+		msPositionIdField.setText(lastId.toString());
 	}
 
 	protected void save() {
@@ -169,7 +172,7 @@ public class CreateMSPositionPanel extends JPanel {
 		if (DialogBox.showAfterChoiceInsert()==0) {
 			clear();
 		} else {
-			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
+			MainPanel.changePanel("module.personalia.ui.MSPositionConfigPanel");
 		}
 	}
 

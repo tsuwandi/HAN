@@ -158,9 +158,7 @@ public class ViewMSPositionPanel extends JPanel implements Bridging{
 		
 		msPositionIdField.setText(msPosition.getId());
 		msPositionNameField.setText(msPosition.getName());
-		System.out.println(msPosition.getDepartment());
 		departemenCmbBox.setSelectedItem(msPosition.getDepartment());
-		System.out.println(msPosition.getDivision());
 		divisionCmbBox.setSelectedItem(msPosition.getDivision());
 		salaryMinField.setText(msPosition.getSalaryMin().toString());
 		salaryMaxField.setText(msPosition.getSalaryMax().toString());
