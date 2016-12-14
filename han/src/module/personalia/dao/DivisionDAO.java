@@ -120,6 +120,6 @@ public class DivisionDAO {
 			e.printStackTrace();
 			return 1;
 		}
-		return divisions.size() < 1 ? 1 : Integer.parseInt(divisions.get(0).getId())+1;
+		return divisions.size() < 1 ? 1 : Integer.parseInt(divisions.get(0).getId().substring(3))+1;
 	}
 }

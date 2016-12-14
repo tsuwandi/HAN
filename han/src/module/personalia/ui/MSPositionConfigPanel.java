@@ -57,7 +57,7 @@ public class MSPositionConfigPanel extends JPanel{
 		msPositionConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (msPositionConfigTable.columnAtPoint(e.getPoint())==7) {
+				if (msPositionConfigTable.columnAtPoint(e.getPoint())==5) {
 					MainPanel.changePanel("module.personalia.ui.ViewMSPositionPanel", getSelectedData());
 				}
 			}
@@ -88,21 +88,19 @@ public class MSPositionConfigPanel extends JPanel{
 		JButton explicitSearchBtn = new JButton("<html>Pencarian<br/>Lanjut</html>");
 		explicitSearchBtn.setBounds(924, 100, 90, 30);
 		add(explicitSearchBtn);
+		explicitSearchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.personalia.ui.SearchMSPositionPanel");
+			}
+		});
 
 		JButton search = new JButton("Pencarian");
 		search.setBounds(924, 140, 90, 30);
 		add(search);
 
 		getData();
-		
-		if(msPositionConfigTable.getColumnModel().getColumnCount()>1) {
-			msPositionConfigTable.getColumnModel().getColumn(5).setPreferredWidth(0);
-			msPositionConfigTable.getColumnModel().getColumn(5).setMaxWidth(0);
-			msPositionConfigTable.getColumnModel().getColumn(5).setMinWidth(0);
-			msPositionConfigTable.getColumnModel().getColumn(6).setPreferredWidth(0);
-			msPositionConfigTable.getColumnModel().getColumn(6).setMaxWidth(0);
-			msPositionConfigTable.getColumnModel().getColumn(6).setMinWidth(0);
-		}
 	}
 
 	protected MSPosition getSelectedData() {
@@ -110,11 +108,19 @@ public class MSPositionConfigPanel extends JPanel{
 
 		MSPosition msPosition = new MSPosition();
 		msPosition.setId(msPositionConfigTable.getValueAt(row, 1).toString());
-		msPosition.setName(msPositionConfigTable.getValueAt(row, 2).toString());
-		msPosition.setDepartementName(msPositionConfigTable.getValueAt(row, 3).toString());
-		msPosition.setDivisionName(msPositionConfigTable.getValueAt(row, 4).toString());
-		msPosition.setSalaryMin((Integer) msPositionConfigTable.getValueAt(row, 5));
-		msPosition.setSalaryMax((Integer) msPositionConfigTable.getValueAt(row, 6));
+		for (MSPosition position : msPositions) {
+			if(position.getId().equals(msPosition.getId())){
+				msPosition.setName(position.getName());
+				msPosition.setDepartementId(position.getDepartementId());
+				msPosition.setDepartementName(position.getDepartementName());
+				msPosition.setDepartment(position.getDepartment());
+				msPosition.setDivisionId(position.getDivisionId());
+				msPosition.setDivisionName(position.getDivisionName());
+				msPosition.setDivision(position.getDivision());
+				msPosition.setSalaryMin(position.getSalaryMin());
+				msPosition.setSalaryMax(position.getSalaryMax());
+			}
+		}
 
 		return msPosition;
 	}
@@ -137,7 +143,7 @@ public class MSPositionConfigPanel extends JPanel{
 
 		@Override
 		public int getColumnCount() {
-			return 8;
+			return 6;
 		}
 
 		@Override
@@ -161,10 +167,6 @@ public class MSPositionConfigPanel extends JPanel{
 			case 4:
 				return msPosition.getDivisionName();
 			case 5:
-				return msPosition.getSalaryMin();
-			case 6:
-				return msPosition.getSalaryMax();
-			case 7:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
@@ -185,10 +187,6 @@ public class MSPositionConfigPanel extends JPanel{
 			case 4:
 				return String.class;
 			case 5:
-				return Integer.class;
-			case 6:
-				return Integer.class;
-			case 7:
 				return String.class;
 			default:
 				return String.class;
@@ -209,10 +207,6 @@ public class MSPositionConfigPanel extends JPanel{
 			case 4:
 				return "Divisi";
 			case 5:
-				return "";
-			case 6:
-				return "";
-			case 7:
 				return "Action";
 			default:
 				return "";

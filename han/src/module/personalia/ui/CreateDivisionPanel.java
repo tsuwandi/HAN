@@ -77,7 +77,10 @@ public class CreateDivisionPanel extends JPanel {
 	}
 
 	private void getLastID() {
-		divisionIdField.setText(ServiceFactory.getPersonaliaBL().getLastIdDivision().toString());
+		StringBuffer lastId = new StringBuffer();
+		lastId.append("DIV");
+		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdDivision()));
+		divisionIdField.setText(lastId.toString());
 	}
 
 	protected void save() {
