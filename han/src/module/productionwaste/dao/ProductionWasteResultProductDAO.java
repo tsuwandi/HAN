@@ -1,0 +1,156 @@
+package module.productionwaste.dao;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import module.productionwaste.model.ProductionResultProductWaste;
+
+
+
+public class ProductionWasteResultProductDAO {
+	private Connection connection;
+	private PreparedStatement getAllStatement;
+	private PreparedStatement getProdResultByProdPKCodeStatement;
+	private PreparedStatement insertStatement;
+	private PreparedStatement updateStatement;
+	private PreparedStatement deleteStatement;
+	private PreparedStatement updateDeleteStatement;
+	
+	private String getAllQuery = "SELECT id, prod_waste_result_id, product_code, qty FROM prod_waste_result_product WHERE deleted_date IS NULL";
+	
+	private String updateDeleteQuery = "UPDATE prod_waste_result_product SET deleted_date = ? , delete_by=? WHERE prod_waste_result_id = ? AND id=?";
+	
+	private String insertQuery = "INSERT INTO prod_waste_result_product (prod_waste_result_id, product_code, qty , input_by, input_date) "
+			+ "VALUES (?,?,?,?,?)";
+	private String updateQuery = "UPDATE prod_waste_result_product SET product_code=?, qty=?, edited_by=?, edited_date=? "
+			+ "WHERE prod_waste_result_id =? AND id=?";
+	
+	private String deleteQuery = "DELETE FROM prod_waste_result_product WHERE prod_waste_result_id = ?";
+	
+	public ProductionWasteResultProductDAO(Connection connection) throws SQLException {
+		this.connection = connection;
+	}
+	
+	
+	public List<ProductionResultProductWaste> getAll() throws SQLException {
+		List<ProductionResultProductWaste> prodPKResultProducts = new ArrayList<ProductionResultProductWaste>();
+
+		try {
+			getAllStatement = connection.prepareStatement(getAllQuery);
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				ProductionResultProductWaste prodPKResultProduct = new ProductionResultProductWaste();
+				prodPKResultProduct.setId(rs.getInt("id"));
+				prodPKResultProduct.setProdResultID(rs.getInt("prod_pk_result_id"));
+				prodPKResultProduct.setProductCode(rs.getString("product_code"));
+				prodPKResultProduct.setQty(rs.getDouble("qty"));
+				prodPKResultProducts.add(prodPKResultProduct);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return prodPKResultProducts;
+	}
+	
+	public List<ProductionResultProductWaste> getAllByProdPKResultID(int prodPKCode) throws SQLException {
+		List<ProductionResultProductWaste> prodPKResultProducts = new ArrayList<ProductionResultProductWaste>();
+
+		try {
+			StringBuffer sb  = new StringBuffer(getAllQuery);
+			sb.append(" AND prod_waste_result_id = ?");
+			
+			getProdResultByProdPKCodeStatement = connection.prepareStatement(sb.toString());
+			getProdResultByProdPKCodeStatement.setInt(1, prodPKCode);
+			
+			ResultSet rs = getProdResultByProdPKCodeStatement.executeQuery();
+			while (rs.next()) {
+				ProductionResultProductWaste prodPKResultProduct = new ProductionResultProductWaste();
+				prodPKResultProduct.setId(rs.getInt("id"));
+				prodPKResultProduct.setProdResultID(rs.getInt("prod_waste_result_id"));
+				prodPKResultProduct.setProductCode(rs.getString("product_code"));
+				prodPKResultProduct.setQty(rs.getDouble("qty"));
+				prodPKResultProducts.add(prodPKResultProduct);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return prodPKResultProducts;
+	}
+	
+	public void save(ProductionResultProductWaste prodPKResultProduct) throws SQLException {
+		try {
+			insertStatement = connection.prepareStatement(insertQuery);
+			insertStatement.setInt(1, prodPKResultProduct.getProdResultID());
+			insertStatement.setString(2, prodPKResultProduct.getProductCode());
+			insertStatement.setDouble(3, prodPKResultProduct.getQty());
+			insertStatement.setString(4, "Michael");
+			insertStatement.setDate(5, new Date(new java.util.Date().getTime()));
+			insertStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+	}
+	
+	
+	public void update(ProductionResultProductWaste prodPKResultProduct) throws SQLException {
+		try {
+			updateStatement = connection.prepareStatement(updateQuery);
+			updateStatement.setString(1, prodPKResultProduct.getProductCode());
+			updateStatement.setDouble(2, prodPKResultProduct.getQty());
+			updateStatement.setString(3, "Michael");
+			updateStatement.setDate(4, new Date(new java.util.Date().getTime()));
+			updateStatement.setInt(5, prodPKResultProduct.getProdResultID());
+			updateStatement.setInt(6, prodPKResultProduct.getId());
+			updateStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+	}
+	
+	public void delete(int prodResultId) throws SQLException {
+		try {
+			deleteStatement = connection.prepareStatement(deleteQuery);
+			deleteStatement.setInt(1, prodResultId);
+			deleteStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+	}
+	
+	public void updateDelete(ProductionResultProductWaste ProductionResultProductWaste) throws SQLException {
+		try {
+			updateDeleteStatement = connection.prepareStatement(updateDeleteQuery);
+			updateDeleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
+			updateDeleteStatement.setString(2, "Michael");
+			updateDeleteStatement.setInt(3, ProductionResultProductWaste.getProdResultID());
+			updateDeleteStatement.setInt(4, ProductionResultProductWaste.getId());
+			updateDeleteStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+	}
+}
