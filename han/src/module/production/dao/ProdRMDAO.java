@@ -20,7 +20,7 @@ public class ProdRMDAO {
 	private PreparedStatement getAllForSearchStatement;
 	private PreparedStatement getAllForSearchByPalletCardCodeStatement;
 	
-	private String getAllQuery = "SELECT a.id, a.pallet_card_code, b.length, b.width, b.thickness, b.total, b.volume  FROM prod_rm a "
+	private String getAllQuery = "SELECT a.production_code, a.id, a.pallet_card_code, b.length, b.width, b.thickness, b.total, b.volume  FROM prod_rm a "
 			+ "INNER JOIN pallet_card b ON a.pallet_card_code = b.pallet_card_code WHERE a.deleted_date IS NULL ";
 	
 	private String insertQuery = "INSERT INTO prod_rm (production_code, pallet_card_code, input_by, input_date) "
@@ -110,6 +110,7 @@ public class ProdRMDAO {
 			while (rs.next()) {
 				ProdRM prodRM = new ProdRM();
 				prodRM.setId(rs.getInt("id"));
+				prodRM.setProductionCode(rs.getString("production_code"));
 				prodRM.setPalletCardCode(rs.getString("pallet_card_code"));
 				prodRM.setLength(rs.getDouble("length"));
 				prodRM.setWidth(rs.getDouble("width"));
