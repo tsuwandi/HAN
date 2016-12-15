@@ -102,8 +102,6 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 	private List<Line> listOfLine = null;
 	private List<ProductionType> listOfProductionType = null;
 
-	private List<PWProduct> listOfPWProduct = null;
-
 	private JLabel lblBreadcrumb;
 	private JLabel lblHeader;
 
@@ -327,7 +325,7 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 	
 	
 	protected void doSave() {
-		productionWaste = new ProductionWaste();
+//		productionWaste = new ProductionWaste();
 		productionWaste.setPwCode(txtProductionCode.getText());
 		productionWaste.setProductionDate(dcProductionDate.getDate());
 		productionWaste.setGroupShiftCode(cbGroupShift.getDataIndex().getGroupShiftCode());

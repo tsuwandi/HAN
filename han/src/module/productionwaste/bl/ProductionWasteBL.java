@@ -33,7 +33,7 @@ import module.productionwaste.model.ProductionWaste;
 
 public class ProductionWasteBL  {
 	private DataSource dataSource;
-
+	
 	ProductWasteResultDAO productionWasteResultDAO;
 	ProductionWasteResultProductDAO productionWasteResultProductDAO;
 	ProductionWasteDAO productionWasteDAO;
@@ -45,8 +45,8 @@ public class ProductionWasteBL  {
 			con = dataSource.getConnection();
 			productionWasteResultDAO = new ProductWasteResultDAO(con);
 			productionWasteResultProductDAO = new ProductionWasteResultProductDAO(con);
+			productionWasteDAO = new ProductionWasteDAO(con);
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
 		
@@ -148,7 +148,6 @@ public class ProductionWasteBL  {
 		}
 	}
 	
-	private static final String STATUS = "COMPLETED";
 	public void save(ProductionWaste pw)
 			throws SQLException {
 		Connection con = null;
@@ -156,27 +155,30 @@ public class ProductionWasteBL  {
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
-			
-			pw.setStatus(STATUS);
-			
-			new ProductionWasteDAO(con).save(pw);
-
+			ProductWasteResultDAO productionWasteResultDAO = new ProductWasteResultDAO(con);
+			ProductionWasteResultProductDAO productionWasteResultProductDAO = new ProductionWasteResultProductDAO(con);
+			ProductionWasteDAO productionWasteDAO = new ProductionWasteDAO(con);
 			if(pw.getProductionResultWastes()!=null){
 				if(pw.getProductionResultWastes().size()!=0){
 					int id = getLastProductWasteResultID();
-					for (ProductionResultWaste prodPK : pw.getProductionResultWastes()) {
-						prodPK.setId(id);
-						prodPK.setProdCode(pw.getPwCode());
-						new ProductWasteResultDAO(con).save(prodPK);
-						for (ProductionResultProductWaste prodResultProduct : prodPK.getListProductionResultProduct()) {
+					for (ProductionResultWaste prodWaste : pw.getProductionResultWastes()) {
+						prodWaste.setId(id);
+						prodWaste.setProdCode(pw.getPwCode());
+						productionWasteResultDAO.save(prodWaste);
+						for (ProductionResultProductWaste prodResultProduct : prodWaste.getListProductionResultProduct()) {
 							prodResultProduct.setProdResultID(id);
-							new ProductionWasteResultProductDAO(con).save(prodResultProduct);
+							productionWasteResultProductDAO.save(prodResultProduct);
 						}
 						id++;
 					}
 					flagProductionResult=true;
 				}
 			}
+			
+			if(!flagProductionResult) pw.setStatus("INCOMPLETE");
+			else pw.setStatus("COMPLETED");
+			productionWasteDAO.save(pw);
+
 			con.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -190,15 +192,49 @@ public class ProductionWasteBL  {
 	public void update(ProductionWaste pw, List<PWProduct> pwProducts)
 			throws SQLException {
 		Connection con = null;
+		ProductWasteResultDAO productionWasteResultDAO = new ProductWasteResultDAO(con);
+		ProductionWasteResultProductDAO productionWasteResultProductDAO = new ProductionWasteResultProductDAO(con);
+		ProductionWasteDAO productionWasteDAO = new ProductionWasteDAO(con);
+		boolean flagProductionResult=false;
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
-
-			new ProductionWasteDAO(con).update(pw);
-
-			for (PWProduct s : pwProducts) {
-				new PWProductDAO(con).update(s);
+			
+			if(pw.getProductionResultWastes()!=null){
+				if(pw.getProductionResultWastes().size()!=0){
+					int id = getLastProductWasteResultID();
+					for (ProductionResultWaste prodWaste : pw.getProductionResultWastes()) {
+						if(prodWaste.getId()==0){
+							prodWaste.setId(id);
+							prodWaste.setProdCode(pw.getPwCode());
+							productionWasteResultDAO.save(prodWaste);
+							for (ProductionResultProductWaste prodResultProduct : prodWaste.getListProductionResultProduct()) {
+								prodResultProduct.setProdResultID(id);
+								productionWasteResultProductDAO.save(prodResultProduct);
+							}
+							id++;
+						}else{
+							productionWasteResultDAO.update(prodWaste);
+							for (ProductionResultProductWaste prodResultProduct : prodWaste.getListProductionResultProduct()) {
+								productionWasteResultProductDAO.update(prodResultProduct);
+							}
+						}
+					}
+					flagProductionResult=true;
+				}
 			}
+			if(pw.getDeletedProductResultWaste().size()!=0){
+				for(ProductionResultWaste pr : pw.getDeletedProductResultWaste().values()){
+					productionWasteResultDAO.delete(pr);
+					for (ProductionResultProductWaste prp : pr.getListProductionResultProduct()) {
+						productionWasteResultProductDAO.updateDelete(prp);
+					}
+				}
+			}
+			
+			if(!flagProductionResult) pw.setStatus("INCOMPLETE");
+			else pw.setStatus("COMPLETED");
+			productionWasteDAO.save(pw);
 			
 			con.commit();
 		} catch (SQLException e) {
@@ -215,10 +251,20 @@ public class ProductionWasteBL  {
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
-
-			new ProductionWasteDAO(con).delete(pw.getId());
-			new PWProductDAO(con).deleteAll(pw.getPwCode());
-
+			ProductWasteResultDAO productionWasteResultDAO = new ProductWasteResultDAO(con);
+			ProductionWasteResultProductDAO productionWasteResultProductDAO = new ProductionWasteResultProductDAO(con);
+			ProductionWasteDAO productionWasteDAO = new ProductionWasteDAO(con);
+			if(pw.getProductionResultWastes()!=null){	
+				if(pw.getProductionResultWastes().size()!=0){
+					for (ProductionResultWaste prodWaste : pw.getProductionResultWastes()) {
+						productionWasteResultDAO.delete(prodWaste);
+						for (ProductionResultProductWaste prodResultProduct : prodWaste.getListProductionResultProduct()) {
+							productionWasteResultProductDAO.updateDelete(prodResultProduct);
+						}
+					}
+				}
+			}
+			productionWasteDAO.delete(pw.getId());
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
