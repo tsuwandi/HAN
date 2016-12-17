@@ -278,11 +278,11 @@ public class ProductionWasteViewPanel extends JPanel implements Bridging {
 				pop.setLocationRelativeTo(null);
 			}
 		});
-		btnInsertProdResult.setBounds(775, 570, 150, 25);
+		btnInsertProdResult.setBounds(765, 570, 150, 25);
 		panel.add(btnInsertProdResult);
 		
 		btnDelete = new JButton("Hapus");
-		btnDelete.setBounds(675,570,150,25);
+		btnDelete.setBounds(605,570,150,25);
 		btnDelete.addActionListener(new ActionListener() {
 			
 			@Override

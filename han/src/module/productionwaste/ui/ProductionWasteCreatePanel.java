@@ -310,7 +310,7 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 				pop.setLocationRelativeTo(null);
 			}
 		});
-		btnInsertProdResult.setBounds(775, 570, 150, 25);
+		btnInsertProdResult.setBounds(765, 570, 150, 25);
 		panel.add(btnInsertProdResult);
 
 		btnCancel = new JButton("Kembali");

@@ -112,6 +112,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 	JButton editBtn;
 	JButton printBtn;
 	JButton backBtn;
+	JButton deleteBtn;
 
 	List<Supplier> suppliers;
 	List<SupplierCP> supplierCPs;
@@ -658,6 +659,10 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		printBtn.setBounds(740,540,100,30);
 		containerPnl.add(printBtn);
 		
+		deleteBtn = new JButton("Hapus");
+		deleteBtn.setBounds(630,540,100,30);
+		containerPnl.add(deleteBtn);
+		
 		backBtn = new JButton("Kembali");
 		backBtn.setBounds(50,540,100,30);
 		containerPnl.add(backBtn);
@@ -670,6 +675,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		woodResourceComboBox.setEnabled(false);
 		woodDomicileField.setEnabled(false);
 		receivedCodeField.setEnabled(false);
+		docDateChooser.setEnabled(false);
 		receivedCodeDateField.setEnabled(false);
 		receivedCodeMonthField.setEnabled(false);
 		receivedCodeYearField.setEnabled(false);
@@ -720,8 +726,9 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		}
 		
 		
-		if(!received.getReceivedStatus().equals("Baru")){
+		if(received.getReceivedStatus().equals("FINAL")){
 			editBtn.setEnabled(false);
+			deleteBtn.setEnabled(false);
 		}
 	}
 }

@@ -869,6 +869,11 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			log.error(e.getMessage());
 			e.printStackTrace();
 		}
+		
+		if(received.getReceivedStatus().equals("FINAL")){
+			inputBtn.setEnabled(false);
+			deleteBtn.setEnabled(false);
+		}
 	
 
 	}
