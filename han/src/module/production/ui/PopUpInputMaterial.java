@@ -170,7 +170,7 @@ public class PopUpInputMaterial extends JDialog{
 		add(uomLengthLbl);
 		
 		//TODO thick part
-		thickLbl = new JLabel("Panjang");
+		thickLbl = new JLabel("Tebal");
 		thickLbl.setBounds(50, 220, 150, 20);
 		add(thickLbl);
 		
@@ -217,7 +217,7 @@ public class PopUpInputMaterial extends JDialog{
 		volumeField.setBounds(200, 340, 150, 20);
 		add(volumeField);
 		
-		uomVolumeLbl = new JLabel("cm3");
+		uomVolumeLbl = new JLabel("m3");
 		uomVolumeLbl.setBounds(352,340,20,20);
 		add(uomVolumeLbl);
 		
@@ -274,7 +274,7 @@ public class PopUpInputMaterial extends JDialog{
 		totalVolumeField.setBounds(200, 650, 150, 20);
 		add(totalVolumeField);
 		
-		uomTotalVolumeLbl = new JLabel("cm3");
+		uomTotalVolumeLbl = new JLabel("m3");
 		uomTotalVolumeLbl.setBounds(352,650,20,20);
 		add(uomTotalVolumeLbl);
 		
@@ -462,7 +462,7 @@ public class PopUpInputMaterial extends JDialog{
 					widthField.setText(prodRM.getWidth()+"");
 					thickField.setText(prodRM.getThick()+"");
 					logField.setText(prodRM.getLog()+"");
-					volumeField.setText(prodRM.getVolume()+"");
+					volumeField.setText(prodRM.getVolume()/1000000+"");
 				}
 			} catch (SQLException e) {
 				log.error(e.getMessage());
@@ -490,7 +490,7 @@ public class PopUpInputMaterial extends JDialog{
 		}
 		totalPalletCard = prodRms.size();
 		totalLogField.setText(totalLog+"");
-		totalVolumeField.setText(totalVolume+"");
+		totalVolumeField.setText(totalVolume/1000000+"");
 		palletCardField.setText(totalPalletCard+"");
 	}
 	

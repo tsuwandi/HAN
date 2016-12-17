@@ -159,7 +159,7 @@ public class PopUpViewMaterial extends JDialog{
 		add(uomLengthLbl);
 		
 		//TODO thick part
-		thickLbl = new JLabel("Panjang");
+		thickLbl = new JLabel("Tebal");
 		thickLbl.setBounds(50, 220, 150, 20);
 		add(thickLbl);
 		
@@ -263,7 +263,7 @@ public class PopUpViewMaterial extends JDialog{
 		totalVolumeField.setBounds(200, 650, 150, 20);
 		add(totalVolumeField);
 		
-		uomTotalVolumeLbl = new JLabel("cm3");
+		uomTotalVolumeLbl = new JLabel("m3");
 		uomTotalVolumeLbl.setBounds(352,650,20,20);
 		add(uomTotalVolumeLbl);
 		
@@ -346,7 +346,7 @@ public class PopUpViewMaterial extends JDialog{
 		}
 		totalPalletCard = prodRms.size();
 		totalLogField.setText(totalLog+"");
-		totalVolumeField.setText(totalVolume+"");
+		totalVolumeField.setText(totalVolume/1000000+"");
 		palletCardField.setText(totalPalletCard+"");
 	}
 	
