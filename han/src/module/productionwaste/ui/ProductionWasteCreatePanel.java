@@ -59,7 +59,18 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 
 	@Override
 	public void invokeObjects(Object... objects) {
-		// TODO Auto-generated method stub
+		if(objects.length>0){
+			productionWaste = (ProductionWaste) objects[0];
+			txtProductionCode.setText(productionWaste.getPwCode());
+			dcProductionDate.setDate(productionWaste.getProductionDate());
+			cbGroupShift.setSelectedItem(productionWaste.getGroupShift().getDescription());
+			cbShift.setSelectedItem(productionWaste.getShift().getShiftName());
+			cbLine.setSelectedItem(productionWaste.getLine().getDescription());
+			cbProductionType.setSelectedItem(productionWaste.getProductionType().getProductionType());
+			editMode = true;
+			dcProductionDate.setEnabled(false);
+			lblBreadcrumb.setText("ERP > Pembelian > Edit Hasil Produksi > Sisa Produksi");
+		}
 	}
 
 	private static final Logger LOGGER = Logger.getLogger(ProductionWasteCreatePanel.class);
@@ -104,14 +115,16 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 
 	private JLabel lblBreadcrumb;
 	private JLabel lblHeader;
-
+	private boolean editMode;
 
 	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
 	final String PRODUCTION_TYPE_BARECORE = "Barecore";
+	String title = "";
 	
 	private ProductionWasteCreatePanel parent;
 
 	public ProductionWasteCreatePanel() {
+
 		parent = this;
 		productionWaste = new ProductionWaste();
 
@@ -119,7 +132,9 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(800, 600));
 		panel.setLayout(null);
-
+		
+		
+		
 		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Sisa Produksi");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 414, 25);
@@ -157,9 +172,11 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 			    new PropertyChangeListener() {
 			        @Override
 			        public void propertyChange(PropertyChangeEvent e) {
-			            if ("date".equals(e.getPropertyName())) {
-			               makeCodeNumber(dcProductionDate.getDate());
-			            }
+			            if(!editMode){
+			            	if ("date".equals(e.getPropertyName())) {
+			            		 makeCodeNumber(dcProductionDate.getDate());
+				            }	
+			            }   
 			        }
 			    });
 		makeCodeNumber(dcProductionDate.getDate());
@@ -285,7 +302,7 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 		btnSave.setBounds(925, 570, 100, 25);
 		panel.add(btnSave);
 		
-		btnInsertProdResult = new JButton("Hasil Produksi");
+		btnInsertProdResult = new JButton("Input Hasil Produksi");
 		btnInsertProdResult.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				PopUpInputProductionResult pop = new PopUpInputProductionResult(parent);
@@ -293,7 +310,7 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 				pop.setLocationRelativeTo(null);
 			}
 		});
-		btnInsertProdResult.setBounds(825, 570, 100, 25);
+		btnInsertProdResult.setBounds(775, 570, 150, 25);
 		panel.add(btnInsertProdResult);
 
 		btnCancel = new JButton("Kembali");
@@ -334,8 +351,15 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 		productionWaste.setProductionTypeCode(cbProductionType.getDataIndex().getProductionTypeCode());
 		
 		try {
-			ServiceFactory.getProductionWasteBL().save(productionWaste);
-			DialogBox.showInsert();
+			if(editMode){
+				ServiceFactory.getProductionWasteBL().update(productionWaste);
+				DialogBox.showEdit();
+			}
+			else {
+				ServiceFactory.getProductionWasteBL().save(productionWaste);
+				DialogBox.showInsert();
+			}
+			
 			MainPanel.changePanel("module.productionwaste.ui.ProductionWasteListPanel");
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());

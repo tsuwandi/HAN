@@ -647,7 +647,7 @@ public class PopUpProductionResult extends JDialog{
 			totalFineA+=prd.getTotalFineA();
 			totalFineB+=prd.getTotalFineB();
 			totalAllFine+=(prd.getTotalFineA()+prd.getTotalFineB());
-			totalOutput+=totalAllFine+totalKlem+totalProtol;
+			totalOutput=totalAllFine+totalKlem+totalProtol;
 		}
 		
 		totalOutputField.setText(totalOutput+"");

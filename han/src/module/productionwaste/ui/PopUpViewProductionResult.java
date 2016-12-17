@@ -1,4 +1,4 @@
-package module.production.ui;
+package module.productionwaste.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -44,6 +44,8 @@ import module.production.model.ProductionResultProduct;
 import module.productionpk.model.ProdPKMaterial;
 import module.productionpk.model.ProdPKResult;
 import module.productionpk.model.ProdPKResultProduct;
+import module.productionwaste.model.ProductionResultProductWaste;
+import module.productionwaste.model.ProductionResultWaste;
 
 public class PopUpViewProductionResult extends JDialog{
 	Logger log = LogManager.getLogger(PopUpViewProductionResult.class.getName());
@@ -103,11 +105,12 @@ public class PopUpViewProductionResult extends JDialog{
 	private JScrollPane containerScrollPane;
 	private JPanel containerPnl;
 	private JPanel borderPanel;
-	private ViewProductionPanel createProductionPKPanel;
-	private List<ProductionResult> listOfPrd;
+	private ProductionWasteViewPanel createProductionPanel;
+	private List<ProductionResultWaste> listOfPrd;
 	private boolean editMode=false;
 	private int indexEdit=0;
 	private Map<Integer, Integer> pressMap;
+	private Map<Integer, ProductionResultWaste> deletedProdResult;
 	
 	static final String KA = "PDC009-7";
 	static final String KB = "PDC009-8";
@@ -129,26 +132,15 @@ public class PopUpViewProductionResult extends JDialog{
 		totalGoodResultAField.setEnabled(false);
 		totalGoodResultBField.setEnabled(false);
 		totalAllGoodResultField.setEnabled(false);
-		pressNoField.setEnabled(false);
-		minuteField.setEnabled(false);
-		hourField.setEnabled(false);
-		klemGradeAField.setEnabled(false);
-		klemGradeBField.setEnabled(false);
-		protolGradeAField.setEnabled(false);
-		protolGradeBField.setEnabled(false);
-		goodResultGradeAField.setEnabled(false);
-		goodResultGradeBField.setEnabled(false);
-		addBtn.setEnabled(false);
-		saveBtn.setVisible(false);
 		pressMap = new HashMap<>();
-	
+		deletedProdResult = new HashMap<>();
 		listOfPrd = new ArrayList<>();
 
-		createProductionPKPanel = (ViewProductionPanel) parent;
-		if(createProductionPKPanel.getProduction().getProductionResults()!=null){
-			listOfPrd = createProductionPKPanel.getProduction().getProductionResults();
+		createProductionPanel = (ProductionWasteViewPanel) parent;
+		if(createProductionPanel.getProductionWaste().getProductionResultWastes()!=null){
+			listOfPrd = createProductionPanel.getProductionWaste().getProductionResultWastes();
 			productionResultTable.setModel(new ResultTableModel(listOfPrd));
-			for (ProductionResult prd : listOfPrd) {
+			for (ProductionResultWaste prd : listOfPrd) {
 				pressMap.put(prd.getPressedNo(), prd.getPressedNo());
 			}
 			productionResultTable.updateUI();
@@ -158,7 +150,7 @@ public class PopUpViewProductionResult extends JDialog{
 	private void createGUI(){
 		setLayout(null);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		setTitle("Input Hasil Produksi");
+		setTitle("View Hasil Produksi");
 		setSize(1020, 750);
 		
 		containerPnl = new JPanel();
@@ -170,7 +162,7 @@ public class PopUpViewProductionResult extends JDialog{
 		containerScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(containerScrollPane);
 		
-		titleLbl = new JLabel("Input Hasil Produksi");
+		titleLbl = new JLabel("View Hasil Produksi");
 		titleLbl.setBounds(50,10,200,30);
 		titleLbl.setFont(new Font("Arial", 1, 18));
 		containerPnl.add(titleLbl);
@@ -305,13 +297,13 @@ public class PopUpViewProductionResult extends JDialog{
 		borderPanel.add(errorGoodResultBLbl);
 		
 		//TODO add BTN Area
-		addBtn = new JButton("OK");
+		addBtn = new JButton("Tambah");
 		addBtn.setBounds(740,450,150,30);
 		borderPanel.add(addBtn);
 		
 		
 		//Table Area
-		productionResultTableModel = new ResultTableModel(new ArrayList<ProductionResult>());
+		productionResultTableModel = new ResultTableModel(new ArrayList<ProductionResultWaste>());
 		productionResultTable = new JTable(productionResultTableModel);
 		productionResultTable.setFocusable(false);
 		
@@ -373,9 +365,10 @@ public class PopUpViewProductionResult extends JDialog{
 		totalAllGoodResultField.setBounds(240,970,150,20);
 		containerPnl.add(totalAllGoodResultField);
 		
-		saveBtn = new JButton("Simpan");
+		saveBtn = new JButton("OK");
 		saveBtn.setBounds(750,1010,150,30);
 		saveBtn.setFocusable(false);
+		saveBtn.setVisible(false);
 		containerPnl.add(saveBtn);
 	}
 	
@@ -384,7 +377,7 @@ public class PopUpViewProductionResult extends JDialog{
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				/*if(DialogBox.showCloseChoice()==JOptionPane.YES_OPTION)*/ dispose();
+				if(DialogBox.showCloseChoice()==JOptionPane.YES_OPTION) dispose();
 			}
 		});
 		
@@ -402,12 +395,12 @@ public class PopUpViewProductionResult extends JDialog{
 				if(productionResultTable.columnAtPoint(e.getPoint())==6){
 					editMode=true;
 					indexEdit=productionResultTable.getSelectedRow();
-					ProductionResult prd = listOfPrd.get(productionResultTable.getSelectedRow());
+					ProductionResultWaste prd = listOfPrd.get(productionResultTable.getSelectedRow());
 					pressNoField.setText(prd.getPressedNo()+"");
 					String [] splitTime = prd.getStartTime().split(":");
 					hourField.setText(splitTime[0]);
 					minuteField.setText(splitTime[1]);
-					for (ProductionResultProduct pkpr : prd.getListProductionResultProduct()) {
+					for (ProductionResultProductWaste pkpr : prd.getListProductionResultProduct()) {
 						if(pkpr.getProductCode().equals(KA)){
 							klemGradeAField.setText(pkpr.getQty()+"");
 						}
@@ -428,14 +421,16 @@ public class PopUpViewProductionResult extends JDialog{
 						}
 					}		
 				}
-//				if(productionResultTable.columnAtPoint(e.getPoint())==10){
-//					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
-//						pressMap.remove(listOfPrd.get(productionResultTable.getSelectedRow()).getPressedNo());
-//						listOfPrd.remove(productionResultTable.getSelectedRow());
-//						productionResultTable.updateUI();
-//						calculateTotal();
-//					}
-//				}
+				if(productionResultTable.columnAtPoint(e.getPoint())==7){
+					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
+						pressMap.remove(listOfPrd.get(productionResultTable.getSelectedRow()).getPressedNo());
+						ProductionResultWaste pr = listOfPrd.get(productionResultTable.getSelectedRow());
+						if(pr.getId()!=0)deletedProdResult.put(pr.getId(), pr);
+						listOfPrd.remove(productionResultTable.getSelectedRow());
+						productionResultTable.updateUI();
+						calculateTotal();
+					}
+				}
 			}
 		});
 		
@@ -522,7 +517,7 @@ public class PopUpViewProductionResult extends JDialog{
 		
 		if(error==0){
 			if(editMode){
-				ProductionResult prd = listOfPrd.get(indexEdit);
+				ProductionResultWaste prd = listOfPrd.get(indexEdit);
 				int tempPressedNo = prd.getPressedNo();
 				prd.setPressedNo(Integer.parseInt(pressNoField.getText()));
 				if(!hourField.getText().equals("")||!minuteField.getText().equals("")){
@@ -544,7 +539,7 @@ public class PopUpViewProductionResult extends JDialog{
 				prd.setTotalFineB(fineB);
 				
 				if(prd.getListProductionResultProduct().size()>0){
-					for (ProductionResultProduct prodPKResultProduct : prd.getListProductionResultProduct()) {
+					for (ProductionResultProductWaste prodPKResultProduct : prd.getListProductionResultProduct()) {
 						if(prodPKResultProduct.getProductCode().equals(KA)){
 							prodPKResultProduct.setQty(klemA);
 						}
@@ -572,7 +567,7 @@ public class PopUpViewProductionResult extends JDialog{
 				editMode=false;
 				indexEdit=0;
 			}else{
-				ProductionResult prd = new ProductionResult();
+				ProductionResultWaste prd = new ProductionResultWaste();
 				prd.setPressedNo(Integer.parseInt(pressNoField.getText()));
 				if(!hourField.getText().equals("")||!minuteField.getText().equals("")){
 					prd.setStartTime(hourField.getText()+":"+minuteField.getText());
@@ -591,9 +586,9 @@ public class PopUpViewProductionResult extends JDialog{
 				prd.setTotalFineA(fineA);
 				prd.setTotalFineB(fineB);
 				
-				List<ProductionResultProduct> prodPKResultProducts = new ArrayList<>();
+				List<ProductionResultProductWaste> prodPKResultProducts = new ArrayList<>();
 				for(int i=0;i<6;i++){
-					ProductionResultProduct prodPK = new ProductionResultProduct();
+					ProductionResultProductWaste prodPK = new ProductionResultProductWaste();
 					if(i==0){
 						prodPK.setProductCode(KA);
 						prodPK.setQty(Double.valueOf(klemA));
@@ -649,7 +644,7 @@ public class PopUpViewProductionResult extends JDialog{
 		int totalFineA=0;
 		int totalFineB=0;
 		int totalAllFine=0;
-		for (ProductionResult prd : listOfPrd) {	
+		for (ProductionResultWaste prd : listOfPrd) {	
 			totalKlem+=(prd.getTotalKlem());
 			totalProtol+=(prd.getTotalProtol());
 			totalFineA+=prd.getTotalFineA();
@@ -668,7 +663,8 @@ public class PopUpViewProductionResult extends JDialog{
 	
 	private void saveProductResult(){
 		if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
-			createProductionPKPanel.getProduction().setProductionResults(listOfPrd);
+			createProductionPanel.getProductionWaste().setProductionResultWastes(listOfPrd);
+			createProductionPanel.getProductionWaste().setDeletedProductResultWaste(deletedProdResult);
 			DialogBox.showInsert();
 			dispose();
 		}
@@ -676,9 +672,9 @@ public class PopUpViewProductionResult extends JDialog{
 	
 	private class ResultTableModel extends AbstractTableModel{
 		private static final long serialVersionUID = 1L;
-		private List<ProductionResult> productionResults;
+		private List<ProductionResultWaste> productionResults;
 		    
-		    public ResultTableModel(List<ProductionResult> productionResults) {
+		    public ResultTableModel(List<ProductionResultWaste> productionResults) {
 		        this.productionResults = productionResults;
 		    }
 		    
@@ -704,7 +700,7 @@ public class PopUpViewProductionResult extends JDialog{
 		     * @return ({@link User}) Object 
 		     */
 		    public Object getValueAt(int rowIndex, int columnIndex) {
-		    	ProductionResult p = productionResults.get(rowIndex);
+		    	ProductionResultWaste p = productionResults.get(rowIndex);
 		        switch(columnIndex){
 		        	case 0:
 		        		return p.getPressedNo();

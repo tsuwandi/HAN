@@ -189,7 +189,7 @@ public class ProductionWasteBL  {
 		}
 	}
 	
-	public void update(ProductionWaste pw, List<PWProduct> pwProducts)
+	public void update(ProductionWaste pw)
 			throws SQLException {
 		Connection con = null;
 		ProductWasteResultDAO productionWasteResultDAO = new ProductWasteResultDAO(con);

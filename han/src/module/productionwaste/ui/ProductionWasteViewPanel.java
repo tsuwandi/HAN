@@ -46,13 +46,21 @@ public class ProductionWasteViewPanel extends JPanel implements Bridging {
 
 	@Override
 	public void invokeObjects(Object... objects) {
-		productionWaste = (ProductionWaste) objects[0];
-		txtProductionCode.setText(productionWaste.getPwCode());
-		dcProductionDate.setDate(productionWaste.getProductionDate());
-		cbGroupShift.setSelectedItem(productionWaste.getGroupShift().getDescription());
-		cbShift.setSelectedItem(productionWaste.getShift().getShiftName());
-		cbLine.setSelectedItem(productionWaste.getLine().getDescription());
-		cbProductionType.setSelectedItem(productionWaste.getProductionType().getProductionType());
+		if(objects.length>0){
+			productionWaste = (ProductionWaste) objects[0];
+			txtProductionCode.setText(productionWaste.getPwCode());
+			dcProductionDate.setDate(productionWaste.getProductionDate());
+			cbGroupShift.setSelectedItem(productionWaste.getGroupShift().getDescription());
+			cbShift.setSelectedItem(productionWaste.getShift().getShiftName());
+			cbLine.setSelectedItem(productionWaste.getLine().getDescription());
+			cbProductionType.setSelectedItem(productionWaste.getProductionType().getProductionType());
+			dcProductionDate.setEnabled(false);
+			cbGroupShift.setEnabled(false);
+			cbShift.setEnabled(false);
+			cbLine.setEnabled(false);
+			cbProductionType.setEnabled(false);
+		}
+		
 		System.out.println("productionWaste.getProductionType()"+productionWaste.getProductionType());
 	}
 
@@ -97,7 +105,7 @@ public class ProductionWasteViewPanel extends JPanel implements Bridging {
 
 	private JLabel lblBreadcrumb;
 	private JLabel lblHeader;
-
+	
 
 	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
 	final String PRODUCTION_TYPE_BARECORE = "Barecore";
@@ -113,7 +121,7 @@ public class ProductionWasteViewPanel extends JPanel implements Bridging {
 		panel.setPreferredSize(new Dimension(800, 600));
 		panel.setLayout(null);
 
-		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Sisa Produksi");
+		lblBreadcrumb = new JLabel("ERP > Pembelian > View Hasil Produksi > Sisa Produksi");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 414, 25);
 		panel.add(lblBreadcrumb);
@@ -262,24 +270,42 @@ public class ProductionWasteViewPanel extends JPanel implements Bridging {
 		btnSave.setBounds(925, 570, 100, 25);
 		panel.add(btnSave);
 		
-		btnInsertProdResult = new JButton("Hasil Produksi");
+		btnInsertProdResult = new JButton("View Hasil Produksi");
 		btnInsertProdResult.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				PopUpInputProductionResult pop = new PopUpInputProductionResult(parent);
+				PopUpViewProductionResult pop = new PopUpViewProductionResult(parent);
 				pop.show();
 				pop.setLocationRelativeTo(null);
 			}
 		});
-		btnInsertProdResult.setBounds(825, 570, 100, 25);
+		btnInsertProdResult.setBounds(775, 570, 150, 25);
 		panel.add(btnInsertProdResult);
-
+		
+		btnDelete = new JButton("Hapus");
+		btnDelete.setBounds(675,570,150,25);
+		btnDelete.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int response = DialogBox.showDeleteChoice();
+				if (response == JOptionPane.YES_OPTION){
+					try {
+						ServiceFactory.getProductionWasteBL().deleteAll(productionWaste);
+						LOGGER.info("Success Deleting Production Waste "+productionWaste.getPwCode());
+						MainPanel.changePanel("module.productionwaste.ui.ProductionWasteListPanel");
+					} catch (SQLException e1) {
+						LOGGER.error(e1.getMessage());
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		panel.add(btnDelete);
+		
 		btnCancel = new JButton("Kembali");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 int response = DialogBox.showCloseChoice();
-				 if (response == JOptionPane.YES_OPTION) {
-					 MainPanel.changePanel("module.productionwaste.ui.ProductionWasteListPanel");
-				 }
+				 MainPanel.changePanel("module.productionwaste.ui.ProductionWasteListPanel");
 			}
 		});
 		btnCancel.setBounds(50, 570, 100, 25);
