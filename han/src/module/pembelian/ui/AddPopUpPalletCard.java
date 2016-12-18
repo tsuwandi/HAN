@@ -108,7 +108,9 @@ public class AddPopUpPalletCard extends JDialog{
 	boolean editMode = false;
 	int indexEdit = 0;
 	Map<String, PalletCard> tempPallet;
-	
+	String volumeHidden="";
+	String totalVolumeHidden="";
+	final static double DIVIDER = 1000000;
 	public AddPopUpPalletCard(AddReceivedDetailPanel parent) {
 		super((JFrame)parent.getTopLevelAncestor());
 		addReceivedDetail = parent;
@@ -481,7 +483,8 @@ public class AddPopUpPalletCard extends JDialog{
 					productNameField.setText(pc.getProductName());
 					productCode.setText(pc.getProductCode());
 					totalField.setText(pc.getTotal()+"");
-					volumeField.setText(pc.getVolume()+"");
+					volumeField.setText(pc.getVolume()/DIVIDER+"");
+					volumeHidden=pc.getVolume()+"";
 					descriptionArea.setText(pc.getDescription());
 				}
 				if(pcTable.columnAtPoint(e.getPoint())==9){
@@ -496,7 +499,8 @@ public class AddPopUpPalletCard extends JDialog{
 						volume+=pcd.getVolume();
 					}
 					totalLogField.setText(total+"");
-					totalVolumeField.setText(volume+"");
+					totalVolumeField.setText(volume/DIVIDER+"");
+					totalVolumeHidden=volume+"";
 					
 				}
 			}
@@ -572,8 +576,9 @@ public class AddPopUpPalletCard extends JDialog{
 							pc.setLength(0);
 							pc.setWidth(0);
 						}
-						pc.setTotal(Integer.valueOf(totalField.getText()));
-						pc.setVolume(Double.valueOf(volumeField.getText()));
+						pc.setTotal(Double.valueOf(totalField.getText()));
+//						pc.setVolume(Double.valueOf(volumeField.getText()));
+						pc.setVolume(Double.valueOf(volumeHidden));
 						pc.setProductName(productNameField.getText());
 						pc.setProductCode(productCode.getText());
 						pc.setDescription(descriptionArea.getText());
@@ -582,20 +587,20 @@ public class AddPopUpPalletCard extends JDialog{
 						pcTable.updateUI();
 						
 						int total = 0;
-						BigDecimal volume = BigDecimal.ZERO;
+						double volume = 0;
 						for(PalletCard pcd : pcs){
 							total+=pcd.getTotal();
-							volume=volume.add(new BigDecimal(pcd.getVolume()));
+							volume+=pcd.getVolume();
 						}
 						totalLogField.setText(total+"");
-						totalVolumeField.setText(volume+"");
-						
+						totalVolumeField.setText(volume/DIVIDER+"");
+						totalVolumeHidden=volume+"";
 						clear();
 					}else{
 						PalletCard pc = pcs.get(indexEdit);
 						pc.setPalletCardCode(codePalletCardField.getText());
-						pc.setTotal(Integer.valueOf(totalField.getText()));
-						pc.setVolume(Double.valueOf(volumeField.getText()));
+						pc.setTotal(Double.valueOf(totalField.getText()));
+						pc.setVolume(Double.valueOf(volumeHidden));
 						pc.setProductName(productNameField.getText());
 						if(addReceivedDetail.gradeComboBox.getDataIndex().getId()!=100){
 							pc.setThickness(Double.valueOf(thicknessField.getText()));
@@ -610,13 +615,14 @@ public class AddPopUpPalletCard extends JDialog{
 						pc.setDescription(descriptionArea.getText());
 						pcTable.updateUI();
 						int total = 0;
-						BigDecimal volume = BigDecimal.ZERO;
+						double volume = 0;
 						for(PalletCard pcd : pcs){
 							total+=pcd.getTotal();
-							volume=volume.add(new BigDecimal(pcd.getVolume()));
+							volume+=pcd.getVolume();
 						}
 						totalLogField.setText(total+"");
-						totalVolumeField.setText(volume+"");
+						totalVolumeField.setText(volume/1000000+"");
+						totalVolumeHidden=volume+"";
 						clear();
 						editMode=false;
 						indexEdit=0;
@@ -651,7 +657,7 @@ public class AddPopUpPalletCard extends JDialog{
 					receivedDetail.setGradeID(addReceivedDetail.gradeComboBox.getDataIndex().getId());
 					receivedDetail.setGrade(addReceivedDetail.gradeComboBox.getDataIndex().getGrade());
 					receivedDetail.setTotalLog(Integer.valueOf(totalLogField.getText()));
-					receivedDetail.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
+					receivedDetail.setTotalVolume(Double.valueOf(totalVolumeHidden));
 					receivedDetail.setPallets(pcs);
 					addReceivedDetail.receivedDetails.add(receivedDetail);
 					addReceivedDetail.receivedDetailTable.updateUI();
@@ -676,6 +682,7 @@ public class AddPopUpPalletCard extends JDialog{
 		}
 		totalField.setText("");
 		volumeField.setText("");
+		volumeHidden="";
 		descriptionArea.setText("");
 	}
 	
@@ -732,7 +739,8 @@ public class AddPopUpPalletCard extends JDialog{
 	public void calculateVolume(){
 		if(!longField.getText().equals("")&&!wideField.getText().equals("")&&!thicknessField.getText().equals("")&&!totalField.getText().equals("")){
 			double volume = Double.valueOf(longField.getText())*Double.valueOf(wideField.getText())*Double.valueOf(thicknessField.getText())*Double.valueOf(totalField.getText());
-			volumeField.setText(volume+"");
+			volumeField.setText(volume/DIVIDER+"");
+			volumeHidden=volume+"";
 		}
 	}
 	
@@ -778,7 +786,7 @@ public class AddPopUpPalletCard extends JDialog{
 	            case 4 :
 	                return p.getTotal();
 	            case 5 :
-	                return p.getVolume();
+	                return p.getVolume()/DIVIDER;
 	            case 6 :
 	            	return p.getProductName();
 	            case 7 :

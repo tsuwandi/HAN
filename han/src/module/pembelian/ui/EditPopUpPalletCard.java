@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,6 +109,10 @@ public class EditPopUpPalletCard extends JDialog{
 	int index;
 	ReceivedDetail receivedDetail;
 	Map<String, PalletCard> tempPallet;
+	String volumeHidden="";
+	String totalVolumeHidden="";
+	
+	final static double DIVIDER = 1000000;
 	public EditPopUpPalletCard(AddReceivedDetailPanel parent, ReceivedDetail receivedDetail, int index) {
 		super((JFrame)parent.getTopLevelAncestor());
 		addReceivedDetail = parent;
@@ -230,7 +235,7 @@ public class EditPopUpPalletCard extends JDialog{
 		volumeField.setBounds(150, 270, 150, 20);
 		add(volumeField);
 		
-		uomVolumeLbl = new JLabel("<html><span>cm&#179;</span></html>");
+		uomVolumeLbl = new JLabel("<html><span>m&#179;</span></html>");
 		uomVolumeLbl.setBounds(302,270,16,20);
 		add(uomVolumeLbl);
 		
@@ -309,7 +314,7 @@ public class EditPopUpPalletCard extends JDialog{
 		totalVolumeField.setBounds(600, 150, 150, 20);
 		add(totalVolumeField);
 		
-		uomTotalVolumeLbl = new JLabel("<html><span>cm&#179;</span></html>");
+		uomTotalVolumeLbl = new JLabel("<html><span>m&#179;</span></html>");
 		uomTotalVolumeLbl.setBounds(752,150,16,20);
 		add(uomTotalVolumeLbl);
 
@@ -493,7 +498,8 @@ public class EditPopUpPalletCard extends JDialog{
 					productNameField.setText(pc.getProductName());
 					productCode.setText(pc.getProductCode());
 					totalField.setText(pc.getTotal()+"");
-					volumeField.setText(pc.getVolume()+"");
+					volumeField.setText(pc.getVolume()/DIVIDER+"");
+					volumeHidden=pc.getVolume()+"";
 					descriptionArea.setText(pc.getDescription());
 				}
 				if(pcTable.columnAtPoint(e.getPoint())==9){
@@ -508,7 +514,8 @@ public class EditPopUpPalletCard extends JDialog{
 						volume+=pcd.getVolume();
 					}
 					totalLogField.setText(total+"");
-					totalVolumeField.setText(volume+"");
+					totalVolumeField.setText(volume/DIVIDER+"");
+					totalVolumeHidden=volume+"";
 					
 				}
 			}
@@ -581,7 +588,7 @@ public class EditPopUpPalletCard extends JDialog{
 							pc.setLength(Double.valueOf(longField.getText()));
 							pc.setWidth(Double.valueOf(wideField.getText()));
 						}
-						pc.setTotal(Integer.valueOf(totalField.getText()));
+						pc.setTotal(Double.valueOf(totalField.getText()));
 						pc.setVolume(Double.valueOf(volumeField.getText()));
 						pc.setProductName(productNameField.getText());
 						pc.setProductCode(productCode.getText());
@@ -597,14 +604,15 @@ public class EditPopUpPalletCard extends JDialog{
 							volume+=pcd.getVolume();
 						}
 						totalLogField.setText(total+"");
-						totalVolumeField.setText(volume+"");
+						totalVolumeField.setText(volume/DIVIDER+"");
+						totalVolumeHidden=volume+"";
 						clear();
 					}else{
 						PalletCard pc = pcs.get(indexEdit);
 						pc.setPalletCardCode(codePalletCardField.getText());
 						
 						pc.setTotal(Double.valueOf(totalField.getText()));
-						pc.setVolume(Double.valueOf(volumeField.getText()));
+						pc.setVolume(Double.valueOf(volumeHidden));
 						pc.setProductName(productNameField.getText());
 						if(addReceivedDetail.receivedDetails.get(index).getGradeID()!=100){
 							pc.setThickness(Double.valueOf(thicknessField.getText()));
@@ -621,7 +629,8 @@ public class EditPopUpPalletCard extends JDialog{
 							volume+=pcd.getVolume();
 						}
 						totalLogField.setText(total+"");
-						totalVolumeField.setText(volume+"");
+						totalVolumeField.setText(volume/DIVIDER+"");
+						totalVolumeHidden=volume+"";
 						clear();
 						editMode=false;
 						indexEdit=0;
@@ -655,7 +664,7 @@ public class EditPopUpPalletCard extends JDialog{
 				if(error==0){
 					ReceivedDetail pallet = addReceivedDetail.receivedDetails.get(index);
 					pallet.setTotalLog(Integer.valueOf(totalLogField.getText()));
-					pallet.setTotalVolume(Double.valueOf(totalVolumeField.getText()));
+					pallet.setTotalVolume(Double.valueOf(totalVolumeHidden));
 					pallet.setPallets(pcs);
 					addReceivedDetail.palletMaps.putAll(tempPallet);
 					addReceivedDetail.receivedDetailTable.updateUI();
@@ -679,6 +688,7 @@ public class EditPopUpPalletCard extends JDialog{
 		}
 		volumeField.setText("");
 		descriptionArea.setText("");
+		volumeHidden="";
 	}
 	
 	public void getProductName(){
@@ -734,7 +744,8 @@ public class EditPopUpPalletCard extends JDialog{
 	public void calculateVolume(){
 		if(!longField.getText().equals("")&&!wideField.getText().equals("")&&!thicknessField.getText().equals("")&&!totalField.getText().equals("")){
 			double volume = Double.valueOf(longField.getText())*Double.valueOf(wideField.getText())*Double.valueOf(thicknessField.getText())*Double.valueOf(totalField.getText());
-			volumeField.setText(volume+"");
+			volumeField.setText(volume/DIVIDER+"");
+			volumeHidden = volume+"";
 		}
 	}
 	
@@ -780,7 +791,7 @@ public class EditPopUpPalletCard extends JDialog{
 	            case 4 :
 	                return p.getTotal();
 	            case 5 :
-	                return p.getVolume();
+	                return p.getVolume()/DIVIDER;
 	            case 6 :
 	            	return p.getProductName();
 	            case 7 :
