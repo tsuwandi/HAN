@@ -16,6 +16,7 @@ public class Delivery implements ComboBoxProperties {
 	int totalLog;
 	double totalVolume;
 	Date docIssuedDate;
+	String receivedCode;
 	
 	
 	
@@ -97,6 +98,12 @@ public class Delivery implements ComboBoxProperties {
 	@Override
 	public Object getField() {
 		return deliveryNote;
+	}
+	public String getReceivedCode() {
+		return receivedCode;
+	}
+	public void setReceivedCode(String receivedCode) {
+		this.receivedCode = receivedCode;
 	}
 	
 	

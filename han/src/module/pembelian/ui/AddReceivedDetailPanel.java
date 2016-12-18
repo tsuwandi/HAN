@@ -158,6 +158,8 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 	public Map<String, PalletCard> palletMaps;
 	public List<Grade> gradeCollection;
 	
+	Map<Integer, ReceivedDetail> deletedDetails;
+	
 	public AddReceivedDetailPanel(){
 		createGUI();
 		setData();
@@ -247,8 +249,11 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 						for (int i = 0; i < receivedDetails.size(); i++) {
 							ReceivedDetail rd = receivedDetails.get(i);
 							if(rd.isFlag()) {
+								deletedDetails.put(rd.getId(), rd);
 								for (PalletCard palletCard : rd.getPallets()) {
-									if(palletMaps.containsKey(palletCard.getPalletCardCode())) palletMaps.remove(palletCard.getPalletCardCode());
+									if(palletMaps.containsKey(palletCard.getPalletCardCode())){
+										palletMaps.remove(palletCard.getPalletCardCode());
+									}
 										
 								}
 								for (int j = 0; j < gradeCollection.size(); j++) {
@@ -361,15 +366,47 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 						if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
 							try {
 								ReceivedDAOFactory.getPicDockingReceivedDAO().delete(received.getReceivedCode());
-								ReceivedDAOFactory.getReceivedDetailDAO().delete(received.getReceivedCode());
-								for(ReceivedDetail pallet : receivedDetails){
-									pallet.setReceivedCode(received.getReceivedCode());
-									ReceivedDAOFactory.getReceivedDetailDAO().save(pallet);
-									ReceivedDAOFactory.getPalletCardDAO().delete(pallet.getId());
-									int detailLastID = ReceivedDAOFactory.getReceivedDetailDAO().getLastID();
-									for(PalletCard palletCardDetail : pallet.getPallets()){
-										palletCardDetail.setReceivedDetailID(detailLastID);
-										ReceivedDAOFactory.getPalletCardDAO().save(palletCardDetail);
+								List<ReceivedDetail> receivedDetailTemp = ReceivedDAOFactory.getReceivedDetailDAO().getAllReceivedDetail(received.getReceivedCode());
+								Map<Integer, ReceivedDetail> receivedMaps = new HashMap<>();
+								for(ReceivedDetail rd : receivedDetailTemp){
+									receivedMaps.put(rd.getId(), rd);
+								}
+								for(ReceivedDetail receivedDetail : receivedDetails){
+									
+									if(receivedDetail.getId()==0){
+										receivedDetail.setReceivedCode(received.getReceivedCode());
+										ReceivedDAOFactory.getReceivedDetailDAO().save(receivedDetail);	
+										int detailLastID = ReceivedDAOFactory.getReceivedDetailDAO().getLastID();
+										for(PalletCard palletCardDetail : receivedDetail.getPallets()){
+											palletCardDetail.setReceivedDetailID(detailLastID);
+											ReceivedDAOFactory.getPalletCardDAO().save(palletCardDetail);
+										}
+									}
+									else{
+										receivedDetail.setReceivedCode(received.getReceivedCode());
+										ReceivedDAOFactory.getReceivedDetailDAO().update(receivedDetail);
+										ReceivedDetail rdTemp = receivedMaps.get(receivedDetail.getId());
+										Map<Integer, PalletCard> palletMapsTemp = new HashMap<>();
+										for(PalletCard palletCarde:rdTemp.getPallets()){
+											palletMapsTemp.put(palletCarde.getId(), palletCarde);
+										}
+										for(PalletCard palletCardDetail : receivedDetail.getPallets()){
+											if(palletMapsTemp.get(palletCardDetail.getId())==null){
+												palletCardDetail.setReceivedDetailID(receivedDetail.getId());
+												ReceivedDAOFactory.getPalletCardDAO().save(palletCardDetail);
+											}else{
+												ReceivedDAOFactory.getPalletCardDAO().update(palletCardDetail);
+											}
+										}
+										for(PalletCard palletCardDetail : receivedDetail.getDeletedPallets().values()){
+											ReceivedDAOFactory.getPalletCardDAO().updateDelete(palletCardDetail.getId());
+										}
+									}
+								}
+								for (ReceivedDetail receivedDetailDeleted :deletedDetails.values()) {
+									ReceivedDAOFactory.getReceivedDetailDAO().updateDelete(receivedDetailDeleted.getId());
+									for(PalletCard palletCardTemp: receivedDetailDeleted.getPallets()){
+										ReceivedDAOFactory.getPalletCardDAO().updateDelete(palletCardTemp.getId());
 									}
 								}
 								for(PicDocking picDocking : picDockings){
@@ -419,6 +456,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		this.parent = this;
 		palletMaps =  new HashMap<>();
 		gradeCollection = new ArrayList<>();
+		deletedDetails = new HashMap<>();
 		
 		containerPnl = new JPanel();
 		containerPnl.setPreferredSize(new Dimension(1100, 900));
@@ -791,7 +829,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 	            case 2 :
 	                return p.getTotalLog();
 	            case 3 :
-	                return p.getTotalVolume();
+	                return p.getTotalVolume()/1000000;
 	            case 4 :
 	                return p.getPallets().size();
 	            case 5 :
@@ -971,7 +1009,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 			dockingPICTable.setModel(new PicDockingTableModel(picDockings));
 			dockingPICTable.updateUI();
 			
-			delivery = ReceivedDAOFactory.getDeliveryDAO().getDeliveryNoteByCode(received.getDeliveryNote());
+			delivery = ReceivedDAOFactory.getDeliveryDAO().getDeliveryNoteByCode(received.getReceivedCode());
 			subSupplier = ReceivedDAOFactory.getSupplierCPDAO().getSuppCPBySupplierByID(received.getSupplierCpID());
 			supplierAddressArea.setText(subSupplier.getSuppAddress());
 			docTypeField.setText(delivery.getDocumentType());
@@ -992,4 +1030,13 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 	
 
 	}
+
+	public Map<Integer, ReceivedDetail> getDeletedDetails() {
+		return deletedDetails;
+	}
+
+	public void setDeletedDetails(Map<Integer, ReceivedDetail> deletedDetails) {
+		this.deletedDetails = deletedDetails;
+	}
+	
 }

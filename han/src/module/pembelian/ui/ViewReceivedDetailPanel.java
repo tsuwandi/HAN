@@ -673,7 +673,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	            case 2 :
 	                return p.getTotalLog();
 	            case 3 :
-	                return p.getTotalVolume();
+	                return p.getTotalVolume()/1000000;
 	            case 4 :
 	                return p.getPallets().size();
 	            case 5 :
@@ -838,7 +838,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		Delivery delivery;
 		SupplierCP subSupplier;
 		try {
-			delivery = ReceivedDAOFactory.getDeliveryDAO().getDeliveryNoteByCode(received.getDeliveryNote());
+			delivery = ReceivedDAOFactory.getDeliveryDAO().getDeliveryNoteByCode(received.getReceivedCode());
 			subSupplier = ReceivedDAOFactory.getSupplierCPDAO().getSuppCPBySupplierByID(received.getSupplierCpID());
 			supplierAddressArea.setText(subSupplier.getSuppAddress());
 			docTypeField.setText(delivery.getDocumentType());

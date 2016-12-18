@@ -111,6 +111,7 @@ public class EditPopUpPalletCard extends JDialog{
 	Map<String, PalletCard> tempPallet;
 	String volumeHidden="";
 	String totalVolumeHidden="";
+	Map<Integer, PalletCard> deletedPallets;
 	
 	final static double DIVIDER = 1000000;
 	public EditPopUpPalletCard(AddReceivedDetailPanel parent, ReceivedDetail receivedDetail, int index) {
@@ -332,6 +333,7 @@ public class EditPopUpPalletCard extends JDialog{
 		changePallet();
 		productMap = new HashMap<>();
 		tempPallet = new HashMap<>();
+		
 		try {
 			
 			products = ReceivedDAOFactory.getProductDAO().getAllProduct(addReceivedDetail.received.getWoodTypeID(), addReceivedDetail.receivedDetails.get(index).getGradeID());
@@ -367,6 +369,7 @@ public class EditPopUpPalletCard extends JDialog{
 			this.receivedDetail = receivedDetail;
 			this.index = index;
 			pcs = receivedDetail.getPallets();
+			deletedPallets = receivedDetail.getDeletedPallets();
 			pcTable.setModel(new PCTableModel(pcs));
 			pcTable.updateUI();
 		
@@ -377,7 +380,8 @@ public class EditPopUpPalletCard extends JDialog{
 				volume+=pcd.getVolume();
 			}
 			totalLogField.setText(total+"");
-			totalVolumeField.setText(volume+"");
+			totalVolumeField.setText(volume/DIVIDER+"");
+			totalVolumeHidden=volume+"";
 		} catch (SQLException e) {
 			log.error(e.getMessage());
 			e.printStackTrace();
@@ -504,6 +508,8 @@ public class EditPopUpPalletCard extends JDialog{
 				}
 				if(pcTable.columnAtPoint(e.getPoint())==9){
 					tempPallet.remove(pcs.get(pcTable.getSelectedRow()).getPalletCardCode());
+					PalletCard pc = pcs.get(pcTable.getSelectedRow());
+					if(pcs.get(pcTable.getSelectedRow()).getId()!=0)deletedPallets.put(pc.getId(), pc);
 					addReceivedDetail.palletMaps.remove(pcs.get(pcTable.getSelectedRow()).getPalletCardCode());
 					pcs.remove(pcTable.getSelectedRow());
 					pcTable.updateUI();

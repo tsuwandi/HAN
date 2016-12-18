@@ -694,6 +694,7 @@ public class AddReceivedDetailSecurityPanel extends JPanel implements Bridging{
 			rec.setSupplierCpID(supplierCPComboBox.getDataIndex().getId());
 			
 			Delivery del = new Delivery();
+			del.setReceivedCode(code);
 			del.setDeliveryNote(docNoField.getText());
 			del.setDocumentType(docTypeField.getText());
 			del.setDocIssuedDate(docDateChooser.getDate());

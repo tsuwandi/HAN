@@ -111,6 +111,7 @@ public class AddPopUpPalletCard extends JDialog{
 	String volumeHidden="";
 	String totalVolumeHidden="";
 	final static double DIVIDER = 1000000;
+	Map<Integer, PalletCard> deletedPallets;
 	public AddPopUpPalletCard(AddReceivedDetailPanel parent) {
 		super((JFrame)parent.getTopLevelAncestor());
 		addReceivedDetail = parent;
@@ -330,6 +331,7 @@ public class AddPopUpPalletCard extends JDialog{
 		changePallet();
 		productMap = new HashMap<>();
 		tempPallet = new HashMap<>();
+		deletedPallets = new HashMap<>();
 		
 		try {
 			products = ReceivedDAOFactory.getProductDAO().getAllProduct(addReceivedDetail.received.getWoodTypeID(), addReceivedDetail.gradeComboBox.getDataIndex().getId());
@@ -489,7 +491,9 @@ public class AddPopUpPalletCard extends JDialog{
 				}
 				if(pcTable.columnAtPoint(e.getPoint())==9){
 					tempPallet.remove(pcs.get(pcTable.getSelectedRow()).getPalletCardCode());
-					addReceivedDetail.palletMaps.remove(pcs.get(pcTable.getSelectedRow()).getPalletCardCode());
+					PalletCard pc = pcs.get(pcTable.getSelectedRow());
+					if(pcs.get(pcTable.getSelectedRow()).getId()!=0)deletedPallets.put(pc.getId(), pc);
+					addReceivedDetail.palletMaps.remove(pc.getPalletCardCode());
 					pcs.remove(pcTable.getSelectedRow());
 					pcTable.updateUI();
 					int total = 0;

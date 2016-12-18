@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import main.panel.LoginPanel;
+import main.panel.MainPanel;
 import module.pembelian.model.PalletCard;
 import module.pembelian.model.ReceivedDetail;
 
@@ -21,19 +23,22 @@ public class ReceivedDetailDAO {
 	private PreparedStatement detailPalletStatement;
 	private PreparedStatement deleteStatement;
 	private PreparedStatement getLastIDStatement;
+	private PreparedStatement updateDeleteStatement;
+	private PreparedStatement updateStatement;
 	
 	private String insertQuery = "INSERT INTO received_detail (received_code,"
 	 		+ " grade_id, total_volume, total_log, input_date, input_by) "
 	 		+ " VALUES (?,?,?,?,?,?)";
 
 	private String detailPalletQuery = "SELECT a.id, a.received_detail_id, a.pallet_card_code, a.length, a.width, a.thickness, a.total, a.volume, a.description, a.product_code, product_name FROM "
-			+ "pallet_card a INNER JOIN product b ON a.product_code = b.product_code WHERE received_detail_id = ?";
+			+ "pallet_card a INNER JOIN product b ON a.product_code = b.product_code WHERE received_detail_id = ? AND a.deleted_date IS NULL";
 
 	private String getReceivedDetailsQuery = "SELECT a.id, received_code, grade_id, total_volume, total_log, grade  "
 			+ "FROM received_detail a INNER JOIN grade b ON a.grade_id = b.id WHERE received_code = ?";
 	
-	
+	private String updateQuery = "UPDATE received_detail SET received_code =?, grade_id=?, total_volume=?, total_log=? , edit_date=?, edited_by=? WHERE id=?";
 	private String deletePalletQuery = "DELETE FROM received_detail WHERE received_code = ?";
+	private String updateDeleteQuery = "UPDATE received_detail SET deleted_date=?, deleted_by = ? WHERE id = ?";
 	
 	private String getLastIDQuery ="SELECT ID FROM received_detail ORDER BY ID DESC LIMIT 1";
 	
@@ -142,6 +147,32 @@ public class ReceivedDetailDAO {
         }
 	}
 	
+	public void update(ReceivedDetail receivedDetail) throws SQLException {
+        Connection con = null;
+    	try {
+    		con = dataSource.getConnection();
+    		
+    		updateStatement = con.prepareStatement(updateQuery);
+    		updateStatement.setString(1, receivedDetail.getReceivedCode());
+    		updateStatement.setInt(2, receivedDetail.getGradeID());
+    		updateStatement.setDouble(3, receivedDetail.getTotalVolume());
+    		updateStatement.setInt(4, receivedDetail.getTotalLog());
+    		updateStatement.setDate(5, new Date(new java.util.Date().getTime()));
+    		updateStatement.setString(6, "Michael");
+    		updateStatement.setInt(7, receivedDetail.getId());
+    		updateStatement.executeUpdate();
+            
+        } catch (SQLException ex) {
+        	ex.printStackTrace();
+        	throw new SQLException(ex.getMessage());
+        } finally {
+        	try {
+				con.close();
+			} catch (SQLException e) {
+			}
+        }
+	}
+	
 	public void delete(String receivedCode) throws SQLException {
 		  Connection con = null;
 	    	try {
@@ -150,6 +181,28 @@ public class ReceivedDetailDAO {
 	    		deleteStatement = con.prepareStatement(deletePalletQuery);
 	    		deleteStatement.setString(1, receivedCode);
 	    		deleteStatement.executeUpdate();
+	            
+	        } catch (SQLException ex) {
+	        	ex.printStackTrace();
+	        	throw new SQLException(ex.getMessage());
+	        } finally {
+	        	try {
+					con.close();
+				} catch (SQLException e) {
+				}
+	        }
+	}
+	
+	public void updateDelete(int id) throws SQLException {
+		  Connection con = null;
+	    	try {
+	    		con = dataSource.getConnection();
+	    		
+	    		updateDeleteStatement = con.prepareStatement(updateDeleteQuery);
+	    		updateDeleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
+	    		updateDeleteStatement.setString(2, "Michael");
+	    		updateDeleteStatement.setInt(3, id);
+	    		updateDeleteStatement.executeUpdate();
 	            
 	        } catch (SQLException ex) {
 	        	ex.printStackTrace();

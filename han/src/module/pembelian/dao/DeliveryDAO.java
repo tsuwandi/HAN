@@ -19,15 +19,15 @@ public class DeliveryDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 
-	private String getAllQuery = "SELECT a.id, a.delivery_note, a.doc_issued_date, a.document_type, a.wood_domicile, a.wood_resource_id, b.wood_resource, a.wood_type_id, c.wood_type, total_log, total_volume FROM delivery a INNER JOIN wood_resource b ON a.wood_resource_id = b.id "
+	private String getAllQuery = "SELECT a.id, a.received_code, a.delivery_note, a.doc_issued_date, a.document_type, a.wood_domicile, a.wood_resource_id, b.wood_resource, a.wood_type_id, c.wood_type, total_log, total_volume FROM delivery a INNER JOIN wood_resource b ON a.wood_resource_id = b.id "
 			+ "INNER JOIN wood_type c ON a.wood_type_id = c.id WHERE 1 = 1 ";
 
 
-	private String updateQuery = "UPDATE delivery SET delivery_note=?, doc_issued_date = ?, document_type=?, wood_domicile=?, "
-			+ "wood_resource_id=?, wood_type_id=?,total_log=?, total_volume=?, edit_date=?, edited_by=? WHERE id=?";
+	private String updateQuery = "UPDATE delivery SET  delivery_note=?, doc_issued_date = ?, document_type=?, wood_domicile=?, "
+			+ "wood_resource_id=?, wood_type_id=?,total_log=?, total_volume=?, edit_date=?, edited_by=? ,received_code = ? WHERE id=?";
 	
 	private String insertQuery = "INSERT INTO delivery "
-			+ "(delivery_note, doc_issued_date, document_type, wood_domicile, wood_resource_id, wood_type_id, total_log, total_volume, input_by, input_date) VALUES (?,?,?,?,?,?,?,?,?,?)";
+			+ "(delivery_note, doc_issued_date, document_type, wood_domicile, wood_resource_id, wood_type_id, total_log, total_volume, input_by, input_date,received_code) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 	
 	public DeliveryDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
@@ -46,6 +46,7 @@ public class DeliveryDAO {
 			while (rs.next()) {
 				Delivery delivery = new Delivery();
 				delivery.setId(rs.getInt("id"));
+				delivery.setReceivedCode("received_code");
 				delivery.setDocumentType(rs.getString("document_type"));
 				delivery.setDocIssuedDate(rs.getDate("doc_issued_date"));
 				delivery.setTotalLog(rs.getInt("total_log"));
@@ -78,11 +79,12 @@ public class DeliveryDAO {
 		Delivery delivery = new Delivery();
 		try {
 			con = dataSource.getConnection();
-			getAllStatement = con.prepareStatement(getAllQuery+" AND delivery_note = ?");
+			getAllStatement = con.prepareStatement(getAllQuery+" AND received_code = ?");
 			getAllStatement.setString(1, deliveryNote);
 			ResultSet rs = getAllStatement.executeQuery();
 			rs.next();
 			delivery.setId(rs.getInt("id"));
+			delivery.setReceivedCode("received_code");
 			delivery.setDocumentType(rs.getString("document_type"));
 			delivery.setDocIssuedDate(rs.getDate("doc_issued_date"));
 			delivery.setTotalLog(rs.getInt("total_log"));
@@ -126,6 +128,7 @@ public class DeliveryDAO {
     		insertStatement.setDouble(8, delivery.getTotalVolume());
     		insertStatement.setString(9, "Michael");
     		insertStatement.setDate(10, new Date(new java.util.Date().getTime()));
+    		insertStatement.setString(11, delivery.getReceivedCode());
     		insertStatement.executeUpdate();
             
         } catch (SQLException ex) {
@@ -155,7 +158,8 @@ public class DeliveryDAO {
     		updateStatement.setDouble(8, delivery.getTotalVolume());
     		updateStatement.setDate(9, new Date(new java.util.Date().getTime()));
     		updateStatement.setString(10, "Michael");
-    		updateStatement.setInt(11, delivery.getId());
+    		updateStatement.setString(11, delivery.getReceivedCode());
+    		updateStatement.setInt(12, delivery.getId());
     		updateStatement.executeUpdate();
             
         } catch (SQLException ex) {

@@ -23,6 +23,7 @@ public class Received {
 	String empCode;
 	double totalVolume;
 	String receivedBy;
+	
 
 	public String getWoodDomicile() {
 		return woodDomicile;

@@ -23,14 +23,14 @@ public class PalletCardDAO {
 	private PreparedStatement deleteStatement;
 	private PreparedStatement getAllForDryInPalletStatement;
 	private PreparedStatement getAllForDryOutPalletStatement;
+	private PreparedStatement updateDeleteStatement;
 	
 	private String insertQuery = "INSERT INTO pallet_card (received_detail_id, pallet_card_code, length, width, thickness,"
 			+ " total, volume, product_code, description, input_date, input_by) "
 	 		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 	
-	private String updateQuery = "INSERT INTO pallet_card (received_detail_id, pallet_card_code, length, width, thickness,"
-			+ " total, volume, product_code, description, edit_date, edited_by) "
-	 		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+	private String updateQuery = "UPDATE pallet_card SET received_detail_id = ? , pallet_card_code=?, length=?, "
+			+ "width=?, thickness=?, total=?, volume=?, product_code=?, description=?, edit_date=?, edited_by=? WHERE id=?";
 	
 	private String deleteQuery = "DELETE FROM pallet_card WHERE received_detail_id = ?";
 	
@@ -45,6 +45,8 @@ public class PalletCardDAO {
 			+ "INNER JOIN received r ON r.received_code = rd.received_code "
 			+ "INNER JOIN dry_in_pallet dp  ON dp.pallet_card_code = pc.pallet_card_code "
 			+ "INNER JOIN dry_in d ON d.dry_in_code = dp.dry_in_code ";
+	
+	private String updateDeleteQuery = "UPDATE pallet_card SET deleted_date=?, deleted_by = ? WHERE id = ?";
 
 	
 	public PalletCardDAO(DataSource dataSource) throws SQLException {
@@ -103,6 +105,7 @@ public class PalletCardDAO {
     		updateStatement.setString(9, palletCard.getDescription());
     		updateStatement.setDate(10, new Date(new java.util.Date().getTime()));
     		updateStatement.setString(11, "Michael");
+    		updateStatement.setInt(12, palletCard.getId());
     		updateStatement.executeUpdate();
             
         } catch (SQLException ex) {
@@ -381,5 +384,27 @@ public class PalletCardDAO {
 		}
 
 		return palletCard;
+	}
+	
+	public void updateDelete(int id) throws SQLException {
+		  Connection con = null;
+	    	try {
+	    		con = dataSource.getConnection();
+	    		
+	    		updateDeleteStatement = con.prepareStatement(updateDeleteQuery);
+	    		updateDeleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
+	    		updateDeleteStatement.setString(2, "Michael");
+	    		updateDeleteStatement.setInt(3, id);
+	    		updateDeleteStatement.executeUpdate();
+	            
+	        } catch (SQLException ex) {
+	        	ex.printStackTrace();
+	        	throw new SQLException(ex.getMessage());
+	        } finally {
+	        	try {
+					con.close();
+				} catch (SQLException e) {
+				}
+	        }
 	}
 }

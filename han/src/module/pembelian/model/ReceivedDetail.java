@@ -1,6 +1,8 @@
 package module.pembelian.model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReceivedDetail {
 	boolean flag;
@@ -11,6 +13,7 @@ public class ReceivedDetail {
 	double totalVolume;
 	int totalLog;
 	List<PalletCard> pallets;
+	Map<Integer, PalletCard> deletedPallets = new HashMap<>();
 	
 	
 	public boolean isFlag() {
@@ -61,4 +64,11 @@ public class ReceivedDetail {
 	public void setPallets(List<PalletCard> pallets) {
 		this.pallets = pallets;
 	}
+	public Map<Integer, PalletCard> getDeletedPallets() {
+		return deletedPallets;
+	}
+	public void setDeletedPallets(Map<Integer, PalletCard> deletedPallets) {
+		this.deletedPallets = deletedPallets;
+	}
+	
 }
