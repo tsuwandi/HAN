@@ -19,6 +19,13 @@ public class ProductionResultWaste {
 	public int getId() {
 		return id;
 	}
+	@Override
+	public String toString() {
+		return "ProductionResultWaste [id=" + id + ", prodCode=" + prodCode + ", pressedNo=" + pressedNo
+				+ ", startTime=" + startTime + ", totalProtol=" + totalProtol + ", totalKlem=" + totalKlem
+				+ ", totalFineA=" + totalFineA + ", totalFineB=" + totalFineB + ", listProductionResultProduct="
+				+ listProductionResultProduct + "]";
+	}
 	public void setId(int id) {
 		this.id = id;
 	}

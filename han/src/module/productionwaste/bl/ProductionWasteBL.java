@@ -207,7 +207,6 @@ public class ProductionWasteBL  {
 						if(prodWaste.getId()==0){
 							prodWaste.setId(id);
 							prodWaste.setProdCode(pw.getPwCode());
-							System.out.println("Prod Waste :"+prodWaste.toString());
 							productionWasteResultDAO.save(prodWaste);
 							for (ProductionResultProductWaste prodResultProduct : prodWaste.getListProductionResultProduct()) {
 								prodResultProduct.setProdResultID(id);

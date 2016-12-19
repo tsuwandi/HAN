@@ -132,6 +132,17 @@ public class PopUpViewProductionResult extends JDialog{
 		totalGoodResultAField.setEnabled(false);
 		totalGoodResultBField.setEnabled(false);
 		totalAllGoodResultField.setEnabled(false);
+		pressNoField.setEnabled(false);
+		minuteField.setEnabled(false);
+		hourField.setEnabled(false);
+		klemGradeAField.setEnabled(false);
+		klemGradeBField.setEnabled(false);
+		protolGradeAField.setEnabled(false);
+		protolGradeBField.setEnabled(false);
+		goodResultGradeAField.setEnabled(false);
+		goodResultGradeBField.setEnabled(false);
+		addBtn.setEnabled(false);
+		saveBtn.setVisible(false);
 		pressMap = new HashMap<>();
 		deletedProdResult = new HashMap<>();
 		listOfPrd = new ArrayList<>();
@@ -299,6 +310,7 @@ public class PopUpViewProductionResult extends JDialog{
 		//TODO add BTN Area
 		addBtn = new JButton("Tambah");
 		addBtn.setBounds(740,450,150,30);
+		addBtn.setEnabled(false);
 		borderPanel.add(addBtn);
 		
 		
@@ -306,6 +318,7 @@ public class PopUpViewProductionResult extends JDialog{
 		productionResultTableModel = new ResultTableModel(new ArrayList<ProductionResultWaste>());
 		productionResultTable = new JTable(productionResultTableModel);
 		productionResultTable.setFocusable(false);
+		productionResultTable.setEnabled(false);
 		
 		scrollPane = new JScrollPane(productionResultTable);
 		scrollPane.setBounds(40,600,900,150);
@@ -389,7 +402,7 @@ public class PopUpViewProductionResult extends JDialog{
 			}
 		});
 		
-		productionResultTable.addMouseListener(new MouseAdapter() {
+		/*productionResultTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(productionResultTable.columnAtPoint(e.getPoint())==6){
@@ -432,7 +445,7 @@ public class PopUpViewProductionResult extends JDialog{
 					}
 				}
 			}
-		});
+		});*/
 		
 		saveBtn.addActionListener(new ActionListener() {
 			

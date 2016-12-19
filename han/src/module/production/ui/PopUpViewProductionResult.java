@@ -396,7 +396,7 @@ public class PopUpViewProductionResult extends JDialog{
 			}
 		});
 		
-		productionResultTable.addMouseListener(new MouseAdapter() {
+		/*productionResultTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(productionResultTable.columnAtPoint(e.getPoint())==6){
@@ -427,7 +427,7 @@ public class PopUpViewProductionResult extends JDialog{
 							goodResultGradeBField.setText(pkpr.getQty()+"");
 						}
 					}		
-				}
+				}*/
 //				if(productionResultTable.columnAtPoint(e.getPoint())==10){
 //					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
 //						pressMap.remove(listOfPrd.get(productionResultTable.getSelectedRow()).getPressedNo());
@@ -436,8 +436,8 @@ public class PopUpViewProductionResult extends JDialog{
 //						calculateTotal();
 //					}
 //				}
-			}
-		});
+/*			}
+		});*/
 		
 		saveBtn.addActionListener(new ActionListener() {
 			
