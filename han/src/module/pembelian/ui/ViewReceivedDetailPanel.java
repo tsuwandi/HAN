@@ -38,6 +38,7 @@ import model.User;
 import module.pembelian.model.Delivery;
 import module.pembelian.model.Employee;
 import module.pembelian.model.Grade;
+import module.pembelian.model.PalletCard;
 import module.pembelian.model.PicDocking;
 import module.pembelian.model.Received;
 import module.pembelian.model.ReceivedDetail;
@@ -223,6 +224,17 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 				if(choice==JOptionPane.YES_OPTION){
 					try {
 						ReceivedDAOFactory.getReceivedDAO().delete(received);
+						if(receivedDetails.size()>0){
+							for (ReceivedDetail rd : receivedDetails) {
+								if(rd.getPallets().size()>0){
+									for (PalletCard pc : rd.getPallets()) {
+										ReceivedDAOFactory.getPalletCardDAO().updateDelete(pc.getId());
+									}
+								}
+								ReceivedDAOFactory.getReceivedDetailDAO().updateDelete(rd.getId());
+							}
+						}
+						
 						MainPanel.changePanel("module.pembelian.ui.ListReceivedPanel",received);
 					} catch (Exception e2) {
 						log.error(e2.getMessage());
