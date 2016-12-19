@@ -192,14 +192,14 @@ public class ProductionWasteBL  {
 	public void update(ProductionWaste pw)
 			throws SQLException {
 		Connection con = null;
-		ProductWasteResultDAO productionWasteResultDAO = new ProductWasteResultDAO(con);
-		ProductionWasteResultProductDAO productionWasteResultProductDAO = new ProductionWasteResultProductDAO(con);
-		ProductionWasteDAO productionWasteDAO = new ProductionWasteDAO(con);
 		boolean flagProductionResult=false;
 		try {
+			
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
-			
+			ProductWasteResultDAO productionWasteResultDAO = new ProductWasteResultDAO(con);
+			ProductionWasteResultProductDAO productionWasteResultProductDAO = new ProductionWasteResultProductDAO(con);
+			ProductionWasteDAO productionWasteDAO = new ProductionWasteDAO(con);
 			if(pw.getProductionResultWastes()!=null){
 				if(pw.getProductionResultWastes().size()!=0){
 					int id = getLastProductWasteResultID();
@@ -207,6 +207,7 @@ public class ProductionWasteBL  {
 						if(prodWaste.getId()==0){
 							prodWaste.setId(id);
 							prodWaste.setProdCode(pw.getPwCode());
+							System.out.println("Prod Waste :"+prodWaste.toString());
 							productionWasteResultDAO.save(prodWaste);
 							for (ProductionResultProductWaste prodResultProduct : prodWaste.getListProductionResultProduct()) {
 								prodResultProduct.setProdResultID(id);
