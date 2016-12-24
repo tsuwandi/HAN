@@ -101,7 +101,7 @@ public class CreateDepartmentPanel extends JPanel {
 
 	private void getLastID() {
 		StringBuffer lastId = new StringBuffer();
-		lastId.append("DEPT");
+		lastId.append("DEP");
 		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdDepartment()));
 		departementIdField.setText(lastId.toString());
 	}

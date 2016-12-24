@@ -20,7 +20,6 @@ import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.personalia.model.Division;
 import module.personalia.model.Employee;
-import module.personalia.ui.DivisionConfigPanel.DivisionConfigTableModel;
 import module.util.Bridging;
 
 public class EmployeeConfigPanel extends JPanel implements Bridging{
@@ -105,19 +104,17 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 		getData();
 	}
 	
-	protected Division getSelectedData() {
+	protected Employee getSelectedData() {
 		int row = employeeConfigTable.getSelectedRow();
 
-		Division division = new Division();
-		division.setId(employeeConfigTable.getValueAt(row, 1).toString());
-		division.setName(employeeConfigTable.getValueAt(row, 2).toString());
+		Employee employee = new Employee();
 
-		return division;
+		return employee;
 	}
 
 	private void getData() {
 		employees.clear();
-		//employees = ServiceFactory.getPersonaliaBL().getDivisions("");
+		employees = ServiceFactory.getPersonaliaBL().getEmployees("");
 		employeeConfigTableModel = new EmployeeConfigTableModel(employees);
 		employeeConfigTable.setModel(employeeConfigTableModel);
 	}

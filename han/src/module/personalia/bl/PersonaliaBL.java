@@ -9,10 +9,12 @@ import javax.sql.DataSource;
 
 import module.personalia.dao.DepartmentDAO;
 import module.personalia.dao.DivisionDAO;
+import module.personalia.dao.EmployeeDAO;
 import module.personalia.dao.EmployeeTypeDAO;
 import module.personalia.dao.MSPositionDAO;
 import module.personalia.model.Department;
 import module.personalia.model.Division;
+import module.personalia.model.Employee;
 import module.personalia.model.EmployeeType;
 import module.personalia.model.MSPosition;
 
@@ -326,6 +328,83 @@ public class PersonaliaBL {
 		try {
 			connection = dataSource.getConnection();
 			return new EmployeeTypeDAO(connection).getLastId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Employee> getEmployees(String query) {
+		List<Employee> employees = new ArrayList<Employee>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			employees = new EmployeeDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return employees;
+	}
+	
+	public void saveEmployee(Employee employee) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new EmployeeDAO(connection).insert(employee);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateEmployee(Employee employee) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new EmployeeDAO(connection).update(employee);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteEmployee(Employee employee) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new EmployeeDAO(connection).delete(employee);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Integer getLastIdEmployee() {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			return new EmployeeDAO(connection).getLastId();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

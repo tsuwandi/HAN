@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import module.personalia.model.Division;
 import module.personalia.model.Employee;
 import module.util.DateUtil;
 

@@ -79,7 +79,7 @@ public class CreateEmployeeTypePanel extends JPanel {
 
 	private void getLastID() {
 		StringBuffer lastId = new StringBuffer();
-		lastId.append("EMPT");
+		lastId.append("EMT");
 		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdEmployeeType()));
 		employeeTypeIdField.setText(lastId.toString());
 	}
