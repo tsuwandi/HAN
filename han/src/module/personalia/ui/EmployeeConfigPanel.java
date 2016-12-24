@@ -18,7 +18,6 @@ import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
 import main.panel.MainPanel;
-import module.personalia.model.Division;
 import module.personalia.model.Employee;
 import module.util.Bridging;
 
@@ -36,7 +35,7 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 
 		JLabel breadCrumbLbl = new JLabel("Personalia > Karyawan");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
-		breadCrumbLbl.setBounds(50, 10, 134, 25);
+		breadCrumbLbl.setBounds(50, 10, 150, 25);
 		add(breadCrumbLbl);
 
 		JLabel lblHeader = new JLabel("DAFTAR KARYAWAN");
@@ -61,7 +60,7 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (employeeConfigTable.columnAtPoint(e.getPoint())==3) {
-					MainPanel.changePanel("module.personalia.ui.ViewDivisionPanel", getSelectedData());
+					MainPanel.changePanel("module.personalia.ui.ViewEmployeePanel", getSelectedData());
 				}
 			}
 		});
@@ -78,7 +77,7 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.personalia.ui.CreateDivisionPanel");
+				MainPanel.changePanel("module.personalia.ui.CreateEmployeePanel");
 			}
 		});
 
@@ -93,7 +92,7 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.personalia.ui.SearchDivisionPanel");
+				MainPanel.changePanel("module.personalia.ui.SearchEmployeePanel");
 			}
 		});
 
@@ -101,7 +100,7 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 		search.setBounds(924, 140, 90, 30);
 		add(search);
 
-		getData();
+		//getData();
 	}
 	
 	protected Employee getSelectedData() {
