@@ -130,6 +130,9 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 	public List<PPRProduct> listOfDeletedPPRProduct = new ArrayList<PPRProduct>();
 	public List<PPRNote> listOfDeletedPPRNote = new ArrayList<PPRNote>();
 	
+	JLabel lblPurchaseNote;
+	JLabel lblPPRProduct;
+	
 	public PurchaseProdResultEditPanel() {
 		purchaseProductResult = new PurchaseProdResult();
 
@@ -218,6 +221,11 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		lblErrorDueDate.setForeground(Color.RED);
 		lblErrorDueDate.setBounds(425, 170, 225, 25);
 		panel.add(lblErrorDueDate);
+		
+		lblPPRProduct = new JLabel("Hasil Produksi");
+		lblPPRProduct.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblPPRProduct.setBounds(50, 430, 150, 25);
+		panel.add(lblPPRProduct);
 
 		btnInsertPPRProduct = new JButton("Tambah");
 		btnInsertPPRProduct.setBounds(820, 430, 100, 25);
@@ -269,6 +277,11 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		});
 		scrollPanePPRProduct.setViewportView(tblPPRProduct);
 		
+		lblPurchaseNote = new JLabel("Nota Pembelian");
+		lblPurchaseNote.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblPurchaseNote.setBounds(50, 220, 150, 25);
+		panel.add(lblPurchaseNote);
+		
 		btnInsertPPRNote = new JButton("Tambah");
 		btnInsertPPRNote.setBounds(820, 220, 100, 25);
 		btnInsertPPRNote.addActionListener(new ActionListener() {
@@ -307,13 +320,13 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 				tblPPRNote.updateUI();
 				
 				if (e.getClickCount() == 2) {
-					JTable target = (JTable) e.getSource();
-					int row = target.getSelectedRow();
-					int column = target.getSelectedColumn();
-
-					if (column == 2) {
-						showEditPPRNoteDialog(listOfPPRNote.get(row), pprEditPanel, row);
-					}
+//					JTable target = (JTable) e.getSource();
+//					int row = target.getSelectedRow();
+//					int column = target.getSelectedColumn();
+//
+//					if (column == 2) {
+//						showEditPPRNoteDialog(listOfPPRNote.get(row), pprEditPanel, row);
+//					}
 				}
 			}
 		});
@@ -664,7 +677,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 3;
+			return 2;
 		}
 
 		/**
@@ -683,8 +696,8 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 				return p.isFlag();
 			case 1:
 				return p.getNote();
-			case 2:
-				return "<html><u>View</u></html>";
+//			case 2:
+//				return "<html><u>View</u></html>";
 			default:
 				return "";
 			}
@@ -701,8 +714,8 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 				return Boolean.class;
 			case 1:
 				return String.class;
-			case 2:
-				return String.class;
+//			case 2:
+//				return String.class;
 			default:
 				return String.class;
 			}
@@ -721,8 +734,8 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 				return "";
 			case 1:
 				return "Note";
-			case 2:
-				return "Tindakan";
+//			case 2:
+//				return "Tindakan";
 			default:
 				return "";
 			}

@@ -114,6 +114,9 @@ import module.util.JTextFieldLimit;
 	JTextField txtDiscount;
 	JTextField txtTax;
 	JTextField txtGrandTotal;
+	
+	JLabel lblPurchaseNote;
+	JLabel lblPPRProduct;
 
 	public PurchaseProdResultPaymentViewPanel() {
 		pprViewPanel = this;
@@ -219,6 +222,11 @@ import module.util.JTextFieldLimit;
 		lblErrorPaymentDate.setForeground(Color.RED);
 		lblErrorPaymentDate.setBounds(425, 200, 225, 25);
 		panel.add(lblErrorPaymentDate);
+		
+		lblPPRProduct = new JLabel("Hasil Produksi");
+		lblPPRProduct.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblPPRProduct.setBounds(50, 460, 150, 25);
+		panel.add(lblPPRProduct);
 
 //		btnInsertPPRProduct = new JButton("Tambah");
 //		btnInsertPPRProduct.setBounds(820, 460, 100, 25);
@@ -257,6 +265,11 @@ import module.util.JTextFieldLimit;
 		});
 		scrollPanePPRProduct.setViewportView(tblPPRProduct);
 		
+		lblPurchaseNote = new JLabel("Nota Pembelian");
+		lblPurchaseNote.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblPurchaseNote.setBounds(50, 250, 150, 25);
+		panel.add(lblPurchaseNote);
+		
 //		btnInsertPPRNote = new JButton("Tambah");
 //		btnInsertPPRNote.setBounds(820, 250, 100, 25);
 //		btnInsertPPRNote.setFocusable(false);
@@ -287,7 +300,7 @@ import module.util.JTextFieldLimit;
 					int column = target.getSelectedColumn();
 
 					if (column == 2) {
-						showViewPPRNoteDialog(listOfPPRNote.get(row), pprViewPanel, row);
+						//showViewPPRNoteDialog(listOfPPRNote.get(row), pprViewPanel, row);
 					}
 				}
 			}

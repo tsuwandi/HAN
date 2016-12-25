@@ -43,7 +43,7 @@ public class ProdPKDAO {
 
 	private String updateQuery = new StringBuilder()
 			.append("update prod_pk set production_date=?, group_shift_code=?, shift_code=?, line_code=?, ")
-			.append("status=?, edited_date=?, edited_by=? where prod_pk_code=?").toString();
+			.append("status=?, edited_date=?, edited_by=? where id=?").toString();
 
 	private String deleteQuery = "update prod_pk set deleted_date=?, deleted_by=? where id=?";
 	
@@ -200,7 +200,7 @@ public class ProdPKDAO {
 			updateStatement.setString(5, ppr.getStatus());
 			updateStatement.setDate(6, DateUtil.getCurrentDate());
 			updateStatement.setString(7, "timotius");
-			updateStatement.setString(8, ppr.getProdPKCode());
+			updateStatement.setInt(8, ppr.getId());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {

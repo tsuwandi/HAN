@@ -407,7 +407,7 @@ public class ProdPKEditPanel extends JPanel implements Bridging {
 		
 		try {
 			ServiceFactory.getProductionPKBL().update(prodPK, listOfProdPKMaterial, listOfProdPKResultProduct);
-			DialogBox.showInsert();
+			DialogBox.showEdit();
 			MainPanel.changePanel("module.prodpk.ui.ProdPKViewPanel", prodPK);
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());

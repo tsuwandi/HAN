@@ -9,11 +9,17 @@ import javax.sql.DataSource;
 
 import module.dryin.dao.DryInDAO;
 import module.product.dao.ProductDAO;
+import module.product.dao.ProductPPDAO;
 import module.product.model.Condition;
 import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
+import module.product.model.ProductPP;
 import module.product.model.Uom;
+import module.purchaseprodresult.dao.PPRNoteDAO;
+import module.purchaseprodresult.dao.PPRProductDAO;
+import module.purchaseprodresult.model.PPRNote;
+import module.purchaseprodresult.model.PPRProduct;
 import module.sn.production.quality.dao.ProductionQualityDAO;
 import module.sn.production.quality.model.ProductionQuality;
 import module.sn.production.type.dao.ProductionTypeDAO;
@@ -58,13 +64,18 @@ public class ProductBL {
 		}
 	}
 
-	public void save(Product product) throws SQLException {
+	public void save(Product product, List<ProductPP> productPPs) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 
 			new ProductDAO(con).save(product);
+			
+			for (ProductPP s : productPPs) {
+				s.setProductCode(product.getProductCode());
+				new ProductPPDAO(con).save(s);
+			}
 
 			con.commit();
 		} catch (SQLException e) {
@@ -75,12 +86,28 @@ public class ProductBL {
 		}
 	}
 
-	public void update(Product product) throws SQLException {
+	public void update(Product product, List<ProductPP> productPPs, List<ProductPP> productPPsDeleted) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
+			
 			new ProductDAO(con).update(product);
+			
+			for (ProductPP s : productPPs) {
+				if (s.getId() == 0) {
+					s.setProductCode(product.getProductCode());
+					new ProductPPDAO(con).save(s);
+				} else {
+					new ProductPPDAO(con).update(s);
+				}
+			}
+
+			for (ProductPP s : productPPsDeleted) {
+				if (s.getId() != 0)
+					new ProductPPDAO(con).deleteById(s.getId());
+			}
+			
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
@@ -96,7 +123,7 @@ public class ProductBL {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 			new ProductDAO(con).delete(product.getProductCode());
-
+			new ProductPPDAO(con).deleteAll(product.getProductCode());
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
@@ -237,6 +264,16 @@ public class ProductBL {
 				return String.format("%04d", new ProductDAO(con).getOrdinalOfCodeNumber(productCategory) + 1);
 			}
 
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<ProductPP> getProductPPByProductCode(String productCode) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductPPDAO(con).getAllByProductCode(productCode);
 		} finally {
 			con.close();
 		}

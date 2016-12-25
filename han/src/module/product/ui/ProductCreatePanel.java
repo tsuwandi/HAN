@@ -7,9 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,9 +21,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
@@ -39,6 +42,7 @@ import module.product.ProductCategoryType;
 import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
+import module.product.model.ProductPP;
 import module.product.model.Uom;
 import module.sn.production.quality.model.ProductionQuality;
 import module.sn.production.type.model.ProductionType;
@@ -106,12 +110,24 @@ public class ProductCreatePanel extends JPanel {
 
 	ProductCreatePanel productCreatePanel;
 
+	List<ProductPP> listOfProductPP = null;
+	JScrollPane scrollPaneProductPP;
+	JTable tblProductPP;
+	ProductPPTableModel productPPTableModel = null;
+	JButton btnInsertProductPP;
+	JButton btnDeleteProductPP;
+	JPanel panel;
+	JLabel lblPurchaserPrice;
+
 	public ProductCreatePanel() {
-		this.productCreatePanel = this;
+		productCreatePanel = this;
 
 		setLayout(null);
-		setPreferredSize(new Dimension(1166, 620));
-		
+		// setPreferredSize(new Dimension(1166, 820));
+		panel = new JPanel();
+		panel.setPreferredSize(new Dimension(800, 850));
+		panel.setLayout(null);
+
 		DocumentFilter filter = new UppercaseDocumentFilter();
 
 		todayDate = new Date();
@@ -122,7 +138,7 @@ public class ProductCreatePanel extends JPanel {
 		breadcrumb.setBounds(50, 10, 320, 25);
 
 		backBtn = new JButton("Kembali");
-		backBtn.setBounds(50, 550, 75, 25);
+		backBtn.setBounds(50, 780, 100, 25);
 		backBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -153,7 +169,7 @@ public class ProductCreatePanel extends JPanel {
 
 		maintainLbl = new JLabel("<html>Maintain Stock <font color=\"red\">*</font></html>");
 		maintainLbl.setBounds(50, 200, 100, 25);
-		
+
 		attLbl = new JLabel("<html>Atribut Produk</html>");
 		attLbl.setBounds(50, 245, 100, 25);
 		attLbl.setFont(new Font(null, Font.BOLD, 12));
@@ -231,16 +247,16 @@ public class ProductCreatePanel extends JPanel {
 		productionTypeLblError.setForeground(Color.RED);
 		productionTypeLblError.setBounds(425, 350, 225, 25);
 
-		add(lblProductionType);
-		add(lblProductionQuality);
-		add(cbProductionType);
-		add(cbProductionQuality);
-		add(productionQualityLblError);
-		add(productionTypeLblError);
+		panel.add(lblProductionType);
+		panel.add(lblProductionQuality);
+		panel.add(cbProductionType);
+		panel.add(cbProductionQuality);
+		panel.add(productionQualityLblError);
+		panel.add(productionTypeLblError);
 
 		////////////////////////////////////////////////////////////////////////////////////
 		grades = new ArrayList<Grade>();
-		
+
 		try {
 			categories = ServiceFactory.getProductBL().getAllProductCategory();
 			categories.add(0, new ProductCategory("-- Pilih Kategori Produk --"));
@@ -307,7 +323,7 @@ public class ProductCreatePanel extends JPanel {
 				}
 			}
 		});
-		
+
 		catField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (catField.getSelectedIndex() != 0) {
@@ -317,7 +333,7 @@ public class ProductCreatePanel extends JPanel {
 					gradeField.removeAllItems();
 					gradeField.setList(grades);
 					gradeField.updateUI();
-					
+
 					makeCodeNumber(catField.getDataIndex().getProductCategory());
 				} else {
 					gradeField.removeAllItems();
@@ -364,7 +380,7 @@ public class ProductCreatePanel extends JPanel {
 		typeField.setBounds(220, 290, 150, 25);
 
 		grades.add(0, new Grade("-- Pilih Grade --"));
-	
+
 		gradeField = new ComboBox<Grade>();
 		gradeField.setList(grades);
 		gradeField.setBounds(220, 380, 150, 25);
@@ -383,7 +399,7 @@ public class ProductCreatePanel extends JPanel {
 		minQtyField.setBounds(220, 500, 150, 25);
 
 		saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(925, 550, 75, 25);
+		saveBtn.setBounds(925, 780, 100, 25);
 		saveBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -421,7 +437,7 @@ public class ProductCreatePanel extends JPanel {
 		});
 
 		copyFromBtn = new JButton("Copy From");
-		copyFromBtn.setBounds(825, 550, 100, 25);
+		copyFromBtn.setBounds(825, 780, 100, 25);
 		copyFromBtn.addActionListener(new ActionListener() {
 
 			@Override
@@ -433,35 +449,35 @@ public class ProductCreatePanel extends JPanel {
 			}
 		});
 
-		add(copyFromBtn);
-		add(breadcrumb);
-		add(backBtn);
-		add(titleLbl);
-		add(idLbl);
-		add(nameLbl);
-		add(catLbl);
-		add(unitLbl);
-		add(maintainLbl);
-		add(attLbl);
-		add(typeLbl);
-		add(gradeLbl);
-		add(thickLbl);
-		add(longLbl);
-		add(wideLbl);
-		add(minQtyLbl);
-		add(idField);
-		add(nameField);
-		add(catField);
-		add(uomField);
-		add(maintainYesField);
-		add(maintainNoField);
-		add(typeField);
-		add(gradeField);
-		add(thickField);
-		add(longField);
-		add(wideField);
-		add(minQtyField);
-		add(saveBtn);
+		panel.add(copyFromBtn);
+		panel.add(breadcrumb);
+		panel.add(backBtn);
+		panel.add(titleLbl);
+		panel.add(idLbl);
+		panel.add(nameLbl);
+		panel.add(catLbl);
+		panel.add(unitLbl);
+		panel.add(maintainLbl);
+		panel.add(attLbl);
+		panel.add(typeLbl);
+		panel.add(gradeLbl);
+		panel.add(thickLbl);
+		panel.add(longLbl);
+		panel.add(wideLbl);
+		panel.add(minQtyLbl);
+		panel.add(idField);
+		panel.add(nameField);
+		panel.add(catField);
+		panel.add(uomField);
+		panel.add(maintainYesField);
+		panel.add(maintainNoField);
+		panel.add(typeField);
+		panel.add(gradeField);
+		panel.add(thickField);
+		panel.add(longField);
+		panel.add(wideField);
+		panel.add(minQtyField);
+		panel.add(saveBtn);
 
 		idLblError = new JLabel("");
 		idLblError.setForeground(Color.RED);
@@ -507,18 +523,82 @@ public class ProductCreatePanel extends JPanel {
 		minQtyLblError.setForeground(Color.RED);
 		minQtyLblError.setBounds(425, 500, 225, 25);
 
-		add(idLblError);
-		add(nameLblError);
-		add(catLblError);
-		add(unitLblError);
-		add(maintainLblError);
-		add(typeLblError);
-		add(gradeLblError);
-		add(thickLblError);
-		add(longLblError);
-		add(wideLblError);
-		add(minQtyLblError);
+		panel.add(idLblError);
+		panel.add(nameLblError);
+		panel.add(catLblError);
+		panel.add(unitLblError);
+		panel.add(maintainLblError);
+		panel.add(typeLblError);
+		panel.add(gradeLblError);
+		panel.add(thickLblError);
+		panel.add(longLblError);
+		panel.add(wideLblError);
+		panel.add(minQtyLblError);
 
+		lblPurchaserPrice = new JLabel("Harga Beli");
+		lblPurchaserPrice.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblPurchaserPrice.setBounds(50, 550, 150, 25);
+		panel.add(lblPurchaserPrice);
+
+		btnInsertProductPP = new JButton("Tambah");
+		btnInsertProductPP.setBounds(825, 550, 100, 25);
+		btnInsertProductPP.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showAddProductPPDialog(productCreatePanel);
+			}
+		});
+		panel.add(btnInsertProductPP);
+
+		btnDeleteProductPP = new JButton("Hapus");
+		btnDeleteProductPP.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				doDeleteProductPP();
+			}
+		});
+		btnDeleteProductPP.setBounds(925, 550, 100, 25);
+		panel.add(btnDeleteProductPP);
+
+		scrollPaneProductPP = new JScrollPane();
+		scrollPaneProductPP.setBounds(50, 590, 975, 150);
+		panel.add(scrollPaneProductPP);
+
+		listOfProductPP = new ArrayList<ProductPP>();
+		productPPTableModel = new ProductPPTableModel(listOfProductPP);
+		tblProductPP = new JTable(productPPTableModel);
+		tblProductPP.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tblProductPP.setFocusable(false);
+		tblProductPP.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (tblProductPP.getValueAt(tblProductPP.getSelectedRow(), 0).equals(true))
+					listOfProductPP.get(tblProductPP.getSelectedRow()).setFlag(false);
+				else
+					listOfProductPP.get(tblProductPP.getSelectedRow()).setFlag(true);
+
+				tblProductPP.updateUI();
+
+				if (e.getClickCount() == 2) {
+					JTable target = (JTable) e.getSource();
+					int row = target.getSelectedRow();
+					int column = target.getSelectedColumn();
+
+					if (column == 4) {
+						showEditProductPPDialog(listOfProductPP.get(row), productCreatePanel, row);
+					}
+				}
+			}
+		});
+		scrollPaneProductPP.setViewportView(tblProductPP);
+
+		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setSize(MainPanel.bodyPanel.getSize());
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(32);
+		scrollPane.getHorizontalScrollBar().setUnitIncrement(32);
+		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		add(scrollPane);
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -527,7 +607,7 @@ public class ProductCreatePanel extends JPanel {
 		});
 
 	}
-	
+
 	public void getAllGradeByProductCategoryId(int productCategoryId) {
 		try {
 			grades = ServiceFactory.getProductBL().getAllGradeByCategoryProductId(productCategoryId);
@@ -537,7 +617,6 @@ public class ProductCreatePanel extends JPanel {
 			DialogBox.showErrorException();
 		}
 	}
-
 
 	public void doInsert() {
 		try {
@@ -569,32 +648,32 @@ public class ProductCreatePanel extends JPanel {
 				if (wideField.getText().length() > 0)
 					product.setWidth(Double.parseDouble(wideField.getText()));
 			}
-			
-			if(product.getProductCat() == ProductCategoryType.BALKEN_BASAH) {
+
+			if (product.getProductCat() == ProductCategoryType.BALKEN_BASAH) {
 				product.setCondition(ProductCategoryType.BALKEN_BASAH);
-			} else if(product.getProductCat() == ProductCategoryType.BALKEN_KERING) {
+			} else if (product.getProductCat() == ProductCategoryType.BALKEN_KERING) {
 				product.setCondition(ProductCategoryType.BALKEN_KERING);
 			}
-			
+
 			product.setMinQty(Integer.parseInt(minQtyField.getText()));
-			
-			if(!ProductCategory.HASIL_PRODUKSI.equalsIgnoreCase(catField.getDataIndex().getProductCategory())) {
+
+			if (!ProductCategory.HASIL_PRODUKSI.equalsIgnoreCase(catField.getDataIndex().getProductCategory())) {
 				Product checkProduct = ServiceFactory.getProductBL().isProductExists(Boolean.FALSE, product);
 				if (checkProduct.getIsExists() > 0) {
 					JOptionPane.showMessageDialog(null,
 							"Produk sudah pernah diinput dengan kode " + checkProduct.getProductCode(), "Warning",
 							JOptionPane.YES_NO_OPTION);
 				} else {
-					ServiceFactory.getProductBL().save(product);
+					ServiceFactory.getProductBL().save(product, listOfProductPP);
 					DialogBox.showInsert();
 					MainPanel.changePanel("module.product.ui.ProductListPanel");
 				}
 			} else {
-				ServiceFactory.getProductBL().save(product);
+				ServiceFactory.getProductBL().save(product, listOfProductPP);
 				DialogBox.showInsert();
 				MainPanel.changePanel("module.product.ui.ProductListPanel");
 			}
-			
+
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
@@ -892,7 +971,8 @@ public class ProductCreatePanel extends JPanel {
 	protected void loadData(String productCode) {
 		try {
 			product = ServiceFactory.getProductBL().getProductByCode(productCode);
-
+			listOfProductPP = ServiceFactory.getProductBL().getProductPPByProductCode(productCode);
+			
 			if (product != null) {
 				nameField.setText(product.getProductName());
 				uomField.setSelectedIndex(product.getProductUom());
@@ -914,26 +994,28 @@ public class ProductCreatePanel extends JPanel {
 				} else {
 					maintainNoField.setSelected(true);
 				}
+				
+				refreshTableProductPP();
 			}
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
-	
+
 	public void makeCodeNumber(String productCategory) {
 		String constantProductCategory = "";
-		
-		if(ProductCategory.BALKEN_BASAH.equalsIgnoreCase(productCategory)) {
+
+		if (ProductCategory.BALKEN_BASAH.equalsIgnoreCase(productCategory)) {
 			constantProductCategory = ProductCategory.BALKEN_BASAH_CD;
-		}else if(ProductCategory.BALKEN_KERING.equalsIgnoreCase(productCategory)) {
+		} else if (ProductCategory.BALKEN_KERING.equalsIgnoreCase(productCategory)) {
 			constantProductCategory = ProductCategory.BALKEN_KERING_CD;
-		}else if(ProductCategory.HASIL_PRODUKSI.equalsIgnoreCase(productCategory)) {
+		} else if (ProductCategory.HASIL_PRODUKSI.equalsIgnoreCase(productCategory)) {
 			constantProductCategory = ProductCategory.HASIL_PRODUKSI_CD;
-		}else if(ProductCategory.BARANG_PENDUKUNG.equalsIgnoreCase(productCategory)) {
+		} else if (ProductCategory.BARANG_PENDUKUNG.equalsIgnoreCase(productCategory)) {
 			constantProductCategory = ProductCategory.BARANG_PENDUKUNG_CD;
 		}
-		
+
 		String ordinal = null;
 		try {
 			ordinal = ServiceFactory.getProductBL().getOrdinalOfCodeNumber(productCategory);
@@ -944,6 +1026,165 @@ public class ProductCreatePanel extends JPanel {
 		}
 
 		idField.setText(new StringBuilder().append(constantProductCategory).append("-").append(ordinal).toString());
+	}
+
+	/**
+	 * Class as TableModel for ProductPP table
+	 * 
+	 * @author TSI
+	 *
+	 */
+	class ProductPPTableModel extends AbstractTableModel {
+
+		private static final long serialVersionUID = 1L;
+
+		private List<ProductPP> listOfProductPP;
+
+		public ProductPPTableModel(List<ProductPP> listOfProductPP) {
+			this.listOfProductPP = listOfProductPP;
+		}
+
+		/**
+		 * Method to get row count
+		 * 
+		 * @return int
+		 */
+		public int getRowCount() {
+			return listOfProductPP.size();
+		}
+
+		/**
+		 * Method to get Column Count
+		 */
+		public int getColumnCount() {
+			return 5;
+		}
+
+		/**
+		 * Method to get selected value
+		 * 
+		 * @param rowIndex
+		 *            rowIndex of selected table
+		 * @param columnIndex
+		 *            columnIndex of selected table
+		 * @return ({@link PPRNote}) Object
+		 */
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			ProductPP p = listOfProductPP.get(rowIndex);
+			switch (columnIndex) {
+			case 0:
+				return p.isFlag();
+			case 1:
+				return p.getPrice();
+			case 2:
+				return p.getEffectiveStartDate();
+			case 3:
+				return p.getEffectiveEndDate();
+			case 4:
+				return "<html><u>View</u></html>";
+			default:
+				return "";
+			}
+		}
+
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		}
+
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public Class getColumnClass(int column) {
+			switch (column) {
+			case 0:
+				return Boolean.class;
+			case 1:
+				return String.class;
+			case 2:
+				return Date.class;
+			case 3:
+				return Date.class;
+			case 4:
+				return String.class;
+			default:
+				return String.class;
+			}
+		}
+
+		/**
+		 * Method to getColumnName
+		 * 
+		 * @param column
+		 *            columnIndex
+		 * @return String column name
+		 */
+		public String getColumnName(int column) {
+			switch (column) {
+			case 0:
+				return "";
+			case 1:
+				return "Price";
+			case 2:
+				return "Effective Start Date";
+			case 3:
+				return "Effective End Date";
+			case 4:
+				return "Tindakan";
+			default:
+				return "";
+			}
+		}
+	}
+
+	public void refreshTableProductPP() {
+		try {
+			tblProductPP.setModel(new ProductPPTableModel(listOfProductPP));
+		} catch (Exception e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
+		}
+	}
+
+	protected void showAddProductPPDialog(ProductCreatePanel productCreatePanel) {
+		ProductPPDialog productPPDialog = new ProductPPDialog(false, new ProductPP(), productCreatePanel, null);
+		productPPDialog.setTitle("Harga Beli");
+		productPPDialog.setLocationRelativeTo(null);
+		productPPDialog.setVisible(true);
+	}
+
+	protected void showEditProductPPDialog(ProductPP productPP, ProductCreatePanel productCreatePanel, Integer index) {
+		ProductPPDialog productPPDialog = new ProductPPDialog(true, productPP, productCreatePanel, index);
+		productPPDialog.setTitle("Harga Beli");
+		productPPDialog.setLocationRelativeTo(null);
+		productPPDialog.setVisible(true);
+	}
+
+	protected void doDeleteProductPP() {
+		if (listOfProductPP.isEmpty())
+			DialogBox.showDeleteEmptyChoice();
+		else {
+			int count = 0;
+
+			List<ProductPP> temp = new ArrayList<ProductPP>();
+			for (ProductPP s : listOfProductPP) {
+				if (Boolean.TRUE.equals(s.isFlag())) {
+					temp.add(s);
+				} else {
+					count += 1;
+				}
+			}
+
+			if (count == listOfProductPP.size()) {
+				DialogBox.showDeleteEmptyChoice();
+				return;
+			}
+
+			if (Boolean.FALSE.equals(temp.isEmpty())) {
+				for (ProductPP s : temp) {
+					listOfProductPP.remove(s);
+				}
+				refreshTableProductPP();
+				DialogBox.showDelete();
+			}
+		}
 	}
 
 }
