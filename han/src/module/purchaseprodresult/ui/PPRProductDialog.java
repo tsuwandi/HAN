@@ -189,9 +189,34 @@ public class PPRProductDialog extends JDialog {
 		try {
 			if (isEdit == false) {
 				if (pprCreatePanel != null) {
-					pprCreatePanel.listOfPPRProduct.add(pprProduct);
+					boolean isExists = false;
+					
+					for(PPRProduct p : pprCreatePanel.listOfPPRProduct) {
+						if(pprProduct.getProductCode().equals(p.getProductCode())) {
+							int qty = Integer.valueOf(txtQty.getText());
+							p.setQty(p.getQty() + qty);
+							isExists = true;
+							break;
+						}
+					}
+					if(isExists == false) {
+						pprCreatePanel.listOfPPRProduct.add(pprProduct);
+					}
+					
 				} else if (pprEditPanel != null) {
-					pprEditPanel.listOfPPRProduct.add(pprProduct);
+					boolean isExists = false;
+					
+					for(PPRProduct p : pprEditPanel.listOfPPRProduct) {
+						if(pprProduct.getProductCode().equals(p.getProductCode())) {
+							int qty = Integer.valueOf(txtQty.getText());
+							p.setQty(p.getQty() + qty);
+							isExists = true;
+							break;
+						}
+					}
+					if(isExists == false) {
+						pprEditPanel.listOfPPRProduct.add(pprProduct);
+					}
 				}
 
 				DialogBox.showInsert();

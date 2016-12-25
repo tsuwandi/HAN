@@ -43,7 +43,7 @@ public class ProdPKMaterialDAO {
 			
 			getAllByProdPKCodeStatement = connection.prepareStatement(query);
 			getAllByProdPKCodeStatement.setString(1, pprCode);
-
+			
 			ResultSet rs = getAllByProdPKCodeStatement.executeQuery();
 			while (rs.next()) {
 				ProdPKMaterial prodPKMaterial = new ProdPKMaterial();
@@ -90,7 +90,10 @@ public class ProdPKMaterialDAO {
 			updateStatement.setDate(3, DateUtil.getCurrentDate());
 			updateStatement.setString(4, "timotius");
 			updateStatement.setInt(5, prodPKMaterial.getId());
+			System.out.println(updateStatement);
 			updateStatement.executeUpdate();
+			
+			
 
 		} catch (SQLException ex) {
 			throw new SQLException(ex.getMessage());
