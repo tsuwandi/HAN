@@ -416,35 +416,27 @@ public class ProdPKEditPanel extends JPanel implements Bridging {
 	}
 	
 	private List<ProdPKMaterial> prodPKMaterialDetail() {
-		List<ProdPKMaterial> listOfProdPKMaterialTemp = new ArrayList<ProdPKMaterial>();
+		for(ProdPKMaterial p : listOfProdPKMaterial) {
+			if(PRODUCT_CODE_KLEM_A.equals(p.getProductCode())) {
+				p.setQty(Integer.valueOf(txtRepairKlemTotalGradeA.getText()));
+			} else if (PRODUCT_CODE_KLEM_B.equals(p.getProductCode())) {
+				p.setQty(Integer.valueOf(txtRepairKlemTotalGradeB.getText()));
+			}
+		}	
 		
-		ProdPKMaterial pwProductKlemGradeA = new ProdPKMaterial();
-		pwProductKlemGradeA.setProductCode(PRODUCT_CODE_KLEM_A);
-		pwProductKlemGradeA.setQty(Integer.valueOf(txtRepairKlemTotalGradeA.getText()));
-		listOfProdPKMaterialTemp.add(pwProductKlemGradeA);
-		
-		ProdPKMaterial pwProductKlemGradeB = new ProdPKMaterial();
-		pwProductKlemGradeB.setProductCode(PRODUCT_CODE_KLEM_B);
-		pwProductKlemGradeB.setQty(Integer.valueOf(txtRepairKlemTotalGradeB.getText()));
-		listOfProdPKMaterialTemp.add(pwProductKlemGradeB);
-		
-		return listOfProdPKMaterialTemp;
+		return listOfProdPKMaterial;
 	}
 	
 	private List<ProdPKResultProduct> prodPKResultProductDetail () {
-		List<ProdPKResultProduct> listOfProdPKResultProductTemp = new ArrayList<ProdPKResultProduct>();
+		for(ProdPKResultProduct p : listOfProdPKResultProduct) {
+			if(PRODUCT_CODE_PROD_RESULT_A.equals(p.getProductCode())) {
+				p.setQty(Integer.valueOf(txtProductionResultTotalGradeA.getText()));
+			} else if (PRODUCT_CODE_PROD_RESULT_B.equals(p.getProductCode())) {
+				p.setQty(Integer.valueOf(txtProductionResultTotalGradeB.getText()));
+			}
+		}			
 		
-		ProdPKResultProduct prodPKResultProductKlemGradeA = new ProdPKResultProduct();
-		prodPKResultProductKlemGradeA.setProductCode(PRODUCT_CODE_PROD_RESULT_A);
-		prodPKResultProductKlemGradeA.setQty(Integer.valueOf(txtProductionResultTotalGradeA.getText()));
-		listOfProdPKResultProductTemp.add(prodPKResultProductKlemGradeA);
-		
-		ProdPKResultProduct prodPKResultProductKlemGradeB = new ProdPKResultProduct();
-		prodPKResultProductKlemGradeB.setProductCode(PRODUCT_CODE_PROD_RESULT_B);
-		prodPKResultProductKlemGradeB.setQty(Integer.valueOf(txtProductionResultTotalGradeB.getText()));
-		listOfProdPKResultProductTemp.add(prodPKResultProductKlemGradeB);
-		
-		return listOfProdPKResultProductTemp;
+		return listOfProdPKResultProduct;
 	}
 	
 	protected boolean doValidate() {
