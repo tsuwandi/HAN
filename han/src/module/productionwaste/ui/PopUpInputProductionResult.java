@@ -116,7 +116,7 @@ public class PopUpInputProductionResult extends JDialog{
 	static final String KB = "PDC009-8";
 	static final String PA = "PDC009-5";
 	static final String PB = "PDC009-6";
-	static final String NA = "PDC009";
+	static final String NA = "PDC009-1";
 	static final String NB = "PDC009-2";
 	
 	public PopUpInputProductionResult(JPanel parent){
