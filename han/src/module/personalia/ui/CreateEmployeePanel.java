@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,8 +31,8 @@ import module.personalia.model.EmployeePosition;
 public class CreateEmployeePanel extends JPanel {
 
 	private static final long serialVersionUID = -9009351103530748031L;
-	private JTextField employeeNameField;
-	private JTextField employeeCodeField;
+	private JTextField nameField;
+	private JTextField codeField;
 	private JTextField npwpField;
 	private JTextField ktpField;
 	private JTextField ktpAddressField;
@@ -41,7 +43,7 @@ public class CreateEmployeePanel extends JPanel {
 	private JTextField telpField;
 	private ComboBox<String> genderCmbox;
 	private ComboBox<String> maritalCmbox;
-	private JTextField nmbChildField;
+	private JTextField numberChildField;
 	private JTextField bankNameField;
 	private JTextField bankAccountField;
 	private ComboBox<String> shiftGroupCmbox;
@@ -78,11 +80,11 @@ public class CreateEmployeePanel extends JPanel {
 		label_1.setBounds(130, 80, 10, 30);
 		containerPanel.add(label_1);
 		
-		employeeCodeField = new JTextField();
-		employeeCodeField.setBounds(140, 80, 200, 30);
-		employeeCodeField.setEditable(false);
-		employeeCodeField.setEnabled(false);
-		containerPanel.add(employeeCodeField);
+		codeField = new JTextField();
+		codeField.setBounds(140, 80, 200, 30);
+		codeField.setEditable(false);
+		codeField.setEnabled(false);
+		containerPanel.add(codeField);
 		// nama
 		JLabel label_2 = new JLabel("<html>Nama Karyawan<font color='red'> * </font></html>");
 		label_2.setBounds(30, 120, 100, 30);
@@ -92,9 +94,9 @@ public class CreateEmployeePanel extends JPanel {
 		label_3.setBounds(130, 120, 10, 30);
 		containerPanel.add(label_3);
 		
-		employeeNameField = new JTextField();
-		employeeNameField.setBounds(140, 120, 200, 30);
-		containerPanel.add(employeeNameField);
+		nameField = new JTextField();
+		nameField.setBounds(140, 120, 200, 30);
+		containerPanel.add(nameField);
 		// npwp
 		JLabel lblnpwp = new JLabel("<html>NPWP<font color='red'> * </font></html>");
 		lblnpwp.setBounds(30, 160, 100, 30);
@@ -175,6 +177,10 @@ public class CreateEmployeePanel extends JPanel {
 		JLabel label_11 = new JLabel(":");
 		label_11.setBounds(130, 400, 10, 30);
 		containerPanel.add(label_11);
+		
+		emailField = new JTextField();
+		emailField.setBounds(140, 400, 200, 30);
+		containerPanel.add(emailField);
 		// nomer telepon
 		JLabel lblnomerTelepon = new JLabel("<html>Nomer Telepon<font color='red'> * </font></html>");
 		lblnomerTelepon.setBounds(30, 440, 100, 30);
@@ -183,6 +189,10 @@ public class CreateEmployeePanel extends JPanel {
 		JLabel label_12 = new JLabel(":");
 		label_12.setBounds(130, 440, 10, 30);
 		containerPanel.add(label_12);
+		
+		telpField = new JTextField();
+		telpField.setBounds(140, 440, 200, 30);
+		containerPanel.add(telpField);
 		// gender
 		JLabel lblgender = new JLabel("<html>Gender<font color='red'> * </font></html>");
 		lblgender.setBounds(30, 480, 100, 30);
@@ -191,6 +201,10 @@ public class CreateEmployeePanel extends JPanel {
 		JLabel label_13 = new JLabel(":");
 		label_13.setBounds(130, 480, 10, 30);
 		containerPanel.add(label_13);
+		
+		genderCmbox = new ComboBox<>();
+		genderCmbox.setBounds(140, 480, 200, 30);
+		containerPanel.add(genderCmbox);
 		// status perkawinan
 		JLabel lblstatusPerkawinan = new JLabel("<html>Status Perkawinan<font color='red'> * </font></html>");
 		lblstatusPerkawinan.setBounds(30, 520, 100, 30);
@@ -199,6 +213,10 @@ public class CreateEmployeePanel extends JPanel {
 		JLabel label_14 = new JLabel(":");
 		label_14.setBounds(130, 520, 10, 30);
 		containerPanel.add(label_14);
+		
+		maritalCmbox = new ComboBox<>();
+		maritalCmbox.setBounds(140, 520, 200, 30);
+		containerPanel.add(maritalCmbox);
 		// jumlah tanggungan anak
 		JLabel lbljumlahTanggunganAnak = new JLabel("<html>Jumlah Tanggungan Anak<font color='red'> * </font></html>");
 		lbljumlahTanggunganAnak.setBounds(30, 560, 100, 30);
@@ -207,6 +225,10 @@ public class CreateEmployeePanel extends JPanel {
 		JLabel label_15 = new JLabel(":");
 		label_15.setBounds(130, 560, 10, 30);
 		containerPanel.add(label_15);
+		
+		numberChildField = new JTextField();
+		numberChildField.setBounds(140, 560, 200, 30);
+		containerPanel.add(numberChildField);
 		// nama bank
 		JLabel lblnamaBank = new JLabel("<html>Nama Bank<font color='red'> * </font></html>");
 		lblnamaBank.setBounds(30, 600, 100, 30);
@@ -215,6 +237,10 @@ public class CreateEmployeePanel extends JPanel {
 		JLabel label_16 = new JLabel(":");
 		label_16.setBounds(130, 600, 10, 30);
 		containerPanel.add(label_16);
+		
+		bankNameField = new JTextField();
+		bankNameField.setBounds(140, 600, 200, 30);
+		containerPanel.add(bankNameField);
 		// nomer rekening bank
 		JLabel lblnomorRekeningBank = new JLabel("<html>Nomor Rekening Bank<font color='red'> * </font></html>");
 		lblnomorRekeningBank.setBounds(30, 640, 100, 30);
@@ -223,6 +249,10 @@ public class CreateEmployeePanel extends JPanel {
 		JLabel label_9 = new JLabel(":");
 		label_9.setBounds(130, 640, 10, 30);
 		containerPanel.add(label_9);
+		
+		bankAccountField = new JTextField();
+		bankAccountField.setBounds(140, 640, 200, 30);
+		containerPanel.add(bankAccountField);
 		// group shift kerja
 		JLabel lblgroupShiftKerja = new JLabel("<html>Group Shift Kerja<font color='red'> * </font></html>");
 		lblgroupShiftKerja.setBounds(30, 680, 100, 30);
@@ -232,6 +262,10 @@ public class CreateEmployeePanel extends JPanel {
 		label_18.setBounds(130, 680, 10, 30);
 		containerPanel.add(label_18);
 		
+		shiftGroupCmbox = new ComboBox<>();
+		shiftGroupCmbox.setBounds(140, 680, 200, 30);
+		containerPanel.add(shiftGroupCmbox);
+		// status
 		JLabel statusLbl = new JLabel("<html>Status<font color='red'> * </font></html>");
 		statusLbl.setBounds(30, 720, 100, 30);
 		containerPanel.add(statusLbl);
@@ -240,6 +274,18 @@ public class CreateEmployeePanel extends JPanel {
 		label_17.setBounds(130, 720, 10, 30);
 		containerPanel.add(label_17);
 		
+		activeRdbtn = new JRadioButton("Aktif");
+		activeRdbtn.setBounds(140, 720, 90, 30);
+		containerPanel.add(activeRdbtn);
+		
+		notActiveRdbtn = new JRadioButton("Non Aktif");
+		notActiveRdbtn.setBounds(240, 720, 90, 30);
+		containerPanel.add(notActiveRdbtn);
+		
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(activeRdbtn);
+		buttonGroup.add(notActiveRdbtn);
+		activeRdbtn.setSelected(true);
 		// upload foto
 		JLabel photoLbl = new JLabel("<html>Upload Foto<font color='red'> * </font></html>");
 		photoLbl.setBounds(30, 760, 100, 30);
@@ -274,6 +320,13 @@ public class CreateEmployeePanel extends JPanel {
 		JButton addHistoryPositionBtn = new JButton("Tambah");
 		addHistoryPositionBtn.setBounds(140, 1110, 75, 30);
 		containerPanel.add(addHistoryPositionBtn);
+		addHistoryPositionBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				addPositionHistory();
+			}
+		});
 		
 		JButton deleteHistoryPositionBtn = new JButton("Hapus");
 		deleteHistoryPositionBtn.setBounds(225, 1110, 75, 30);
@@ -304,17 +357,21 @@ public class CreateEmployeePanel extends JPanel {
 		getLastID();
 	}
 
+	protected void addPositionHistory() {
+		MainPanel.changePanel("module.personalia.ui.CreatePositionHistoryPanel");
+	}
+
 	private void getLastID() {
 		StringBuffer lastId = new StringBuffer();
 		lastId.append("EMP");
 		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdDivision()));
-		employeeCodeField.setText(lastId.toString());
+		codeField.setText(lastId.toString());
 	}
 
 	protected void save() {
 		Division division = new Division();
-		division.setId(employeeCodeField.getText());
-		division.setName(employeeNameField.getText());
+		division.setId(codeField.getText());
+		division.setName(nameField.getText());
 		division.setInputDate(new Date());
 		division.setInputBy("");
 		division.setEditDate(new Date());
@@ -340,7 +397,7 @@ public class CreateEmployeePanel extends JPanel {
 
 	private void clear() {
 		getLastID();
-		employeeNameField.setText("");
+		nameField.setText("");
 	}
 	
 	class PositionHistoryTableModel extends AbstractTableModel {
