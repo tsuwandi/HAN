@@ -87,12 +87,23 @@ public class MSPositionDAO {
 				msPosition.setId(resultSet.getString("id"));
 				msPosition.setName(resultSet.getString("name"));
 				msPosition.setDepartementId(resultSet.getString("department_id"));
-				msPosition.setDepartementName(getDepartement(msPosition.getDepartementId()).getName());
-				msPosition.setDepartment(getDepartement(msPosition.getDepartementId()));
-				//System.out.println(msPosition.getDepartment());
+				System.out.println(msPosition.getDepartementId());
+				if (getDepartement(msPosition.getDepartementId()) == null) {
+					msPosition.setDepartementName("");
+					msPosition.setDepartment(null);
+				} else {
+					msPosition.setDepartementName(getDepartement(msPosition.getDepartementId()).getName());
+					msPosition.setDepartment(getDepartement(msPosition.getDepartementId()));
+				}
 				msPosition.setDivisionId(resultSet.getString("division_id"));
-				msPosition.setDivisionName(getDivision(msPosition.getDivisionId()).getName());
-				msPosition.setDivision(getDivision(msPosition.getDivisionId()));
+				if (getDivision(msPosition.getDivisionId()) == null) {
+					msPosition.setDivisionName("");
+					msPosition.setDivision(null);
+				} else {
+					msPosition.setDivisionName(getDivision(msPosition.getDivisionId()).getName());
+					msPosition.setDivision(getDivision(msPosition.getDivisionId()));
+				}
+				//System.out.println(msPosition.getDepartment());
 				//System.out.println(msPosition.getDivision());
 				msPosition.setSalaryMin(resultSet.getInt("min_salary"));
 				msPosition.setSalaryMax(resultSet.getInt("max_salary"));
