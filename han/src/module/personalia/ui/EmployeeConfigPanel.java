@@ -16,7 +16,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.personalia.model.Employee;
 import module.util.Bridging;
@@ -100,7 +99,7 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 		search.setBounds(924, 140, 90, 30);
 		add(search);
 
-		//getData();
+		getData();
 	}
 	
 	protected Employee getSelectedData() {
@@ -113,7 +112,7 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 
 	private void getData() {
 		employees.clear();
-		employees = ServiceFactory.getPersonaliaBL().getEmployees("");
+		//employees = ServiceFactory.getPersonaliaBL().getEmployees("");
 		employeeConfigTableModel = new EmployeeConfigTableModel(employees);
 		employeeConfigTable.setModel(employeeConfigTableModel);
 	}

@@ -35,12 +35,12 @@ public class PayrollComponentConfigPanel extends JPanel implements Bridging{
 
 		JLabel breadCrumbLbl = new JLabel("Personalia > KOMPONEN PAYROLL");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
-		breadCrumbLbl.setBounds(50, 10, 134, 25);
+		breadCrumbLbl.setBounds(50, 10, 230, 25);
 		add(breadCrumbLbl);
 
 		JLabel lblHeader = new JLabel("DAFTAR KOMPONEN PAYROLL");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblHeader.setBounds(50, 46, 150, 25);
+		lblHeader.setBounds(50, 46, 230, 25);
 		add(lblHeader);
 
 		JPanel pnlTable = new JPanel();
