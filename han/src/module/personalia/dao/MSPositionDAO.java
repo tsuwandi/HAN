@@ -87,7 +87,6 @@ public class MSPositionDAO {
 				msPosition.setId(resultSet.getString("id"));
 				msPosition.setName(resultSet.getString("name"));
 				msPosition.setDepartementId(resultSet.getString("department_id"));
-				System.out.println(msPosition.getDepartementId());
 				if (getDepartement(msPosition.getDepartementId()) == null) {
 					msPosition.setDepartementName("");
 					msPosition.setDepartment(null);
