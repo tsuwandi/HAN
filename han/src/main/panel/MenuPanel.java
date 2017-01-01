@@ -49,6 +49,7 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Produksi", "Sisa Produksi", "Downsize (Sisa Produksi)", "module.productionwaste.ui.ProductionWasteListPanel");
 		menu.addNewLeafTo("Produksi", "Produksi PK", "Hasil Klem (Produksi PK)", "module.prodpk.ui.ProdPKListPanel");
 		menu.addNewLeafTo("Produksi", "Pembelian", "Pembelian", "module.purchaseprodresult.ui.PurchaseProdResultListPanel");
+		menu.addNewLeafTo("Produksi", "Pembelian", "Hasil Packing", "module.packingresult.ui.ListPackingResultPanel");
 		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Finance", "Finance");

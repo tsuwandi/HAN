@@ -1,0 +1,52 @@
+package module.packingresult.model;
+
+import java.sql.Date;
+import java.util.List;
+
+public class Packing {
+	private int id;
+	private Date packingDate;
+	private String status;
+	private String confirmCode;
+	private Date confirmDate;
+	private List<PackingResult> packingResults;
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public Date getPackingDate() {
+		return packingDate;
+	}
+	public void setPackingDate(Date packingDate) {
+		this.packingDate = packingDate;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getConfirmCode() {
+		return confirmCode;
+	}
+	public void setConfirmCode(String confirmCode) {
+		this.confirmCode = confirmCode;
+	}
+	public Date getConfirmDate() {
+		return confirmDate;
+	}
+	public void setConfirmDate(Date confirmDate) {
+		this.confirmDate = confirmDate;
+	}
+	public List<PackingResult> getPackingResults() {
+		return packingResults;
+	}
+	public void setPackingResults(List<PackingResult> packingResults) {
+		this.packingResults = packingResults;
+	}
+	
+	
+}
