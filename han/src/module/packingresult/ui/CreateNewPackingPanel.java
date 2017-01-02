@@ -74,8 +74,8 @@ public class CreateNewPackingPanel extends JPanel {
 	JPanel containerPnl;
 	
 	private String EQUALS="=";
-	private String NORMAL_A="lembar barcode normal A";
-	private String NORMAL_B="lembar barcode normal B";
+	private String NORMAL_A="lembar barcore normal A";
+	private String NORMAL_B="lembar barcore normal B";
 	
 	public CreateNewPackingPanel() {
 		createGUI();
