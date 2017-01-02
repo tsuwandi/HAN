@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import module.dailyclosing.model.Inventory;
@@ -15,6 +16,7 @@ public class InventoryDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement getInventoryByProductCodeAndWarehouseStatement;
+	private PreparedStatement getInventoryBySelectedCode;
 	
 	private String insertQuery = new StringBuilder().append("insert into inventory (product_code, qty, warehouse, stock_date, inventory_log_id, ")
 			.append("input_date, input_by) values (?,?,?,?,?,?,?)").toString();
@@ -25,6 +27,8 @@ public class InventoryDAO {
 	private String getInventoryByProductCodeAndWarehouseQuery = new StringBuilder().append("select id, product_code, qty, warehouse, stock_date, inventory_log_id ")
 			.append("from inventory where product_code = ? and warehouse = ? and deleted_date is null").toString();
 	
+	private String getInventoryBySelectedCodeQuery = new StringBuilder().append("select id, product_code, qty, warehouse, stock_date, inventory_log_id ")
+			.append("from inventory WHERE deleted_date is null").toString();
 	
 	public InventoryDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -88,5 +92,30 @@ public class InventoryDAO {
 		}
 
 		return inventory;
+	}
+	
+	public List<Inventory> getInventoryBySelectedCode(String sql) throws SQLException {
+		List<Inventory> inventories = new ArrayList<>();
+		try {
+			getInventoryBySelectedCode = connection.prepareStatement(getInventoryBySelectedCodeQuery+sql);
+			
+			ResultSet rs = getInventoryBySelectedCode.executeQuery();
+			while (rs.next()) {
+				Inventory inventory = new Inventory();
+				inventory.setId(rs.getInt("id"));
+				inventory.setProductCode(rs.getString("product_code"));
+				inventory.setQty(rs.getDouble("qty"));
+				inventory.setWarehouse(rs.getInt("warehouse"));
+				inventory.setStockDate(rs.getDate("stock_date"));
+				inventory.setInventoryLogId(rs.getInt("inventory_log_id"));
+				inventories.add(inventory);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return inventories;
 	}
 }

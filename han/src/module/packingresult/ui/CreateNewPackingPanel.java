@@ -2,19 +2,32 @@ package module.packingresult.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.toedter.calendar.JDateChooser;
 
+import controller.ServiceFactory;
 import main.component.NumberField;
+import model.User;
+import module.dailyclosing.model.Inventory;
 
 public class CreateNewPackingPanel extends JPanel {
+	Logger log = LogManager.getLogger(CreateNewPackingPanel.class.getName());
 	private JLabel packingDateLbl;
 	private JLabel unpackedStockLbl;
 	private JLabel packingResultLbl;
@@ -77,8 +90,28 @@ public class CreateNewPackingPanel extends JPanel {
 	private String NORMAL_A="lembar barcore normal A";
 	private String NORMAL_B="lembar barcore normal B";
 	
+	private static final String BIG_CRATE_A="PDC009-9";
+	private static final String SMALL_CRATE_A="PDC009-10";
+	private static final String BIG_CRATE_A1="PDC009-11";
+	private static final String SMALL_CRATE_A1="PDC009-12";
+	private static final String BIG_CRATE_B="PDC009-13";
+	private static final String SMALL_CRATE_B="PDC009-14";
+	private static final String BIG_CRATE_BNP="PDC009-15";
+	private static final String SMALL_CRATE_BNP="PDC009-16";
+	
+	private static final String KA = "PDC009-7";
+	private static final String KB = "PDC009-8";
+	private static final String NA = "PDC009-1";
+	private static final String NB = "PDC009-2";
+	
+	private List<Inventory> inventories;
+	private Map<String, String> inventoryTableData;
+	private StockTableModel stockTableModel;
+	private JScrollPane tableScrollPane;
+	
 	public CreateNewPackingPanel() {
 		createGUI();
+		initData();
 	}
 	
 	private void createGUI(){
@@ -121,8 +154,10 @@ public class CreateNewPackingPanel extends JPanel {
 		containerPnl.add(unpackedStockLbl);
 		
 		stockTable = new JTable();
-		stockTable.setBounds(50,165,200,200);
-		containerPnl.add(stockTable);
+		
+		tableScrollPane = new JScrollPane(stockTable);
+		tableScrollPane.setBounds(50,165,200,200);
+		containerPnl.add(tableScrollPane);
 		
 		packingResultLbl = new JLabel("<html><b>Hasil Produksi</b></html>");
 		packingResultLbl.setBounds(50,385,150,20);
@@ -304,8 +339,90 @@ public class CreateNewPackingPanel extends JPanel {
 		backBtn.setBounds(30,745,150,30);
 		backBtn.setFocusable(false);
 		containerPnl.add(backBtn);
+	}
+	
+	private void initData(){
+		inventories = new ArrayList<>();
+		inventoryTableData = new HashMap<>();
 		
-		 
+		try {
+			String queryInventoryCode = " AND product_code IN ('"+NA+"','"+NB+"','"+KA+"','"+KB+"')";
+			inventories = ServiceFactory.getPackingBL().getLastInventoryData(queryInventoryCode);
+			if(inventories!=null||inventories.size()!=0){
+				for (Inventory inventory : inventories) {
+					if(inventory.getProductCode().equals(NA)) inventoryTableData.put(NA, "Barecore Normal A");
+					else if(inventory.getProductCode().equals(NB)) inventoryTableData.put(NB, "Barecore Normal B");
+					else if(inventory.getProductCode().equals(KA)) inventoryTableData.put(KA, "Barecore Klem A");
+					else if(inventory.getProductCode().equals(KB)) inventoryTableData.put(KB, "Barecore Klem B");
+				}
+			}
+			stockTableModel = new StockTableModel(inventories);
+			stockTable.setModel(stockTableModel);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+		}
+	}
+	
+	
+	
+	private class StockTableModel extends AbstractTableModel{
+		private static final long serialVersionUID = 1L;
+		private List<Inventory> inventories;
+		    
+	    public StockTableModel(List<Inventory> inventories) {
+	        this.inventories = inventories;
+	    }
+	    
+	    /**
+	     * Method to get row count
+	     * @return int
+	     */
+	    public int getRowCount() {
+	        return inventories.size();
+	    }
+	    
+	    /**
+	     * Method to get Column Count
+	     */
+	    public int getColumnCount() {
+	        return 2;
+	    }
+	    
+	    /**
+	     * Method to get selected value
+	     * @param rowIndex rowIndex of selected table
+	     * @param columnIndex columnIndex of selected table 
+	     * @return ({@link User}) Object 
+	     */
+	    public Object getValueAt(int rowIndex, int columnIndex) {
+	    	Inventory p = inventories.get(rowIndex);
+	        switch(columnIndex){
+	        	case 0:
+	        		return inventoryTableData.get(p.getProductCode());
+	            case 1 : 
+	                return p.getQty();
+	            default :
+	                return "";
+	        }
+	    }
+
+	    /**
+	     * Method to getColumnName
+	     * @param column columnIndex
+	     * @return String column name
+	     */
+	    public String getColumnName(int column) {
+	        switch(column){
+	            case 0 : 
+	                return "Nama Produk";
+	            case 1 :
+	                return "Jumlah (Lembar)";
+	            default :
+	                return "";
+	        }
+	    }
+
 	}
 	
 }

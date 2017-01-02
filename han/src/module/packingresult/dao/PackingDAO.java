@@ -23,7 +23,7 @@ public class PackingDAO {
 			
 	private String getLastIDQuery = "SELECT id FROM packing WHERE deleted_date IS NULL ORDER BY id DESC LIMIT 1";
 	
-	private String insertQuery = "INSERT INTO packing (packing_date, status, input_date, input_by) VALUES (?,?,?,?)";  
+	private String insertQuery = "INSERT INTO packing (id,packing_date, status, input_date, input_by) VALUES (?,?,?,?,?)";  
 	private String updateQuery = "UPDATE packing SET packing_date=?, status=?, edited_by=?, edited_date=? WHERE id =?";
 	
 	private String deleteQuery = "UPDATE packing SET deleted_date = ? , delete_by=? WHERE id=?";
@@ -96,13 +96,14 @@ public class PackingDAO {
 	}
 
 
-	public void save(Packing production) throws SQLException {
+	public void save(Packing packing) throws SQLException {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
-			insertStatement.setDate(1, production.getPackingDate());
-			insertStatement.setString(2, production.getStatus());
-			insertStatement.setDate(3, new Date(new java.util.Date().getTime()));
-			insertStatement.setString(4, "Michael");
+			insertStatement.setInt(1, packing.getId());
+			insertStatement.setDate(2, packing.getPackingDate());
+			insertStatement.setString(3, packing.getStatus());
+			insertStatement.setDate(4, new Date(new java.util.Date().getTime()));
+			insertStatement.setString(5, "Michael");
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -112,12 +113,12 @@ public class PackingDAO {
 
 	}
 	
-	public void delete(Packing production) throws SQLException {
+	public void delete(Packing packing) throws SQLException {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			deleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
 			deleteStatement.setString(2, "Michael");
-			deleteStatement.setInt(3, production.getId());
+			deleteStatement.setInt(3, packing.getId());
 			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -127,11 +128,11 @@ public class PackingDAO {
 
 	}
 	
-	public void update(Packing production) throws SQLException {
+	public void update(Packing packing) throws SQLException {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
-			updateStatement.setDate(4, new Date(production.getPackingDate().getTime()));
-			updateStatement.setString(9, production.getStatus());
+			updateStatement.setDate(4, new Date(packing.getPackingDate().getTime()));
+			updateStatement.setString(9, packing.getStatus());
 			updateStatement.setString(10, "Michael");
 			updateStatement.setDate(11, new Date(new java.util.Date().getTime()));
 
