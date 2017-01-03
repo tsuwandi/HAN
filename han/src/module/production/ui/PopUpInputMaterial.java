@@ -327,7 +327,6 @@ public class PopUpInputMaterial extends JDialog{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Deleted Size :"+ deletedProdRms.size());
 				PopUpSearchMaterial pop = new PopUpSearchMaterial(parentDialog);
 				pop.show();
 				pop.setLocationRelativeTo(null);
@@ -430,6 +429,7 @@ public class PopUpInputMaterial extends JDialog{
 						break;
 					}
 				}
+				checkPallet();
 			}
 		});
 	}
@@ -573,7 +573,7 @@ public class PopUpInputMaterial extends JDialog{
 		            case 4 :
 		                return p.getLog();
 		            case 5 :
-		                return p.getVolume();
+		                return p.getVolume()/1000000;
 		            case 6 :
 		            	return "Delete";
 		            default :
