@@ -185,7 +185,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(receivedDetailTable.columnAtPoint(e.getPoint())==5){
-					ViewPopUpPalletCard pop = new ViewPopUpPalletCard(parent, receivedDetails.get(receivedDetailTable.getSelectedRow()));
+					ViewPopUpPalletCard pop = new ViewPopUpPalletCard(parent, receivedDetails.get(receivedDetailTable.getSelectedRow()),receivedDetailTable.getSelectedRow());
 					pop.show();
 					pop.setLocationRelativeTo(null);
 				}

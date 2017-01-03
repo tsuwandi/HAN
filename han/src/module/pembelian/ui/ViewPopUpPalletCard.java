@@ -2,6 +2,7 @@ package module.pembelian.ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -15,11 +16,11 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -28,6 +29,7 @@ import javax.swing.table.AbstractTableModel;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import controller.ReceivedDAOFactory;
 import main.component.NumberField;
 import main.component.TextField;
 import model.User;
@@ -37,10 +39,10 @@ import module.pembelian.model.PalletCard;
 import module.pembelian.model.Product;
 import module.pembelian.model.ReceivedDetail;
 import module.pembelian.model.Thickness;
-import controller.ReceivedDAOFactory;
 
 public class ViewPopUpPalletCard extends JDialog{
 	Logger log = LogManager.getLogger(ViewPopUpPalletCard.class.getName());
+	
 	JLabel noPalletLbl;
 	JLabel palletCardCodeLbl;
 	JLabel gradeLbl;
@@ -70,6 +72,7 @@ public class ViewPopUpPalletCard extends JDialog{
 	JLabel errorTotalLbl;
 	JLabel errorVolumeLbl;
 	JLabel errorProductLbl;
+	JLabel errorPalletCardLbl;
 	JLabel productCode;
 	
 	NumberField noPalletCardField;
@@ -91,22 +94,29 @@ public class ViewPopUpPalletCard extends JDialog{
 	
 	JTable pcTable;
 	JScrollPane pcScrollPane;
+	JScrollPane areaScrollPane;
 	
 	PCTableModel pcTableModel;
 	List<PalletCard> pcs;
 	List<Grade> grades;
 	List<Thickness> thicknesses;
 	List<Employee> employees;
-	List<Product> products;
-	Map<Double, Map<Double, Map<Double, Product>>> productMap;
 	ViewReceivedDetailPanel addReceivedDetail;
-	
+	boolean editMode = false;
+	int indexEdit = 0;
+	int index;
 	ReceivedDetail receivedDetail;
-	public ViewPopUpPalletCard(ViewReceivedDetailPanel parent, ReceivedDetail receivedDetail) {
+	String volumeHidden="";
+	String totalVolumeHidden="";
+	Map<Integer, PalletCard> deletedPallets;
+	
+	final static double DIVIDER = 1000000;
+	public ViewPopUpPalletCard(ViewReceivedDetailPanel parent, ReceivedDetail receivedDetail, int index) {
+		super((JFrame)parent.getTopLevelAncestor());
 		addReceivedDetail = parent;
 		setLayout(null);
 		setTitle("Kartu Pallet");
-		setSize(800, 750);
+		setSize(810, 750);
 		
 		//Grade
 		gradeLbl = new JLabel("Grade : " + receivedDetail.getGrade());
@@ -119,7 +129,7 @@ public class ViewPopUpPalletCard extends JDialog{
 
 		
 		//Nomor Pallet
-		noPalletLbl = new JLabel("No Pallet");
+		noPalletLbl = new JLabel("<html>No Pallet <font color='red'>*</font></html>");
 		noPalletLbl.setBounds(30,30,150,20);
 		add(noPalletLbl);
 		
@@ -139,9 +149,13 @@ public class ViewPopUpPalletCard extends JDialog{
 		codePalletCardField = new TextField();
 		codePalletCardField.setBounds(150, 70, 150, 20);
 		add(codePalletCardField);
+		
+		errorPalletCardLbl = new JLabel();
+		errorPalletCardLbl.setBounds(320, 70, 180, 20);
+		add(errorPalletCardLbl);
 	
 		//Long 
-		longLbl = new JLabel("Panjang");
+		longLbl = new JLabel("<html>Panjang <font color='red'>*</font></html>");
 		longLbl.setBounds(30,110,150,20);
 		add(longLbl);
 		
@@ -158,7 +172,7 @@ public class ViewPopUpPalletCard extends JDialog{
 		add(errorLongLbl);
 		
 		//Thickness
-		thickLbl = new JLabel("Tebal");
+		thickLbl = new JLabel("<html>Tebal <font color='red'>*</font></html>");
 		thickLbl.setBounds(30,150,100,20);
 		add(thickLbl);
 		
@@ -175,7 +189,7 @@ public class ViewPopUpPalletCard extends JDialog{
 		add(errorThickLbl);
 		
 		//Wide
-		wideLbl = new JLabel("Lebar");
+		wideLbl = new JLabel("<html>Lebar <font color='red'>*</font></html>");
 		wideLbl.setBounds(30,190,100,20);
 		add(wideLbl);
 		
@@ -194,7 +208,7 @@ public class ViewPopUpPalletCard extends JDialog{
 	
 	
 		//Total
-		totalLbl = new JLabel("Jumlah");
+		totalLbl = new JLabel("<html>Jumlah <font color='red'>*</font></html>");
 		totalLbl.setBounds(30,230,100,20);
 		add(totalLbl);
 	
@@ -219,7 +233,7 @@ public class ViewPopUpPalletCard extends JDialog{
 		volumeField.setBounds(150, 270, 150, 20);
 		add(volumeField);
 		
-		uomVolumeLbl = new JLabel("<html><span>cm&#179;</span></html>");
+		uomVolumeLbl = new JLabel("<html><span>m&#179;</span></html>");
 		uomVolumeLbl.setBounds(302,270,16,20);
 		add(uomVolumeLbl);
 		
@@ -252,12 +266,18 @@ public class ViewPopUpPalletCard extends JDialog{
 		add(descriptionLbl);
 		
 		descriptionArea = new JTextArea();
-		descriptionArea.setBounds(150, 350, 150, 50);
-		add(descriptionArea);		
+		descriptionArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+		descriptionArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+		
+		areaScrollPane = new JScrollPane(descriptionArea);
+		areaScrollPane.setBounds(150, 350, 150, 50);
+		areaScrollPane.setFocusable(false);
+		add(areaScrollPane);
 		
 		//insert Button
-		insertButton = new JButton("Insert");
+		insertButton = new JButton("Tambah");
 		insertButton.setBounds(360,420,150,30);
+		insertButton.setEnabled(false);
 		add(insertButton);
 		
 		//Table pc
@@ -268,75 +288,65 @@ public class ViewPopUpPalletCard extends JDialog{
 		pcTable.setFocusable(false);
 		
 		pcScrollPane = new JScrollPane(pcTable);
-		pcScrollPane.setBounds(30,460,740,100);
+		pcScrollPane.setBounds(30,460,740,200);
 		add(pcScrollPane);
 		
 		//Total Log
 		totalLogLbl = new JLabel("Total Jumlah Kayu");
-		totalLogLbl.setBounds(30,580,150,20);
+		totalLogLbl.setBounds(500,110,150,20);
 		add(totalLogLbl);
 	
 		totalLogField =  new TextField();
-		totalLogField.setBounds(350, 580, 150, 20);
+		totalLogField.setBounds(600, 110, 150, 20);
 		add(totalLogField);
 		
 		uomTotalLogLbl = new JLabel("batang");
-		uomTotalLogLbl.setBounds(502,580,40,20);
+		uomTotalLogLbl.setBounds(752,110,40,20);
 		add(uomTotalLogLbl);
 		
 		//total Volume
 		totalVolumeLbl = new JLabel("Total Volume");
-		totalVolumeLbl.setBounds(30,620,150,20);
+		totalVolumeLbl.setBounds(500,150,150,20);
 		add(totalVolumeLbl);
 
 		totalVolumeField =  new TextField();
-		totalVolumeField.setBounds(350, 620, 150, 20);
+		totalVolumeField.setBounds(600, 150, 150, 20);
 		add(totalVolumeField);
 		
-		uomTotalVolumeLbl = new JLabel("<html><span>cm&#179;</span></html>");
-		uomTotalVolumeLbl.setBounds(502,620,16,20);
+		uomTotalVolumeLbl = new JLabel("<html><span>m&#179;</span></html>");
+		uomTotalVolumeLbl.setBounds(752,150,16,20);
 		add(uomTotalVolumeLbl);
 
 		//Confirm Btn
-		confirmButton = new JButton("Confirm");
+		confirmButton = new JButton("Konfirmasi");
 		confirmButton.setBounds(600,680,150,30);
+		confirmButton.setEnabled(false);
 		add(confirmButton);
 		
 		totalVolumeField.setEnabled(false);
-		totalField.setEnabled(false);
+		totalLogField.setEnabled(false);
 		productNameField.setEnabled(false);
 		volumeField.setEnabled(false);
 		codePalletCardField.setEnabled(false);
-		longField.setEnabled(false);
-		wideField.setEnabled(false);
-		thicknessField.setEnabled(false);
-		insertButton.setEnabled(false);
-		confirmButton.setEnabled(false);
-		noPalletCardField.setEnabled(false);
-		totalLogField.setEnabled(false);
-		descriptionArea.setEnabled(false);
 		
-
-		productMap = new HashMap<Double, Map<Double,Map<Double, Product>>>();
+		this.receivedDetail = receivedDetail;
+		this.index = index;
+		pcs = receivedDetail.getPallets();
+		deletedPallets = receivedDetail.getDeletedPallets();
+		pcTable.setModel(new PCTableModel(pcs));
+		pcTable.updateUI();
+	
+		int total = 0;
+		double volume = 0;
+		for(PalletCard pcd : pcs){
+			total+=pcd.getTotal();
+			volume+=pcd.getVolume();
+		}
+		totalLogField.setText(total+"");
+		totalVolumeField.setText(volume/DIVIDER+"");
+		totalVolumeHidden=volume+"";
 		
-		try {
-			this.receivedDetail = receivedDetail;
-			pcs = receivedDetail.getPallets();
-			pcTable.setModel(new PCTableModel(pcs));
-			pcTable.updateUI();
-		
-			int total = 0;
-			double volume = 0;
-			for(PalletCard pcd : pcs){
-				total+=pcd.getTotal();
-				volume+=pcd.getVolume();
-			}
-			totalLogField.setText(total+"");
-			totalVolumeField.setText(volume+"");
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			e.printStackTrace();
-		}	
+	
 	}
 	
 	public void clear(){
@@ -344,13 +354,26 @@ public class ViewPopUpPalletCard extends JDialog{
 		longField.setText("");
 		wideField.setText("");
 		thicknessField.setText("");
-		productCode.setText("");
-		productNameField.setText("");
 		totalField.setText("");
+		if(addReceivedDetail.receivedDetails.get(index).getGradeID()!=100){
+			productCode.setText("");
+			productNameField.setText("");
+		}
 		volumeField.setText("");
 		descriptionArea.setText("");
+		volumeHidden="";
 	}
-
+	
+	
+	
+	public void calculateVolume(){
+		if(!longField.getText().equals("")&&!wideField.getText().equals("")&&!thicknessField.getText().equals("")&&!totalField.getText().equals("")){
+			double volume = Double.valueOf(longField.getText())*Double.valueOf(wideField.getText())*Double.valueOf(thicknessField.getText())*Double.valueOf(totalField.getText());
+			volumeField.setText(volume/DIVIDER+"");
+			volumeHidden = volume+"";
+		}
+	}
+	
 	private class PCTableModel extends AbstractTableModel {
 	    private List<PalletCard> palletCards;
 	    
@@ -387,13 +410,13 @@ public class ViewPopUpPalletCard extends JDialog{
 	            case 1 : 
 	                return p.getLength();
 	            case 2 :
-	                return p.getWidth();
-	            case 3 :
 	                return p.getThickness();
+	            case 3 :
+	                return p.getWidth();
 	            case 4 :
 	                return p.getTotal();
 	            case 5 :
-	                return p.getVolume();
+	                return p.getVolume()/DIVIDER;
 	            case 6 :
 	            	return p.getProductName();
 	            case 7 :
