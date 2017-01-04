@@ -233,12 +233,12 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 		payrollComponent.setCode(payrollComponentCodeField.getText());
 		payrollComponent.setDescription(payrollComponentDescriptionField.getText());
 		
-		if (payrollStatusYesRdbtn.isSelected()) payrollComponent.setPayrollStatus(true);
-		else payrollComponent.setPayrollStatus(false);
-		if (thrStatusYesRdbtn.isSelected()) payrollComponent.setThrStatus(true);
-		else payrollComponent.setThrStatus(false);
-		if (bonusStatusYesRdbtn.isSelected()) payrollComponent.setBonusStatus(true);
-		else payrollComponent.setBonusStatus(false);
+		if (payrollStatusYesRdbtn.isSelected()) payrollComponent.setIsSalary(1);
+		else payrollComponent.setIsSalary(0);
+		if (thrStatusYesRdbtn.isSelected()) payrollComponent.setIsThr(1);
+		else payrollComponent.setIsThr(0);
+		if (bonusStatusYesRdbtn.isSelected()) payrollComponent.setIsBonus(1);
+		else payrollComponent.setIsBonus(0);
 		
 		payrollComponent.setReferenceDocument(referenceDocumentField.getText());
 		
@@ -258,13 +258,13 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 		
 		payrollComponentCodeField.setText(payrollComponent.getCode());
 		payrollComponentDescriptionField.setText(payrollComponent.getDescription());
-		if(payrollComponent.getPayrollStatus() == true) {
+		if(payrollComponent.getIsSalary() == 1) {
 			payrollStatusYesRdbtn.setSelected(true);
 		} else payrollStatusNoRdbtn.setSelected(true);
-		if (payrollComponent.getThrStatus() == true) {
+		if (payrollComponent.getIsThr() == 1) {
 			thrStatusYesRdbtn.setSelected(true);
 		} else thrStatusNoRdbtn.setSelected(true);
-		if (payrollComponent.getBonusStatus() == true) {
+		if (payrollComponent.getIsBonus() == 1) {
 			bonusStatusYesRdbtn.setSelected(true);
 		} else bonusStatusNoRdbtn.setSelected(true);
 		referenceDocumentField.setText(payrollComponent.getReferenceDocument());

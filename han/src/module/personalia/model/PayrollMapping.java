@@ -4,11 +4,14 @@ import java.util.Date;
 
 public class PayrollMapping {
 
+	Integer id;
 	String code;
+	String positionId;
 	MSPosition msPosition;
+	String payrollComponentCode;
 	PayrollComponent payrollComponent;
-	Boolean skipStatus;
-	Boolean permitStatus;
+	Integer isAbsent;
+	Integer isLeave;
 	String referenceDocument;
 	Date inputDate;
 	String inputBy;
@@ -16,11 +19,23 @@ public class PayrollMapping {
 	String editBy;
 	Date deleteDate;
 	String deleteBy;
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getCode() {
 		return code;
 	}
 	public void setCode(String code) {
 		this.code = code;
+	}
+	public String getPositionId() {
+		return positionId;
+	}
+	public void setPositionId(String positionId) {
+		this.positionId = positionId;
 	}
 	public MSPosition getMsPosition() {
 		return msPosition;
@@ -28,23 +43,29 @@ public class PayrollMapping {
 	public void setMsPosition(MSPosition msPosition) {
 		this.msPosition = msPosition;
 	}
+	public String getPayrollComponentCode() {
+		return payrollComponentCode;
+	}
+	public void setPayrollComponentCode(String payrollComponentCode) {
+		this.payrollComponentCode = payrollComponentCode;
+	}
 	public PayrollComponent getPayrollComponent() {
 		return payrollComponent;
 	}
 	public void setPayrollComponent(PayrollComponent payrollComponent) {
 		this.payrollComponent = payrollComponent;
 	}
-	public Boolean getSkipStatus() {
-		return skipStatus;
+	public Integer getIsAbsent() {
+		return isAbsent;
 	}
-	public void setSkipStatus(Boolean skipStatus) {
-		this.skipStatus = skipStatus;
+	public void setIsAbsent(Integer isAbsent) {
+		this.isAbsent = isAbsent;
 	}
-	public Boolean getPermitStatus() {
-		return permitStatus;
+	public Integer getIsLeave() {
+		return isLeave;
 	}
-	public void setPermitStatus(Boolean permitStatus) {
-		this.permitStatus = permitStatus;
+	public void setIsLeave(Integer isLeave) {
+		this.isLeave = isLeave;
 	}
 	public String getReferenceDocument() {
 		return referenceDocument;

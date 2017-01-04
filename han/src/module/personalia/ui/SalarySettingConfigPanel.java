@@ -18,18 +18,18 @@ import javax.swing.table.AbstractTableModel;
 
 import main.panel.MainPanel;
 import module.personalia.model.Division;
+import module.personalia.model.SalarySetting;
 import module.util.Bridging;
-import controller.ServiceFactory;
 
-public class SalaryConfigPanel extends JPanel implements Bridging{
+public class SalarySettingConfigPanel extends JPanel implements Bridging{
 
 	private static final long serialVersionUID = -3127283027621703632L;
 	private JTable salaryConfigTable;
 	private JTextField searchField;
-	private List<Division> divisions = new ArrayList<>();
+	private List<SalarySetting> salaries = new ArrayList<>();
 	private SalaryConfigTableModel salaryConfigTableModel;
 
-	public SalaryConfigPanel() {
+	public SalarySettingConfigPanel() {
 		setSize(1024, 630);
 		setLayout(null);
 
@@ -77,7 +77,7 @@ public class SalaryConfigPanel extends JPanel implements Bridging{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.personalia.ui.CreateDivisionPanel");
+				MainPanel.changePanel("module.personalia.ui.CreateSalarySettingPanel");
 			}
 		});
 
@@ -114,43 +114,57 @@ public class SalaryConfigPanel extends JPanel implements Bridging{
 	}
 
 	private void getUserData() {
-		divisions.clear();
-		divisions = ServiceFactory.getPersonaliaBL().getDivisions("");
-		salaryConfigTableModel = new SalaryConfigTableModel(divisions);
+		salaries.clear();
+		//salaries = ServiceFactory.getPersonaliaBL().getDivisions("");
+		salaryConfigTableModel = new SalaryConfigTableModel(salaries);
 		salaryConfigTable.setModel(salaryConfigTableModel);
 	}
 
 	class SalaryConfigTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = -5786040815921137590L;
-		private List<Division> divisions;
+		private List<SalarySetting> salaries;
 
-		public SalaryConfigTableModel(List<Division> divisions) {
-			this.divisions = divisions;
+		public SalaryConfigTableModel(List<SalarySetting> salaries) {
+			this.salaries = salaries;
 		}
 
 		@Override
 		public int getColumnCount() {
-			return 4;
+			return 11;
 		}
 
 		@Override
 		public int getRowCount() {
-			return divisions == null ? 0 : divisions.size();
+			return salaries == null ? 0 : salaries.size();
 		}
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			Division division = divisions.get(rowIndex);
+			SalarySetting salary = salaries.get(rowIndex);
 
 			switch (columnIndex) {
 			case 0:
-				return divisions.indexOf(division) + 1;
+				return salaries.indexOf(salary) + 1;
 			case 1:
-				return division.getId();
+				return salary.getEmployeeCode();
 			case 2:
-				return division.getName();
+				return salary.getEmployeeName();
 			case 3:
+				return salary.getEmployeeType();
+			case 4:
+				return salary.getPosition();
+			case 5:
+				return salary.getDepartment();
+			case 6:
+				return salary.getDivision();
+			case 7:
+				return salary.getSalaryBruto();
+			case 8:
+				return salary.getTax();
+			case 9:
+				return salary.getSalaryNett();
+			case 10:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
@@ -179,10 +193,24 @@ public class SalaryConfigPanel extends JPanel implements Bridging{
 			case 0:
 				return "No";
 			case 1:
-				return "ID Divisi";
+				return "NIK";
 			case 2:
-				return "Nama Divisi";
+				return "Nama Karyawan";
 			case 3:
+				return "Tipe Karyawan";
+			case 4:
+				return "Jabatan";
+			case 5:
+				return "Departemen";
+			case 6:
+				return "Divisi";
+			case 7:
+				return "Gaji Kotor";
+			case 8:
+				return "Total Potongan";
+			case 9:
+				return "Gaji Bersih";
+			case 10:
 				return "Action";
 			default:
 				return "";
@@ -193,8 +221,8 @@ public class SalaryConfigPanel extends JPanel implements Bridging{
 	@SuppressWarnings("unchecked")
 	@Override
 	public void invokeObjects(Object... objects) {
-		divisions = (List<Division>) objects[0];
-		salaryConfigTableModel = new SalaryConfigTableModel(divisions);
+		salaries = (List<SalarySetting>) objects[0];
+		salaryConfigTableModel = new SalaryConfigTableModel(salaries);
 		salaryConfigTable.setModel(salaryConfigTableModel);
 	}
 }

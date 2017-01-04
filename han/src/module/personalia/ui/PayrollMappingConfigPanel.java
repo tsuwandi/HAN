@@ -153,9 +153,9 @@ public class PayrollMappingConfigPanel extends JPanel implements Bridging{
 			case 3:
 				return payrollMapping.getPayrollComponent().getDescription();
 			case 4:
-				return payrollMapping.getSkipStatus();
+				return payrollMapping.getIsAbsent();
 			case 5:
-				return payrollMapping.getPermitStatus();
+				return payrollMapping.getIsLeave();
 			case 6:
 				return payrollMapping.getReferenceDocument();
 			case 7:

@@ -223,10 +223,10 @@ public class ViewPayrollMappingPanel extends JPanel implements Bridging{
 		payrollComponent.setCode(payrollMappingCodeField.getText());
 		payrollComponent.setMsPosition(msPositionCmbox.getDataIndex());
 		payrollComponent.setPayrollComponent(payrollComponentCmbox.getDataIndex());
-		if (skipStatusYesRdbtn.isSelected()) payrollComponent.setSkipStatus(true);
-		else payrollComponent.setSkipStatus(false);
-		if (permitStatusYesRdbtn.isSelected()) payrollComponent.setPermitStatus(true);
-		else payrollComponent.setPermitStatus(false);
+		if (skipStatusYesRdbtn.isSelected()) payrollComponent.setIsAbsent(1);
+		else payrollComponent.setIsAbsent(0);
+		if (permitStatusYesRdbtn.isSelected()) payrollComponent.setIsLeave(1);
+		else payrollComponent.setIsLeave(0);
 		
 		payrollComponent.setReferenceDocument(referenceDocumentField.getText());
 		
@@ -247,10 +247,10 @@ public class ViewPayrollMappingPanel extends JPanel implements Bridging{
 		payrollMappingCodeField.setText(payrollMapping.getCode());
 		msPositionCmbox.setSelectedItem(payrollMapping.getMsPosition());
 		payrollComponentCmbox.setSelectedItem(payrollMapping.getPayrollComponent());
-		if (payrollMapping.getSkipStatus() == true) {
+		if (payrollMapping.getIsAbsent() == 1) {
 			skipStatusYesRdbtn.setSelected(true);
 		} else skipStatusNoRdbtn.setSelected(true);
-		if (payrollMapping.getPermitStatus() == true) {
+		if (payrollMapping.getIsLeave() == 1) {
 			permitStatusYesRdbtn.setSelected(true);
 		} else permitStatusNoRdbtn.setSelected(true);
 		referenceDocumentField.setText(payrollMapping.getReferenceDocument());

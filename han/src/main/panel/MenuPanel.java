@@ -69,6 +69,8 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Personalia", "Karyawan", "Karyawan", "module.personalia.ui.EmployeeConfigPanel");
 		menu.addNewLeafTo("Personalia", "Komponen Payroll", "Komponen Payroll", "module.personalia.ui.PayrollComponentConfigPanel");
 		menu.addNewLeafTo("Personalia", "Pemetaan Gaji", "Pemetaan Gaji", "module.personalia.ui.PayrollMappingConfigPanel");
+		menu.addNewLeafTo("Personalia", "Setting Gaji", "Setting Gaji", "module.personalia.ui.SalarySettingConfigPanel");
+		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Konfigurasi Sistem", "Konfigurasi Sistem");
 		menu.addNewLeafTo("Konfigurasi Sistem", "Group", "Group", "module.system.ui.GroupConfigPanel");

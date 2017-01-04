@@ -151,11 +151,11 @@ public class PayrollComponentConfigPanel extends JPanel implements Bridging{
 			case 2:
 				return payrollComponent.getDescription();
 			case 3:
-				return payrollComponent.getPayrollStatus();
+				return payrollComponent.getIsSalary();
 			case 4:
-				return payrollComponent.getThrStatus();
+				return payrollComponent.getIsThr();
 			case 5:
-				return payrollComponent.getBonusStatus();
+				return payrollComponent.getIsBonus();
 			case 6:
 				return payrollComponent.getReferenceDocument();
 			case 7:

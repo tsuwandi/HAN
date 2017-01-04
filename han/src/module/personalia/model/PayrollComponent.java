@@ -4,11 +4,12 @@ import java.util.Date;
 
 public class PayrollComponent {
 
+	Integer id;
 	String code;
 	String description;
-	Boolean payrollStatus;
-	Boolean thrStatus;
-	Boolean bonusStatus;
+	Integer isSalary;
+	Integer isThr;
+	Integer isBonus;
 	String referenceDocument;
 	Date inputDate;
 	String inputBy;
@@ -16,7 +17,12 @@ public class PayrollComponent {
 	String editBy;
 	Date deleteDate;
 	String deleteBy;
-	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getCode() {
 		return code;
 	}
@@ -29,23 +35,23 @@ public class PayrollComponent {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Boolean getPayrollStatus() {
-		return payrollStatus;
+	public Integer getIsSalary() {
+		return isSalary;
 	}
-	public void setPayrollStatus(Boolean payrollStatus) {
-		this.payrollStatus = payrollStatus;
+	public void setIsSalary(Integer isSalary) {
+		this.isSalary = isSalary;
 	}
-	public Boolean getThrStatus() {
-		return thrStatus;
+	public Integer getIsThr() {
+		return isThr;
 	}
-	public void setThrStatus(Boolean thrStatus) {
-		this.thrStatus = thrStatus;
+	public void setIsThr(Integer isThr) {
+		this.isThr = isThr;
 	}
-	public Boolean getBonusStatus() {
-		return bonusStatus;
+	public Integer getIsBonus() {
+		return isBonus;
 	}
-	public void setBonusStatus(Boolean bonusStatus) {
-		this.bonusStatus = bonusStatus;
+	public void setIsBonus(Integer isBonus) {
+		this.isBonus = isBonus;
 	}
 	public String getReferenceDocument() {
 		return referenceDocument;
