@@ -74,7 +74,6 @@ public class ViewDivisionPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(isEditMode());
 				if (isEditMode()==false) {
 					setEditMode(true);
 				}

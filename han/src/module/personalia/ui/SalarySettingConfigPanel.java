@@ -60,7 +60,7 @@ public class SalarySettingConfigPanel extends JPanel implements Bridging{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (salaryConfigTable.columnAtPoint(e.getPoint())==3) {
-					MainPanel.changePanel("module.personalia.ui.ViewDivisionPanel", getSelectedData());
+					MainPanel.changePanel("module.personalia.ui.ViewSalarySettingPanel", getSelectedData());
 				}
 			}
 		});
@@ -92,7 +92,7 @@ public class SalarySettingConfigPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.personalia.ui.SearchDivisionPanel");
+				MainPanel.changePanel("module.personalia.ui.SearchSalarySettingPanel");
 			}
 		});
 
