@@ -20,22 +20,23 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
-import org.apache.log4j.Logger;
-
-import com.toedter.calendar.JDateChooser;
-
-import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
 import main.panel.MainPanel;
-import module.dryin.DryInType;
 import module.dryin.model.DryIn;
 import module.dryin.model.DryInPallet;
 import module.dryin.model.PicTally;
 import module.sn.chamber.model.Chamber;
 import module.util.Bridging;
 import module.util.DateUtil;
+
+import org.apache.log4j.Logger;
+
+import com.toedter.calendar.JDateChooser;
+
+import controller.ServiceFactory;
 
 public class DryInViewPanel extends JPanel implements Bridging {
 
@@ -365,7 +366,7 @@ public class DryInViewPanel extends JPanel implements Bridging {
 
 				refreshTableDryInPallet();
 
-				if (dryIn.getStatus().equals(DryInType.FINAL.toString())) {
+				if (dryIn.getStatus().equals(AppConstants.STATUS_FINAL)) {
 					btnEdit.setEnabled(false);
 					btnDelete.setEnabled(false);
 					updateUI();

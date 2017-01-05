@@ -20,20 +20,21 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
-import org.apache.log4j.Logger;
-
-import com.toedter.calendar.JDateChooser;
-
-import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.dryout.DryOutType;
 import module.dryout.model.DryOut;
 import module.dryout.model.DryOutPallet;
 import module.sn.chamber.model.Chamber;
 import module.util.Bridging;
 import module.util.DateUtil;
+
+import org.apache.log4j.Logger;
+
+import com.toedter.calendar.JDateChooser;
+
+import controller.ServiceFactory;
 
 public class DryOutViewPanel extends JPanel implements Bridging {
 
@@ -359,7 +360,7 @@ public class DryOutViewPanel extends JPanel implements Bridging {
 
 				refreshTableDryOutPallet();
 				
-				if (dryOut.getStatus().equals(DryOutType.FINAL.toString())) {
+				if (dryOut.getStatus().equals(AppConstants.STATUS_FINAL)) {
 					btnEdit.setEnabled(false);
 					btnDelete.setEnabled(false);
 					updateUI();

@@ -22,6 +22,7 @@ import javax.swing.table.AbstractTableModel;
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.purchaseprodresult.model.PurchaseProdResult;
@@ -50,8 +51,6 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 	private PurchaseProdResultPaymentListPanel purchaseProdResultListPanel;
 
 	private static final long serialVersionUID = 1L;
-	
-	public static final String FINAL = "FINAL";
 
 	public PurchaseProdResultPaymentListPanel() {
 		purchaseProdResultListPanel = this;
@@ -135,7 +134,7 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 
 		try {
 			listOfPurchaseProdResult = new ArrayList<PurchaseProdResult>();
-			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultPaymentBL().getAllPurchaseProdResult(FINAL);
+			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultPaymentBL().getAllPurchaseProdResult(AppConstants.STATUS_FINAL);
 			refreshTablePurchaseProdResult();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -164,7 +163,7 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 	public void doSearch(String value) {
 		try {
 			listOfPurchaseProdResult = new ArrayList<PurchaseProdResult>();
-			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultPaymentBL().getAllPurchaseProdResultBySimpleSearch(value, FINAL);
+			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultPaymentBL().getAllPurchaseProdResultBySimpleSearch(value, AppConstants.STATUS_FINAL);
 			refreshTablePurchaseProdResult();
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());

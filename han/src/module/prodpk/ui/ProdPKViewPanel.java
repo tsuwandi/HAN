@@ -30,6 +30,7 @@ import com.toedter.calendar.JDateChooser;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
+import main.component.AppConstants;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
@@ -108,10 +109,6 @@ public class ProdPKViewPanel extends JPanel implements Bridging {
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
-
-
-	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
-	final String PRODUCTION_TYPE_BARECORE = "Barecore";
 
 	public ProdPKViewPanel() {
 		prodPK = new ProdPK();
@@ -377,11 +374,6 @@ public class ProdPKViewPanel extends JPanel implements Bridging {
 		}
 	}
 	
-	private static final String PRODUCT_CODE_KLEM_A = "PDC009-3";
-	private static final String PRODUCT_CODE_KLEM_B = "PDC009-4";
-	private static final String PRODUCT_CODE_PROD_RESULT_A = "PDC009-7";
-	private static final String PRODUCT_CODE_PROD_RESULT_B = "PDC009-8";
-	
 	@Override
 	public void invokeObjects(Object... objects) {
 		this.prodPK = (ProdPK) objects[0];
@@ -403,16 +395,16 @@ public class ProdPKViewPanel extends JPanel implements Bridging {
 				cbLine.setSelectedItem(prodPK.getLine().getDescription());
 
 				for (ProdPKMaterial prodPKMaterial : listOfProdPKMaterial) {
-					if (PRODUCT_CODE_KLEM_A.equals(prodPKMaterial.getProductCode()))
+					if (AppConstants.PRODUCT_CODE_KLEM_A.equals(prodPKMaterial.getProductCode()))
 						txtRepairKlemTotalGradeA.setText(String.valueOf(prodPKMaterial.getQty()));
-					else if (PRODUCT_CODE_KLEM_B.equals(prodPKMaterial.getProductCode()))
+					else if (AppConstants.PRODUCT_CODE_KLEM_B.equals(prodPKMaterial.getProductCode()))
 						txtRepairKlemTotalGradeB.setText(String.valueOf(prodPKMaterial.getQty()));
 				}
 				
 				for (ProdPKResultProduct prodPKMaterial : listOfProdPKResultProduct) {
-					if (PRODUCT_CODE_PROD_RESULT_A.equals(prodPKMaterial.getProductCode()))
+					if (AppConstants.PRODUCT_CODE_PROD_RESULT_A.equals(prodPKMaterial.getProductCode()))
 						txtProductionResultTotalGradeA.setText(String.valueOf(prodPKMaterial.getQty()));
-					else if (PRODUCT_CODE_PROD_RESULT_B.equals(prodPKMaterial.getProductCode()))
+					else if (AppConstants.PRODUCT_CODE_PROD_RESULT_B.equals(prodPKMaterial.getProductCode()))
 						txtProductionResultTotalGradeB.setText(String.valueOf(prodPKMaterial.getQty()));
 				}
 			}

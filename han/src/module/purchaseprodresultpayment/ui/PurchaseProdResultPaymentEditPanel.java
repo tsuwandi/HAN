@@ -156,8 +156,6 @@ public class PurchaseProdResultPaymentEditPanel extends JPanel implements Bridgi
 
 	PurchaseProdResultPaymentEditPanel pprEditPanel;
 	
-	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
-	
 	public List<PPRProduct> listOfDeletedPPRProduct = new ArrayList<PPRProduct>();
 	public List<PPRNote> listOfDeletedPPRNote = new ArrayList<PPRNote>();
 	

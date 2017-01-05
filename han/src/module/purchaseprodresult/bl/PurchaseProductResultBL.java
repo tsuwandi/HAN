@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import main.component.AppConstants;
 import module.dryin.dao.DryInDAO;
 import module.product.dao.ProductDAO;
 import module.product.model.Product;
@@ -98,7 +99,6 @@ public class PurchaseProductResultBL  {
 		}
 	}
 	
-	private static final String STATUS = "COMPLETED";
 	public void save(PurchaseProdResult ppr, List<PPRProduct> pprProducts, List<PPRNote> pprNotes)
 			throws SQLException {
 		Connection con = null;
@@ -106,7 +106,7 @@ public class PurchaseProductResultBL  {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 			
-			ppr.setStatus(STATUS);
+			ppr.setStatus(AppConstants.STATUS_COMPLETED);
 			
 			new PurchaseProdResultDAO(con).save(ppr);
 

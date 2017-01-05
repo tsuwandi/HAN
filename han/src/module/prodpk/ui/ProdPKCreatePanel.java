@@ -30,6 +30,7 @@ import com.toedter.calendar.JDateChooser;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
+import main.component.AppConstants;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
@@ -110,10 +111,6 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
-
-
-	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
-	final String PRODUCTION_TYPE_BARECORE = "Barecore";
 
 	public ProdPKCreatePanel() {
 		prodPK = new ProdPK();
@@ -357,11 +354,6 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 
 	}
 	
-	private static final String PRODUCT_CODE_KLEM_A = "PDC009-3";
-	private static final String PRODUCT_CODE_KLEM_B = "PDC009-4";
-	private static final String PRODUCT_CODE_PROD_RESULT_A = "PDC009-7";
-	private static final String PRODUCT_CODE_PROD_RESULT_B = "PDC009-8";
-	
 	protected void doSave() {
 		prodPK = new ProdPK();
 		prodPK.setProdPKCode(txtProductionCode.getText());
@@ -387,12 +379,12 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		List<ProdPKMaterial> listOfProdPKMaterialTemp = new ArrayList<ProdPKMaterial>();
 		
 		ProdPKMaterial pwProductKlemGradeA = new ProdPKMaterial();
-		pwProductKlemGradeA.setProductCode(PRODUCT_CODE_KLEM_A);
+		pwProductKlemGradeA.setProductCode(AppConstants.PRODUCT_CODE_KLEM_A);
 		pwProductKlemGradeA.setQty(Integer.valueOf(txtRepairKlemTotalGradeA.getText()));
 		listOfProdPKMaterialTemp.add(pwProductKlemGradeA);
 		
 		ProdPKMaterial pwProductKlemGradeB = new ProdPKMaterial();
-		pwProductKlemGradeB.setProductCode(PRODUCT_CODE_KLEM_B);
+		pwProductKlemGradeB.setProductCode(AppConstants.PRODUCT_CODE_KLEM_B);
 		pwProductKlemGradeB.setQty(Integer.valueOf(txtRepairKlemTotalGradeB.getText()));
 		listOfProdPKMaterialTemp.add(pwProductKlemGradeB);
 		
@@ -403,12 +395,12 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		List<ProdPKResultProduct> listOfProdPKResultProductTemp = new ArrayList<ProdPKResultProduct>();
 		
 		ProdPKResultProduct prodPKResultProductKlemGradeA = new ProdPKResultProduct();
-		prodPKResultProductKlemGradeA.setProductCode(PRODUCT_CODE_PROD_RESULT_A);
+		prodPKResultProductKlemGradeA.setProductCode(AppConstants.PRODUCT_CODE_PROD_RESULT_A);
 		prodPKResultProductKlemGradeA.setQty(Integer.valueOf(txtProductionResultTotalGradeA.getText()));
 		listOfProdPKResultProductTemp.add(prodPKResultProductKlemGradeA);
 		
 		ProdPKResultProduct prodPKResultProductKlemGradeB = new ProdPKResultProduct();
-		prodPKResultProductKlemGradeB.setProductCode(PRODUCT_CODE_PROD_RESULT_B);
+		prodPKResultProductKlemGradeB.setProductCode(AppConstants.PRODUCT_CODE_PROD_RESULT_B);
 		prodPKResultProductKlemGradeB.setQty(Integer.valueOf(txtProductionResultTotalGradeB.getText()));
 		listOfProdPKResultProductTemp.add(prodPKResultProductKlemGradeB);
 		

@@ -34,14 +34,4 @@ public class ProductCategory implements ComboBoxProperties {
 	public ProductCategory(String productCategory) {
 		this.productCategory = productCategory;
 	}
-
-	public static final String BALKEN_BASAH_CD = "B";
-	public static final String BALKEN_KERING_CD = "K";
-	public static final String HASIL_PRODUKSI_CD = "PDC009";
-	public static final String BARANG_PENDUKUNG_CD = "P";
-	
-	public static final String BALKEN_BASAH = "Balken Basah";
-	public static final String BALKEN_KERING = "Balken Kering";
-	public static final String HASIL_PRODUKSI = "Hasil Produksi";
-	public static final String BARANG_PENDUKUNG = "Barang Pendukung";
 }

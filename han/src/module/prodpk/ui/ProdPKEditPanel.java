@@ -30,6 +30,7 @@ import com.toedter.calendar.JDateChooser;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
+import main.component.AppConstants;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
@@ -68,16 +69,16 @@ public class ProdPKEditPanel extends JPanel implements Bridging {
 				cbLine.setSelectedItem(prodPK.getLine().getDescription());
 
 				for (ProdPKMaterial prodPKMaterial : listOfProdPKMaterial) {
-					if (PRODUCT_CODE_KLEM_A.equals(prodPKMaterial.getProductCode()))
+					if (AppConstants.PRODUCT_CODE_KLEM_A.equals(prodPKMaterial.getProductCode()))
 						txtRepairKlemTotalGradeA.setText(String.valueOf(prodPKMaterial.getQty()));
-					else if (PRODUCT_CODE_KLEM_B.equals(prodPKMaterial.getProductCode()))
+					else if (AppConstants.PRODUCT_CODE_KLEM_B.equals(prodPKMaterial.getProductCode()))
 						txtRepairKlemTotalGradeB.setText(String.valueOf(prodPKMaterial.getQty()));
 				}
 				
 				for (ProdPKResultProduct prodPKMaterial : listOfProdPKResultProduct) {
-					if (PRODUCT_CODE_PROD_RESULT_A.equals(prodPKMaterial.getProductCode()))
+					if (AppConstants.PRODUCT_CODE_PROD_RESULT_A.equals(prodPKMaterial.getProductCode()))
 						txtProductionResultTotalGradeA.setText(String.valueOf(prodPKMaterial.getQty()));
-					else if (PRODUCT_CODE_PROD_RESULT_B.equals(prodPKMaterial.getProductCode()))
+					else if (AppConstants.PRODUCT_CODE_PROD_RESULT_B.equals(prodPKMaterial.getProductCode()))
 						txtProductionResultTotalGradeB.setText(String.valueOf(prodPKMaterial.getQty()));
 				}
 			}
@@ -146,10 +147,6 @@ public class ProdPKEditPanel extends JPanel implements Bridging {
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
-
-
-	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
-	final String PRODUCTION_TYPE_BARECORE = "Barecore";
 
 	public ProdPKEditPanel() {
 		prodPK = new ProdPK();
@@ -390,10 +387,6 @@ public class ProdPKEditPanel extends JPanel implements Bridging {
 
 	}
 	
-	private static final String PRODUCT_CODE_KLEM_A = "PDC009-3";
-	private static final String PRODUCT_CODE_KLEM_B = "PDC009-4";
-	private static final String PRODUCT_CODE_PROD_RESULT_A = "PDC009-7";
-	private static final String PRODUCT_CODE_PROD_RESULT_B = "PDC009-8";
 	
 	protected void doSave() {
 		prodPK.setProdPKCode(txtProductionCode.getText());
@@ -417,9 +410,9 @@ public class ProdPKEditPanel extends JPanel implements Bridging {
 	
 	private List<ProdPKMaterial> prodPKMaterialDetail() {
 		for(ProdPKMaterial p : listOfProdPKMaterial) {
-			if(PRODUCT_CODE_KLEM_A.equals(p.getProductCode())) {
+			if(AppConstants.PRODUCT_CODE_KLEM_A.equals(p.getProductCode())) {
 				p.setQty(Integer.valueOf(txtRepairKlemTotalGradeA.getText()));
-			} else if (PRODUCT_CODE_KLEM_B.equals(p.getProductCode())) {
+			} else if (AppConstants.PRODUCT_CODE_KLEM_B.equals(p.getProductCode())) {
 				p.setQty(Integer.valueOf(txtRepairKlemTotalGradeB.getText()));
 			}
 		}	
@@ -429,9 +422,9 @@ public class ProdPKEditPanel extends JPanel implements Bridging {
 	
 	private List<ProdPKResultProduct> prodPKResultProductDetail () {
 		for(ProdPKResultProduct p : listOfProdPKResultProduct) {
-			if(PRODUCT_CODE_PROD_RESULT_A.equals(p.getProductCode())) {
+			if(AppConstants.PRODUCT_CODE_PROD_RESULT_A.equals(p.getProductCode())) {
 				p.setQty(Integer.valueOf(txtProductionResultTotalGradeA.getText()));
-			} else if (PRODUCT_CODE_PROD_RESULT_B.equals(p.getProductCode())) {
+			} else if (AppConstants.PRODUCT_CODE_PROD_RESULT_B.equals(p.getProductCode())) {
 				p.setQty(Integer.valueOf(txtProductionResultTotalGradeB.getText()));
 			}
 		}			

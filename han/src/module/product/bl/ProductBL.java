@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import main.component.AppConstants;
 import module.dryin.dao.DryInDAO;
 import module.product.dao.ProductDAO;
 import module.product.dao.ProductPPDAO;
@@ -258,7 +259,7 @@ public class ProductBL {
 		try {
 			con = dataSource.getConnection();
 
-			if (ProductCategory.HASIL_PRODUKSI.equalsIgnoreCase(productCategory)) {
+			if (AppConstants.HASIL_PRODUKSI.equalsIgnoreCase(productCategory)) {
 				return String.format("%01d", new ProductDAO(con).getOrdinalOfCodeNumber(productCategory) + 1);
 			} else {
 				return String.format("%04d", new ProductDAO(con).getOrdinalOfCodeNumber(productCategory) + 1);

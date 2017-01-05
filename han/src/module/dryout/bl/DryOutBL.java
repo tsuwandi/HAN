@@ -7,8 +7,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import main.component.AppConstants;
 import module.dryin.dao.PicTallyDAO;
-import module.dryout.DryOutType;
 import module.dryout.dao.DryOutDAO;
 import module.dryout.dao.DryOutPalletDAO;
 import module.dryout.model.DryOut;
@@ -92,7 +92,7 @@ public class DryOutBL {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 
-			dryOut.setStatus(DryOutType.COMPLETED.toString());
+			dryOut.setStatus(AppConstants.STATUS_COMPLETED.toString());
 			
 			new DryOutDAO(con).save(dryOut);
 

@@ -1,6 +1,5 @@
 package module.dailyclosing.bl;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
@@ -8,8 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
-
+import main.component.AppConstants;
 import module.dailyclosing.dao.ConfirmDAO;
 import module.dailyclosing.dao.InventoryDAO;
 import module.dailyclosing.dao.InventoryLogDAO;
@@ -18,16 +16,16 @@ import module.dailyclosing.model.Confirm;
 import module.dailyclosing.model.Inventory;
 import module.dailyclosing.model.InventoryLog;
 import module.dailyclosing.model.InventoryLogTemp;
-import module.dryin.DryInType;
 import module.dryin.dao.DryInDAO;
 import module.dryin.model.DryIn;
-import module.dryout.DryOutType;
 import module.dryout.dao.DryOutDAO;
 import module.dryout.model.DryOut;
 import module.pembelian.ReceivedType;
 import module.pembelian.dao.ReceivedDAO;
 import module.pembelian.model.Received;
 import module.util.DateUtil;
+
+import org.apache.log4j.Logger;
 
 public class DailyClosingBL {
 	private static final long serialVersionUID = 1L;
@@ -70,13 +68,6 @@ public class DailyClosingBL {
 		}
 	}
 
-	final String BUYING_MODULE = "PEMBELIAN";
-	final String RECEIVED = "RECEIVED";
-	final String DRY_IN = "DRY_IN";
-	final String DRY_OUT = "DRY_OUT";
-	final String DEBET = "D";
-	final String CREDIT = "C";
-
 	public void save(List<Received> listOfReceived, List<DryIn> listOfDryIn, List<DryOut> listOfDryOut,
 			String confirmCode) throws SQLException {
 		Connection con = null;
@@ -86,7 +77,7 @@ public class DailyClosingBL {
 
 			Confirm confirm = new Confirm();
 			confirm.setConfirmCode(confirmCode);
-			confirm.setModule(BUYING_MODULE);
+			confirm.setModule(AppConstants.BUYING_MODULE);
 			confirm.setDailyClosingDate(DateUtil.setTimeStamp());
 			new ConfirmDAO(con).save(confirm);
 
@@ -95,8 +86,8 @@ public class DailyClosingBL {
 				inventoryLogTemp.setProductCode(received.getPalletCard().getProductCode());
 				inventoryLogTemp.setWarehouse(0);
 				inventoryLogTemp.setQty(received.getPalletCard().getTotal());
-				inventoryLogTemp.setMutasi(DEBET);
-				inventoryLogTemp.setSrcTable(RECEIVED);
+				inventoryLogTemp.setMutasi(AppConstants.DEBET);
+				inventoryLogTemp.setSrcTable(AppConstants.RECEIVED);
 				inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
 
 				new InventoryLogTempDAO(con).save(inventoryLogTemp);
@@ -111,8 +102,8 @@ public class DailyClosingBL {
 				inventoryLogTempCredit.setProductCode(dryIn.getPalletCard().getProductCode());
 				inventoryLogTempCredit.setWarehouse(0);
 				inventoryLogTempCredit.setQty(dryIn.getPalletCard().getTotal());
-				inventoryLogTempCredit.setMutasi(CREDIT);
-				inventoryLogTempCredit.setSrcTable(DRY_IN);
+				inventoryLogTempCredit.setMutasi(AppConstants.CREDIT);
+				inventoryLogTempCredit.setSrcTable(AppConstants.DRY_IN);
 				inventoryLogTempCredit.setConfirmCode(confirm.getConfirmCode());
 
 				new InventoryLogTempDAO(con).save(inventoryLogTempCredit);
@@ -121,13 +112,13 @@ public class DailyClosingBL {
 				inventoryLogTempDebet.setProductCode(dryIn.getPalletCard().getProductCode());
 				inventoryLogTempDebet.setWarehouse(dryIn.getChamberId());
 				inventoryLogTempDebet.setQty(dryIn.getPalletCard().getTotal());
-				inventoryLogTempDebet.setMutasi(DEBET);
-				inventoryLogTempDebet.setSrcTable(DRY_IN);
+				inventoryLogTempDebet.setMutasi(AppConstants.DEBET);
+				inventoryLogTempDebet.setSrcTable(AppConstants.DRY_IN);
 				inventoryLogTempDebet.setConfirmCode(confirm.getConfirmCode());
 
 				new InventoryLogTempDAO(con).save(inventoryLogTempDebet);
 
-				dryIn.setStatus(DryInType.FINAL.toString());
+				dryIn.setStatus(AppConstants.STATUS_FINAL);
 
 				new DryInDAO(con).updateDailyClosing(dryIn);
 			}
@@ -137,8 +128,8 @@ public class DailyClosingBL {
 				inventoryLogTempCredit.setProductCode(dryOut.getPalletCard().getProductCode());
 				inventoryLogTempCredit.setWarehouse(dryOut.getChamberId());
 				inventoryLogTempCredit.setQty(dryOut.getPalletCard().getTotal());
-				inventoryLogTempCredit.setMutasi(CREDIT);
-				inventoryLogTempCredit.setSrcTable(DRY_OUT);
+				inventoryLogTempCredit.setMutasi(AppConstants.CREDIT);
+				inventoryLogTempCredit.setSrcTable(AppConstants.DRY_OUT);
 				inventoryLogTempCredit.setConfirmCode(confirm.getConfirmCode());
 
 				new InventoryLogTempDAO(con).save(inventoryLogTempCredit);
@@ -147,13 +138,13 @@ public class DailyClosingBL {
 				inventoryLogTempDebet.setProductCode(dryOut.getPalletCard().getProductCode());
 				inventoryLogTempDebet.setWarehouse(dryOut.getChamberId());
 				inventoryLogTempDebet.setQty(dryOut.getPalletCard().getTotal());
-				inventoryLogTempDebet.setMutasi(DEBET);
-				inventoryLogTempDebet.setSrcTable(DRY_OUT);
+				inventoryLogTempDebet.setMutasi(AppConstants.DEBET);
+				inventoryLogTempDebet.setSrcTable(AppConstants.DRY_OUT);
 				inventoryLogTempDebet.setConfirmCode(confirm.getConfirmCode());
 
 				new InventoryLogTempDAO(con).save(inventoryLogTempDebet);
 
-				dryOut.setStatus(DryOutType.FINAL.toString());
+				dryOut.setStatus(AppConstants.STATUS_FINAL);
 
 				new DryOutDAO(con).updateDailyClosing(dryOut);
 			}
@@ -194,11 +185,11 @@ public class DailyClosingBL {
 				inventoryLog.setProductCode(inventoryLogTemp.getProductCode());
 				inventoryLog.setWarehouse(inventoryLogTemp.getWarehouse());
 				inventoryLog.setConfirmCode(makeConfirmCode());
-				if(inventoryLogTemp.getMutasi().equals(DEBET)) {
+				if(inventoryLogTemp.getMutasi().equals(AppConstants.DEBET)) {
 					inventoryLog.setPrevStock((double) 0);
 					inventoryLog.setPlusStock(inventoryLogTemp.getQty());
 					inventoryLog.setMinStock((double) 0);
-				} else if (inventoryLogTemp.getMutasi().equals(CREDIT)) {
+				} else if (inventoryLogTemp.getMutasi().equals(AppConstants.CREDIT)) {
 					inventoryLog.setPrevStock((double) 0);
 					inventoryLog.setMinStock(inventoryLogTemp.getQty());
 					inventoryLog.setPlusStock((double) 0);

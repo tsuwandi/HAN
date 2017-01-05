@@ -19,6 +19,7 @@ import javax.swing.text.DocumentFilter;
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
@@ -55,8 +56,6 @@ public class PPRProductDialog extends JDialog {
 
 	private Integer index;
 	
-	final String PRODUCT_CODE_NORMAL_A = "PDC009";
-	final String PRODUCT_CODE_NORMAL_B = "PDC009-2";
 
 	public PPRProductDialog(boolean edit, PPRProduct pprProduct, PurchaseProdResultCreatePanel pprCreatePanel,
 			Integer index) {
@@ -103,7 +102,7 @@ public class PPRProductDialog extends JDialog {
 
 		listOfProduct = new ArrayList<Product>();
 		try {
-			listOfProduct = ServiceFactory.getPurchaseProductResultBL().getAllByProductCode(PRODUCT_CODE_NORMAL_A, PRODUCT_CODE_NORMAL_B);
+			listOfProduct = ServiceFactory.getPurchaseProductResultBL().getAllByProductCode(AppConstants.PRODUCT_CODE_NORMAL_A, AppConstants.PRODUCT_CODE_NORMAL_B);
 			listOfProduct.add(0, new Product("-- Pilih Produk --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());

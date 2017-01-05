@@ -100,8 +100,6 @@ import module.util.JTextFieldLimit;
 
 	PPRProductTableModel pprProductTableModel = null;
 	PPRNoteTableModel pprNoteTableModel = null;
-
-	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
 	
 	private PurchaseProdResultPaymentViewPanel pprViewPanel;
 	

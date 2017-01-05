@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import module.dryin.DryInType;
+import main.component.AppConstants;
 import module.dryin.dao.DryInDAO;
 import module.dryin.dao.DryInPalletDAO;
 import module.dryin.dao.PicTallyDAO;
@@ -117,7 +117,7 @@ public class DryInBL {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 
-			dryIn.setStatus(DryInType.COMPLETED.toString());
+			dryIn.setStatus(AppConstants.STATUS_COMPLETED);
 			
 			new DryInDAO(con).save(dryIn);
 			

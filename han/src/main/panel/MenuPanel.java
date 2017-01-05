@@ -22,7 +22,7 @@ public class MenuPanel extends JPanel {
 		setLayout(null);
 
 		AccordionMenu menu = new AccordionMenu();
-		menu.setBounds(1, 0, 200, 320);
+		menu.setBounds(1, 0, 200, 360);
 		
 		menu.addNewMenu("Penerimaan", "Penerimaan");
 		menu.addNewLeafTo("Penerimaan", "Supplier", "Supplier", "module.supplier.ui.SupplierListPanel");

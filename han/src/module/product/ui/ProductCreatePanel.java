@@ -30,15 +30,12 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
 
-import org.apache.log4j.Logger;
-
-import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
-import module.product.ProductCategoryType;
 import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
@@ -49,6 +46,11 @@ import module.sn.production.type.model.ProductionType;
 import module.sn.woodtype.model.WoodType;
 import module.supplier.model.Supplier;
 import module.util.JTextFieldLimit;
+
+import org.apache.log4j.Logger;
+
+import module.purchaseprodresult.model.PPRNote;
+import controller.ServiceFactory;
 
 public class ProductCreatePanel extends JPanel {
 
@@ -268,7 +270,7 @@ public class ProductCreatePanel extends JPanel {
 		catField.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				switch (catField.getDataIndex().getId()) {
-				case ProductCategoryType.BALKEN_BASAH:
+				case AppConstants.BALKEN_BASAH_ID:
 					typeLbl.setText("<html>Jenis Kayu <font color=\"red\">*</font></html>");
 					gradeLbl.setText("<html>Grade <font color=\"red\">*</font></html>");
 					thickLbl.setText("<html>Tebal <font color=\"red\">*</font></html>");
@@ -281,7 +283,7 @@ public class ProductCreatePanel extends JPanel {
 					cbProductionQuality.setEnabled(false);
 					cbProductionType.setEnabled(false);
 					break;
-				case ProductCategoryType.BALKEN_KERING:
+				case AppConstants.BALKEN_KERING_ID:
 					typeLbl.setText("<html>Jenis Kayu <font color=\"red\">*</font></html>");
 					gradeLbl.setText("<html>Grade <font color=\"red\">*</font></html>");
 					thickLbl.setText("<html>Tebal <font color=\"red\">*</font></html>");
@@ -294,7 +296,7 @@ public class ProductCreatePanel extends JPanel {
 					cbProductionQuality.setEnabled(false);
 					cbProductionType.setEnabled(false);
 					break;
-				case ProductCategoryType.HASIL_PRODUKSI:
+				case AppConstants.HASIL_PRODUKSI_ID:
 					typeLbl.setText("Jenis Kayu");
 					gradeLbl.setText("Grade");
 					thickLbl.setText("Tebal");
@@ -305,7 +307,7 @@ public class ProductCreatePanel extends JPanel {
 					cbProductionQuality.setEnabled(true);
 					cbProductionType.setEnabled(true);
 					break;
-				case ProductCategoryType.BARANG_PENDUKUNG:
+				case AppConstants.BARANG_PENDUKUNG_ID:
 					typeLbl.setText("Jenis Kayu");
 					gradeLbl.setText("Grade");
 					thickLbl.setText("Tebal");
@@ -635,8 +637,8 @@ public class ProductCreatePanel extends JPanel {
 			else
 				product.setIsMaintain(1);
 
-			if (product.getProductCat() == ProductCategoryType.BALKEN_BASAH
-					|| product.getProductCat() == ProductCategoryType.BALKEN_KERING) {
+			if (product.getProductCat() == AppConstants.BALKEN_BASAH_ID
+					|| product.getProductCat() == AppConstants.BALKEN_KERING_ID) {
 				product.setThickness(Double.parseDouble(thickField.getText()));
 				product.setLength(Double.parseDouble(longField.getText()));
 				product.setWidth(Double.parseDouble(wideField.getText()));
@@ -649,15 +651,15 @@ public class ProductCreatePanel extends JPanel {
 					product.setWidth(Double.parseDouble(wideField.getText()));
 			}
 
-			if (product.getProductCat() == ProductCategoryType.BALKEN_BASAH) {
-				product.setCondition(ProductCategoryType.BALKEN_BASAH);
-			} else if (product.getProductCat() == ProductCategoryType.BALKEN_KERING) {
-				product.setCondition(ProductCategoryType.BALKEN_KERING);
+			if (product.getProductCat() == AppConstants.BALKEN_BASAH_ID) {
+				product.setCondition(AppConstants.BALKEN_BASAH_ID);
+			} else if (product.getProductCat() == AppConstants.BALKEN_KERING_ID) {
+				product.setCondition(AppConstants.BALKEN_KERING_ID);
 			}
 
 			product.setMinQty(Integer.parseInt(minQtyField.getText()));
 
-			if (!ProductCategory.HASIL_PRODUKSI.equalsIgnoreCase(catField.getDataIndex().getProductCategory())) {
+			if (!AppConstants.HASIL_PRODUKSI.equalsIgnoreCase(catField.getDataIndex().getProductCategory())) {
 				Product checkProduct = ServiceFactory.getProductBL().isProductExists(Boolean.FALSE, product);
 				if (checkProduct.getIsExists() > 0) {
 					JOptionPane.showMessageDialog(null,
@@ -741,8 +743,8 @@ public class ProductCreatePanel extends JPanel {
 			isValid = false;
 		}
 
-		if (catField.getDataIndex().getId() == ProductCategoryType.BALKEN_BASAH
-				|| catField.getDataIndex().getId() == ProductCategoryType.BALKEN_KERING) {
+		if (catField.getDataIndex().getId() == AppConstants.BALKEN_BASAH_ID
+				|| catField.getDataIndex().getId() == AppConstants.BALKEN_KERING_ID) {
 
 			if (typeField.getSelectedIndex() == 0) {
 				typeLblError.setText("Jenis Kayu harus dipilih");
@@ -767,7 +769,7 @@ public class ProductCreatePanel extends JPanel {
 				thickLblError.setText("Tebal Produk harus diisi");
 				isValid = false;
 			}
-		} else if (catField.getDataIndex().getId() == ProductCategoryType.HASIL_PRODUKSI) {
+		} else if (catField.getDataIndex().getId() == AppConstants.HASIL_PRODUKSI_ID) {
 			if (cbProductionQuality.getSelectedIndex() == 0) {
 				productionQualityLblError.setText("Kualitas Produksi harus dipilih");
 				isValid = false;
@@ -1006,14 +1008,14 @@ public class ProductCreatePanel extends JPanel {
 	public void makeCodeNumber(String productCategory) {
 		String constantProductCategory = "";
 
-		if (ProductCategory.BALKEN_BASAH.equalsIgnoreCase(productCategory)) {
-			constantProductCategory = ProductCategory.BALKEN_BASAH_CD;
-		} else if (ProductCategory.BALKEN_KERING.equalsIgnoreCase(productCategory)) {
-			constantProductCategory = ProductCategory.BALKEN_KERING_CD;
-		} else if (ProductCategory.HASIL_PRODUKSI.equalsIgnoreCase(productCategory)) {
-			constantProductCategory = ProductCategory.HASIL_PRODUKSI_CD;
-		} else if (ProductCategory.BARANG_PENDUKUNG.equalsIgnoreCase(productCategory)) {
-			constantProductCategory = ProductCategory.BARANG_PENDUKUNG_CD;
+		if (AppConstants.BALKEN_BASAH.equalsIgnoreCase(productCategory)) {
+			constantProductCategory = AppConstants.BALKEN_BASAH_CD;
+		} else if (AppConstants.BALKEN_KERING.equalsIgnoreCase(productCategory)) {
+			constantProductCategory = AppConstants.BALKEN_KERING_CD;
+		} else if (AppConstants.HASIL_PRODUKSI.equalsIgnoreCase(productCategory)) {
+			constantProductCategory = AppConstants.HASIL_PRODUKSI_CD;
+		} else if (AppConstants.BARANG_PENDUKUNG.equalsIgnoreCase(productCategory)) {
+			constantProductCategory = AppConstants.BARANG_PENDUKUNG_CD;
 		}
 
 		String ordinal = null;

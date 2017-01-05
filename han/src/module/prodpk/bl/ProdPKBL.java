@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import main.component.AppConstants;
 import module.production.dao.GroupShiftDAO;
 import module.production.dao.LineDAO;
 import module.production.dao.ProductionTypeDAO;
@@ -118,7 +119,6 @@ public class ProdPKBL  {
 		}
 	}
 	
-	private static final String STATUS_COMPLETED = "COMPLETED";
 	public void save(ProdPK prodPK, List<ProdPKMaterial> prodPKMaterials, List<ProdPKResultProduct> prodPKResultProducts)
 			throws SQLException {
 		Connection con = null;
@@ -126,7 +126,7 @@ public class ProdPKBL  {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 			
-			prodPK.setStatus(STATUS_COMPLETED);
+			prodPK.setStatus(AppConstants.STATUS_COMPLETED);
 			
 			new ProdPKDAO(con).save(prodPK);
 

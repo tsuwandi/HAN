@@ -31,6 +31,7 @@ import javax.swing.text.DocumentFilter;
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
@@ -343,11 +344,10 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		cbCurrency.setList(listOfCurrency);
 		
 		//default IDR
-		final String CURRENCY_IDR = "IDR";
 		
 		int i = 0;
 		for(Currency currency : listOfCurrency) {
-			if(CURRENCY_IDR.equals(currency.getCurrencyAbbr())) {
+			if(AppConstants.CURRENCY_IDR.equals(currency.getCurrencyAbbr())) {
 				cbCurrency.setSelectedIndex(i);
 				break;
 			}

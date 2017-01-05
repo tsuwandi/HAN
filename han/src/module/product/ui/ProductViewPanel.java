@@ -25,28 +25,25 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
-import org.apache.log4j.Logger;
-
-import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.sn.woodtype.model.WoodType;
-import module.product.ProductCategoryType;
 import module.product.model.Condition;
 import module.product.model.Grade;
 import module.product.model.Product;
 import module.product.model.ProductCategory;
 import module.product.model.ProductPP;
 import module.product.model.Uom;
-import module.product.ui.ProductEditPanel.ProductPPTableModel;
 import module.purchaseprodresult.model.PPRNote;
-import module.purchaseprodresult.model.PPRProduct;
-import module.purchaseprodresult.ui.PPRProductDialog;
-import module.purchaseprodresult.ui.PurchaseProdResultViewPanel;
 import module.sn.production.quality.model.ProductionQuality;
 import module.sn.production.type.model.ProductionType;
+import module.sn.woodtype.model.WoodType;
 import module.util.Bridging;
+
+import org.apache.log4j.Logger;
+
+import main.component.AppConstants;
+import controller.ServiceFactory;
 
 public class ProductViewPanel extends JPanel implements Bridging {
 
@@ -572,7 +569,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 				}
 				
 				switch (catField.getDataIndex().getId()) {
-				case ProductCategoryType.BALKEN_BASAH:
+				case AppConstants.BALKEN_BASAH_ID:
 					typeLbl.setText("<html>Jenis Kayu <font color=\"red\">*</font></html>");
 					gradeLbl.setText("<html>Grade <font color=\"red\">*</font></html>");
 					thickLbl.setText("<html>Tebal <font color=\"red\">*</font></html>");
@@ -581,7 +578,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 					lblProductionType.setText("Tipe Hasil Produksi");
 					lblProductionQuality.setText("Kualitas Produksi");
 					break;
-				case ProductCategoryType.BALKEN_KERING:
+				case AppConstants.BALKEN_KERING_ID:
 					typeLbl.setText("<html>Jenis Kayu <font color=\"red\">*</font></html>");
 					gradeLbl.setText("<html>Grade <font color=\"red\">*</font></html>");
 					thickLbl.setText("<html>Tebal <font color=\"red\">*</font></html>");
@@ -590,7 +587,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 					lblProductionType.setText("Tipe Hasil Produksi");
 					lblProductionQuality.setText("Kualitas Produksi");
 					break;
-				case ProductCategoryType.HASIL_PRODUKSI:
+				case AppConstants.HASIL_PRODUKSI_ID:
 					typeLbl.setText("Jenis Kayu");
 					gradeLbl.setText("Grade");
 					thickLbl.setText("Tebal");
@@ -602,7 +599,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 					cbProductionQuality.setSelectedItem(product.getProductionQuality());
 					cbProductionType.setSelectedItem(product.getProductionType());
 					break;
-				case ProductCategoryType.BARANG_PENDUKUNG:
+				case AppConstants.BARANG_PENDUKUNG_ID:
 					typeLbl.setText("Jenis Kayu");
 					gradeLbl.setText("Grade");
 					thickLbl.setText("Tebal");
