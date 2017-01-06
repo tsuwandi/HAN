@@ -17,24 +17,22 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import main.panel.MainPanel;
-import module.personalia.model.Division;
-import module.personalia.model.NonRoutineAllowance;
+import module.personalia.model.NonRoutineAllowanceMasterType;
 import module.util.Bridging;
-import controller.ServiceFactory;
 
-public class NonRoutineAllowanceConfigPanel extends JPanel implements Bridging{
+public class NonRoutineAllowanceMasterTypeConfigPanel extends JPanel implements Bridging{
 
-	private static final long serialVersionUID = -4588733710608236153L;
-	private JTable nonRoutineAllowanceConfigTable;
+	private static final long serialVersionUID = -9089874016146253402L;
+	private JTable nonRoutineAllowanceMasterTypeConfigTable;
 	private JTextField searchField;
-	private List<NonRoutineAllowance> nonRoutineAllowances = new ArrayList<>();
-	private NonRoutineAllowanceConfigTableModel nonRoutineAllowanceConfigTableModel;
+	private List<NonRoutineAllowanceMasterType> nonRoutineAllowanceMasterTypes = new ArrayList<>();
+	private NonRoutineAllowanceMasterTypeConfigTableModel nonRoutineAllowanceMasterTypeConfigTableModel;
 
-	public NonRoutineAllowanceConfigPanel() {
+	public NonRoutineAllowanceMasterTypeConfigPanel() {
 		setSize(1024, 630);
 		setLayout(null);
 
-		JLabel breadCrumbLbl = new JLabel("Personalia > Master Jenis Tunjangan Non Rutin");
+		JLabel breadCrumbLbl = new JLabel("Payroll > Master Jenis Tunjangan Non Rutin");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 350, 25);
 		add(breadCrumbLbl);
@@ -53,15 +51,15 @@ public class NonRoutineAllowanceConfigPanel extends JPanel implements Bridging{
 		scrollPane.setBounds(0, 0, 1004, 363);
 		pnlTable.add(scrollPane);
 
-		nonRoutineAllowanceConfigTable = new JTable();
-		nonRoutineAllowanceConfigTable.setFocusable(false);
-		nonRoutineAllowanceConfigTable.setAutoCreateRowSorter(true);
-		scrollPane.setViewportView(nonRoutineAllowanceConfigTable);
-		nonRoutineAllowanceConfigTable.addMouseListener(new MouseAdapter() {
+		nonRoutineAllowanceMasterTypeConfigTable = new JTable();
+		nonRoutineAllowanceMasterTypeConfigTable.setFocusable(false);
+		nonRoutineAllowanceMasterTypeConfigTable.setAutoCreateRowSorter(true);
+		scrollPane.setViewportView(nonRoutineAllowanceMasterTypeConfigTable);
+		nonRoutineAllowanceMasterTypeConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (nonRoutineAllowanceConfigTable.columnAtPoint(e.getPoint())==3) {
-					MainPanel.changePanel("module.personalia.ui.ViewDivisionPanel", getSelectedData());
+				if (nonRoutineAllowanceMasterTypeConfigTable.columnAtPoint(e.getPoint())==3) {
+					MainPanel.changePanel("module.personalia.ui.", getSelectedData());
 				}
 			}
 		});
@@ -78,7 +76,7 @@ public class NonRoutineAllowanceConfigPanel extends JPanel implements Bridging{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.personalia.ui.CreateNonRoutineAllowancePanel");
+				MainPanel.changePanel("module.personalia.ui.CreateNonRoutineAllowanceMasterTypePanel");
 			}
 		});
 
@@ -104,27 +102,29 @@ public class NonRoutineAllowanceConfigPanel extends JPanel implements Bridging{
 		getUserData();
 	}
 
-	protected NonRoutineAllowance getSelectedData() {
-		int row = nonRoutineAllowanceConfigTable.getSelectedRow();
+	protected NonRoutineAllowanceMasterType getSelectedData() {
+		int row = nonRoutineAllowanceMasterTypeConfigTable.getSelectedRow();
 
-		NonRoutineAllowance nonRoutineAllowance = new NonRoutineAllowance();
-
-		return nonRoutineAllowance;
+		NonRoutineAllowanceMasterType nonRoutineAllowanceMasterType = new NonRoutineAllowanceMasterType();
+		nonRoutineAllowanceMasterType.setTnrType(nonRoutineAllowanceMasterTypeConfigTable.getValueAt(row, 1).toString());
+		nonRoutineAllowanceMasterType.setReferenceDocument(nonRoutineAllowanceMasterTypeConfigTable.getValueAt(row, 2).toString());
+		
+		return nonRoutineAllowanceMasterType;
 	}
 
 	private void getUserData() {
-		nonRoutineAllowances.clear();
+		nonRoutineAllowanceMasterTypes.clear();
 		//nonRoutineAllowances = ServiceFactory.getPersonaliaBL().getDivisions("");
-		nonRoutineAllowanceConfigTableModel = new NonRoutineAllowanceConfigTableModel(nonRoutineAllowances);
-		nonRoutineAllowanceConfigTable.setModel(nonRoutineAllowanceConfigTableModel);
+		nonRoutineAllowanceMasterTypeConfigTableModel = new NonRoutineAllowanceMasterTypeConfigTableModel(nonRoutineAllowanceMasterTypes);
+		nonRoutineAllowanceMasterTypeConfigTable.setModel(nonRoutineAllowanceMasterTypeConfigTableModel);
 	}
 
-	class NonRoutineAllowanceConfigTableModel extends AbstractTableModel {
+	class NonRoutineAllowanceMasterTypeConfigTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = -5786040815921137590L;
-		private List<NonRoutineAllowance> nonRoutineAllowances;
+		private List<NonRoutineAllowanceMasterType> nonRoutineAllowances;
 
-		public NonRoutineAllowanceConfigTableModel(List<NonRoutineAllowance> nonRoutineAllowances) {
+		public NonRoutineAllowanceMasterTypeConfigTableModel(List<NonRoutineAllowanceMasterType> nonRoutineAllowances) {
 			this.nonRoutineAllowances = nonRoutineAllowances;
 		}
 
@@ -140,15 +140,15 @@ public class NonRoutineAllowanceConfigPanel extends JPanel implements Bridging{
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			NonRoutineAllowance nonRoutineAllowance = nonRoutineAllowances.get(rowIndex);
+			NonRoutineAllowanceMasterType nonRoutineAllowanceMasterType = nonRoutineAllowances.get(rowIndex);
 
 			switch (columnIndex) {
 			case 0:
-				return nonRoutineAllowances.indexOf(nonRoutineAllowance) + 1;
+				return nonRoutineAllowances.indexOf(nonRoutineAllowanceMasterType) + 1;
 			case 1:
-				return nonRoutineAllowance.getTnrType();
+				return nonRoutineAllowanceMasterType.getTnrType();
 			case 2:
-				return nonRoutineAllowance.getReferenceDocument();
+				return nonRoutineAllowanceMasterType.getReferenceDocument();
 			case 3:
 				return "<html><u>View</u></html>";
 			default:
@@ -192,8 +192,8 @@ public class NonRoutineAllowanceConfigPanel extends JPanel implements Bridging{
 	@SuppressWarnings("unchecked")
 	@Override
 	public void invokeObjects(Object... objects) {
-		nonRoutineAllowances = (List<NonRoutineAllowance>) objects[0];
-		nonRoutineAllowanceConfigTableModel = new NonRoutineAllowanceConfigTableModel(nonRoutineAllowances);
-		nonRoutineAllowanceConfigTable.setModel(nonRoutineAllowanceConfigTableModel);
+		nonRoutineAllowanceMasterTypes = (List<NonRoutineAllowanceMasterType>) objects[0];
+		nonRoutineAllowanceMasterTypeConfigTableModel = new NonRoutineAllowanceMasterTypeConfigTableModel(nonRoutineAllowanceMasterTypes);
+		nonRoutineAllowanceMasterTypeConfigTable.setModel(nonRoutineAllowanceMasterTypeConfigTableModel);
 	}
 }

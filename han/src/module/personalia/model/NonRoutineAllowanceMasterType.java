@@ -2,8 +2,7 @@ package module.personalia.model;
 
 import java.util.Date;
 
-public class NonRoutineAllowance {
-
+public class NonRoutineAllowanceMasterType {
 	Integer id;
 	String tnrType;
 	Integer taxId;

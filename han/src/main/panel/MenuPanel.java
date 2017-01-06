@@ -67,11 +67,15 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Personalia", "Jabatan", "Jabatan", "module.personalia.ui.MSPositionConfigPanel");
 		menu.addNewLeafTo("Personalia", "Tipe Karyawan", "Tipe Karyawan", "module.personalia.ui.EmployeeTypeConfigPanel");
 		menu.addNewLeafTo("Personalia", "Karyawan", "Karyawan", "module.personalia.ui.EmployeeConfigPanel");
-		menu.addNewLeafTo("Personalia", "Komponen Payroll", "Komponen Payroll", "module.personalia.ui.PayrollComponentConfigPanel");
-		menu.addNewLeafTo("Personalia", "Pemetaan Gaji", "Pemetaan Gaji", "module.personalia.ui.PayrollMappingConfigPanel");
-		menu.addNewLeafTo("Personalia", "Setting Gaji", "Setting Gaji", "module.personalia.ui.SalarySettingConfigPanel");
-		menu.addNewLeafTo("Personalia", "Master Jenis Tunjangan Non Rutin", "Master Jenis Tunjangan Non Rutin", "module.personalia.ui.NonRoutineAllowanceConfigPanel");
 		menu.calculateAvaiableSpace();
+		
+		menu.addNewMenu("Payroll", "Payroll");
+		menu.addNewLeafTo("Payroll", "Komponen Payroll", "Komponen Payroll", "module.personalia.ui.PayrollComponentConfigPanel");
+		menu.addNewLeafTo("Payroll", "Pemetaan Gaji", "Pemetaan Gaji", "module.personalia.ui.PayrollMappingConfigPanel");
+		menu.addNewLeafTo("Payroll", "Setting Gaji", "Setting Gaji", "module.personalia.ui.SalarySettingConfigPanel");
+		menu.addNewLeafTo("Payroll", "Master Jenis Tunjangan Non Rutin", "Master Jenis Tunjangan Non Rutin", "module.personalia.ui.NonRoutineAllowanceMasterTypeConfigPanel");
+		menu.addNewLeafTo("Payroll", "Master Tunjangan Non Rutin", "Master Tunjangan Non Rutin", "module.personalia.ui.NonRoutineAllowanceMasterConfigPanel");
+		menu.addNewLeafTo("Payroll", "Tunjangan Non Rutin", "Tunjangan Non Rutin", "module.personalia.ui.NonRoutineAllowanceTransactionConfigPanel");
 		
 		menu.addNewMenu("Konfigurasi Sistem", "Konfigurasi Sistem");
 		menu.addNewLeafTo("Konfigurasi Sistem", "Group", "Group", "module.system.ui.GroupConfigPanel");
