@@ -337,6 +337,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 							del.setId(delivery.getId());
 							try {
 								ReceivedDAOFactory.getReceivedDAO().update(rec);
+								del.setReceivedCode(rec.getReceivedCode());
 								ReceivedDAOFactory.getDeliveryDAO().update(del);
 								DialogBox.showEdit();
 								MainPanel.changePanel("module.pembelian.ui.ListReceivedSecurityPanel");
@@ -711,7 +712,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		
 		
 		try {
-			delivery = ReceivedDAOFactory.getDeliveryDAO().getDeliveryNoteByCode(received.getDeliveryNote());
+			delivery = ReceivedDAOFactory.getDeliveryDAO().getDeliveryNoteByCode(received.getReceivedCode());
 			docTypeField.setText(delivery.getDocumentType());
 			docDateChooser.setDate(delivery.getDocIssuedDate());
 			totalLogField.setText(""+delivery.getTotalLog());
