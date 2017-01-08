@@ -207,7 +207,10 @@ public class DailyClosingBL {
 
 			for (Production production : listOfProdRM) {
 				 InventoryLogTemp inventoryLogTemp = new InventoryLogTemp();
-				 inventoryLogTemp.setProductCode(production.getPalletCard().getProductCode());
+				 String productCodeBalkenKering = new StringBuilder().append("K")
+							.append(production.getPalletCard().getProductCode().substring(1)).toString();
+
+				 inventoryLogTemp.setProductCode(productCodeBalkenKering);
 				 inventoryLogTemp.setWarehouse(0);
 				 inventoryLogTemp.setQty(production.getPalletCard().getTotal());
 				 inventoryLogTemp.setMutasi(AppConstants.CREDIT);
@@ -216,7 +219,7 @@ public class DailyClosingBL {
 				
 				 new InventoryLogTempDAO(con).save(inventoryLogTemp);
 				
-				 new ProdRMDAO(con).updateDailyClosing(production.getPalletCard().getProductCode(), AppConstants.STATUS_FINAL);
+				 new ProdRMDAO(con).updateDailyClosing(production.getProductionCode(), AppConstants.STATUS_FINAL);
 				 
 				 if(productionCodes.isEmpty()) {
 					 productionCodes.add(production.getProductionCode());
@@ -234,13 +237,13 @@ public class DailyClosingBL {
 				 inventoryLogTemp.setProductCode(production.getProductionResultProduct().getProductCode());
 				 inventoryLogTemp.setWarehouse(0);
 				 inventoryLogTemp.setQty(production.getProductionResultProduct().getQty());
-				 inventoryLogTemp.setMutasi(AppConstants.CREDIT);
-				 inventoryLogTemp.setSrcTable(AppConstants.PRODUCTION_PROD_RM);
+				 inventoryLogTemp.setMutasi(AppConstants.DEBET);
+				 inventoryLogTemp.setSrcTable(AppConstants.PROD_RESULT);
 				 inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
 				
 				 new InventoryLogTempDAO(con).save(inventoryLogTemp);
 				
-				 new ProductionResultDAO(con).updateDailyClosing(production.getProductionResultProduct().getProductCode(), AppConstants.STATUS_FINAL);
+				 new ProductionResultDAO(con).updateDailyClosing(production.getProductionCode(), AppConstants.STATUS_FINAL);
 				 
 				 if(productionCodes.isEmpty()) {
 					 productionCodes.add(production.getProductionCode());

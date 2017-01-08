@@ -263,12 +263,12 @@ public class ProductionDAO {
 				.append(" INNER JOIN pallet_card pc ON r.pallet_card_code = pc.pallet_card_code ")
 				.append(" INNER JOIN product pd ON pd.product_code = pc.product_code ")
 				.append(" WHERE a.deleted_date IS NULL AND r.deleted_date IS NULL AND pc.deleted_date IS NULL AND pd.deleted_date IS NULL")
-				.append(" AND a.status <> 'FINAL' AND r.status <> 'FINAL'")
+				.append(" AND r.confirm_date IS NULL")
 				.append(" AND a.confirm_date IS NULL AND c.deleted_date is NULL AND e.deleted_date is NULL ")
 				.append(" AND a.input_date <= CURDATE()").toString();
 		
 			getAllStatement = connection.prepareStatement(query);
-			
+			System.out.println(getAllStatement);
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
 				Production production = new Production();
@@ -322,12 +322,12 @@ public class ProductionDAO {
 				.append(" INNER JOIN prod_result r ON r.prod_code = a.production_code")
 				.append(" INNER JOIN prod_result_product rp ON rp.prod_result_id = r.id")
 				.append(" WHERE a.deleted_date IS NULL AND r.deleted_date is NULL AND rp.deleted_date is NULL")
-				.append(" AND a.status <> 'FINAL' AND r.status <> 'FINAL'")
+				.append(" AND r.confirm_date IS NULL ")
 				.append(" AND a.confirm_date IS NULL AND c.deleted_date is NULL AND e.deleted_date is NULL")
 				.append(" AND a.input_date <= CURDATE()").toString();
 		
 			getAllStatement = connection.prepareStatement(query);
-			
+			System.out.println(getAllStatement);
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
 				Production production = new Production();

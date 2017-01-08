@@ -22,6 +22,7 @@ public class AppConstants {
 	public static final String DEBET = "D";
 	public static final String CREDIT = "C";
 	public static final String PRODUCTION_PROD_RM = "PROD_RM";
+	public static final String PROD_RESULT = "PROD_RESULT";
 	
 	public static final String BALKEN_BASAH_CD = "B";
 	public static final String BALKEN_KERING_CD = "K";
