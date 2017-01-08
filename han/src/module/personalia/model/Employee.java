@@ -1,51 +1,74 @@
 package module.personalia.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Employee {
 
-	String employeeId;
-	String employeeName;
-	String npwp;
+	String id;
+	String empCode;
+	String name;
+	String empTypeId;
+	String currentAddress;
+	String currentCity;
 	String ktp;
 	String ktpAddress;
-	String address;
-	String originCity;
+	String ktpCity;
+	String hometown;
+	Integer totalChild;
+	String bankCode;
+	String bankAccountNumber;
+	String groupShiftCode;
 	Date birthDate;
 	String email;
-	String phoneNumber;
+	String phone;
+	BigDecimal salary;
+	String departmentId;
 	String genderId;
+	String positionId;
 	String maritalId;
-	Integer childNo;
-	String bankName;
-	String bankAccountNo;
-	String groupShiftCode;
-	String photo;
-	String employeeStatusId;
+	String emplStatusId;
 	Date inputDate;
 	String inputBy;
 	Date editDate;
 	String editBy;
 	Date deleteDate;
 	String deleteBy;
-	
-	public String getEmployeeId() {
-		return employeeId;
+	public String getId() {
+		return id;
 	}
-	public void setEmployeeId(String employeeId) {
-		this.employeeId = employeeId;
+	public void setId(String id) {
+		this.id = id;
 	}
-	public String getEmployeeName() {
-		return employeeName;
+	public String getEmpCode() {
+		return empCode;
 	}
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
+	public void setEmpCode(String empCode) {
+		this.empCode = empCode;
 	}
-	public String getNpwp() {
-		return npwp;
+	public String getName() {
+		return name;
 	}
-	public void setNpwp(String npwp) {
-		this.npwp = npwp;
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getEmpTypeId() {
+		return empTypeId;
+	}
+	public void setEmpTypeId(String empTypeId) {
+		this.empTypeId = empTypeId;
+	}
+	public String getCurrentAddress() {
+		return currentAddress;
+	}
+	public void setCurrentAddress(String currentAddress) {
+		this.currentAddress = currentAddress;
+	}
+	public String getCurrentCity() {
+		return currentCity;
+	}
+	public void setCurrentCity(String currentCity) {
+		this.currentCity = currentCity;
 	}
 	public String getKtp() {
 		return ktp;
@@ -59,17 +82,41 @@ public class Employee {
 	public void setKtpAddress(String ktpAddress) {
 		this.ktpAddress = ktpAddress;
 	}
-	public String getAddress() {
-		return address;
+	public String getKtpCity() {
+		return ktpCity;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public void setKtpCity(String ktpCity) {
+		this.ktpCity = ktpCity;
 	}
-	public String getOriginCity() {
-		return originCity;
+	public String getHometown() {
+		return hometown;
 	}
-	public void setOriginCity(String originCity) {
-		this.originCity = originCity;
+	public void setHometown(String hometown) {
+		this.hometown = hometown;
+	}
+	public Integer getTotalChild() {
+		return totalChild;
+	}
+	public void setTotalChild(Integer totalChild) {
+		this.totalChild = totalChild;
+	}
+	public String getBankCode() {
+		return bankCode;
+	}
+	public void setBankCode(String bankCode) {
+		this.bankCode = bankCode;
+	}
+	public String getBankAccountNumber() {
+		return bankAccountNumber;
+	}
+	public void setBankAccountNumber(String bankAccountNumber) {
+		this.bankAccountNumber = bankAccountNumber;
+	}
+	public String getGroupShiftCode() {
+		return groupShiftCode;
+	}
+	public void setGroupShiftCode(String groupShiftCode) {
+		this.groupShiftCode = groupShiftCode;
 	}
 	public Date getBirthDate() {
 		return birthDate;
@@ -83,11 +130,23 @@ public class Employee {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getPhoneNumber() {
-		return phoneNumber;
+	public String getPhone() {
+		return phone;
 	}
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public BigDecimal getSalary() {
+		return salary;
+	}
+	public void setSalary(BigDecimal salary) {
+		this.salary = salary;
+	}
+	public String getDepartmentId() {
+		return departmentId;
+	}
+	public void setDepartmentId(String departmentId) {
+		this.departmentId = departmentId;
 	}
 	public String getGenderId() {
 		return genderId;
@@ -95,47 +154,23 @@ public class Employee {
 	public void setGenderId(String genderId) {
 		this.genderId = genderId;
 	}
+	public String getPositionId() {
+		return positionId;
+	}
+	public void setPositionId(String positionId) {
+		this.positionId = positionId;
+	}
 	public String getMaritalId() {
 		return maritalId;
 	}
 	public void setMaritalId(String maritalId) {
 		this.maritalId = maritalId;
 	}
-	public Integer getChildNo() {
-		return childNo;
+	public String getEmplStatusId() {
+		return emplStatusId;
 	}
-	public void setChildNo(Integer childNo) {
-		this.childNo = childNo;
-	}
-	public String getBankName() {
-		return bankName;
-	}
-	public void setBankName(String bankName) {
-		this.bankName = bankName;
-	}
-	public String getBankAccountNo() {
-		return bankAccountNo;
-	}
-	public void setBankAccountNo(String bankAccountNo) {
-		this.bankAccountNo = bankAccountNo;
-	}
-	public String getGroupShiftCode() {
-		return groupShiftCode;
-	}
-	public void setGroupShiftCode(String groupShiftCode) {
-		this.groupShiftCode = groupShiftCode;
-	}
-	public String getPhoto() {
-		return photo;
-	}
-	public void setPhoto(String photo) {
-		this.photo = photo;
-	}
-	public String getEmployeeStatusId() {
-		return employeeStatusId;
-	}
-	public void setEmployeeStatusId(String employeeStatusId) {
-		this.employeeStatusId = employeeStatusId;
+	public void setEmplStatusId(String emplStatusId) {
+		this.emplStatusId = emplStatusId;
 	}
 	public Date getInputDate() {
 		return inputDate;

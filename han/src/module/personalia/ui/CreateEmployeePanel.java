@@ -3,13 +3,21 @@ package module.personalia.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -23,6 +31,10 @@ import com.toedter.calendar.JDateChooser;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
+import main.component.ImageFileView;
+import main.component.ImageFilter;
+import main.component.ImagePanel;
+import main.component.ImagePreview;
 import main.panel.MainPanel;
 import module.personalia.model.Division;
 import module.personalia.model.EmployeePosition;
@@ -30,8 +42,8 @@ import module.personalia.model.EmployeePosition;
 public class CreateEmployeePanel extends JPanel {
 
 	private static final long serialVersionUID = -9009351103530748031L;
-	private JTextField nameField;
-	private JTextField codeField;
+	private JTextField employeeNameField;
+	private JTextField employeeCodeField;
 	private JTextField npwpField;
 	private JTextField ktpField;
 	private JTextField ktpAddressField;
@@ -48,7 +60,9 @@ public class CreateEmployeePanel extends JPanel {
 	private ComboBox<String> shiftGroupCmbox;
 	private JRadioButton activeRdbtn;
 	private JRadioButton notActiveRdbtn;
-	private JPanel photoPnl;
+	private ImagePanel photoPnl;
+	private JFileChooser jfc;
+	private BufferedImage image = null;
 
 	public CreateEmployeePanel() {
 		setLayout(null);
@@ -79,11 +93,11 @@ public class CreateEmployeePanel extends JPanel {
 		label_1.setBounds(130, 80, 10, 30);
 		containerPanel.add(label_1);
 		
-		codeField = new JTextField();
-		codeField.setBounds(140, 80, 200, 30);
-		codeField.setEditable(false);
-		codeField.setEnabled(false);
-		containerPanel.add(codeField);
+		employeeCodeField = new JTextField();
+		employeeCodeField.setBounds(140, 80, 200, 30);
+		employeeCodeField.setEditable(false);
+		employeeCodeField.setEnabled(false);
+		containerPanel.add(employeeCodeField);
 		// nama
 		JLabel label_2 = new JLabel("<html>Nama Karyawan<font color='red'> * </font></html>");
 		label_2.setBounds(30, 120, 100, 30);
@@ -93,9 +107,9 @@ public class CreateEmployeePanel extends JPanel {
 		label_3.setBounds(130, 120, 10, 30);
 		containerPanel.add(label_3);
 		
-		nameField = new JTextField();
-		nameField.setBounds(140, 120, 200, 30);
-		containerPanel.add(nameField);
+		employeeNameField = new JTextField();
+		employeeNameField.setBounds(140, 120, 200, 30);
+		containerPanel.add(employeeNameField);
 		// npwp
 		JLabel lblnpwp = new JLabel("<html>NPWP<font color='red'> * </font></html>");
 		lblnpwp.setBounds(30, 160, 100, 30);
@@ -294,7 +308,7 @@ public class CreateEmployeePanel extends JPanel {
 		label_19.setBounds(130, 760, 10, 30);
 		containerPanel.add(label_19);
 		
-		photoPnl = new JPanel();
+		photoPnl = new ImagePanel();
 		photoPnl.setBounds(140, 760, 236, 300);
 		photoPnl.setBackground(Color.BLACK);
 		containerPanel.add(photoPnl);
@@ -302,6 +316,38 @@ public class CreateEmployeePanel extends JPanel {
 		JButton searchfileBtn = new JButton("Cari File");
 		searchfileBtn.setBounds(140, 1070, 75, 30);
 		containerPanel.add(searchfileBtn);
+		
+		jfc = new JFileChooser();
+		jfc.addChoosableFileFilter(new ImageFilter());
+		jfc.setAcceptAllFileFilterUsed(false);
+		jfc.setFileView(new ImageFileView());
+		jfc.setAccessory(new ImagePreview(jfc));
+		
+		searchfileBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == searchfileBtn) {
+					int returnValue =  jfc.showDialog(CreateEmployeePanel.this, "Upload");
+					
+					if (returnValue == JFileChooser.APPROVE_OPTION) {
+						File file = jfc.getSelectedFile();
+						try {
+							image = ImageIO.read(file);
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+						photoPnl.setImage(image);
+						photoPnl.validate();
+						photoPnl.updateUI();
+					}
+					else {
+						System.out.println("gagal");
+					}
+					jfc.setSelectedFile(null);
+				}
+			}
+		});
 		
 		JButton uploadBtn = new JButton("Upload");
 		uploadBtn.setBounds(225, 1070, 75, 30);
@@ -364,13 +410,13 @@ public class CreateEmployeePanel extends JPanel {
 		StringBuffer lastId = new StringBuffer();
 		lastId.append("EMP");
 		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdDivision()));
-		codeField.setText(lastId.toString());
+		employeeCodeField.setText(lastId.toString());
 	}
 
 	protected void save() {
 		Division division = new Division();
-		division.setId(codeField.getText());
-		division.setName(nameField.getText());
+		division.setId(employeeCodeField.getText());
+		division.setName(employeeNameField.getText());
 		division.setInputDate(new Date());
 		division.setInputBy("");
 		division.setEditDate(new Date());
@@ -396,15 +442,15 @@ public class CreateEmployeePanel extends JPanel {
 
 	private void clear() {
 		getLastID();
-		nameField.setText("");
+		employeeNameField.setText("");
 	}
 	
-	class PositionHistoryTableModel extends AbstractTableModel {
+	class EmployeePositionHistoryTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = -8720800573929798216L;
 		private List<EmployeePosition> employeePositions;
 
-		public PositionHistoryTableModel(List<EmployeePosition> employeePositions) {
+		public EmployeePositionHistoryTableModel(List<EmployeePosition> employeePositions) {
 			this.employeePositions = employeePositions;
 		}
 

@@ -144,9 +144,9 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 			case 0:
 				return employees.indexOf(employee) + 1;
 			case 1:
-				return employee.getEmployeeId();
+				return employee.getEmpCode();
 			case 2:
-				return employee.getEmployeeName();
+				return employee.getName();
 			case 3:
 				return "<html><u>View</u></html>";
 			default:

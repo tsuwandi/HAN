@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class EmployeePosition {
 
-	Integer id;
+	String id;
 	String employeeId;
 	Date startDate;
 	Date endDate;
@@ -15,11 +15,11 @@ public class EmployeePosition {
 	EmployeeType employeeType;
 	String referenceDoc;
 	String notes;
-	
-	public Integer getId() {
+
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getEmployeeId() {
