@@ -39,7 +39,7 @@ public class ReceivedDAO {
 	private String getAllQuery = "select a.id, received_by, a.received_code, received_date, rit_no, a.license_plate, a.supplier_code, a.supplier_cp_id, s.name, "
 			+ "driver, a.delivery_note, a.wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource, a.emp_code, a.total_volume "
 			+ "FROM received a " + "INNER JOIN supplier c ON a.supplier_code = c.supp_code "
-			+ "INNER JOIN supp_cp s ON a.supplier_cp_id = s.supp_address_id "
+			+ "INNER JOIN supp_cp s ON a.supplier_cp_id = s.id "
 			+ "INNER JOIN wood_type d ON a.wood_type_id = d.id "
 			+ "INNER JOIN delivery f ON a.received_code = f.received_code "
 			+ "INNER JOIN wood_resource e ON f.wood_resource_id = e.id WHERE 1=1 AND a.deleted_date IS NULL";
