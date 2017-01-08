@@ -518,7 +518,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 
 		String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
 		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
-		String date = String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+		String date = String.format("%02d", cal.get(Calendar.DAY_OF_MONTH));
 
 		txtDate.setText(date);
 		txtMonth.setText(month);

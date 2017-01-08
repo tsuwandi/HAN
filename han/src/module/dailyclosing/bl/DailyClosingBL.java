@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
 
 public class DailyClosingBL {
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final Logger LOGGER = Logger.getLogger(DailyClosingBL.class);
 
 	private DataSource dataSource;
@@ -146,7 +146,10 @@ public class DailyClosingBL {
 				new InventoryLogTempDAO(con).save(inventoryLogTempCredit);
 
 				InventoryLogTemp inventoryLogTempDebet = new InventoryLogTemp();
-				inventoryLogTempDebet.setProductCode(dryOut.getPalletCard().getProductCode());
+				String productCodeBalkenKering = new StringBuilder().append("K")
+							.append(dryOut.getPalletCard().getProductCode().substring(1)).toString();
+
+				inventoryLogTempDebet.setProductCode(productCodeBalkenKering);
 				inventoryLogTempDebet.setWarehouse(dryOut.getChamberId());
 				inventoryLogTempDebet.setQty(dryOut.getPalletCard().getTotal());
 				inventoryLogTempDebet.setMutasi(AppConstants.DEBET);
@@ -168,9 +171,9 @@ public class DailyClosingBL {
 			con.close();
 		}
 	}
-	
+
 	/** END TUTUP HARIAN PENERIMAAN **/
-	
+
 	/** START TUTUP HARIAN PRODUKSI **/
 	public List<Production> getAllProductionForDailyClosing() throws SQLException {
 		Connection con = null;
@@ -181,7 +184,7 @@ public class DailyClosingBL {
 			con.close();
 		}
 	}
-	
+
 	public List<ProdRM> getAllProdRMForDailyClosing() throws SQLException {
 		Connection con = null;
 		try {
@@ -191,7 +194,7 @@ public class DailyClosingBL {
 			con.close();
 		}
 	}
-	
+
 	public List<ProductionResult> getAllProductionResultForDailyClosing() throws SQLException {
 		Connection con = null;
 		try {
@@ -201,7 +204,7 @@ public class DailyClosingBL {
 			con.close();
 		}
 	}
-	
+
 	public List<ProductionResultProduct> getAllProductionResultProductForDailyClosing() throws SQLException {
 		Connection con = null;
 		try {
@@ -211,12 +214,9 @@ public class DailyClosingBL {
 			con.close();
 		}
 	}
-	
-	
-	public void save(List<Production> listOfProduction,
-			List<ProdRM> listOfProdRM,
-			List<ProductionResult> listOfProductionResult,
-			List<ProductionResultProduct> listOfProductionResultProduct,
+
+	public void save(List<Production> listOfProduction, List<ProdRM> listOfProdRM,
+			List<ProductionResult> listOfProductionResult, List<ProductionResultProduct> listOfProductionResultProduct,
 			String confirmCode) throws SQLException {
 		Connection con = null;
 		try {
@@ -228,21 +228,21 @@ public class DailyClosingBL {
 			confirm.setModule(AppConstants.BUYING_MODULE);
 			confirm.setDailyClosingDate(DateUtil.setTimeStamp());
 			new ConfirmDAO(con).save(confirm);
-			
+
 			for (Production production : listOfProduction) {
-//				InventoryLogTemp inventoryLogTemp = new InventoryLogTemp();
-//				inventoryLogTemp.setProductCode(production.getProduct);
-//				inventoryLogTemp.setWarehouse(0);
-//				inventoryLogTemp.setQty(received.getPalletCard().getTotal());
-//				inventoryLogTemp.setMutasi(AppConstants.DEBET);
-//				inventoryLogTemp.setSrcTable(AppConstants.RECEIVED);
-//				inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
-//
-//				new InventoryLogTempDAO(con).save(inventoryLogTemp);
-//
-//				received.setReceivedStatus(ReceivedType.FINAL.toString());
-//
-//				new ReceivedDAO(con).updateDailyClosing(received);
+				// InventoryLogTemp inventoryLogTemp = new InventoryLogTemp();
+				// inventoryLogTemp.setProductCode(production.getProduct);
+				// inventoryLogTemp.setWarehouse(0);
+				// inventoryLogTemp.setQty(received.getPalletCard().getTotal());
+				// inventoryLogTemp.setMutasi(AppConstants.DEBET);
+				// inventoryLogTemp.setSrcTable(AppConstants.RECEIVED);
+				// inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
+				//
+				// new InventoryLogTempDAO(con).save(inventoryLogTemp);
+				//
+				// received.setReceivedStatus(ReceivedType.FINAL.toString());
+				//
+				// new ReceivedDAO(con).updateDailyClosing(received);
 			}
 			con.rollback();
 		} catch (SQLException e) {
@@ -252,7 +252,7 @@ public class DailyClosingBL {
 			con.close();
 		}
 	}
-	
+
 	/** END TUTUP HARIAN PRODUKSI **/
 
 	public static String makeConfirmCode() {
@@ -272,17 +272,18 @@ public class DailyClosingBL {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 			List<InventoryLogTemp> inventoryLogTemps = new InventoryLogTempDAO(con).getAll();
-			
-			for(InventoryLogTemp inventoryLogTemp : inventoryLogTemps) {
+
+			for (InventoryLogTemp inventoryLogTemp : inventoryLogTemps) {
 				double currStock = 0;
 				Inventory inventory = null;
-				inventory = new InventoryDAO(con).getInventoryByProductCodeAndWarehouse(inventoryLogTemp.getProductCode(), inventoryLogTemp.getWarehouse());
-				
+				inventory = new InventoryDAO(con).getInventoryByProductCodeAndWarehouse(
+						inventoryLogTemp.getProductCode(), inventoryLogTemp.getWarehouse());
+
 				InventoryLog inventoryLog = new InventoryLog();
 				inventoryLog.setProductCode(inventoryLogTemp.getProductCode());
 				inventoryLog.setWarehouse(inventoryLogTemp.getWarehouse());
 				inventoryLog.setConfirmCode(makeConfirmCode());
-				if(inventoryLogTemp.getMutasi().equals(AppConstants.DEBET)) {
+				if (inventoryLogTemp.getMutasi().equals(AppConstants.DEBET)) {
 					inventoryLog.setPrevStock((double) 0);
 					inventoryLog.setPlusStock(inventoryLogTemp.getQty());
 					inventoryLog.setMinStock((double) 0);
@@ -290,23 +291,24 @@ public class DailyClosingBL {
 					inventoryLog.setPrevStock((double) 0);
 					inventoryLog.setMinStock(inventoryLogTemp.getQty());
 					inventoryLog.setPlusStock((double) 0);
-					//currStock = inventoryLog.getPrevStock() - inventoryLog.getMinStock();
-					//inventoryLog.setCurrStock(currStock);
+					// currStock = inventoryLog.getPrevStock() -
+					// inventoryLog.getMinStock();
+					// inventoryLog.setCurrStock(currStock);
 				} else {
 					LOGGER.error("NO DATA MUTASI.");
 					throw new Exception("Failed to Process Daily Closing.");
 				}
-				
-				if(inventory == null) {
+
+				if (inventory == null) {
 					currStock = inventoryLog.getPrevStock() + inventoryLog.getPlusStock() - inventoryLog.getMinStock();
 					inventoryLog.setCurrStock(currStock);
 					inventoryLog.setPrevStockDate(new Date());
 					inventoryLog.setCurrStockDate(new Date());
-					
+
 					inventoryLog = new InventoryLogDAO(con).save(inventoryLog);
-					currStock = inventoryLog.getPrevStock() + inventoryLog.getPlusStock()  - inventoryLog.getMinStock();
+					currStock = inventoryLog.getPrevStock() + inventoryLog.getPlusStock() - inventoryLog.getMinStock();
 					inventoryLog.setCurrStock(currStock);
-							
+
 					inventory = new Inventory();
 					inventory.setId(0);
 					inventory.setProductCode(inventoryLogTemp.getProductCode());
@@ -314,35 +316,35 @@ public class DailyClosingBL {
 					inventory.setWarehouse(inventoryLogTemp.getWarehouse());
 					inventory.setStockDate(new Date());
 					inventory.setInventoryLogId(inventoryLog.getId());
-					
+
 					new InventoryDAO(con).save(inventory);
 				} else {
 					currStock = inventoryLog.getPrevStock() + inventoryLog.getPlusStock() - inventoryLog.getMinStock();
 					inventoryLog.setCurrStock(currStock);
 					inventoryLog.setPrevStock(inventory.getQty());
-					
-					//override curr_stock
+
+					// override curr_stock
 					inventoryLog.setCurrStock(inventory.getQty() + currStock);
-					
+
 					inventoryLog.setPrevStockDate(inventory.getStockDate());
 					inventoryLog.setCurrStockDate(new Date());
-					
+
 					inventoryLog = new InventoryLogDAO(con).save(inventoryLog);
 					currStock = inventoryLog.getPrevStock() + inventoryLog.getPlusStock() - inventoryLog.getMinStock();
 					inventoryLog.setCurrStock(currStock);
-					
+
 					inventory.setProductCode(inventoryLogTemp.getProductCode());
 					inventory.setQty(currStock);
 					inventory.setWarehouse(inventoryLogTemp.getWarehouse());
 					inventory.setStockDate(new Date());
 					inventory.setInventoryLogId(inventoryLog.getId());
-					
+
 					new InventoryDAO(con).update(inventory);
 				}
-				
+
 				new InventoryLogTempDAO(con).updateStatusConfirmDate(inventoryLogTemp);
 			}
-			
+
 			con.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -352,7 +354,5 @@ public class DailyClosingBL {
 			con.close();
 		}
 	}
-
-	
 
 }
