@@ -23,6 +23,16 @@ import module.dryout.model.DryOut;
 import module.pembelian.ReceivedType;
 import module.pembelian.dao.ReceivedDAO;
 import module.pembelian.model.Received;
+import module.production.dao.ProdRMDAO;
+import module.production.dao.ProductionDAO;
+import module.production.dao.ProductionResultDAO;
+import module.production.dao.ProductionResultProductDAO;
+import module.production.model.ProdRM;
+import module.production.model.Production;
+import module.production.model.ProductionResult;
+import module.production.model.ProductionResultProduct;
+import module.purchaseprodresult.dao.PurchaseProdResultDAO;
+import module.purchaseprodresult.model.PurchaseProdResult;
 import module.util.DateUtil;
 
 import org.apache.log4j.Logger;
@@ -38,6 +48,7 @@ public class DailyClosingBL {
 		this.dataSource = dataSource;
 	}
 
+	/** START TUTUP HARIAN PENERIMAAN **/
 	public List<Received> getAllReceivedForDailyClosing() throws SQLException {
 		Connection con = null;
 		try {
@@ -157,6 +168,92 @@ public class DailyClosingBL {
 			con.close();
 		}
 	}
+	
+	/** END TUTUP HARIAN PENERIMAAN **/
+	
+	/** START TUTUP HARIAN PRODUKSI **/
+	public List<Production> getAllProductionForDailyClosing() throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductionDAO(con).getAllProductionForDailyClosing();
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<ProdRM> getAllProdRMForDailyClosing() throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProdRMDAO(con).getAllProdRMForDailyClosing();
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<ProductionResult> getAllProductionResultForDailyClosing() throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductionResultDAO(con).getAllProductionResultForDailyClosing();
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<ProductionResultProduct> getAllProductionResultProductForDailyClosing() throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductionResultProductDAO(con).getAllProductionResultProductForDailyClosing();
+		} finally {
+			con.close();
+		}
+	}
+	
+	
+	public void save(List<Production> listOfProduction,
+			List<ProdRM> listOfProdRM,
+			List<ProductionResult> listOfProductionResult,
+			List<ProductionResultProduct> listOfProductionResultProduct,
+			String confirmCode) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			con.setAutoCommit(false);
+
+			Confirm confirm = new Confirm();
+			confirm.setConfirmCode(confirmCode);
+			confirm.setModule(AppConstants.BUYING_MODULE);
+			confirm.setDailyClosingDate(DateUtil.setTimeStamp());
+			new ConfirmDAO(con).save(confirm);
+			
+			for (Production production : listOfProduction) {
+//				InventoryLogTemp inventoryLogTemp = new InventoryLogTemp();
+//				inventoryLogTemp.setProductCode(production.getProduct);
+//				inventoryLogTemp.setWarehouse(0);
+//				inventoryLogTemp.setQty(received.getPalletCard().getTotal());
+//				inventoryLogTemp.setMutasi(AppConstants.DEBET);
+//				inventoryLogTemp.setSrcTable(AppConstants.RECEIVED);
+//				inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
+//
+//				new InventoryLogTempDAO(con).save(inventoryLogTemp);
+//
+//				received.setReceivedStatus(ReceivedType.FINAL.toString());
+//
+//				new ReceivedDAO(con).updateDailyClosing(received);
+			}
+			con.rollback();
+		} catch (SQLException e) {
+			con.rollback();
+			throw new SQLException(e.getMessage());
+		} finally {
+			con.close();
+		}
+	}
+	
+	/** END TUTUP HARIAN PRODUKSI **/
 
 	public static String makeConfirmCode() {
 		final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -255,5 +352,7 @@ public class DailyClosingBL {
 			con.close();
 		}
 	}
+
+	
 
 }

@@ -168,4 +168,37 @@ public class ProductionResultDAO {
 		}
 
 	}
+
+	public List<ProductionResult> getAllProductionResultForDailyClosing() throws SQLException {
+		
+		List<ProductionResult> prodPKResults = new ArrayList<ProductionResult>();
+		String query = new StringBuilder().append(getAllQuery)
+				.append(" AND confirm_date is NOT NULL")
+				.append(" AND input_date <= CURDATE()").toString();
+		try {
+			getAllStatement = connection.prepareStatement(query);
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				ProductionResult prodPKResult = new ProductionResult();
+				prodPKResult.setId(rs.getInt("id"));
+				prodPKResult.setProdCode(rs.getString("prod_code"));
+				prodPKResult.setPressedNo(rs.getInt("pressed_no"));
+				prodPKResult.setStartTime(rs.getString("start_time"));
+				prodPKResult.setTotalFineA(rs.getDouble("total_fine_a"));
+				prodPKResult.setTotalFineB(rs.getDouble("total_fine_b"));
+				prodPKResult.setTotalProtol(rs.getDouble("total_protol"));
+				prodPKResult.setTotalKlem(rs.getDouble("total_klem"));
+				prodPKResults.add(prodPKResult);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return prodPKResults;
+		
+		
+	}
 }

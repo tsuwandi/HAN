@@ -249,7 +249,8 @@ public class DryOutDAO {
 					+ "INNER JOIN pallet_card pc ON pc.pallet_card_code = dp.pallet_card_code "
 					+ "INNER JOIN product pd ON pd.product_code = pc.product_code "
 					+ "WHERE d.confirm_date IS NULL "
-					+ "AND d.deleted_date IS NULL AND dp.deleted_date IS NULL AND pc.deleted_date IS NULL";
+					+ "AND d.deleted_date IS NULL AND dp.deleted_date IS NULL AND pc.deleted_date IS NULL"
+					+ "AND d.input_date <= CURDATE()";
 			
 			getAllStatement = connection.prepareStatement(allDryOutForDailyClosingQuery);
 
