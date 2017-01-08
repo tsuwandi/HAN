@@ -68,25 +68,18 @@ public class DailyClosingProductionDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					String confirmCode = DailyClosingBL.makeConfirmCode();
-					List<Production> listOfProduction = ServiceFactory.getDailyClosingBL().getAllProductionForDailyClosing();
-					List<ProdRM> listOfProdRM = ServiceFactory.getDailyClosingBL().getAllProdRMForDailyClosing();
-					List<ProductionResult> listOfProductionResult = ServiceFactory.getDailyClosingBL().getAllProductionResultForDailyClosing();
-					List<ProductionResultProduct> listOfProductionResultProduct = ServiceFactory.getDailyClosingBL().getAllProductionResultProductForDailyClosing();
-
-					
+					List<Production> listOfProdRM = ServiceFactory.getDailyClosingBL().getAllProductionCreditForDailyClosing();
+					List<Production> listOfProductionResult = ServiceFactory.getDailyClosingBL().getAllProductionDebetForDailyClosing();
+				
 					
 					/* Convert List to JRBeanCollectionDataSource */
-					JRBeanCollectionDataSource itemsJRBeanListOfProduction = new JRBeanCollectionDataSource(listOfProduction);
 					JRBeanCollectionDataSource itemsJRBeanListOfProdRM = new JRBeanCollectionDataSource(listOfProdRM);
 					JRBeanCollectionDataSource itemsJRBeanListOfProductionResult = new JRBeanCollectionDataSource(listOfProductionResult);
-					JRBeanCollectionDataSource itemsJRBeanListOfProductionResultProduct = new JRBeanCollectionDataSource(listOfProductionResultProduct);
-
+				
 					/* Map to hold Jasper report Parameters */
 					Map<String, Object> parameters = new HashMap<String, Object>();
-					parameters.put("ItemDataSourceListOfProduction", itemsJRBeanListOfProduction);
 					parameters.put("ItemDataSourceListOfProdRM", itemsJRBeanListOfProdRM);
 					parameters.put("ItemDataSourceListOfProductionResult", itemsJRBeanListOfProductionResult);
-					parameters.put("ItemDataSourceListOfProductionResultProduct", itemsJRBeanListOfProductionResultProduct);
 					/*
 					 * Using compiled version(.jasper) of Jasper report to
 					 * generate PDF
@@ -95,7 +88,7 @@ public class DailyClosingProductionDialog extends JDialog {
 //							"src/module/dailyclosing/jasper/DailyClosing.jasper", parameters, new JREmptyDataSource());
 
 					if (rdbtnMonitor.isSelected()) {
-						if (isValid(listOfProduction, listOfProdRM, listOfProductionResult, listOfProductionResultProduct) == true) {
+						if (isValid(listOfProdRM, listOfProductionResult) == true) {
 							//JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
 
 //							JDialog dialog = new JDialog();
@@ -114,17 +107,17 @@ public class DailyClosingProductionDialog extends JDialog {
 									if (response == JOptionPane.YES_OPTION) {
 										//dialog.dispose();
 										try {
-											save(listOfProduction, listOfProdRM, listOfProductionResult, listOfProductionResultProduct, confirmCode);
+											save(listOfProdRM, listOfProductionResult, confirmCode);
 										} catch (SQLException e1) {
 											e1.printStackTrace();
 											JOptionPane.showMessageDialog(null, "Gagal Memproses Tutup Harian",
-													"Tutup Harian", JOptionPane.ERROR_MESSAGE);
+													"Tutup Harian Produksi", JOptionPane.ERROR_MESSAGE);
 										}
 									}
 //								}
 //							});
 						} else {
-							JOptionPane.showMessageDialog(null, "Tidak ada data yang diproses.", "Tutup Harian",
+							JOptionPane.showMessageDialog(null, "Tidak ada data yang diproses.", "Tutup Harian Produksi",
 									JOptionPane.INFORMATION_MESSAGE);
 							dispose();
 						}
@@ -212,21 +205,22 @@ public class DailyClosingProductionDialog extends JDialog {
 
 	}
 	
-	public boolean isValid(List<Production> listOfProduction, List<ProdRM> listOfProdRM
-			, List<ProductionResult> listOfProductionResult, List<ProductionResultProduct> listOfProductionResultProduct) {
-		if (!listOfProduction.isEmpty() || !listOfProductionResult.isEmpty() || !listOfProductionResultProduct.isEmpty())
+	public boolean isValid(List<Production> listOfProdRM
+			, List<Production> listOfProductionResult) {
+		if (!listOfProductionResult.isEmpty() || !listOfProductionResult.isEmpty())
 			return true;
 
 		return false;
 	}
 
-	public void save(List<Production> listOfProduction, List<ProdRM> listOfProdRM
-			, List<ProductionResult> listOfProductionResult, List<ProductionResultProduct> listOfProductionResultProduct,
+	public void save(List<Production> listOfProdRM
+			, List<Production> listOfProductionResult,
 			String confirmCode) throws SQLException {
+System.out.println(listOfProdRM);
+System.out.println(listOfProductionResult);
+		//ServiceFactory.getDailyClosingBL().save(listOfProdRM, listOfProductionResult, confirmCode);
 
-		ServiceFactory.getDailyClosingBL().save(listOfProduction, listOfProdRM, listOfProductionResult, listOfProductionResultProduct, confirmCode);
-
-		JOptionPane.showMessageDialog(null, "Tutup Harian Berhasil", "Tutup Harian", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Tutup Harian Berhasil", "Tutup Harian Produksi", JOptionPane.INFORMATION_MESSAGE);
 
 	}
 }

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import module.production.model.ProdRM;
+import module.production.model.Production;
+import module.util.DateUtil;
 
 public class ProdRMDAO {
 	private Connection connection;
@@ -229,5 +231,27 @@ public class ProdRMDAO {
 		}
 		
 		return prodRMs;
+	}
+	
+	private PreparedStatement updateDailyClosingStatement;
+	private String updateDailyClosingQuery = "update prod_rm set confirm_date=?, status=?, "
+			+ "edit_date=?, edited_by=? where production_code=? ";
+	
+	public void updateDailyClosing(String code, String status) throws SQLException {
+		try {
+			updateDailyClosingStatement = connection.prepareStatement(updateDailyClosingQuery);
+			
+			updateDailyClosingStatement.setDate(1, DateUtil.getCurrentDate());
+			updateDailyClosingStatement.setString(2, status);
+			updateDailyClosingStatement.setDate(3, DateUtil.getCurrentDate());
+			updateDailyClosingStatement.setString(4, "timotius");
+			updateDailyClosingStatement.setString(5, code);
+			updateDailyClosingStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
 	}
 }
