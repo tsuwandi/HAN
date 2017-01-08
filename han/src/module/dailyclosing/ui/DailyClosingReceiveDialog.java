@@ -94,7 +94,7 @@ public class DailyClosingReceiveDialog extends JDialog {
 							JDialog dialog = new JDialog();
 							dialog.setContentPane(jasperViewer.getContentPane());
 							dialog.setSize(jasperViewer.getSize());
-							dialog.setTitle("Laporan Tutup Harian");
+							dialog.setTitle("Laporan Tutup Harian Penerimaan");
 							dialog.setVisible(true);
 
 							setVisible(false);
@@ -110,14 +110,14 @@ public class DailyClosingReceiveDialog extends JDialog {
 											save(listOfReceived, listOfDryIn, listOfDryOut, confirmCode);
 										} catch (SQLException e1) {
 											e1.printStackTrace();
-											JOptionPane.showMessageDialog(null, "Gagal Memproses Tutup Harian",
+											JOptionPane.showMessageDialog(null, "Gagal Memproses Tutup Harian Penerimaan",
 													"Tutup Harian", JOptionPane.ERROR_MESSAGE);
 										}
 									}
 								}
 							});
 						} else {
-							JOptionPane.showMessageDialog(null, "Tidak ada data yang diproses.", "Tutup Harian",
+							JOptionPane.showMessageDialog(null, "Tidak ada data yang diproses.", "Tutup Harian Penerimaan",
 									JOptionPane.INFORMATION_MESSAGE);
 							dispose();
 						}
@@ -169,7 +169,7 @@ public class DailyClosingReceiveDialog extends JDialog {
 
 				} catch (Exception e1) {
 					e1.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Gagal Memproses Tutup Harian", "Tutup Harian",
+					JOptionPane.showMessageDialog(null, "Gagal Memproses Tutup Harian Penerimaan", "Tutup Harian Penerimaan",
 							JOptionPane.ERROR_MESSAGE);
 				}
 
@@ -211,7 +211,7 @@ public class DailyClosingReceiveDialog extends JDialog {
 
 		ServiceFactory.getDailyClosingBL().save(listOfReceived, listOfDryIn, listOfDryOut, confirmCode);
 
-		JOptionPane.showMessageDialog(null, "Tutup Harian Berhasil", "Tutup Harian", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Tutup Harian Penerimaan Berhasil", "Tutup Harian Penerimaan", JOptionPane.INFORMATION_MESSAGE);
 
 	}
 }

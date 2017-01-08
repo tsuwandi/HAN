@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import module.production.model.ProductionResult;
 import module.purchaseprodresult.model.PurchaseProdResult;
 import module.sn.currency.model.Currency;
 import module.supplier.model.Supplier;
@@ -273,4 +274,6 @@ public class PurchaseProdResultDAO {
 
 		return ordinal;
 	}
+
+
 }

@@ -5,11 +5,11 @@ import javax.swing.JPanel;
 
 import main.panel.MainPanel;
 
-public class DailyClosingReceivePanel extends JPanel {
+public class DailyClosingProductionPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	public DailyClosingReceivePanel() {
+	public DailyClosingProductionPanel() {
 		MainPanel.bodyPanel.removeAll();
 		MainPanel.bodyPanel.revalidate();
 		MainPanel.bodyPanel.repaint();
@@ -19,10 +19,10 @@ public class DailyClosingReceivePanel extends JPanel {
 
 		if (response == JOptionPane.YES_OPTION) {
 
-			DailyClosingReceiveDialog dailyClosingReceiveDialog = new DailyClosingReceiveDialog();
-			dailyClosingReceiveDialog.setTitle("Tutup Harian Penerimaan");
-			dailyClosingReceiveDialog.setLocationRelativeTo(null);
-			dailyClosingReceiveDialog.setVisible(true);
+			DailyClosingProductionDialog dailyClosingProductionDialog = new DailyClosingProductionDialog();
+			dailyClosingProductionDialog.setTitle("Tutup Harian Produksi");
+			dailyClosingProductionDialog.setLocationRelativeTo(null);
+			dailyClosingProductionDialog.setVisible(true);
 
 		}
 	}

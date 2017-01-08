@@ -1,5 +1,6 @@
 package module.production.model;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -73,6 +74,28 @@ public class ProductionResult {
 		this.totalFineB = totalFineB;
 	}
 	
-	
+	//timotius@20170107_start_tutup_harian_produksi
+	private Date confirmDate;
+	private String confirmCode;
+	private String status;
+	public Date getConfirmDate() {
+		return confirmDate;
+	}
+	public void setConfirmDate(Date confirmDate) {
+		this.confirmDate = confirmDate;
+	}
+	public String getConfirmCode() {
+		return confirmCode;
+	}
+	public void setConfirmCode(String confirmCode) {
+		this.confirmCode = confirmCode;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	//timotius@20170107_end_tutup_harian_produksi
 	
 }

@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import module.pembelian.model.Received;
 import module.production.model.Production;
 
 public class ProductionDAO {
@@ -240,6 +239,48 @@ public class ProductionDAO {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
+		return productions;
+	}
+
+	public List<Production> getAllProductionForDailyClosing() throws SQLException {
+		List<Production> productions = new ArrayList<Production>();
+
+		try {
+			String query = new StringBuilder()
+				.append(getAllQuery)
+				.append(" AND a.confirm_date IS NULL AND c.deleted_date is NULL AND e.deleted_date is NULL ")
+				.append(" AND a.input_date <= CURDATE()").toString();
+		
+
+			getAllStatement = connection.prepareStatement(query);
+			
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				Production production = new Production();
+				production.setId(rs.getInt("id"));
+				production.setProductionCode(rs.getString("production_code"));
+				production.setGroupShiftCode(rs.getString("group_shift_code"));
+				production.setGroupShiftDescription(rs.getString("group_shift_description"));
+				production.setLineCode(rs.getString("line_code"));
+				production.setLineDescription(rs.getString("line_description"));
+				production.setShiftCode(rs.getString("shift_code"));
+				production.setShiftName(rs.getString("shift_name"));
+				production.setProductionDate(rs.getDate("production_date"));
+				production.setInformation(rs.getString("information"));
+				production.setTotalPalletCard(rs.getInt("total_pallet_card"));
+				production.setTotalLog(rs.getInt("total_log"));
+				production.setTotalVolume(rs.getDouble("total_volume"));
+				production.setStatus(rs.getString("status"));
+				production.setProductionTypeCode(rs.getString("production_type_code"));
+				production.setProductionTypeDescription(rs.getString("production_type_description"));
+				productions.add(production);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		}
+
 		return productions;
 	}
 }

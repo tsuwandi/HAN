@@ -203,4 +203,31 @@ public class ProdRMDAO {
 		}
 
 	}
+
+
+	public List<ProdRM> getAllProdRMForDailyClosing() throws SQLException {
+		List<ProdRM> prodRMs = new ArrayList<ProdRM>();
+		String query = new StringBuilder()
+			.append(getAllQuery)
+			.append(" AND a.confirm_date IS NULL AND b.deleted_date is NULL")
+			.append(" AND a.input_date <= CURDATE()").toString();
+		
+		getAllStatement = connection.prepareStatement(query);
+		
+		ResultSet rs = getAllStatement.executeQuery();
+		while (rs.next()) {
+			ProdRM prodRM = new ProdRM();
+			prodRM.setId(rs.getInt("id"));
+			prodRM.setProductionCode(rs.getString("production_code"));
+			prodRM.setPalletCardCode(rs.getString("pallet_card_code"));
+			prodRM.setLength(rs.getDouble("length"));
+			prodRM.setWidth(rs.getDouble("width"));
+			prodRM.setThick(rs.getDouble("thickness"));
+			prodRM.setLog(rs.getInt("total"));
+			prodRM.setVolume(rs.getDouble("volume"));
+			prodRMs.add(prodRM);
+		}
+		
+		return prodRMs;
+	}
 }

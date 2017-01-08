@@ -150,6 +150,23 @@ public class Production {
 		this.deletedProductionResult = deletedProductionResult;
 	}
 	
+	//timotius@20170107_start_tutup_harian_produksi
+	private Date confirmDate;
+	private String confirmCode;
+	public Date getConfirmDate() {
+		return confirmDate;
+	}
+	public void setConfirmDate(Date confirmDate) {
+		this.confirmDate = confirmDate;
+	}
+	public String getConfirmCode() {
+		return confirmCode;
+	}
+	public void setConfirmCode(String confirmCode) {
+		this.confirmCode = confirmCode;
+	}
+	//timotius@20170107_end_tutup_harian_produksi
+
 	
 	
 }
