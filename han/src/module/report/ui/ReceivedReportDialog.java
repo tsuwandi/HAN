@@ -110,7 +110,7 @@ private static final long serialVersionUID = 1L;
 					
 					try {
 						if(dcDateFrom.getDate()!=null&&dcDateTo.getDate()!=null){
-							sb.append(" AND A.RECEIVED_DATE BETWEEN ? AND ?");
+							sb.append(" AND RCV.RECEIVED_DATE BETWEEN ? AND ?");
 							objs.add(dcDateFrom.getDate());
 							objs.add(dcDateTo.getDate());
 						}else{
@@ -118,13 +118,13 @@ private static final long serialVersionUID = 1L;
 							objs.add(null);
 						}
 						if(!txtSupplierName.getText().equals("")){
-							sb.append(" AND C.SUPP_NAME LIKE ?");
+							sb.append(" AND SUPP.SUPP_NAME LIKE ?");
 							objs.add(txtSupplierName.getText());
 						}else{
 							objs.add(null);
 						}
 						if(!txtWoodType.getText().equals("")){
-							sb.append(" AND B.WOOD_TYPE LIKE ?");
+							sb.append(" AND WOODT.WOOD_TYPE LIKE ?");
 							objs.add(txtWoodType.getText());
 						}else{
 							objs.add(null);
@@ -139,6 +139,9 @@ private static final long serialVersionUID = 1L;
 						JOptionPane.showMessageDialog(null, "Tidak ada data yang diproses.",
 								"Laporan Detail Penerimaan Bahan Baku", JOptionPane.INFORMATION_MESSAGE);
 					} else {
+						for (ReceivedReport receivedReport : results) {
+							System.out.println(receivedReport.toString());
+						}
 						/* Convert List to JRBeanCollectionDataSource */
 						JRBeanCollectionDataSource itemsJRBeanResults = new JRBeanCollectionDataSource(
 								results);
