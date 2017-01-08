@@ -26,7 +26,7 @@ public class PackingDAO {
 	private String insertQuery = "INSERT INTO packing (id,packing_date, status, input_date, input_by) VALUES (?,?,?,?,?)";  
 	private String updateQuery = "UPDATE packing SET packing_date=?, status=?, edited_by=?, edited_date=? WHERE id =?";
 	
-	private String deleteQuery = "UPDATE packing SET deleted_date = ? , delete_by=? WHERE id=?";
+	private String deleteQuery = "UPDATE packing SET deleted_date = ? , deleted_by=? WHERE id=?";
 	
 	public PackingDAO(Connection connection) throws SQLException {
 		this.connection = connection;

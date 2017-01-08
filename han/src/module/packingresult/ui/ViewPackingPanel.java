@@ -634,6 +634,7 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 				if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
 					try {
 						ServiceFactory.getPackingBL().delete(packing);
+						DialogBox.showDelete();
 						MainPanel.changePanel("module.packingresult.ui.ListPackingResultPanel");
 					} catch (SQLException e1) {
 						log.error(e1.getMessage());

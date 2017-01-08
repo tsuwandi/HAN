@@ -22,7 +22,7 @@ public class PackingResultDAO {
 	
 	private String getAllQuery = "SELECT id, packing_id, product_code, qty FROM packing_result WHERE deleted_date IS NULL";
 	
-	private String updateDeleteQuery = "UPDATE packing_result SET deleted_date = ? , delete_by=? WHERE packing_id = ? AND id=?";
+	private String updateDeleteQuery = "UPDATE packing_result SET deleted_date = ? , deleted_by=? WHERE packing_id = ? AND id=?";
 	
 	private String insertQuery = "INSERT INTO packing_result (packing_id, product_code, qty , input_by, input_date) "
 			+ "VALUES (?,?,?,?,?)";
