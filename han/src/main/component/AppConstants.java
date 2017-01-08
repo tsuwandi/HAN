@@ -14,12 +14,14 @@ public class AppConstants {
 	public static final String STATUS_COMPLETED = "COMPLETED";
 	public static final String STATUS_FINAL = "FINAL";
 	
-	public static final String BUYING_MODULE = "PEMBELIAN";
+	public static final String RECEIVE_MODULE = "PENERIMAAN";
+	public static final String PRODUCTION_MODULE = "PRODUKSI";
 	public static final String RECEIVED = "RECEIVED";
 	public static final String DRY_IN = "DRY_IN";
 	public static final String DRY_OUT = "DRY_OUT";
 	public static final String DEBET = "D";
 	public static final String CREDIT = "C";
+	public static final String PRODUCTION_PROD_RM = "PROD_RM";
 	
 	public static final String BALKEN_BASAH_CD = "B";
 	public static final String BALKEN_KERING_CD = "K";

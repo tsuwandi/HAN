@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import module.pembelian.model.PalletCard;
+
 public class Production {
 	int id;
 	String productionCode;
@@ -153,6 +155,9 @@ public class Production {
 	//timotius@20170107_start_tutup_harian_produksi
 	private Date confirmDate;
 	private String confirmCode;
+	private PalletCard palletCard;
+	private ProductionResultProduct productionResultProduct;
+	
 	public Date getConfirmDate() {
 		return confirmDate;
 	}
@@ -164,6 +169,29 @@ public class Production {
 	}
 	public void setConfirmCode(String confirmCode) {
 		this.confirmCode = confirmCode;
+	}
+	public PalletCard getPalletCard() {
+		if (palletCard == null)
+			palletCard = new PalletCard();
+		return palletCard;
+	}
+
+	public void setPalletCard(PalletCard palletCard) {
+		if (palletCard == null)
+			palletCard = new PalletCard();
+		this.palletCard = palletCard;
+	}
+	
+	public ProductionResultProduct getProductionResultProduct() {
+		if (productionResultProduct == null)
+			productionResultProduct = new ProductionResultProduct();
+		return productionResultProduct;
+	}
+
+	public void setProductionResultProduct(ProductionResultProduct productionResultProduct) {
+		if (productionResultProduct == null)
+			productionResultProduct = new ProductionResultProduct();
+		this.productionResultProduct = productionResultProduct;
 	}
 	//timotius@20170107_end_tutup_harian_produksi
 

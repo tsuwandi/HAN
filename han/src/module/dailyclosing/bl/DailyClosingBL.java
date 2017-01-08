@@ -2,10 +2,13 @@ package module.dailyclosing.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
+
+import org.apache.log4j.Logger;
 
 import main.component.AppConstants;
 import module.dailyclosing.dao.ConfirmDAO;
@@ -20,22 +23,13 @@ import module.dryin.dao.DryInDAO;
 import module.dryin.model.DryIn;
 import module.dryout.dao.DryOutDAO;
 import module.dryout.model.DryOut;
-import module.pembelian.ReceivedType;
 import module.pembelian.dao.ReceivedDAO;
 import module.pembelian.model.Received;
 import module.production.dao.ProdRMDAO;
 import module.production.dao.ProductionDAO;
 import module.production.dao.ProductionResultDAO;
-import module.production.dao.ProductionResultProductDAO;
-import module.production.model.ProdRM;
 import module.production.model.Production;
-import module.production.model.ProductionResult;
-import module.production.model.ProductionResultProduct;
-import module.purchaseprodresult.dao.PurchaseProdResultDAO;
-import module.purchaseprodresult.model.PurchaseProdResult;
 import module.util.DateUtil;
-
-import org.apache.log4j.Logger;
 
 public class DailyClosingBL {
 	private static final long serialVersionUID = 1L;
@@ -88,7 +82,7 @@ public class DailyClosingBL {
 
 			Confirm confirm = new Confirm();
 			confirm.setConfirmCode(confirmCode);
-			confirm.setModule(AppConstants.BUYING_MODULE);
+			confirm.setModule(AppConstants.RECEIVE_MODULE);
 			confirm.setDailyClosingDate(DateUtil.setTimeStamp());
 			new ConfirmDAO(con).save(confirm);
 
@@ -103,7 +97,7 @@ public class DailyClosingBL {
 
 				new InventoryLogTempDAO(con).save(inventoryLogTemp);
 
-				received.setReceivedStatus(ReceivedType.FINAL.toString());
+				received.setReceivedStatus(AppConstants.STATUS_FINAL);
 
 				new ReceivedDAO(con).updateDailyClosing(received);
 			}
@@ -175,49 +169,31 @@ public class DailyClosingBL {
 	/** END TUTUP HARIAN PENERIMAAN **/
 
 	/** START TUTUP HARIAN PRODUKSI **/
-	public List<Production> getAllProductionForDailyClosing() throws SQLException {
+	public List<Production> getAllProductionCreditForDailyClosing() throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProductionDAO(con).getAllProductionForDailyClosing();
+			return new ProductionDAO(con).getAllProductionCreditForDailyClosing();
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<Production> getAllProductionDebetForDailyClosing() throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductionDAO(con).getAllProductionDebetForDailyClosing();
 		} finally {
 			con.close();
 		}
 	}
 
-	public List<ProdRM> getAllProdRMForDailyClosing() throws SQLException {
-		Connection con = null;
-		try {
-			con = dataSource.getConnection();
-			return new ProdRMDAO(con).getAllProdRMForDailyClosing();
-		} finally {
-			con.close();
-		}
-	}
-
-	public List<ProductionResult> getAllProductionResultForDailyClosing() throws SQLException {
-		Connection con = null;
-		try {
-			con = dataSource.getConnection();
-			return new ProductionResultDAO(con).getAllProductionResultForDailyClosing();
-		} finally {
-			con.close();
-		}
-	}
-
-	public List<ProductionResultProduct> getAllProductionResultProductForDailyClosing() throws SQLException {
-		Connection con = null;
-		try {
-			con = dataSource.getConnection();
-			return new ProductionResultProductDAO(con).getAllProductionResultProductForDailyClosing();
-		} finally {
-			con.close();
-		}
-	}
-
-	public void save(List<Production> listOfProduction, List<ProdRM> listOfProdRM,
-			List<ProductionResult> listOfProductionResult, List<ProductionResultProduct> listOfProductionResultProduct,
+	public void save(List<Production> listOfProdRM,
+			List<Production> listOfProductionResult,
 			String confirmCode) throws SQLException {
+		
+		List<String> productionCodes = new ArrayList<String>();
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -225,25 +201,65 @@ public class DailyClosingBL {
 
 			Confirm confirm = new Confirm();
 			confirm.setConfirmCode(confirmCode);
-			confirm.setModule(AppConstants.BUYING_MODULE);
+			confirm.setModule(AppConstants.PRODUCTION_MODULE);
 			confirm.setDailyClosingDate(DateUtil.setTimeStamp());
 			new ConfirmDAO(con).save(confirm);
 
-			for (Production production : listOfProduction) {
-				// InventoryLogTemp inventoryLogTemp = new InventoryLogTemp();
-				// inventoryLogTemp.setProductCode(production.getProduct);
-				// inventoryLogTemp.setWarehouse(0);
-				// inventoryLogTemp.setQty(received.getPalletCard().getTotal());
-				// inventoryLogTemp.setMutasi(AppConstants.DEBET);
-				// inventoryLogTemp.setSrcTable(AppConstants.RECEIVED);
-				// inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
-				//
-				// new InventoryLogTempDAO(con).save(inventoryLogTemp);
-				//
-				// received.setReceivedStatus(ReceivedType.FINAL.toString());
-				//
-				// new ReceivedDAO(con).updateDailyClosing(received);
+			for (Production production : listOfProdRM) {
+				 InventoryLogTemp inventoryLogTemp = new InventoryLogTemp();
+				 inventoryLogTemp.setProductCode(production.getPalletCard().getProductCode());
+				 inventoryLogTemp.setWarehouse(0);
+				 inventoryLogTemp.setQty(production.getPalletCard().getTotal());
+				 inventoryLogTemp.setMutasi(AppConstants.CREDIT);
+				 inventoryLogTemp.setSrcTable(AppConstants.PRODUCTION_PROD_RM);
+				 inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
+				
+				 new InventoryLogTempDAO(con).save(inventoryLogTemp);
+				
+				 new ProdRMDAO(con).updateDailyClosing(production.getPalletCard().getProductCode(), AppConstants.STATUS_FINAL);
+				 
+				 if(productionCodes.isEmpty()) {
+					 productionCodes.add(production.getProductionCode());
+				 } else {
+					 for(String codes : productionCodes) {
+						 if(!codes.equalsIgnoreCase(production.getProductionCode())) {
+							 productionCodes.add(production.getProductionCode());
+						 }
+					 }
+				 }
 			}
+			
+			for (Production production : listOfProductionResult) {
+				 InventoryLogTemp inventoryLogTemp = new InventoryLogTemp();
+				 inventoryLogTemp.setProductCode(production.getProductionResultProduct().getProductCode());
+				 inventoryLogTemp.setWarehouse(0);
+				 inventoryLogTemp.setQty(production.getProductionResultProduct().getQty());
+				 inventoryLogTemp.setMutasi(AppConstants.CREDIT);
+				 inventoryLogTemp.setSrcTable(AppConstants.PRODUCTION_PROD_RM);
+				 inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
+				
+				 new InventoryLogTempDAO(con).save(inventoryLogTemp);
+				
+				 new ProductionResultDAO(con).updateDailyClosing(production.getProductionResultProduct().getProductCode(), AppConstants.STATUS_FINAL);
+				 
+				 if(productionCodes.isEmpty()) {
+					 productionCodes.add(production.getProductionCode());
+				 } else {
+					 for(String codes : productionCodes) {
+						 if(!codes.equalsIgnoreCase(production.getProductionCode())) {
+							 productionCodes.add(production.getProductionCode());
+						 }
+					 }
+				 }
+			}
+			
+			 for(String codes : productionCodes) {
+				 Production p = new Production();
+				 p.setProductionCode(codes);
+				 new ProductionDAO(con).updateDailyClosing(p);
+			 }
+			
+			
 			con.rollback();
 		} catch (SQLException e) {
 			con.rollback();
