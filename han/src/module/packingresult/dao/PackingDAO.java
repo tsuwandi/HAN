@@ -100,7 +100,7 @@ public class PackingDAO {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setInt(1, packing.getId());
-			insertStatement.setDate(2, packing.getPackingDate());
+			insertStatement.setDate(2, new Date(packing.getPackingDate().getTime()));
 			insertStatement.setString(3, packing.getStatus());
 			insertStatement.setDate(4, new Date(new java.util.Date().getTime()));
 			insertStatement.setString(5, "Michael");
@@ -131,11 +131,11 @@ public class PackingDAO {
 	public void update(Packing packing) throws SQLException {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
-			updateStatement.setDate(4, new Date(packing.getPackingDate().getTime()));
-			updateStatement.setString(9, packing.getStatus());
-			updateStatement.setString(10, "Michael");
-			updateStatement.setDate(11, new Date(new java.util.Date().getTime()));
-
+			updateStatement.setDate(1, new Date(packing.getPackingDate().getTime()));
+			updateStatement.setString(2, packing.getStatus());
+			updateStatement.setString(3, "Michael");
+			updateStatement.setDate(4, new Date(new java.util.Date().getTime()));
+			updateStatement.setInt(5, packing.getId());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {

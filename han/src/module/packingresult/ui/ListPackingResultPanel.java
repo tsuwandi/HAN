@@ -21,6 +21,7 @@ import javax.swing.table.TableColumn;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.component.PagingPanel;
 import main.component.TextField;
@@ -69,7 +70,7 @@ public class ListPackingResultPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(packingTable.columnAtPoint(e.getPoint())==11){
-					MainPanel.changePanel("module.production.ui.ViewProductionPanel", pagingPanel.getSubListData().get(packingTable.getSelectedRow()));
+					MainPanel.changePanel("module.packingresult.ui.ViewPackingPanel", pagingPanel.getSubListData().get(packingTable.getSelectedRow()));
 				}
 			}
 		});
@@ -120,9 +121,8 @@ public class ListPackingResultPanel extends JPanel{
 	
 	private void initData(){
 		try {
-			//TODO repair
-//			productions = ServiceFactory.getProductionBL().getProduction();
-//			productionTable.setModel(new ProductionTableModel(productions));
+			packings = ServiceFactory.getPackingBL().getPackings();
+			packingTable.setModel(new PackingTableModel(packings));
 			
 			pagingPanel.setPage(1);
 			pagingPanel.setMaxDataPerPage(20);

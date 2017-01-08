@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import main.panel.MainPanel;
 import module.dailyclosing.dao.InventoryDAO;
 import module.dailyclosing.model.Inventory;
 import module.packingresult.dao.PackingConversionDAO;
@@ -77,7 +78,44 @@ public class PackingBL {
 				packingResult.setPackingID(lastID);
 				packingResultDAOTemp.save(packingResult);
 			}
+			packing.setStatus("BARU");
 			new PackingDAO(connection).save(packing);
+			connection.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+	}
+	public void update(Packing packing) throws SQLException{
+		Connection connection = null;
+		PackingResultDAO packingResultDAOTemp;
+		try {
+			connection = dataSource.getConnection();
+			connection.setAutoCommit(false);
+			packingResultDAOTemp = new PackingResultDAO(connection);
+			
+			for (PackingResult packingResult : packing.getPackingResults()) {
+				packingResultDAOTemp.update(packingResult);
+			}
+			new PackingDAO(connection).update(packing);
+			connection.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			connection.rollback();
+		}
+	}
+	public void delete(Packing packing) throws SQLException{
+		Connection connection = null;
+		PackingResultDAO packingResultDAOTemp;
+		try {
+			connection = dataSource.getConnection();
+			connection.setAutoCommit(false);
+			packingResultDAOTemp = new PackingResultDAO(connection);
+			
+			for (PackingResult packingResult : packing.getPackingResults()) {
+				packingResultDAOTemp.updateDelete(packingResult);
+			}
+			new PackingDAO(connection).delete(packing);
 			connection.commit();
 		} catch (Exception e) {
 			e.printStackTrace();

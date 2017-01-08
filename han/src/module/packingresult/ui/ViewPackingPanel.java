@@ -24,6 +24,7 @@ import javax.swing.table.AbstractTableModel;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.joda.time.Years;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -39,8 +40,8 @@ import module.packingresult.model.PackingConversion;
 import module.packingresult.model.PackingResult;
 import module.util.Bridging;
 
-public class CreateNewPackingPanel extends JPanel implements Bridging {
-	Logger log = LogManager.getLogger(CreateNewPackingPanel.class.getName());
+public class ViewPackingPanel extends JPanel implements Bridging{
+	Logger log = LogManager.getLogger(ViewPackingPanel.class.getName());
 	private JLabel packingDateLbl;
 	private JLabel unpackedStockLbl;
 	private JLabel packingResultLbl;
@@ -81,7 +82,8 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 	private JLabel smallCrateBNPErrorLbl;
 	
 	private JButton backBtn;
-	private JButton saveBtn;
+	private JButton editBtn;
+	private JButton deleteBtn;
 	
 	private JTable stockTable;
 	
@@ -135,9 +137,7 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 	private Packing packing;
 	private boolean editMode = false;
 	
-	private JLabel lblHeader;
-	
-	public CreateNewPackingPanel() {
+	public ViewPackingPanel() {
 		createGUI();
 		initData();
 		listener();
@@ -161,7 +161,7 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		containerPnl.add(lblBreadcrumb);
 
-		lblHeader= new JLabel("INPUT HASIL PACKING");
+		JLabel lblHeader = new JLabel("INPUT HASIL PACKING");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		containerPnl.add(lblHeader);
@@ -393,9 +393,13 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 		smallCrateBNPErrorLbl.setBounds(700,705,150,20);
 		containerPnl.add(smallCrateBNPErrorLbl);
 		
-		saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(850,745,150,30);
-		containerPnl.add(saveBtn);
+		editBtn = new JButton("Edit");
+		editBtn.setBounds(850,745,150,30);
+		containerPnl.add(editBtn);
+		
+		deleteBtn = new JButton("Hapus");
+		deleteBtn.setBounds(700,745,150,30);
+		containerPnl.add(deleteBtn);
 		
 		backBtn = new JButton("Kembali");
 		backBtn.setBounds(30,745,150,30);
@@ -412,6 +416,16 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 		smallCrateBResultField.setEnabled(false);
 		bigCrateBNPResultField.setEnabled(false);
 		smallCrateBNPResultField.setEnabled(false);
+		bigCrateA1Field.setEnabled(false);
+		smallCrateA1Field.setEnabled(false);
+		bigCrateAField.setEnabled(false);
+		smallCrateAField.setEnabled(false);
+		bigCrateBField.setEnabled(false);
+		smallCrateBField.setEnabled(false);
+		bigCrateBNPField.setEnabled(false);
+		smallCrateBNPField.setEnabled(false);
+		packingDateChooser.setEnabled(false);
+		stockTable.setEnabled(false);
 		
 		inventories = new ArrayList<>();
 		packingConversions = new ArrayList<>();
@@ -597,157 +611,37 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 			}
 		});
 		
-		saveBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveData();
-			}
-		});
-		
 		backBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)MainPanel.changePanel("module.packingresult.ui.ListPackingResultPanel");
+				MainPanel.changePanel("module.packingresult.ui.ListPackingResultPanel");
 			}
 		});
-	}
-	private void saveData(){
-		int error=0;
-		if(bigCrateAField.getText().equals("")){
-			error++;
-			bigCrateAErrorLbl.setText("<html><font color='red'>Crate Besar A harus diisi !</font></html>");
-		}else{
-			bigCrateAErrorLbl.setText("");
-		}
 		
-		if(smallCrateAField.getText().equals("")){
-			error++;
-			smallCrateAErrorLbl.setText("<html><font color='red'>Crate Kecil A harus diisi !</font></html>");
-		}else{
-			smallCrateAErrorLbl.setText("");
-		}
+		editBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.packingresult.ui.CreateNewPackingPanel",packing);
+			}
+		});
 		
-		if(bigCrateA1Field.getText().equals("")){
-			error++;
-			bigCrateA1ErrorLbl.setText("<html><font color='red'>Crate Besar A1 harus diisi !</font></html>");
-		}else{
-			bigCrateA1ErrorLbl.setText("");
-		}
-		
-		if(smallCrateA1Field.getText().equals("")){
-			error++;
-			smallCrateA1ErrorLbl.setText("<html><font color='red'>Crate Kecil A1 harus diisi !</font></html>");
-		}else{
-			smallCrateA1ErrorLbl.setText("");
-		}
-		
-		if(bigCrateBField.getText().equals("")){
-			error++;
-			bigCrateBErrorLbl.setText("<html><font color='red'>Crate Besar B harus diisi !</font></html>");
-		}else{
-			bigCrateBErrorLbl.setText("");
-		}
-		
-		if(smallCrateBField.getText().equals("")){
-			error++;
-			smallCrateBErrorLbl.setText("<html><font color='red'>Crate Kecil B harus diisi !</font></html>");
-		}else{
-			smallCrateBErrorLbl.setText("");
-		}
-		
-		if(bigCrateBNPField.getText().equals("")){
-			error++;
-			bigCrateBNPErrorLbl.setText("<html><font color='red'>Crate Besar BNP harus diisi !</font></html>");
-		}else{
-			bigCrateBNPErrorLbl.setText("");
-		}
-		
-		if(smallCrateBNPField.getText().equals("")){
-			error++;
-			smallCrateBNPErrorLbl.setText("<html><font color='red'>Crate Kecil BNP harus diisi !</font></html>");
-		}else{
-			smallCrateBNPErrorLbl.setText("");
-		}
-		
-		if(error==0){
-			if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
-				if(!editMode){
+		deleteBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
 					try {
-						packing.setPackingDate(packingDateChooser.getDate());
-						List<PackingResult> packingResults = new ArrayList<>();
-						for (int i = 0; i < 8; i++) {
-							PackingResult packingResult = new PackingResult();
-							if(i==0){
-								packingResult.setProductCode(BIG_CRATE_A);
-								packingResult.setQty(Double.valueOf(bigCrateAField.getText()));
-							}else if(i==1){
-								packingResult.setProductCode(SMALL_CRATE_A);
-								packingResult.setQty(Double.valueOf(smallCrateAField.getText()));
-							}else if(i==2){
-								packingResult.setProductCode(BIG_CRATE_A1);
-								packingResult.setQty(Double.valueOf(bigCrateA1Field.getText()));
-							}else if(i==3){
-								packingResult.setProductCode(SMALL_CRATE_A1);
-								packingResult.setQty(Double.valueOf(smallCrateA1Field.getText()));
-							}else if(i==4){
-								packingResult.setProductCode(BIG_CRATE_B);
-								packingResult.setQty(Double.valueOf(bigCrateBField.getText()));
-							}else if(i==5){
-								packingResult.setProductCode(SMALL_CRATE_B);
-								packingResult.setQty(Double.valueOf(smallCrateBField.getText()));
-							}else if(i==6){
-								packingResult.setProductCode(BIG_CRATE_BNP);
-								packingResult.setQty(Double.valueOf(bigCrateBNPField.getText()));
-							}else if(i==7){
-								packingResult.setProductCode(SMALL_CRATE_BNP);
-								packingResult.setQty(Double.valueOf(smallCrateBNPField.getText()));
-							}
-							packingResults.add(packingResult);
-						}
-						packing.setPackingResults(packingResults);
-						ServiceFactory.getPackingBL().save(packing);
-						DialogBox.showInsert();
+						ServiceFactory.getPackingBL().delete(packing);
 						MainPanel.changePanel("module.packingresult.ui.ListPackingResultPanel");
-					} catch (SQLException e) {
-						log.error(e.getMessage());
-						e.printStackTrace();
+					} catch (SQLException e1) {
+						log.error(e1.getMessage());
+						e1.printStackTrace();
 					}
 				}
-				else{
-					try {
-						packing.setPackingDate(packingDateChooser.getDate());
-						List<PackingResult> packingResults = packing.getPackingResults();
-						for (PackingResult packingResult : packingResults) {
-							if(packingResult.getProductCode().equals(BIG_CRATE_A)){
-								packingResult.setQty(Double.valueOf(bigCrateAField.getText()));
-							}else if(packingResult.getProductCode().equals(SMALL_CRATE_A)){
-								packingResult.setQty(Double.valueOf(smallCrateAField.getText()));
-							}else if(packingResult.getProductCode().equals(BIG_CRATE_A1)){
-								packingResult.setQty(Double.valueOf(bigCrateA1Field.getText()));
-							}else if(packingResult.getProductCode().equals(SMALL_CRATE_A1)){
-								packingResult.setQty(Double.valueOf(smallCrateA1Field.getText()));
-							}else if(packingResult.getProductCode().equals(BIG_CRATE_B)){
-								packingResult.setQty(Double.valueOf(bigCrateBField.getText()));
-							}else if(packingResult.getProductCode().equals(SMALL_CRATE_B)){
-								packingResult.setQty(Double.valueOf(smallCrateBField.getText()));
-							}else if(packingResult.getProductCode().equals(BIG_CRATE_BNP)){
-								packingResult.setQty(Double.valueOf(bigCrateBNPField.getText()));
-							}else if(packingResult.getProductCode().equals(BIG_CRATE_BNP)){
-								packingResult.setQty(Double.valueOf(smallCrateBNPField.getText()));
-							}
-						}
-						ServiceFactory.getPackingBL().update(packing);
-						DialogBox.showEdit();
-						MainPanel.changePanel("module.packingresult.ui.ListPackingResultPanel");
-					} catch (SQLException e) {
-						log.error(e.getMessage());
-						e.printStackTrace();
-					}
-				}
-			}	
-		}
+			}
+		});
 	}
 	
 	private void validateConversion(JComponent component){
@@ -898,7 +792,6 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 
 	@Override
 	public void invokeObjects(Object... objects) {
-		editMode=true;
 		packing = (Packing) objects[0];
 		packing.setPackingDate(packing.getPackingDate());
 		for (PackingResult packingResult : packing.getPackingResults()) {
@@ -911,7 +804,10 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 			else if(packingResult.getProductCode().equals(BIG_CRATE_BNP))bigCrateBNPField.setText(Double.valueOf(packingResult.getQty())+"");
 			else if(packingResult.getProductCode().equals(SMALL_CRATE_BNP))smallCrateBNPField.setText(Double.valueOf(packingResult.getQty())+"");
 		}
-		lblHeader.setText("EDIT HASIL PACKING");
+		if(packing.getStatus().equals("FINAL")){
+			editBtn.setEnabled(false);
+			deleteBtn.setEnabled(false);
+		}
 	}
 	
 }
