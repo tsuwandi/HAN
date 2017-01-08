@@ -595,7 +595,7 @@ public class EditPopUpPalletCard extends JDialog{
 							pc.setWidth(Double.valueOf(wideField.getText()));
 						}
 						pc.setTotal(Double.valueOf(totalField.getText()));
-						pc.setVolume(Double.valueOf(volumeField.getText()));
+						pc.setVolume(Double.valueOf(volumeHidden));
 						pc.setProductName(productNameField.getText());
 						pc.setProductCode(productCode.getText());
 						pc.setDescription(descriptionArea.getText());
