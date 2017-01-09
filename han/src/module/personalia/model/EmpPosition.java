@@ -2,7 +2,7 @@ package module.personalia.model;
 
 import java.util.Date;
 
-public class EmployeePosition {
+public class EmpPosition {
 
 	String id;
 	String employeeId;

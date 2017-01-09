@@ -37,7 +37,7 @@ import main.component.ImagePanel;
 import main.component.ImagePreview;
 import main.panel.MainPanel;
 import module.personalia.model.Division;
-import module.personalia.model.EmployeePosition;
+import module.personalia.model.EmpPosition;
 
 public class CreateEmployeePanel extends JPanel {
 
@@ -448,9 +448,9 @@ public class CreateEmployeePanel extends JPanel {
 	class EmployeePositionHistoryTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = -8720800573929798216L;
-		private List<EmployeePosition> employeePositions;
+		private List<EmpPosition> employeePositions;
 
-		public EmployeePositionHistoryTableModel(List<EmployeePosition> employeePositions) {
+		public EmployeePositionHistoryTableModel(List<EmpPosition> employeePositions) {
 			this.employeePositions = employeePositions;
 		}
 
@@ -466,7 +466,7 @@ public class CreateEmployeePanel extends JPanel {
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			EmployeePosition employeePosition = employeePositions.get(rowIndex);
+			EmpPosition employeePosition = employeePositions.get(rowIndex);
 
 			switch (columnIndex) {
 			case 0:

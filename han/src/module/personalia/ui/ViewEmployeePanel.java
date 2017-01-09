@@ -25,7 +25,7 @@ import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.personalia.model.Division;
-import module.personalia.model.EmployeePosition;
+import module.personalia.model.EmpPosition;
 
 public class ViewEmployeePanel extends JPanel {
 
@@ -462,9 +462,9 @@ public class ViewEmployeePanel extends JPanel {
 	class PositionHistoryTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = -8720800573929798216L;
-		private List<EmployeePosition> employeePositions;
+		private List<EmpPosition> employeePositions;
 
-		public PositionHistoryTableModel(List<EmployeePosition> employeePositions) {
+		public PositionHistoryTableModel(List<EmpPosition> employeePositions) {
 			this.employeePositions = employeePositions;
 		}
 
@@ -480,7 +480,7 @@ public class ViewEmployeePanel extends JPanel {
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			EmployeePosition employeePosition = employeePositions.get(rowIndex);
+			EmpPosition employeePosition = employeePositions.get(rowIndex);
 
 			switch (columnIndex) {
 			case 0:
