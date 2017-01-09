@@ -34,9 +34,15 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Penerimaan", "Tutup Harian", "Tutup Harian", "module.dailyclosing.ui.DailyClosingReceivePanel");
 		menu.calculateAvaiableSpace();
 		
-		menu.addNewMenu("Laporan Penerimaan", "Laporan Penerimaan");
-		menu.addNewLeafTo("Laporan Penerimaan", "Stok Flow Basah", "Stok Flow Basah", "module.report.ui.DryStokFlowReportPanel");
-		menu.addNewLeafTo("Laporan Penerimaan", "Stok Detail Penerimaan", "Stok Detail Penerimaan", "module.report.ui.ReceivedReportPanel");
+		menu.addNewMenu("Laporan", "Laporan");
+		//menu.addNewLeafTo("Laporan", "Stok Flow Basah", "Stok Flow Basah", "module.report.ui.DryStokFlowReportPanel");
+		menu.addNewLeafTo("Laporan", "Rekap Kayu Masuk", "Rekap Kayu Masuk", "module.report.ui.RekapKayuMasukReportPanel");
+		menu.addNewLeafTo("Laporan", "Stock Balken Basah", "Stock Balken Basah", "module.report.ui.StockBalkenBasahReportPanel");
+		menu.addNewLeafTo("Laporan", "Penerimaan Kayu", "Penerimaan Kayu", "module.report.ui.ReceivedReportPanel");
+		menu.addNewLeafTo("Laporan", "KD IN", "KD IN", "module.report.ui.KDINReportPanel");
+		menu.addNewLeafTo("Laporan", "KD OUT", "KD OUT", "module.report.ui.KDOUTReportPanel");
+		
+		
 		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Tutup Harian", "Tutup Harian");
