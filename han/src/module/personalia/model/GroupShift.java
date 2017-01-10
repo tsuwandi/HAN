@@ -2,30 +2,34 @@ package module.personalia.model;
 
 import java.util.Date;
 
-import module.util.ComboBoxProperties;
+public class GroupShift {
 
-public class EmployeeType implements ComboBoxProperties{
-
-	String id;
-	String name;
+	Integer id;
+	String groupShiftCode;
+	String description;
 	Date inputDate;
 	String inputBy;
 	Date editDate;
 	String editBy;
 	Date deleteDate;
 	String deleteBy;
-	
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getGroupShiftCode() {
+		return groupShiftCode;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setGroupShiftCode(String groupShiftCode) {
+		this.groupShiftCode = groupShiftCode;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public Date getInputDate() {
 		return inputDate;
@@ -62,9 +66,5 @@ public class EmployeeType implements ComboBoxProperties{
 	}
 	public void setDeleteBy(String deleteBy) {
 		this.deleteBy = deleteBy;
-	}
-	@Override
-	public Object getField() {
-		return name;
 	}
 }

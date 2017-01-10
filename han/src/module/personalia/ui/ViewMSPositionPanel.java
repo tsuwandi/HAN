@@ -1,6 +1,9 @@
 package module.personalia.ui;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -26,6 +29,8 @@ public class ViewMSPositionPanel extends JPanel implements Bridging{
 	private JTextField salaryMinField;
 	private JTextField salaryMaxField;
 	private MSPosition msPosition;
+	private JButton editBtn;
+	private boolean editMode = false;
 
 	public ViewMSPositionPanel() {
 		setSize(1024, 630);
@@ -90,66 +95,122 @@ public class ViewMSPositionPanel extends JPanel implements Bridging{
 		add(label_11);
 
 		msPositionIdField = new JTextField();
-		msPositionIdField.setBounds(140, 80, 200, 30);
-		msPositionIdField.setEditable(false);
 		msPositionIdField.setEnabled(false);
+		msPositionIdField.setEditable(false);
+		msPositionIdField.setBounds(140, 80, 200, 30);
 		add(msPositionIdField);
 		
 		msPositionNameField = new JTextField();
+		msPositionNameField.setEnabled(false);
+		msPositionNameField.setEditable(false);
 		msPositionNameField.setBounds(140, 120, 200, 30);
 		add(msPositionNameField);
 
 		departemenCmbBox = new ComboBox<Department>();
+		departemenCmbBox.setEnabled(false);
 		departemenCmbBox.setBounds(140, 160, 200, 30);
 		add(departemenCmbBox);
 		
 		divisionCmbBox = new ComboBox<Division>();
+		divisionCmbBox.setEnabled(false);
 		divisionCmbBox.setBounds(140, 200, 200, 30);
 		add(divisionCmbBox);
 		
 		salaryMinField = new JTextField();
+		salaryMinField.setEnabled(false);
+		salaryMinField.setEditable(false);
 		salaryMinField.setBounds(140, 240, 200, 30);
 		add(salaryMinField);
 		
 		salaryMaxField = new JTextField();
+		salaryMaxField.setEnabled(false);
+		salaryMaxField.setEditable(false);
 		salaryMaxField.setBounds(140, 280, 200, 30);
 		add(salaryMaxField);
 		
-		JButton editBtn = new JButton("Edit");
+		editBtn = new JButton("Edit");
 		editBtn.setBounds(924, 589, 90, 30);
 		add(editBtn);
+		
+		editBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent paramActionEvent) {
+				if (isEditMode()==false) {
+					setEditMode(true);
+				}
+				else {
+					update();
+				}
+			}
+		});
 		
 		JButton deleteBtn = new JButton("Hapus");
 		deleteBtn.setBounds(824, 589, 90, 30);
 		add(deleteBtn);
 		
+		deleteBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent paramActionEvent) {
+				delete();
+			}
+		});
+		
 		JButton printBtn = new JButton("Cetak");
 		printBtn.setBounds(724, 589, 90, 30);
 		add(printBtn);
 		
+		printBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent paramActionEvent) {
+				
+			}
+		});
+		
 		getData();
 	}
 	
-	private void getData() {
-		departemenCmbBox.setList(ServiceFactory.getPersonaliaBL().getDepartments(""));
-		divisionCmbBox.setList(ServiceFactory.getPersonaliaBL().getDivisions(""));
-	}
-
-	private void getLastID() {
-		msPositionIdField.setText(ServiceFactory.getPersonaliaBL().getLastIdDivision().toString());
-	}
-
-	private void option() {
-		if (DialogBox.showAfterChoiceInsert()==0) {
-			clear();
-		} else {
+	protected void update() {
+		MSPosition msPosition = new MSPosition();
+		msPosition.setId(msPositionIdField.getText());
+		msPosition.setName(msPositionNameField.getText());
+		msPosition.setDepartment(departemenCmbBox.getDataIndex());
+		msPosition.setDivision(divisionCmbBox.getDataIndex());
+		msPosition.setDepartementId(departemenCmbBox.getDataIndex().getId());
+		msPosition.setDivisionId(divisionCmbBox.getDataIndex().getId());
+		msPosition.setDivisionName(divisionCmbBox.getDataIndex().getName());
+		msPosition.setDepartementName(departemenCmbBox.getDataIndex().getName());
+		msPosition.setSalaryMax(Integer.parseInt(salaryMaxField.getText()));
+		msPosition.setSalaryMin(Integer.parseInt(salaryMinField.getText()));
+		msPosition.setEditDate(new Date());
+		msPosition.setEditBy("");
+		
+		try {
+			ServiceFactory.getPersonaliaBL().updateMSPosition(msPosition);
+			DialogBox.showEdit();
 			MainPanel.changePanel("module.personalia.ui.MSPositionConfigPanel");
+		} catch (Exception e) {
+			e.printStackTrace();
+			DialogBox.showError("Data tidak berhasil disimpan");
 		}
 	}
 
-	private void clear() {
-		getLastID();
-		msPositionNameField.setText("");
+	protected void delete() {
+		if (DialogBox.showDeleteChoice()==0) {
+			msPosition.setDeleteDate(new Date());
+			msPosition.setDeleteBy("");
+			ServiceFactory.getPersonaliaBL().deleteMSPosition(msPosition);
+			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
+		} else {
+			
+		}
+	}
+
+	private void getData() {
+		departemenCmbBox.setList(ServiceFactory.getPersonaliaBL().getDepartments(""));
+		divisionCmbBox.setList(ServiceFactory.getPersonaliaBL().getDivisions(""));
 	}
 	
 	@Override
@@ -162,5 +223,28 @@ public class ViewMSPositionPanel extends JPanel implements Bridging{
 		divisionCmbBox.setSelectedItem(msPosition.getDivision());
 		salaryMinField.setText(msPosition.getSalaryMin().toString());
 		salaryMaxField.setText(msPosition.getSalaryMax().toString());
+	}
+
+	public boolean isEditMode() {
+		return editMode;
+	}
+
+	public void setEditMode(boolean editMode) {
+		this.editMode = editMode;
+		msPositionIdField.setEnabled(true);
+		msPositionIdField.setEditable(true);
+		msPositionNameField.setEnabled(true);
+		msPositionNameField.setEditable(true);
+		departemenCmbBox.setEnabled(true);
+		departemenCmbBox.setEditable(true);
+		divisionCmbBox.setEnabled(true);
+		divisionCmbBox.setEditable(true);
+		salaryMinField.setEnabled(true);
+		salaryMinField.setEditable(true);
+		salaryMaxField.setEnabled(true);
+		salaryMaxField.setEditable(true);
+		
+		editBtn.setText("Simpan");
+		editBtn.repaint();
 	}
 }

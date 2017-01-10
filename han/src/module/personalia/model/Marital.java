@@ -4,28 +4,27 @@ import java.util.Date;
 
 import module.util.ComboBoxProperties;
 
-public class EmployeeType implements ComboBoxProperties{
+public class Marital implements ComboBoxProperties{
 
-	String id;
-	String name;
+	Integer id;
+	String marital;
 	Date inputDate;
 	String inputBy;
 	Date editDate;
 	String editBy;
 	Date deleteDate;
 	String deleteBy;
-	
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getMarital() {
+		return marital;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setMarital(String marital) {
+		this.marital = marital;
 	}
 	public Date getInputDate() {
 		return inputDate;
@@ -65,6 +64,6 @@ public class EmployeeType implements ComboBoxProperties{
 	}
 	@Override
 	public Object getField() {
-		return name;
+		return marital;
 	}
 }

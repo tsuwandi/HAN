@@ -142,7 +142,7 @@ public class CreateMSPositionPanel extends JPanel {
 	private void getLastID() {
 		StringBuffer lastId = new StringBuffer();
 		lastId.append("POS");
-		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdDivision()));
+		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdMSPosition()));
 		msPositionIdField.setText(lastId.toString());
 	}
 
@@ -179,5 +179,10 @@ public class CreateMSPositionPanel extends JPanel {
 	private void clear() {
 		getLastID();
 		msPositionNameField.setText("");
+		msPositionNameField.setText("");
+		departemenCmbBox.setSelectedIndex(0);
+		divisionCmbBox.setSelectedIndex(0);
+		salaryMinField.setText("0");
+		salaryMaxField.setText("0");
 	}
 }

@@ -5,10 +5,9 @@ import java.util.Date;
 
 public class Employee {
 
-	String id;
+	Integer id;
 	String empCode;
 	String name;
-	String empTypeId;
 	String currentAddress;
 	String currentCity;
 	String ktp;
@@ -23,10 +22,8 @@ public class Employee {
 	String email;
 	String phone;
 	BigDecimal salary;
-	String departmentId;
-	String genderId;
-	String positionId;
-	String maritalId;
+	Integer genderId;
+	Integer maritalId;
 	String emplStatusId;
 	Date inputDate;
 	String inputBy;
@@ -34,10 +31,10 @@ public class Employee {
 	String editBy;
 	Date deleteDate;
 	String deleteBy;
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getEmpCode() {
@@ -51,12 +48,6 @@ public class Employee {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getEmpTypeId() {
-		return empTypeId;
-	}
-	public void setEmpTypeId(String empTypeId) {
-		this.empTypeId = empTypeId;
 	}
 	public String getCurrentAddress() {
 		return currentAddress;
@@ -142,28 +133,16 @@ public class Employee {
 	public void setSalary(BigDecimal salary) {
 		this.salary = salary;
 	}
-	public String getDepartmentId() {
-		return departmentId;
-	}
-	public void setDepartmentId(String departmentId) {
-		this.departmentId = departmentId;
-	}
-	public String getGenderId() {
+	public Integer getGenderId() {
 		return genderId;
 	}
-	public void setGenderId(String genderId) {
+	public void setGenderId(Integer genderId) {
 		this.genderId = genderId;
 	}
-	public String getPositionId() {
-		return positionId;
-	}
-	public void setPositionId(String positionId) {
-		this.positionId = positionId;
-	}
-	public String getMaritalId() {
+	public Integer getMaritalId() {
 		return maritalId;
 	}
-	public void setMaritalId(String maritalId) {
+	public void setMaritalId(Integer maritalId) {
 		this.maritalId = maritalId;
 	}
 	public String getEmplStatusId() {

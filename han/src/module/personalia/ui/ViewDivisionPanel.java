@@ -98,6 +98,14 @@ public class ViewDivisionPanel extends JPanel implements Bridging{
 		JButton printBtn = new JButton("Cetak");
 		printBtn.setBounds(724, 589, 90, 30);
 		add(printBtn);
+		
+		printBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent paramActionEvent) {
+				
+			}
+		});
 	}
 
 	protected void delete() {
