@@ -14,6 +14,7 @@ import module.personalia.dao.EmployeeTypeDAO;
 import module.personalia.dao.GenderDAO;
 import module.personalia.dao.MSPositionDAO;
 import module.personalia.dao.MaritalDAO;
+import module.personalia.dao.PayrollComponentDAO;
 import module.personalia.model.Department;
 import module.personalia.model.Division;
 import module.personalia.model.Employee;
@@ -21,6 +22,7 @@ import module.personalia.model.EmployeeType;
 import module.personalia.model.Gender;
 import module.personalia.model.MSPosition;
 import module.personalia.model.Marital;
+import module.personalia.model.PayrollComponent;
 
 public class PersonaliaBL {
 	
@@ -434,5 +436,82 @@ public class PersonaliaBL {
 			e.printStackTrace();
 		}
 		return new MaritalDAO(connection).getAllData(query);
+	}
+	
+	public List<PayrollComponent> getPayrollComponents(String query) {
+		List<PayrollComponent> payrollComponents = new ArrayList<PayrollComponent>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			payrollComponents = new PayrollComponentDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return payrollComponents;
+	}
+	
+	public void savePayrollComponent(PayrollComponent payrollComponent) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new PayrollComponentDAO(connection).insert(payrollComponent);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updatePayrollComponent(PayrollComponent payrollComponent) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new PayrollComponentDAO(connection).update(payrollComponent);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deletePayrollComponent(PayrollComponent payrollComponent) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new PayrollComponentDAO(connection).delete(payrollComponent);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Integer getLastIdPayrollComponent() {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			return new PayrollComponentDAO(connection).getLastId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
 	}
 }

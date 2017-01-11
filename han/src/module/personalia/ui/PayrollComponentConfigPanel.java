@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.personalia.model.Division;
 import module.personalia.model.PayrollComponent;
@@ -59,8 +60,8 @@ public class PayrollComponentConfigPanel extends JPanel implements Bridging{
 		payrollComponentConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (payrollComponentConfigTable.columnAtPoint(e.getPoint())==3) {
-					MainPanel.changePanel("module.personalia.ui.ViewDivisionPanel", getSelectedData());
+				if (payrollComponentConfigTable.columnAtPoint(e.getPoint())==7) {
+					MainPanel.changePanel("module.personalia.ui.ViewPayrollComponentPanel", getSelectedData());
 				}
 			}
 		});
@@ -103,19 +104,17 @@ public class PayrollComponentConfigPanel extends JPanel implements Bridging{
 		getUserData();
 	}
 
-	protected Division getSelectedData() {
+	protected PayrollComponent getSelectedData() {
 		int row = payrollComponentConfigTable.getSelectedRow();
 
-		Division division = new Division();
-		division.setId(payrollComponentConfigTable.getValueAt(row, 1).toString());
-		division.setName(payrollComponentConfigTable.getValueAt(row, 2).toString());
+		PayrollComponent PayrollComponent = payrollComponents.get(row);
 
-		return division;
+		return PayrollComponent;
 	}
 
 	private void getUserData() {
 		payrollComponents.clear();
-		//payrollComponents = ServiceFactory.getPersonaliaBL().getDivisions("");
+		payrollComponents = ServiceFactory.getPersonaliaBL().getPayrollComponents("");
 		payrollComponentConfigTableModel = new PayrollComponentConfigTableModel(payrollComponents);
 		payrollComponentConfigTable.setModel(payrollComponentConfigTableModel);
 	}

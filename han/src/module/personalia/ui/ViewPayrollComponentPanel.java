@@ -15,7 +15,6 @@ import javax.swing.JTextField;
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.personalia.model.Division;
 import module.personalia.model.PayrollComponent;
 import module.util.Bridging;
 
@@ -73,6 +72,8 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 		add(label_3);
 		
 		payrollComponentDescriptionField = new JTextField();
+		payrollComponentDescriptionField.setEditable(false);
+		payrollComponentDescriptionField.setEnabled(false);
 		payrollComponentDescriptionField.setBounds(140, 120, 200, 30);
 		add(payrollComponentDescriptionField);
 		// status gaji
@@ -85,10 +86,12 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 		add(label_2);
 		
 		payrollStatusYesRdbtn = new JRadioButton("Ya");
+		payrollStatusYesRdbtn.setEnabled(false);
 		payrollStatusYesRdbtn.setBounds(140, 160, 100, 30);
 		add(payrollStatusYesRdbtn);
 		
 		payrollStatusNoRdbtn = new JRadioButton("Tidak");
+		payrollStatusNoRdbtn.setEnabled(false);
 		payrollStatusNoRdbtn.setBounds(240, 160, 100, 30);
 		add(payrollStatusNoRdbtn);
 		
@@ -106,10 +109,12 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 		add(label_5);
 		
 		thrStatusYesRdbtn = new JRadioButton("Ya");
+		thrStatusYesRdbtn.setEnabled(false);
 		thrStatusYesRdbtn.setBounds(140, 200, 100, 30);
 		add(thrStatusYesRdbtn);
 		
 		thrStatusNoRdbtn = new JRadioButton("Tidak");
+		thrStatusNoRdbtn.setEnabled(false);
 		thrStatusNoRdbtn.setBounds(240, 200, 100, 30);
 		add(thrStatusNoRdbtn);
 		
@@ -127,10 +132,12 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 		add(label_7);
 		
 		bonusStatusYesRdbtn = new JRadioButton("Ya");
+		bonusStatusYesRdbtn.setEnabled(false);
 		bonusStatusYesRdbtn.setBounds(140, 240, 100, 30);
 		add(bonusStatusYesRdbtn);
 		
 		bonusStatusNoRdbtn = new JRadioButton("Tidak");
+		bonusStatusNoRdbtn.setEnabled(false);
 		bonusStatusNoRdbtn.setBounds(240, 240, 100, 30);
 		add(bonusStatusNoRdbtn);
 		
@@ -148,6 +155,8 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 		add(label_9);
 		
 		referenceDocumentField = new JTextField();
+		referenceDocumentField.setEditable(false);
+		referenceDocumentField.setEnabled(false);
 		referenceDocumentField.setBounds(140, 280, 200, 30);
 		add(referenceDocumentField);
 		
@@ -214,15 +223,15 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 	}
 
 	protected void back() {
-		
+		MainPanel.changePanel("module.personalia.ui.PayrollComponentConfigPanel");
 	}
 
 	protected void delete() {
 		if (DialogBox.showDeleteChoice()==0) {
 			payrollComponent.setDeleteDate(new Date());
 			payrollComponent.setDeleteBy("");
-			//ServiceFactory.getPersonaliaBL().deleteDivision(division);
-			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
+			ServiceFactory.getPersonaliaBL().deletePayrollComponent(payrollComponent);
+			MainPanel.changePanel("module.personalia.ui.PayrollComponentConfigPanel");
 		} else {
 			
 		}
@@ -230,6 +239,7 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 
 	protected void update() {
 		PayrollComponent payrollComponent = new PayrollComponent();
+		payrollComponent.setId(this.payrollComponent.getId());
 		payrollComponent.setCode(payrollComponentCodeField.getText());
 		payrollComponent.setDescription(payrollComponentDescriptionField.getText());
 		
@@ -241,11 +251,13 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 		else payrollComponent.setIsBonus(0);
 		
 		payrollComponent.setReferenceDocument(referenceDocumentField.getText());
+		payrollComponent.setEditDate(new Date());
+		payrollComponent.setEditBy("");
 		
 		try {
-			//ServiceFactory.getPersonaliaBL().updateDivision(division);
+			ServiceFactory.getPersonaliaBL().updatePayrollComponent(payrollComponent);
 			DialogBox.showEdit();
-			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
+			MainPanel.changePanel("module.personalia.ui.PayrollComponentConfigPanel");
 		} catch (Exception e) {
 			e.printStackTrace();
 			DialogBox.showError("Data tidak berhasil disimpan");
@@ -255,7 +267,6 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 	@Override
 	public void invokeObjects(Object... objects) {
 		payrollComponent = (PayrollComponent) objects[0];
-		
 		payrollComponentCodeField.setText(payrollComponent.getCode());
 		payrollComponentDescriptionField.setText(payrollComponent.getDescription());
 		if(payrollComponent.getIsSalary() == 1) {
@@ -276,7 +287,7 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
-		payrollComponentCodeField.setEnabled(true);
+		//payrollComponentCodeField.setEnabled(true);
 		payrollComponentDescriptionField.setEnabled(true);
 		payrollStatusYesRdbtn.setEnabled(true);
 		payrollStatusNoRdbtn.setEnabled(true);
