@@ -3,6 +3,7 @@ package module.personalia.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -193,17 +194,28 @@ public class CreatePayrollComponentPanel extends JPanel {
 
 	private void getLastID() {
 		StringBuffer lastId = new StringBuffer();
-		lastId.append("DIV");
-		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdDivision()));
+		lastId.append("PAYCOMP");
+		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdPayrollComponent()));
 		payrollComponentCodeField.setText(lastId.toString());
 	}
 
 	protected void save() {
 		PayrollComponent payrollComponent = new PayrollComponent();
-		
-		
+		payrollComponent.setCode(payrollComponentCodeField.getText());
+		payrollComponent.setDescription(payrollComponentDescriptionField.getText());
+		if(payrollStatusYesRdbtn.isSelected()) payrollComponent.setIsSalary(1);
+		else payrollComponent.setIsSalary(0);
+		if(thrStatusYesRdbtn.isSelected()) payrollComponent.setIsThr(1);
+		else payrollComponent.setIsThr(0);
+		if(bonusStatusYesRdbtn.isSelected()) payrollComponent.setIsBonus(1);
+		else payrollComponent.setIsBonus(0);
+		payrollComponent.setReferenceDocument(referenceDocumentField.getText());
+		payrollComponent.setInputDate(new Date());
+		payrollComponent.setInputBy("");
+		payrollComponent.setEditDate(new Date());
+		payrollComponent.setEditBy("");
 		try {
-			//ServiceFactory.getPersonaliaBL().saveDivision(division);
+			ServiceFactory.getPersonaliaBL().savePayrollComponent(payrollComponent);
 			option();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -216,7 +228,7 @@ public class CreatePayrollComponentPanel extends JPanel {
 		if (DialogBox.showAfterChoiceInsert()==0) {
 			clear();
 		} else {
-			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
+			MainPanel.changePanel("module.personalia.ui.PayrollComponentConfigPanel");
 		}
 	}
 

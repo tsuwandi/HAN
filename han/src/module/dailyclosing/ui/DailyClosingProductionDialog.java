@@ -218,7 +218,7 @@ public class DailyClosingProductionDialog extends JDialog {
 			String confirmCode) throws SQLException {
 System.out.println(listOfProdRM);
 System.out.println(listOfProductionResult);
-		//ServiceFactory.getDailyClosingBL().save(listOfProdRM, listOfProductionResult, confirmCode);
+		ServiceFactory.getDailyClosingBL().save(listOfProdRM, listOfProductionResult, confirmCode);
 
 		JOptionPane.showMessageDialog(null, "Tutup Harian Berhasil", "Tutup Harian Produksi", JOptionPane.INFORMATION_MESSAGE);
 

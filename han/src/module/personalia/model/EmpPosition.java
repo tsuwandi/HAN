@@ -2,7 +2,7 @@ package module.personalia.model;
 
 import java.util.Date;
 
-public class EmployeePosition {
+public class EmpPosition {
 
 	Integer id;
 	String employeeId;
@@ -15,7 +15,13 @@ public class EmployeePosition {
 	EmployeeType employeeType;
 	String referenceDoc;
 	String notes;
-	
+	Date inputDate;
+	String inputBy;
+	Date editDate;
+	String editBy;
+	Date deleteDate;
+	String deleteBy;
+
 	public Integer getId() {
 		return id;
 	}
@@ -52,11 +58,23 @@ public class EmployeePosition {
 	public void setPositionId(String positionId) {
 		this.positionId = positionId;
 	}
+	public MSPosition getMsPosition() {
+		return msPosition;
+	}
+	public void setMsPosition(MSPosition msPosition) {
+		this.msPosition = msPosition;
+	}
 	public String getEmployeeTypeId() {
 		return employeeTypeId;
 	}
 	public void setEmployeeTypeId(String employeeTypeId) {
 		this.employeeTypeId = employeeTypeId;
+	}
+	public EmployeeType getEmployeeType() {
+		return employeeType;
+	}
+	public void setEmployeeType(EmployeeType employeeType) {
+		this.employeeType = employeeType;
 	}
 	public String getReferenceDoc() {
 		return referenceDoc;
@@ -69,5 +87,41 @@ public class EmployeePosition {
 	}
 	public void setNotes(String notes) {
 		this.notes = notes;
-	}	
+	}
+	public Date getInputDate() {
+		return inputDate;
+	}
+	public void setInputDate(Date inputDate) {
+		this.inputDate = inputDate;
+	}
+	public String getInputBy() {
+		return inputBy;
+	}
+	public void setInputBy(String inputBy) {
+		this.inputBy = inputBy;
+	}
+	public Date getEditDate() {
+		return editDate;
+	}
+	public void setEditDate(Date editDate) {
+		this.editDate = editDate;
+	}
+	public String getEditBy() {
+		return editBy;
+	}
+	public void setEditBy(String editBy) {
+		this.editBy = editBy;
+	}
+	public Date getDeleteDate() {
+		return deleteDate;
+	}
+	public void setDeleteDate(Date deleteDate) {
+		this.deleteDate = deleteDate;
+	}
+	public String getDeleteBy() {
+		return deleteBy;
+	}
+	public void setDeleteBy(String deleteBy) {
+		this.deleteBy = deleteBy;
+	}
 }

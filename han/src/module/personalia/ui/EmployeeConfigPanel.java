@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.personalia.model.Employee;
 import module.util.Bridging;
@@ -106,13 +107,16 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 		int row = employeeConfigTable.getSelectedRow();
 
 		Employee employee = new Employee();
+		//employee.setId(employeeConfigTable.getValueAt(row, ));
+		employee.setEmpCode(employeeConfigTable.getValueAt(row, 1).toString());
+		employee.setName(employeeConfigTable.getValueAt(row, 2).toString());
 
 		return employee;
 	}
 
 	private void getData() {
 		employees.clear();
-		//employees = ServiceFactory.getPersonaliaBL().getEmployees("");
+		employees = ServiceFactory.getPersonaliaBL().getEmployees("");
 		employeeConfigTableModel = new EmployeeConfigTableModel(employees);
 		employeeConfigTable.setModel(employeeConfigTableModel);
 	}
@@ -128,7 +132,7 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 
 		@Override
 		public int getColumnCount() {
-			return 13;
+			return 7;
 		}
 
 		@Override
@@ -144,10 +148,16 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 			case 0:
 				return employees.indexOf(employee) + 1;
 			case 1:
-				return employee.getEmployeeId();
+				return employee.getEmpCode();
 			case 2:
-				return employee.getEmployeeName();
+				return employee.getName();
 			case 3:
+				return employee.getHometown();
+			case 4:
+				return employee.getBirthDate();
+			case 5:
+				return employee.getGenderId();
+			case 6:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
@@ -165,6 +175,12 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 				return String.class;
 			case 3:
 				return String.class;
+			case 4:
+				return String.class;
+			case 5:
+				return String.class;
+			case 6:
+				return String.class;
 			default:
 				return String.class;
 			}
@@ -179,7 +195,7 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 				return "NIK";
 			case 2:
 				return "Nama Karyawan";
-			case 3:
+				/*case 3:
 				return "Tipe Karyawan";
 			case 4:
 				return "Jabatan";
@@ -187,17 +203,17 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 				return "Department";
 			case 6:
 				return "Divisi";
-			case 7:
-				return "Tanggal Mulai Kerja";
-			case 8:
+			case 3:
+				return "Tanggal Mulai Kerja";*/
+			case 3:
 				return "Kota Asal";
-			case 9:
+			case 4:
 				return "Tanggal Lahir";
-			case 10:
+			case 5:
 				return "Gender";
-			case 11:
-				return "Status";
-			case 12:
+			/*case 11:
+				return "Status";*/
+			case 6:
 				return "Action";
 			default:
 				return "";

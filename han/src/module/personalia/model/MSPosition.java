@@ -2,7 +2,9 @@ package module.personalia.model;
 
 import java.util.Date;
 
-public class MSPosition {
+import module.util.ComboBoxProperties;
+
+public class MSPosition implements ComboBoxProperties {
 
 	String id;
 	String name;
@@ -116,5 +118,9 @@ public class MSPosition {
 	}
 	public void setDivision(Division division) {
 		this.division = division;
+	}
+	@Override
+	public Object getField() {
+		return name;
 	}
 }

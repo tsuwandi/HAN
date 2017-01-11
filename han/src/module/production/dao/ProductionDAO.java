@@ -319,11 +319,10 @@ public class ProductionDAO {
 				.append(" FROM production a INNER JOIN line b ON a.line_code = b.line_code ")
 				.append(" INNER JOIN shift c ON a.shift_code = c.shift_code INNER JOIN group_shift d ON a.group_shift_code = d.group_shift_code ")
 				.append(" INNER JOIN production_type e ON a.production_type_code = e.production_type_code")
-				.append(" INNER JOIN prod_result r ON r.prod_code = a.production_code")
-				.append(" INNER JOIN prod_result_product rp ON rp.prod_result_id = r.id")
+				.append(" LEFT JOIN prod_result r ON r.prod_code = a.production_code")
+				.append(" LEFT JOIN prod_result_product rp ON rp.prod_result_id = r.id")
 				.append(" WHERE a.deleted_date IS NULL AND r.deleted_date is NULL AND rp.deleted_date is NULL")
-				.append(" AND r.confirm_date IS NULL ")
-				.append(" AND a.confirm_date IS NULL AND c.deleted_date is NULL AND e.deleted_date is NULL")
+				.append(" AND a.confirm_date IS NULL AND rp.confirm_date IS NULL AND r.confirm_date IS NULL AND c.deleted_date is NULL AND e.deleted_date is NULL")
 				.append(" AND a.input_date <= CURDATE()").toString();
 		
 			getAllStatement = connection.prepareStatement(query);

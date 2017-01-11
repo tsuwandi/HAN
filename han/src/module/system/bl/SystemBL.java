@@ -93,7 +93,6 @@ public class SystemBL {
 		
 		try {
 			connection = dataSource.getConnection();
-			System.out.println("user : "+new UserDAO(connection).selectUser(user));
 			return new UserDAO(connection).selectUser(user) == null ? false : true;
 		} catch (SQLException e) {
 			e.printStackTrace();
