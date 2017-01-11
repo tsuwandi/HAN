@@ -269,15 +269,12 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 		payrollComponent = (PayrollComponent) objects[0];
 		payrollComponentCodeField.setText(payrollComponent.getCode());
 		payrollComponentDescriptionField.setText(payrollComponent.getDescription());
-		if(payrollComponent.getIsSalary() == 1) {
-			payrollStatusYesRdbtn.setSelected(true);
-		} else payrollStatusNoRdbtn.setSelected(true);
-		if (payrollComponent.getIsThr() == 1) {
-			thrStatusYesRdbtn.setSelected(true);
-		} else thrStatusNoRdbtn.setSelected(true);
-		if (payrollComponent.getIsBonus() == 1) {
-			bonusStatusYesRdbtn.setSelected(true);
-		} else bonusStatusNoRdbtn.setSelected(true);
+		if (payrollComponent.getIsSalary() == 1) payrollStatusYesRdbtn.setSelected(true);
+		else payrollStatusNoRdbtn.setSelected(true);
+		if (payrollComponent.getIsThr() == 1) thrStatusYesRdbtn.setSelected(true);
+		else thrStatusNoRdbtn.setSelected(true);
+		if (payrollComponent.getIsBonus() == 1) bonusStatusYesRdbtn.setSelected(true);
+		else bonusStatusNoRdbtn.setSelected(true);
 		referenceDocumentField.setText(payrollComponent.getReferenceDocument());
 	}
 	
