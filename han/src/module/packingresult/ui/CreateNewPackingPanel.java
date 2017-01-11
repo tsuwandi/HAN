@@ -36,6 +36,7 @@ import model.User;
 import module.dailyclosing.model.Inventory;
 import module.packingresult.model.Packing;
 import module.packingresult.model.PackingConversion;
+import module.packingresult.model.PackingRM;
 import module.packingresult.model.PackingResult;
 import module.util.Bridging;
 
@@ -310,7 +311,7 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 		bigCrateBResultField.setBounds(380,585,150,20);
 		containerPnl.add(bigCrateBResultField);
 		
-		bigCrateBResultLbl= new JLabel(NORMAL_A);
+		bigCrateBResultLbl= new JLabel(NORMAL_B);
 		bigCrateBResultLbl.setBounds(540,585,150,20);
 		containerPnl.add(bigCrateBResultLbl);
 		
@@ -615,7 +616,7 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 	}
 	private void saveData(){
 		int error=0;
-		if(bigCrateAField.getText().equals("")){
+		/*if(bigCrateAField.getText().equals("")){
 			error++;
 			bigCrateAErrorLbl.setText("<html><font color='red'>Crate Besar A harus diisi !</font></html>");
 		}else{
@@ -669,43 +670,81 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 			smallCrateBNPErrorLbl.setText("<html><font color='red'>Crate Kecil BNP harus diisi !</font></html>");
 		}else{
 			smallCrateBNPErrorLbl.setText("");
-		}
+		}*/
 		
+		if(bigCrateAField.getText().equals(""))bigCrateAField.setText("0");
+	
+		if(smallCrateAField.getText().equals(""))smallCrateAField.setText("0");
+		
+		if(bigCrateA1Field.getText().equals(""))bigCrateA1Field.setText("0");
+		
+		if(smallCrateA1Field.getText().equals(""))smallCrateA1Field.setText("0");
+		
+		if(bigCrateBField.getText().equals(""))bigCrateBField.setText("0");
+		
+		if(smallCrateBField.getText().equals(""))smallCrateBField.setText("0");
+		
+		if(bigCrateBNPField.getText().equals(""))bigCrateBNPField.setText("0");
+		
+		if(smallCrateBNPField.getText().equals(""))smallCrateBNPField.setText("0");
 		if(error==0){
 			if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
 				if(!editMode){
 					try {
 						packing.setPackingDate(packingDateChooser.getDate());
 						List<PackingResult> packingResults = new ArrayList<>();
+						List<PackingRM> packingRMs = new ArrayList<>();
+						double barecoreA=0;
+						double barecoreB=0;
 						for (int i = 0; i < 8; i++) {
 							PackingResult packingResult = new PackingResult();
 							if(i==0){
 								packingResult.setProductCode(BIG_CRATE_A);
 								packingResult.setQty(Double.valueOf(bigCrateAField.getText()));
+								barecoreA+=Double.valueOf(bigCrateAResultField.getText());
 							}else if(i==1){
 								packingResult.setProductCode(SMALL_CRATE_A);
 								packingResult.setQty(Double.valueOf(smallCrateAField.getText()));
+								barecoreA+=Double.valueOf(smallCrateAResultField.getText());
 							}else if(i==2){
 								packingResult.setProductCode(BIG_CRATE_A1);
 								packingResult.setQty(Double.valueOf(bigCrateA1Field.getText()));
+								barecoreA+=Double.valueOf(bigCrateA1ResultField.getText());
 							}else if(i==3){
 								packingResult.setProductCode(SMALL_CRATE_A1);
 								packingResult.setQty(Double.valueOf(smallCrateA1Field.getText()));
+								barecoreA+=Double.valueOf(smallCrateA1ResultField.getText());
 							}else if(i==4){
 								packingResult.setProductCode(BIG_CRATE_B);
 								packingResult.setQty(Double.valueOf(bigCrateBField.getText()));
+								barecoreB+=Double.valueOf(bigCrateBResultField.getText());
 							}else if(i==5){
 								packingResult.setProductCode(SMALL_CRATE_B);
 								packingResult.setQty(Double.valueOf(smallCrateBField.getText()));
+								barecoreB+=Double.valueOf(smallCrateBResultField.getText());
 							}else if(i==6){
 								packingResult.setProductCode(BIG_CRATE_BNP);
 								packingResult.setQty(Double.valueOf(bigCrateBNPField.getText()));
+								barecoreB+=Double.valueOf(bigCrateBNPResultField.getText());
 							}else if(i==7){
 								packingResult.setProductCode(SMALL_CRATE_BNP);
 								packingResult.setQty(Double.valueOf(smallCrateBNPField.getText()));
+								barecoreB+=Double.valueOf(smallCrateBNPResultField.getText());
 							}
 							packingResults.add(packingResult);
 						}
+						for(int i = 0; i < 2; i++){
+							PackingRM packingRM = new PackingRM();
+							if(i==0){
+								packingRM.setProductCode(NA);
+								packingRM.setQty(barecoreA);
+							}else if(i==1){
+								packingRM.setProductCode(NB);
+								packingRM.setQty(barecoreB);
+							}
+							packingRMs.add(packingRM);
+						}
+						packing.setPackingRMs(packingRMs);
 						packing.setPackingResults(packingResults);
 						ServiceFactory.getPackingBL().save(packing);
 						DialogBox.showInsert();
@@ -719,23 +758,41 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 					try {
 						packing.setPackingDate(packingDateChooser.getDate());
 						List<PackingResult> packingResults = packing.getPackingResults();
+						List<PackingRM> packingRms = packing.getPackingRMs();
+						double barecoreA=0;
+						double barecoreB=0;;
 						for (PackingResult packingResult : packingResults) {
 							if(packingResult.getProductCode().equals(BIG_CRATE_A)){
 								packingResult.setQty(Double.valueOf(bigCrateAField.getText()));
+								barecoreA+=Double.valueOf(bigCrateAResultField.getText());
 							}else if(packingResult.getProductCode().equals(SMALL_CRATE_A)){
 								packingResult.setQty(Double.valueOf(smallCrateAField.getText()));
+								barecoreA+=Double.valueOf(smallCrateAResultField.getText());
 							}else if(packingResult.getProductCode().equals(BIG_CRATE_A1)){
 								packingResult.setQty(Double.valueOf(bigCrateA1Field.getText()));
+								barecoreA+=Double.valueOf(bigCrateA1ResultField.getText());
 							}else if(packingResult.getProductCode().equals(SMALL_CRATE_A1)){
 								packingResult.setQty(Double.valueOf(smallCrateA1Field.getText()));
+								barecoreA+=Double.valueOf(smallCrateA1ResultField.getText());
 							}else if(packingResult.getProductCode().equals(BIG_CRATE_B)){
 								packingResult.setQty(Double.valueOf(bigCrateBField.getText()));
+								barecoreB+=Double.valueOf(bigCrateBResultField.getText());
 							}else if(packingResult.getProductCode().equals(SMALL_CRATE_B)){
 								packingResult.setQty(Double.valueOf(smallCrateBField.getText()));
+								barecoreB+=Double.valueOf(smallCrateBResultField.getText());
 							}else if(packingResult.getProductCode().equals(BIG_CRATE_BNP)){
 								packingResult.setQty(Double.valueOf(bigCrateBNPField.getText()));
+								barecoreB+=Double.valueOf(bigCrateBNPResultField.getText());
 							}else if(packingResult.getProductCode().equals(BIG_CRATE_BNP)){
 								packingResult.setQty(Double.valueOf(smallCrateBNPField.getText()));
+								barecoreB+=Double.valueOf(smallCrateBNPResultField.getText());
+							}
+						}
+						for(PackingRM packingRM : packingRms){
+							if(packingRM.getProductCode().equals(NA)){
+								packingRM.setQty(barecoreA);
+							}else if(packingRM.getProductCode().equals(NB)){
+								packingRM.setQty(barecoreB);
 							}
 						}
 						ServiceFactory.getPackingBL().update(packing);

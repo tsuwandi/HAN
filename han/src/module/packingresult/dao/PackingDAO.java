@@ -21,7 +21,7 @@ public class PackingDAO {
 	
 	private String getAllQuery = "SELECT id, packing_date, status, confirm_code, confirm_date FROM packing WHERE deleted_date IS NULL";
 			
-	private String getLastIDQuery = "SELECT id FROM packing WHERE deleted_date IS NULL ORDER BY id DESC LIMIT 1";
+	private String getLastIDQuery = "SELECT id FROM packing ORDER BY id DESC LIMIT 1";
 	
 	private String insertQuery = "INSERT INTO packing (id,packing_date, status, input_date, input_by) VALUES (?,?,?,?,?)";  
 	private String updateQuery = "UPDATE packing SET packing_date=?, status=?, edited_by=?, edited_date=? WHERE id =?";

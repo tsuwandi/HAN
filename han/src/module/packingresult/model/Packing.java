@@ -10,6 +10,7 @@ public class Packing {
 	private String confirmCode;
 	private Date confirmDate;
 	private List<PackingResult> packingResults;
+	private List<PackingRM> packingRMs;
 	
 	public int getId() {
 		return id;
@@ -46,6 +47,12 @@ public class Packing {
 	}
 	public void setPackingResults(List<PackingResult> packingResults) {
 		this.packingResults = packingResults;
+	}
+	public List<PackingRM> getPackingRMs() {
+		return packingRMs;
+	}
+	public void setPackingRMs(List<PackingRM> packingRMs) {
+		this.packingRMs = packingRMs;
 	}
 	
 	
