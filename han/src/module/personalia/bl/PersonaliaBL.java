@@ -15,6 +15,7 @@ import module.personalia.dao.GenderDAO;
 import module.personalia.dao.MSPositionDAO;
 import module.personalia.dao.MaritalDAO;
 import module.personalia.dao.PayrollComponentDAO;
+import module.personalia.dao.PayrollMappingDAO;
 import module.personalia.model.Department;
 import module.personalia.model.Division;
 import module.personalia.model.Employee;
@@ -23,6 +24,7 @@ import module.personalia.model.Gender;
 import module.personalia.model.MSPosition;
 import module.personalia.model.Marital;
 import module.personalia.model.PayrollComponent;
+import module.personalia.model.PayrollMapping;
 
 public class PersonaliaBL {
 	
@@ -509,6 +511,83 @@ public class PersonaliaBL {
 		try {
 			connection = dataSource.getConnection();
 			return new PayrollComponentDAO(connection).getLastId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+	}
+	/////////////////////////////////////////////////////////////
+	public List<PayrollMapping> getPayrollMappings(String query) {
+		List<PayrollMapping> payrollMappings = new ArrayList<PayrollMapping>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			payrollMappings = new PayrollMappingDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return payrollMappings;
+	}
+	
+	public void savePayrollMapping(PayrollMapping payrollMapping) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new PayrollMappingDAO(connection).insert(payrollMapping);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updatePayrollMapping(PayrollMapping payrollMapping) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new PayrollMappingDAO(connection).update(payrollMapping);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deletePayrollMapping(PayrollMapping payrollMapping) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new PayrollMappingDAO(connection).delete(payrollMapping);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Integer getLastIdpayrollMapping() {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			return new PayrollMappingDAO(connection).getLastId();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 1;

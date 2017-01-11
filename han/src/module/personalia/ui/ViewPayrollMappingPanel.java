@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
@@ -72,6 +73,7 @@ public class ViewPayrollMappingPanel extends JPanel implements Bridging{
 		add(label_3);
 		
 		msPositionCmbox = new ComboBox<>();
+		msPositionCmbox.setEnabled(false);
 		msPositionCmbox.setBounds(140, 120, 200, 30);
 		add(msPositionCmbox);
 		// status gaji
@@ -84,6 +86,7 @@ public class ViewPayrollMappingPanel extends JPanel implements Bridging{
 		add(label_2);
 		
 		payrollComponentCmbox = new ComboBox<PayrollComponent>();
+		payrollComponentCmbox.setEnabled(false);
 		payrollComponentCmbox.setBounds(140, 160, 200, 30);
 		add(payrollComponentCmbox);
 		// status mangkir
@@ -96,10 +99,12 @@ public class ViewPayrollMappingPanel extends JPanel implements Bridging{
 		add(label_5);
 		
 		skipStatusYesRdbtn = new JRadioButton("Ya");
+		skipStatusYesRdbtn.setEnabled(false);
 		skipStatusYesRdbtn.setBounds(140, 200, 100, 30);
 		add(skipStatusYesRdbtn);
 		
 		skipStatusNoRdbtn = new JRadioButton("Tidak");
+		skipStatusNoRdbtn.setEnabled(false);
 		skipStatusNoRdbtn.setBounds(240, 200, 100, 30);
 		add(skipStatusNoRdbtn);
 		
@@ -117,10 +122,12 @@ public class ViewPayrollMappingPanel extends JPanel implements Bridging{
 		add(label_7);
 		
 		permitStatusYesRdbtn = new JRadioButton("Ya");
+		permitStatusYesRdbtn.setEnabled(false);
 		permitStatusYesRdbtn.setBounds(140, 240, 100, 30);
 		add(permitStatusYesRdbtn);
 		
 		permitStatusNoRdbtn = new JRadioButton("Tidak");
+		permitStatusNoRdbtn.setEnabled(false);
 		permitStatusNoRdbtn.setBounds(240, 240, 100, 30);
 		add(permitStatusNoRdbtn);
 		
@@ -138,6 +145,8 @@ public class ViewPayrollMappingPanel extends JPanel implements Bridging{
 		add(label_9);
 		
 		referenceDocumentField = new JTextField();
+		referenceDocumentField.setEditable(false);
+		referenceDocumentField.setEnabled(false);
 		referenceDocumentField.setBounds(140, 280, 200, 30);
 		add(referenceDocumentField);
 		
@@ -197,6 +206,13 @@ public class ViewPayrollMappingPanel extends JPanel implements Bridging{
 				}
 			}
 		});
+		
+		getData();
+	}
+
+	private void getData() {
+		msPositionCmbox.setList(ServiceFactory.getPersonaliaBL().getMSPositions(""));
+		payrollComponentCmbox.setList(ServiceFactory.getPersonaliaBL().getPayrollComponents(""));
 	}
 
 	protected void attach() {
@@ -204,14 +220,14 @@ public class ViewPayrollMappingPanel extends JPanel implements Bridging{
 	}
 
 	protected void back() {
-		
+		MainPanel.changePanel("module.personalia.ui.PayrollMappingConfigPanel");
 	}
 
 	protected void delete() {
 		if (DialogBox.showDeleteChoice()==0) {
 			payrollMapping.setDeleteDate(new Date());
 			payrollMapping.setDeleteBy("");
-			//ServiceFactory.getPersonaliaBL().deleteDivision(division);
+			ServiceFactory.getPersonaliaBL().updatePayrollMapping(payrollMapping);
 			MainPanel.changePanel("module.personalia.ui.PayrollMappingConfigPanel");
 		} else {
 			
@@ -219,19 +235,23 @@ public class ViewPayrollMappingPanel extends JPanel implements Bridging{
 	}
 
 	protected void update() {
-		PayrollMapping payrollComponent = new PayrollMapping();
-		payrollComponent.setCode(payrollMappingCodeField.getText());
-		payrollComponent.setMsPosition(msPositionCmbox.getDataIndex());
-		payrollComponent.setPayrollComponent(payrollComponentCmbox.getDataIndex());
-		if (skipStatusYesRdbtn.isSelected()) payrollComponent.setIsAbsent(1);
-		else payrollComponent.setIsAbsent(0);
-		if (permitStatusYesRdbtn.isSelected()) payrollComponent.setIsLeave(1);
-		else payrollComponent.setIsLeave(0);
+		PayrollMapping payrollMapping = new PayrollMapping();
+		payrollMapping.setCode(payrollMappingCodeField.getText());
+		payrollMapping.setMsPosition(msPositionCmbox.getDataIndex());
+		payrollMapping.setPositionId(msPositionCmbox.getDataIndex().getId());
+		payrollMapping.setPayrollComponent(payrollComponentCmbox.getDataIndex());
+		payrollMapping.setPayrollComponentCode(payrollComponentCmbox.getDataIndex().getCode());
+		if (skipStatusYesRdbtn.isSelected()) payrollMapping.setIsAbsent(1);
+		else payrollMapping.setIsAbsent(0);
+		if (permitStatusYesRdbtn.isSelected()) payrollMapping.setIsLeave(1);
+		else payrollMapping.setIsLeave(0);
 		
-		payrollComponent.setReferenceDocument(referenceDocumentField.getText());
+		payrollMapping.setReferenceDocument(referenceDocumentField.getText());
+		payrollMapping.setEditDate(new Date());
+		payrollMapping.setEditBy("");
 		
 		try {
-			//ServiceFactory.getPersonaliaBL().updateDivision(division);
+			ServiceFactory.getPersonaliaBL().updatePayrollMapping(payrollMapping);
 			DialogBox.showEdit();
 			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
 		} catch (Exception e) {
@@ -247,12 +267,10 @@ public class ViewPayrollMappingPanel extends JPanel implements Bridging{
 		payrollMappingCodeField.setText(payrollMapping.getCode());
 		msPositionCmbox.setSelectedItem(payrollMapping.getMsPosition());
 		payrollComponentCmbox.setSelectedItem(payrollMapping.getPayrollComponent());
-		if (payrollMapping.getIsAbsent() == 1) {
-			skipStatusYesRdbtn.setSelected(true);
-		} else skipStatusNoRdbtn.setSelected(true);
-		if (payrollMapping.getIsLeave() == 1) {
-			permitStatusYesRdbtn.setSelected(true);
-		} else permitStatusNoRdbtn.setSelected(true);
+		if (payrollMapping.getIsAbsent() == 1) skipStatusYesRdbtn.setSelected(true);
+		else skipStatusNoRdbtn.setSelected(true);
+		if (payrollMapping.getIsLeave() == 1) permitStatusYesRdbtn.setSelected(true);
+		else permitStatusNoRdbtn.setSelected(true);
 		referenceDocumentField.setText(payrollMapping.getReferenceDocument());
 	}
 	
@@ -262,7 +280,6 @@ public class ViewPayrollMappingPanel extends JPanel implements Bridging{
 
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
-		payrollMappingCodeField.setEnabled(true);
 		msPositionCmbox.setEnabled(true);
 		payrollComponentCmbox.setEnabled(true);
 		skipStatusYesRdbtn.setEnabled(true);
