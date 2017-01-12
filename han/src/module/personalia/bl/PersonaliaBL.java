@@ -14,8 +14,13 @@ import module.personalia.dao.EmployeeTypeDAO;
 import module.personalia.dao.GenderDAO;
 import module.personalia.dao.MSPositionDAO;
 import module.personalia.dao.MaritalDAO;
+import module.personalia.dao.NonRoutineAllowanceMasterDAO;
+import module.personalia.dao.NonRoutineAllowanceMasterTypeDAO;
+import module.personalia.dao.NonRoutineAllowanceTransactionDAO;
 import module.personalia.dao.PayrollComponentDAO;
 import module.personalia.dao.PayrollMappingDAO;
+import module.personalia.dao.SalarySettingDAO;
+import module.personalia.dao.TaxDAO;
 import module.personalia.model.Department;
 import module.personalia.model.Division;
 import module.personalia.model.Employee;
@@ -23,8 +28,13 @@ import module.personalia.model.EmployeeType;
 import module.personalia.model.Gender;
 import module.personalia.model.MSPosition;
 import module.personalia.model.Marital;
+import module.personalia.model.NonRoutineAllowanceMaster;
+import module.personalia.model.NonRoutineAllowanceMasterType;
+import module.personalia.model.NonRoutineAllowanceTransaction;
 import module.personalia.model.PayrollComponent;
 import module.personalia.model.PayrollMapping;
+import module.personalia.model.SalarySetting;
+import module.personalia.model.Tax;
 
 public class PersonaliaBL {
 	
@@ -418,7 +428,7 @@ public class PersonaliaBL {
 			return null;
 		}
 	}
-	
+	//
 	public List<Gender> getGenders(String query){
 		Connection connection = null;
 		
@@ -440,6 +450,16 @@ public class PersonaliaBL {
 		return new MaritalDAO(connection).getAllData(query);
 	}
 	
+	public List<Tax> getTaxs(String query){
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new TaxDAO(connection).getAllData(query);
+	}
+	// payroll component
 	public List<PayrollComponent> getPayrollComponents(String query) {
 		List<PayrollComponent> payrollComponents = new ArrayList<PayrollComponent>();
 		Connection connection = null;
@@ -516,7 +536,7 @@ public class PersonaliaBL {
 			return 1;
 		}
 	}
-	/////////////////////////////////////////////////////////////
+	// payroll mapping
 	public List<PayrollMapping> getPayrollMappings(String query) {
 		List<PayrollMapping> payrollMappings = new ArrayList<PayrollMapping>();
 		Connection connection = null;
@@ -588,6 +608,314 @@ public class PersonaliaBL {
 		try {
 			connection = dataSource.getConnection();
 			return new PayrollMappingDAO(connection).getLastId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+	}
+	// salary settings
+	public List<SalarySetting> getSalarySettings(String query) {
+		List<SalarySetting> salarySettings = new ArrayList<SalarySetting>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			salarySettings = new SalarySettingDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return salarySettings;
+	}
+	
+	public void saveSalarySetting(SalarySetting salarySetting) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new SalarySettingDAO(connection).insert(salarySetting);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateSalarySetting(SalarySetting salarySetting) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new SalarySettingDAO(connection).update(salarySetting);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteSalarySetting(SalarySetting salarySetting) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new SalarySettingDAO(connection).delete(salarySetting);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Integer getLastIdSalarySetting() {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			return new SalarySettingDAO(connection).getLastId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+	}
+	// tnr master type
+	public List<NonRoutineAllowanceMasterType> getNonRoutineAllowanceMasterTypes(String query) {
+		List<NonRoutineAllowanceMasterType> nonRoutineAllowanceMasterTypes = new ArrayList<NonRoutineAllowanceMasterType>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			nonRoutineAllowanceMasterTypes = new NonRoutineAllowanceMasterTypeDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return nonRoutineAllowanceMasterTypes;
+	}
+	
+	public void saveNonRoutineAllowanceMasterType(NonRoutineAllowanceMasterType nonRoutineAllowanceMasterType) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new NonRoutineAllowanceMasterTypeDAO(connection).insert(nonRoutineAllowanceMasterType);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateNonRoutineAllowanceMasterType(NonRoutineAllowanceMasterType nonRoutineAllowanceMasterType) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new NonRoutineAllowanceMasterTypeDAO(connection).update(nonRoutineAllowanceMasterType);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteNonRoutineAllowanceMasterType(NonRoutineAllowanceMasterType nonRoutineAllowanceMasterType) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new NonRoutineAllowanceMasterTypeDAO(connection).delete(nonRoutineAllowanceMasterType);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Integer getLastIdNonRoutineAllowanceMasterType() {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			return new NonRoutineAllowanceMasterTypeDAO(connection).getLastId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+	}
+	// tnr master
+	public List<NonRoutineAllowanceMaster> getNonRoutineAllowanceMasters(String query) {
+		List<NonRoutineAllowanceMaster> nonRoutineAllowanceMasters = new ArrayList<NonRoutineAllowanceMaster>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			nonRoutineAllowanceMasters = new NonRoutineAllowanceMasterDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return nonRoutineAllowanceMasters;
+	}
+	
+	public void saveNonRoutineAllowanceMaster(NonRoutineAllowanceMaster nonRoutineAllowanceMaster) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new NonRoutineAllowanceMasterDAO(connection).insert(nonRoutineAllowanceMaster);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateNonRoutineAllowanceMaster(NonRoutineAllowanceMaster nonRoutineAllowanceMaster) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new NonRoutineAllowanceMasterDAO(connection).update(nonRoutineAllowanceMaster);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteNonRoutineAllowanceMaster(NonRoutineAllowanceMaster nonRoutineAllowanceMaster) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new NonRoutineAllowanceMasterDAO(connection).delete(nonRoutineAllowanceMaster);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Integer getLastIdNonRoutineAllowanceMaster() {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			return new NonRoutineAllowanceMasterDAO(connection).getLastId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+	}
+	// tnr transaction
+	public List<NonRoutineAllowanceTransaction> getNonRoutineAllowanceTransactions(String query) {
+		List<NonRoutineAllowanceTransaction> nonRoutineAllowanceTransactions = new ArrayList<NonRoutineAllowanceTransaction>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			nonRoutineAllowanceTransactions = new NonRoutineAllowanceTransactionDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return nonRoutineAllowanceTransactions;
+	}
+	
+	public void saveNonRoutineAllowanceTransaction(NonRoutineAllowanceTransaction nonRoutineAllowanceTransaction) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new NonRoutineAllowanceTransactionDAO(connection).insert(nonRoutineAllowanceTransaction);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateNonRoutineAllowanceTransaction(NonRoutineAllowanceTransaction nonRoutineAllowanceTransaction) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new NonRoutineAllowanceTransactionDAO(connection).delete(nonRoutineAllowanceTransaction);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteNonRoutineAllowanceTransaction(NonRoutineAllowanceTransaction nonRoutineAllowanceTransaction) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new NonRoutineAllowanceTransactionDAO(connection).delete(nonRoutineAllowanceTransaction);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Integer getLastIdNonRoutineAllowanceTransaction() {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			return new NonRoutineAllowanceMasterDAO(connection).getLastId();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 1;

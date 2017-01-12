@@ -9,9 +9,14 @@ public class SalarySetting {
 	String employeeCode;
 	String employeeName;
 	String employeeType;
-	String position;
-	String department;
-	String division;
+	Date effectiveStartDate;
+	Date effectiveEndDate;
+	String position_id;
+	MSPosition msPosition;
+	String department_id;
+	Department department;
+	String division_id;
+	Division division;
 	BigDecimal salaryBruto;
 	BigDecimal tax;
 	BigDecimal salaryNett;
@@ -45,22 +50,52 @@ public class SalarySetting {
 	public void setEmployeeType(String employeeType) {
 		this.employeeType = employeeType;
 	}
-	public String getPosition() {
-		return position;
+	public Date getEffectiveStartDate() {
+		return effectiveStartDate;
 	}
-	public void setPosition(String position) {
-		this.position = position;
+	public void setEffectiveStartDate(Date effectiveStartDate) {
+		this.effectiveStartDate = effectiveStartDate;
 	}
-	public String getDepartment() {
+	public Date getEffectiveEndDate() {
+		return effectiveEndDate;
+	}
+	public void setEffectiveEndDate(Date effectiveEndDate) {
+		this.effectiveEndDate = effectiveEndDate;
+	}
+	public String getPosition_id() {
+		return position_id;
+	}
+	public void setPosition_id(String position_id) {
+		this.position_id = position_id;
+	}
+	public MSPosition getMsPosition() {
+		return msPosition;
+	}
+	public void setMsPosition(MSPosition msPosition) {
+		this.msPosition = msPosition;
+	}
+	public String getDepartment_id() {
+		return department_id;
+	}
+	public void setDepartment_id(String department_id) {
+		this.department_id = department_id;
+	}
+	public Department getDepartment() {
 		return department;
 	}
-	public void setDepartment(String department) {
+	public void setDepartment(Department department) {
 		this.department = department;
 	}
-	public String getDivision() {
+	public String getDivision_id() {
+		return division_id;
+	}
+	public void setDivision_id(String division_id) {
+		this.division_id = division_id;
+	}
+	public Division getDivision() {
 		return division;
 	}
-	public void setDivision(String division) {
+	public void setDivision(Division division) {
 		this.division = division;
 	}
 	public BigDecimal getSalaryBruto() {

@@ -90,6 +90,8 @@ public class CreateSalarySettingPanel extends JPanel {
 		containerPanel.add(label_3);
 		
 		employeeNameField = new JTextField();
+		employeeNameField.setEditable(false);
+		employeeNameField.setEnabled(false);
 		employeeNameField.setBounds(140, 120, 200, 30);
 		containerPanel.add(employeeNameField);
 		// tipe karyawan
@@ -102,6 +104,8 @@ public class CreateSalarySettingPanel extends JPanel {
 		containerPanel.add(label_2);
 		
 		employeeTypeField = new JTextField();
+		employeeTypeField.setEnabled(false);
+		employeeTypeField.setEditable(false);
 		employeeTypeField.setBounds(140, 160, 200, 30);
 		containerPanel.add(employeeTypeField);
 		// jabatan
@@ -114,6 +118,8 @@ public class CreateSalarySettingPanel extends JPanel {
 		containerPanel.add(label_5);
 		
 		positionNameField = new JTextField();
+		positionNameField.setEnabled(false);
+		positionNameField.setEditable(false);
 		positionNameField.setBounds(140, 200, 200, 30);
 		containerPanel.add(positionNameField);
 		// departemen
@@ -126,6 +132,8 @@ public class CreateSalarySettingPanel extends JPanel {
 		containerPanel.add(label_7);
 		
 		departmentNameField = new JTextField();
+		departmentNameField.setEnabled(false);
+		departmentNameField.setEditable(false);
 		departmentNameField.setBounds(140, 240, 200, 30);
 		containerPanel.add(departmentNameField);
 		// divisi
@@ -138,6 +146,8 @@ public class CreateSalarySettingPanel extends JPanel {
 		containerPanel.add(label_9);
 		
 		divisionNameField = new JTextField();
+		divisionNameField.setEnabled(false);
+		divisionNameField.setEditable(false);
 		divisionNameField.setBounds(140, 280, 200, 30);
 		containerPanel.add(divisionNameField);
 		// tanggal mulai efektif

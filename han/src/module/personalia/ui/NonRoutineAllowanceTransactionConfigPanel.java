@@ -16,11 +16,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ServiceFactory;
 import main.panel.MainPanel;
-import module.personalia.model.NonRoutineAllowanceMasterType;
 import module.personalia.model.NonRoutineAllowanceTransaction;
 import module.util.Bridging;
-import module.util.DateUtil;
 
 public class NonRoutineAllowanceTransactionConfigPanel extends JPanel implements Bridging{
 
@@ -34,12 +33,12 @@ public class NonRoutineAllowanceTransactionConfigPanel extends JPanel implements
 		setSize(1024, 630);
 		setLayout(null);
 
-		JLabel breadCrumbLbl = new JLabel("Personalia > Tunjangan Non Rutin");
+		JLabel breadCrumbLbl = new JLabel("Personalia > Tunjangan Non Rutin Karyawan");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 350, 25);
 		add(breadCrumbLbl);
 
-		JLabel lblHeader = new JLabel("DAFTAR TUNJANGAN NON RUTIN");
+		JLabel lblHeader = new JLabel("DAFTAR TUNJANGAN NON RUTIN KARYAWAN");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 46, 350, 25);
 		add(lblHeader);
@@ -60,8 +59,8 @@ public class NonRoutineAllowanceTransactionConfigPanel extends JPanel implements
 		nonRoutineAllowanceTransactionConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (nonRoutineAllowanceTransactionConfigTable.columnAtPoint(e.getPoint())==3) {
-					MainPanel.changePanel("module.personalia.ui.ViewDivisionPanel", getSelectedData());
+				if (nonRoutineAllowanceTransactionConfigTable.columnAtPoint(e.getPoint())==7) {
+					MainPanel.changePanel("module.personalia.ui.ViewNonRoutineAllowanceTransactionPanel", getSelectedData());
 				}
 			}
 		});
@@ -104,17 +103,14 @@ public class NonRoutineAllowanceTransactionConfigPanel extends JPanel implements
 		getUserData();
 	}
 
-	protected NonRoutineAllowanceMasterType getSelectedData() {
+	protected NonRoutineAllowanceTransaction getSelectedData() {
 		int row = nonRoutineAllowanceTransactionConfigTable.getSelectedRow();
-
-		NonRoutineAllowanceMasterType nonRoutineAllowance = new NonRoutineAllowanceMasterType();
-
-		return nonRoutineAllowance;
+		return nonRoutineAllowanceTransactions.get(row);
 	}
 
 	private void getUserData() {
 		nonRoutineAllowanceTransactions.clear();
-		//nonRoutineAllowances = ServiceFactory.getPersonaliaBL().getDivisions("");
+		nonRoutineAllowanceTransactions = ServiceFactory.getPersonaliaBL().getNonRoutineAllowanceTransactions("");
 		nonRoutineAllowanceMasterConfigTableModel = new NonRoutineAllowanceTransactionConfigTableModel(nonRoutineAllowanceTransactions);
 		nonRoutineAllowanceTransactionConfigTable.setModel(nonRoutineAllowanceMasterConfigTableModel);
 	}
@@ -130,7 +126,7 @@ public class NonRoutineAllowanceTransactionConfigPanel extends JPanel implements
 
 		@Override
 		public int getColumnCount() {
-			return 9;
+			return 8;
 		}
 
 		@Override
@@ -146,20 +142,18 @@ public class NonRoutineAllowanceTransactionConfigPanel extends JPanel implements
 			case 0:
 				return nonRoutineAllowanceTransactions.indexOf(nonRoutineAllowanceTransaction) + 1;
 			case 1:
-				return DateUtil.setFormatedDate(nonRoutineAllowanceTransaction.getTransactionInputDate());
-			case 2:
 				return nonRoutineAllowanceTransaction.getEmployeeCode();
-			case 3:
+			case 2:
 				return nonRoutineAllowanceTransaction.getEmployeeName();
-			case 4:
+			case 3:
 				return nonRoutineAllowanceTransaction.getNonRoutineAllowanceMasterType().getTnrType();
+			case 4:
+				return nonRoutineAllowanceTransaction.getNonRoutineAllowanceMaster().getTnr();
 			case 5:
 				return nonRoutineAllowanceTransaction.getNominal().toString();
 			case 6:
-				return nonRoutineAllowanceTransaction.getDescription();
-			case 7:
 				return nonRoutineAllowanceTransaction.getReferenceNumber();
-			case 8:
+			case 7:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
@@ -185,8 +179,6 @@ public class NonRoutineAllowanceTransactionConfigPanel extends JPanel implements
 				return String.class;
 			case 7:
 				return String.class;
-			case 8:
-				return String.class;
 			default:
 				return String.class;
 			}
@@ -198,20 +190,18 @@ public class NonRoutineAllowanceTransactionConfigPanel extends JPanel implements
 			case 0:
 				return "No";
 			case 1:
-				return "Tanggal Input";
-			case 2:
 				return "NIK";
-			case 3:
+			case 2:
 				return "Nama Karyawan";
-			case 4:
+			case 3:
 				return "Jenis Tunjangan non Rutin";
+			case 4:
+				return "Tunjangan non Rutin";
 			case 5:
 				return "Nominal";
 			case 6:
-				return "Deskripsi";
-			case 7:
 				return "Nomer Referensi";
-			case 8:
+			case 7:
 				return "Action";
 			default:
 				return "";
