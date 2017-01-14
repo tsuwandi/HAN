@@ -266,7 +266,7 @@ public class PopUpInputMaterial extends JDialog{
 		add(uomTotalLogLbl);
 		
 		//TODO Total Kayu Area
-		totalVolumeLbl = new JLabel("Total Kartu Pallet");
+		totalVolumeLbl = new JLabel("Total Volume");
 		totalVolumeLbl.setBounds(50, 650, 150, 20);
 		add(totalVolumeLbl);
 		
