@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.personalia.model.Division;
 import module.personalia.model.SalarySetting;
@@ -24,10 +25,10 @@ import module.util.Bridging;
 public class SalarySettingConfigPanel extends JPanel implements Bridging{
 
 	private static final long serialVersionUID = -3127283027621703632L;
-	private JTable salaryConfigTable;
+	private JTable salarySettingConfigTable;
 	private JTextField searchField;
-	private List<SalarySetting> salaries = new ArrayList<>();
-	private SalaryConfigTableModel salaryConfigTableModel;
+	private List<SalarySetting> salarySettings = new ArrayList<>();
+	private SalarySettingConfigTableModel salarySettingConfigTableModel;
 
 	public SalarySettingConfigPanel() {
 		setSize(1024, 630);
@@ -35,7 +36,7 @@ public class SalarySettingConfigPanel extends JPanel implements Bridging{
 
 		JLabel breadCrumbLbl = new JLabel("Personalia > SETTING NOMINAL GAJI");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
-		breadCrumbLbl.setBounds(50, 10, 134, 25);
+		breadCrumbLbl.setBounds(50, 10, 300, 25);
 		add(breadCrumbLbl);
 
 		JLabel lblHeader = new JLabel("DAFTAR NOMINAL GAJI");
@@ -52,14 +53,14 @@ public class SalarySettingConfigPanel extends JPanel implements Bridging{
 		scrollPane.setBounds(0, 0, 1004, 363);
 		pnlTable.add(scrollPane);
 
-		salaryConfigTable = new JTable();
-		salaryConfigTable.setFocusable(false);
-		salaryConfigTable.setAutoCreateRowSorter(true);
-		scrollPane.setViewportView(salaryConfigTable);
-		salaryConfigTable.addMouseListener(new MouseAdapter() {
+		salarySettingConfigTable = new JTable();
+		salarySettingConfigTable.setFocusable(false);
+		salarySettingConfigTable.setAutoCreateRowSorter(true);
+		scrollPane.setViewportView(salarySettingConfigTable);
+		salarySettingConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (salaryConfigTable.columnAtPoint(e.getPoint())==3) {
+				if (salarySettingConfigTable.columnAtPoint(e.getPoint())==3) {
 					MainPanel.changePanel("module.personalia.ui.ViewSalarySettingPanel", getSelectedData());
 				}
 			}
@@ -104,29 +105,29 @@ public class SalarySettingConfigPanel extends JPanel implements Bridging{
 	}
 
 	protected Division getSelectedData() {
-		int row = salaryConfigTable.getSelectedRow();
+		int row = salarySettingConfigTable.getSelectedRow();
 
 		Division division = new Division();
-		division.setId(salaryConfigTable.getValueAt(row, 1).toString());
-		division.setName(salaryConfigTable.getValueAt(row, 2).toString());
+		division.setId(salarySettingConfigTable.getValueAt(row, 1).toString());
+		division.setName(salarySettingConfigTable.getValueAt(row, 2).toString());
 
 		return division;
 	}
 
 	private void getUserData() {
-		salaries.clear();
-		//salaries = ServiceFactory.getPersonaliaBL().getDivisions("");
-		salaryConfigTableModel = new SalaryConfigTableModel(salaries);
-		salaryConfigTable.setModel(salaryConfigTableModel);
+		salarySettings.clear();
+		salarySettings = ServiceFactory.getPersonaliaBL().getSalarySettings("");
+		salarySettingConfigTableModel = new SalarySettingConfigTableModel(salarySettings);
+		salarySettingConfigTable.setModel(salarySettingConfigTableModel);
 	}
 
-	class SalaryConfigTableModel extends AbstractTableModel {
+	class SalarySettingConfigTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = -5786040815921137590L;
-		private List<SalarySetting> salaries;
+		private List<SalarySetting> salarySettings;
 
-		public SalaryConfigTableModel(List<SalarySetting> salaries) {
-			this.salaries = salaries;
+		public SalarySettingConfigTableModel(List<SalarySetting> salarySettings) {
+			this.salarySettings = salarySettings;
 		}
 
 		@Override
@@ -136,16 +137,16 @@ public class SalarySettingConfigPanel extends JPanel implements Bridging{
 
 		@Override
 		public int getRowCount() {
-			return salaries == null ? 0 : salaries.size();
+			return salarySettings == null ? 0 : salarySettings.size();
 		}
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			SalarySetting salary = salaries.get(rowIndex);
+			SalarySetting salary = salarySettings.get(rowIndex);
 
 			switch (columnIndex) {
 			case 0:
-				return salaries.indexOf(salary) + 1;
+				return salarySettings.indexOf(salary) + 1;
 			case 1:
 				return salary.getEmployeeCode();
 			case 2:
@@ -153,7 +154,7 @@ public class SalarySettingConfigPanel extends JPanel implements Bridging{
 			case 3:
 				return salary.getEmployeeType();
 			case 4:
-				return salary.getPosition();
+				return salary.getMsPosition().getName();
 			case 5:
 				return salary.getDepartment();
 			case 6:
@@ -221,8 +222,8 @@ public class SalarySettingConfigPanel extends JPanel implements Bridging{
 	@SuppressWarnings("unchecked")
 	@Override
 	public void invokeObjects(Object... objects) {
-		salaries = (List<SalarySetting>) objects[0];
-		salaryConfigTableModel = new SalaryConfigTableModel(salaries);
-		salaryConfigTable.setModel(salaryConfigTableModel);
+		salarySettings = (List<SalarySetting>) objects[0];
+		salarySettingConfigTableModel = new SalarySettingConfigTableModel(salarySettings);
+		salarySettingConfigTable.setModel(salarySettingConfigTableModel);
 	}
 }

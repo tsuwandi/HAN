@@ -6,13 +6,19 @@ import java.util.Date;
 public class NonRoutineAllowanceTransaction {
 
 	Integer id;
-	Date transactionInputDate;
+	String emplyeeId;
 	String employeeCode;
 	String employeeName;
+	Employee employee;
+	Integer effectiveStartMonth;
+	Integer effectiveStartYear;
+	Integer effectiveEndMonth;
+	Integer effectiveEndYear;
 	Integer tnrTypeId;
 	NonRoutineAllowanceMasterType nonRoutineAllowanceMasterType;
+	Integer tnrId;
+	NonRoutineAllowanceMaster nonRoutineAllowanceMaster;
 	BigDecimal nominal;
-	String description;
 	String referenceNumber;
 	Date inputDate;
 	String inputBy;
@@ -26,11 +32,11 @@ public class NonRoutineAllowanceTransaction {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Date getTransactionInputDate() {
-		return transactionInputDate;
+	public String getEmplyeeId() {
+		return emplyeeId;
 	}
-	public void setTransactionInputDate(Date transactionInputDate) {
-		this.transactionInputDate = transactionInputDate;
+	public void setEmplyeeId(String emplyeeId) {
+		this.emplyeeId = emplyeeId;
 	}
 	public String getEmployeeCode() {
 		return employeeCode;
@@ -44,6 +50,36 @@ public class NonRoutineAllowanceTransaction {
 	public void setEmployeeName(String employeeName) {
 		this.employeeName = employeeName;
 	}
+	public Employee getEmployee() {
+		return employee;
+	}
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+	public Integer getEffectiveStartMonth() {
+		return effectiveStartMonth;
+	}
+	public void setEffectiveStartMonth(Integer effectiveStartMonth) {
+		this.effectiveStartMonth = effectiveStartMonth;
+	}
+	public Integer getEffectiveStartYear() {
+		return effectiveStartYear;
+	}
+	public void setEffectiveStartYear(Integer effectiveStartYear) {
+		this.effectiveStartYear = effectiveStartYear;
+	}
+	public Integer getEffectiveEndMonth() {
+		return effectiveEndMonth;
+	}
+	public void setEffectiveEndMonth(Integer effectiveEndMonth) {
+		this.effectiveEndMonth = effectiveEndMonth;
+	}
+	public Integer getEffectiveEndYear() {
+		return effectiveEndYear;
+	}
+	public void setEffectiveEndYear(Integer effectiveEndYear) {
+		this.effectiveEndYear = effectiveEndYear;
+	}
 	public Integer getTnrTypeId() {
 		return tnrTypeId;
 	}
@@ -56,17 +92,23 @@ public class NonRoutineAllowanceTransaction {
 	public void setNonRoutineAllowanceMasterType(NonRoutineAllowanceMasterType nonRoutineAllowanceMasterType) {
 		this.nonRoutineAllowanceMasterType = nonRoutineAllowanceMasterType;
 	}
+	public Integer getTnrId() {
+		return tnrId;
+	}
+	public void setTnrId(Integer tnrId) {
+		this.tnrId = tnrId;
+	}
+	public NonRoutineAllowanceMaster getNonRoutineAllowanceMaster() {
+		return nonRoutineAllowanceMaster;
+	}
+	public void setNonRoutineAllowanceMaster(NonRoutineAllowanceMaster nonRoutineAllowanceMaster) {
+		this.nonRoutineAllowanceMaster = nonRoutineAllowanceMaster;
+	}
 	public BigDecimal getNominal() {
 		return nominal;
 	}
 	public void setNominal(BigDecimal nominal) {
 		this.nominal = nominal;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	public String getReferenceNumber() {
 		return referenceNumber;

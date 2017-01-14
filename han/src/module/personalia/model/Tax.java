@@ -4,15 +4,10 @@ import java.util.Date;
 
 import module.util.ComboBoxProperties;
 
-public class PayrollComponent implements ComboBoxProperties{
+public class Tax implements ComboBoxProperties{
 
 	Integer id;
-	String code;
-	String description;
-	Integer isSalary;
-	Integer isThr;
-	Integer isBonus;
-	String referenceDocument;
+	String tax;
 	Date inputDate;
 	String inputBy;
 	Date editDate;
@@ -25,41 +20,11 @@ public class PayrollComponent implements ComboBoxProperties{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getCode() {
-		return code;
+	public String getTax() {
+		return tax;
 	}
-	public void setCode(String code) {
-		this.code = code;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public Integer getIsSalary() {
-		return isSalary;
-	}
-	public void setIsSalary(Integer isSalary) {
-		this.isSalary = isSalary;
-	}
-	public Integer getIsThr() {
-		return isThr;
-	}
-	public void setIsThr(Integer isThr) {
-		this.isThr = isThr;
-	}
-	public Integer getIsBonus() {
-		return isBonus;
-	}
-	public void setIsBonus(Integer isBonus) {
-		this.isBonus = isBonus;
-	}
-	public String getReferenceDocument() {
-		return referenceDocument;
-	}
-	public void setReferenceDocument(String referenceDocument) {
-		this.referenceDocument = referenceDocument;
+	public void setTax(String tax) {
+		this.tax = tax;
 	}
 	public Date getInputDate() {
 		return inputDate;
@@ -99,6 +64,6 @@ public class PayrollComponent implements ComboBoxProperties{
 	}
 	@Override
 	public Object getField() {
-		return code;
+		return tax;
 	}
 }

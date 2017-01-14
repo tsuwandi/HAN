@@ -16,11 +16,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ServiceFactory;
 import main.panel.MainPanel;
-import module.personalia.model.Division;
 import module.personalia.model.PayrollMapping;
 import module.util.Bridging;
-import controller.ServiceFactory;
 
 public class PayrollMappingConfigPanel extends JPanel implements Bridging{
 
@@ -60,7 +59,7 @@ public class PayrollMappingConfigPanel extends JPanel implements Bridging{
 		payrollMappingConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (payrollMappingConfigTable.columnAtPoint(e.getPoint())==3) {
+				if (payrollMappingConfigTable.columnAtPoint(e.getPoint())==7) {
 					MainPanel.changePanel("module.personalia.ui.ViewPayrollMappingPanel", getSelectedData());
 				}
 			}
@@ -106,16 +105,12 @@ public class PayrollMappingConfigPanel extends JPanel implements Bridging{
 
 	protected PayrollMapping getSelectedData() {
 		int row = payrollMappingConfigTable.getSelectedRow();
-
-		PayrollMapping payrollMapping = new PayrollMapping();
-		
-
-		return payrollMapping;
+		return payrollMappings.get(row);
 	}
 
 	private void getUserData() {
 		payrollMappings.clear();
-		//payrollMappings = ServiceFactory.getPersonaliaBL().getDivisions("");
+		payrollMappings = ServiceFactory.getPersonaliaBL().getPayrollMappings("");
 		payrollMappingConfigTableModel = new PayrollMappingConfigTableModel(payrollMappings);
 		payrollMappingConfigTable.setModel(payrollMappingConfigTableModel);
 	}

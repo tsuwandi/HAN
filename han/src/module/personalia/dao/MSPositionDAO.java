@@ -79,7 +79,6 @@ public class MSPositionDAO {
 		List<MSPosition> msPositions = new ArrayList<>();
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery+query);
-
 			ResultSet resultSet = getAllStatement.executeQuery();
 
 			while (resultSet.next()) {

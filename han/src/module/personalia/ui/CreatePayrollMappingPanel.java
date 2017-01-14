@@ -3,6 +3,7 @@ package module.personalia.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -16,13 +17,14 @@ import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.personalia.model.MSPosition;
+import module.personalia.model.PayrollComponent;
 import module.personalia.model.PayrollMapping;
 
 public class CreatePayrollMappingPanel extends JPanel {
 
 	private static final long serialVersionUID = -9009351103530748031L;
 	private ComboBox<MSPosition> msPositionCmbox;
-	private ComboBox<MSPosition> payrollComponentCmbox;
+	private ComboBox<PayrollComponent> payrollComponentCmbox;
 	private JTextField payrollComponentCodeField;
 	private JTextField referenceDocumentField;
 	private JRadioButton skipStatusYesRdbtn;
@@ -78,7 +80,7 @@ public class CreatePayrollMappingPanel extends JPanel {
 		label_2.setBounds(130, 160, 10, 30);
 		add(label_2);
 		
-		payrollComponentCmbox = new ComboBox<MSPosition>();
+		payrollComponentCmbox = new ComboBox<>();
 		payrollComponentCmbox.setBounds(140, 160, 200, 30);
 		add(payrollComponentCmbox);
 		// status Mangkir
@@ -174,6 +176,12 @@ public class CreatePayrollMappingPanel extends JPanel {
 		});
 		
 		getLastID();
+		getData();
+	}
+
+	private void getData() {
+		msPositionCmbox.setList(ServiceFactory.getPersonaliaBL().getMSPositions(""));
+		payrollComponentCmbox.setList(ServiceFactory.getPersonaliaBL().getPayrollComponents(""));
 	}
 
 	protected void attach() {
@@ -186,16 +194,29 @@ public class CreatePayrollMappingPanel extends JPanel {
 
 	private void getLastID() {
 		StringBuffer lastId = new StringBuffer();
-		lastId.append("DIV");
+		lastId.append("SALMAP");
 		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdDivision()));
 		payrollComponentCodeField.setText(lastId.toString());
 	}
 
 	protected void save() {
 		PayrollMapping payrollMapping = new PayrollMapping();
+		payrollMapping.setCode(payrollComponentCodeField.getText());
+		payrollMapping.setMsPosition(msPositionCmbox.getDataIndex());
+		payrollMapping.setPositionId(msPositionCmbox.getDataIndex().getId());
+		payrollMapping.setPayrollComponent(payrollComponentCmbox.getDataIndex());
+		payrollMapping.setPayrollComponentCode(payrollComponentCmbox.getDataIndex().getCode());
+		if (skipStatusYesRdbtn.isSelected()) payrollMapping.setIsAbsent(1);
+		else payrollMapping.setIsAbsent(0);
+		if (permitStatusYesRdbtn.isSelected()) payrollMapping.setIsLeave(1);
+		else payrollMapping.setIsLeave(0);
+		payrollMapping.setInputDate(new Date());
+		payrollMapping.setInputBy("");
+		payrollMapping.setEditDate(new Date());
+		payrollMapping.setEditBy("");
 		
 		try {
-			//ServiceFactory.getPersonaliaBL().saveDivision(division);
+			ServiceFactory.getPersonaliaBL().savePayrollMapping(payrollMapping);
 			option();
 		} catch (Exception e) {
 			e.printStackTrace();
