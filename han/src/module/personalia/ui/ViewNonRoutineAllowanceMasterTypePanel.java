@@ -131,16 +131,15 @@ public class ViewNonRoutineAllowanceMasterTypePanel extends JPanel implements Br
 	}
 
 	protected void update() {
-		NonRoutineAllowanceMasterType nonRoutineAllowance = new NonRoutineAllowanceMasterType();
+		NonRoutineAllowanceMasterType nonRoutineAllowanceMasterType = new NonRoutineAllowanceMasterType();
 
-		nonRoutineAllowance.setInputDate(new Date());
-		nonRoutineAllowance.setInputBy("");
-		nonRoutineAllowance.setEditDate(new Date());
-		nonRoutineAllowance.setEditBy("");
+		nonRoutineAllowanceMasterType.setInputDate(new Date());
+		nonRoutineAllowanceMasterType.setInputBy("");
+		nonRoutineAllowanceMasterType.setEditDate(new Date());
+		nonRoutineAllowanceMasterType.setEditBy("");
 
 		try {
-			//ServiceFactory.getPersonaliaBL().saveDivision(nonRoutineAllowance);
-
+			ServiceFactory.getPersonaliaBL().updateNonRoutineAllowanceMasterType(nonRoutineAllowanceMasterType);
 		} catch (Exception e) {
 			e.printStackTrace();
 			DialogBox.showError("Data tidak berhasil disimpan");

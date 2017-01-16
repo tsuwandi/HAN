@@ -3,6 +3,8 @@ package module.personalia.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -16,6 +18,8 @@ import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
+import module.personalia.model.NonRoutineAllowanceMaster;
+import module.personalia.model.NonRoutineAllowanceMasterType;
 import module.personalia.model.NonRoutineAllowanceTransaction;
 
 public class CreateNonRoutineAllowanceTransactionPanel extends JPanel {
@@ -24,7 +28,9 @@ public class CreateNonRoutineAllowanceTransactionPanel extends JPanel {
 	private JTextField employeeNameField;
 	private JTextField employeeCodeField;
 	private JDateChooser transactionStartInputDateField;
-	private ComboBox<?> nonRoutineAllowanceMasterTypeCmbox;
+	private JDateChooser transactionEndInputDateField;
+	private ComboBox<NonRoutineAllowanceMasterType> nonRoutineAllowanceMasterTypeCmbox;
+	private ComboBox<NonRoutineAllowanceMaster> nonRoutineAllowanceMasterCmbox;
 	private JTextField referenceNumberField;
 	private JTextField nominalField;
 
@@ -77,7 +83,8 @@ public class CreateNonRoutineAllowanceTransactionPanel extends JPanel {
 		add(label_2);
 		
 		transactionStartInputDateField = new JDateChooser();
-		transactionStartInputDateField.setBounds(140, 160, 200, 30);
+		transactionStartInputDateField.setBounds(140, 160, 95, 30);
+		transactionStartInputDateField.setDateFormatString("MM/yyyy");
 		add(transactionStartInputDateField);
 		// jenis tunjangan
 		JLabel lbljenisTunjanganNon = new JLabel("<html>Jenis Tunjangan Non Rutin</html>");
@@ -132,15 +139,24 @@ public class CreateNonRoutineAllowanceTransactionPanel extends JPanel {
 		searchEmployeeCodeBtn.setBounds(350, 80, 90, 30);
 		add(searchEmployeeCodeBtn);
 		
+		searchEmployeeCodeBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				employeeNameField.setText(ServiceFactory.getPersonaliaBL().getEmployees(" and LOWER(emp_code) like ('"+employeeCodeField.getText()+"')").get(0).getName());
+			}
+		});
+		
 		JLabel lblNewLabel = new JLabel(" -");
-		lblNewLabel.setBounds(350, 160, 10, 30);
+		lblNewLabel.setBounds(235, 160, 10, 30);
 		add(lblNewLabel);
 		
-		JDateChooser transactionEndInputDateField = new JDateChooser();
-		transactionEndInputDateField.setBounds(370, 160, 200, 30);
+		transactionEndInputDateField = new JDateChooser();
+		transactionEndInputDateField.setBounds(245, 160, 95, 30);
+		transactionEndInputDateField.setDateFormatString("MM/yyyy");
 		add(transactionEndInputDateField);
 		
-		ComboBox<Object> nonRoutineAllowanceMasterCmbox = new ComboBox<Object>();
+		nonRoutineAllowanceMasterCmbox = new ComboBox<>();
 		nonRoutineAllowanceMasterCmbox.setBounds(140, 240, 200, 30);
 		add(nonRoutineAllowanceMasterCmbox);
 		
@@ -164,30 +180,46 @@ public class CreateNonRoutineAllowanceTransactionPanel extends JPanel {
 			}
 		});
 		
-		getLastID();
+		getData();
+	}
+
+	private void getData() {
+		nonRoutineAllowanceMasterTypeCmbox.setList(ServiceFactory.getPersonaliaBL().getNonRoutineAllowanceMasterTypes(""));
+		nonRoutineAllowanceMasterCmbox.setList(ServiceFactory.getPersonaliaBL().getNonRoutineAllowanceMasters(""));
 	}
 
 	protected void back() {
 		MainPanel.changePanel("module.personalia.ui.NonRoutineAllowanceTransactionConfigPanel");
 	}
 
-	private void getLastID() {
-		StringBuffer lastId = new StringBuffer();
-		lastId.append("DIV");
-		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdDivision()));
-		employeeCodeField.setText(lastId.toString());
-	}
-
 	protected void save() {
 		NonRoutineAllowanceTransaction nonRoutineAllowanceTransaction = new NonRoutineAllowanceTransaction();
 		
+		nonRoutineAllowanceTransaction.setEmployeeCode(employeeCodeField.getText());
+		nonRoutineAllowanceTransaction.setEmployeeName(employeeNameField.getText());
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(transactionStartInputDateField.getDate());
+		
+		nonRoutineAllowanceTransaction.setEffectiveStartMonth(cal.get(Calendar.MONTH));
+		nonRoutineAllowanceTransaction.setEffectiveStartYear(cal.get(Calendar.YEAR));
+		
+		cal.setTime(transactionEndInputDateField.getDate());
+		
+		nonRoutineAllowanceTransaction.setEffectiveEndMonth(cal.get(Calendar.MONTH));
+		nonRoutineAllowanceTransaction.setEffectiveEndYear(cal.get(Calendar.YEAR));
+		
+		nonRoutineAllowanceTransaction.setTnrId(nonRoutineAllowanceMasterCmbox.getDataIndex().getId());
+		nonRoutineAllowanceTransaction.setTnrTypeId(nonRoutineAllowanceMasterTypeCmbox.getDataIndex().getId());
+		nonRoutineAllowanceTransaction.setNominal(new BigDecimal(nominalField.getText()));
+		nonRoutineAllowanceTransaction.setReferenceNumber(referenceNumberField.getText());
 		nonRoutineAllowanceTransaction.setInputDate(new Date());
 		nonRoutineAllowanceTransaction.setInputBy("");
 		nonRoutineAllowanceTransaction.setEditDate(new Date());
 		nonRoutineAllowanceTransaction.setEditBy("");
 		
 		try {
-			//ServiceFactory.getPersonaliaBL().saveDivision(nonRoutineAllowance);
+			ServiceFactory.getPersonaliaBL().saveNonRoutineAllowanceTransaction(nonRoutineAllowanceTransaction);
 			option();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -200,11 +232,18 @@ public class CreateNonRoutineAllowanceTransactionPanel extends JPanel {
 		if (DialogBox.showAfterChoiceInsert()==0) {
 			clear();
 		} else {
-			MainPanel.changePanel("module.personalia.ui.NonRoutineAllowanceConfigPanel");
+			MainPanel.changePanel("module.personalia.ui.NonRoutineAllowanceTransactionConfigPanel");
 		}
 	}
 
 	private void clear() {
-		getLastID();
+		employeeCodeField.setText("");
+		employeeNameField.setText("");
+		transactionStartInputDateField.setDate(null);
+		transactionEndInputDateField.setDate(null);
+		nonRoutineAllowanceMasterTypeCmbox.setSelectedIndex(0);
+		nonRoutineAllowanceMasterCmbox.setSelectedIndex(0);
+		nominalField.setText("");
+		referenceNumberField.setText("");
 	}
 }

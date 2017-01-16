@@ -2,7 +2,9 @@ package module.personalia.model;
 
 import java.util.Date;
 
-public class NonRoutineAllowanceMasterType {
+import module.util.ComboBoxProperties;
+
+public class NonRoutineAllowanceMasterType implements ComboBoxProperties{
 	Integer id;
 	String tnrType;
 	Integer taxId;
@@ -79,5 +81,9 @@ public class NonRoutineAllowanceMasterType {
 	}
 	public void setDeleteBy(String deleteBy) {
 		this.deleteBy = deleteBy;
+	}
+	@Override
+	public Object getField() {
+		return tnrType;
 	}
 }

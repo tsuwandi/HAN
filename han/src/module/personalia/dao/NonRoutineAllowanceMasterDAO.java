@@ -34,6 +34,7 @@ public class NonRoutineAllowanceMasterDAO {
 	public List<NonRoutineAllowanceMaster> getAllData(String query){
 		List<NonRoutineAllowanceMaster> nonRoutineAllowanceMasters = new ArrayList<>();
 
+		System.out.println(getAllQuery+query);
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery+query);
 

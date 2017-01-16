@@ -83,7 +83,7 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Payroll", "Setting Gaji", "Setting Gaji", "module.personalia.ui.SalarySettingConfigPanel");
 		menu.addNewLeafTo("Payroll", "Master Jenis Tunjangan Non Rutin", "Master Jenis Tunjangan Non Rutin", "module.personalia.ui.NonRoutineAllowanceMasterTypeConfigPanel");
 		menu.addNewLeafTo("Payroll", "Master Tunjangan Non Rutin", "Master Tunjangan Non Rutin", "module.personalia.ui.NonRoutineAllowanceMasterConfigPanel");
-		menu.addNewLeafTo("Payroll", "Tunjangan Non Rutin", "Tunjangan Non Rutin", "module.personalia.ui.NonRoutineAllowanceTransactionConfigPanel");
+		menu.addNewLeafTo("Payroll", "Tunjangan Non Rutin Karyawan", "Tunjangan Non Rutin Karyawan", "module.personalia.ui.NonRoutineAllowanceTransactionConfigPanel");
 		
 		menu.addNewMenu("Konfigurasi Sistem", "Konfigurasi Sistem");
 		menu.addNewLeafTo("Konfigurasi Sistem", "Group", "Group", "module.system.ui.GroupConfigPanel");
