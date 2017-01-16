@@ -20,10 +20,10 @@ public class NonRoutineAllowanceTransactionDAO {
 	private PreparedStatement deleteStatement;
 
 	private String getLastIdQuery = "select * from tnr_type order by id desc limit 1";
-	private String getAllQuery = "select * from tnr_type where delete_date is null and delete_by is null";
-	private String insertQuery = "insert into tnr_type (tnr_type, tax_id, reference_doc, input_date, input_by, edit_date, edit_by) values (?, ?, ?, ?, ?, ?, ?)";
-	private String updateQuery = "update tnr_type set tnr_type = ?, tax_id = ?, reference_doc = ?, edit_date = ?, edit_by = ? where id = ?";
-	private String deleteQuery = "update tnr_type set delete_date = ?, delete_by = ? where id = ?";
+	private String getAllQuery = "select * from tnr_trx where delete_date is null and delete_by is null";
+	private String insertQuery = "insert into tnr_trx(employee_id,effective_start_month,effective_start_year,effective_end_month,effective_end_year,tnr_id,nominal,ref_number,input_date,input_by,edit_date,edit_by)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+	private String updateQuery = "update tnr_trx set employee_id = ?, effective_start_month = ?, effective_start_year = ?, effective_end_month = ?, effective_end_year = ?, tnr_id = ?, nominal = ?, ref_number = ?, edit_date = ?, edit_by = ? WHERE id = ?";
+	private String deleteQuery = "update tnr_trx set delete_date = ?, delete_by = ? where id = ?";
 
 	public NonRoutineAllowanceTransactionDAO(Connection connection) {
 		this.connection = connection;
@@ -73,11 +73,11 @@ public class NonRoutineAllowanceTransactionDAO {
 			insertStatement.setInt(4, nonRoutineAllowanceTransaction.getEffectiveEndMonth());
 			insertStatement.setInt(5, nonRoutineAllowanceTransaction.getEffectiveEndYear());
 			insertStatement.setInt(6, nonRoutineAllowanceTransaction.getTnrId());
-			insertStatement.setString(3, nonRoutineAllowanceTransaction.getReferenceNumber());
-			insertStatement.setDate(4, DateUtil.toDate(nonRoutineAllowanceTransaction.getInputDate()));
-			insertStatement.setString(5, nonRoutineAllowanceTransaction.getInputBy());
-			insertStatement.setDate(6, DateUtil.toDate(nonRoutineAllowanceTransaction.getEditDate()));
-			insertStatement.setString(7, nonRoutineAllowanceTransaction.getEditBy());
+			insertStatement.setString(7, nonRoutineAllowanceTransaction.getReferenceNumber());
+			insertStatement.setDate(8, DateUtil.toDate(nonRoutineAllowanceTransaction.getInputDate()));
+			insertStatement.setString(9, nonRoutineAllowanceTransaction.getInputBy());
+			insertStatement.setDate(10, DateUtil.toDate(nonRoutineAllowanceTransaction.getEditDate()));
+			insertStatement.setString(11, nonRoutineAllowanceTransaction.getEditBy());
 
 			insertStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -95,10 +95,10 @@ public class NonRoutineAllowanceTransactionDAO {
 			updateStatement.setInt(4, nonRoutineAllowanceTransaction.getEffectiveEndMonth());
 			updateStatement.setInt(5, nonRoutineAllowanceTransaction.getEffectiveEndYear());
 			updateStatement.setInt(6, nonRoutineAllowanceTransaction.getTnrId());
-			updateStatement.setString(3, nonRoutineAllowanceTransaction.getReferenceNumber());
-			updateStatement.setDate(4, DateUtil.toDate(nonRoutineAllowanceTransaction.getEditDate()));
-			updateStatement.setString(5, nonRoutineAllowanceTransaction.getEditBy());
-			updateStatement.setInt(6, nonRoutineAllowanceTransaction.getId());
+			updateStatement.setString(7, nonRoutineAllowanceTransaction.getReferenceNumber());
+			updateStatement.setDate(8, DateUtil.toDate(nonRoutineAllowanceTransaction.getEditDate()));
+			updateStatement.setString(9, nonRoutineAllowanceTransaction.getEditBy());
+			updateStatement.setInt(10, nonRoutineAllowanceTransaction.getId());
 
 			updateStatement.executeUpdate();
 		} catch (SQLException e) {

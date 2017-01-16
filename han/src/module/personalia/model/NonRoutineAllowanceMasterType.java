@@ -6,6 +6,7 @@ public class NonRoutineAllowanceMasterType {
 	Integer id;
 	String tnrType;
 	Integer taxId;
+	Tax tax;
 	String referenceDocument;
 	Date inputDate;
 	String inputBy;
@@ -30,6 +31,12 @@ public class NonRoutineAllowanceMasterType {
 	}
 	public void setTaxId(Integer taxId) {
 		this.taxId = taxId;
+	}
+	public Tax getTax() {
+		return tax;
+	}
+	public void setTax(Tax tax) {
+		this.tax = tax;
 	}
 	public String getReferenceDocument() {
 		return referenceDocument;

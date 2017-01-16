@@ -15,14 +15,14 @@ public class TaxDAO {
 
 	private PreparedStatement getAllStatement;
 
-	private String getAllQuery = "select * from tax";
+	private String getAllQuery = "select * from tax where delete_date is null and delete_by is null";
 
 	public TaxDAO(Connection connection) {
 		this.connection = connection;
 	}
 	
 	public List<Tax> getAllData(String query) {
-		List<Tax> maritals = new ArrayList<>();
+		List<Tax> taxs = new ArrayList<>();
 		
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery+query);
@@ -33,11 +33,11 @@ public class TaxDAO {
 				tax.setId(resultSet.getInt("id"));
 				tax.setTax(resultSet.getString("tax"));
 				
-				maritals.add(tax);
+				taxs.add(tax);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return maritals;
+		return taxs;
 	}
 }

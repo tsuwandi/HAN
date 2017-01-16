@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.personalia.model.NonRoutineAllowanceMasterType;
 import module.util.DateUtil;
 
@@ -43,6 +44,7 @@ public class NonRoutineAllowanceMasterTypeDAO {
 				nonRoutineAllowanceMasterType.setId(resultSet.getInt("id"));
 				nonRoutineAllowanceMasterType.setTnrType(resultSet.getString("tnr_type"));
 				nonRoutineAllowanceMasterType.setTaxId(resultSet.getInt("tax_id"));
+				nonRoutineAllowanceMasterType.setTax(ServiceFactory.getPersonaliaBL().getTaxs(" and id = "+nonRoutineAllowanceMasterType.getTaxId()).get(0));
 				nonRoutineAllowanceMasterType.setReferenceDocument(resultSet.getString("ref_document"));
 				nonRoutineAllowanceMasterType.setInputDate(resultSet.getDate("input_date"));
 				nonRoutineAllowanceMasterType.setInputBy(resultSet.getString("input_by"));

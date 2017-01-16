@@ -15,12 +15,13 @@ import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.personalia.model.NonRoutineAllowanceMasterType;
+import module.personalia.model.Tax;
 import module.util.Bridging;
 
 public class ViewNonRoutineAllowanceMasterTypePanel extends JPanel implements Bridging{
 
 	private static final long serialVersionUID = -9009351103530748031L;
-	private ComboBox<?> taxCmbox;
+	private ComboBox<Tax> taxCmbox;
 	private JTextField nonRoutineAllowanceMasterTypeField;
 	private JTextField referenceDocumentField;
 	private NonRoutineAllowanceMasterType nonRoutineAllowanceMasterType;
@@ -81,10 +82,6 @@ public class ViewNonRoutineAllowanceMasterTypePanel extends JPanel implements Br
 		referenceDocumentField.setEditable(false);
 		referenceDocumentField.setBounds(140, 160, 200, 30);
 		add(referenceDocumentField);
-		// save
-		JButton saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(924, 589, 90, 30);
-		add(saveBtn);
 
 		JButton btnAttach = new JButton("Attach");
 		btnAttach.setBounds(250, 201, 90, 30);
@@ -125,7 +122,12 @@ public class ViewNonRoutineAllowanceMasterTypePanel extends JPanel implements Br
 		JButton printBtn = new JButton("Cetak");
 		printBtn.setBounds(724, 589, 90, 30);
 		add(printBtn);
+		
+		getData();
+	}
 
+	private void getData() {
+		taxCmbox.setList(ServiceFactory.getPersonaliaBL().getTaxs(""));
 	}
 
 	protected void update() {
@@ -169,10 +171,9 @@ public class ViewNonRoutineAllowanceMasterTypePanel extends JPanel implements Br
 		taxCmbox.setEditable(true);
 		referenceDocumentField.setEditable(true);
 		referenceDocumentField.setEnabled(true);
-	}
-	
-	private void clear() {
-
+		
+		editBtn.setText("Simpan");
+		editBtn.repaint();
 	}
 
 	@Override
@@ -180,7 +181,7 @@ public class ViewNonRoutineAllowanceMasterTypePanel extends JPanel implements Br
 		nonRoutineAllowanceMasterType = (NonRoutineAllowanceMasterType) objects[0];
 
 		nonRoutineAllowanceMasterTypeField.setText(nonRoutineAllowanceMasterType.getTnrType());
-		//taxCmbox.setSelectedItem(nonRoutineAllowanceMasterType);
+		taxCmbox.setSelectedItem(nonRoutineAllowanceMasterType);
 		referenceDocumentField.setText(nonRoutineAllowanceMasterType.getReferenceDocument());
 	}
 }

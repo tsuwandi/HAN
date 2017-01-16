@@ -23,11 +23,10 @@ public class CreateNonRoutineAllowanceTransactionPanel extends JPanel {
 	private static final long serialVersionUID = 3932828429629704157L;
 	private JTextField employeeNameField;
 	private JTextField employeeCodeField;
-	private JDateChooser transactionInputDateField;
+	private JDateChooser transactionStartInputDateField;
 	private ComboBox<?> nonRoutineAllowanceMasterTypeCmbox;
-	private JTextField nominalField;
-	private ComboBox<?> descriptionCmbox;
 	private JTextField referenceNumberField;
+	private JTextField nominalField;
 
 	public CreateNonRoutineAllowanceTransactionPanel() {
 		setSize(1024, 630);
@@ -69,7 +68,7 @@ public class CreateNonRoutineAllowanceTransactionPanel extends JPanel {
 		employeeNameField.setBounds(140, 120, 200, 30);
 		add(employeeNameField);
 		// tanggal input
-		JLabel lbldokumenReferensi = new JLabel("<html>Tanggal Input</html>");
+		JLabel lbldokumenReferensi = new JLabel("<html>Periode Efektif</html>");
 		lbldokumenReferensi.setBounds(30, 160, 100, 30);
 		add(lbldokumenReferensi);
 		
@@ -77,9 +76,9 @@ public class CreateNonRoutineAllowanceTransactionPanel extends JPanel {
 		label_2.setBounds(130, 160, 10, 30);
 		add(label_2);
 		
-		transactionInputDateField = new JDateChooser();
-		transactionInputDateField.setBounds(140, 160, 200, 30);
-		add(transactionInputDateField);
+		transactionStartInputDateField = new JDateChooser();
+		transactionStartInputDateField.setBounds(140, 160, 200, 30);
+		add(transactionStartInputDateField);
 		// jenis tunjangan
 		JLabel lbljenisTunjanganNon = new JLabel("<html>Jenis Tunjangan Non Rutin</html>");
 		lbljenisTunjanganNon.setBounds(30, 200, 100, 30);
@@ -93,29 +92,21 @@ public class CreateNonRoutineAllowanceTransactionPanel extends JPanel {
 		nonRoutineAllowanceMasterTypeCmbox.setBounds(140, 200, 200, 30);
 		add(nonRoutineAllowanceMasterTypeCmbox);
 		// nominal
-		JLabel lblnominal = new JLabel("<html>Nominal</html>");
+		JLabel lblnominal = new JLabel("<html>Tunjangan Non Rutin</html>");
 		lblnominal.setBounds(30, 240, 100, 30);
 		add(lblnominal);
 		
 		JLabel label = new JLabel(":");
 		label.setBounds(130, 240, 10, 30);
 		add(label);
-		
-		nominalField = new JTextField();
-		nominalField.setBounds(140, 242, 200, 30);
-		add(nominalField);
 		// deskription
-		JLabel lbldeskripsi = new JLabel("<html>Deskripsi</html>");
+		JLabel lbldeskripsi = new JLabel("<html>Nominal</html>");
 		lbldeskripsi.setBounds(30, 280, 100, 30);
 		add(lbldeskripsi);
 		
 		JLabel label_5 = new JLabel(":");
 		label_5.setBounds(130, 280, 10, 30);
 		add(label_5);
-		
-		descriptionCmbox = new ComboBox<>();
-		descriptionCmbox.setBounds(140, 283, 200, 30);
-		add(descriptionCmbox);
 		// nomer referensi
 		JLabel lblnomerReferensi = new JLabel("<html>Nomer Referensi</html>");
 		lblnomerReferensi.setBounds(30, 320, 100, 30);
@@ -126,7 +117,7 @@ public class CreateNonRoutineAllowanceTransactionPanel extends JPanel {
 		add(label_6);
 
 		referenceNumberField = new JTextField();
-		referenceNumberField.setBounds(140, 324, 200, 30);
+		referenceNumberField.setBounds(140, 320, 200, 30);
 		add(referenceNumberField);
 		// save
 		JButton saveBtn = new JButton("Simpan");
@@ -136,6 +127,26 @@ public class CreateNonRoutineAllowanceTransactionPanel extends JPanel {
 		JButton backBtn = new JButton("Kembali");
 		backBtn.setBounds(10, 589, 90, 30);
 		add(backBtn);
+		
+		JButton searchEmployeeCodeBtn = new JButton("Cari");
+		searchEmployeeCodeBtn.setBounds(350, 80, 90, 30);
+		add(searchEmployeeCodeBtn);
+		
+		JLabel lblNewLabel = new JLabel(" -");
+		lblNewLabel.setBounds(350, 160, 10, 30);
+		add(lblNewLabel);
+		
+		JDateChooser transactionEndInputDateField = new JDateChooser();
+		transactionEndInputDateField.setBounds(370, 160, 200, 30);
+		add(transactionEndInputDateField);
+		
+		ComboBox<Object> nonRoutineAllowanceMasterCmbox = new ComboBox<Object>();
+		nonRoutineAllowanceMasterCmbox.setBounds(140, 240, 200, 30);
+		add(nonRoutineAllowanceMasterCmbox);
+		
+		nominalField = new JTextField();
+		nominalField.setBounds(140, 280, 200, 30);
+		add(nominalField);
 		
 		backBtn.addActionListener(new ActionListener() {
 			

@@ -64,6 +64,6 @@ public class Tax implements ComboBoxProperties{
 	}
 	@Override
 	public Object getField() {
-		return tax;
+		return null;
 	}
 }

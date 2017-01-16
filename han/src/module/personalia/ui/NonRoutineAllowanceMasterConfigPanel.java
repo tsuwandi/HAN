@@ -16,9 +16,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.personalia.model.NonRoutineAllowanceMaster;
-import module.personalia.model.NonRoutineAllowanceMasterType;
 import module.util.Bridging;
 
 public class NonRoutineAllowanceMasterConfigPanel extends JPanel implements Bridging{
@@ -59,8 +59,8 @@ public class NonRoutineAllowanceMasterConfigPanel extends JPanel implements Brid
 		nonRoutineAllowanceMasterConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (nonRoutineAllowanceMasterConfigTable.columnAtPoint(e.getPoint())==3) {
-					MainPanel.changePanel("module.personalia.ui.ViewDivisionPanel", getSelectedData());
+				if (nonRoutineAllowanceMasterConfigTable.columnAtPoint(e.getPoint())==4) {
+					MainPanel.changePanel("module.personalia.ui.ViewNonRoutineAllowanceMasterPanel", getSelectedData());
 				}
 			}
 		});
@@ -103,17 +103,14 @@ public class NonRoutineAllowanceMasterConfigPanel extends JPanel implements Brid
 		getUserData();
 	}
 
-	protected NonRoutineAllowanceMasterType getSelectedData() {
+	protected NonRoutineAllowanceMaster getSelectedData() {
 		int row = nonRoutineAllowanceMasterConfigTable.getSelectedRow();
-
-		NonRoutineAllowanceMasterType nonRoutineAllowance = new NonRoutineAllowanceMasterType();
-
-		return nonRoutineAllowance;
+		return nonRoutineAllowanceMasters.get(row);
 	}
 
 	private void getUserData() {
 		nonRoutineAllowanceMasters.clear();
-		//nonRoutineAllowances = ServiceFactory.getPersonaliaBL().getDivisions("");
+		nonRoutineAllowanceMasters = ServiceFactory.getPersonaliaBL().getNonRoutineAllowanceMasters("");
 		nonRoutineAllowanceMasterConfigTableModel = new NonRoutineAllowanceMasterConfigTableModel(nonRoutineAllowanceMasters);
 		nonRoutineAllowanceMasterConfigTable.setModel(nonRoutineAllowanceMasterConfigTableModel);
 	}

@@ -14,13 +14,14 @@ import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
+import module.personalia.model.NonRoutineAllowanceMaster;
 import module.personalia.model.NonRoutineAllowanceMasterType;
 
 public class CreateNonRoutineAllowanceMasterPanel extends JPanel {
 
 	private static final long serialVersionUID = -9009351103530748031L;
-	private ComboBox<?> nonRoutineAllowanceTypeCmbox;
-	private JTextField nonRoutineAllowanceField;
+	private ComboBox<NonRoutineAllowanceMasterType> nonRoutineAllowanceMasterTypeCmbox;
+	private JTextField nonRoutineAllowanceMasterField;
 	private JTextField taxField;
 	private JTextField referenceDocumentField;
 
@@ -46,11 +47,9 @@ public class CreateNonRoutineAllowanceMasterPanel extends JPanel {
 		label_1.setBounds(130, 80, 10, 30);
 		add(label_1);
 		
-		nonRoutineAllowanceField = new JTextField();
-		nonRoutineAllowanceField.setBounds(140, 80, 200, 30);
-		nonRoutineAllowanceField.setEditable(false);
-		nonRoutineAllowanceField.setEnabled(false);
-		add(nonRoutineAllowanceField);
+		nonRoutineAllowanceMasterField = new JTextField();
+		nonRoutineAllowanceMasterField.setBounds(140, 80, 200, 30);
+		add(nonRoutineAllowanceMasterField);
 		// pajak
 		JLabel lblpajak = new JLabel("<html>Jenis Tunjangan Non Rutin</html>");
 		lblpajak.setBounds(30, 120, 100, 30);
@@ -60,9 +59,17 @@ public class CreateNonRoutineAllowanceMasterPanel extends JPanel {
 		label_3.setBounds(130, 120, 10, 30);
 		add(label_3);
 		
-		nonRoutineAllowanceTypeCmbox = new ComboBox<>();
-		nonRoutineAllowanceTypeCmbox.setBounds(140, 120, 200, 30);
-		add(nonRoutineAllowanceTypeCmbox);
+		nonRoutineAllowanceMasterTypeCmbox = new ComboBox<>();
+		nonRoutineAllowanceMasterTypeCmbox.setBounds(140, 120, 200, 30);
+		add(nonRoutineAllowanceMasterTypeCmbox);
+		
+		nonRoutineAllowanceMasterTypeCmbox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updateTax();
+			}
+		});
 		// dokumen referensi
 		JLabel lbldokumenReferensi = new JLabel("<html>Pajak</html>");
 		lbldokumenReferensi.setBounds(30, 160, 100, 30);
@@ -73,6 +80,8 @@ public class CreateNonRoutineAllowanceMasterPanel extends JPanel {
 		add(label_2);
 		
 		taxField = new JTextField();
+		taxField.setEnabled(false);
+		taxField.setEditable(false);
 		taxField.setBounds(140, 160, 200, 30);
 		add(taxField);
 		// save
@@ -115,31 +124,35 @@ public class CreateNonRoutineAllowanceMasterPanel extends JPanel {
 				save();
 			}
 		});
-		
-		getLastID();
+		getData();
+	}
+
+	protected void updateTax() {
+		taxField.setText(nonRoutineAllowanceMasterTypeCmbox.getDataIndex().getTax().getTax());
+	}
+
+	private void getData() {
+		nonRoutineAllowanceMasterTypeCmbox.setList(ServiceFactory.getPersonaliaBL().getNonRoutineAllowanceMasterTypes(""));
 	}
 
 	protected void back() {
 		MainPanel.changePanel("module.personalia.ui.NonRoutineAllowanceMasterConfigPanel");
 	}
 
-	private void getLastID() {
-		StringBuffer lastId = new StringBuffer();
-		lastId.append("DIV");
-		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdDivision()));
-		nonRoutineAllowanceField.setText(lastId.toString());
-	}
-
 	protected void save() {
-		NonRoutineAllowanceMasterType nonRoutineAllowance = new NonRoutineAllowanceMasterType();
+		NonRoutineAllowanceMaster nonRoutineAllowanceMaster = new NonRoutineAllowanceMaster();
 		
-		nonRoutineAllowance.setInputDate(new Date());
-		nonRoutineAllowance.setInputBy("");
-		nonRoutineAllowance.setEditDate(new Date());
-		nonRoutineAllowance.setEditBy("");
+		nonRoutineAllowanceMaster.setTnr(nonRoutineAllowanceMasterField.getText());
+		nonRoutineAllowanceMaster.setNonRoutineAllowanceMasterType(nonRoutineAllowanceMasterTypeCmbox.getDataIndex());
+		nonRoutineAllowanceMaster.setTnrTypeId(nonRoutineAllowanceMasterTypeCmbox.getDataIndex().getId());
+		nonRoutineAllowanceMaster.setReferenceDocument(referenceDocumentField.getText());
+		nonRoutineAllowanceMaster.setInputDate(new Date());
+		nonRoutineAllowanceMaster.setInputBy("");
+		nonRoutineAllowanceMaster.setEditDate(new Date());
+		nonRoutineAllowanceMaster.setEditBy("");
 		
 		try {
-			//ServiceFactory.getPersonaliaBL().saveDivision(nonRoutineAllowance);
+			ServiceFactory.getPersonaliaBL().saveNonRoutineAllowanceMaster(nonRoutineAllowanceMaster);
 			option();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -152,11 +165,13 @@ public class CreateNonRoutineAllowanceMasterPanel extends JPanel {
 		if (DialogBox.showAfterChoiceInsert()==0) {
 			clear();
 		} else {
-			MainPanel.changePanel("module.personalia.ui.NonRoutineAllowanceConfigPanel");
+			MainPanel.changePanel("module.personalia.ui.NonRoutineAllowanceMasterConfigPanel");
 		}
 	}
 
 	private void clear() {
-		getLastID();
+		nonRoutineAllowanceMasterField.setText("");
+		nonRoutineAllowanceMasterTypeCmbox.setSelectedIndex(0);
+		referenceDocumentField.setText("");
 	}
 }

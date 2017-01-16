@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.personalia.model.NonRoutineAllowanceMaster;
 import module.util.DateUtil;
 
@@ -20,11 +21,11 @@ public class NonRoutineAllowanceMasterDAO {
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 
-	private String getLastIdQuery = "select * from tnr_type order by id desc limit 1";
-	private String getAllQuery = "select * from tnr_type where delete_date is null and delete_by is null";
-	private String insertQuery = "insert into tnr_type (tnr_type, tax_id, reference_doc, input_date, input_by, edit_date, edit_by) values (?, ?, ?, ?, ?, ?, ?)";
-	private String updateQuery = "update tnr_type set tnr_type = ?, tax_id = ?, reference_doc = ?, edit_date = ?, edit_by = ? where id = ?";
-	private String deleteQuery = "update tnr_type set delete_date = ?, delete_by = ? where id = ?";
+	private String getLastIdQuery = "select * from tnr order by id desc limit 1";
+	private String getAllQuery = "select * from tnr where delete_date is null and delete_by is null";
+	private String insertQuery = "insert into tnr (tnr, tnr_type_id, ref_document, input_date, input_by, edit_date, edit_by) values (?, ?, ?, ?, ?, ?, ?)";
+	private String updateQuery = "update tnr set tnr = ?, tnr_type_id = ?, ref_document = ?, edit_date = ?, edit_by = ? where id = ?";
+	private String deleteQuery = "update tnr set delete_date = ?, delete_by = ? where id = ?";
 
 	public NonRoutineAllowanceMasterDAO(Connection connection) {
 		this.connection = connection;
@@ -43,7 +44,8 @@ public class NonRoutineAllowanceMasterDAO {
 				nonRoutineAllowanceMaster.setId(resultSet.getInt("id"));
 				nonRoutineAllowanceMaster.setTnr(resultSet.getString("tnr"));
 				nonRoutineAllowanceMaster.setTnrTypeId(resultSet.getInt("tnr_type_id"));
-				nonRoutineAllowanceMaster.setReferenceDocument(resultSet.getString("reference_doc"));
+				nonRoutineAllowanceMaster.setNonRoutineAllowanceMasterType(ServiceFactory.getPersonaliaBL().getNonRoutineAllowanceMasterTypes(" and id = "+nonRoutineAllowanceMaster.getTnrTypeId()).get(0));
+				nonRoutineAllowanceMaster.setReferenceDocument(resultSet.getString("ref_document"));
 				nonRoutineAllowanceMaster.setInputDate(resultSet.getDate("input_date"));
 				nonRoutineAllowanceMaster.setInputBy(resultSet.getString("input_by"));
 				nonRoutineAllowanceMaster.setEditDate(resultSet.getDate("edit_date"));
