@@ -21,8 +21,8 @@ public class SalarySettingDAO {
 
 	private String getLastIdQuery = "select * from salary_setting order by id desc limit 1";
 	private String getAllQuery = "select * from salary_setting where delete_date is null and delete_by is null";
-	private String insertQuery = "insert into salary_setting (id, name, input_date, input_by, edit_date, edit_by) values (?, ?, ?, ?, ?, ?)";
-	private String updateQuery = "update salary_setting set name = ?, edit_date = ?, edit_by = ? where id = ?";
+	private String insertQuery = "insert into salary_setting(employee_code,effective_start_date,effective_end_date,salary_bruto,tax,salary_net,input_date,input_by,edit_date,edit_by)VALUES(?,?,?,?,?,?,?,?,?,?)";
+	private String updateQuery = "update salary_setting set employee_code = ?, effective_start_date = ?, effective_end_date = ?, salary_bruto = ?, tax = ?, salary_net = ? edit_date = ?, edit_by = ? WHERE id = ?";
 	private String deleteQuery = "update salary_setting set delete_date = ?, delete_by = ? where id = ?";
 
 	public SalarySettingDAO(Connection connection) {
@@ -42,7 +42,7 @@ public class SalarySettingDAO {
 				salarySetting.setId(resultSet.getInt("id"));
 				salarySetting.setEmployeeCode(resultSet.getString("employee_code"));
 				salarySetting.setEffectiveStartDate(resultSet.getDate("effective_start_date"));
-				salarySetting.setEffectiveEndDate(resultSet.getDate("effective_start_end"));
+				salarySetting.setEffectiveEndDate(resultSet.getDate("effective_end_date"));
 				salarySetting.setSalaryBruto(resultSet.getBigDecimal("salary_bruto"));
 				salarySetting.setTax(resultSet.getBigDecimal("tax"));
 				salarySetting.setSalaryNett(resultSet.getBigDecimal("salary_net"));

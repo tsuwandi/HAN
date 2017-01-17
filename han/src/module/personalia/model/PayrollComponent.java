@@ -99,6 +99,6 @@ public class PayrollComponent implements ComboBoxProperties{
 	}
 	@Override
 	public Object getField() {
-		return code;
+		return description;
 	}
 }

@@ -17,8 +17,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 
+import com.toedter.calendar.JDateChooser;
+
+import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
@@ -27,10 +32,6 @@ import module.personalia.model.PayrollComponentSetting;
 import module.personalia.model.SalarySetting;
 import module.personalia.model.Tax;
 import module.personalia.model.TaxComponentSetting;
-
-import com.toedter.calendar.JDateChooser;
-
-import controller.ServiceFactory;
 
 public class CreateSalarySettingPanel extends JPanel {
 
@@ -47,13 +48,13 @@ public class CreateSalarySettingPanel extends JPanel {
 	private ComboBox<Tax> taxCmbox;
 	private JTextField payrollComponentNominalField;
 	private JTextField taxNominalField;
-	private JTextField salaryBrutoField;
+	private JTextField brutoSalaryField;
 	private JTable payrollComponentTable;
 	private JTable taxTable;
 	private PayrollComponentTableModel payrollComponentTableModel;
 	private TaxTableModel taxTableModel;
 	private JTextField totalCutField;
-	private JTextField salaryNettField;
+	private JTextField nettSalaryField;
 	List<PayrollComponentSetting> payrollComponentSettings;
 	List<TaxComponentSetting> taxComponentSettings;
 
@@ -213,6 +214,7 @@ public class CreateSalarySettingPanel extends JPanel {
 		payrollComponentNominalField = new JTextField();
 		payrollComponentNominalField.setBounds(140, 460, 200, 30);
 		containerPanel.add(payrollComponentNominalField);
+		
 		// tombol tambah
 		JButton addPayrollComponentBtn = new JButton("Tambah");
 		addPayrollComponentBtn.setBounds(140, 500, 70, 30);
@@ -235,7 +237,7 @@ public class CreateSalarySettingPanel extends JPanel {
 					totalComponent = totalComponent.add(nominal.getNominal());
 				}
 				
-				salaryBrutoField.setText(totalComponent.toString());
+				brutoSalaryField.setText(totalComponent.toString());
 			}
 		});
 		
@@ -247,7 +249,7 @@ public class CreateSalarySettingPanel extends JPanel {
 		payrollComponentTable = new JTable();
 		payrollComponentTable.setFocusable(false);
 		payrollComponentTable.setAutoCreateRowSorter(true);
-		componentPayrollScrollPane.setColumnHeaderView(payrollComponentTable);
+		componentPayrollScrollPane.setViewportView(payrollComponentTable);
 		
 		payrollComponentTable.addMouseListener(new MouseAdapter() {
 			@Override
@@ -277,9 +279,28 @@ public class CreateSalarySettingPanel extends JPanel {
 		label_15.setBounds(130, 730, 10, 30);
 		containerPanel.add(label_15);
 		
-		salaryBrutoField = new JTextField();
-		salaryBrutoField.setBounds(140, 730, 200, 30);
-		containerPanel.add(salaryBrutoField);
+		brutoSalaryField = new JTextField();
+		brutoSalaryField.setBounds(140, 730, 200, 30);
+		containerPanel.add(brutoSalaryField);
+		
+		brutoSalaryField.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				updateSalary();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				updateSalary();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				updateSalary();
+			}
+		});
+		
 		// pembatas
 		JLabel secondFlip = new JLabel("________________________________________________________________________________");
 		secondFlip.setBounds(30, 770, 500, 20);
@@ -342,7 +363,7 @@ public class CreateSalarySettingPanel extends JPanel {
 		taxTable = new JTable();
 		taxTable.setFocusable(false);
 		taxTable.setAutoCreateRowSorter(true);
-		taxScrollPane.setColumnHeaderView(taxTable);
+		taxScrollPane.setViewportView(taxTable);
 		
 		taxTable.addMouseListener(new MouseAdapter() {
 			@Override
@@ -365,16 +386,35 @@ public class CreateSalarySettingPanel extends JPanel {
 		
 		//total potongan field
 		JLabel label_20 = new JLabel("<html>Total Potongan</html>");
-		label_20.setBounds(30, 1100, 100, 30);
+		label_20.setBounds(30, 1110, 100, 30);
 		containerPanel.add(label_20);
 		
 		JLabel label_21 = new JLabel(":");
-		label_21.setBounds(130, 1100, 10, 30);
+		label_21.setBounds(130, 1110, 10, 30);
 		containerPanel.add(label_21);
 		
 		totalCutField = new JTextField();
-		totalCutField.setBounds(140, 1100, 200, 30);
+		totalCutField.setBounds(140, 1110, 200, 30);
 		containerPanel.add(totalCutField);
+		
+		totalCutField.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				updateSalary();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				updateSalary();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				updateSalary();
+			}
+		});
+		
 		//gaji bersih
 		JLabel label_22 = new JLabel("<html>Gaji Bersih</html>");
 		label_22.setBounds(30, 1150, 100, 30);
@@ -384,9 +424,10 @@ public class CreateSalarySettingPanel extends JPanel {
 		label_23.setBounds(130, 1150, 10, 30);
 		containerPanel.add(label_23);
 		
-		salaryNettField = new JTextField();
-		salaryNettField.setBounds(140, 1150, 200, 30);
-		containerPanel.add(salaryNettField);
+		nettSalaryField = new JTextField();
+		nettSalaryField.setBounds(140, 1150, 200, 30);
+		containerPanel.add(nettSalaryField);
+		
 		// tombol simpan
 		JButton saveBtn = new JButton("Simpan");
 		saveBtn.setBounds(924, 1190, 90, 30);
@@ -402,6 +443,27 @@ public class CreateSalarySettingPanel extends JPanel {
 		
 		//getLastID();
 		getData();
+	}
+
+	protected void updateSalary() {
+		BigDecimal brutoSalary;
+		BigDecimal netSalary = BigDecimal.ZERO;
+		BigDecimal totalTax;
+		
+		if(brutoSalaryField.getText() == null | "".equals(brutoSalaryField.getText())) {
+			brutoSalary = BigDecimal.ZERO;
+		} else {
+			brutoSalary = new BigDecimal(brutoSalaryField.getText());
+		}
+		
+		if(taxNominalField.getText() == null | "".equals(taxNominalField.getText())) {
+			totalTax = BigDecimal.ZERO;	
+		} else {
+			totalTax = new BigDecimal(taxNominalField.getText());
+		}
+		
+		netSalary = brutoSalary.subtract(totalTax);
+		nettSalaryField.setText(netSalary.toString());
 	}
 
 	private void getData() {
@@ -428,9 +490,9 @@ public class CreateSalarySettingPanel extends JPanel {
 		salarySetting.setEmployeeCode(employeeCodeField.getText());
 		salarySetting.setEffectiveStartDate(startDateEffectiveField.getDate());
 		salarySetting.setEffectiveEndDate(endDateEffectiveField.getDate());
-		salarySetting.setSalaryBruto(new BigDecimal(salaryBrutoField.getText()));
+		salarySetting.setSalaryBruto(new BigDecimal(brutoSalaryField.getText()));
 		salarySetting.setTax(new BigDecimal(totalCutField.getText()));
-		salarySetting.setSalaryNett(new BigDecimal(salaryNettField.getText()));
+		salarySetting.setSalaryNett(new BigDecimal(nettSalaryField.getText()));
 		salarySetting.setInputDate(new Date());
 		salarySetting.setInputBy("");
 		salarySetting.setEditDate(new Date());
@@ -471,7 +533,7 @@ public class CreateSalarySettingPanel extends JPanel {
 		payrollComponentSettings.clear();
 		payrollComponentTable.updateUI();
 		
-		salaryBrutoField.setText("");
+		brutoSalaryField.setText("");
 		taxCmbox.setSelectedIndex(0);
 		taxNominalField.setText("");
 		
@@ -479,7 +541,7 @@ public class CreateSalarySettingPanel extends JPanel {
 		taxTable.updateUI();
 		
 		totalCutField.setText("");
-		salaryNettField.setText("");
+		nettSalaryField.setText("");
 	}
 	
 	class PayrollComponentTableModel extends AbstractTableModel {
@@ -502,7 +564,7 @@ public class CreateSalarySettingPanel extends JPanel {
 
 		@Override
 		public int getRowCount() {
-			return payrollComponentSettings.size();
+			return payrollComponentSettings == null ? 0 : payrollComponentSettings.size();
 		}
 
 		@Override
@@ -542,13 +604,13 @@ public class CreateSalarySettingPanel extends JPanel {
 		@Override
 		public String getColumnName(int column) {
 			switch (column) {
-			case 1:
+			case 0:
 				return "Komponen Gaji";
-			case 2:
+			case 1:
 				return "Nominal";
-			case 3:
+			case 2:
 				return "<html><u>Tindakan 1</u></html>";
-			case 4:
+			case 3:
 				return "<html><u>Tindakan 2</html>";
 			default:
 				return "";
@@ -576,7 +638,7 @@ public class CreateSalarySettingPanel extends JPanel {
 
 		@Override
 		public int getRowCount() {
-			return taxComponentSettings.size();
+			return taxComponentSettings == null ? 0 : taxComponentSettings.size();
 		}
 
 		@Override
@@ -616,13 +678,13 @@ public class CreateSalarySettingPanel extends JPanel {
 		@Override
 		public String getColumnName(int column) {
 			switch (column) {
-			case 1:
+			case 0:
 				return "Pajak";
-			case 2:
+			case 1:
 				return "Nominal";
-			case 3:
+			case 2:
 				return "<html><u>Tindakan 1</u></html>";
-			case 4:
+			case 3:
 				return "<html><u>Tindakan 2</html>";
 			default:
 				return "";
