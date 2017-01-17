@@ -4,6 +4,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,14 +19,18 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import com.toedter.calendar.JDateChooser;
-
-import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.personalia.model.PayrollComponent;
+import module.personalia.model.PayrollComponentSetting;
 import module.personalia.model.SalarySetting;
+import module.personalia.model.Tax;
+import module.personalia.model.TaxComponentSetting;
+
+import com.toedter.calendar.JDateChooser;
+
+import controller.ServiceFactory;
 
 public class CreateSalarySettingPanel extends JPanel {
 
@@ -36,7 +44,7 @@ public class CreateSalarySettingPanel extends JPanel {
 	private JDateChooser startDateEffectiveField;
 	private JDateChooser endDateEffectiveField;
 	private ComboBox<PayrollComponent> payrollComponentCmbox;
-	private ComboBox<?> taxCmbox;
+	private ComboBox<Tax> taxCmbox;
 	private JTextField payrollComponentNominalField;
 	private JTextField taxNominalField;
 	private JTextField salaryBrutoField;
@@ -46,6 +54,8 @@ public class CreateSalarySettingPanel extends JPanel {
 	private TaxTableModel taxTableModel;
 	private JTextField totalCutField;
 	private JTextField salaryNettField;
+	List<PayrollComponentSetting> payrollComponentSettings;
+	List<TaxComponentSetting> taxComponentSettings;
 
 	public CreateSalarySettingPanel() {
 		setLayout(null);
@@ -204,22 +214,54 @@ public class CreateSalarySettingPanel extends JPanel {
 		payrollComponentNominalField.setBounds(140, 460, 200, 30);
 		containerPanel.add(payrollComponentNominalField);
 		// tombol tambah
-		JButton btnTambah = new JButton("Tambah");
-		btnTambah.setBounds(140, 500, 70, 30);
-		containerPanel.add(btnTambah);
+		JButton addPayrollComponentBtn = new JButton("Tambah");
+		addPayrollComponentBtn.setBounds(140, 500, 70, 30);
+		containerPanel.add(addPayrollComponentBtn);
+		
+		addPayrollComponentBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PayrollComponentSetting payrollComponentSetting = new PayrollComponentSetting();
+				payrollComponentSetting.setPayrollComponent(payrollComponentCmbox.getDataIndex());
+				payrollComponentSetting.setNominal(new BigDecimal(payrollComponentNominalField.getText()));
+				
+				payrollComponentSettings.add(payrollComponentSetting);
+				
+				payrollComponentTable.updateUI();
+			}
+		});
+		
 		// tabel komponen payroll 
 		JScrollPane componentPayrollScrollPane = new JScrollPane();
 		componentPayrollScrollPane.setBounds(30, 540, 340, 180);
 		containerPanel.add(componentPayrollScrollPane);
 		
-		payrollComponentTableModel = new PayrollComponentTableModel();
-		
 		payrollComponentTable = new JTable();
-		payrollComponentTable.setModel(payrollComponentTableModel);
 		payrollComponentTable.setFocusable(false);
 		payrollComponentTable.setAutoCreateRowSorter(true);
-		//payrollComponentTable.setDefaultRenderer(columnClass, renderer);
 		componentPayrollScrollPane.setColumnHeaderView(payrollComponentTable);
+		
+		payrollComponentTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (payrollComponentTable.columnAtPoint(e.getPoint())==2) {
+					int row = payrollComponentTable.getSelectedRow();
+					
+					payrollComponentCmbox.setSelectedItem(payrollComponentSettings.get(row));
+					payrollComponentNominalField.setText(payrollComponentSettings.get(row).getNominal().toString());
+					
+				} else if(payrollComponentTable.columnAtPoint(e.getPoint())==3){
+					int row = payrollComponentTable.getSelectedRow();
+					
+					payrollComponentSettings.remove(row);
+					
+					payrollComponentTable.updateUI();
+				}
+				
+			}
+		});
+		
 		// gaji kotor
 		JLabel label_14 = new JLabel("<html>Gaji Kotor</html>");
 		label_14.setBounds(30, 730, 100, 30);
@@ -269,13 +311,18 @@ public class CreateSalarySettingPanel extends JPanel {
 		taxScrollPane.setBounds(30, 920, 340, 180);
 		containerPanel.add(taxScrollPane);
 		
-		taxTableModel = new TaxTableModel();
-		
 		taxTable = new JTable();
-		taxTable.setModel(taxTableModel);
 		taxTable.setFocusable(false);
 		taxTable.setAutoCreateRowSorter(true);
-		componentPayrollScrollPane.setColumnHeaderView(payrollComponentTable);
+		taxScrollPane.setColumnHeaderView(taxTable);
+		
+		taxTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
+		
 		//total potongan field
 		JLabel label_20 = new JLabel("<html>Total Potongan</html>");
 		label_20.setBounds(30, 1100, 100, 30);
@@ -313,7 +360,20 @@ public class CreateSalarySettingPanel extends JPanel {
 			}
 		});
 		
-		getLastID();
+		//getLastID();
+		getData();
+	}
+
+	private void getData() {
+		payrollComponentSettings = new ArrayList<PayrollComponentSetting>();
+		payrollComponentTableModel = new PayrollComponentTableModel(payrollComponentSettings);
+		payrollComponentTable.setModel(payrollComponentTableModel);
+		payrollComponentCmbox.setList(ServiceFactory.getPersonaliaBL().getPayrollComponents(""));
+		
+		taxComponentSettings = new ArrayList<TaxComponentSetting>();
+		taxTableModel = new TaxTableModel(taxComponentSettings);
+		taxTable.setModel(taxTableModel);
+		taxCmbox.setList(ServiceFactory.getPersonaliaBL().getTaxs(""));
 	}
 
 	private void getLastID() {
@@ -356,36 +416,67 @@ public class CreateSalarySettingPanel extends JPanel {
 	class PayrollComponentTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 5617235600148018029L;
-		private List<E> list;
+		private List<PayrollComponentSetting> payrollComponentSettings;
 		
-		public PayrollComponentTableModel(List<E> list) {
-			this.list = list;
+		public PayrollComponentTableModel(List<PayrollComponentSetting> payrollComponentSettings) {
+			this.payrollComponentSettings = payrollComponentSettings;
 		}
 		
-		
-
 		@Override
 		public int getColumnCount() {
-			return 0;
+			return 4;
 		}
 
 		@Override
 		public int getRowCount() {
-			return 0;
+			return payrollComponentSettings.size();
 		}
 
 		@Override
-		public Object getValueAt(int arg0, int arg1) {
-			return null;
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			PayrollComponentSetting payrollComponentSetting = payrollComponentSettings.get(rowIndex);
+			
+			switch (columnIndex) {
+			case 0:
+				return payrollComponentSetting.getPayrollComponent().getDescription();
+			case 1:
+				return payrollComponentSetting.getNominal();
+			case 2:
+				return "<html><u>Edit</u></html>";
+			case 3:
+				return "<html><u>Hapus</u></html>";
+			default:
+				return "";
+			}
+		}
+		
+		@Override
+		public Class<?> getColumnClass(int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				return String.class;
+			case 1:
+				return BigDecimal.class;
+			case 2:
+				return String.class;
+			case 3:
+				return String.class;
+			default:
+				return String.class;
+			}
 		}
 		
 		@Override
 		public String getColumnName(int column) {
 			switch (column) {
 			case 1:
-				return "Pajak";
+				return "Komponen Gaji";
 			case 2:
 				return "Nominal";
+			case 3:
+				return "<html><u>Tindakan 1</u></html>";
+			case 4:
+				return "<html><u>Tindakan 2</html>";
 			default:
 				return "";
 			}
@@ -395,10 +486,10 @@ public class CreateSalarySettingPanel extends JPanel {
 	class TaxTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 8994908579910879062L;
-		private List<E> list;
+		private List<TaxComponentSetting> taxComponentSettings;
 		
-		public TaxTableModel(List<E> list) {
-			this.list = list;
+		public TaxTableModel(List<TaxComponentSetting> taxComponentSettings) {
+			this.taxComponentSettings = taxComponentSettings;
 		}
 
 		@Override
@@ -408,12 +499,57 @@ public class CreateSalarySettingPanel extends JPanel {
 
 		@Override
 		public int getRowCount() {
-			return 0;
+			return taxComponentSettings.size();
 		}
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			return null;
+			TaxComponentSetting taxComponentSetting = taxComponentSettings.get(rowIndex);
+			
+			switch (columnIndex) {
+			case 0:
+				return taxComponentSetting.getTax().getTax();
+			case 1:
+				return taxComponentSetting.getNominal();
+			case 2:
+				return "<html><u>Edit</u></html>";
+			case 3:
+				return "<html><u>Hapus</u></html>";
+			default:
+				return "";
+			}
+		}
+		
+		@Override
+		public Class<?> getColumnClass(int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				return String.class;
+			case 1:
+				return BigDecimal.class;
+			case 2:
+				return String.class;
+			case 3:
+				return String.class;
+			default:
+				return String.class;
+			}
+		}
+		
+		@Override
+		public String getColumnName(int column) {
+			switch (column) {
+			case 1:
+				return "Pajak";
+			case 2:
+				return "Nominal";
+			case 3:
+				return "<html><u>Tindakan 1</u></html>";
+			case 4:
+				return "<html><u>Tindakan 2</html>";
+			default:
+				return "";
+			}
 		}
 	}
 }
