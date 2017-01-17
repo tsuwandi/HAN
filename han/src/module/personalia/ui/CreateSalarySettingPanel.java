@@ -225,10 +225,17 @@ public class CreateSalarySettingPanel extends JPanel {
 				PayrollComponentSetting payrollComponentSetting = new PayrollComponentSetting();
 				payrollComponentSetting.setPayrollComponent(payrollComponentCmbox.getDataIndex());
 				payrollComponentSetting.setNominal(new BigDecimal(payrollComponentNominalField.getText()));
-				
 				payrollComponentSettings.add(payrollComponentSetting);
-				
+				payrollComponentTableModel.setPayrollComponentSettings(payrollComponentSettings);
 				payrollComponentTable.updateUI();
+				
+				BigDecimal totalComponent = BigDecimal.ZERO;
+				
+				for (PayrollComponentSetting nominal : payrollComponentSettings) {
+					totalComponent = totalComponent.add(nominal.getNominal());
+				}
+				
+				salaryBrutoField.setText(totalComponent.toString());
 			}
 		});
 		
@@ -255,10 +262,9 @@ public class CreateSalarySettingPanel extends JPanel {
 					int row = payrollComponentTable.getSelectedRow();
 					
 					payrollComponentSettings.remove(row);
-					
+					payrollComponentTableModel.setPayrollComponentSettings(payrollComponentSettings);
 					payrollComponentTable.updateUI();
 				}
-				
 			}
 		});
 		
@@ -303,9 +309,31 @@ public class CreateSalarySettingPanel extends JPanel {
 		taxNominalField.setBounds(140, 840, 200, 30);
 		containerPanel.add(taxNominalField);
 		// tax tombol add
-		JButton taxAddButton = new JButton("Tambah");
-		taxAddButton.setBounds(140, 880, 70, 30);
-		containerPanel.add(taxAddButton);
+		JButton addTaxBtn = new JButton("Tambah");
+		addTaxBtn.setBounds(140, 880, 70, 30);
+		containerPanel.add(addTaxBtn);
+		
+		addTaxBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				TaxComponentSetting taxComponentSetting = new TaxComponentSetting();
+				taxComponentSetting.setTax(taxCmbox.getDataIndex());
+				taxComponentSetting.setNominal(new BigDecimal(taxNominalField.getText()));
+				taxComponentSettings.add(taxComponentSetting);
+				taxTableModel.setTaxComponentSettings(taxComponentSettings);
+				taxTable.updateUI();
+				
+				BigDecimal totalCut = BigDecimal.ZERO;
+				
+				for (TaxComponentSetting nominal : taxComponentSettings) {
+					totalCut = totalCut.add(nominal.getNominal());
+				}
+				
+				totalCutField.setText(totalCut.toString());
+			}
+		});
+		
 		// tabel tax
 		JScrollPane taxScrollPane = new JScrollPane();
 		taxScrollPane.setBounds(30, 920, 340, 180);
@@ -319,7 +347,19 @@ public class CreateSalarySettingPanel extends JPanel {
 		taxTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				if (taxTable.columnAtPoint(e.getPoint())==2) {
+					int row = taxTable.getSelectedRow();
+					
+					taxCmbox.setSelectedItem(taxComponentSettings.get(row));
+					taxNominalField.setText(taxComponentSettings.get(row).getNominal().toString());
+					
+				} else if(taxTable.columnAtPoint(e.getPoint())==3){
+					int row = taxTable.getSelectedRow();
+					
+					taxComponentSettings.remove(row);
+					taxTableModel.setTaxComponentSettings(taxComponentSettings);
+					taxTable.updateUI();
+				}
 			}
 		});
 		
@@ -385,14 +425,19 @@ public class CreateSalarySettingPanel extends JPanel {
 
 	protected void save() {
 		SalarySetting salarySetting = new SalarySetting();
-		
+		salarySetting.setEmployeeCode(employeeCodeField.getText());
+		salarySetting.setEffectiveStartDate(startDateEffectiveField.getDate());
+		salarySetting.setEffectiveEndDate(endDateEffectiveField.getDate());
+		salarySetting.setSalaryBruto(new BigDecimal(salaryBrutoField.getText()));
+		salarySetting.setTax(new BigDecimal(totalCutField.getText()));
+		salarySetting.setSalaryNett(new BigDecimal(salaryNettField.getText()));
 		salarySetting.setInputDate(new Date());
 		salarySetting.setInputBy("");
 		salarySetting.setEditDate(new Date());
 		salarySetting.setEditBy("");
 		
 		try {
-			//ServiceFactory.getPersonaliaBL().saveDivision(salarySetting);
+			ServiceFactory.getPersonaliaBL().saveSalarySetting(salarySetting);
 			option();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -409,8 +454,32 @@ public class CreateSalarySettingPanel extends JPanel {
 	}
 
 	private void clear() {
-		getLastID();
+		//getLastID();
+		employeeCodeField.setText("");
 		employeeNameField.setText("");
+		employeeTypeField.setText("");
+		positionNameField.setText("");
+		departmentNameField.setText("");
+		divisionNameField.setText("");
+		
+		startDateEffectiveField.setDate(null);
+		endDateEffectiveField.setDate(null);
+		
+		payrollComponentCmbox.setSelectedIndex(0);
+		payrollComponentNominalField.setText("");
+		
+		payrollComponentSettings.clear();
+		payrollComponentTable.updateUI();
+		
+		salaryBrutoField.setText("");
+		taxCmbox.setSelectedIndex(0);
+		taxNominalField.setText("");
+		
+		taxComponentSettings.clear();
+		taxTable.updateUI();
+		
+		totalCutField.setText("");
+		salaryNettField.setText("");
 	}
 	
 	class PayrollComponentTableModel extends AbstractTableModel {
@@ -421,7 +490,11 @@ public class CreateSalarySettingPanel extends JPanel {
 		public PayrollComponentTableModel(List<PayrollComponentSetting> payrollComponentSettings) {
 			this.payrollComponentSettings = payrollComponentSettings;
 		}
-		
+				
+		public void setPayrollComponentSettings(List<PayrollComponentSetting> payrollComponentSettings) {
+			this.payrollComponentSettings = payrollComponentSettings;
+		}
+
 		@Override
 		public int getColumnCount() {
 			return 4;
@@ -489,6 +562,10 @@ public class CreateSalarySettingPanel extends JPanel {
 		private List<TaxComponentSetting> taxComponentSettings;
 		
 		public TaxTableModel(List<TaxComponentSetting> taxComponentSettings) {
+			this.taxComponentSettings = taxComponentSettings;
+		}
+		
+		public void setTaxComponentSettings(List<TaxComponentSetting> taxComponentSettings) {
 			this.taxComponentSettings = taxComponentSettings;
 		}
 
