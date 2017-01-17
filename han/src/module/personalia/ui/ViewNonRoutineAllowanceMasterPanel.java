@@ -168,7 +168,14 @@ public class ViewNonRoutineAllowanceMasterPanel extends JPanel implements Bridgi
 	}
 
 	protected void delete() {
-		ServiceFactory.getPersonaliaBL().deleteNonRoutineAllowanceMaster(nonRoutineAllowanceMaster);
+		if (DialogBox.showDeleteChoice()==0) {
+			nonRoutineAllowanceMaster.setDeleteDate(new Date());
+			nonRoutineAllowanceMaster.setDeleteBy("");
+			ServiceFactory.getPersonaliaBL().deleteNonRoutineAllowanceMaster(nonRoutineAllowanceMaster);
+			MainPanel.changePanel("module.personalia.ui.NonRoutineAllowanceTransactionConfigPanel");
+		} else {
+			
+		}
 	}
 
 	private void option() {

@@ -3,8 +3,10 @@ package module.personalia.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -14,16 +16,17 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import com.toedter.calendar.JDateChooser;
-
-import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.personalia.model.NonRoutineAllowanceTransaction;
-import module.util.Bridging;
 import module.personalia.model.NonRoutineAllowanceMaster;
 import module.personalia.model.NonRoutineAllowanceMasterType;
+import module.personalia.model.NonRoutineAllowanceTransaction;
+import module.util.Bridging;
+
+import com.toedter.calendar.JDateChooser;
+
+import controller.ServiceFactory;
 
 public class ViewNonRoutineAllowanceTransactionPanel extends JPanel implements Bridging{
 
@@ -44,9 +47,9 @@ public class ViewNonRoutineAllowanceTransactionPanel extends JPanel implements B
 		setSize(1024, 630);
 		setLayout(null);
 
-		JLabel breadCrumbLbl = new JLabel("Personalia > Input Tunjangan Non Rutin > Pendaftaran Baru");
+		JLabel breadCrumbLbl = new JLabel("Personalia > Input Tunjangan Non Rutin Karyawan > Pendaftaran Baru");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
-		breadCrumbLbl.setBounds(50, 10, 430, 25);
+		breadCrumbLbl.setBounds(50, 10, 450, 25);
 		add(breadCrumbLbl);
 
 		JLabel lblHeader = new JLabel("INPUT TUNJANGAN NON RUTIN");
@@ -160,9 +163,17 @@ public class ViewNonRoutineAllowanceTransactionPanel extends JPanel implements B
 		saveBtn.setBounds(924, 589, 90, 30);
 		add(saveBtn);
 
-		JButton btnKembali = new JButton("Kembali");
-		btnKembali.setBounds(10, 589, 90, 30);
-		add(btnKembali);
+		JButton backBtn = new JButton("Kembali");
+		backBtn.setBounds(10, 589, 90, 30);
+		add(backBtn);
+		
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				back();
+			}
+		});
 
 		editBtn = new JButton("Edit");
 		editBtn.setBounds(924, 589, 90, 30);
@@ -213,7 +224,7 @@ public class ViewNonRoutineAllowanceTransactionPanel extends JPanel implements B
 		transactionStartInputDateField.setEnabled(false);
 		add(transactionStartInputDateField);
 
-		JLabel label_7 = new JLabel(" -");
+		JLabel label_7 = new JLabel(" - ");
 		label_7.setBounds(235, 160, 10, 30);
 		add(label_7);
 
@@ -229,17 +240,35 @@ public class ViewNonRoutineAllowanceTransactionPanel extends JPanel implements B
 		add(nonRoutineAllowanceMasterCmbox);
 	}
 
-	protected void update() {
-		NonRoutineAllowanceTransaction nonRoutineAllowanceTransaction = new NonRoutineAllowanceTransaction();
+	protected void back() {
+		MainPanel.changePanel("module.personalia.ui.NonRoutineAllowanceTransactionConfigPanel");
+	}
 
-		nonRoutineAllowanceTransaction.setInputDate(new Date());
-		nonRoutineAllowanceTransaction.setInputBy("");
+	protected void update() {
+		
+		nonRoutineAllowanceTransaction.setEmplyeeId(employeeCodeField.getText());
+		Calendar calendar = Calendar.getInstance();
+		
+		calendar.setTime(transactionStartInputDateField.getDate());
+		
+		nonRoutineAllowanceTransaction.setEffectiveStartMonth(calendar.get(Calendar.MONTH));
+		nonRoutineAllowanceTransaction.setEffectiveStartYear(calendar.get(Calendar.YEAR));
+		
+		calendar.setTime(transactionEndInputDateField.getDate());
+		
+		nonRoutineAllowanceTransaction.setEffectiveEndMonth(calendar.get(Calendar.MONTH));
+		nonRoutineAllowanceTransaction.setEffectiveEndYear(calendar.get(Calendar.YEAR));
+		nonRoutineAllowanceTransaction.setTnrTypeId(nonRoutineAllowanceMasterTypeCmbox.getDataIndex().getId());
+		nonRoutineAllowanceTransaction.setTnrId(nonRoutineAllowanceMasterCmbox.getDataIndex().getId());
+		nonRoutineAllowanceTransaction.setNominal(new BigDecimal(nominalField.getText()));
+		nonRoutineAllowanceTransaction.setReferenceNumber(referenceNumberField.getText());
 		nonRoutineAllowanceTransaction.setEditDate(new Date());
 		nonRoutineAllowanceTransaction.setEditBy("");
 
 		try {
 			ServiceFactory.getPersonaliaBL().updateNonRoutineAllowanceTransaction(nonRoutineAllowanceTransaction);
-			option();
+			DialogBox.showEdit();
+			MainPanel.changePanel("module.personalia.ui.NonRoutineAllowanceTransactionConfigPanel");
 		} catch (Exception e) {
 			e.printStackTrace();
 			DialogBox.showError("Data tidak berhasil disimpan");
@@ -247,21 +276,17 @@ public class ViewNonRoutineAllowanceTransactionPanel extends JPanel implements B
 	}
 
 	protected void delete() {
-
-	}
-
-	private void option() {
-		if (DialogBox.showAfterChoiceInsert()==0) {
-			clear();
+		if (DialogBox.showDeleteChoice()==0) {
+			nonRoutineAllowanceTransaction.setDeleteDate(new Date());
+			nonRoutineAllowanceTransaction.setDeleteBy("");
+			ServiceFactory.getPersonaliaBL().deleteNonRoutineAllowanceTransaction(nonRoutineAllowanceTransaction);
+			MainPanel.changePanel("module.personalia.ui.NonRoutineAllowanceTransactionConfigPanel");
 		} else {
-			MainPanel.changePanel("module.personalia.ui.NonRoutineAllowanceConfigPanel");
+			
 		}
+		
 	}
-
-	private void clear() {
-
-	}
-
+	
 	public boolean isEditMode() {
 		return editMode;
 	}
@@ -269,7 +294,20 @@ public class ViewNonRoutineAllowanceTransactionPanel extends JPanel implements B
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
 		
+		employeeCodeField.setEnabled(true);
+		employeeCodeField.setEditable(true);
+		employeeNameField.setEnabled(true);
+		transactionStartInputDateField.setEnabled(true);
+		transactionEndInputDateField.setEnabled(true);
+		nonRoutineAllowanceMasterTypeCmbox.setEnabled(true);
+		nonRoutineAllowanceMasterCmbox.setEnabled(true);
+		nominalField.setEnabled(true);
+		nominalField.setEditable(true);
+		referenceNumberField.setEnabled(true);
+		referenceNumberField.setEditable(true);
 		
+		editBtn.setText("Simpan");
+		editBtn.updateUI();
 	}
 
 	@Override

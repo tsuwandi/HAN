@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -355,9 +356,13 @@ public class CreateSalarySettingPanel extends JPanel {
 	class PayrollComponentTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 5617235600148018029L;
-		public PayrollComponentTableModel() {
-			
+		private List<E> list;
+		
+		public PayrollComponentTableModel(List<E> list) {
+			this.list = list;
 		}
+		
+		
 
 		@Override
 		public int getColumnCount() {
@@ -390,9 +395,10 @@ public class CreateSalarySettingPanel extends JPanel {
 	class TaxTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 8994908579910879062L;
+		private List<E> list;
 		
-		public TaxTableModel() {
-			
+		public TaxTableModel(List<E> list) {
+			this.list = list;
 		}
 
 		@Override
