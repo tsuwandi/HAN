@@ -1,7 +1,9 @@
 package module.personalia.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Employee {
 
@@ -10,6 +12,7 @@ public class Employee {
 	String name;
 	String currentAddress;
 	String currentCity;
+	String npwp;
 	String ktp;
 	String ktpAddress;
 	String ktpCity;
@@ -31,6 +34,11 @@ public class Employee {
 	String editBy;
 	Date deleteDate;
 	String deleteBy;
+	EmployeeType employeeType;
+	MSPosition msPosition;
+	Department department;
+	Division division;
+	List<EmpPosition> empPositions = new ArrayList<>();
 	public Integer getId() {
 		return id;
 	}
@@ -60,6 +68,12 @@ public class Employee {
 	}
 	public void setCurrentCity(String currentCity) {
 		this.currentCity = currentCity;
+	}
+	public String getNpwp() {
+		return npwp;
+	}
+	public void setNpwp(String npwp) {
+		this.npwp = npwp;
 	}
 	public String getKtp() {
 		return ktp;
@@ -186,5 +200,35 @@ public class Employee {
 	}
 	public void setDeleteBy(String deleteBy) {
 		this.deleteBy = deleteBy;
+	}
+	public EmployeeType getEmployeeType() {
+		return employeeType;
+	}
+	public void setEmployeeType(EmployeeType employeeType) {
+		this.employeeType = employeeType;
+	}
+	public MSPosition getMsPosition() {
+		return msPosition;
+	}
+	public void setMsPosition(MSPosition msPosition) {
+		this.msPosition = msPosition;
+	}
+	public Department getDepartment() {
+		return department;
+	}
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+	public Division getDivision() {
+		return division;
+	}
+	public void setDivision(Division division) {
+		this.division = division;
+	}
+	public List<EmpPosition> getEmpPositions() {
+		return empPositions;
+	}
+	public void setEmpPositions(List<EmpPosition> empPositions) {
+		this.empPositions = empPositions;
 	}
 }

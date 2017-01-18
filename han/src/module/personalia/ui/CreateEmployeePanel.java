@@ -471,6 +471,10 @@ public class CreateEmployeePanel extends JPanel {
 		
 		try {
 			ServiceFactory.getPersonaliaBL().saveEmployee(employee);
+			for (EmpPosition empPosition : empPositions) {
+				empPosition.setEmployeeId(employee.getEmpCode());
+				ServiceFactory.getPersonaliaBL().saveEmpPosition(empPosition);
+			}
 			option();
 		} catch (Exception e) {
 			e.printStackTrace();

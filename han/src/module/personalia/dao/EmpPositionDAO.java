@@ -48,10 +48,10 @@ public class EmpPositionDAO {
 				empPosition.setEndDate(resultSet.getDate("end_date"));
 				empPosition.setProbation(resultSet.getInt("probation"));
 				empPosition.setPositionId(resultSet.getString("position_id"));
-				List<MSPosition> msPositions = ServiceFactory.getPersonaliaBL().getMSPositions(" and id = "+empPosition.getPositionId());
+				List<MSPosition> msPositions = ServiceFactory.getPersonaliaBL().getMSPositions(" and id = '"+empPosition.getPositionId()+"'");
 				empPosition.setMsPosition(msPositions.get(0));
 				empPosition.setEmployeeTypeId(resultSet.getString("employee_type_id"));
-				List<EmployeeType> employeeTypes = ServiceFactory.getPersonaliaBL().getEmployeeTypes(" and id "+empPosition.getEmployeeTypeId());
+				List<EmployeeType> employeeTypes = ServiceFactory.getPersonaliaBL().getEmployeeTypes(" and id = '"+empPosition.getEmployeeTypeId()+"'");
 				empPosition.setEmployeeType(employeeTypes.get(0));
 				empPosition.setReferenceDoc(resultSet.getString("reference_doc"));
 				empPosition.setNotes(resultSet.getString("note"));
@@ -76,7 +76,8 @@ public class EmpPositionDAO {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setString(1, employeePosition.getEmployeeId());
 			insertStatement.setDate(2, DateUtil.toDate(employeePosition.getStartDate()));
-			insertStatement.setDate(3, DateUtil.toDate(employeePosition.getEndDate()));
+			if (employeePosition.getEndDate()==null) insertStatement.setDate(3, null);
+			else insertStatement.setDate(3, DateUtil.toDate(employeePosition.getEndDate()));
 			insertStatement.setInt(4, employeePosition.getProbation());
 			insertStatement.setString(5, employeePosition.getPositionId());
 			insertStatement.setString(6, employeePosition.getEmployeeTypeId());

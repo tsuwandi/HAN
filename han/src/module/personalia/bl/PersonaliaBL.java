@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 
 import module.personalia.dao.DepartmentDAO;
 import module.personalia.dao.DivisionDAO;
+import module.personalia.dao.EmpPositionDAO;
 import module.personalia.dao.EmployeeDAO;
 import module.personalia.dao.EmployeeTypeDAO;
 import module.personalia.dao.GenderDAO;
@@ -23,6 +24,7 @@ import module.personalia.dao.SalarySettingDAO;
 import module.personalia.dao.TaxDAO;
 import module.personalia.model.Department;
 import module.personalia.model.Division;
+import module.personalia.model.EmpPosition;
 import module.personalia.model.Employee;
 import module.personalia.model.EmployeeType;
 import module.personalia.model.Gender;
@@ -274,7 +276,7 @@ public class PersonaliaBL {
 			return null;
 		}
 	}
-	
+	// employee types
 	public List<EmployeeType> getEmployeeTypes(String query) {
 		List<EmployeeType> employeeTypes = new ArrayList<EmployeeType>();
 		Connection connection = null;
@@ -351,7 +353,7 @@ public class PersonaliaBL {
 			return null;
 		}
 	}
-	
+	// employee
 	public List<Employee> getEmployees(String query) {
 		List<Employee> employees = new ArrayList<Employee>();
 		Connection connection = null;
@@ -919,6 +921,83 @@ public class PersonaliaBL {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 1;
+		}
+	}
+	// emp position
+	public List<EmpPosition> getEmpPositions(String query) {
+		List<EmpPosition> empPositions = new ArrayList<EmpPosition>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			empPositions = new EmpPositionDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return empPositions;
+	}
+	
+	public void saveEmpPosition(EmpPosition empPosition) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new EmpPositionDAO(connection).insert(empPosition);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateEmpPosition(EmpPosition empPosition) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new EmpPositionDAO(connection).update(empPosition);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteEmpPosition(EmpPosition empPosition) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new EmpPositionDAO(connection).delete(empPosition);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Integer getLastIdEmpPosition() {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			return new EmpPositionDAO(connection).getLastId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

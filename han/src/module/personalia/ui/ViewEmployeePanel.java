@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -24,14 +26,17 @@ import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.personalia.model.Division;
 import module.personalia.model.EmpPosition;
+import module.personalia.model.Employee;
+import module.personalia.model.Gender;
+import module.personalia.model.Marital;
+import module.util.Bridging;
 
-public class ViewEmployeePanel extends JPanel {
+public class ViewEmployeePanel extends JPanel implements Bridging{
 
 	private static final long serialVersionUID = -9009351103530748031L;
-	private JTextField nameField;
-	private JTextField codeField;
+	private JTextField employeeNameField;
+	private JTextField employeeCodeField;
 	private JTextField npwpField;
 	private JTextField ktpField;
 	private JTextField ktpAddressField;
@@ -40,8 +45,8 @@ public class ViewEmployeePanel extends JPanel {
 	private JDateChooser bornDateField;
 	private JTextField emailField;
 	private JTextField telpField;
-	private ComboBox<String> genderCmbox;
-	private ComboBox<String> maritalCmbox;
+	private ComboBox<Gender> genderCmbox;
+	private ComboBox<Marital> maritalCmbox;
 	private JTextField numberChildField;
 	private JTextField bankNameField;
 	private JTextField bankAccountField;
@@ -51,6 +56,11 @@ public class ViewEmployeePanel extends JPanel {
 	private JPanel photoPnl;
 	private JButton editBtn;
 	private boolean editMode = false;
+	private Employee employee;
+	private List<EmpPosition> empPositions;
+	private PopUpPositionHistoryPanel popUpPositionHistoryPanel;
+	private JTable empPositionTable;
+	private EmployeePositionHistoryTableModel employeePositionHistoryTableModel;
 
 	public ViewEmployeePanel() {
 		setLayout(null);
@@ -81,11 +91,11 @@ public class ViewEmployeePanel extends JPanel {
 		label_1.setBounds(130, 80, 10, 30);
 		containerPanel.add(label_1);
 		
-		codeField = new JTextField();
-		codeField.setBounds(140, 80, 200, 30);
-		codeField.setEditable(false);
-		codeField.setEnabled(false);
-		containerPanel.add(codeField);
+		employeeCodeField = new JTextField();
+		employeeCodeField.setBounds(140, 80, 200, 30);
+		employeeCodeField.setEditable(false);
+		employeeCodeField.setEnabled(false);
+		containerPanel.add(employeeCodeField);
 		// nama
 		JLabel label_2 = new JLabel("<html>Nama Karyawan<font color='red'> * </font></html>");
 		label_2.setBounds(30, 120, 100, 30);
@@ -95,9 +105,9 @@ public class ViewEmployeePanel extends JPanel {
 		label_3.setBounds(130, 120, 10, 30);
 		containerPanel.add(label_3);
 		
-		nameField = new JTextField();
-		nameField.setBounds(140, 120, 200, 30);
-		containerPanel.add(nameField);
+		employeeNameField = new JTextField();
+		employeeNameField.setBounds(140, 120, 200, 30);
+		containerPanel.add(employeeNameField);
 		// npwp
 		JLabel lblnpwp = new JLabel("<html>NPWP<font color='red'> * </font></html>");
 		lblnpwp.setBounds(30, 160, 100, 30);
@@ -338,22 +348,10 @@ public class ViewEmployeePanel extends JPanel {
 		historyPositionScroolPane.setBounds(30, 1150, 900, 300);
 		containerPanel.add(historyPositionScroolPane);
 		
-		JTable positionHistoryTable = new JTable();
-		positionHistoryTable.setFocusable(false);
-		positionHistoryTable.setAutoCreateRowSorter(true);
-		historyPositionScroolPane.setViewportView(positionHistoryTable);
-		
-		/*JButton saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(900, 1460, 90, 30);
-		containerPanel.add(saveBtn);
-		
-		saveBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				save();
-			}
-		});*/
+		empPositionTable = new JTable();
+		empPositionTable.setFocusable(false);
+		empPositionTable.setAutoCreateRowSorter(true);
+		historyPositionScroolPane.setViewportView(empPositionTable);
 		
 		editBtn = new JButton("Edit");
 		editBtn.setBounds(924, 1460, 90, 30);
@@ -387,7 +385,65 @@ public class ViewEmployeePanel extends JPanel {
 		printBtn.setBounds(724, 1460, 90, 30);
 		add(printBtn);
 		
-		getLastID();
+		empPositionTableConfig();
+	}
+	
+	private void empPositionTableConfig() {
+		empPositionTable.setFocusable(false);
+		empPositionTable.setAutoCreateRowSorter(true);
+		employeePositionHistoryTableModel = new EmployeePositionHistoryTableModel(empPositions);
+		empPositionTable.setModel(employeePositionHistoryTableModel);
+		
+		TableColumn noColumn = empPositionTable.getColumnModel().getColumn(0);
+		TableColumn startDateColumn = empPositionTable.getColumnModel().getColumn(1);
+		TableColumn endDateColumn = empPositionTable.getColumnModel().getColumn(2);
+		TableColumn prohibitionColumn = empPositionTable.getColumnModel().getColumn(3);
+		TableColumn positionColumn = empPositionTable.getColumnModel().getColumn(4);
+		TableColumn departmentColumn = empPositionTable.getColumnModel().getColumn(5);
+		TableColumn divisionColumn = empPositionTable.getColumnModel().getColumn(6);
+		TableColumn employeeTypeColumn = empPositionTable.getColumnModel().getColumn(7);
+		TableColumn referenceDocColumn = empPositionTable.getColumnModel().getColumn(8);
+		TableColumn descColumn = empPositionTable.getColumnModel().getColumn(9);
+		
+		noColumn.setPreferredWidth(30);
+		noColumn.setMinWidth(20);
+		noColumn.setMaxWidth(40);
+		
+		startDateColumn.setPreferredWidth(100);
+		startDateColumn.setMinWidth(90);
+		startDateColumn.setMaxWidth(110);
+		
+		endDateColumn.setPreferredWidth(100);
+		endDateColumn.setMinWidth(90);
+		endDateColumn.setMaxWidth(110);
+		
+		prohibitionColumn.setPreferredWidth(30);
+		prohibitionColumn.setMinWidth(20);
+		prohibitionColumn.setMaxWidth(40);
+		
+		positionColumn.setPreferredWidth(100);
+		positionColumn.setMinWidth(90);
+		positionColumn.setMaxWidth(110);
+		
+		departmentColumn.setPreferredWidth(100);
+		departmentColumn.setMinWidth(90);
+		departmentColumn.setMaxWidth(110);
+		
+		divisionColumn.setPreferredWidth(100);
+		divisionColumn.setMinWidth(90);
+		divisionColumn.setMaxWidth(110);
+		
+		employeeTypeColumn.setPreferredWidth(100);
+		employeeTypeColumn.setMinWidth(90);
+		employeeTypeColumn.setMaxWidth(110);
+		
+		referenceDocColumn.setPreferredWidth(100);
+		referenceDocColumn.setMinWidth(90);
+		referenceDocColumn.setMaxWidth(110);
+		
+		descColumn.setPreferredWidth(100);
+		descColumn.setMinWidth(90);
+		descColumn.setMaxWidth(110);
 	}
 
 	protected void delete() {
@@ -417,33 +473,30 @@ public class ViewEmployeePanel extends JPanel {
 	}
 
 	protected void addPositionHistory() {
-		MainPanel.changePanel("module.personalia.ui.CreatePositionHistoryPanel");
-	}
-
-	private void getLastID() {
-		StringBuffer lastId = new StringBuffer();
-		lastId.append("EMP");
-		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdDivision()));
-		codeField.setText(lastId.toString());
+		popUpPositionHistoryPanel = new PopUpPositionHistoryPanel(this);
+		popUpPositionHistoryPanel.setLocationRelativeTo(null);
+		popUpPositionHistoryPanel.setTitle("History Jabatan");
+		popUpPositionHistoryPanel.setVisible(true);
 	}
 
 	protected void save() {
-		Division division = new Division();
-		division.setId(codeField.getText());
-		division.setName(nameField.getText());
-		division.setInputDate(new Date());
-		division.setInputBy("");
-		division.setEditDate(new Date());
-		division.setEditBy("");
+		
+		
+		employee.setInputDate(new Date());
+		employee.setInputBy("");
+		employee.setEditDate(new Date());
+		employee.setEditBy("");
 		
 		try {
-			ServiceFactory.getPersonaliaBL().saveDivision(division);
+			ServiceFactory.getPersonaliaBL().updateEmployee(employee);
+			for (EmpPosition empPosition : employee.getEmpPositions()) {
+				ServiceFactory.getPersonaliaBL().updateEmpPosition(empPosition);
+			}
 			option();
 		} catch (Exception e) {
 			e.printStackTrace();
 			DialogBox.showError("Data tidak berhasil disimpan");
 		}
-		
 	}
 
 	private void option() {
@@ -455,16 +508,19 @@ public class ViewEmployeePanel extends JPanel {
 	}
 
 	private void clear() {
-		getLastID();
-		nameField.setText("");
+		employeeNameField.setText("");
 	}
 	
-	class PositionHistoryTableModel extends AbstractTableModel {
+	class EmployeePositionHistoryTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = -8720800573929798216L;
 		private List<EmpPosition> employeePositions;
 
-		public PositionHistoryTableModel(List<EmpPosition> employeePositions) {
+		public EmployeePositionHistoryTableModel(List<EmpPosition> employeePositions) {
+			this.employeePositions = employeePositions;
+		}
+
+		public void setEmployeePositions(List<EmpPosition> employeePositions) {
 			this.employeePositions = employeePositions;
 		}
 
@@ -559,5 +615,60 @@ public class ViewEmployeePanel extends JPanel {
 				return "";
 			}
 		}
+	}
+
+	@Override
+	public void invokeObjects(Object... objects) {
+		employee = (Employee) objects[0];
+		employeeCodeField.setText(employee.getEmpCode());
+		employeeNameField.setText(employee.getName());
+		ktpField.setText(employee.getKtp());
+		ktpAddressField.setText(employee.getKtpAddress());
+		domicileField.setText(employee.getCurrentAddress());
+		originCityField.setText(employee.getHometown());
+		numberChildField.setText(employee.getTotalChild().toString());
+		bankNameField.setText(employee.getBankCode());
+		bankAccountField.setText(employee.getBankAccountNumber());
+		shiftGroupCmbox.setSelectedItem(null);
+		bornDateField.setDate(employee.getBirthDate());
+		emailField.setText(employee.getEmail());
+		telpField.setText(employee.getPhone());
+		genderCmbox.setSelectedItem(null);
+		maritalCmbox.setSelectedItem(null);
+		
+		employeePositionHistoryTableModel.setEmployeePositions(employee.getEmpPositions());
+		empPositionTable.updateUI();
+	}
+	
+	public List<EmpPosition> getEmpPositions() {
+		return empPositions;
+	}
+
+	public void setEmpPositions(List<EmpPosition> empPositions) {
+		this.empPositions = empPositions;
+	}
+
+	public PopUpPositionHistoryPanel getPopUpPositionHistoryPanel() {
+		return popUpPositionHistoryPanel;
+	}
+
+	public void setPopUpPositionHistoryPanel(PopUpPositionHistoryPanel popUpPositionHistoryPanel) {
+		this.popUpPositionHistoryPanel = popUpPositionHistoryPanel;
+	}
+
+	public EmployeePositionHistoryTableModel getEmployeePositionHistoryTableModel() {
+		return employeePositionHistoryTableModel;
+	}
+
+	public void setEmployeePositionHistoryTableModel(EmployeePositionHistoryTableModel employeePositionHistoryTableModel) {
+		this.employeePositionHistoryTableModel = employeePositionHistoryTableModel;
+	}
+
+	public JTable getEmpPositionTable() {
+		return empPositionTable;
+	}
+
+	public void setEmpPositionTable(JTable empPositionTable) {
+		this.empPositionTable = empPositionTable;
 	}
 }

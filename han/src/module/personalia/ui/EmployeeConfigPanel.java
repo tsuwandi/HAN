@@ -18,6 +18,7 @@ import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
 import main.panel.MainPanel;
+import module.personalia.model.EmpPosition;
 import module.personalia.model.Employee;
 import module.util.Bridging;
 
@@ -28,6 +29,8 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 	private JTextField searchField;
 	private List<Employee> employees = new ArrayList<>();
 	private EmployeeConfigTableModel employeeConfigTableModel;
+	private List<EmpPosition> empPositions = new ArrayList<>(); 
+	private EmpPosition empPosition;
 
 	public EmployeeConfigPanel() {
 		setSize(1024, 630);
@@ -59,7 +62,7 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 		employeeConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (employeeConfigTable.columnAtPoint(e.getPoint())==3) {
+				if (employeeConfigTable.columnAtPoint(e.getPoint())==6) {
 					MainPanel.changePanel("module.personalia.ui.ViewEmployeePanel", getSelectedData());
 				}
 			}
@@ -89,7 +92,7 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 		explicitSearchBtn.setBounds(924, 100, 90, 30);
 		add(explicitSearchBtn);
 		explicitSearchBtn.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainPanel.changePanel("module.personalia.ui.SearchEmployeePanel");
@@ -102,21 +105,23 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 
 		getData();
 	}
-	
+
 	protected Employee getSelectedData() {
 		int row = employeeConfigTable.getSelectedRow();
-
-		Employee employee = new Employee();
-		//employee.setId(employeeConfigTable.getValueAt(row, ));
-		employee.setEmpCode(employeeConfigTable.getValueAt(row, 1).toString());
-		employee.setName(employeeConfigTable.getValueAt(row, 2).toString());
-
-		return employee;
+		return employees.get(row);
 	}
 
 	private void getData() {
 		employees.clear();
 		employees = ServiceFactory.getPersonaliaBL().getEmployees("");
+		empPositions = ServiceFactory.getPersonaliaBL().getEmpPositions("");
+		for (Employee employee : employees) {
+			for (EmpPosition empPosition : empPositions) {
+				if(employee.getEmpCode().equals(empPosition.getEmployeeId())){
+					employee.getEmpPositions().add(empPosition);
+				}
+			}
+		}
 		employeeConfigTableModel = new EmployeeConfigTableModel(employees);
 		employeeConfigTable.setModel(employeeConfigTableModel);
 	}
@@ -181,6 +186,18 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 				return String.class;
 			case 6:
 				return String.class;
+			case 7:
+				return String.class;
+			case 8:
+				return String.class;
+			case 9:
+				return String.class;
+			case 10:
+				return String.class;
+			case 11:
+				return String.class;
+			case 12:
+				return String.class;
 			default:
 				return String.class;
 			}
@@ -195,7 +212,7 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 				return "NIK";
 			case 2:
 				return "Nama Karyawan";
-				/*case 3:
+			case 3:
 				return "Tipe Karyawan";
 			case 4:
 				return "Jabatan";
@@ -203,17 +220,17 @@ public class EmployeeConfigPanel extends JPanel implements Bridging{
 				return "Department";
 			case 6:
 				return "Divisi";
-			case 3:
-				return "Tanggal Mulai Kerja";*/
-			case 3:
+			case 7:
+				return "Tanggal Mulai Kerja";
+			case 8:
 				return "Kota Asal";
-			case 4:
+			case 9:
 				return "Tanggal Lahir";
-			case 5:
+			case 10:
 				return "Gender";
-			/*case 11:
-				return "Status";*/
-			case 6:
+			case 11:
+				return "Status";
+			case 12:
 				return "Action";
 			default:
 				return "";

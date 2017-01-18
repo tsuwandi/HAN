@@ -3,12 +3,14 @@ package module.personalia.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -36,11 +38,29 @@ public class PopUpPositionHistoryPanel extends JDialog {
 	private ComboBox<EmployeeType> employeeTypeCmbox;
 	private JTextField referenceDocumentField;
 	private JTextArea noteField;
-	private CreateEmployeePanel parent;
+	private CreateEmployeePanel createEmployeePanel;
+	private ViewEmployeePanel viewEmployeePanel;
+	private JPanel parent;
 
-	public PopUpPositionHistoryPanel(CreateEmployeePanel parent) {
-		super((JFrame)parent.getTopLevelAncestor());
+	public JPanel getParent() {
+		return parent;
+	}
+
+	public void setParent(JPanel parent) {
 		this.parent = parent;
+	}
+
+	public PopUpPositionHistoryPanel(JPanel parent) {
+		super((JFrame) parent.getTopLevelAncestor());
+		
+		if(parent instanceof CreateEmployeePanel) {
+			this.createEmployeePanel = (CreateEmployeePanel) parent;
+			setParent(this.createEmployeePanel);
+		} else if(parent instanceof ViewEmployeePanel) {
+			this.viewEmployeePanel = (ViewEmployeePanel) parent;
+			setParent(this.viewEmployeePanel);
+		}
+		
 		setSize(530, 630);
 		getContentPane().setLayout(null);
 		getContentPane().setSize(530, 630);
@@ -218,14 +238,26 @@ public class PopUpPositionHistoryPanel extends JDialog {
 		empPosition.setMsPosition(positionCmbox.getDataIndex());
 		empPosition.setPositionId(positionCmbox.getDataIndex().getId());
 		empPosition.setEmployeeType(employeeTypeCmbox.getDataIndex());
+		empPosition.setEmployeeTypeId(empPosition.getEmployeeType().getId());
 		empPosition.setReferenceDoc(referenceDocumentField.getText());
 		empPosition.setNotes(noteField.getText());
+		empPosition.setInputDate(new Date());
+		empPosition.setInputBy("");
+		empPosition.setEditDate(new Date());
+		empPosition.setEditBy("");
 		
 		try {
-			parent.getEmpPositions().add(empPosition);
-			parent.getEmployeePositionHistoryTableModel().setEmployeePositions(parent.getEmpPositions());
-			parent.getEmpPositionTable().updateUI();
-			parent.getPopUpPositionHistoryPanel().setVisible(false);
+			if(getParent() instanceof CreateEmployeePanel) {
+				createEmployeePanel.getEmpPositions().add(empPosition);
+				createEmployeePanel.getEmployeePositionHistoryTableModel().setEmployeePositions(createEmployeePanel.getEmpPositions());
+				createEmployeePanel.getEmpPositionTable().updateUI();
+				createEmployeePanel.getPopUpPositionHistoryPanel().setVisible(false);
+			} else if(parent instanceof ViewEmployeePanel) {
+				viewEmployeePanel.getEmpPositions().add(empPosition);
+				viewEmployeePanel.getEmployeePositionHistoryTableModel().setEmployeePositions(createEmployeePanel.getEmpPositions());
+				viewEmployeePanel.getEmpPositionTable().updateUI();
+				viewEmployeePanel.getPopUpPositionHistoryPanel().setVisible(false);
+			}
 			clear();
 		} catch (Exception e) {
 			e.printStackTrace();

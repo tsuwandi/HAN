@@ -22,8 +22,8 @@ public class EmployeeDAO {
 
 	private String getLastIdQuery = "select * from employee order by id desc limit 1";
 	private String getAllQuery = "select * from employee where delete_date is null and delete_by is null";
-	private String insertQuery = "insert into employee (emp_code, name, current_address, current_city, ktp, ktp_address, ktp_city, hometown, total_child, bank_code, bank_account_number, group_shift_code, birth_date, email, phone, salary, gender_id, marital_id, emp_status_id, input_date, input_by, edit_date, edit_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-	private String updateQuery = "update employee set emp_code = ?, name = ?, current_address = ?, current_city = ?, ktp = ?, ktp_address = ?, ktp_city = ?, hometown = ?, total_child = ?, bank_code = ?, bank_account_number = ?, group_shift_code = ?, birth_date = ?, email = ?, phone = ?, salary = ?, gender_id = ?, marital_id = ?, emp_status_id = ?, edit_date = ?, edit_by = ? where id = ?";
+	private String insertQuery = "insert into employee (emp_code, name, current_address, current_city, npwp, ktp, ktp_address, ktp_city, hometown, total_child, bank_code, bank_account_number, group_shift_code, birth_date, email, phone, salary, gender_id, marital_id, emp_status_id, input_date, input_by, edit_date, edit_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	private String updateQuery = "update employee set emp_code = ?, name = ?, current_address = ?, current_city = ?, npwp = ?, ktp = ?, ktp_address = ?, ktp_city = ?, hometown = ?, total_child = ?, bank_code = ?, bank_account_number = ?, group_shift_code = ?, birth_date = ?, email = ?, phone = ?, salary = ?, gender_id = ?, marital_id = ?, emp_status_id = ?, edit_date = ?, edit_by = ? where id = ?";
 	private String deleteQuery = "update employee set delete_date = ?, delete_by = ? where id = ?";
 	
 	public EmployeeDAO(Connection connection) {
@@ -45,6 +45,7 @@ public class EmployeeDAO {
 				employee.setName(resultSet.getString("name"));
 				employee.setCurrentAddress(resultSet.getString("current_address"));
 				employee.setCurrentCity(resultSet.getString("current_city"));
+				employee.setNpwp(resultSet.getString("npwp"));
 				employee.setKtp(resultSet.getString("ktp"));
 				employee.setKtpAddress(resultSet.getString("ktp_address"));
 				employee.setKtpCity(resultSet.getString("ktp_city"));
@@ -82,25 +83,26 @@ public class EmployeeDAO {
 			insertStatement.setString(2, employee.getName());
 			insertStatement.setString(3, employee.getCurrentAddress());
 			insertStatement.setString(4, employee.getCurrentCity());
-			insertStatement.setString(5, employee.getKtp());
-			insertStatement.setString(6, employee.getKtpAddress());
-			insertStatement.setString(7, employee.getKtpCity());
-			insertStatement.setString(8, employee.getHometown());
-			insertStatement.setInt(9, employee.getTotalChild());
-			insertStatement.setString(10, employee.getBankCode());
-			insertStatement.setString(11, employee.getBankAccountNumber());
-			insertStatement.setString(12, employee.getGroupShiftCode());
-			insertStatement.setDate(13, DateUtil.toDate(employee.getBirthDate()));
-			insertStatement.setString(14, employee.getEmail());
-			insertStatement.setString(15, employee.getPhone());
-			insertStatement.setBigDecimal(16, employee.getSalary());
-			insertStatement.setInt(17, employee.getGenderId());
-			insertStatement.setInt(18, employee.getMaritalId());
-			insertStatement.setString(19, employee.getEmplStatusId());
-			insertStatement.setDate(20, DateUtil.toDate(employee.getInputDate()));
-			insertStatement.setString(21, employee.getInputBy());
-			insertStatement.setDate(22, DateUtil.toDate(employee.getEditDate()));
-			insertStatement.setString(23, employee.getEditBy());
+			insertStatement.setString(5, employee.getNpwp());
+			insertStatement.setString(6, employee.getKtp());
+			insertStatement.setString(7, employee.getKtpAddress());
+			insertStatement.setString(8, employee.getKtpCity());
+			insertStatement.setString(9, employee.getHometown());
+			insertStatement.setInt(10, employee.getTotalChild());
+			insertStatement.setString(11, employee.getBankCode());
+			insertStatement.setString(12, employee.getBankAccountNumber());
+			insertStatement.setString(13, employee.getGroupShiftCode());
+			insertStatement.setDate(14, DateUtil.toDate(employee.getBirthDate()));
+			insertStatement.setString(15, employee.getEmail());
+			insertStatement.setString(16, employee.getPhone());
+			insertStatement.setBigDecimal(17, employee.getSalary());
+			insertStatement.setInt(18, employee.getGenderId());
+			insertStatement.setInt(19, employee.getMaritalId());
+			insertStatement.setString(20, employee.getEmplStatusId());
+			insertStatement.setDate(21, DateUtil.toDate(employee.getInputDate()));
+			insertStatement.setString(22, employee.getInputBy());
+			insertStatement.setDate(23, DateUtil.toDate(employee.getEditDate()));
+			insertStatement.setString(24, employee.getEditBy());
 			insertStatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -114,24 +116,25 @@ public class EmployeeDAO {
 			updateStatement.setString(2, employee.getName());
 			updateStatement.setString(3, employee.getCurrentAddress());
 			updateStatement.setString(4, employee.getCurrentCity());
-			updateStatement.setString(5, employee.getKtp());
-			updateStatement.setString(6, employee.getKtpAddress());
-			updateStatement.setString(7, employee.getKtpCity());
-			updateStatement.setString(8, employee.getHometown());
-			updateStatement.setInt(9, employee.getTotalChild());
-			updateStatement.setString(10, employee.getBankCode());
-			updateStatement.setString(11, employee.getBankAccountNumber());
-			updateStatement.setString(12, employee.getGroupShiftCode());
-			updateStatement.setDate(13, DateUtil.toDate(employee.getBirthDate()));
-			updateStatement.setString(14, employee.getEmail());
-			updateStatement.setString(15, employee.getPhone());
-			updateStatement.setBigDecimal(16, employee.getSalary());
-			updateStatement.setInt(17, employee.getGenderId());
-			updateStatement.setInt(18, employee.getMaritalId());
-			updateStatement.setString(19, employee.getEmplStatusId());
-			updateStatement.setDate(20, DateUtil.toDate(employee.getEditDate()));
-			updateStatement.setString(21, employee.getEditBy());
-			updateStatement.setInt(22, employee.getId());
+			updateStatement.setString(5, employee.getNpwp());
+			updateStatement.setString(6, employee.getKtp());
+			updateStatement.setString(7, employee.getKtpAddress());
+			updateStatement.setString(8, employee.getKtpCity());
+			updateStatement.setString(9, employee.getHometown());
+			updateStatement.setInt(10, employee.getTotalChild());
+			updateStatement.setString(11, employee.getBankCode());
+			updateStatement.setString(12, employee.getBankAccountNumber());
+			updateStatement.setString(13, employee.getGroupShiftCode());
+			updateStatement.setDate(14, DateUtil.toDate(employee.getBirthDate()));
+			updateStatement.setString(15, employee.getEmail());
+			updateStatement.setString(16, employee.getPhone());
+			updateStatement.setBigDecimal(17, employee.getSalary());
+			updateStatement.setInt(18, employee.getGenderId());
+			updateStatement.setInt(19, employee.getMaritalId());
+			updateStatement.setString(20, employee.getEmplStatusId());
+			updateStatement.setDate(21, DateUtil.toDate(employee.getEditDate()));
+			updateStatement.setString(22, employee.getEditBy());
+			updateStatement.setInt(23, employee.getId());
 
 			updateStatement.executeUpdate();
 		} catch (SQLException e) {
