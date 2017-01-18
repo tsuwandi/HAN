@@ -223,6 +223,7 @@ public class PopUpPositionHistoryPanel extends JDialog {
 		
 		try {
 			parent.getEmpPositions().add(empPosition);
+			parent.getEmployeePositionHistoryTableModel().setEmployeePositions(parent.getEmpPositions());
 			parent.getEmpPositionTable().updateUI();
 			parent.getPopUpPositionHistoryPanel().setVisible(false);
 			clear();

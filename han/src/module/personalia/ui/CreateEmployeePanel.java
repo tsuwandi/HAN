@@ -321,7 +321,7 @@ public class CreateEmployeePanel extends JPanel {
 		photoPnl.setBackground(Color.BLACK);
 		containerPanel.add(photoPnl);
 		
-		JButton searchfileBtn = new JButton("Cari File");
+		final JButton searchfileBtn = new JButton("Cari File");
 		searchfileBtn.setBounds(140, 1070, 75, 30);
 		containerPanel.add(searchfileBtn);
 		
@@ -385,6 +385,14 @@ public class CreateEmployeePanel extends JPanel {
 		deleteHistoryPositionBtn.setBounds(225, 1110, 75, 30);
 		containerPanel.add(deleteHistoryPositionBtn);
 		
+		deleteHistoryPositionBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				deletePositionHistory();
+			}
+		});
+		
 		// tabel history jabatan
 		JScrollPane empPositionScrollPane = new JScrollPane();
 		empPositionScrollPane.setBounds(30, 1150, 900, 300);
@@ -408,6 +416,14 @@ public class CreateEmployeePanel extends JPanel {
 		getLastID();
 		empPositionTableConfig();
 		getData();
+	}
+
+	protected void deletePositionHistory() {
+		int row = empPositionTable.getSelectedRow();
+		
+		empPositions.remove(row);
+		employeePositionHistoryTableModel.setEmployeePositions(empPositions);
+		empPositionTable.updateUI();
 	}
 
 	private void getData() {
@@ -482,6 +498,10 @@ public class CreateEmployeePanel extends JPanel {
 		private List<EmpPosition> employeePositions;
 
 		public EmployeePositionHistoryTableModel(List<EmpPosition> employeePositions) {
+			this.employeePositions = employeePositions;
+		}
+		
+		public void setEmployeePositions(List<EmpPosition> employeePositions) {
 			this.employeePositions = employeePositions;
 		}
 
@@ -654,5 +674,9 @@ public class CreateEmployeePanel extends JPanel {
 
 	public PopUpPositionHistoryPanel getPopUpPositionHistoryPanel() {
 		return popUpPositionHistoryPanel;
+	}
+	
+	public EmployeePositionHistoryTableModel getEmployeePositionHistoryTableModel() {
+		return employeePositionHistoryTableModel;
 	}
 }
