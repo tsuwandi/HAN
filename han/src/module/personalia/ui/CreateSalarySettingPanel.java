@@ -27,6 +27,7 @@ import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
+import module.personalia.model.Employee;
 import module.personalia.model.PayrollComponent;
 import module.personalia.model.PayrollComponentSetting;
 import module.personalia.model.SalarySetting;
@@ -57,6 +58,7 @@ public class CreateSalarySettingPanel extends JPanel {
 	private JTextField nettSalaryField;
 	List<PayrollComponentSetting> payrollComponentSettings;
 	List<TaxComponentSetting> taxComponentSettings;
+	private Employee employee;
 
 	public CreateSalarySettingPanel() {
 		setLayout(null);
@@ -89,9 +91,28 @@ public class CreateSalarySettingPanel extends JPanel {
 		
 		employeeCodeField = new JTextField();
 		employeeCodeField.setBounds(140, 80, 200, 30);
-		employeeCodeField.setEditable(false);
-		employeeCodeField.setEnabled(false);
+		//employeeCodeField.setEditable(false);
+		//employeeCodeField.setEnabled(false);
 		containerPanel.add(employeeCodeField);
+		
+		employeeCodeField.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				updateData();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				updateData();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				updateData();
+			}
+		});
+		
 		// nama karyawan
 		JLabel lblnamaKaryawan = new JLabel("<html>Nama Karyawan</html>");
 		lblnamaKaryawan.setBounds(30, 120, 100, 30);
@@ -443,6 +464,15 @@ public class CreateSalarySettingPanel extends JPanel {
 		
 		//getLastID();
 		getData();
+	}
+
+	protected void updateData() {
+		employee = ServiceFactory.getPersonaliaBL().getEmployees(" and LOWER(emp_code) like ('"+employeeCodeField.getText()+"')").get(0);
+		employeeNameField.setText(employee.getName());
+		employeeTypeField.setText(employee.getEmployeeType().getName());
+		positionNameField.setText(employee.getMsPosition().getName());
+		departmentNameField.setText(employee.getDepartment().getName());
+		divisionNameField.setText(employee.getDivision().getName());
 	}
 
 	protected void updateSalary() {
