@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
+import module.personalia.model.EmpPosition;
 import module.personalia.model.Employee;
 import module.util.DateUtil;
 
@@ -67,6 +69,15 @@ public class EmployeeDAO {
 				employee.setEditBy(resultSet.getString("edit_by"));
 				employee.setDeleteDate(resultSet.getDate("delete_date"));
 				employee.setDeleteBy(resultSet.getString("delete_by"));
+				List<EmpPosition> empPositions = ServiceFactory.getPersonaliaBL().getEmpPositions(" and employee_id = '"+employee.getEmpCode()+"'");
+				for (EmpPosition empPosition : empPositions) {
+					if(empPosition.getEndDate()==null) {
+						employee.setEmployeeType(empPosition.getEmployeeType());
+						employee.setMsPosition(empPosition.getMsPosition());
+						employee.setDivision(employee.getMsPosition().getDivision());
+						employee.setDepartment(employee.getMsPosition().getDepartment());
+					}
+				}
 				employees.add(employee);
 			}
 		} catch (SQLException e) {

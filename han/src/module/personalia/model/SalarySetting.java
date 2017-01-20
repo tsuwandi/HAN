@@ -2,6 +2,7 @@ package module.personalia.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class SalarySetting {
 	
@@ -9,6 +10,7 @@ public class SalarySetting {
 	String employeeCode;
 	String employeeName;
 	String employeeType;
+	Employee employee;
 	Date effectiveStartDate;
 	Date effectiveEndDate;
 	String position_id;
@@ -26,6 +28,8 @@ public class SalarySetting {
 	String editBy;
 	Date deleteDate;
 	String deleteBy;
+	List<SsSalaryComp> ssSalaryComps;
+	List<SsTax> ssTaxs;
 	public Integer getId() {
 		return id;
 	}
@@ -49,6 +53,12 @@ public class SalarySetting {
 	}
 	public void setEmployeeType(String employeeType) {
 		this.employeeType = employeeType;
+	}
+	public Employee getEmployee() {
+		return employee;
+	}
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 	public Date getEffectiveStartDate() {
 		return effectiveStartDate;
@@ -151,5 +161,17 @@ public class SalarySetting {
 	}
 	public void setDeleteBy(String deleteBy) {
 		this.deleteBy = deleteBy;
+	}
+	public List<SsSalaryComp> getSsSalaryComps() {
+		return ssSalaryComps;
+	}
+	public void setSsSalaryComps(List<SsSalaryComp> ssSalaryComps) {
+		this.ssSalaryComps = ssSalaryComps;
+	}
+	public List<SsTax> getSsTaxs() {
+		return ssTaxs;
+	}
+	public void setSsTaxs(List<SsTax> ssTaxs) {
+		this.ssTaxs = ssTaxs;
 	}
 }

@@ -21,6 +21,8 @@ import module.personalia.dao.NonRoutineAllowanceTransactionDAO;
 import module.personalia.dao.PayrollComponentDAO;
 import module.personalia.dao.PayrollMappingDAO;
 import module.personalia.dao.SalarySettingDAO;
+import module.personalia.dao.SsSalaryCompDAO;
+import module.personalia.dao.SsTaxDAO;
 import module.personalia.dao.TaxDAO;
 import module.personalia.model.Department;
 import module.personalia.model.Division;
@@ -36,6 +38,8 @@ import module.personalia.model.NonRoutineAllowanceTransaction;
 import module.personalia.model.PayrollComponent;
 import module.personalia.model.PayrollMapping;
 import module.personalia.model.SalarySetting;
+import module.personalia.model.SsSalaryComp;
+import module.personalia.model.SsTax;
 import module.personalia.model.Tax;
 
 public class PersonaliaBL {
@@ -995,6 +999,160 @@ public class PersonaliaBL {
 		try {
 			connection = dataSource.getConnection();
 			return new EmpPositionDAO(connection).getLastId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	// ss salary
+	public List<SsSalaryComp> getSsSalaryComps(String query) {
+		List<SsSalaryComp> empPositions = new ArrayList<SsSalaryComp>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			empPositions = new SsSalaryCompDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return empPositions;
+	}
+	
+	public void saveSsSalaryComp(SsSalaryComp empPosition) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new SsSalaryCompDAO(connection).insert(empPosition);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateSsSalaryComp(SsSalaryComp empPosition) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new SsSalaryCompDAO(connection).update(empPosition);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteSsSalaryComp(SsSalaryComp empPosition) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new SsSalaryCompDAO(connection).delete(empPosition);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Integer getLastIdSsSalaryComp() {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			return new SsSalaryCompDAO(connection).getLastId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	// ss tax
+	public List<SsTax> getSsTaxs(String query) {
+		List<SsTax> ssTaxs = new ArrayList<SsTax>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			ssTaxs = new SsTaxDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return ssTaxs;
+	}
+	
+	public void saveSsTax(SsTax ssTax) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new SsTaxDAO(connection).insert(ssTax);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateSsTax(SsTax ssTax) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new SsTaxDAO(connection).update(ssTax);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteSsTax(SsTax ssTax) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new SsTaxDAO(connection).delete(ssTax);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public Integer getLastIdSsTax(){
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			return new SsTaxDAO(connection).getLastId();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

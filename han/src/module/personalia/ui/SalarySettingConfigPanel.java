@@ -18,7 +18,6 @@ import javax.swing.table.AbstractTableModel;
 
 import controller.ServiceFactory;
 import main.panel.MainPanel;
-import module.personalia.model.Division;
 import module.personalia.model.SalarySetting;
 import module.util.Bridging;
 
@@ -60,7 +59,7 @@ public class SalarySettingConfigPanel extends JPanel implements Bridging{
 		salarySettingConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (salarySettingConfigTable.columnAtPoint(e.getPoint())==3) {
+				if (salarySettingConfigTable.columnAtPoint(e.getPoint())==10) {
 					MainPanel.changePanel("module.personalia.ui.ViewSalarySettingPanel", getSelectedData());
 				}
 			}
@@ -104,14 +103,9 @@ public class SalarySettingConfigPanel extends JPanel implements Bridging{
 		getUserData();
 	}
 
-	protected Division getSelectedData() {
+	protected SalarySetting getSelectedData() {
 		int row = salarySettingConfigTable.getSelectedRow();
-
-		Division division = new Division();
-		division.setId(salarySettingConfigTable.getValueAt(row, 1).toString());
-		division.setName(salarySettingConfigTable.getValueAt(row, 2).toString());
-
-		return division;
+		return salarySettings.get(row);
 	}
 
 	private void getUserData() {
@@ -150,15 +144,15 @@ public class SalarySettingConfigPanel extends JPanel implements Bridging{
 			case 1:
 				return salary.getEmployeeCode();
 			case 2:
-				return salary.getEmployeeName();
+				return salary.getEmployee().getName();
 			case 3:
-				return salary.getEmployeeType();
+				return salary.getEmployee().getEmployeeType().getName();
 			case 4:
-				return salary.getMsPosition().getName();
+				return salary.getEmployee().getMsPosition().getName();
 			case 5:
-				return salary.getDepartment();
+				return salary.getEmployee().getMsPosition().getDepartment().getName();
 			case 6:
-				return salary.getDivision();
+				return salary.getEmployee().getMsPosition().getDivision().getName();
 			case 7:
 				return salary.getSalaryBruto();
 			case 8:

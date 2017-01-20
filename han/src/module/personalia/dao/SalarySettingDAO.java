@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.personalia.model.SalarySetting;
 import module.util.DateUtil;
 
@@ -41,6 +42,7 @@ public class SalarySettingDAO {
 				SalarySetting salarySetting = new SalarySetting();
 				salarySetting.setId(resultSet.getInt("id"));
 				salarySetting.setEmployeeCode(resultSet.getString("employee_code"));
+				salarySetting.setEmployee(ServiceFactory.getPersonaliaBL().getEmployees(" and emp_code = '"+salarySetting.getEmployeeCode()+"'").get(0));
 				salarySetting.setEffectiveStartDate(resultSet.getDate("effective_start_date"));
 				salarySetting.setEffectiveEndDate(resultSet.getDate("effective_end_date"));
 				salarySetting.setSalaryBruto(resultSet.getBigDecimal("salary_bruto"));
@@ -52,7 +54,8 @@ public class SalarySettingDAO {
 				salarySetting.setEditBy(resultSet.getString("edit_by"));
 				salarySetting.setDeleteDate(resultSet.getDate("delete_date"));
 				salarySetting.setDeleteBy(resultSet.getString("delete_by"));
-				
+				salarySetting.setSsSalaryComps(ServiceFactory.getPersonaliaBL().getSsSalaryComps(" and salary_setting_id = "+salarySetting.getId()));
+				salarySetting.setSsTaxs(ServiceFactory.getPersonaliaBL().getSsTaxs(" and salary_setting_id = "+salarySetting.getId()));
 				salarySettings.add(salarySetting);
 			}
 		} catch (SQLException e) {
