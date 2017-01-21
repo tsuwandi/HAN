@@ -34,7 +34,7 @@ public class PayrollComponentConfigPanel extends JPanel implements Bridging{
 		setSize(1024, 630);
 		setLayout(null);
 
-		JLabel breadCrumbLbl = new JLabel("Personalia > KOMPONEN PAYROLL");
+		JLabel breadCrumbLbl = new JLabel("Payroll > KOMPONEN PAYROLL");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 230, 25);
 		add(breadCrumbLbl);

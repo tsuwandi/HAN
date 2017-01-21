@@ -33,7 +33,7 @@ public class NonRoutineAllowanceTransactionConfigPanel extends JPanel implements
 		setSize(1024, 630);
 		setLayout(null);
 
-		JLabel breadCrumbLbl = new JLabel("Personalia > Tunjangan Non Rutin Karyawan");
+		JLabel breadCrumbLbl = new JLabel("Payroll > Tunjangan Non Rutin Karyawan");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 350, 25);
 		add(breadCrumbLbl);

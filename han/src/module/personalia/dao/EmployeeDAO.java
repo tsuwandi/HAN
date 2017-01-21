@@ -74,8 +74,10 @@ public class EmployeeDAO {
 					if(empPosition.getEndDate()==null) {
 						employee.setEmployeeType(empPosition.getEmployeeType());
 						employee.setMsPosition(empPosition.getMsPosition());
-						employee.setDivision(employee.getMsPosition().getDivision());
-						employee.setDepartment(employee.getMsPosition().getDepartment());
+						if(empPosition.getMsPosition()!=null) {
+							employee.setDivision(employee.getMsPosition().getDivision());
+							employee.setDepartment(employee.getMsPosition().getDepartment());
+						}
 					}
 				}
 				employees.add(employee);

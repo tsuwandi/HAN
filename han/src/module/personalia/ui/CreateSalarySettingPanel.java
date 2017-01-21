@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
@@ -28,6 +29,7 @@ import com.toedter.calendar.JDateChooser;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
+import main.component.NumberFormat;
 import main.panel.MainPanel;
 import module.personalia.model.Employee;
 import module.personalia.model.PayrollComponent;
@@ -73,7 +75,7 @@ public class CreateSalarySettingPanel extends JPanel {
 		scrollPane.setBounds(0, 0, 1024, 630);
 		add(scrollPane);
 
-		JLabel breadCrumbLbl = new JLabel("Personalia > Setting Nominal Gaji > Pendaftaran Baru");
+		JLabel breadCrumbLbl = new JLabel("Payroll > Setting Nominal Gaji > Pendaftaran Baru");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 380, 25);
 		containerPanel.add(breadCrumbLbl);
@@ -93,8 +95,6 @@ public class CreateSalarySettingPanel extends JPanel {
 
 		employeeCodeField = new JTextField();
 		employeeCodeField.setBounds(140, 80, 200, 30);
-		//employeeCodeField.setEditable(false);
-		//employeeCodeField.setEnabled(false);
 		containerPanel.add(employeeCodeField);
 
 		employeeCodeField.addKeyListener(new KeyListener() {
@@ -266,8 +266,8 @@ public class CreateSalarySettingPanel extends JPanel {
 				for (SsSalaryComp nominal : ssSalaryComps) {
 					totalComponent = totalComponent.add(nominal.getNominal());
 				}
-
-				brutoSalaryField.setText(totalComponent.toString());
+				;
+				brutoSalaryField.setText(NumberFormat.onTypeNum(9, totalComponent.toString()));
 			}
 		});
 
@@ -477,6 +477,14 @@ public class CreateSalarySettingPanel extends JPanel {
 		});
 
 		getData();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				employeeCodeField.requestFocusInWindow();
+			}
+		});
 	}
 
 	protected void updateData() {

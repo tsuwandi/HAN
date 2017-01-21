@@ -33,7 +33,7 @@ public class NonRoutineAllowanceMasterConfigPanel extends JPanel implements Brid
 		setSize(1024, 630);
 		setLayout(null);
 
-		JLabel breadCrumbLbl = new JLabel("Personalia > Master Tunjangan Non Rutin");
+		JLabel breadCrumbLbl = new JLabel("Payroll > Master Tunjangan Non Rutin");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 350, 25);
 		add(breadCrumbLbl);

@@ -49,10 +49,12 @@ public class EmpPositionDAO {
 				empPosition.setProbation(resultSet.getInt("probation"));
 				empPosition.setPositionId(resultSet.getString("position_id"));
 				List<MSPosition> msPositions = ServiceFactory.getPersonaliaBL().getMSPositions(" and id = '"+empPosition.getPositionId()+"'");
-				empPosition.setMsPosition(msPositions.get(0));
+				if(msPositions.size()>0) empPosition.setMsPosition(msPositions.get(0));
+				else empPosition.setMsPosition(null);
 				empPosition.setEmployeeTypeId(resultSet.getString("employee_type_id"));
 				List<EmployeeType> employeeTypes = ServiceFactory.getPersonaliaBL().getEmployeeTypes(" and id = '"+empPosition.getEmployeeTypeId()+"'");
-				empPosition.setEmployeeType(employeeTypes.get(0));
+				if(employeeTypes.size()>0) empPosition.setEmployeeType(employeeTypes.get(0));
+				else empPosition.setEmployeeType(null);
 				empPosition.setReferenceDoc(resultSet.getString("reference_doc"));
 				empPosition.setNotes(resultSet.getString("note"));
 				empPosition.setInputDate(resultSet.getDate("input_date"));

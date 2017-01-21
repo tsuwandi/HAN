@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import controller.ServiceFactory;
 import main.component.ComboBox;
@@ -36,7 +37,7 @@ public class CreatePayrollMappingPanel extends JPanel {
 		setSize(1024, 630);
 		setLayout(null);
 		
-		JLabel breadCrumbLbl = new JLabel("Personalia > Pemetaan Gaji > Pendaftaran Baru");
+		JLabel breadCrumbLbl = new JLabel("Payroll > Pemetaan Gaji > Pendaftaran Baru");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 330, 25);
 		add(breadCrumbLbl);
@@ -177,6 +178,14 @@ public class CreatePayrollMappingPanel extends JPanel {
 		
 		getLastID();
 		getData();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				msPositionCmbox.requestFocusInWindow();
+			}
+		});
 	}
 
 	private void getData() {

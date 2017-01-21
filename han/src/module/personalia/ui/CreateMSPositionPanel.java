@@ -9,10 +9,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
+import main.component.NumericField;
 import main.panel.MainPanel;
 import module.personalia.model.Department;
 import module.personalia.model.Division;
@@ -26,8 +28,8 @@ public class CreateMSPositionPanel extends JPanel {
 	private JTextField msPositionIdField;
 	private ComboBox<Department> departemenCmbBox;
 	private ComboBox<Division> divisionCmbBox;
-	private JTextField salaryMinField;
-	private JTextField salaryMaxField;
+	private NumericField salaryMinField;
+	private NumericField salaryMaxField;
 
 	public CreateMSPositionPanel() {
 		setSize(1024, 630);
@@ -109,11 +111,11 @@ public class CreateMSPositionPanel extends JPanel {
 		divisionCmbBox.setBounds(140, 200, 200, 30);
 		add(divisionCmbBox);
 		
-		salaryMinField = new JTextField();
+		salaryMinField = new NumericField(12, "###,###,###,###");
 		salaryMinField.setBounds(140, 240, 200, 30);
 		add(salaryMinField);
 		
-		salaryMaxField = new JTextField();
+		salaryMaxField = new NumericField(12, "###,###,###,###");
 		salaryMaxField.setBounds(140, 280, 200, 30);
 		add(salaryMaxField);
 
@@ -132,6 +134,14 @@ public class CreateMSPositionPanel extends JPanel {
 		getLastID();
 		
 		getData();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				msPositionNameField.requestFocusInWindow();
+			}
+		});
 	}
 	
 	private void getData() {
@@ -141,7 +151,7 @@ public class CreateMSPositionPanel extends JPanel {
 
 	private void getLastID() {
 		StringBuffer lastId = new StringBuffer();
-		lastId.append("POS");
+		lastId.append("ROLE");
 		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdMSPosition()));
 		msPositionIdField.setText(lastId.toString());
 	}

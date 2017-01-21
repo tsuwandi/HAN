@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
@@ -65,6 +66,18 @@ public class CreateDivisionPanel extends JPanel {
 		saveBtn.setBounds(924, 589, 90, 30);
 		add(saveBtn);
 		
+		JButton backBtn = new JButton("Kembali");
+		backBtn.setBounds(10, 589, 90, 30);
+		add(backBtn);
+		
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				back();
+			}
+		});
+		
 		saveBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -73,7 +86,19 @@ public class CreateDivisionPanel extends JPanel {
 			}
 		});
 		
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				divisionNameField.requestFocusInWindow();
+			}
+		});
+		
 		getLastID();
+	}
+
+	protected void back() {
+		MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
 	}
 
 	private void getLastID() {

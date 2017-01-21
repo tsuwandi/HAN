@@ -33,7 +33,7 @@ public class SalarySettingConfigPanel extends JPanel implements Bridging{
 		setSize(1024, 630);
 		setLayout(null);
 
-		JLabel breadCrumbLbl = new JLabel("Personalia > SETTING NOMINAL GAJI");
+		JLabel breadCrumbLbl = new JLabel("Payroll > Setting Nominal Gaji");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 300, 25);
 		add(breadCrumbLbl);

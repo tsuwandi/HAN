@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import main.component.ComboBox;
 import main.component.DialogBox;
@@ -81,6 +82,18 @@ public class CreateDepartmentPanel extends JPanel {
 		JButton saveBtn = new JButton("Simpan");
 		saveBtn.setBounds(924, 589, 90, 30);
 		add(saveBtn);
+		
+		JButton backBtn = new JButton("Kembali");
+		backBtn.setBounds(10, 589, 90, 30);
+		add(backBtn);
+		
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				back();
+			}
+		});
 
 		saveBtn.addActionListener(new ActionListener() {
 
@@ -93,15 +106,27 @@ public class CreateDepartmentPanel extends JPanel {
 		getLastID();
 		
 		getData();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				departmentNameField.requestFocusInWindow();
+			}
+		});
 	}
 	
+	protected void back() {
+		MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
+	}
+
 	private void getData() {
 		divisionCmbBox.setList(ServiceFactory.getPersonaliaBL().getDivisions(""));
 	}
 
 	private void getLastID() {
 		StringBuffer lastId = new StringBuffer();
-		lastId.append("DEP");
+		lastId.append("DEPT");
 		lastId.append(String.format("%03d", ServiceFactory.getPersonaliaBL().getLastIdDepartment()));
 		departementIdField.setText(lastId.toString());
 	}

@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import controller.ServiceFactory;
 import main.component.ComboBox;
@@ -29,7 +30,7 @@ public class CreateNonRoutineAllowanceMasterPanel extends JPanel {
 		setSize(1024, 630);
 		setLayout(null);
 		
-		JLabel breadCrumbLbl = new JLabel("Personalia > Master Tunjangan Non Rutin > Pendaftaran Baru");
+		JLabel breadCrumbLbl = new JLabel("Payroll > Master Tunjangan Non Rutin > Pendaftaran Baru");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 430, 25);
 		add(breadCrumbLbl);
@@ -125,6 +126,14 @@ public class CreateNonRoutineAllowanceMasterPanel extends JPanel {
 			}
 		});
 		getData();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				nonRoutineAllowanceMasterField.requestFocusInWindow();
+			}
+		});
 	}
 
 	protected void updateTax() {

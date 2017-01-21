@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
@@ -416,6 +417,14 @@ public class CreateEmployeePanel extends JPanel {
 		getLastID();
 		empPositionTableConfig();
 		getData();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				employeeNameField.requestFocusInWindow();
+			}
+		});
 	}
 
 	protected void deletePositionHistory() {

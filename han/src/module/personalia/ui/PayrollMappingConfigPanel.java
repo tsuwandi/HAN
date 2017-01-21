@@ -33,7 +33,7 @@ public class PayrollMappingConfigPanel extends JPanel implements Bridging{
 		setSize(1024, 630);
 		setLayout(null);
 
-		JLabel breadCrumbLbl = new JLabel("Personalia > Pemetaan Gaji");
+		JLabel breadCrumbLbl = new JLabel("Payroll > Pemetaan Gaji");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 210, 25);
 		add(breadCrumbLbl);

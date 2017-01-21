@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
@@ -74,6 +75,14 @@ public class CreateEmployeeTypePanel extends JPanel {
 		});
 		
 		getLastID();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				employeeTypeNameField.requestFocusInWindow();
+			}
+		});
 	}
 	
 

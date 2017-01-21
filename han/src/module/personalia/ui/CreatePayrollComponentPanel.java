@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
@@ -34,7 +35,7 @@ public class CreatePayrollComponentPanel extends JPanel {
 		setSize(1024, 630);
 		setLayout(null);
 		
-		JLabel breadCrumbLbl = new JLabel("Personalia > Komponen Payroll > Pendaftaran Baru");
+		JLabel breadCrumbLbl = new JLabel("Payroll > Komponen Payroll > Pendaftaran Baru");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
 		breadCrumbLbl.setBounds(50, 10, 330, 25);
 		add(breadCrumbLbl);
@@ -182,6 +183,14 @@ public class CreatePayrollComponentPanel extends JPanel {
 		});
 		
 		getLastID();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				payrollComponentDescriptionField.requestFocusInWindow();
+			}
+		});
 	}
 
 	protected void attach() {
