@@ -126,7 +126,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		
 		panel = new JPanel();
 		panel.setPreferredSize(
-				new Dimension(MainPanel.bodyPanel.getWidth() - 100, MainPanel.bodyPanel.getHeight() + 200));
+				new Dimension(MainPanel.bodyPanel.getWidth() - 100, MainPanel.bodyPanel.getHeight()));
 		panel.setLayout(null);
 
 		lblSuppCode = new JLabel("<html>Kode Supplier <font color=\"red\">*</font></html>");
@@ -137,9 +137,10 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		txtSuppCode.setBounds(220, 80, 150, 25);
 		txtSuppCode.setDocument(new JTextFieldLimit(9));
 		((AbstractDocument) txtSuppCode.getDocument()).setDocumentFilter(filter);
+		txtSuppCode.setEnabled(false);
 		panel.add(txtSuppCode);
 
-		lblErrorSuppCode = new JLabel("Example : BL001");
+		lblErrorSuppCode = new JLabel();
 		lblErrorSuppCode.setForeground(Color.RED);
 		lblErrorSuppCode.setBounds(425, 80, 225, 25);
 		panel.add(lblErrorSuppCode);
@@ -194,6 +195,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		cbSuppType = new ComboBox<SuppType>();
 		cbSuppType.setList(listOfSuppType);
 		cbSuppType.setBounds(220, 200, 150, 25);
+		cbSuppType.setEnabled(false);
 		panel.add(cbSuppType);
 
 		lblErrorSuppType = new JLabel();
@@ -273,64 +275,64 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 
 		/////// Table SuppCP ///////
 
-		lblSuppVehicle = new JLabel("Kendaraan");
-		lblSuppVehicle.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblSuppVehicle.setBounds(50, 455, 150, 25);
-		panel.add(lblSuppVehicle);
-
-		scrollPaneSuppVehicle = new JScrollPane();
-		scrollPaneSuppVehicle.setBounds(50, 490, 975, 150);
-		panel.add(scrollPaneSuppVehicle);
-
-		suppVehicleTableModel = new SuppVehicleTableModel(new ArrayList<SuppVehicle>());
-		tblSuppVehicle = new JTable(suppVehicleTableModel);
-		tblSuppVehicle.setBorder(new EmptyBorder(5, 5, 5, 5));
-		tblSuppVehicle.setFocusable(false);
-		scrollPaneSuppVehicle.setViewportView(tblSuppVehicle);
-
-		tblSuppVehicle.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (tblSuppVehicle.getValueAt(tblSuppVehicle.getSelectedRow(), 0).equals(true))
-					listOfSuppVehicle.get(tblSuppVehicle.getSelectedRow()).setFlag(false);
-				else
-					listOfSuppVehicle.get(tblSuppVehicle.getSelectedRow()).setFlag(true);
-
-				tblSuppVehicle.updateUI();
-
-				if (e.getClickCount() == 2) {
-					JTable target = (JTable) e.getSource();
-					int row = target.getSelectedRow();
-					int column = target.getSelectedColumn();
-
-					if (column == 3)
-						showEditSuppVehicleDialog(listOfSuppVehicle.get(row), supplierEdit, row);
-				}
-			}
-		});
-
-		btnAddSuppVehicle = new JButton("Tambah");
-		btnAddSuppVehicle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				showAddSuppVehicleDialog(supplierEdit);
-			}
-		});
-		btnAddSuppVehicle.setBounds(820, 455, 100, 25);
-		panel.add(btnAddSuppVehicle);
-
-		btnDeleteSuppVehicle = new JButton("Hapus");
-		btnDeleteSuppVehicle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				doDeleteSuppVehicle();
-			}
-		});
-		btnDeleteSuppVehicle.setBounds(925, 455, 100, 25);
-		panel.add(btnDeleteSuppVehicle);
+//		lblSuppVehicle = new JLabel("Kendaraan");
+//		lblSuppVehicle.setFont(new Font("Tahoma", Font.BOLD, 12));
+//		lblSuppVehicle.setBounds(50, 455, 150, 25);
+//		panel.add(lblSuppVehicle);
+//
+//		scrollPaneSuppVehicle = new JScrollPane();
+//		scrollPaneSuppVehicle.setBounds(50, 490, 975, 150);
+//		panel.add(scrollPaneSuppVehicle);
+//
+//		suppVehicleTableModel = new SuppVehicleTableModel(new ArrayList<SuppVehicle>());
+//		tblSuppVehicle = new JTable(suppVehicleTableModel);
+//		tblSuppVehicle.setBorder(new EmptyBorder(5, 5, 5, 5));
+//		tblSuppVehicle.setFocusable(false);
+//		scrollPaneSuppVehicle.setViewportView(tblSuppVehicle);
+//
+//		tblSuppVehicle.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				if (tblSuppVehicle.getValueAt(tblSuppVehicle.getSelectedRow(), 0).equals(true))
+//					listOfSuppVehicle.get(tblSuppVehicle.getSelectedRow()).setFlag(false);
+//				else
+//					listOfSuppVehicle.get(tblSuppVehicle.getSelectedRow()).setFlag(true);
+//
+//				tblSuppVehicle.updateUI();
+//
+//				if (e.getClickCount() == 2) {
+//					JTable target = (JTable) e.getSource();
+//					int row = target.getSelectedRow();
+//					int column = target.getSelectedColumn();
+//
+//					if (column == 3)
+//						showEditSuppVehicleDialog(listOfSuppVehicle.get(row), supplierEdit, row);
+//				}
+//			}
+//		});
+//
+//		btnAddSuppVehicle = new JButton("Tambah");
+//		btnAddSuppVehicle.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				showAddSuppVehicleDialog(supplierEdit);
+//			}
+//		});
+//		btnAddSuppVehicle.setBounds(820, 455, 100, 25);
+//		panel.add(btnAddSuppVehicle);
+//
+//		btnDeleteSuppVehicle = new JButton("Hapus");
+//		btnDeleteSuppVehicle.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				doDeleteSuppVehicle();
+//			}
+//		});
+//		btnDeleteSuppVehicle.setBounds(925, 455, 100, 25);
+//		panel.add(btnDeleteSuppVehicle);
 
 		///////////////////////////////////////////////////////////////
 
 		lblCurrency = new JLabel("<html>Kurs <font color=\"red\">*</font></html>");
-		lblCurrency.setBounds(50, 655, 150, 25);
+		lblCurrency.setBounds(50, 455, 150, 25);
 		panel.add(lblCurrency);
 
 		listOfCurrency = new ArrayList<Currency>();
@@ -343,46 +345,46 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		}
 		cbCurrency = new ComboBox<Currency>();
 		cbCurrency.setList(listOfCurrency);
-		cbCurrency.setBounds(220, 655, 150, 25);
+		cbCurrency.setBounds(220, 455, 150, 25);
 		panel.add(cbCurrency);
 
 		lblErrorCurrency = new JLabel();
 		lblErrorCurrency.setForeground(Color.RED);
-		lblErrorCurrency.setBounds(425, 655, 225, 25);
+		lblErrorCurrency.setBounds(425, 455, 225, 25);
 		panel.add(lblErrorCurrency);
 
 		lblTop = new JLabel("TOP");
-		lblTop.setBounds(50, 685, 150, 25);
+		lblTop.setBounds(50, 485, 150, 25);
 		panel.add(lblTop);
 
 		txtTop = new NumberField(3);
-		txtTop.setBounds(220, 685, 150, 25);
+		txtTop.setBounds(220, 485, 150, 25);
 		panel.add(txtTop);
 
 		lblTopDays = new JLabel("hari");
-		lblTopDays.setBounds(380, 685, 150, 25);
+		lblTopDays.setBounds(380, 485, 150, 25);
 		panel.add(lblTopDays);
 
 		lblErrorTop = new JLabel();
 		lblErrorTop.setForeground(Color.RED);
-		lblErrorTop.setBounds(425, 715, 225, 25);
+		lblErrorTop.setBounds(425, 515, 225, 25);
 		panel.add(lblErrorTop);
 
 		lblDefaultTax = new JLabel("Default Tax");
-		lblDefaultTax.setBounds(50, 715, 150, 25);
+		lblDefaultTax.setBounds(50, 515, 150, 25);
 		panel.add(lblDefaultTax);
 
 		txtDefaultTax = new NumberField(6);
-		txtDefaultTax.setBounds(220, 715, 150, 25);
+		txtDefaultTax.setBounds(220, 515, 150, 25);
 		panel.add(txtDefaultTax);
 
 		lblDefaultTaxPercentage = new JLabel("%");
-		lblDefaultTaxPercentage.setBounds(380, 715, 150, 25);
+		lblDefaultTaxPercentage.setBounds(380, 515, 150, 25);
 		panel.add(lblDefaultTaxPercentage);
 
 		lblErrorDefaultTax = new JLabel();
 		lblErrorDefaultTax.setForeground(Color.RED);
-		lblErrorDefaultTax.setBounds(425, 715, 225, 25);
+		lblErrorDefaultTax.setBounds(425, 515, 225, 25);
 		panel.add(lblErrorDefaultTax);
 
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -415,7 +417,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		btnSave.setBounds(925, 760, 100, 25);
+		btnSave.setBounds(925, 560, 100, 25);
 		panel.add(btnSave);
 
 		btnCancel = new JButton("Kembali");
@@ -427,7 +429,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		btnCancel.setBounds(50, 760, 100, 25);
+		btnCancel.setBounds(50, 560, 100, 25);
 		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
 
@@ -662,7 +664,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 7;
+			return 3;//7;
 		}
 
 		/**
@@ -680,19 +682,27 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 			case 0:
 				return p.isFlag();
 			case 1:
-				return p.getAddressType();
+				return p.getCity();
 			case 2:
-				return p.getAddress();
-			case 3:
-				return p.getSuppCp().getName();
-			case 4:
-				return p.getPhone();
-			case 5:
-				return p.getFax();
-			case 6:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
+//			case 0:
+//				return p.isFlag();
+//			case 1:
+//				return p.getAddressType();
+//			case 2:
+//				return p.getAddress();
+//			case 3:
+//				return p.getSuppCp().getName();
+//			case 4:
+//				return p.getPhone();
+//			case 5:
+//				return p.getFax();
+//			case 6:
+//				return "<html><u>View</u></html>";
+//			default:
+//				return "";
 			}
 		}
 
@@ -707,19 +717,26 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 				return Boolean.class;
 			case 1:
 				return String.class;
-			case 2:
-				return String.class;
-			case 3:
-				return String.class;
-			case 4:
-				return String.class;
-			case 5:
-				return String.class;
-			case 6:
-				return String.class;
 			default:
 				return String.class;
 			}
+//			case 0:
+//				return Boolean.class;
+//			case 1:
+//				return String.class;
+//			case 2:
+//				return String.class;
+//			case 3:
+//				return String.class;
+//			case 4:
+//				return String.class;
+//			case 5:
+//				return String.class;
+//			case 6:
+//				return String.class;
+//			default:
+//				return String.class;
+//			}
 		}
 
 		/**
@@ -734,22 +751,30 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 			case 0:
 				return "";
 			case 1:
-				return "Tipe Alamat";
+				return "Kota";
 			case 2:
-				return "Alamat";
-			case 3:
-				return "Contact Person";
-			case 4:
-				return "Telepon";
-			case 5:
-				return "Fax";
-			case 6:
 				return "Tindakan";
 			default:
 				return "";
 			}
+//			case 0:
+//				return "";
+//			case 1:
+//				return "Tipe Alamat";
+//			case 2:
+//				return "Alamat";
+//			case 3:
+//				return "Contact Person";
+//			case 4:
+//				return "Telepon";
+//			case 5:
+//				return "Fax";
+//			case 6:
+//				return "Tindakan";
+//			default:
+//				return "";
+//			}
 		}
-
 	}
 
 

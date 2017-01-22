@@ -260,7 +260,7 @@ public class ProductBL {
 			con = dataSource.getConnection();
 
 			if (AppConstants.HASIL_PRODUKSI.equalsIgnoreCase(productCategory)) {
-				return String.format("%01d", new ProductDAO(con).getOrdinalOfCodeNumber(productCategory) + 1);
+				return String.format("%02d", new ProductDAO(con).getOrdinalOfCodeNumber(productCategory) + 1);
 			} else {
 				return String.format("%04d", new ProductDAO(con).getOrdinalOfCodeNumber(productCategory) + 1);
 			}

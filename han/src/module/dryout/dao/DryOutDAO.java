@@ -26,7 +26,7 @@ public class DryOutDAO {
 
 	private String getAllQuery = "SELECT d.id, d.dry_out_code, d.date_out, d.chamber_id, d.total_volume, d.status, c.chamber, d.status "
 			+ "FROM dry_out d INNER JOIN chamber c ON d.chamber_id = c.id ";
-	private String getOrdinalOfCodeNumberQuery = "SELECT SUBSTRING_INDEX(dry_out_code, '/', -1) AS ordinal FROM dry_out "
+	private String getOrdinalOfCodeNumberQuery = "SELECT CONVERT(SUBSTRING_INDEX(dry_out_code, '/', -1),UNSIGNED INTEGER) AS ordinal FROM dry_out "
 			+ "WHERE SUBSTRING_INDEX(SUBSTRING_INDEX(dry_out_code, '/', 2), '/', -1) = ? "
 			+ "ORDER BY ordinal DESC LIMIT 1 ";
 	private String isDryOutCodeExistsQuery = "select count(*) as is_exists from dry_out where dry_out_code = ? ";

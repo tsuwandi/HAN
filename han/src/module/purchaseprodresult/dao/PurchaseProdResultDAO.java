@@ -41,7 +41,7 @@ public class PurchaseProdResultDAO {
 
 	private String deleteQuery = "update purchase_prod_result set deleted_date=?, deleted_by=? where id=?";
 	
-	private String getOrdinalOfCodeNumberQuery = "SELECT SUBSTRING_INDEX(ppr_code, '/', 1) AS ordinal FROM purchase_prod_result "
+	private String getOrdinalOfCodeNumberQuery = "SELECT CONVERT(SUBSTRING_INDEX(ppr_code, '/', 1),UNSIGNED INTEGER) AS ordinal FROM purchase_prod_result "
 			+ "WHERE SUBSTRING_INDEX(ppr_code, '/', -1) = ? "
 			+ "ORDER BY ordinal DESC LIMIT 1 ";
 	

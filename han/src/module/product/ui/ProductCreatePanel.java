@@ -186,23 +186,23 @@ public class ProductCreatePanel extends JPanel {
 		longLbl.setBounds(50, 410, 100, 25);
 
 		thickLbl = new JLabel("Tebal");
-		thickLbl.setBounds(50, 440, 100, 25);
+		thickLbl.setBounds(50, 470, 100, 25);
 
 		wideLbl = new JLabel("Lebar");
-		wideLbl.setBounds(50, 470, 100, 25);
+		wideLbl.setBounds(50, 440, 100, 25);
 
 		minQtyLbl = new JLabel("<html>Minimum Qty <font color=\"red\">*</font></html>");
 		minQtyLbl.setBounds(50, 500, 100, 25);
 
 		idField = new JTextField();
 		idField.setDocument(new JTextFieldLimit(18));
-		idField.setBounds(220, 80, 150, 25);
+		idField.setBounds(220, 80, 200, 25);
 		((AbstractDocument) idField.getDocument()).setDocumentFilter(filter);
 		idField.setEnabled(false);
 
 		nameField = new JTextField();
 		nameField.setDocument(new JTextFieldLimit(50));
-		nameField.setBounds(220, 110, 150, 25);
+		nameField.setBounds(220, 110, 200, 25);
 		((AbstractDocument) nameField.getDocument()).setDocumentFilter(filter);
 
 		///////////////////// Kategori Hasil Produksi
@@ -223,7 +223,7 @@ public class ProductCreatePanel extends JPanel {
 
 		cbProductionType = new ComboBox<ProductionType>();
 		cbProductionType.setList(listOfProductionType);
-		cbProductionType.setBounds(220, 320, 150, 25);
+		cbProductionType.setBounds(220, 320, 200, 25);
 
 		try {
 			listOfProductionQuality = new ArrayList<ProductionQuality>();
@@ -236,18 +236,18 @@ public class ProductCreatePanel extends JPanel {
 
 		cbProductionQuality = new ComboBox<ProductionQuality>();
 		cbProductionQuality.setList(listOfProductionQuality);
-		cbProductionQuality.setBounds(220, 350, 150, 25);
+		cbProductionQuality.setBounds(220, 350, 200, 25);
 
 		cbProductionQuality.setEnabled(false);
 		cbProductionType.setEnabled(false);
 
 		productionQualityLblError = new JLabel("");
 		productionQualityLblError.setForeground(Color.RED);
-		productionQualityLblError.setBounds(425, 320, 225, 25);
+		productionQualityLblError.setBounds(475, 320, 225, 25);
 
 		productionTypeLblError = new JLabel("");
 		productionTypeLblError.setForeground(Color.RED);
-		productionTypeLblError.setBounds(425, 350, 225, 25);
+		productionTypeLblError.setBounds(475, 350, 225, 25);
 
 		panel.add(lblProductionType);
 		panel.add(lblProductionQuality);
@@ -345,7 +345,7 @@ public class ProductCreatePanel extends JPanel {
 			}
 		});
 		catField.setList(categories);
-		catField.setBounds(220, 140, 150, 25);
+		catField.setBounds(220, 140, 200, 25);
 
 		try {
 			units = ServiceFactory.getProductBL().getAllUom();
@@ -356,7 +356,7 @@ public class ProductCreatePanel extends JPanel {
 		}
 		uomField = new ComboBox<Uom>();
 		uomField.setList(units);
-		uomField.setBounds(220, 170, 150, 25);
+		uomField.setBounds(220, 170, 200, 25);
 
 		maintain = new ButtonGroup();
 		maintainYesField = new JRadioButton("Ya");
@@ -379,26 +379,26 @@ public class ProductCreatePanel extends JPanel {
 		}
 		typeField = new ComboBox<WoodType>();
 		typeField.setList(woodTypes);
-		typeField.setBounds(220, 290, 150, 25);
+		typeField.setBounds(220, 290, 200, 25);
 
 		grades.add(0, new Grade("-- Pilih Grade --"));
 
 		gradeField = new ComboBox<Grade>();
 		gradeField.setList(grades);
-		gradeField.setBounds(220, 380, 150, 25);
+		gradeField.setBounds(220, 380, 200, 25);
 
 		longField = new NumberField(10);
-		longField.setBounds(220, 410, 150, 25);
+		longField.setBounds(220, 410, 200, 25);
 
 		thickField = new NumberField(10);
-		thickField.setBounds(220, 440, 150, 25);
+		thickField.setBounds(220, 470, 200, 25);
 
 		wideField = new NumberField(10);
-		wideField.setBounds(220, 470, 150, 25);
+		wideField.setBounds(220, 440, 200, 25);
 
 		minQtyField = new NumberField(5);
 		minQtyField.setText("0");
-		minQtyField.setBounds(220, 500, 150, 25);
+		minQtyField.setBounds(220, 500, 200, 25);
 
 		saveBtn = new JButton("Simpan");
 		saveBtn.setBounds(925, 780, 100, 25);
@@ -483,47 +483,49 @@ public class ProductCreatePanel extends JPanel {
 
 		idLblError = new JLabel("");
 		idLblError.setForeground(Color.RED);
-		idLblError.setBounds(425, 80, 225, 25);
+		idLblError.setBounds(475, 80, 225, 25);
 
 		nameLblError = new JLabel("");
 		nameLblError.setForeground(Color.RED);
-		nameLblError.setBounds(425, 110, 225, 25);
+		nameLblError.setBounds(475, 110, 225, 25);
 
 		catLblError = new JLabel("");
 		catLblError.setForeground(Color.RED);
-		catLblError.setBounds(425, 140, 225, 25);
+		catLblError.setBounds(475, 140, 225, 25);
 
 		unitLblError = new JLabel("");
 		unitLblError.setForeground(Color.RED);
-		unitLblError.setBounds(425, 170, 225, 25);
+		unitLblError.setBounds(475, 170, 225, 25);
 
 		maintainLblError = new JLabel("");
 		maintainLblError.setForeground(Color.RED);
-		maintainLblError.setBounds(425, 200, 225, 25);
+		maintainLblError.setBounds(475, 200, 225, 25);
 
 		typeLblError = new JLabel("");
 		typeLblError.setForeground(Color.RED);
-		typeLblError.setBounds(425, 290, 225, 25);
+		typeLblError.setBounds(475, 290, 225, 25);
 
 		gradeLblError = new JLabel("");
 		gradeLblError.setForeground(Color.RED);
-		gradeLblError.setBounds(425, 380, 225, 25);
+		gradeLblError.setBounds(475, 380, 225, 25);
 
 		longLblError = new JLabel("");
 		longLblError.setForeground(Color.RED);
-		longLblError.setBounds(425, 410, 225, 25);
-
-		thickLblError = new JLabel("");
-		thickLblError.setForeground(Color.RED);
-		thickLblError.setBounds(425, 440, 225, 25);
+		longLblError.setBounds(475, 410, 225, 25);
 
 		wideLblError = new JLabel("");
 		wideLblError.setForeground(Color.RED);
-		wideLblError.setBounds(425, 470, 225, 25);
+		wideLblError.setBounds(475, 440, 225, 25);
+		
+
+
+		thickLblError = new JLabel("");
+		thickLblError.setForeground(Color.RED);
+		thickLblError.setBounds(475, 470, 225, 25);
 
 		minQtyLblError = new JLabel("");
 		minQtyLblError.setForeground(Color.RED);
-		minQtyLblError.setBounds(425, 500, 225, 25);
+		minQtyLblError.setBounds(475, 500, 225, 25);
 
 		panel.add(idLblError);
 		panel.add(nameLblError);
@@ -539,7 +541,7 @@ public class ProductCreatePanel extends JPanel {
 
 		lblPurchaserPrice = new JLabel("Harga Beli");
 		lblPurchaserPrice.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblPurchaserPrice.setBounds(50, 550, 150, 25);
+		lblPurchaserPrice.setBounds(50, 550, 200, 25);
 		panel.add(lblPurchaserPrice);
 
 		btnInsertProductPP = new JButton("Tambah");
@@ -976,10 +978,13 @@ public class ProductCreatePanel extends JPanel {
 			listOfProductPP = ServiceFactory.getProductBL().getProductPPByProductCode(productCode);
 			
 			if (product != null) {
-				nameField.setText(product.getProductName());
+				nameField.setText(product.getProductName().trim());
 				uomField.setSelectedIndex(product.getProductUom());
 				typeField.setSelectedIndex(product.getWoodType());
-				gradeField.setSelectedIndex(product.getGrade());
+				
+//				if(gradeField.getItemCount() > 0) {
+//					gradeField.setSelectedIndex(product.getGrade());
+//				}
 
 				if (product.getThickness() != 0.00)
 					thickField.setText(String.valueOf(product.getThickness()));

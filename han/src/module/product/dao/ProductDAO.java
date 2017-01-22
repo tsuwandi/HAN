@@ -689,7 +689,7 @@ public class ProductDAO {
 	
 	private PreparedStatement getOrdinalOfCodeNumberStatement;
 	
-	private String getOrdinalOfCodeNumberQuery = "SELECT SUBSTRING_INDEX(p.product_code, '-', -1) AS ordinal FROM product p "
+	private String getOrdinalOfCodeNumberQuery = "SELECT CONVERT(SUBSTRING_INDEX(p.product_code, '-', -1),UNSIGNED INTEGER) AS ordinal FROM product p "
 			+ "INNER JOIN product_category pc ON pc.id = p.product_category_id "
 			+ "WHERE pc.product_category = ? "
 			+ "ORDER BY ordinal DESC LIMIT 1 ";
@@ -699,7 +699,7 @@ public class ProductDAO {
 		try {
 			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
 			getOrdinalOfCodeNumberStatement.setString(1, productCategory);
-			
+			System.out.println(getOrdinalOfCodeNumberStatement);
 			ResultSet rs = getOrdinalOfCodeNumberStatement.executeQuery();
 			while (rs.next()) {
 				ordinal = rs.getInt("ordinal");

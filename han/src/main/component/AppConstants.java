@@ -40,4 +40,16 @@ public class AppConstants {
 	public static final int BARANG_PENDUKUNG_ID = 4;
 	
 	public static final String CURRENCY_IDR = "IDR";
+	
+	public static final String SUPP_TYPE_BALKEN_CD = "SBL";
+	public static final String SUPP_TYPE_BARECORE_CD = "SBR";
+	public static final String SUPP_TYPE_VENEER_CD = "SVN";
+	public static final String SUPP_TYPE_FACEBACK_CD = "SFB";
+	public static final String SUPP_TYPE_PROD_SUPP_CD = "SPP";
+	
+	public static final int SUPP_TYPE_BALKEN_ID = 1;
+	public static final int SUPP_TYPE_BARECORE_ID = 2;
+	public static final int SUPP_TYPE_VENEER_ID = 3;
+	public static final int SUPP_TYPE_FACEBACK_ID = 4;
+	public static final int SUPP_TYPE_PROD_SUPP_ID = 5;
 }

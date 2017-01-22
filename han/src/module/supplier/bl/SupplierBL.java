@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import main.component.AppConstants;
+import module.product.dao.ProductDAO;
 import module.sn.bank.dao.BankDAO;
 import module.sn.bank.model.Bank;
 import module.sn.city.dao.CityDAO;
@@ -285,6 +287,19 @@ public class SupplierBL {
 		try {
 			con = dataSource.getConnection();
 			return new SupplierDAO(con).getAllByAdvancedSearch(supplier);
+		} finally {
+			con.close();
+		}
+	}
+	
+	public String getOrdinalOfCodeNumber(String suppTypeConstant) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+
+			return String.format("%03d", new SupplierDAO(con).getOrdinalOfCodeNumber(suppTypeConstant) + 1);
+			
+
 		} finally {
 			con.close();
 		}

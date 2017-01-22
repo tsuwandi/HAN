@@ -91,7 +91,7 @@ public class ProductCopyFromDialog extends JDialog {
 		btnCopyTo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				productCreatePanel.loadData(getSelectedProduct().getProductCode());
-				dispose();
+				ProductCopyFromDialog.this.setVisible(false);
 			}
 		});
 		btnCopyTo.setBounds(480, 250, 95, 25);

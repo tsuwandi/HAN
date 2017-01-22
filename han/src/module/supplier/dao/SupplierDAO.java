@@ -417,4 +417,28 @@ public class SupplierDAO {
 
 		return suppliers;
 	}
+	
+	private PreparedStatement getOrdinalOfCodeNumberStatement;
+	
+	private String getOrdinalOfCodeNumberQuery = "SELECT CONVERT(SUBSTRING(p.supp_code, 3, 3),UNSIGNED INTEGER) AS ordinal FROM supplier p "
+			+ "WHERE SUBSTRING(p.supp_code, 1, 3) = ? "
+			+ "ORDER BY ordinal DESC LIMIT 1 ";
+	
+	public int getOrdinalOfCodeNumber(String suppType) throws SQLException {
+		int ordinal = 0;
+		try {
+			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
+			getOrdinalOfCodeNumberStatement.setString(1, suppType);
+			
+			ResultSet rs = getOrdinalOfCodeNumberStatement.executeQuery();
+			while (rs.next()) {
+				ordinal = rs.getInt("ordinal");
+			}
+
+		} catch (SQLException ex) {
+			throw new SQLException(ex.getMessage());
+		}
+
+		return ordinal;
+	}
 }

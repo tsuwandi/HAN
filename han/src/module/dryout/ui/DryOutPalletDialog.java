@@ -148,10 +148,14 @@ public class DryOutPalletDialog extends JDialog {
 	private void doInsert() {
 		List<DryOutPallet> listOfDryOutPallet = new ArrayList<DryOutPallet>();
 
+		int sizeIN = listOfPalletCard.size();
+		
 		for (PalletCard palletCard : listOfPalletCard) {
 			DryOutPallet dryOutPallet = new DryOutPallet();
 			if (palletCard.isFlag()) {
 				dryOutPallet.setPalletCard(palletCard);
+				double vol = dryOutPallet.getPalletCard().getVolume() / 1000000;
+				dryOutPallet.getPalletCard().setVolume(vol);
 				dryOutPallet.setPalletCardCode(palletCard.getPalletCardCode());
 				if (palletCard.getRowNum() != 0 && dryOutEditPanel != null)
 					dryOutPallet.setId(palletCard.getRowNum());
@@ -159,19 +163,23 @@ public class DryOutPalletDialog extends JDialog {
 			} else {
 				if (palletCard.getRowNum() != 0 && dryOutEditPanel != null) {
 					dryOutPallet.setPalletCard(palletCard);
+					double vol = dryOutPallet.getPalletCard().getVolume() / 1000000;
+					dryOutPallet.getPalletCard().setVolume(vol);
 					dryOutPallet.setPalletCardCode(palletCard.getPalletCardCode());
 					dryOutPallet.setId(palletCard.getRowNum());
 					dryOutEditPanel.listOfDeletedDryOutPallet.add(dryOutPallet);
 				}
 			}
 		}
+		
+		int sizeOut = listOfDryOutPallet.size();
 
 		if (dryOutCreatePanel != null)
 			dryOutCreatePanel.setListOfDryOutPallet(listOfDryOutPallet);
 		else if (dryOutEditPanel != null) {
 			dryOutEditPanel.setListOfDryOutPallet(listOfDryOutPallet);
 		}
-
+		
 		closeDialog();
 	}
 
@@ -205,9 +213,13 @@ public class DryOutPalletDialog extends JDialog {
 				for (DryOutPallet dryOutPallet : dryOutEditPanel.getListOfDryOutPallet()) {
 					dryOutPallet.getPalletCard().setRowNum(dryOutPallet.getId());
 					if (!listOfPalletCard.contains(dryOutPallet.getPalletCard())) {
+						double vol = dryOutPallet.getPalletCard().getVolume() / 1000000;
+						dryOutPallet.getPalletCard().setVolume(vol);
 						listOfPalletCard.add(dryOutPallet.getPalletCard());
 					} else {
 						Integer index = listOfPalletCard.indexOf(dryOutPallet.getPalletCard());
+						double vol = dryOutPallet.getPalletCard().getVolume() / 1000000;
+						dryOutPallet.getPalletCard().setVolume(vol);
 						listOfPalletCard.set(index, dryOutPallet.getPalletCard());
 					}
 				}

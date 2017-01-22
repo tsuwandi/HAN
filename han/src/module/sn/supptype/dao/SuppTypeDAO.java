@@ -22,7 +22,7 @@ public class SuppTypeDAO {
 	// edit_date=?, edited_by=? where id=?";
 	// private String deleteQuery = "update bank set deleted_date=?,
 	// deleted_by=? where id=?";
-	private String getAllQuery = "select id, supp_type from supp_type order by supp_type";
+	private String getAllQuery = "select id, supp_type from supp_type order by id";
 
 	public SuppTypeDAO(Connection connection) throws SQLException {
 		this.connection = connection;

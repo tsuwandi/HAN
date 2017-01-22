@@ -24,9 +24,12 @@ public class MenuPanel extends JPanel {
 		AccordionMenu menu = new AccordionMenu();
 		menu.setBounds(1, 0, 200, 360);
 		
+		menu.addNewMenu("General", "General");
+		menu.addNewLeafTo("General", "Supplier", "Supplier", "module.supplier.ui.SupplierListPanel");
+		menu.addNewLeafTo("General", "Produk", "Produk", "module.product.ui.ProductListPanel");
+		menu.calculateAvaiableSpace();
+		
 		menu.addNewMenu("Penerimaan", "Penerimaan");
-		menu.addNewLeafTo("Penerimaan", "Supplier", "Supplier", "module.supplier.ui.SupplierListPanel");
-		menu.addNewLeafTo("Penerimaan", "Produk", "Produk", "module.product.ui.ProductListPanel");
 		menu.addNewLeafTo("Penerimaan", "Penerimaan", "Penerimaan", "module.pembelian.ui.ListReceivedSecurityPanel");
 		menu.addNewLeafTo("Penerimaan", "STTK", "STTK", "module.pembelian.ui.ListReceivedPanel");
 		menu.addNewLeafTo("Penerimaan", "Pengeringan In", "Pengeringan In", "module.dryin.ui.DryInListPanel");

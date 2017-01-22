@@ -324,7 +324,7 @@ public class DryOutEditPanel extends JPanel implements Bridging {
 		txtTotalVolume.setEnabled(false);
 		panel.add(txtTotalVolume);
 
-		lblTotalVolumeUomPalletCard = new JLabel("cm3");
+		lblTotalVolumeUomPalletCard = new JLabel("m3");
 		lblTotalVolumeUomPalletCard.setBounds(380, 535, 150, 25);
 		panel.add(lblTotalVolumeUomPalletCard);
 

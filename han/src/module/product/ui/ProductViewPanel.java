@@ -190,21 +190,21 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		longLbl.setBounds(50, 410, 100, 25);
 
 		thickLbl = new JLabel("Tebal");
-		thickLbl.setBounds(50, 440, 100, 25);
+		thickLbl.setBounds(50, 470, 100, 25);
 
 		wideLbl = new JLabel("Lebar");
-		wideLbl.setBounds(50, 470, 100, 25);
+		wideLbl.setBounds(50, 440, 100, 25);
 
 		minQtyLbl = new JLabel("<html>Minimum Qty <font color=\"red\">*</font></html>");
 		minQtyLbl.setBounds(50, 500, 100, 25);
 
 		idField = new JTextField();
 		idField.setEnabled(false);
-		idField.setBounds(220, 80, 150, 25);
+		idField.setBounds(220, 80, 200, 25);
 
 		nameField = new JTextField();
 		nameField.setEnabled(false);
-		nameField.setBounds(220, 110, 150, 25);
+		nameField.setBounds(220, 110, 200, 25);
 
 		///////////////////// Kategori Hasil Produksi
 		///////////////////// ///////////////////////////////
@@ -225,7 +225,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 
 		cbProductionType = new ComboBox<ProductionType>();
 		cbProductionType.setList(listOfProductionType);
-		cbProductionType.setBounds(220, 320, 150, 25);
+		cbProductionType.setBounds(220, 320, 200, 25);
 
 		try {
 			listOfProductionQuality = new ArrayList<ProductionQuality>();
@@ -238,7 +238,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 
 		cbProductionQuality = new ComboBox<ProductionQuality>();
 		cbProductionQuality.setList(listOfProductionQuality);
-		cbProductionQuality.setBounds(220, 350, 150, 25);
+		cbProductionQuality.setBounds(220, 350, 200, 25);
 
 		cbProductionQuality.setEnabled(false);
 		cbProductionType.setEnabled(false);
@@ -270,7 +270,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		catField = new ComboBox<ProductCategory>();
 		catField.setList(categories);
 		catField.setEnabled(false);
-		catField.setBounds(220, 140, 150, 25);
+		catField.setBounds(220, 140, 200, 25);
 
 		try {
 			units = ServiceFactory.getProductBL().getAllUom();
@@ -282,7 +282,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		uomField = new ComboBox<Uom>();
 		uomField.setList(units);
 		uomField.setEnabled(false);
-		uomField.setBounds(220, 170, 150, 25);
+		uomField.setBounds(220, 170, 200, 25);
 
 		maintain = new ButtonGroup();
 		maintainYesField = new JRadioButton("Ya");
@@ -306,7 +306,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		typeField = new ComboBox<WoodType>();
 		typeField.setList(woodTypes);
 		typeField.setEnabled(false);
-		typeField.setBounds(220, 290, 150, 25);
+		typeField.setBounds(220, 290, 200, 25);
 
 		try {
 			grades = ServiceFactory.getProductBL().getAllGrade();
@@ -318,33 +318,33 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		gradeField = new ComboBox<Grade>();
 		gradeField.setList(grades);
 		gradeField.setEnabled(false);
-		gradeField.setBounds(220, 380, 150, 25);
+		gradeField.setBounds(220, 380, 200, 25);
 
 		longField = new JTextField();
 		longField.setEnabled(false);
-		longField.setBounds(220, 410, 150, 25);
+		longField.setBounds(220, 410, 200, 25);
 
 		thickField = new JTextField();
 		thickField.setEnabled(false);
-		thickField.setBounds(220, 440, 150, 25);
+		thickField.setBounds(220, 470, 200, 25);
 
 		wideField = new JTextField();
 		wideField.setEnabled(false);
-		wideField.setBounds(220, 470, 150, 25);
+		wideField.setBounds(220, 440, 200, 25);
 
 		minQtyField = new JTextField();
 		minQtyField.setEnabled(false);
-		minQtyField.setBounds(220, 500, 150, 25);
+		minQtyField.setBounds(220, 500, 200, 25);
 
 		printBtn = new JButton("Cetak");
 		printBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		printBtn.setBounds(765, 780, 75, 25);
+		printBtn.setBounds(725, 780, 100, 25);
 
 		deleteBtn = new JButton("Hapus");
-		deleteBtn.setBounds(845, 780, 75, 25);
+		deleteBtn.setBounds(825, 780, 100, 25);
 		deleteBtn.addActionListener(new ActionListener() {
 
 			@Override
@@ -357,7 +357,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		});
 
 		editBtn = new JButton("Ubah");
-		editBtn.setBounds(925, 780, 75, 25);
+		editBtn.setBounds(925, 780, 100, 25);
 		editBtn.addActionListener(new ActionListener() {
 
 			@Override
@@ -458,7 +458,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		
 		lblPurchaserPrice = new JLabel("Harga Beli");
 		lblPurchaserPrice.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblPurchaserPrice.setBounds(50, 550, 150, 25);
+		lblPurchaserPrice.setBounds(50, 550, 200, 25);
 		panel.add(lblPurchaserPrice);
 		
 		btnInsertProductPP = new JButton("Tambah");
