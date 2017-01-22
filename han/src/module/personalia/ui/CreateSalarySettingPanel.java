@@ -30,6 +30,7 @@ import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberFormat;
+import main.component.NumericField;
 import main.panel.MainPanel;
 import module.personalia.model.Employee;
 import module.personalia.model.PayrollComponent;
@@ -52,7 +53,7 @@ public class CreateSalarySettingPanel extends JPanel {
 	private ComboBox<PayrollComponent> payrollComponentCmbox;
 	private ComboBox<Tax> taxCmbox;
 	private JTextField payrollComponentNominalField;
-	private JTextField taxNominalField;
+	private NumericField taxNominalField;
 	private JTextField brutoSalaryField;
 	private JTable payrollComponentTable;
 	private JTable taxTable;
@@ -266,7 +267,7 @@ public class CreateSalarySettingPanel extends JPanel {
 				for (SsSalaryComp nominal : ssSalaryComps) {
 					totalComponent = totalComponent.add(nominal.getNominal());
 				}
-				;
+				
 				brutoSalaryField.setText(NumberFormat.onTypeNum(9, totalComponent.toString()));
 			}
 		});
@@ -356,7 +357,7 @@ public class CreateSalarySettingPanel extends JPanel {
 		label_19.setBounds(130, 840, 10, 30);
 		containerPanel.add(label_19);
 
-		taxNominalField = new JTextField();
+		taxNominalField = new NumericField(15, "###,###,###,###");
 		taxNominalField.setBounds(140, 840, 200, 30);
 		containerPanel.add(taxNominalField);
 		// tax tombol add
@@ -371,7 +372,12 @@ public class CreateSalarySettingPanel extends JPanel {
 				SsTax ssTax = new SsTax();
 				ssTax.setTax(taxCmbox.getDataIndex());
 				ssTax.setTaxId(taxCmbox.getDataIndex().getId());
-				ssTax.setNominal(new BigDecimal(taxNominalField.getText()));
+				if("".equals(taxNominalField.getText()) || "0".equals(taxNominalField.getText())) {
+					DialogBox.showError("<html>Field <font color='red'>Nominal</font> tidak boleh kosong atau 0</html>");
+					return;
+				} else {
+					ssTax.setNominal(new BigDecimal(taxNominalField.getText()));
+				}
 				ssTax.setInputDate(new Date());
 				ssTax.setInputBy("");
 				ssTax.setEditDate(new Date());
@@ -380,13 +386,7 @@ public class CreateSalarySettingPanel extends JPanel {
 				taxTableModel.setTaxComponentSettings(ssTaxs);
 				taxTable.updateUI();
 
-				BigDecimal totalCut = BigDecimal.ZERO;
-
-				for (SsTax nominal : ssTaxs) {
-					totalCut = totalCut.add(nominal.getNominal());
-				}
-
-				totalCutField.setText(totalCut.toString());
+				updateCut();
 			}
 		});
 
@@ -415,6 +415,8 @@ public class CreateSalarySettingPanel extends JPanel {
 					ssTaxs.remove(row);
 					taxTableModel.setTaxComponentSettings(ssTaxs);
 					taxTable.updateUI();
+					
+					updateCut();
 				}
 			}
 		});
@@ -498,6 +500,16 @@ public class CreateSalarySettingPanel extends JPanel {
 		} else {
 			DialogBox.showError("Data tidak ditemukan, silahkan coba lagi");
 		}
+	}
+	
+	protected void updateCut() {
+		BigDecimal totalCut = BigDecimal.ZERO;
+
+		for (SsTax nominal : ssTaxs) {
+			totalCut = totalCut.add(nominal.getNominal());
+		}
+
+		totalCutField.setText(totalCut.toString());
 	}
 
 	protected void updateSalary() {

@@ -41,7 +41,6 @@ public class NumericField extends TextField implements KeyListener, FocusListene
 		df.setGroupingUsed(true);
 		//df.setGroupingSize(3);
 		df.setParseIntegerOnly(false);
-		setValue(0);
 		
 		addKeyListener(this);
 		addFocusListener(this);
