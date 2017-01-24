@@ -31,6 +31,7 @@ public class ViewMSPositionPanel extends JPanel implements Bridging{
 	private MSPosition msPosition;
 	private JButton editBtn;
 	private boolean editMode = false;
+	private JButton deleteBtn;
 
 	public ViewMSPositionPanel() {
 		setSize(1024, 630);
@@ -145,7 +146,8 @@ public class ViewMSPositionPanel extends JPanel implements Bridging{
 			}
 		});
 		
-		JButton deleteBtn = new JButton("Hapus");
+		deleteBtn = new JButton("Hapus");
+		deleteBtn.setEnabled(false);
 		deleteBtn.setBounds(824, 589, 90, 30);
 		add(deleteBtn);
 		
@@ -202,7 +204,7 @@ public class ViewMSPositionPanel extends JPanel implements Bridging{
 			msPosition.setDeleteDate(new Date());
 			msPosition.setDeleteBy("");
 			ServiceFactory.getPersonaliaBL().deleteMSPosition(msPosition);
-			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
+			MainPanel.changePanel("module.personalia.ui.MSPositionConfigPanel");
 		} else {
 			
 		}
@@ -243,6 +245,7 @@ public class ViewMSPositionPanel extends JPanel implements Bridging{
 		salaryMinField.setEditable(true);
 		salaryMaxField.setEnabled(true);
 		salaryMaxField.setEditable(true);
+		deleteBtn.setEnabled(true);
 		
 		editBtn.setText("Simpan");
 		editBtn.repaint();

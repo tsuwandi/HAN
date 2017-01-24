@@ -74,6 +74,18 @@ public class CreateEmployeeTypePanel extends JPanel {
 			}
 		});
 		
+		JButton backBtn = new JButton("Kembali");
+		backBtn.setBounds(10, 589, 90, 30);
+		add(backBtn);
+		
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				back();
+			}
+		});
+		
 		getLastID();
 		
 		SwingUtilities.invokeLater(new Runnable() {
@@ -85,6 +97,11 @@ public class CreateEmployeeTypePanel extends JPanel {
 		});
 	}
 	
+
+	protected void back() {
+		MainPanel.changePanel("module.personalia.ui.EmployeeTypeConfigPanel");
+	}
+
 
 	private void getLastID() {
 		StringBuffer lastId = new StringBuffer();
@@ -109,7 +126,6 @@ public class CreateEmployeeTypePanel extends JPanel {
 			e.printStackTrace();
 			DialogBox.showError("Data tidak berhasil disimpan");
 		}
-		
 	}
 
 	private void option() {

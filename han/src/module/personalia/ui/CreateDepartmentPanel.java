@@ -132,6 +132,10 @@ public class CreateDepartmentPanel extends JPanel {
 	}
 
 	protected void save() {
+		if(divisionCmbBox.getDataIndex()==null || "".equals(departmentNameField.getText())) {
+			DialogBox.showError("Isian data kurang lengkap");
+		}
+		
 		Department departement = new Department();
 		departement.setId(departementIdField.getText());
 		departement.setName(departmentNameField.getText());
@@ -148,7 +152,6 @@ public class CreateDepartmentPanel extends JPanel {
 			e.printStackTrace();
 			DialogBox.showError("Data tidak berhasil disimpan");
 		}
-
 	}
 
 	private void option() {

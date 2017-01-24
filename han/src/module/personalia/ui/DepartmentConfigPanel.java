@@ -27,7 +27,7 @@ public class DepartmentConfigPanel extends JPanel implements Bridging{
 	private JTable departmentConfigTable;
 	private JTextField searchField;
 	private List<Department> departements = new ArrayList<>();
-	private DepartementConfigTableModel divisionConfigTableModel;
+	private DepartementConfigTableModel departementConfigTableModel;
 
 	public DepartmentConfigPanel() {
 		setSize(1024, 630);
@@ -96,9 +96,30 @@ public class DepartmentConfigPanel extends JPanel implements Bridging{
 			}
 		});
 
-		JButton search = new JButton("Pencarian");
-		search.setBounds(924, 140, 90, 30);
-		add(search);
+		JButton searchBtn = new JButton("Pencarian");
+		searchBtn.setBounds(924, 140, 90, 30);
+		add(searchBtn);
+		
+		searchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String var = searchField.getText();
+				StringBuffer sb = new StringBuffer();
+				sb.append(" and id like '%");
+				sb.append(var);
+				sb.append("%'");
+				sb.append(" or name like '%");
+				sb.append(var);
+				sb.append("%'");
+				sb.append(" or division_id like '%");
+				sb.append(var);
+				sb.append("%'");
+				departements = ServiceFactory.getPersonaliaBL().getDepartments(sb.toString());
+				departementConfigTableModel.setDepartements(departements);
+				departmentConfigTable.updateUI();
+			}
+		});
 
 		getUserData();
 	}
@@ -117,8 +138,8 @@ public class DepartmentConfigPanel extends JPanel implements Bridging{
 	private void getUserData() {
 		departements.clear();
 		departements = ServiceFactory.getPersonaliaBL().getDepartments("");
-		divisionConfigTableModel = new DepartementConfigTableModel(departements);
-		departmentConfigTable.setModel(divisionConfigTableModel);
+		departementConfigTableModel = new DepartementConfigTableModel(departements);
+		departmentConfigTable.setModel(departementConfigTableModel);
 	}
 
 	class DepartementConfigTableModel extends AbstractTableModel {
@@ -127,6 +148,10 @@ public class DepartmentConfigPanel extends JPanel implements Bridging{
 		private List<Department> departements;
 
 		public DepartementConfigTableModel(List<Department> departements) {
+			this.departements = departements;
+		}
+
+		public void setDepartements(List<Department> departements) {
 			this.departements = departements;
 		}
 
@@ -202,7 +227,7 @@ public class DepartmentConfigPanel extends JPanel implements Bridging{
 	public void invokeObjects(Object... objects) {
 		departements = (List<Department>) objects[0];
 		
-		divisionConfigTableModel = new DepartementConfigTableModel(departements);
-		departmentConfigTable.setModel(divisionConfigTableModel);
+		departementConfigTableModel = new DepartementConfigTableModel(departements);
+		departmentConfigTable.setModel(departementConfigTableModel);
 	}
 }

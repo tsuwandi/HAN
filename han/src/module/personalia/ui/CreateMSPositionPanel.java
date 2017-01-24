@@ -130,6 +130,18 @@ public class CreateMSPositionPanel extends JPanel {
 				save();
 			}
 		});
+		
+		JButton backBtn = new JButton("Kembali");
+		backBtn.setBounds(10, 589, 90, 30);
+		add(backBtn);
+		
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				back();
+			}
+		});
 
 		getLastID();
 		
@@ -144,6 +156,10 @@ public class CreateMSPositionPanel extends JPanel {
 		});
 	}
 	
+	protected void back() {
+		MainPanel.changePanel("module.personalia.ui.MSPositionConfigPanel");
+	}
+
 	private void getData() {
 		departemenCmbBox.setList(ServiceFactory.getPersonaliaBL().getDepartments(""));
 		divisionCmbBox.setList(ServiceFactory.getPersonaliaBL().getDivisions(""));
@@ -162,8 +178,8 @@ public class CreateMSPositionPanel extends JPanel {
 		msPosition.setName(msPositionNameField.getText());
 		msPosition.setDepartementId(departemenCmbBox.getDataIndex().getId());
 		msPosition.setDivisionId(divisionCmbBox.getDataIndex().getId());
-		msPosition.setSalaryMin(Integer.parseInt(salaryMinField.getText()));
-		msPosition.setSalaryMax(Integer.parseInt(salaryMaxField.getText()));
+		msPosition.setSalaryMin(salaryMinField.getValue());
+		msPosition.setSalaryMax(salaryMaxField.getValue());
 		msPosition.setInputDate(DateUtil.toDate(new Date()));
 		msPosition.setInputBy("");
 		msPosition.setEditDate(DateUtil.toDate(new Date()));

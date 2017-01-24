@@ -194,6 +194,6 @@ public class MSPositionDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return msPositions.size() < 1 ? 1 : Integer.parseInt(msPositions.get(0).getId().substring(3)) + 1;
+		return msPositions.size() < 1 ? 1 : Integer.parseInt(msPositions.get(0).getId().substring(4)) + 1;
 	}
 }

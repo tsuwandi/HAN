@@ -96,9 +96,34 @@ public class MSPositionConfigPanel extends JPanel{
 			}
 		});
 
-		JButton search = new JButton("Pencarian");
-		search.setBounds(924, 140, 90, 30);
-		add(search);
+		JButton searchBtn = new JButton("Pencarian");
+		searchBtn.setBounds(924, 140, 90, 30);
+		add(searchBtn);
+		
+		searchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String var = searchField.getText();
+				StringBuffer sb = new StringBuffer();
+				sb.append(" and id like '%");
+				sb.append(var);
+				sb.append("%' ");
+				sb.append(" or name like '%");
+				sb.append(var);
+				sb.append("%' ");
+				sb.append(" or division_id like '%");
+				sb.append(var);
+				sb.append("%' ");
+				sb.append(" or department_id like '%");
+				sb.append(var);
+				sb.append("%' ");
+				
+				msPositions = ServiceFactory.getPersonaliaBL().getMSPositions(sb.toString());
+				msPositionConfigTableModel.setMsPositions(msPositions);
+				msPositionConfigTable.updateUI();
+			}
+		});
 
 		getData();
 	}
@@ -138,6 +163,10 @@ public class MSPositionConfigPanel extends JPanel{
 		private List<MSPosition> msPositions;
 
 		public EmployeeTypeConfigTableModel(List<MSPosition> msPositions) {
+			this.msPositions = msPositions;
+		}
+
+		public void setMsPositions(List<MSPosition> msPositions) {
 			this.msPositions = msPositions;
 		}
 

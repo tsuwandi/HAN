@@ -27,6 +27,7 @@ public class ViewDepartmentPanel extends JPanel implements Bridging{
 	private JButton editBtn;
 	private Department departement;
 	private boolean editMode = false;
+	private JButton deleteBtn;
 	
 	public ViewDepartmentPanel() {
 		setSize(1024, 630);
@@ -79,6 +80,7 @@ public class ViewDepartmentPanel extends JPanel implements Bridging{
 		add(departementIdField);
 		
 		divisionCmbBox = new ComboBox<Division>();
+		divisionCmbBox.setEnabled(false);
 		divisionCmbBox.setBounds(140, 160, 200, 30);
 		add(divisionCmbBox);
 		
@@ -99,7 +101,8 @@ public class ViewDepartmentPanel extends JPanel implements Bridging{
 			}
 		});
 		
-		JButton deleteBtn = new JButton("Hapus");
+		deleteBtn = new JButton("Hapus");
+		deleteBtn.setEnabled(false);
 		deleteBtn.setBounds(824, 589, 90, 30);
 		add(deleteBtn);
 		
@@ -171,6 +174,8 @@ public class ViewDepartmentPanel extends JPanel implements Bridging{
 		departementIdField.setEnabled(true);
 		departementNameField.setEditable(true);
 		departementNameField.setEnabled(true);
+		divisionCmbBox.setEnabled(true);
+		deleteBtn.setEnabled(true);
 		
 		editBtn.setText("Simpan");
 		editBtn.updateUI();

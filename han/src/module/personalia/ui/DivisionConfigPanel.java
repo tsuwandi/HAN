@@ -16,10 +16,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.personalia.model.Division;
 import module.util.Bridging;
-import controller.ServiceFactory;
 
 public class DivisionConfigPanel extends JPanel implements Bridging{
 
@@ -96,9 +96,27 @@ public class DivisionConfigPanel extends JPanel implements Bridging{
 			}
 		});
 
-		JButton search = new JButton("Pencarian");
-		search.setBounds(924, 140, 90, 30);
-		add(search);
+		JButton searchBtn = new JButton("Pencarian");
+		searchBtn.setBounds(924, 140, 90, 30);
+		add(searchBtn);
+		
+		searchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String var  = searchField.getText();
+				StringBuffer sb = new StringBuffer();
+				sb.append(" and id like '%");
+				sb.append(var);
+				sb.append("%' ");
+				sb.append(" or name like '%");
+				sb.append(var);
+				sb.append("%' ");
+				divisions = ServiceFactory.getPersonaliaBL().getDivisions(sb.toString());
+				divisionConfigTableModel.setDivisions(divisions);
+				divisionConfigTable.updateUI();
+			}
+		});
 
 		getUserData();
 	}
@@ -126,6 +144,10 @@ public class DivisionConfigPanel extends JPanel implements Bridging{
 		private List<Division> divisions;
 
 		public DivisionConfigTableModel(List<Division> divisions) {
+			this.divisions = divisions;
+		}
+
+		public void setDivisions(List<Division> divisions) {
 			this.divisions = divisions;
 		}
 

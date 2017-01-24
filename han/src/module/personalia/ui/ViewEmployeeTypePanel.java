@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.personalia.model.Division;
 import module.personalia.model.EmployeeType;
 import module.util.Bridging;
 
@@ -25,6 +24,7 @@ public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 	private JButton editBtn;
 	private EmployeeType employeeType;
 	private boolean editMode = false;
+	private JButton deleteBtn;
 
 	public ViewEmployeeTypePanel() {
 		setSize(1024, 630);
@@ -84,7 +84,8 @@ public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 			}
 		});
 
-		JButton deleteBtn = new JButton("Hapus");
+		deleteBtn = new JButton("Hapus");
+		deleteBtn.setEnabled(false);
 		deleteBtn.setBounds(824, 589, 90, 30);
 		add(deleteBtn);
 
@@ -106,7 +107,7 @@ public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 			employeeType.setDeleteDate(new Date());
 			employeeType.setDeleteBy("");
 			ServiceFactory.getPersonaliaBL().deleteEmployeeType(employeeType);
-			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
+			MainPanel.changePanel("module.personalia.ui.EmployeeTypeConfigPanel");
 		} else {
 
 		}
@@ -147,6 +148,7 @@ public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 		employeeTypeIdField.setEnabled(true);
 		employeeTypeNameField.setEditable(true);
 		employeeTypeNameField.setEnabled(true);
+		deleteBtn.setEnabled(true);
 
 		editBtn.setText("Simpan");
 		editBtn.updateUI();

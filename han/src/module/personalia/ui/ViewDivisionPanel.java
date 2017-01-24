@@ -24,6 +24,7 @@ public class ViewDivisionPanel extends JPanel implements Bridging{
 	private JButton editBtn;
 	private Division division;
 	private boolean editMode = false;
+	private JButton deleteBtn;
 
 	public ViewDivisionPanel() {
 		setSize(1024, 630);
@@ -83,7 +84,8 @@ public class ViewDivisionPanel extends JPanel implements Bridging{
 			}
 		});
 		
-		JButton deleteBtn = new JButton("Hapus");
+		deleteBtn = new JButton("Hapus");
+		deleteBtn.setEnabled(false);
 		deleteBtn.setBounds(824, 589, 90, 30);
 		add(deleteBtn);
 		
@@ -154,6 +156,7 @@ public class ViewDivisionPanel extends JPanel implements Bridging{
 		divisionIdField.setEnabled(true);
 		divisionNameField.setEditable(true);
 		divisionNameField.setEnabled(true);
+		deleteBtn.setEnabled(true);
 		
 		editBtn.setText("Simpan");
 		editBtn.updateUI();

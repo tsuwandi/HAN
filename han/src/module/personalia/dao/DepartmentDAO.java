@@ -117,6 +117,6 @@ public class DepartmentDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return departments.size() < 1 ? 1 : Integer.parseInt(departments.get(0).getId().substring(3)) + 1; 
+		return departments.size() < 1 ? 1 : Integer.parseInt(departments.get(0).getId().substring(4)) + 1; 
 	}
 }

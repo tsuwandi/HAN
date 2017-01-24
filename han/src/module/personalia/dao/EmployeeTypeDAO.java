@@ -111,6 +111,6 @@ public class EmployeeTypeDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return employeeTypes.size() < 1 ? 1 : Integer.parseInt(employeeTypes.get(0).getId().substring(3))  + 1;
+		return employeeTypes.size() < 1 ? 1 : Integer.parseInt(employeeTypes.get(0).getId().substring(4))  + 1;
 	}
 }
