@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +30,7 @@ import module.personalia.model.Employee;
 import module.personalia.model.Gender;
 import module.personalia.model.Marital;
 import module.util.Bridging;
+import module.util.DateUtil;
 
 public class ViewEmployeePanel extends JPanel implements Bridging{
 
@@ -61,6 +61,12 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 	private PopUpPositionHistoryPanel popUpPositionHistoryPanel;
 	private JTable empPositionTable;
 	private EmployeePositionHistoryTableModel employeePositionHistoryTableModel;
+	private JButton searchfileBtn;
+	private JButton uploadBtn;
+	private JButton addHistoryPositionBtn;
+	private JButton deleteHistoryPositionBtn;
+	private JButton deleteBtn;
+	private JButton printBtn;
 
 	public ViewEmployeePanel() {
 		setLayout(null);
@@ -78,7 +84,7 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		breadCrumbLbl.setBounds(50, 10, 290, 25);
 		containerPanel.add(breadCrumbLbl);
 		
-		JLabel lblHeader = new JLabel("PENDAFTARAN KARYAWAN");
+		JLabel lblHeader = new JLabel("VIEW KARYAWAN");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 46, 180, 25);
 		containerPanel.add(lblHeader);
@@ -107,6 +113,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		employeeNameField = new JTextField();
 		employeeNameField.setBounds(140, 120, 200, 30);
+		employeeNameField.setEditable(false);
+		employeeNameField.setEnabled(false);
 		containerPanel.add(employeeNameField);
 		// npwp
 		JLabel lblnpwp = new JLabel("<html>NPWP<font color='red'> * </font></html>");
@@ -119,6 +127,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		npwpField = new JTextField();
 		npwpField.setBounds(140, 160, 200, 30);
+		npwpField.setEditable(false);
+		npwpField.setEnabled(false);
 		containerPanel.add(npwpField);
 		// ktp
 		JLabel lblnomorKtp = new JLabel("<html>Nomor KTP<font color='red'> * </font></html>");
@@ -131,6 +141,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		ktpField = new JTextField();
 		ktpField.setBounds(140, 200, 200, 30);
+		ktpField.setEditable(false);
+		ktpField.setEnabled(false);
 		containerPanel.add(ktpField);
 		// alamat ktp
 		JLabel lblalamatKtp = new JLabel("<html>Alamat KTP<font color='red'> * </font></html>");
@@ -143,6 +155,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		ktpAddressField = new JTextField();
 		ktpAddressField.setBounds(140, 240, 200, 30);
+		ktpAddressField.setEditable(false);
+		ktpAddressField.setEnabled(false);
 		containerPanel.add(ktpAddressField);
 		// alamat domisili
 		JLabel lblalamatDomisili = new JLabel("<html>Alamat Domisili<font color='red'> * </font></html>");
@@ -155,6 +169,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		domicileField = new JTextField();
 		domicileField.setBounds(140, 280, 200, 30);
+		domicileField.setEditable(false);
+		domicileField.setEnabled(false);
 		containerPanel.add(domicileField);
 		// kota asal
 		JLabel lblkotaAsal = new JLabel("<html>Kota Asal<font color='red'> * </font></html>");
@@ -167,6 +183,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		originCityField = new JTextField();
 		originCityField.setBounds(140, 320, 200, 30);
+		originCityField.setEditable(false);
+		originCityField.setEnabled(false);
 		containerPanel.add(originCityField);
 		// tanggal lahir
 		JLabel lbltanggalLahir = new JLabel("<html>Tanggal Lahir<font color='red'> * </font></html>");
@@ -179,9 +197,10 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		bornDateField = new JDateChooser();
 		bornDateField.setBounds(140, 360, 200, 30);
+		bornDateField.setEnabled(false);
 		containerPanel.add(bornDateField);
 		// email
-		JLabel lblemail = new JLabel("<html>Email<font color='red'> * </font></html>");
+		JLabel lblemail = new JLabel("<html>Email</html>");
 		lblemail.setBounds(30, 400, 100, 30);
 		containerPanel.add(lblemail);
 		
@@ -191,6 +210,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		emailField = new JTextField();
 		emailField.setBounds(140, 400, 200, 30);
+		emailField.setEditable(false);
+		emailField.setEnabled(false);
 		containerPanel.add(emailField);
 		// nomer telepon
 		JLabel lblnomerTelepon = new JLabel("<html>Nomer Telepon<font color='red'> * </font></html>");
@@ -203,6 +224,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		telpField = new JTextField();
 		telpField.setBounds(140, 440, 200, 30);
+		telpField.setEditable(false);
+		telpField.setEnabled(false);
 		containerPanel.add(telpField);
 		// gender
 		JLabel lblgender = new JLabel("<html>Gender<font color='red'> * </font></html>");
@@ -215,9 +238,11 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		genderCmbox = new ComboBox<>();
 		genderCmbox.setBounds(140, 480, 200, 30);
+		genderCmbox.setEditable(false);
+		genderCmbox.setEnabled(false);
 		containerPanel.add(genderCmbox);
 		// status perkawinan
-		JLabel lblstatusPerkawinan = new JLabel("<html>Status Perkawinan<font color='red'> * </font></html>");
+		JLabel lblstatusPerkawinan = new JLabel("<html>Status Perkawinan</html>");
 		lblstatusPerkawinan.setBounds(30, 520, 100, 30);
 		containerPanel.add(lblstatusPerkawinan);
 		
@@ -227,6 +252,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		maritalCmbox = new ComboBox<>();
 		maritalCmbox.setBounds(140, 520, 200, 30);
+		maritalCmbox.setEditable(false);
+		maritalCmbox.setEnabled(false);
 		containerPanel.add(maritalCmbox);
 		// jumlah tanggungan anak
 		JLabel lbljumlahTanggunganAnak = new JLabel("<html>Jumlah Tanggungan Anak<font color='red'> * </font></html>");
@@ -239,6 +266,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		numberChildField = new JTextField();
 		numberChildField.setBounds(140, 560, 200, 30);
+		numberChildField.setEditable(false);
+		numberChildField.setEnabled(false);
 		containerPanel.add(numberChildField);
 		// nama bank
 		JLabel lblnamaBank = new JLabel("<html>Nama Bank<font color='red'> * </font></html>");
@@ -251,6 +280,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		bankNameField = new JTextField();
 		bankNameField.setBounds(140, 600, 200, 30);
+		bankNameField.setEditable(false);
+		bankNameField.setEnabled(false);
 		containerPanel.add(bankNameField);
 		// nomer rekening bank
 		JLabel lblnomorRekeningBank = new JLabel("<html>Nomor Rekening Bank<font color='red'> * </font></html>");
@@ -263,6 +294,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		bankAccountField = new JTextField();
 		bankAccountField.setBounds(140, 640, 200, 30);
+		bankAccountField.setEditable(false);
+		bankAccountField.setEnabled(false);
 		containerPanel.add(bankAccountField);
 		// group shift kerja
 		JLabel lblgroupShiftKerja = new JLabel("<html>Group Shift Kerja<font color='red'> * </font></html>");
@@ -275,6 +308,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		shiftGroupCmbox = new ComboBox<>();
 		shiftGroupCmbox.setBounds(140, 680, 200, 30);
+		shiftGroupCmbox.setEditable(false);
+		shiftGroupCmbox.setEnabled(false);
 		containerPanel.add(shiftGroupCmbox);
 		// status
 		JLabel statusLbl = new JLabel("<html>Status<font color='red'> * </font></html>");
@@ -287,10 +322,12 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		
 		activeRdbtn = new JRadioButton("Aktif");
 		activeRdbtn.setBounds(140, 720, 90, 30);
+		activeRdbtn.setEnabled(false);
 		containerPanel.add(activeRdbtn);
 		
 		notActiveRdbtn = new JRadioButton("Non Aktif");
 		notActiveRdbtn.setBounds(240, 720, 90, 30);
+		notActiveRdbtn.setEnabled(false);
 		containerPanel.add(notActiveRdbtn);
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
@@ -311,12 +348,14 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		photoPnl.setBackground(Color.BLACK);
 		containerPanel.add(photoPnl);
 		
-		JButton searchfileBtn = new JButton("Cari File");
+		searchfileBtn = new JButton("Cari File");
 		searchfileBtn.setBounds(140, 1070, 75, 30);
+		searchfileBtn.setEnabled(false);
 		containerPanel.add(searchfileBtn);
 		
-		JButton uploadBtn = new JButton("Upload");
+		uploadBtn = new JButton("Upload");
 		uploadBtn.setBounds(225, 1070, 75, 30);
+		uploadBtn.setEnabled(false);
 		containerPanel.add(uploadBtn);
 		
 		// history jabatan
@@ -328,8 +367,9 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		label_20.setBounds(130, 1110, 10, 30);
 		containerPanel.add(label_20);
 		
-		JButton addHistoryPositionBtn = new JButton("Tambah");
+		addHistoryPositionBtn = new JButton("Tambah");
 		addHistoryPositionBtn.setBounds(140, 1110, 75, 30);
+		addHistoryPositionBtn.setEnabled(false);
 		containerPanel.add(addHistoryPositionBtn);
 		addHistoryPositionBtn.addActionListener(new ActionListener() {
 			
@@ -339,8 +379,9 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 			}
 		});
 		
-		JButton deleteHistoryPositionBtn = new JButton("Hapus");
+		deleteHistoryPositionBtn = new JButton("Hapus");
 		deleteHistoryPositionBtn.setBounds(225, 1110, 75, 30);
+		deleteHistoryPositionBtn.setEnabled(false);
 		containerPanel.add(deleteHistoryPositionBtn);
 		
 		// tabel history jabatan
@@ -349,13 +390,11 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		containerPanel.add(historyPositionScroolPane);
 		
 		empPositionTable = new JTable();
-		empPositionTable.setFocusable(false);
-		empPositionTable.setAutoCreateRowSorter(true);
 		historyPositionScroolPane.setViewportView(empPositionTable);
 		
 		editBtn = new JButton("Edit");
 		editBtn.setBounds(924, 1460, 90, 30);
-		add(editBtn);
+		containerPanel.add(editBtn);
 		editBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -369,9 +408,9 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 			}
 		});
 		
-		JButton deleteBtn = new JButton("Hapus");
+		deleteBtn = new JButton("Hapus");
 		deleteBtn.setBounds(824, 1460, 90, 30);
-		add(deleteBtn);
+		containerPanel.add(deleteBtn);
 		
 		deleteBtn.addActionListener(new ActionListener() {
 			
@@ -381,13 +420,25 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 			}
 		});
 		
-		JButton printBtn = new JButton("Cetak");
+		printBtn = new JButton("Cetak");
 		printBtn.setBounds(724, 1460, 90, 30);
-		add(printBtn);
+		containerPanel.add(printBtn);
+		printBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				print();
+			}
+		});
 		
 		empPositionTableConfig();
 	}
 	
+	protected void print() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void empPositionTableConfig() {
 		empPositionTable.setFocusable(false);
 		empPositionTable.setAutoCreateRowSorter(true);
@@ -448,9 +499,9 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 
 	protected void delete() {
 		if (DialogBox.showDeleteChoice()==0) {
-			//division.setDeleteDate(new Date());
-			//division.setDeleteBy("");
-			//ServiceFactory.getPersonaliaBL().deleteDivision(division);
+			employee.setDeleteDate(new Date());
+			employee.setDeleteBy("");
+			ServiceFactory.getPersonaliaBL().deleteEmployee(employee);
 			MainPanel.changePanel("module.personalia.ui.EmployeeConfigPanel");
 		} else {
 			
@@ -459,6 +510,8 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 
 	protected void setEditMode(boolean editMode) {
 		this.editMode = editMode;
+		
+		
 		
 		editBtn.setText("Simpan");
 		editBtn.updateUI();
@@ -469,19 +522,6 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 	}
 
 	protected void update() {
-		
-	}
-
-	protected void addPositionHistory() {
-		popUpPositionHistoryPanel = new PopUpPositionHistoryPanel(this);
-		popUpPositionHistoryPanel.setLocationRelativeTo(null);
-		popUpPositionHistoryPanel.setTitle("History Jabatan");
-		popUpPositionHistoryPanel.setVisible(true);
-	}
-
-	protected void save() {
-		
-		
 		employee.setInputDate(new Date());
 		employee.setInputBy("");
 		employee.setEditDate(new Date());
@@ -497,6 +537,13 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 			e.printStackTrace();
 			DialogBox.showError("Data tidak berhasil disimpan");
 		}
+	}
+
+	protected void addPositionHistory() {
+		popUpPositionHistoryPanel = new PopUpPositionHistoryPanel(this);
+		popUpPositionHistoryPanel.setLocationRelativeTo(null);
+		popUpPositionHistoryPanel.setTitle("History Jabatan");
+		popUpPositionHistoryPanel.setVisible(true);
 	}
 
 	private void option() {
@@ -526,7 +573,7 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 
 		@Override
 		public int getColumnCount() {
-			return 13;
+			return 10;
 		}
 
 		@Override
@@ -542,18 +589,22 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 			case 0:
 				return employeePositions.indexOf(employeePosition) + 1;
 			case 1:
-				return employeePosition.getEmployeeId();
+				return DateUtil.setFormatedDate(employeePosition.getStartDate());
 			case 2:
-				return employeePosition.getStartDate();
+				return employeePosition.getEndDate()==null? "-" : DateUtil.setFormatedDate(employeePosition.getEndDate());
 			case 3:
-				return employeePosition.getEndDate();
-			case 4:
 				return employeePosition.getProbation();
+			case 4:
+				return employeePosition.getMsPosition().getName();
 			case 5:
-				return employeePosition.getPositionId();
+				return employeePosition.getMsPosition().getDepartment().getName();
 			case 6:
-				return employeePosition.getReferenceDoc();
+				return employeePosition.getMsPosition().getDivision().getName();
 			case 7:
+				return employeePosition.getEmployeeType().getName();
+			case 8:
+				return employeePosition.getReferenceDoc();
+			case 9:
 				return employeePosition.getNotes();
 			default:
 				return "";
@@ -594,9 +645,9 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 			case 0:
 				return "No";
 			case 1:
-				return "Tanggal Mulai Kerja";
+				return "Mulai Kerja";
 			case 2:
-				return "Tanggal Berhenti Kerja";
+				return "Berhenti Kerja";
 			case 3:
 				return "Masa Percobaan (bulan)";
 			case 4:

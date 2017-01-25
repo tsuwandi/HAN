@@ -234,7 +234,8 @@ public class PopUpPositionHistoryPanel extends JDialog {
 		empPosition.setEmployeeId("");
 		empPosition.setStartDate(startWorkDateField.getDate());
 		empPosition.setEndDate(endWorkDateField.getDate());
-		empPosition.setProbation(Integer.parseInt(prohibitionTimeField.getText()));
+		if("".equals(prohibitionTimeField.getText())) empPosition.setProbation(0); 
+		else empPosition.setProbation(Integer.parseInt(prohibitionTimeField.getText()));
 		empPosition.setMsPosition(positionCmbox.getDataIndex());
 		empPosition.setPositionId(positionCmbox.getDataIndex().getId());
 		empPosition.setEmployeeType(employeeTypeCmbox.getDataIndex());

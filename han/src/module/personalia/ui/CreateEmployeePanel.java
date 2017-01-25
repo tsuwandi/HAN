@@ -43,6 +43,7 @@ import module.personalia.model.EmpPosition;
 import module.personalia.model.Employee;
 import module.personalia.model.Gender;
 import module.personalia.model.Marital;
+import module.util.DateUtil;
 
 public class CreateEmployeePanel extends JPanel {
 
@@ -192,7 +193,7 @@ public class CreateEmployeePanel extends JPanel {
 		bornDateField.setBounds(140, 360, 200, 30);
 		containerPanel.add(bornDateField);
 		// email
-		JLabel lblemail = new JLabel("<html>Email<font color='red'> * </font></html>");
+		JLabel lblemail = new JLabel("<html>Email</html>");
 		lblemail.setBounds(30, 400, 100, 30);
 		containerPanel.add(lblemail);
 		
@@ -240,7 +241,7 @@ public class CreateEmployeePanel extends JPanel {
 		maritalCmbox.setBounds(140, 520, 200, 30);
 		containerPanel.add(maritalCmbox);
 		// jumlah tanggungan anak
-		JLabel lbljumlahTanggunganAnak = new JLabel("<html>Jumlah Tanggungan Anak<font color='red'> * </font></html>");
+		JLabel lbljumlahTanggunganAnak = new JLabel("<html>Jumlah Tanggungan Anak</html>");
 		lbljumlahTanggunganAnak.setBounds(30, 560, 100, 30);
 		containerPanel.add(lbljumlahTanggunganAnak);
 		
@@ -395,12 +396,12 @@ public class CreateEmployeePanel extends JPanel {
 		});
 		
 		// tabel history jabatan
-		JScrollPane empPositionScrollPane = new JScrollPane();
-		empPositionScrollPane.setBounds(30, 1150, 900, 300);
-		containerPanel.add(empPositionScrollPane);
+		JScrollPane historyPositionScroolPane = new JScrollPane();
+		historyPositionScroolPane.setBounds(30, 1150, 900, 300);
+		containerPanel.add(historyPositionScroolPane);
 		
 		empPositionTable = new JTable();
-		empPositionScrollPane.setViewportView(empPositionTable);
+		historyPositionScroolPane.setViewportView(empPositionTable);
 		
 		JButton saveBtn = new JButton("Simpan");
 		saveBtn.setBounds(900, 1460, 90, 30);
@@ -536,9 +537,9 @@ public class CreateEmployeePanel extends JPanel {
 			case 0:
 				return employeePositions.indexOf(employeePosition) + 1;
 			case 1:
-				return employeePosition.getStartDate();
+				return DateUtil.setFormatedDate(employeePosition.getStartDate());
 			case 2:
-				return employeePosition.getEndDate();
+				return employeePosition.getEndDate()==null? "-" : DateUtil.setFormatedDate(employeePosition.getEndDate());
 			case 3:
 				return employeePosition.getProbation();
 			case 4:
