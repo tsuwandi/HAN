@@ -251,7 +251,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 				try {
 					java.sql.Connection conn = DataSourceFactory.getDataSource().getConnection();
 					JasperDesign jDesign = JRXmlLoader.load("src/module/pembelian/report/ReceivedReport.jrxml");
-					String sql = "SELECT length,thickness,width,grade,total,volume FROM received_detail a INNER JOIN pallet_card b ON a.id = b.received_detail_id INNER JOIN grade c ON  a.grade_id = c.id WHERE a.received_code = '"+received.getReceivedCode()+"'";
+					String sql = "SELECT RIGHT(pallet_card_code,4) AS rit_no,length,thickness,width,grade,total,(volume/1000000) AS volume FROM received_detail a INNER JOIN pallet_card b ON a.id = b.received_detail_id INNER JOIN grade c ON  a.grade_id = c.id WHERE a.received_code = '"+received.getReceivedCode()+"'";
 					JRDesignQuery jDesignQuery = new JRDesignQuery();		
 					jDesignQuery.setText(sql);
 					jDesign.setQuery(jDesignQuery);
