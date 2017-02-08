@@ -3,13 +3,16 @@ package module.system.bl;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import module.system.dao.GroupDAO;
+import module.system.dao.LoginDAO;
 import module.system.dao.UserDAO;
 import module.system.model.Group;
+import module.system.model.Login;
 import module.system.model.User;
 
 public class SystemBL {
@@ -98,5 +101,64 @@ public class SystemBL {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public void checkLogin(User user){
+		Connection connection = null;
+		Login login = new Login();
+		login.setUsername(user.getUsername());
+		try {
+			connection = dataSource.getConnection();
+			login = new LoginDAO(connection).validate(login);
+			if(login==null) {
+				login = new Login();
+				login.setUsername(user.getUsername());
+				login.setEmployeeId("");
+				login.setLastLogin(new Date());
+				login.setLoginStatus("1");
+				login.setInputDate(new Date());
+				login.setInputBy(user.getUsername());
+				login.setEditDate(new Date());
+				login.setEditedBy(user.getUsername());
+				new LoginDAO(connection).insert(login);
+			}
+			else {
+				new LoginDAO(connection).update(login);
+			}
+			setActiveLogin(new LoginDAO(connection).getAll().get(0));
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public String getUsernameActive(){
+		return getActiveLogin().getUsername();
+	}
+	
+	Login activeLogin;
+	
+	private void setActiveLogin(Login login){
+		activeLogin = new Login();
+		activeLogin.setId(login.getId());
+		activeLogin.setUsername(login.getUsername());
+		activeLogin.setEmployeeId(login.getEmployeeId());
+		activeLogin.setLastLogin(login.getLastLogin());
+		activeLogin.setLoginStatus(login.getLoginStatus());
+		activeLogin.setInputDate(login.getInputDate());
+		activeLogin.setInputBy(login.getInputBy());
+		activeLogin.setEditedBy(login.getEditedBy());
+		activeLogin.setEditDate(login.getEditDate());
+		activeLogin.setDeletedBy(login.getDeletedBy());
+		activeLogin.setDeletedDate(login.getDeletedDate());
+	}
+
+	public Login getActiveLogin() {
+		return activeLogin;
 	}
 }

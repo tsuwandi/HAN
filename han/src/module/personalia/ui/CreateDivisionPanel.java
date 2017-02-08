@@ -113,9 +113,9 @@ public class CreateDivisionPanel extends JPanel {
 		division.setId(divisionIdField.getText());
 		division.setName(divisionNameField.getText());
 		division.setInputDate(new Date());
-		division.setInputBy("");
+		division.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		division.setEditDate(new Date());
-		division.setEditBy("");
+		division.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 		
 		try {
 			ServiceFactory.getPersonaliaBL().saveDivision(division);

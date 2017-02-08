@@ -156,6 +156,7 @@ public class LoginPanel extends JPanel {
 			MainPanel.glassPane.setVisible(false);
 		} else {
 			if (ServiceFactory.getSystemBL().validateUser(user)) {
+				ServiceFactory.getSystemBL().checkLogin(user);
 				setVisible(false);
 				MainPanel.glassPane.setVisible(false);
 			} else {
