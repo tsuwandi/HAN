@@ -18,6 +18,7 @@ import module.dailyclosing.ui.DailyClosingDialog;
 import module.dryin.model.DryIn;
 import module.dryout.model.DryOut;
 import module.pembelian.model.Received;
+import module.production.model.Production;
 import module.report.model.DryStockFlow;
 import module.report.model.RekapKayuMasuk;
 import module.sendtofinance.ui.SendToFinanceDialog;
@@ -30,6 +31,7 @@ import net.sf.jasperreports.view.JasperViewer;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -102,7 +104,9 @@ private static final long serialVersionUID = 1L;
 				if (rdbtnPerincianPembelianBalken.isSelected()) {
 					JasperPrint jasperPrint;
 					try {
+						RekapKayuMasuk rekapKayuMasuk = new RekapKayuMasuk();
 						List<RekapKayuMasuk> results = new ArrayList<RekapKayuMasuk>();
+						results = ServiceFactory.getReportBL().getAllPerincianPembelianBalken(rekapKayuMasuk);
 						
 						JRBeanCollectionDataSource itemsJRBeanResults = new JRBeanCollectionDataSource(
 								results);
@@ -125,7 +129,7 @@ private static final long serialVersionUID = 1L;
 						JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
 	
 						showDialog(jasperViewer, "Laporan Perincian Pembelian Balken");
-					} catch (JRException e1) {
+					} catch (JRException | SQLException e1) {
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(null, "Gagal Memproses Laporan Perincian Pembelian Balken", "Perincian Pembelian Balken",
 								JOptionPane.ERROR_MESSAGE);
@@ -136,11 +140,10 @@ private static final long serialVersionUID = 1L;
 				else if (rdbtnRekapitulasiPembelianBalken.isSelected()) {
 					JasperPrint jasperPrint;
 					try {
-						jasperPrint = JasperFillManager.fillReport(
-								"src/module/report/jasper/rekapkayumasuk/LaporanRekapitulasiPembelianBalken.jasper", parameters, new JREmptyDataSource());
-					
-						List<RekapKayuMasuk> results = new ArrayList<RekapKayuMasuk>();
 						
+						RekapKayuMasuk rekapKayuMasuk = new RekapKayuMasuk();
+						List<RekapKayuMasuk> results = new ArrayList<RekapKayuMasuk>();
+						results = ServiceFactory.getReportBL().getAllPerincianPembelianBalken(rekapKayuMasuk);
 						
 						JRBeanCollectionDataSource itemsJRBeanResults = new JRBeanCollectionDataSource(
 								results);
@@ -157,11 +160,14 @@ private static final long serialVersionUID = 1L;
 						parameters.put("startDate",startDate);
 						parameters.put("endDate",endDate);
 					
+						jasperPrint = JasperFillManager.fillReport(
+								"src/module/report/jasper/rekapkayumasuk/LaporanRekapitulasiPembelianBalken.jasper", parameters, new JREmptyDataSource());
+					
 						JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
 	
 						showDialog(jasperViewer, "Laporan Rekapitulasi Pembelian Balken");
 						
-					} catch (JRException e1) {
+					} catch (JRException | SQLException e1) {
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(null, "Gagal Memproses Laporan Rekapitulasi Pembelian Balken", "Rekapitulasi Pembelian Balken",
 								JOptionPane.ERROR_MESSAGE);

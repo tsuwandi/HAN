@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-01-09T10:56:03 -->
+<!-- 2017-02-09T23:56:57 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LaporanPerincianPembelianBalken" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="062d5954-cbaa-48ab-b784-93e4a87a8661">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
@@ -35,6 +35,14 @@
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
+		<field name="date" class="java.util.Date"/>
+		<field name="ritNo" class="java.lang.String"/>
+		<field name="supplierName" class="java.lang.String"/>
+		<field name="length" class="java.lang.String"/>
+		<field name="width" class="java.lang.Double"/>
+		<field name="thickness" class="java.lang.Double"/>
+		<field name="total" class="java.lang.Integer"/>
+		<field name="volume" class="java.lang.Double"/>
 	</subDataset>
 	<parameter name="ItemDataSourceResults" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="startDate" class="java.lang.String"/>
@@ -140,7 +148,12 @@
 								<text><![CDATA[Tanggal]]></text>
 							</staticText>
 						</jr:tableHeader>
-						<jr:detailCell style="Table_TD" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="30" uuid="0be8ca8e-4e59-4991-abe6-53640e9c94bc"/>
+								<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
 					</jr:column>
 					<jr:column width="50" uuid="4391961d-8298-44e0-a310-f6c4b01f342b">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
@@ -151,7 +164,12 @@
 								<text><![CDATA[No RIT]]></text>
 							</staticText>
 						</jr:tableHeader>
-						<jr:detailCell style="Table_TD" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="30" uuid="4f08e64c-f046-4b16-a388-9127b09eafd6"/>
+								<textFieldExpression><![CDATA[$F{ritNo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
 					</jr:column>
 					<jr:column width="73" uuid="121b8750-ddd3-44da-88b1-71fcb329a8bc">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
@@ -162,7 +180,12 @@
 								<text><![CDATA[Supplier]]></text>
 							</staticText>
 						</jr:tableHeader>
-						<jr:detailCell style="Table_TD" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="73" height="30" uuid="b665814f-3d5d-48e0-8c46-f2188d569e2d"/>
+								<textFieldExpression><![CDATA[$F{supplierName}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
 					</jr:column>
 					<jr:columnGroup width="117" uuid="dc1af747-8898-43db-a461-8433fcc14ee6">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [3]"/>
@@ -182,7 +205,12 @@
 									<text><![CDATA[Panjang (CM)]]></text>
 								</staticText>
 							</jr:tableHeader>
-							<jr:detailCell style="Table_TD" height="30"/>
+							<jr:detailCell style="Table_TD" height="30">
+								<textField>
+									<reportElement x="0" y="0" width="42" height="30" uuid="795394e5-2e5a-4b48-abe4-867228de989b"/>
+									<textFieldExpression><![CDATA[$F{length}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
 						</jr:column>
 						<jr:column width="40" uuid="c2e14fb1-f8aa-4361-8d45-3fc0c01c84c6">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
@@ -193,7 +221,12 @@
 									<text><![CDATA[Tebal (CM)]]></text>
 								</staticText>
 							</jr:tableHeader>
-							<jr:detailCell style="Table_TD" height="30"/>
+							<jr:detailCell style="Table_TD" height="30">
+								<textField>
+									<reportElement x="0" y="0" width="40" height="30" uuid="99a05037-ec73-4832-bcb6-8943f8f0366a"/>
+									<textFieldExpression><![CDATA[$F{width}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
 						</jr:column>
 						<jr:column width="35" uuid="750c5b7f-3d4b-41f5-9a8e-e08c4723a04d">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
@@ -204,7 +237,12 @@
 									<text><![CDATA[Lebar (CM)]]></text>
 								</staticText>
 							</jr:tableHeader>
-							<jr:detailCell style="Table_TD" height="30"/>
+							<jr:detailCell style="Table_TD" height="30">
+								<textField>
+									<reportElement x="0" y="0" width="35" height="30" uuid="34afb09c-82e8-4f0d-aa90-67271ef25905"/>
+									<textFieldExpression><![CDATA[$F{thickness}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
 						</jr:column>
 					</jr:columnGroup>
 					<jr:columnGroup width="86" uuid="1d4ef6f8-23bc-4853-99ff-f49bb2d30e86">
@@ -344,7 +382,12 @@
 								<text><![CDATA[Jumlah Batang]]></text>
 							</staticText>
 						</jr:tableHeader>
-						<jr:detailCell style="Table_TD" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="73" height="30" uuid="cf3790fc-f0e6-4854-a6e8-f23a3836576b"/>
+								<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
 					</jr:column>
 					<jr:column width="75" uuid="26c86c92-5fb5-4576-8fc5-956f6b2d3d08">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column17"/>
@@ -355,7 +398,12 @@
 								<text><![CDATA[Volume (m3)]]></text>
 							</staticText>
 						</jr:tableHeader>
-						<jr:detailCell style="Table_TD" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="75" height="30" uuid="435ebcc3-2c05-426a-9cfd-e1d7f13aa67c"/>
+								<textFieldExpression><![CDATA[$F{volume}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
 					</jr:column>
 				</jr:table>
 			</componentElement>

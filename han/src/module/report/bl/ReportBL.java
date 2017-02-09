@@ -15,8 +15,10 @@ import module.pembelian.model.Grade;
 import module.pembelian.model.Received;
 import module.pembelian.model.Thickness;
 import module.report.dao.ReceivedReportDAO;
+import module.report.dao.RekapKayuMasukDAO;
 import module.report.model.DryStockFlow;
 import module.report.model.ReceivedReport;
+import module.report.model.RekapKayuMasuk;
 import module.sn.woodtype.dao.WoodTypeDAO;
 import module.sn.woodtype.model.WoodType;
 
@@ -73,6 +75,26 @@ public class ReportBL {
 		try {
 			con = dataSource.getConnection();
 			return new ReceivedReportDAO(con).getAll(sql, objects);
+		} finally {
+			con.close();
+		}
+	} 
+	
+	public List<RekapKayuMasuk> getAllPerincianPembelianBalken(RekapKayuMasuk rekapKayuMasuk) throws SQLException{
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new RekapKayuMasukDAO(con).getAllPerincianPembelianBalken(rekapKayuMasuk);
+		} finally {
+			con.close();
+		}
+	} 
+	
+	public List<RekapKayuMasuk> getAllRekapitulasiPembelianBalken(RekapKayuMasuk rekapKayuMasuk) throws SQLException{
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new RekapKayuMasukDAO(con).getAllRekapitulasiPembelianBalken(rekapKayuMasuk);
 		} finally {
 			con.close();
 		}
