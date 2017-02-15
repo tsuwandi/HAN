@@ -1,6 +1,8 @@
 package module.system.ui;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ServiceFactory;
+import main.component.ComboBox;
+import main.panel.MainPanel;
 import module.system.model.Group;
 import module.system.model.GroupScreen;
 
@@ -24,7 +29,8 @@ public class GroupAccessConfigPanel extends JPanel {
 	private List<Group> groups = new ArrayList<>();
 	private List<GroupScreen> groupScreens = new ArrayList<>();
 	private GroupAccessConfigTableModel groupAccessConfigTableModel;
-	private JTextField textField;
+	private JTextField searchField;
+	private ComboBox<Group> groupCmbox;
 
 	/**
 	 * Create the panel.
@@ -69,30 +75,44 @@ public class GroupAccessConfigPanel extends JPanel {
 		label.setBounds(110, 46, 10, 30);
 		add(label);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(120, 45, 100, 30);
-		add(comboBox);
+		groupCmbox = new ComboBox();
+		groupCmbox.setBounds(120, 45, 150, 30);
+		add(groupCmbox);
 		
-		JButton searchBtn = new JButton("Cari");
-		searchBtn.setBounds(939, 174, 75, 30);
-		add(searchBtn);
+		JButton newGroupBtn = new JButton("Buat Baru");
+		newGroupBtn.setBounds(724, 100, 90, 30);
+		add(newGroupBtn);
+		newGroupBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.system.ui.CreateGroupPanel");
+			}
+		});
 		
-		textField = new JTextField();
-		textField.setBounds(779, 174, 150, 30);
-		add(textField);
-		textField.setColumns(10);
+		searchField = new JTextField();
+		searchField.setColumns(10);
+		searchField.setBounds(724, 140, 190, 30);
+		add(searchField);
 		
-		JButton saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(694, 174, 75, 30);
-		add(saveBtn);
+		JButton button_1 = new JButton("Export");
+		button_1.setBounds(824, 100, 90, 30);
+		add(button_1);
 		
-		JButton editBtn = new JButton("Edit");
-		editBtn.setBounds(609, 174, 75, 30);
-		add(editBtn);
+		JButton button_2 = new JButton("<html>Pencarian<br/>Lanjut</html>");
+		button_2.setBounds(924, 100, 90, 30);
+		add(button_2);
 		
-		JButton deleteBtn = new JButton("Hapus");
-		deleteBtn.setBounds(524, 174, 75, 30);
-		add(deleteBtn);
+		JButton button_3 = new JButton("Pencarian");
+		button_3.setBounds(924, 140, 90, 30);
+		add(button_3);
+		
+		getData();
+	}
+
+	private void getData() {
+		groups = ServiceFactory.getSystemBL().getAllGroup();
+		groupCmbox.setList(groups);
 	}
 
 	class GroupAccessConfigTableModel extends AbstractTableModel {

@@ -19,7 +19,7 @@ public class GroupDAO {
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 	
-	private String getAllGroupQuery = "select * from system_group";
+	private String getAllGroupQuery = "select * from system_group where delete_date is null and delete_by is null";
 	private String insertQuery = "insert into system_group (name, description, input_date, input_by, edit_date, edit_by) values (?, ?, ?, ?, ?, ?)";
 	private String updateQuery = "update system_group set name = ? , description = ?, edit_date = ?, edit_by = ? where id = ?";
 	private String deleteQuery = "update system_group set delete_date = ?, delete_by = ? where id = ?";
@@ -40,6 +40,10 @@ public class GroupDAO {
 				group.setGroupId(resultSet.getInt("id"));
 				group.setGroupName(resultSet.getString("name"));
 				group.setGroupDesc(resultSet.getString("description"));
+				group.setInputDate(resultSet.getDate("input_date"));
+				group.setInputBy(resultSet.getString("input_by"));
+				group.setEditDate(resultSet.getDate("edit_date"));
+				group.setEditedBy(resultSet.getString("edit_by"));
 				groups.add(group);
 			}
 		} catch (SQLException e) {

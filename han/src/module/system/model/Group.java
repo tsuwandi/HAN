@@ -2,7 +2,9 @@ package module.system.model;
 
 import java.util.Date;
 
-public class Group {
+import module.util.ComboBoxProperties;
+
+public class Group implements ComboBoxProperties{
 	
 	Integer groupId;
 	String groupName;
@@ -67,5 +69,9 @@ public class Group {
 	}
 	public void setDeletedBy(String deletedBy) {
 		this.deletedBy = deletedBy;
+	}
+	@Override
+	public Object getField() {
+		return groupName;
 	}
 }
