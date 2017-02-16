@@ -3,8 +3,6 @@ package module.production.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,8 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import javax.swing.SwingUtilities;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -28,18 +24,16 @@ import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.TextField;
 import main.panel.MainPanel;
-import module.pembelian.ui.PopUpAdvanceSearchSecurity;
 import module.production.model.GroupShift;
 import module.production.model.Line;
-import module.production.model.Shift;
-import module.util.Bridging;
 import module.production.model.Production;
 import module.production.model.ProductionType;
+import module.production.model.Shift;
+import module.util.Bridging;
 
-public class CreateProductionPanel extends JPanel implements Bridging{
-	Logger log = LogManager.getLogger(CreateProductionPanel.class.getName());
+public class ViewBigProductionPanel extends JPanel implements Bridging{
 	private static final long serialVersionUID = 1L;
-	
+	Logger log = LogManager.getLogger(ViewBigProductionPanel.class.getName());
 	private JLabel productionCodeLbl;
 	private JLabel productionDateLbl;
 	private JLabel groupShiftLbl;
@@ -50,7 +44,6 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 	private JLabel errorGroupShiftLbl;
 	private JLabel errorLineLbl;
 	private JLabel errorShiftLbl;
-	private JLabel errorProductionTypeLbl;
 	
 	private TextField productionCodeField;
 	private JDateChooser productionDateChooser;
@@ -61,15 +54,15 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 	
 	private JButton inputMaterialBtn;
 	private JButton inputProductionResultBtn;
-	private JButton saveBtn;
+	private JButton printBtn;
 	private JButton backBtn;
+	private JButton editBtn;
+	private JButton deleteBtn;
 	
 	private Production production;
-	private CreateProductionPanel parent;
-	private boolean editMode=false;
-	private String lastProductionCode;
+	private ViewBigProductionPanel parent;
 	
-	public CreateProductionPanel(){
+	public ViewBigProductionPanel(){
 		parent = this;
 		production = new Production();
 		createGUI();
@@ -81,27 +74,25 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		inputMaterialBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PopUpInputMaterial pop = new PopUpInputMaterial(parent);
+				PopUpViewMaterial pop = new PopUpViewMaterial(parent);
 				pop.setVisible(true);
 				pop.setLocationRelativeTo(null);
-//				pop.setModal(true);
 			}
 		});
 		
 		inputProductionResultBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PopUpProductionResult pop = new PopUpProductionResult(parent);
+				PopUpViewProductionResult pop = new PopUpViewProductionResult(parent);
 				pop.setVisible(true);
 				pop.setLocationRelativeTo(null);
-//				pop.setModal(true);
 			}
 		});
 		
-		saveBtn.addActionListener(new ActionListener() {
+		printBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				save();
+				
 			}
 		});
 		
@@ -109,28 +100,32 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)MainPanel.changePanel("module.production.ui.ListProductionPanel");
+				MainPanel.changePanel("module.production.ui.ListBigProductionPanel");
 			}
 		});
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				productionDateLbl.requestFocusInWindow();
-			}
-		});
-		
-		productionDateChooser.addPropertyChangeListener(new PropertyChangeListener() {
+		editBtn.addActionListener(new ActionListener() {
 			
 			@Override
-			public void propertyChange(PropertyChangeEvent e) {
-				if(e.getPropertyName()=="date"){
-					Date currentDate = (Date)e.getNewValue();
-					String date = new SimpleDateFormat("dd").format(currentDate);
-					String month = new SimpleDateFormat("MM").format(currentDate);
-					String year = new SimpleDateFormat("yy").format(currentDate);
-					productionCodeField.setText(lastProductionCode+"/PD/"+date+"/"+month+"/"+year);
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.production.ui.CreateBigProductionPanel",production);
+			}
+		});
+		
+		deleteBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
+						ServiceFactory.getProductionBL().delete(production);
+						MainPanel.changePanel("module.production.ui.ListBigProductionPanel");
+					}
+				} catch (SQLException e1) {
+					log.error(e1.getMessage());
+					e1.printStackTrace();
 				}
+				
 			}
 		});
 	}
@@ -157,15 +152,12 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			shiftCmb.setList(shifts);
 			groupShiftCmb.setList(groupShifts);
 			productionTypeCmb.setList(productionTypes);
-			productionTypeCmb.setSelectedItem("Barecore");
-			
-			lastProductionCode = ServiceFactory.getProductionBL().getProductionLastCode();
 			
 			Date currentDate = new Date();
 			String date = new SimpleDateFormat("dd").format(currentDate);
 			String month = new SimpleDateFormat("MM").format(currentDate);
 			String year = new SimpleDateFormat("yy").format(currentDate);
-			productionCodeField.setText(lastProductionCode+"/PD/"+date+"/"+month+"/"+year);
+			productionCodeField.setText(ServiceFactory.getProductionBL().getProductionLastCode()+"/PD/"+date+"/"+month+"/"+year);
 			productionDateChooser.setDate(currentDate);
 		} catch (SQLException e) {
 			log.error(e.getMessage());
@@ -177,12 +169,12 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		setLayout(null);
 		
 		//TODO Title Area
-		JLabel lblBreadcrumb = new JLabel("ERP > Produksi");
+		JLabel lblBreadcrumb = new JLabel("ERP > Produksi 13");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("INPUT PRODUKSI");
+		JLabel lblHeader = new JLabel("VIEW PRODUKSI 13");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -197,7 +189,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		add(productionCodeField);
 		
 		//TODO ProductionDate Area
-		productionDateLbl = new JLabel("<html>Tanggal Produksi <font color='red'>*</font></html>");
+		productionDateLbl = new JLabel("Tanggal Produksi");
 		productionDateLbl.setBounds(30,160,150,20);
 		add(productionDateLbl);
 		
@@ -207,7 +199,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		add(productionDateChooser);
 		
 		//TODO GroupShift Area
-		groupShiftLbl = new JLabel("<html>Group Shift <font color='red'>*</font></html>");
+		groupShiftLbl = new JLabel("Group Shift");
 		groupShiftLbl.setBounds(30,200,150,20);
 		add(groupShiftLbl);
 		
@@ -220,7 +212,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		add(errorGroupShiftLbl);
 		
 		//TODO Shift Area
-		shiftLbl = new JLabel("<html>Shift <font color='red'>*</font></html>");
+		shiftLbl = new JLabel("Shift");
 		shiftLbl.setBounds(30,240,150,20);
 		add(shiftLbl);
 		
@@ -233,7 +225,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		add(errorShiftLbl);
 		
 		//TODO Line Area
-		lineLbl = new JLabel("<html>Line <font color='red'>*</font></html>");
+		lineLbl = new JLabel("Line");
 		lineLbl.setBounds(30,280,150,20);
 		add(lineLbl);
 		
@@ -254,99 +246,55 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		productionTypeCmb.setBounds(190,320,150,20);
 		add(productionTypeCmb);
 		
-		errorProductionTypeLbl = new JLabel();
-		errorProductionTypeLbl.setBounds(345,320,150,20);
-		add(errorProductionTypeLbl);
-		
 		//TODO Button Area
-		inputMaterialBtn = new JButton("Input Bahan Baku");
-		inputMaterialBtn.setBounds(630,550,150,30);
+		inputMaterialBtn = new JButton("View Bahan Baku");
+		inputMaterialBtn.setBounds(470,550,150,30);
 		add(inputMaterialBtn);
 		
-		inputProductionResultBtn = new JButton("Input Hasil Produksi");
-		inputProductionResultBtn.setBounds(790,550,150,30);
+		inputProductionResultBtn = new JButton("View Hasil Produksi");
+		inputProductionResultBtn.setBounds(630,550,150,30);
 		add(inputProductionResultBtn);
 		
-		saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(950,550,150,30);
-		add(saveBtn);
+		printBtn = new JButton("Cetak");
+		printBtn.setBounds(790,550,150,30);
+		add(printBtn);
+		
+		editBtn = new JButton("Ubah");
+		editBtn.setBounds(950,550,150,30);
+		add(editBtn);
 		
 		backBtn = new JButton("Kembali");
 		backBtn.setBounds(30,550,150,30);
-		backBtn.setFocusable(false);
 		add(backBtn);
+		
+		deleteBtn = new JButton("Hapus");
+		deleteBtn.setBounds(310,550,150,30);
+		add(deleteBtn);
 	}
 	
-	private void save(){
-		int error = 0;
-		if(groupShiftCmb.getSelectedIndex()==0){
-			errorGroupShiftLbl.setText("<html><font color='red'>Group Shift harus dipilih !</font></html>");
-			error++;
-		}else{
-			errorGroupShiftLbl.setText("");
-		}
-		
-		if(shiftCmb.getSelectedIndex()==0){
-			errorShiftLbl.setText("<html><font color='red'>Shift harus dipilih !</font></html>");
-			error++;
-		}else{
-			errorShiftLbl.setText("");
-		}
-		
-		if(lineCmb.getSelectedIndex()==0){
-			errorLineLbl.setText("<html><font color='red'>Line harus dipilih !</font></html>");
-			error++;
-		}else{
-			errorLineLbl.setText("");
-		}
-		
-		if(productionTypeCmb.getSelectedIndex()==0){
-			errorProductionTypeLbl.setText("<html><font color='red'>Tipe Produksi harus dipilih !</font></html>");
-			error++;
-		}else{
-			errorProductionTypeLbl.setText("");
-		}
-		
-		if(error==0){
-			if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
-				try {
-					production.setProductionCode(productionCodeField.getText());
-					production.setGroupShiftCode(groupShiftCmb.getDataIndex().getGroupShiftCode());
-					production.setShiftCode(shiftCmb.getDataIndex().getShiftCode());
-					production.setLineCode(lineCmb.getDataIndex().getLineCode());
-					production.setProductionDate(productionDateChooser.getDate());
-					production.setProductionTypeCode(productionTypeCmb.getDataIndex().getProductionTypeCode());
-					if(editMode){
-						System.out.println(production.getDeletedProductionResult().size());
-						ServiceFactory.getProductionBL().updateAll(production);
-						DialogBox.showEdit();
-					}else {
-						ServiceFactory.getProductionBL().saveAll(production);
-						DialogBox.showInsert();
-					}
-					MainPanel.changePanel("module.production.ui.ListProductionPanel");
-				} catch (SQLException e) {
-					log.error(e.getMessage());
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+	
 
 	@Override
 	public void invokeObjects(Object... objects) {
 		if(objects.length!=0)production = (Production)objects[0];
 		if(production!=null){
-			editMode=true;
-			productionDateChooser.setEnabled(false);
-			lastProductionCode=production.getProductionCode().split("/")[0];
-			System.out.println(lastProductionCode);
 			productionCodeField.setText(production.getProductionCode());
 			productionDateChooser.setDate(production.getProductionDate());
 			groupShiftCmb.setSelectedItem(production.getGroupShiftDescription());
 			shiftCmb.setSelectedItem(production.getShiftName());
 			lineCmb.setSelectedItem(production.getLineDescription());
 			productionTypeCmb.setSelectedItem(production.getProductionTypeDescription());
+			
+			productionDateChooser.setEnabled(false);
+			groupShiftCmb.setEnabled(false);
+			shiftCmb.setEnabled(false);
+			lineCmb.setEnabled(false);	
+			productionTypeCmb.setEnabled(false);
+			
+			if(production.getStatus().equals("Final")){
+				editBtn.setEnabled(false);
+				deleteBtn.setVisible(false);
+			}
 		}
 	}
 

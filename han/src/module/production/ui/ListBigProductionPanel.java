@@ -33,8 +33,8 @@ import module.pembelian.model.Received;
 import module.production.model.Production;
 import module.util.Pagination;
 
-public class ListProductionPanel extends JPanel {
-	Logger log = LogManager.getLogger(ListProductionPanel.class.getName());
+public class ListBigProductionPanel extends JPanel {
+	Logger log = LogManager.getLogger(ListBigProductionPanel.class.getName());
 	private static final long serialVersionUID = 1L;
 	private JButton searchBtn;
 	private TextField searchField;
@@ -47,9 +47,9 @@ public class ListProductionPanel extends JPanel {
 	
 	ProductionTableModel productionTableModel;
 	List<Production> productions;
-	ListProductionPanel listProductionPanel;
+	ListBigProductionPanel listProductionPanel;
 
-	public ListProductionPanel() {
+	public ListBigProductionPanel() {
 		createGUI();
 		listener();
 		initData();
@@ -65,7 +65,7 @@ public class ListProductionPanel extends JPanel {
 					}
 				}*/
 				if(productionTable.columnAtPoint(e.getPoint())==10){
-					MainPanel.changePanel("module.production.ui.ViewProductionPanel", pagingPanel.getSubListData().get(productionTable.getSelectedRow()));
+					MainPanel.changePanel("module.production.ui.ViewBigProductionPanel", pagingPanel.getSubListData().get(productionTable.getSelectedRow()));
 				}
 			}
 		});
@@ -74,7 +74,7 @@ public class ListProductionPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.production.ui.CreateProductionPanel");
+				MainPanel.changePanel("module.production.ui.CreateBigProductionPanel");
 			}
 		});
 	
@@ -84,7 +84,7 @@ public class ListProductionPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				PopUpAdvancedSearch pop = new PopUpAdvancedSearch(listProductionPanel);
-				pop.setVisible(true);
+				pop.show();
 				pop.setLocationRelativeTo(null);
 			}
 		});

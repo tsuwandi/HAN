@@ -36,8 +36,8 @@ import module.util.Bridging;
 import module.production.model.Production;
 import module.production.model.ProductionType;
 
-public class CreateProductionPanel extends JPanel implements Bridging{
-	Logger log = LogManager.getLogger(CreateProductionPanel.class.getName());
+public class CreateBigProductionPanel extends JPanel implements Bridging{
+	Logger log = LogManager.getLogger(CreateBigProductionPanel.class.getName());
 	private static final long serialVersionUID = 1L;
 	
 	private JLabel productionCodeLbl;
@@ -65,11 +65,11 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 	private JButton backBtn;
 	
 	private Production production;
-	private CreateProductionPanel parent;
+	private CreateBigProductionPanel parent;
 	private boolean editMode=false;
 	private String lastProductionCode;
 	
-	public CreateProductionPanel(){
+	public CreateBigProductionPanel(){
 		parent = this;
 		production = new Production();
 		createGUI();
@@ -89,6 +89,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		});
 		
 		inputProductionResultBtn.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				PopUpProductionResult pop = new PopUpProductionResult(parent);
@@ -109,7 +110,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)MainPanel.changePanel("module.production.ui.ListProductionPanel");
+				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)MainPanel.changePanel("module.production.ui.ListBigProductionPanel");
 			}
 		});
 		
@@ -177,12 +178,12 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		setLayout(null);
 		
 		//TODO Title Area
-		JLabel lblBreadcrumb = new JLabel("ERP > Produksi");
+		JLabel lblBreadcrumb = new JLabel("ERP > Produksi 13");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("INPUT PRODUKSI");
+		JLabel lblHeader = new JLabel("INPUT PRODUKSI 13");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -324,7 +325,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 						ServiceFactory.getProductionBL().saveAll(production);
 						DialogBox.showInsert();
 					}
-					MainPanel.changePanel("module.production.ui.ListProductionPanel");
+					MainPanel.changePanel("module.production.ui.ListBigProductionPanel");
 				} catch (SQLException e) {
 					log.error(e.getMessage());
 					e.printStackTrace();

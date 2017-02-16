@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -49,7 +50,7 @@ public class PopUpAdvancedSearch extends JDialog{
 	private JButton searchBtn;
 	private JButton resetBtn;
 	
-	public PopUpAdvancedSearch(ListProductionPanel parent){
+	public PopUpAdvancedSearch(JPanel parent){
 		super((JFrame) parent.getTopLevelAncestor());
 		createGUI();
 		initData();
@@ -165,7 +166,7 @@ public class PopUpAdvancedSearch extends JDialog{
 		}
 	}
 	
-	private void listener(ListProductionPanel parent){
+	private void listener(JPanel parent){
 		searchBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -214,7 +215,12 @@ public class PopUpAdvancedSearch extends JDialog{
 				
 				try {
 					List<Production> productions = ServiceFactory.getProductionBL().advancedSearchProduction(sb.toString(), objs);
-					parent.updateTableData(productions);
+					if (parent instanceof ListProductionPanel) {
+						((ListProductionPanel)parent).updateTableData(productions);
+					}else{
+						((ListBigProductionPanel)parent).updateTableData(productions);
+					}
+					
 					dispose();
 				} catch (Exception e2) {
 					log.error(e2.getMessage());
