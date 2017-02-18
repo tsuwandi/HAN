@@ -177,12 +177,12 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 		setLayout(null);
 		
 		//TODO Title Area
-		JLabel lblBreadcrumb = new JLabel("ERP > Produksi");
+		JLabel lblBreadcrumb = new JLabel("ERP > Produksi 9");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("INPUT PRODUKSI");
+		JLabel lblHeader = new JLabel("INPUT PRODUKSI 9");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -321,6 +321,7 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 						ServiceFactory.getProductionBL().updateAll(production);
 						DialogBox.showEdit();
 					}else {
+						production.setType("9");
 						ServiceFactory.getProductionBL().saveAll(production);
 						DialogBox.showInsert();
 					}

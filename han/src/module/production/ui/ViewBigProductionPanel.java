@@ -74,7 +74,7 @@ public class ViewBigProductionPanel extends JPanel implements Bridging{
 		inputMaterialBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PopUpViewMaterial pop = new PopUpViewMaterial(parent);
+				PopUpBigViewMaterial pop = new PopUpBigViewMaterial(parent);
 				pop.setVisible(true);
 				pop.setLocationRelativeTo(null);
 			}
@@ -83,7 +83,7 @@ public class ViewBigProductionPanel extends JPanel implements Bridging{
 		inputProductionResultBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PopUpViewProductionResult pop = new PopUpViewProductionResult(parent);
+				PopUpViewBigProductionResult pop = new PopUpViewBigProductionResult(parent);
 				pop.setVisible(true);
 				pop.setLocationRelativeTo(null);
 			}

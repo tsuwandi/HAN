@@ -171,7 +171,13 @@ public class PopUpAdvancedSearch extends JDialog{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				StringBuffer sb = new StringBuffer();
+				String typeQuery = "";
+				if (parent instanceof ListProductionPanel) {
+					typeQuery = " AND type='9' ";
+				}else{
+					typeQuery = " AND type='13' ";
+				}
+				StringBuffer sb = new StringBuffer(typeQuery);
 				List<Object> objs = new ArrayList<>();
 				if(!productionCodeField.getText().equals("")){
 					sb.append(" AND production_code LIKE ?");

@@ -1,2 +1,2 @@
 
-ALTER TABLE `packing_result` CHANGE `id` `id` INT(12) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `production` ADD `type` VARCHAR(5) NOT NULL AFTER `status`;

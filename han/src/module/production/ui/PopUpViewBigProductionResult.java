@@ -109,12 +109,12 @@ public class PopUpViewBigProductionResult extends JDialog{
 	private int indexEdit=0;
 	private Map<Integer, Integer> pressMap;
 	
-	static final String KA = "PDC009-7";
-	static final String KB = "PDC009-8";
-	static final String PA = "PDC009-5";
-	static final String PB = "PDC009-6";
-	static final String NA = "PDC009-1";
-	static final String NB = "PDC009-2";
+	static final String KA = "PDC009-19";
+	static final String KB = "PDC009-20";
+	static final String PA = "PDC009-21";
+	static final String PB = "PDC009-22";
+	static final String NA = "PDC009-17";
+	static final String NB = "PDC009-18";
 	
 	public PopUpViewBigProductionResult(JPanel parent){
 		super((JFrame)parent.getTopLevelAncestor());
@@ -158,7 +158,7 @@ public class PopUpViewBigProductionResult extends JDialog{
 	private void createGUI(){
 		setLayout(null);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		setTitle("Input Hasil Produksi");
+		setTitle("Input Hasil Produksi 13");
 		setSize(1020, 750);
 		
 		containerPnl = new JPanel();
@@ -170,7 +170,7 @@ public class PopUpViewBigProductionResult extends JDialog{
 		containerScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(containerScrollPane);
 		
-		titleLbl = new JLabel("Input Hasil Produksi");
+		titleLbl = new JLabel("Input Hasil Produksi 13");
 		titleLbl.setBounds(50,10,200,30);
 		titleLbl.setFont(new Font("Arial", 1, 18));
 		containerPnl.add(titleLbl);

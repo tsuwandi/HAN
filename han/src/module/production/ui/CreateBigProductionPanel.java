@@ -81,7 +81,7 @@ public class CreateBigProductionPanel extends JPanel implements Bridging{
 		inputMaterialBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PopUpInputMaterial pop = new PopUpInputMaterial(parent);
+				PopUpBigInputMaterial pop = new PopUpBigInputMaterial(parent);
 				pop.setVisible(true);
 				pop.setLocationRelativeTo(null);
 //				pop.setModal(true);
@@ -92,7 +92,7 @@ public class CreateBigProductionPanel extends JPanel implements Bridging{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PopUpProductionResult pop = new PopUpProductionResult(parent);
+				PopUpBigProductionResult pop = new PopUpBigProductionResult(parent);
 				pop.setVisible(true);
 				pop.setLocationRelativeTo(null);
 //				pop.setModal(true);
@@ -322,6 +322,7 @@ public class CreateBigProductionPanel extends JPanel implements Bridging{
 						ServiceFactory.getProductionBL().updateAll(production);
 						DialogBox.showEdit();
 					}else {
+						production.setType("13");
 						ServiceFactory.getProductionBL().saveAll(production);
 						DialogBox.showInsert();
 					}

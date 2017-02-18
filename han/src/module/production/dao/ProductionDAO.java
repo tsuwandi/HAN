@@ -24,7 +24,7 @@ public class ProductionDAO {
 	private PreparedStatement deleteStatement;
 	
 	private String getAllQuery = "SELECT a.id, production_code, a.group_shift_code, d.description AS group_shift_description, "
-			+ "a.line_code, b.description AS line_description, a.shift_code, c.shift_name, "
+			+ "a.line_code, b.description AS line_description, a.shift_code, c.shift_name, a.type, "
 			+ "production_date, information, total_pallet_card, total_log, total_volume, status, a.production_type_code, e.production_type AS production_type_description "
 			+ "FROM production a INNER JOIN line b ON a.line_code = b.line_code "
 			+ "INNER JOIN shift c ON a.shift_code = c.shift_code INNER JOIN group_shift d ON a.group_shift_code = d.group_shift_code "
@@ -33,8 +33,8 @@ public class ProductionDAO {
 	private String getLastCodeQuery = "SELECT production_code FROM production WHERE deleted_date IS NULL ORDER BY id DESC LIMIT 1";
 	
 	private String insertQuery = "INSERT INTO production (production_code, group_shift_code, line_code, shift_code, "
-			+ "production_date, information, total_pallet_card, total_log, total_volume, status , input_by, input_date, production_type_code) "
-			+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			+ "production_date, information, total_pallet_card, total_log, total_volume, status , input_by, input_date, production_type_code, type) "
+			+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	private String updateQuery = "UPDATE production SET group_shift_code =?, "
 			+ "line_code=?, shift_code=?, production_date=?, information=?, total_pallet_card=?, total_log=?, total_volume=?, status=?, edited_by=?, edited_date=?, production_type_code=?  "
 			+ "WHERE production_code =?";
@@ -58,11 +58,11 @@ public class ProductionDAO {
 		return lastCode;
 	}
 	
-	public List<Production> getAll() throws SQLException {
+	public List<Production> getAll(String sql) throws SQLException {
 		List<Production> productions = new ArrayList<Production>();
 
 		try {
-			getAllStatement = connection.prepareStatement(getAllQuery);
+			getAllStatement = connection.prepareStatement(getAllQuery + sql);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
@@ -81,6 +81,7 @@ public class ProductionDAO {
 				production.setTotalLog(rs.getInt("total_log"));
 				production.setTotalVolume(rs.getDouble("total_volume"));
 				production.setStatus(rs.getString("status"));
+				production.setType(rs.getString("type"));
 				production.setProductionTypeCode(rs.getString("production_type_code"));
 				production.setProductionTypeDescription(rs.getString("production_type_description"));
 				productions.add(production);
@@ -117,6 +118,7 @@ public class ProductionDAO {
 				production.setTotalLog(rs.getInt("total_log"));
 				production.setTotalVolume(rs.getDouble("total_volume"));
 				production.setStatus(rs.getString("status"));
+				production.setType(rs.getString("type"));
 				production.setProductionTypeCode(rs.getString("production_type_code"));
 				production.setProductionTypeDescription(rs.getString("production_type_description"));
 				productions.add(production);
@@ -147,6 +149,7 @@ public class ProductionDAO {
 			insertStatement.setString(11, "Michael");
 			insertStatement.setDate(12, new Date(new java.util.Date().getTime()));
 			insertStatement.setString(13, production.getProductionTypeCode());
+			insertStatement.setString(14, production.getType());
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -236,6 +239,7 @@ public class ProductionDAO {
 				production.setTotalLog(rs.getInt("total_log"));
 				production.setTotalVolume(rs.getDouble("total_volume"));
 				production.setStatus(rs.getString("status"));
+				production.setType(rs.getString("type"));
 				production.setProductionTypeCode(rs.getString("production_type_code"));
 				production.setProductionTypeDescription(rs.getString("production_type_description"));
 				productions.add(production);

@@ -121,8 +121,8 @@ public class ProductionBL {
 		return productionResultDetailDAO.getAllByProdPKResultID(resultID);
 	}
 	
-	public List<Production> getProduction() throws SQLException {
-		List<Production> productions = productionDAO.getAll();
+	public List<Production> getProduction(String sql) throws SQLException {
+		List<Production> productions = productionDAO.getAll(sql);
 		for (Production production : productions) {
 			if(getProductResult(production.getProductionCode())!=null)production.setProductionResults(getProductResult(production.getProductionCode()));
 			if(getProductRMByCode(production.getProductionCode())!=null)production.setListOfProdRM(getProductRMByCode(production.getProductionCode()));

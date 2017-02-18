@@ -24,6 +24,7 @@ public class Production {
 	String shiftName;
 	String productionTypeDescription;
 	String status;
+	String type;
 	List<ProdRM> listOfProdRM;
 	Map<String, ProdRM> deletedProdRMs = new HashMap<>();
 	List<ProductionResult> productionResults;
@@ -176,6 +177,12 @@ public class Production {
 		return palletCard;
 	}
 
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public void setPalletCard(PalletCard palletCard) {
 		if (palletCard == null)
 			palletCard = new PalletCard();

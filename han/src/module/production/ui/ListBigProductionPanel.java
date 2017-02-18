@@ -95,7 +95,7 @@ public class ListBigProductionPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				if(!searchField.getText().equals("")){
 					try {
-						List<Production> productions = ServiceFactory.getProductionBL().searchProduction(" AND production_code LIKE '%"+searchField.getText()+"%'");
+						List<Production> productions = ServiceFactory.getProductionBL().searchProduction(" AND type = '13' AND production_code LIKE '%"+searchField.getText()+"%'");
 						updateTableData(productions);
 					} catch (SQLException e) {
 						log.error(e.getMessage());
@@ -115,7 +115,7 @@ public class ListBigProductionPanel extends JPanel {
 	
 	private void initData(){
 		try {
-			productions = ServiceFactory.getProductionBL().getProduction();
+			productions = ServiceFactory.getProductionBL().getProduction(" AND type = '13'");
 			productionTable.setModel(new ProductionTableModel(productions));
 			
 			pagingPanel.setPage(1);
@@ -138,12 +138,12 @@ public class ListBigProductionPanel extends JPanel {
 		setLayout(null);
 		listProductionPanel = this;
 		
-		JLabel lblBreadcrumb = new JLabel("ERP > Produksi");
+		JLabel lblBreadcrumb = new JLabel("ERP > Produksi 13");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("PRODUKSI");
+		JLabel lblHeader = new JLabel("PRODUKSI 13");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
