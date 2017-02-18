@@ -10,9 +10,11 @@ import javax.sql.DataSource;
 
 import module.system.dao.GroupDAO;
 import module.system.dao.LoginDAO;
+import module.system.dao.ScreenDAO;
 import module.system.dao.UserDAO;
 import module.system.model.Group;
 import module.system.model.Login;
+import module.system.model.Screen;
 import module.system.model.User;
 
 public class SystemBL {
@@ -28,7 +30,7 @@ public class SystemBL {
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
-			groups = new GroupDAO(connection).getAllGroup();
+			groups = new GroupDAO(connection).getAll();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -45,7 +47,7 @@ public class SystemBL {
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
-			new GroupDAO(connection).insertGroup(group);
+			new GroupDAO(connection).insert(group);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -160,5 +162,71 @@ public class SystemBL {
 
 	public Login getActiveLogin() {
 		return activeLogin;
+	}
+	// Screen
+	public List<Screen> getAllScreen(String query) {
+		List<Screen> divisions = new ArrayList<Screen>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			divisions = new ScreenDAO(connection).getAll();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return divisions;
+	}
+
+	public void saveScreen(Screen screen) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new ScreenDAO(connection).insert(screen);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateScreen(Screen screen) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new ScreenDAO(connection).update(screen);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteScreen(Screen screen) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new ScreenDAO(connection).delete(screen);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
