@@ -28,7 +28,7 @@ public class GroupDAO {
 		this.connection = connection;
 	}
 	
-	public List<Group> getAllGroup() {
+	public List<Group> getAll() {
 		List<Group> groups = new ArrayList<Group>();
 		try {
 			getAllGroupStatement = connection.prepareStatement(getAllGroupQuery);
@@ -52,7 +52,7 @@ public class GroupDAO {
 		return groups;
 	}
 	
-	public void insertGroup(Group group) {
+	public void insert(Group group) {
 		
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
@@ -70,7 +70,7 @@ public class GroupDAO {
 		}
 	}
 	
-	public void updateGroup(Group group) {
+	public void update(Group group) {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 			
@@ -86,7 +86,7 @@ public class GroupDAO {
 		}
 	}
 	
-	public void deleteGroup(Group group) {
+	public void delete(Group group) {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			
