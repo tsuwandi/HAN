@@ -140,7 +140,7 @@ public class GroupAccessConfigPanel extends JPanel {
 			
 			switch (columnIndex) {
 			case 0:
-				return groupScreen.getGroupScreenId();
+				return groupScreen.getId();
 			case 1:
 				return groupScreen.getGroupId();
 			case 2:
@@ -148,7 +148,7 @@ public class GroupAccessConfigPanel extends JPanel {
 			case 3:
 				return groupScreen.getScreenName();
 			case 4:
-				return groupScreen.getAccess();
+				return groupScreen.getRightAccess();
 			default:
 				return "";
 			}
