@@ -93,6 +93,7 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Konfigurasi Sistem", "Group", "Group", "module.system.ui.GroupConfigPanel");
 		menu.addNewLeafTo("Konfigurasi Sistem", "User", "User", "module.system.ui.UserConfigPanel");
 		menu.addNewLeafTo("Konfigurasi Sistem", "Group Akses", "Group Akses", "module.system.ui.GroupAccessConfigPanel");
+		menu.addNewLeafTo("Konfigurasi Sistem", "Screen", "Screen", "module.system.ui.ScreenConfigPanel");
 		menu.calculateAvaiableSpace();
 		
 		setMouseAdapter(menu);
