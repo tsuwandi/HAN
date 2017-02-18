@@ -1,14 +1,14 @@
 package module.system.model;
 
-import java.sql.Date;
+import java.util.Date;
 
-public class GroupScreen {
+import module.util.ComboBoxProperties;
+
+public class Menu implements ComboBoxProperties{
 
 	Integer id;
-	Integer groupId;
-	Integer screenId;
-	String screenName;
-	String rightAccess;
+	String menuName;
+	String menuTitle;
 	Date inputDate;
 	String inputBy;
 	Date editDate;
@@ -21,29 +21,17 @@ public class GroupScreen {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getGroupId() {
-		return groupId;
+	public String getMenuName() {
+		return menuName;
 	}
-	public void setGroupId(Integer groupId) {
-		this.groupId = groupId;
+	public void setMenuName(String menuName) {
+		this.menuName = menuName;
 	}
-	public Integer getScreenId() {
-		return screenId;
+	public String getMenuTitle() {
+		return menuTitle;
 	}
-	public void setScreenId(Integer screenId) {
-		this.screenId = screenId;
-	}
-	public String getScreenName() {
-		return screenName;
-	}
-	public void setScreenName(String screenName) {
-		this.screenName = screenName;
-	}
-	public String getRightAccess() {
-		return rightAccess;
-	}
-	public void setRightAccess(String rightAccess) {
-		this.rightAccess = rightAccess;
+	public void setMenuTitle(String menuTitle) {
+		this.menuTitle = menuTitle;
 	}
 	public Date getInputDate() {
 		return inputDate;
@@ -81,4 +69,8 @@ public class GroupScreen {
 	public void setDeletedBy(String deletedBy) {
 		this.deletedBy = deletedBy;
 	}
+	@Override
+	public Object getField() {
+		return getMenuTitle();
+	}	
 }

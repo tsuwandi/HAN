@@ -1,37 +1,32 @@
 package module.system.model;
 
-import java.sql.Date;
+import java.util.Date;
 
-public class GroupScreen {
+public class Screen {
 
 	Integer id;
-	Integer groupId;
-	Integer screenId;
+	String menuName;
 	String screenName;
-	String rightAccess;
+	String screenTitle;
+	String moduleName;
 	Date inputDate;
 	String inputBy;
 	Date editDate;
 	String editedBy;
 	Date deletedDate;
 	String deletedBy;
+	
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getGroupId() {
-		return groupId;
+	public String getMenuName() {
+		return menuName;
 	}
-	public void setGroupId(Integer groupId) {
-		this.groupId = groupId;
-	}
-	public Integer getScreenId() {
-		return screenId;
-	}
-	public void setScreenId(Integer screenId) {
-		this.screenId = screenId;
+	public void setMenuName(String menuName) {
+		this.menuName = menuName;
 	}
 	public String getScreenName() {
 		return screenName;
@@ -39,11 +34,17 @@ public class GroupScreen {
 	public void setScreenName(String screenName) {
 		this.screenName = screenName;
 	}
-	public String getRightAccess() {
-		return rightAccess;
+	public String getScreenTitle() {
+		return screenTitle;
 	}
-	public void setRightAccess(String rightAccess) {
-		this.rightAccess = rightAccess;
+	public void setScreenTitle(String screenTitle) {
+		this.screenTitle = screenTitle;
+	}
+	public String getModuleName() {
+		return moduleName;
+	}
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
 	}
 	public Date getInputDate() {
 		return inputDate;
@@ -80,5 +81,5 @@ public class GroupScreen {
 	}
 	public void setDeletedBy(String deletedBy) {
 		this.deletedBy = deletedBy;
-	}
+	}	
 }
