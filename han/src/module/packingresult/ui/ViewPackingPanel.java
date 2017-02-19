@@ -37,6 +37,7 @@ import model.User;
 import module.dailyclosing.model.Inventory;
 import module.packingresult.model.Packing;
 import module.packingresult.model.PackingConversion;
+import module.packingresult.model.PackingRM;
 import module.packingresult.model.PackingResult;
 import module.util.Bridging;
 
@@ -53,6 +54,10 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 	private JLabel smallCrateBLbl;
 	private JLabel bigCrateBNPLbl;
 	private JLabel smallCrateBNPLbl;
+	private JLabel bigCrateCLbl;
+	private JLabel smallCrateCLbl;
+	private JLabel crateWasteALbl;
+	private JLabel crateWasteBLbl;
 	
 	private JLabel bigCrateAResultLbl;
 	private JLabel smallCrateAResultLbl;
@@ -62,6 +67,10 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 	private JLabel smallCrateBResultLbl;
 	private JLabel bigCrateBNPResultLbl;
 	private JLabel smallCrateBNPResultLbl;
+	private JLabel bigCrateCResultLbl;
+	private JLabel smallCrateCResultLbl;
+	private JLabel crateWasteAResultLbl;
+	private JLabel crateWasteBResultLbl;
 	
 	private JLabel bigCrateAEqualsLbl;
 	private JLabel smallCrateAEqualsLbl;
@@ -71,6 +80,10 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 	private JLabel smallCrateBEqualsLbl;
 	private JLabel bigCrateBNPEqualsLbl;
 	private JLabel smallCrateBNPEqualsLbl;
+	private JLabel bigCrateCEqualsLbl;
+	private JLabel smallCrateCEqualsLbl;
+	private JLabel crateWasteAEqualsLbl;
+	private JLabel crateWasteBEqualsLbl;
 	
 	private JLabel bigCrateAErrorLbl;
 	private JLabel smallCrateAErrorLbl;
@@ -97,6 +110,10 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 	private NumberField smallCrateBField;
 	private NumberField bigCrateBNPField;
 	private NumberField smallCrateBNPField;
+	private NumberField bigCrateCField;
+	private NumberField smallCrateCField;
+	private NumberField crateWasteAField;
+	private NumberField crateWasteBField;
 	
 	private TextField bigCrateAResultField;
 	private TextField smallCrateAResultField;
@@ -106,6 +123,10 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 	private TextField smallCrateBResultField;
 	private TextField bigCrateBNPResultField;
 	private TextField smallCrateBNPResultField;
+	private TextField bigCrateCResultField;
+	private TextField smallCrateCResultField;
+	private TextField crateWasteAResultField;
+	private TextField crateWasteBResultField;
 	
 	JScrollPane scrollPane;
 	JPanel containerPnl;
@@ -122,11 +143,16 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 	private static final String SMALL_CRATE_B="PDC009-14";
 	private static final String BIG_CRATE_BNP="PDC009-15";
 	private static final String SMALL_CRATE_BNP="PDC009-16";
+	private static final String BIG_CRATE_C="PDC009-7";
+	private static final String SMALL_CRATE_C="PDC009-8";
+	private static final String CRATE_WASTE_A="PDC009-3";
+	private static final String CRATE_WASTE_B="PDC009-4";
 	
-	private static final String KA = "PDC009-7";
-	private static final String KB = "PDC009-8";
+	private static final String KA = "PDC009-3";
+	private static final String KB = "PDC009-4";
 	private static final String NA = "PDC009-1";
 	private static final String NB = "PDC009-2";
+	
 	
 	private List<Inventory> inventories;
 	private List<PackingConversion> packingConversions;
@@ -147,7 +173,7 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 		setLayout(null);
 		
 		containerPnl = new JPanel();
-		containerPnl.setPreferredSize(new Dimension(1050, 800));
+		containerPnl.setPreferredSize(new Dimension(1050, 950));
 		
 		containerPnl.setLayout(null);
 		
@@ -393,16 +419,102 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 		smallCrateBNPErrorLbl.setBounds(700,705,150,20);
 		containerPnl.add(smallCrateBNPErrorLbl);
 		
+		//Big Crate C
+		bigCrateCLbl= new JLabel("Crate Besar C");
+		bigCrateCLbl.setBounds(50,745,150,20);
+		containerPnl.add(bigCrateCLbl);
+		
+		bigCrateCField= new NumberField(7);
+		bigCrateCField.setBounds(210,745,150,20);
+		containerPnl.add(bigCrateCField);
+		
+		bigCrateCEqualsLbl= new JLabel(EQUALS);
+		bigCrateCEqualsLbl.setBounds(368,745,150,20);
+		containerPnl.add(bigCrateCEqualsLbl);
+		
+		bigCrateCResultField= new TextField();
+		bigCrateCResultField.setBounds(380,745,150,20);
+		containerPnl.add(bigCrateCResultField);
+		
+		bigCrateCResultLbl= new JLabel(NORMAL_B);
+		bigCrateCResultLbl.setBounds(540,745,150,20);
+		containerPnl.add(bigCrateCResultLbl);
+
+		
+		//Small Crate C
+		smallCrateCLbl= new JLabel("Crate Kecil C");
+		smallCrateCLbl.setBounds(50,785,150,20);
+		containerPnl.add(smallCrateCLbl);
+		
+		smallCrateCField= new NumberField(7);
+		smallCrateCField.setBounds(210,785,150,20);
+		containerPnl.add(smallCrateCField);
+		
+		smallCrateCEqualsLbl= new JLabel(EQUALS);
+		smallCrateCEqualsLbl.setBounds(368,785,150,20);
+		containerPnl.add(smallCrateCEqualsLbl);
+		
+		smallCrateCResultField= new TextField();
+		smallCrateCResultField.setBounds(380,785,150,20);
+		containerPnl.add(smallCrateCResultField);
+		
+		smallCrateCResultLbl= new JLabel(NORMAL_B);
+		smallCrateCResultLbl.setBounds(540,785,150,20);
+		containerPnl.add(smallCrateCResultLbl);
+		
+		//Crate Waste A
+		crateWasteALbl= new JLabel("Cacat Finishing A");
+		crateWasteALbl.setBounds(50,825,150,20);
+		containerPnl.add(crateWasteALbl);
+		
+		crateWasteAField= new NumberField(7);
+		crateWasteAField.setBounds(210,825,150,20);
+		containerPnl.add(crateWasteAField);
+		
+		crateWasteAEqualsLbl= new JLabel(EQUALS);
+		crateWasteAEqualsLbl.setBounds(368,825,150,20);
+		containerPnl.add(crateWasteAEqualsLbl);
+		
+		crateWasteAResultField= new TextField();
+		crateWasteAResultField.setBounds(380,825,150,20);
+		containerPnl.add(crateWasteAResultField);
+		
+		crateWasteAResultLbl= new JLabel(NORMAL_A);
+		crateWasteAResultLbl.setBounds(540,825,150,20);
+		containerPnl.add(crateWasteAResultLbl);
+
+		
+		//Crate Waste B
+		crateWasteBLbl= new JLabel("Cacat Finishing B");
+		crateWasteBLbl.setBounds(50,865,150,20);
+		containerPnl.add(crateWasteBLbl);
+		
+		crateWasteBField= new NumberField(7);
+		crateWasteBField.setBounds(210,865,150,20);
+		containerPnl.add(crateWasteBField);
+		
+		crateWasteBEqualsLbl= new JLabel(EQUALS);
+		crateWasteBEqualsLbl.setBounds(368,865,150,20);
+		containerPnl.add(crateWasteBEqualsLbl);
+		
+		crateWasteBResultField= new TextField();
+		crateWasteBResultField.setBounds(380,865,150,20);
+		containerPnl.add(crateWasteBResultField);
+		
+		crateWasteBResultLbl= new JLabel(NORMAL_B);
+		crateWasteBResultLbl.setBounds(540,865,150,20);
+		containerPnl.add(crateWasteBResultLbl);
+		
 		editBtn = new JButton("Edit");
-		editBtn.setBounds(850,745,150,30);
+		editBtn.setBounds(850,905,150,30);
 		containerPnl.add(editBtn);
 		
 		deleteBtn = new JButton("Hapus");
-		deleteBtn.setBounds(700,745,150,30);
+		deleteBtn.setBounds(700,905,150,30);
 		containerPnl.add(deleteBtn);
 		
 		backBtn = new JButton("Kembali");
-		backBtn.setBounds(30,745,150,30);
+		backBtn.setBounds(30,905,150,30);
 		backBtn.setFocusable(false);
 		containerPnl.add(backBtn);
 	}
@@ -426,6 +538,8 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 		smallCrateBNPField.setEnabled(false);
 		packingDateChooser.setEnabled(false);
 		stockTable.setEnabled(false);
+		crateWasteAResultField.setEnabled(false);
+		crateWasteBResultField.setEnabled(false);
 		
 		inventories = new ArrayList<>();
 		packingConversions = new ArrayList<>();
@@ -611,6 +725,42 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 			}
 		});
 		
+		crateWasteAField.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				validateConversion(crateWasteAField);
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				validateConversion(crateWasteAField);
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				validateConversion(crateWasteAField);
+			}
+		});
+		
+		crateWasteBField.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				validateConversion(crateWasteBField);
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				validateConversion(crateWasteBField);
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				validateConversion(crateWasteBField);
+			}
+		});
+		
 		backBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -725,6 +875,26 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 			}
 		}
 		
+		if (component==crateWasteAField) {
+			if(!crateWasteAField.getText().equals("")){
+				if(mapPackingConversion.get(CRATE_WASTE_A)!=null){
+					crateWasteAResultField.setText(""+Double.valueOf(crateWasteAField.getText())*mapPackingConversion.get(CRATE_WASTE_A).getQtyTo());
+				}
+			}else{
+				crateWasteAResultField.setText("0");
+			}
+		}
+		
+		if (component==crateWasteBField) {
+			if(!crateWasteBField.getText().equals("")){
+				if(mapPackingConversion.get(CRATE_WASTE_B)!=null){
+					crateWasteBResultField.setText(""+Double.valueOf(crateWasteBField.getText())*mapPackingConversion.get(CRATE_WASTE_B).getQtyTo());
+				}
+			}else{
+				crateWasteBResultField.setText("0");
+			}
+		}
+		
 		
 	}
 	
@@ -804,7 +974,17 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 			else if(packingResult.getProductCode().equals(SMALL_CRATE_B))smallCrateBField.setText(Double.valueOf(packingResult.getQty())+"");
 			else if(packingResult.getProductCode().equals(BIG_CRATE_BNP))bigCrateBNPField.setText(Double.valueOf(packingResult.getQty())+"");
 			else if(packingResult.getProductCode().equals(SMALL_CRATE_BNP))smallCrateBNPField.setText(Double.valueOf(packingResult.getQty())+"");
+			else if(packingResult.getProductCode().equals(BIG_CRATE_C))bigCrateCField.setText(Double.valueOf(packingResult.getQty())+"");
+			else if(packingResult.getProductCode().equals(SMALL_CRATE_C))smallCrateCField.setText(Double.valueOf(packingResult.getQty())+"");
+			else if(packingResult.getProductCode().equals(CRATE_WASTE_A))crateWasteAField.setText(Double.valueOf(packingResult.getQty())+"");
+			else if(packingResult.getProductCode().equals(CRATE_WASTE_B))crateWasteBField.setText(Double.valueOf(packingResult.getQty())+"");
 		}
+		
+		for (PackingRM packingRM : packing.getPackingRMs()) {
+			if(packingRM.getProductCode().equals(BIG_CRATE_C))bigCrateCResultField.setText(Double.valueOf(packingRM.getQty())+"");
+			else if(packingRM.getProductCode().equals(SMALL_CRATE_C))smallCrateCResultField.setText(Double.valueOf(packingRM.getQty())+"");
+		}
+		
 		if(packing.getStatus().equals("FINAL")){
 			editBtn.setEnabled(false);
 			deleteBtn.setEnabled(false);

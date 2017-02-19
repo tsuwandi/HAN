@@ -525,6 +525,8 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 		smallCrateBResultField.setEnabled(false);
 		bigCrateBNPResultField.setEnabled(false);
 		smallCrateBNPResultField.setEnabled(false);
+		crateWasteAResultField.setEnabled(false);
+		crateWasteBResultField.setEnabled(false);
 		
 		inventories = new ArrayList<>();
 		packingConversions = new ArrayList<>();
@@ -1187,6 +1189,15 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 			else if(packingResult.getProductCode().equals(SMALL_CRATE_B))smallCrateBField.setText(Double.valueOf(packingResult.getQty())+"");
 			else if(packingResult.getProductCode().equals(BIG_CRATE_BNP))bigCrateBNPField.setText(Double.valueOf(packingResult.getQty())+"");
 			else if(packingResult.getProductCode().equals(SMALL_CRATE_BNP))smallCrateBNPField.setText(Double.valueOf(packingResult.getQty())+"");
+			else if(packingResult.getProductCode().equals(BIG_CRATE_C))bigCrateCField.setText(Double.valueOf(packingResult.getQty())+"");
+			else if(packingResult.getProductCode().equals(SMALL_CRATE_C))smallCrateCField.setText(Double.valueOf(packingResult.getQty())+"");
+			else if(packingResult.getProductCode().equals(CRATE_WASTE_A))crateWasteAField.setText(Double.valueOf(packingResult.getQty())+"");
+			else if(packingResult.getProductCode().equals(CRATE_WASTE_B))crateWasteBField.setText(Double.valueOf(packingResult.getQty())+"");
+		}
+		
+		for (PackingRM packingRM : packing.getPackingRMs()) {
+			if(packingRM.getProductCode().equals(BIG_CRATE_C))bigCrateCResultField.setText(Double.valueOf(packingRM.getQty())+"");
+			else if(packingRM.getProductCode().equals(SMALL_CRATE_C))smallCrateCResultField.setText(Double.valueOf(packingRM.getQty())+"");
 		}
 		lblHeader.setText("EDIT HASIL PACKING");
 	}
