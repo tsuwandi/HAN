@@ -110,8 +110,8 @@ public class PopUpProductionResult extends JDialog{
 	private Map<Integer, Integer> pressMap;
 	private Map<Integer, ProductionResult> deletedProdResult;
 	
-	static final String KA = "PDC009-7";
-	static final String KB = "PDC009-8";
+	static final String KA = "PDC009-3";
+	static final String KB = "PDC009-4";
 	static final String PA = "PDC009-5";
 	static final String PB = "PDC009-6";
 	static final String NA = "PDC009-1";
