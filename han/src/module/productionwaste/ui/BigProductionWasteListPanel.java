@@ -26,9 +26,9 @@ import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.productionwaste.model.ProductionWaste;
 
-public class ProductionWasteListPanel extends JPanel {
+public class BigProductionWasteListPanel extends JPanel {
 
-	private static final Logger LOGGER = Logger.getLogger(ProductionWasteListPanel.class);
+	private static final Logger LOGGER = Logger.getLogger(BigProductionWasteListPanel.class);
 
 	JButton btnCreateNew;
 	JButton btnExport;
@@ -47,22 +47,22 @@ public class ProductionWasteListPanel extends JPanel {
 
 	JTable tblProductionWaste;
 
-	private ProductionWasteListPanel productionWasteListPanel;
+	private BigProductionWasteListPanel productionWasteListPanel;
 
 	private static final long serialVersionUID = 1L;
 
-	public ProductionWasteListPanel() {
+	public BigProductionWasteListPanel() {
 		productionWasteListPanel = this;
 		setLayout(null);
 
 		setPreferredSize(new Dimension(1024, 768));
 
-		lblBreadcrumb = new JLabel("ERP > Produksi > Input Hasil Produksi > Sisa Produksi 9");
+		lblBreadcrumb = new JLabel("ERP > Produksi > Input Hasil Produksi > Sisa Produksi 13");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		lblHeader = new JLabel("Input Hasil Produksi Sisa Produksi 9 ");
+		lblHeader = new JLabel("Input Hasil Produksi Sisa Produksi 13");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -70,7 +70,7 @@ public class ProductionWasteListPanel extends JPanel {
 		btnCreateNew = new JButton("Buat Baru");
 		btnCreateNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MainPanel.changePanel("module.productionwaste.ui.ProductionWasteCreatePanel");
+				MainPanel.changePanel("module.productionwaste.ui.BigProductionWasteCreatePanel");
 			}
 		});
 		btnCreateNew.setBounds(700, 80, 100, 30);
@@ -126,14 +126,14 @@ public class ProductionWasteListPanel extends JPanel {
 					int column = target.getSelectedColumn();
 
 					if (column == 7)
-						MainPanel.changePanel("module.productionwaste.ui.ProductionWasteViewPanel", listOfProductionWaste.get(row));
+						MainPanel.changePanel("module.productionwaste.ui.BigProductionWasteViewPanel", listOfProductionWaste.get(row));
 				}
 			}
 		});
 
 		try {
 			listOfProductionWaste = new ArrayList<ProductionWaste>();
-			listOfProductionWaste = ServiceFactory.getProductionWasteBL().getAllProductionWaste(" AND TYPE = '9' ");
+			listOfProductionWaste = ServiceFactory.getProductionWasteBL().getAllProductionWaste(" AND TYPE = '13' ");
 			refreshTableProductionWaste();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -162,7 +162,7 @@ public class ProductionWasteListPanel extends JPanel {
 	public void doSearch(String value) {
 		try {
 			listOfProductionWaste = new ArrayList<ProductionWaste>();
-			listOfProductionWaste = ServiceFactory.getProductionWasteBL().getAllProductionWasteBySimpleSearch("9",value);
+			listOfProductionWaste = ServiceFactory.getProductionWasteBL().getAllProductionWasteBySimpleSearch("13",value);
 			refreshTableProductionWaste();
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
@@ -173,7 +173,7 @@ public class ProductionWasteListPanel extends JPanel {
 	/**
 	 * Method to display advanced search dialog
 	 */
-	protected void showAdvancedSearchDialog(ProductionWasteListPanel productionWasteListPanel) {
+	protected void showAdvancedSearchDialog(BigProductionWasteListPanel productionWasteListPanel) {
 		
 	}
 

@@ -9,9 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,25 +28,15 @@ import javax.swing.table.AbstractTableModel;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import com.toedter.calendar.JDateChooser;
-
-import controller.ServiceFactory;
-import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.TextField;
 import model.User;
-import module.production.model.Machine;
-import module.production.model.ProductionResult;
-import module.production.model.ProductionResultProduct;
-import module.productionpk.model.ProdPKMaterial;
-import module.productionpk.model.ProdPKResult;
-import module.productionpk.model.ProdPKResultProduct;
 import module.productionwaste.model.ProductionResultProductWaste;
 import module.productionwaste.model.ProductionResultWaste;
 
-public class PopUpInputProductionResult extends JDialog{
-	Logger log = LogManager.getLogger(PopUpInputProductionResult.class.getName());
+public class PopUpInputBigProductionResult extends JDialog{
+	Logger log = LogManager.getLogger(PopUpInputBigProductionResult.class.getName());
 	private static final long serialVersionUID = 1L;
 	private JLabel titleLbl;
 	private JLabel pressNoLbl;
@@ -105,21 +93,21 @@ public class PopUpInputProductionResult extends JDialog{
 	private JScrollPane containerScrollPane;
 	private JPanel containerPnl;
 	private JPanel borderPanel;
-	private ProductionWasteCreatePanel createProductionPanel;
+	private BigProductionWasteCreatePanel createProductionPanel;
 	private List<ProductionResultWaste> listOfPrd;
 	private boolean editMode=false;
 	private int indexEdit=0;
 	private Map<Integer, Integer> pressMap;
 	private Map<Integer, ProductionResultWaste> deletedProdResult;
 	
-	static final String KA = "PDC009-3";
-	static final String KB = "PDC009-4";
-	static final String PA = "PDC009-5";
-	static final String PB = "PDC009-6";
-	static final String NA = "PDC009-1";
-	static final String NB = "PDC009-2";
+	static final String KA = "PDC009-19";
+	static final String KB = "PDC009-20";
+	static final String PA = "PDC009-21";
+	static final String PB = "PDC009-22";
+	static final String NA = "PDC009-17";
+	static final String NB = "PDC009-18";
 	
-	public PopUpInputProductionResult(JPanel parent){
+	public PopUpInputBigProductionResult(JPanel parent){
 		super((JFrame)parent.getTopLevelAncestor());
 		createGUI();
 		initData(parent);
@@ -136,7 +124,7 @@ public class PopUpInputProductionResult extends JDialog{
 		deletedProdResult = new HashMap<>();
 		listOfPrd = new ArrayList<>();
 
-		createProductionPanel = (ProductionWasteCreatePanel) parent;
+		createProductionPanel = (BigProductionWasteCreatePanel) parent;
 		if(createProductionPanel.getProductionWaste().getProductionResultWastes()!=null){
 			listOfPrd = createProductionPanel.getProductionWaste().getProductionResultWastes();
 			productionResultTable.setModel(new ResultTableModel(listOfPrd));
@@ -150,7 +138,7 @@ public class PopUpInputProductionResult extends JDialog{
 	private void createGUI(){
 		setLayout(null);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		setTitle("Input Hasil Produksi 9");
+		setTitle("Input Hasil Produksi 13");
 		setSize(1020, 750);
 		
 		containerPnl = new JPanel();
@@ -162,7 +150,7 @@ public class PopUpInputProductionResult extends JDialog{
 		containerScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(containerScrollPane);
 		
-		titleLbl = new JLabel("Input Hasil Produksi 9");
+		titleLbl = new JLabel("Input Hasil Produksi 13");
 		titleLbl.setBounds(50,10,200,30);
 		titleLbl.setFont(new Font("Arial", 1, 18));
 		containerPnl.add(titleLbl);

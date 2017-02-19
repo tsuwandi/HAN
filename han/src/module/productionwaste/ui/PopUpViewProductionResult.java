@@ -112,11 +112,11 @@ public class PopUpViewProductionResult extends JDialog{
 	private Map<Integer, Integer> pressMap;
 	private Map<Integer, ProductionResultWaste> deletedProdResult;
 	
-	static final String KA = "PDC009-7";
-	static final String KB = "PDC009-8";
+	static final String KA = "PDC009-3";
+	static final String KB = "PDC009-4";
 	static final String PA = "PDC009-5";
 	static final String PB = "PDC009-6";
-	static final String NA = "PDC009";
+	static final String NA = "PDC009-1";
 	static final String NB = "PDC009-2";
 	
 	public PopUpViewProductionResult(JPanel parent){
@@ -173,7 +173,7 @@ public class PopUpViewProductionResult extends JDialog{
 		containerScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(containerScrollPane);
 		
-		titleLbl = new JLabel("View Hasil Produksi");
+		titleLbl = new JLabel("View Hasil Produksi 9");
 		titleLbl.setBounds(50,10,200,30);
 		titleLbl.setFont(new Font("Arial", 1, 18));
 		containerPnl.add(titleLbl);

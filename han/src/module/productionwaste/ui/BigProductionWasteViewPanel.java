@@ -5,10 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
@@ -22,10 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
 
@@ -36,24 +30,17 @@ import com.toedter.calendar.JDateChooser;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
-import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
 import module.production.model.GroupShift;
 import module.production.model.Line;
 import module.production.model.ProductionType;
 import module.production.model.Shift;
-import module.production.ui.PopUpProductionResult;
-import module.productionwaste.model.PWProduct;
 import module.productionwaste.model.ProductionWaste;
-import module.purchaseprodresult.model.PPRProduct;
-import module.purchaseprodresult.model.PurchaseProdResult;
-import module.sn.currency.model.Currency;
-import module.supplier.model.Supplier;
 import module.util.Bridging;
 import module.util.JTextFieldLimit;
 
-public class ProductionWasteCreatePanel extends JPanel implements Bridging {
+public class BigProductionWasteViewPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
@@ -67,13 +54,17 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 			cbShift.setSelectedItem(productionWaste.getShift().getShiftName());
 			cbLine.setSelectedItem(productionWaste.getLine().getDescription());
 			cbProductionType.setSelectedItem(productionWaste.getProductionType().getProductionType());
-			editMode = true;
 			dcProductionDate.setEnabled(false);
-			lblBreadcrumb.setText("ERP > Pembelian > Edit Hasil Produksi > Sisa Produksi 9");
+			cbGroupShift.setEnabled(false);
+			cbShift.setEnabled(false);
+			cbLine.setEnabled(false);
+			cbProductionType.setEnabled(false);
 		}
+		
+		System.out.println("productionWaste.getProductionType()"+productionWaste.getProductionType());
 	}
 
-	private static final Logger LOGGER = Logger.getLogger(ProductionWasteCreatePanel.class);
+	private static final Logger LOGGER = Logger.getLogger(BigProductionWasteViewPanel.class);
 
 	private JLabel lblProductionCode;
 	private JLabel lblProductionDate;
@@ -82,7 +73,6 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 	private JLabel lblLine;
 	private JLabel lblProductionType;
 	
-	private JButton btnInsert;
 	private JButton btnDelete;
 	private JButton btnCancel;
 	private JButton btnSave;
@@ -115,16 +105,14 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 
 	private JLabel lblBreadcrumb;
 	private JLabel lblHeader;
-	private boolean editMode;
+	
 
 	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
 	final String PRODUCTION_TYPE_BARECORE = "Barecore";
-	String title = "";
 	
-	private ProductionWasteCreatePanel parent;
+	private BigProductionWasteViewPanel parent;
 
-	public ProductionWasteCreatePanel() {
-
+	public BigProductionWasteViewPanel() {
 		parent = this;
 		productionWaste = new ProductionWaste();
 
@@ -132,10 +120,8 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(800, 600));
 		panel.setLayout(null);
-		
-		
-		
-		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Sisa Produksi 9");
+
+		lblBreadcrumb = new JLabel("ERP > Pembelian > View Hasil Produksi > Sisa Produksi 13");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 414, 25);
 		panel.add(lblBreadcrumb);
@@ -168,18 +154,6 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 		dcProductionDate = new JDateChooser(new Date());
 		dcProductionDate.setBounds(220, 110, 150, 25);
 		dcProductionDate.setDateFormatString("dd-MM-yyyy");
-		dcProductionDate.getDateEditor().addPropertyChangeListener(
-			    new PropertyChangeListener() {
-			        @Override
-			        public void propertyChange(PropertyChangeEvent e) {
-			            if(!editMode){
-			            	if ("date".equals(e.getPropertyName())) {
-			            		 makeCodeNumber(dcProductionDate.getDate());
-				            }	
-			            }   
-			        }
-			    });
-		makeCodeNumber(dcProductionDate.getDate());
 		panel.add(dcProductionDate);
 
 		lblErrorProductionDate = new JLabel();
@@ -287,39 +261,51 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 		lblErrorProductionType.setBounds(425, 230, 225, 25);
 		panel.add(lblErrorProductionType);
 
-		btnSave = new JButton("Simpan");
+		btnSave = new JButton("Edit");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (doValidate() == false) {
-					return;
-				}
-				int response = DialogBox.showInsertChoice();
-				if (response == JOptionPane.YES_OPTION) {
-					doSave();
-				}
+				MainPanel.changePanel("module.productionwaste.ui.BigProductionWasteCreatePanel",productionWaste);
 			}
 		});
 		btnSave.setBounds(925, 570, 100, 25);
 		panel.add(btnSave);
 		
-		btnInsertProdResult = new JButton("Input Hasil Produksi");
+		btnInsertProdResult = new JButton("View Hasil Produksi");
 		btnInsertProdResult.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				PopUpInputProductionResult pop = new PopUpInputProductionResult(parent);
-				pop.show();
+				PopUpViewBigProductionResult pop = new PopUpViewBigProductionResult(parent);
+				pop.setVisible(true);
 				pop.setLocationRelativeTo(null);
 			}
 		});
 		btnInsertProdResult.setBounds(765, 570, 150, 25);
 		panel.add(btnInsertProdResult);
-
+		
+		btnDelete = new JButton("Hapus");
+		btnDelete.setBounds(605,570,150,25);
+		btnDelete.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int response = DialogBox.showDeleteChoice();
+				if (response == JOptionPane.YES_OPTION){
+					try {
+						ServiceFactory.getProductionWasteBL().deleteAll(productionWaste);
+						LOGGER.info("Success Deleting Production Waste "+productionWaste.getPwCode());
+						MainPanel.changePanel("module.productionwaste.ui.BigProductionWasteListPanel");
+					} catch (SQLException e1) {
+						LOGGER.error(e1.getMessage());
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		panel.add(btnDelete);
+		
 		btnCancel = new JButton("Kembali");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 int response = DialogBox.showCloseChoice();
-				 if (response == JOptionPane.YES_OPTION) {
-					 MainPanel.changePanel("module.productionwaste.ui.ProductionWasteListPanel");
-				 }
+				 MainPanel.changePanel("module.productionwaste.ui.BigProductionWasteListPanel");
 			}
 		});
 		btnCancel.setBounds(50, 570, 100, 25);
@@ -341,109 +327,6 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 	}
 	
 	
-	protected void doSave() {
-//		productionWaste = new ProductionWaste();
-		productionWaste.setPwCode(txtProductionCode.getText());
-		productionWaste.setProductionDate(dcProductionDate.getDate());
-		productionWaste.setGroupShiftCode(cbGroupShift.getDataIndex().getGroupShiftCode());
-		productionWaste.setShiftCode(cbShift.getDataIndex().getShiftCode());
-		productionWaste.setLineCode(cbLine.getDataIndex().getLineCode());
-		productionWaste.setProductionTypeCode(cbProductionType.getDataIndex().getProductionTypeCode());
-		
-		try {
-			if(editMode){
-				ServiceFactory.getProductionWasteBL().update(productionWaste);
-				DialogBox.showEdit();
-			}
-			else {
-				productionWaste.setType("9");
-				ServiceFactory.getProductionWasteBL().save(productionWaste);
-				DialogBox.showInsert();
-			}
-			
-			MainPanel.changePanel("module.productionwaste.ui.ProductionWasteListPanel");
-		} catch (SQLException e) {
-			LOGGER.error(e.getMessage());
-			DialogBox.showErrorException();
-		}
-	}
-	
-	
-	protected boolean doValidate() {
-		boolean isValid = true;
-
-		lblErrorProductionCode.setText("");
-		lblErrorGroupShift.setText("");
-		lblErrorShift.setText("");
-		lblErrorLine.setText("");
-		lblErrorProductionType.setText("");
-		
-		if (txtProductionCode.getText() == null || txtProductionCode.getText().length() == 0) {
-			lblErrorProductionCode.setText("Textbox Kode Produksi harus diisi.");
-			isValid = false;
-		} else {
-			try {
-				if (ServiceFactory.getProductionWasteBL().isPWCodeExists(txtProductionCode.getText()) > 0) {
-					lblErrorProductionCode.setText("Kode Produksi sudah pernah diinput.");
-					isValid = false;
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				DialogBox.showErrorException();
-				isValid = false;
-			}
-		}
-
-		if (cbGroupShift.getSelectedItem() == null || cbGroupShift.getSelectedIndex() == 0) {
-			lblErrorGroupShift.setText("Combobox Group Shift harus dipilih.");
-			isValid = false;
-		} 
-
-		if (dcProductionDate.getDate() == null) {
-			lblErrorProductionDate.setText("Tanggal Produksi harus dipilih.");
-			isValid = false;
-		}
-		
-		if (cbShift.getSelectedItem() == null || cbShift.getSelectedIndex() == 0) {
-			lblErrorShift.setText("Combobox Shift harus dipilih.");
-			isValid = false;
-		}
-		
-		if (cbLine.getSelectedItem() == null || cbLine.getSelectedIndex() == 0) {
-			lblErrorLine.setText("Combobox Line harus dipilih.");
-			isValid = false;
-		}
-		
-		if (cbProductionType.getSelectedItem() == null || cbProductionType.getSelectedIndex() == 0) {
-			lblErrorProductionType.setText("Combobox Tipe Produksi harus dipilih.");
-			isValid = false;
-		}
-	
-		
-		return isValid;
-	}
-	
-	public void makeCodeNumber(Date producationDate) {
-		final String constant = "PW";
-
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(producationDate);
-		
-		String date = String.valueOf(cal.get(Calendar.DATE));
-		String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
-		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
-
-		String ordinal = null;
-		try {
-			ordinal = ServiceFactory.getProductionWasteBL().getOrdinalOfCodeNumber(Integer.valueOf(year));
-		} catch (SQLException e) {
-			LOGGER.error(e.getMessage());
-			DialogBox.showErrorException();
-		}
-		txtProductionCode.setText(new StringBuilder().append(ordinal).append("/").append(constant)
-				.append("/").append(date).append("/").append(month)
-				.append("/").append(year).toString());
-	}
 
 
 	public ProductionWaste getProductionWaste() {

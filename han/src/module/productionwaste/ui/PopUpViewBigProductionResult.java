@@ -47,8 +47,8 @@ import module.productionpk.model.ProdPKResultProduct;
 import module.productionwaste.model.ProductionResultProductWaste;
 import module.productionwaste.model.ProductionResultWaste;
 
-public class PopUpInputProductionResult extends JDialog{
-	Logger log = LogManager.getLogger(PopUpInputProductionResult.class.getName());
+public class PopUpViewBigProductionResult extends JDialog{
+	Logger log = LogManager.getLogger(PopUpViewBigProductionResult.class.getName());
 	private static final long serialVersionUID = 1L;
 	private JLabel titleLbl;
 	private JLabel pressNoLbl;
@@ -105,21 +105,21 @@ public class PopUpInputProductionResult extends JDialog{
 	private JScrollPane containerScrollPane;
 	private JPanel containerPnl;
 	private JPanel borderPanel;
-	private ProductionWasteCreatePanel createProductionPanel;
+	private BigProductionWasteViewPanel createProductionPanel;
 	private List<ProductionResultWaste> listOfPrd;
 	private boolean editMode=false;
 	private int indexEdit=0;
 	private Map<Integer, Integer> pressMap;
 	private Map<Integer, ProductionResultWaste> deletedProdResult;
 	
-	static final String KA = "PDC009-3";
-	static final String KB = "PDC009-4";
-	static final String PA = "PDC009-5";
-	static final String PB = "PDC009-6";
-	static final String NA = "PDC009-1";
-	static final String NB = "PDC009-2";
+	static final String KA = "PDC009-19";
+	static final String KB = "PDC009-20";
+	static final String PA = "PDC009-21";
+	static final String PB = "PDC009-22";
+	static final String NA = "PDC009-17";
+	static final String NB = "PDC009-18";
 	
-	public PopUpInputProductionResult(JPanel parent){
+	public PopUpViewBigProductionResult(JPanel parent){
 		super((JFrame)parent.getTopLevelAncestor());
 		createGUI();
 		initData(parent);
@@ -132,11 +132,22 @@ public class PopUpInputProductionResult extends JDialog{
 		totalGoodResultAField.setEnabled(false);
 		totalGoodResultBField.setEnabled(false);
 		totalAllGoodResultField.setEnabled(false);
+		pressNoField.setEnabled(false);
+		minuteField.setEnabled(false);
+		hourField.setEnabled(false);
+		klemGradeAField.setEnabled(false);
+		klemGradeBField.setEnabled(false);
+		protolGradeAField.setEnabled(false);
+		protolGradeBField.setEnabled(false);
+		goodResultGradeAField.setEnabled(false);
+		goodResultGradeBField.setEnabled(false);
+		addBtn.setEnabled(false);
+		saveBtn.setVisible(false);
 		pressMap = new HashMap<>();
 		deletedProdResult = new HashMap<>();
 		listOfPrd = new ArrayList<>();
 
-		createProductionPanel = (ProductionWasteCreatePanel) parent;
+		createProductionPanel = (BigProductionWasteViewPanel) parent;
 		if(createProductionPanel.getProductionWaste().getProductionResultWastes()!=null){
 			listOfPrd = createProductionPanel.getProductionWaste().getProductionResultWastes();
 			productionResultTable.setModel(new ResultTableModel(listOfPrd));
@@ -150,7 +161,7 @@ public class PopUpInputProductionResult extends JDialog{
 	private void createGUI(){
 		setLayout(null);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		setTitle("Input Hasil Produksi 9");
+		setTitle("View Hasil Produksi 13");
 		setSize(1020, 750);
 		
 		containerPnl = new JPanel();
@@ -162,7 +173,7 @@ public class PopUpInputProductionResult extends JDialog{
 		containerScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(containerScrollPane);
 		
-		titleLbl = new JLabel("Input Hasil Produksi 9");
+		titleLbl = new JLabel("View Hasil Produksi 13");
 		titleLbl.setBounds(50,10,200,30);
 		titleLbl.setFont(new Font("Arial", 1, 18));
 		containerPnl.add(titleLbl);
@@ -299,6 +310,7 @@ public class PopUpInputProductionResult extends JDialog{
 		//TODO add BTN Area
 		addBtn = new JButton("Tambah");
 		addBtn.setBounds(740,450,150,30);
+		addBtn.setEnabled(false);
 		borderPanel.add(addBtn);
 		
 		
@@ -306,6 +318,7 @@ public class PopUpInputProductionResult extends JDialog{
 		productionResultTableModel = new ResultTableModel(new ArrayList<ProductionResultWaste>());
 		productionResultTable = new JTable(productionResultTableModel);
 		productionResultTable.setFocusable(false);
+		productionResultTable.setEnabled(false);
 		
 		scrollPane = new JScrollPane(productionResultTable);
 		scrollPane.setBounds(40,600,900,150);
@@ -368,6 +381,7 @@ public class PopUpInputProductionResult extends JDialog{
 		saveBtn = new JButton("OK");
 		saveBtn.setBounds(750,1010,150,30);
 		saveBtn.setFocusable(false);
+		saveBtn.setVisible(false);
 		containerPnl.add(saveBtn);
 	}
 	
@@ -388,7 +402,7 @@ public class PopUpInputProductionResult extends JDialog{
 			}
 		});
 		
-		productionResultTable.addMouseListener(new MouseAdapter() {
+		/*productionResultTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(productionResultTable.columnAtPoint(e.getPoint())==6){
@@ -431,7 +445,7 @@ public class PopUpInputProductionResult extends JDialog{
 					}
 				}
 			}
-		});
+		});*/
 		
 		saveBtn.addActionListener(new ActionListener() {
 			
@@ -649,7 +663,7 @@ public class PopUpInputProductionResult extends JDialog{
 			totalFineA+=prd.getTotalFineA();
 			totalFineB+=prd.getTotalFineB();
 			totalAllFine+=(prd.getTotalFineA()+prd.getTotalFineB());
-			totalOutput=(totalAllFine+totalKlem+totalProtol);	
+			totalOutput=totalAllFine+totalKlem+totalProtol;
 		}
 		
 		totalOutputField.setText(totalOutput+"");

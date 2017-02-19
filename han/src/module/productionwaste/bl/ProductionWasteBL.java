@@ -130,19 +130,19 @@ public class ProductionWasteBL  {
 		return productionWasteResultProductDAO.getAllByProdPKResultID(resultID);
 	}
 	
-	public List<ProductionWaste> getAllProductionWaste() throws SQLException {
-		List<ProductionWaste> productionWastes =  productionWasteDAO.getAll();
+	public List<ProductionWaste> getAllProductionWaste(String sql) throws SQLException {
+		List<ProductionWaste> productionWastes =  productionWasteDAO.getAll(sql);
 		for (ProductionWaste productionWaste : productionWastes) {
 			if(getProductResultWasteByCode(productionWaste.getPwCode())!=null)productionWaste.setProductionResultWastes(getProductResultWasteByCode(productionWaste.getPwCode()));
 		}
 		return productionWastes;
 	}
 
-	public List<ProductionWaste> getAllProductionWasteBySimpleSearch(String value) throws SQLException {
+	public List<ProductionWaste> getAllProductionWasteBySimpleSearch(String type,String value) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProductionWasteDAO(con).getAllBySimpleSearch(value);
+			return new ProductionWasteDAO(con).getAllBySimpleSearch(type,value);
 		} finally {
 			con.close();
 		}

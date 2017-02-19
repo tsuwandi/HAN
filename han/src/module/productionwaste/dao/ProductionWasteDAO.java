@@ -27,7 +27,7 @@ public class ProductionWasteDAO {
 	private String getAllQuery = new StringBuilder()
 			.append("select p.id, p.pw_code, p.production_date, p.group_shift_code, ")
 			.append("p.shift_code, p.line_code, p.production_type_code, p.status, g.description as group_shift_desc,  ")
-			.append("s.shift_name, l.description as line_desc, pt.production_type from production_waste p ")
+			.append("s.shift_name, l.description as line_desc, pt.production_type, p.type from production_waste p ")
 			.append("inner join group_shift g on p.group_shift_code = g.group_shift_code ")
 			.append("inner join shift s on p.shift_code = s.shift_code ")
 			.append("inner join line l on p.line_code = l.line_code ")
@@ -39,7 +39,7 @@ public class ProductionWasteDAO {
 
 	private String insertQuery = new StringBuilder()
 			.append("insert into production_waste (pw_code, production_date, group_shift_code, shift_code, line_code, ")
-			.append("production_type_code, status, input_date, input_by) ").append(" values (?,?,?,?,?,?,?,?,?)")
+			.append("production_type_code, status, input_date, input_by, type) ").append(" values (?,?,?,?,?,?,?,?,?,?)")
 			.toString();
 
 	private String updateQuery = new StringBuilder()
@@ -56,11 +56,11 @@ public class ProductionWasteDAO {
 		this.connection = connection;
 	}
 
-	public List<ProductionWaste> getAll() throws SQLException {
+	public List<ProductionWaste> getAll(String sql) throws SQLException {
 		List<ProductionWaste> pprs = new ArrayList<ProductionWaste>();
 
 		try {
-			getAllStatement = connection.prepareStatement(getAllQuery);
+			getAllStatement = connection.prepareStatement(getAllQuery+sql);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
@@ -73,6 +73,7 @@ public class ProductionWasteDAO {
 				ppr.setLineCode(rs.getString("line_code"));
 				ppr.setProductionTypeCode(rs.getString("production_type_code"));
 				ppr.setStatus(rs.getString("status"));
+				ppr.setType(rs.getString("type"));
 
 				GroupShift groupShift = new GroupShift();
 				groupShift.setGroupShiftCode(rs.getString("group_shift_code"));
@@ -106,20 +107,20 @@ public class ProductionWasteDAO {
 		return pprs;
 	}
 
-	public List<ProductionWaste> getAllBySimpleSearch(String value) throws SQLException {
+	public List<ProductionWaste> getAllBySimpleSearch(String type, String value) throws SQLException {
 		List<ProductionWaste> pprs = new ArrayList<ProductionWaste>();
 		try {
 			if (null != value && !"".equals(value)) {
 				String keyword = new StringBuilder().append("%").append(value).append("%").toString();
-				String query = new StringBuilder().append(getAllQuery).append(" and")
+				String query = new StringBuilder().append(getAllQuery).append(" AND type = '"+type+"'").append(" and")
 						.append(" (lower(p.pw_code) like lower('%s')")
 						.append(" or lower(p.group_shift_code) like lower('%s')")
 						.append(" or lower(s.shift_code) like lower('%s')")
-						.append(" or lower(s.line_code) like lower('%s')")
-						.append(" or lower(s.production_type_code) like lower('%s')")
+						.append(" or lower(l.line_code) like lower('%s')")
+						.append(" or lower(p.production_type_code) like lower('%s')")
 						.append(" or lower(p.status) like lower('%s'))").toString();
 				getAllStatement = connection
-						.prepareStatement(String.format(query, keyword, keyword, keyword, keyword, keyword));
+						.prepareStatement(String.format(query, keyword, keyword, keyword, keyword, keyword,keyword));
 			} else {
 				getAllStatement = connection.prepareStatement(getAllQuery);
 			}
@@ -135,6 +136,7 @@ public class ProductionWasteDAO {
 				ppr.setLineCode(rs.getString("line_code"));
 				ppr.setProductionTypeCode(rs.getString("production_type_code"));
 				ppr.setStatus(rs.getString("status"));
+				ppr.setType(rs.getString("type"));
 
 				GroupShift groupShift = new GroupShift();
 				groupShift.setGroupShiftCode(rs.getString("group_shift_code"));
@@ -197,6 +199,7 @@ public class ProductionWasteDAO {
 			insertStatement.setString(7, ppr.getStatus());
 			insertStatement.setDate(8, DateUtil.getCurrentDate());
 			insertStatement.setString(9, "timotius");
+			insertStatement.setString(10, ppr.getType());
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {

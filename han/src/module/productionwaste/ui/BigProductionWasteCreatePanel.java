@@ -5,10 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
@@ -22,10 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
 
@@ -36,24 +30,17 @@ import com.toedter.calendar.JDateChooser;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
-import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
 import module.production.model.GroupShift;
 import module.production.model.Line;
 import module.production.model.ProductionType;
 import module.production.model.Shift;
-import module.production.ui.PopUpProductionResult;
-import module.productionwaste.model.PWProduct;
 import module.productionwaste.model.ProductionWaste;
-import module.purchaseprodresult.model.PPRProduct;
-import module.purchaseprodresult.model.PurchaseProdResult;
-import module.sn.currency.model.Currency;
-import module.supplier.model.Supplier;
 import module.util.Bridging;
 import module.util.JTextFieldLimit;
 
-public class ProductionWasteCreatePanel extends JPanel implements Bridging {
+public class BigProductionWasteCreatePanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
@@ -69,11 +56,11 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 			cbProductionType.setSelectedItem(productionWaste.getProductionType().getProductionType());
 			editMode = true;
 			dcProductionDate.setEnabled(false);
-			lblBreadcrumb.setText("ERP > Pembelian > Edit Hasil Produksi > Sisa Produksi 9");
+			lblBreadcrumb.setText("ERP > Pembelian > Edit Hasil Produksi > Sisa Produksi 13");
 		}
 	}
 
-	private static final Logger LOGGER = Logger.getLogger(ProductionWasteCreatePanel.class);
+	private static final Logger LOGGER = Logger.getLogger(BigProductionWasteCreatePanel.class);
 
 	private JLabel lblProductionCode;
 	private JLabel lblProductionDate;
@@ -121,9 +108,9 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 	final String PRODUCTION_TYPE_BARECORE = "Barecore";
 	String title = "";
 	
-	private ProductionWasteCreatePanel parent;
+	private BigProductionWasteCreatePanel parent;
 
-	public ProductionWasteCreatePanel() {
+	public BigProductionWasteCreatePanel() {
 
 		parent = this;
 		productionWaste = new ProductionWaste();
@@ -135,7 +122,7 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 		
 		
 		
-		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Sisa Produksi 9");
+		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Sisa Produksi 13");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 414, 25);
 		panel.add(lblBreadcrumb);
@@ -305,8 +292,8 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 		btnInsertProdResult = new JButton("Input Hasil Produksi");
 		btnInsertProdResult.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				PopUpInputProductionResult pop = new PopUpInputProductionResult(parent);
-				pop.show();
+				PopUpInputBigProductionResult pop = new PopUpInputBigProductionResult(parent);
+				pop.setVisible(true);
 				pop.setLocationRelativeTo(null);
 			}
 		});
@@ -318,7 +305,7 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 			public void actionPerformed(ActionEvent arg0) {
 				 int response = DialogBox.showCloseChoice();
 				 if (response == JOptionPane.YES_OPTION) {
-					 MainPanel.changePanel("module.productionwaste.ui.ProductionWasteListPanel");
+					 MainPanel.changePanel("module.productionwaste.ui.BigProductionWasteListPanel");
 				 }
 			}
 		});
@@ -356,12 +343,12 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 				DialogBox.showEdit();
 			}
 			else {
-				productionWaste.setType("9");
+				productionWaste.setType("13");
 				ServiceFactory.getProductionWasteBL().save(productionWaste);
 				DialogBox.showInsert();
 			}
 			
-			MainPanel.changePanel("module.productionwaste.ui.ProductionWasteListPanel");
+			MainPanel.changePanel("module.productionwaste.ui.BigProductionWasteListPanel");
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
