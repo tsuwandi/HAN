@@ -772,7 +772,7 @@ public class ViewBigPackingPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.packingresult.ui.ListPackingResultPanel");
+				MainPanel.changePanel("module.packingresult.ui.ListBigPackingResultPanel");
 			}
 		});
 		
@@ -780,7 +780,7 @@ public class ViewBigPackingPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.packingresult.ui.CreateNewPackingPanel",packing);
+				MainPanel.changePanel("module.packingresult.ui.CreateNewBigPackingPanel",packing);
 			}
 		});
 		

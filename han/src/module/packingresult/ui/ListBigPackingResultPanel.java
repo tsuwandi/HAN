@@ -74,7 +74,7 @@ public class ListBigPackingResultPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(packingTable.columnAtPoint(e.getPoint())==15){
-					MainPanel.changePanel("module.packingresult.ui.ViewPackingPanel", pagingPanel.getSubListData().get(packingTable.getSelectedRow()));
+					MainPanel.changePanel("module.packingresult.ui.ViewBigPackingPanel", pagingPanel.getSubListData().get(packingTable.getSelectedRow()));
 				}
 			}
 		});
@@ -83,7 +83,7 @@ public class ListBigPackingResultPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.packingresult.ui.CreateNewPackingPanel");
+				MainPanel.changePanel("module.packingresult.ui.CreateNewBigPackingPanel");
 			}
 		});
 	

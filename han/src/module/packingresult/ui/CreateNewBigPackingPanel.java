@@ -760,7 +760,7 @@ public class CreateNewBigPackingPanel extends JPanel implements Bridging {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)MainPanel.changePanel("module.packingresult.ui.ListPackingResultPanel");
+				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)MainPanel.changePanel("module.packingresult.ui.ListBigPackingResultPanel");
 			}
 		});
 	}
@@ -935,7 +935,7 @@ public class CreateNewBigPackingPanel extends JPanel implements Bridging {
 						packing.setType("13");
 						ServiceFactory.getPackingBL().save(packing);
 						DialogBox.showInsert();
-						MainPanel.changePanel("module.packingresult.ui.ListPackingResultPanel");
+						MainPanel.changePanel("module.packingresult.ui.ListBigPackingResultPanel");
 					} catch (SQLException e) {
 						log.error(e.getMessage());
 						e.printStackTrace();
@@ -1000,7 +1000,7 @@ public class CreateNewBigPackingPanel extends JPanel implements Bridging {
 						}
 						ServiceFactory.getPackingBL().update(packing);
 						DialogBox.showEdit();
-						MainPanel.changePanel("module.packingresult.ui.ListPackingResultPanel");
+						MainPanel.changePanel("module.packingresult.ui.ListBigPackingResultPanel");
 					} catch (SQLException e) {
 						log.error(e.getMessage());
 						e.printStackTrace();
