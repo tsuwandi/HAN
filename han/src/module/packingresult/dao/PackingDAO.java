@@ -19,11 +19,11 @@ public class PackingDAO {
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 	
-	private String getAllQuery = "SELECT id, packing_date, status, confirm_code, confirm_date FROM packing WHERE deleted_date IS NULL";
+	private String getAllQuery = "SELECT id, packing_date, status, confirm_code, confirm_date, type FROM packing WHERE deleted_date IS NULL";
 			
 	private String getLastIDQuery = "SELECT id FROM packing ORDER BY id DESC LIMIT 1";
 	
-	private String insertQuery = "INSERT INTO packing (id,packing_date, status, input_date, input_by) VALUES (?,?,?,?,?)";  
+	private String insertQuery = "INSERT INTO packing (id,packing_date, status, input_date, input_by,type) VALUES (?,?,?,?,?,?)";  
 	private String updateQuery = "UPDATE packing SET packing_date=?, status=?, edited_by=?, edited_date=? WHERE id =?";
 	
 	private String deleteQuery = "UPDATE packing SET deleted_date = ? , deleted_by=? WHERE id=?";
@@ -45,11 +45,11 @@ public class PackingDAO {
 		return lastID;
 	}
 	
-	public List<Packing> getAll() throws SQLException {
+	public List<Packing> getAll(String sql) throws SQLException {
 		List<Packing> packings = new ArrayList<Packing>();
 
 		try {
-			getAllStatement = connection.prepareStatement(getAllQuery);
+			getAllStatement = connection.prepareStatement(getAllQuery+sql);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
@@ -59,6 +59,7 @@ public class PackingDAO {
 				packing.setStatus(rs.getString("status"));
 				packing.setConfirmCode(rs.getString("confirm_code"));
 				packing.setConfirmDate(rs.getDate("confirm_date"));
+				packing.setType(rs.getString("type"));
 				packings.add(packing);
 			}
 
@@ -84,6 +85,7 @@ public class PackingDAO {
 				packing.setStatus(rs.getString("status"));
 				packing.setConfirmCode(rs.getString("confirm_code"));
 				packing.setConfirmDate(rs.getDate("confirm_date"));
+				packing.setType(rs.getString("type"));
 				packings.add(packing);
 			}
 
@@ -104,6 +106,7 @@ public class PackingDAO {
 			insertStatement.setString(3, packing.getStatus());
 			insertStatement.setDate(4, new Date(new java.util.Date().getTime()));
 			insertStatement.setString(5, "Michael");
+			insertStatement.setString(6, packing.getType());
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -176,6 +179,7 @@ public class PackingDAO {
 				packing.setStatus(rs.getString("status"));
 				packing.setConfirmCode(rs.getString("confirm_code"));
 				packing.setConfirmDate(rs.getDate("confirm_date"));
+				packing.setType(rs.getString("type"));
 				packings.add(packing);
 			}
 		} catch (SQLException ex) {

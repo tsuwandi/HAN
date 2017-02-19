@@ -40,8 +40,8 @@ import module.packingresult.model.PackingRM;
 import module.packingresult.model.PackingResult;
 import module.util.Bridging;
 
-public class CreateNewPackingPanel extends JPanel implements Bridging {
-	Logger log = LogManager.getLogger(CreateNewPackingPanel.class.getName());
+public class CreateNewBigPackingPanel extends JPanel implements Bridging {
+	Logger log = LogManager.getLogger(CreateNewBigPackingPanel.class.getName());
 	private JLabel packingDateLbl;
 	private JLabel unpackedStockLbl;
 	private JLabel packingResultLbl;
@@ -134,23 +134,23 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 	private String NORMAL_A="lembar barcore normal A";
 	private String NORMAL_B="lembar barcore normal B";
 	
-	private static final String BIG_CRATE_A="PDC009-9";
-	private static final String SMALL_CRATE_A="PDC009-10";
-	private static final String BIG_CRATE_A1="PDC009-11";
-	private static final String SMALL_CRATE_A1="PDC009-12";
-	private static final String BIG_CRATE_B="PDC009-13";
-	private static final String SMALL_CRATE_B="PDC009-14";
-	private static final String BIG_CRATE_BNP="PDC009-15";
-	private static final String SMALL_CRATE_BNP="PDC009-16";
-	private static final String BIG_CRATE_C="PDC009-7";
-	private static final String SMALL_CRATE_C="PDC009-8";
-	private static final String CRATE_WASTE_A="PDC009-3";
-	private static final String CRATE_WASTE_B="PDC009-4";
+	private static final String BIG_CRATE_A="PDC009-23";
+	private static final String SMALL_CRATE_A="PDC009-24";
+	private static final String BIG_CRATE_A1="PDC009-25";
+	private static final String SMALL_CRATE_A1="PDC009-26";
+	private static final String BIG_CRATE_B="PDC009-27";
+	private static final String SMALL_CRATE_B="PDC009-28";
+	private static final String BIG_CRATE_BNP="PDC009-29";
+	private static final String SMALL_CRATE_BNP="PDC009-30";
+	private static final String BIG_CRATE_C="PDC009-31";
+	private static final String SMALL_CRATE_C="PDC009-32";
+	private static final String CRATE_WASTE_A="PDC009-19";
+	private static final String CRATE_WASTE_B="PDC009-20";
 	
-	private static final String KA = "PDC009-3";
-	private static final String KB = "PDC009-4";
-	private static final String NA = "PDC009-1";
-	private static final String NB = "PDC009-2";
+	private static final String KA = "PDC009-19";
+	private static final String KB = "PDC009-20";
+	private static final String NA = "PDC009-17";
+	private static final String NB = "PDC009-18";
 	
 	private List<Inventory> inventories;
 	private List<PackingConversion> packingConversions;
@@ -163,7 +163,7 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 	
 	private JLabel lblHeader;
 	
-	public CreateNewPackingPanel() {
+	public CreateNewBigPackingPanel() {
 		createGUI();
 		initData();
 		listener();
@@ -182,12 +182,12 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(scrollPane);
 
-		JLabel lblBreadcrumb = new JLabel("ERP > Produksi > Hasil Packing 9");
+		JLabel lblBreadcrumb = new JLabel("ERP > Produksi > Hasil Packing 13");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		containerPnl.add(lblBreadcrumb);
 
-		lblHeader= new JLabel("INPUT HASIL PACKING 9");
+		lblHeader= new JLabel("INPUT HASIL PACKING 13");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		containerPnl.add(lblHeader);
@@ -932,7 +932,7 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 						}
 						packing.setPackingRMs(packingRMs);
 						packing.setPackingResults(packingResults);
-						packing.setType("9");
+						packing.setType("13");
 						ServiceFactory.getPackingBL().save(packing);
 						DialogBox.showInsert();
 						MainPanel.changePanel("module.packingresult.ui.ListPackingResultPanel");

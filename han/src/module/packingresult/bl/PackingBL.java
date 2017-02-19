@@ -43,9 +43,9 @@ public class PackingBL {
 		}
 	}
 	
-	public List<Packing> getPackings() throws SQLException{
+	public List<Packing> getPackings(String sql) throws SQLException{
 		List<Packing> packings = new ArrayList<>();
-		for (Packing packing : packingDAO.getAll()) {
+		for (Packing packing : packingDAO.getAll(sql)) {
 			packing.setPackingResults(getPackingResults(packing.getId()));
 			packing.setPackingRMs(getPackingRms(packing.getId()));
 			packings.add(packing);

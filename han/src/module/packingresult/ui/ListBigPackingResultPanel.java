@@ -32,7 +32,7 @@ import module.packingresult.model.PackingResult;
 import module.production.ui.ListProductionPanel;
 import module.util.Pagination;
 
-public class ListPackingResultPanel extends JPanel{
+public class ListBigPackingResultPanel extends JPanel{
 
 	Logger log = LogManager.getLogger(ListProductionPanel.class.getName());
 	private static final long serialVersionUID = 1L;
@@ -47,23 +47,23 @@ public class ListPackingResultPanel extends JPanel{
 	
 	PackingTableModel packingTableModel;
 	List<Packing> packings;
-	ListPackingResultPanel listPackagingResultPanel;
+	ListBigPackingResultPanel listPackagingResultPanel;
 	
-	private static final String BIG_CRATE_A="PDC009-9";
-	private static final String SMALL_CRATE_A="PDC009-10";
-	private static final String BIG_CRATE_A1="PDC009-11";
-	private static final String SMALL_CRATE_A1="PDC009-12";
-	private static final String BIG_CRATE_B="PDC009-13";
-	private static final String SMALL_CRATE_B="PDC009-14";
-	private static final String BIG_CRATE_BNP="PDC009-15";
-	private static final String SMALL_CRATE_BNP="PDC009-16";
-	private static final String BIG_CRATE_C="PDC009-7";
-	private static final String SMALL_CRATE_C="PDC009-8";
-	private static final String CRATE_WASTE_A="PDC009-3";
-	private static final String CRATE_WASTE_B="PDC009-4";
-	
+	private static final String BIG_CRATE_A="PDC009-23";
+	private static final String SMALL_CRATE_A="PDC009-24";
+	private static final String BIG_CRATE_A1="PDC009-25";
+	private static final String SMALL_CRATE_A1="PDC009-26";
+	private static final String BIG_CRATE_B="PDC009-27";
+	private static final String SMALL_CRATE_B="PDC009-28";
+	private static final String BIG_CRATE_BNP="PDC009-29";
+	private static final String SMALL_CRATE_BNP="PDC009-30";
+	private static final String BIG_CRATE_C="PDC009-31";
+	private static final String SMALL_CRATE_C="PDC009-32";
+	private static final String CRATE_WASTE_A="PDC009-19";
+	private static final String CRATE_WASTE_B="PDC009-20";
 
-	public ListPackingResultPanel() {
+
+	public ListBigPackingResultPanel() {
 		createGUI();
 		listener();
 		initData();
@@ -74,7 +74,7 @@ public class ListPackingResultPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(packingTable.columnAtPoint(e.getPoint())==15){
-					MainPanel.changePanel("module.packingresult.ui.ViewBigPackingPanel", pagingPanel.getSubListData().get(packingTable.getSelectedRow()));
+					MainPanel.changePanel("module.packingresult.ui.ViewPackingPanel", pagingPanel.getSubListData().get(packingTable.getSelectedRow()));
 				}
 			}
 		});
@@ -83,7 +83,7 @@ public class ListPackingResultPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.packingresult.ui.CreateNewBigPackingPanel");
+				MainPanel.changePanel("module.packingresult.ui.CreateNewPackingPanel");
 			}
 		});
 	
@@ -125,7 +125,7 @@ public class ListPackingResultPanel extends JPanel{
 	
 	private void initData(){
 		try {
-			packings = ServiceFactory.getPackingBL().getPackings(" AND type='9' ");
+			packings = ServiceFactory.getPackingBL().getPackings(" AND type='13' ");
 			packingTable.setModel(new PackingTableModel(packings));
 			
 			pagingPanel.setPage(1);
@@ -148,12 +148,12 @@ public class ListPackingResultPanel extends JPanel{
 		setLayout(null);
 		listPackagingResultPanel = this;
 		
-		JLabel lblBreadcrumb = new JLabel("ERP > PACKING 9");
+		JLabel lblBreadcrumb = new JLabel("ERP > PACKING 13");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("Packing 9");
+		JLabel lblHeader = new JLabel("Packing 13");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);

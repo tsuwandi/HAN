@@ -11,6 +11,7 @@ public class Packing {
 	private Date confirmDate;
 	private List<PackingResult> packingResults;
 	private List<PackingRM> packingRMs;
+	private String type;
 	
 	public int getId() {
 		return id;
@@ -53,6 +54,12 @@ public class Packing {
 	}
 	public void setPackingRMs(List<PackingRM> packingRMs) {
 		this.packingRMs = packingRMs;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	

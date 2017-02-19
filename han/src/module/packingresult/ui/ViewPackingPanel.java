@@ -182,12 +182,12 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(scrollPane);
 
-		JLabel lblBreadcrumb = new JLabel("ERP > Produksi > Hasil Packing");
+		JLabel lblBreadcrumb = new JLabel("ERP > Produksi > Hasil Packing 9");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		containerPnl.add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("INPUT HASIL PACKING");
+		JLabel lblHeader = new JLabel("VIEW HASIL PACKING 9");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		containerPnl.add(lblHeader);
@@ -540,6 +540,13 @@ public class ViewPackingPanel extends JPanel implements Bridging{
 		stockTable.setEnabled(false);
 		crateWasteAResultField.setEnabled(false);
 		crateWasteBResultField.setEnabled(false);
+		bigCrateCField.setEnabled(false);
+		smallCrateCField.setEnabled(false);
+		bigCrateCResultField.setEnabled(false);
+		smallCrateCResultField.setEnabled(false);
+		crateWasteAField.setEnabled(false);
+		crateWasteBField.setEnabled(false);
+		
 		
 		inventories = new ArrayList<>();
 		packingConversions = new ArrayList<>();
