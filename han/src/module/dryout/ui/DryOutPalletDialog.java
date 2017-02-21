@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -48,6 +49,8 @@ public class DryOutPalletDialog extends JDialog {
 
 	private DryOutCreatePanel dryOutCreatePanel;
 	private DryOutEditPanel dryOutEditPanel;
+	
+	private int totalPallet;
 
 	public DryOutPalletDialog(DryOutCreatePanel dryOutCreatePanel, DryOutEditPanel dryOutEditPanel) {
 		this.dryOutCreatePanel = dryOutCreatePanel;
@@ -87,7 +90,9 @@ public class DryOutPalletDialog extends JDialog {
 			if (dryOutCreatePanel != null) {
 				listOfPalletCard = ServiceFactory.getDryOutBL()
 						.getAllPalletByChamberId(dryOutCreatePanel.cbChamber.getDataIndex().getId());
-
+				
+				totalPallet = listOfPalletCard.size();
+				
 				for (DryOutPallet dryOutPallet : dryOutCreatePanel.getListOfDryOutPallet()) {
 					Integer index = listOfPalletCard.indexOf(dryOutPallet.getPalletCard());
 					listOfPalletCard.set(index, dryOutPallet.getPalletCard());
@@ -96,6 +101,8 @@ public class DryOutPalletDialog extends JDialog {
 				listOfPalletCard = ServiceFactory.getDryOutBL()
 						.getAllPalletByChamberId(dryOutEditPanel.cbChamber.getDataIndex().getId());
 
+				totalPallet = listOfPalletCard.size();
+				
 				for (DryOutPallet dryOutPallet : dryOutEditPanel.getDryOutPallets()) {
 					dryOutPallet.getPalletCard().setRowNum(dryOutPallet.getId());
 					if (!listOfPalletCard.contains(dryOutPallet.getPalletCard())) {
@@ -154,8 +161,6 @@ public class DryOutPalletDialog extends JDialog {
 			DryOutPallet dryOutPallet = new DryOutPallet();
 			if (palletCard.isFlag()) {
 				dryOutPallet.setPalletCard(palletCard);
-				double vol = dryOutPallet.getPalletCard().getVolume() / 1000000;
-				dryOutPallet.getPalletCard().setVolume(vol);
 				dryOutPallet.setPalletCardCode(palletCard.getPalletCardCode());
 				if (palletCard.getRowNum() != 0 && dryOutEditPanel != null)
 					dryOutPallet.setId(palletCard.getRowNum());
@@ -163,8 +168,6 @@ public class DryOutPalletDialog extends JDialog {
 			} else {
 				if (palletCard.getRowNum() != 0 && dryOutEditPanel != null) {
 					dryOutPallet.setPalletCard(palletCard);
-					double vol = dryOutPallet.getPalletCard().getVolume() / 1000000;
-					dryOutPallet.getPalletCard().setVolume(vol);
 					dryOutPallet.setPalletCardCode(palletCard.getPalletCardCode());
 					dryOutPallet.setId(palletCard.getRowNum());
 					dryOutEditPanel.listOfDeletedDryOutPallet.add(dryOutPallet);
@@ -174,6 +177,13 @@ public class DryOutPalletDialog extends JDialog {
 		
 		int sizeOut = listOfDryOutPallet.size();
 
+		int total = totalPallet - listOfDryOutPallet.size();
+		
+		if (total > 0)
+		{
+			JOptionPane.showMessageDialog(null, "Masih terdapat " + total + " kartu pallet didalam oven.", "Info", JOptionPane.INFORMATION_MESSAGE);
+		}
+		
 		if (dryOutCreatePanel != null)
 			dryOutCreatePanel.setListOfDryOutPallet(listOfDryOutPallet);
 		else if (dryOutEditPanel != null) {
@@ -213,13 +223,9 @@ public class DryOutPalletDialog extends JDialog {
 				for (DryOutPallet dryOutPallet : dryOutEditPanel.getListOfDryOutPallet()) {
 					dryOutPallet.getPalletCard().setRowNum(dryOutPallet.getId());
 					if (!listOfPalletCard.contains(dryOutPallet.getPalletCard())) {
-						double vol = dryOutPallet.getPalletCard().getVolume() / 1000000;
-						dryOutPallet.getPalletCard().setVolume(vol);
 						listOfPalletCard.add(dryOutPallet.getPalletCard());
 					} else {
 						Integer index = listOfPalletCard.indexOf(dryOutPallet.getPalletCard());
-						double vol = dryOutPallet.getPalletCard().getVolume() / 1000000;
-						dryOutPallet.getPalletCard().setVolume(vol);
 						listOfPalletCard.set(index, dryOutPallet.getPalletCard());
 					}
 				}

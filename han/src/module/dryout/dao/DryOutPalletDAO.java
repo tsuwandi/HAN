@@ -56,7 +56,7 @@ public class DryOutPalletDAO {
 				PalletCard palletCard = new PalletCard();
 				palletCard.setId(rs.getInt("id"));
 				palletCard.setPalletCardCode(rs.getString("pallet_card_code"));
-				palletCard.setVolume(rs.getDouble("volume"));
+				palletCard.setVolume(rs.getDouble("volume")/1000000);
 				palletCard.setDateIn(rs.getTimestamp("date_in"));
 				palletCard.setLength(rs.getDouble("length"));
 				palletCard.setWidth(rs.getDouble("width"));

@@ -171,14 +171,14 @@ public class PalletCard {
 			return false;
 		if (receivedDetailID != other.receivedDetailID)
 			return false;
-		if (Double.doubleToLongBits(thickness) != Double.doubleToLongBits(other.thickness))
-			return false;
-		if (Double.doubleToLongBits(total) != Double.doubleToLongBits(other.total))
-			return false;
-		if (Double.doubleToLongBits(volume) != Double.doubleToLongBits(other.volume))
-			return false;
-		if (Double.doubleToLongBits(width) != Double.doubleToLongBits(other.width))
-			return false;
+//		if (Double.doubleToLongBits(thickness) != Double.doubleToLongBits(other.thickness))
+//			return false;
+//		if (Double.doubleToLongBits(total) != Double.doubleToLongBits(other.total))
+//			return false;
+//		if (Double.doubleToLongBits(volume) != Double.doubleToLongBits(other.volume))
+//			return false;
+//		if (Double.doubleToLongBits(width) != Double.doubleToLongBits(other.width))
+//			return false;
 		return true;
 	}
 

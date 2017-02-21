@@ -151,8 +151,8 @@ public class DryInPalletDialog extends JDialog {
 			if (palletCard.isFlag()) {
 				dryInPallet.setPalletCard(palletCard);
 				
-				double vol = dryInPallet.getPalletCard().getVolume() / 1000000;
-				dryInPallet.getPalletCard().setVolume(vol);
+//				double vol = dryInPallet.getPalletCard().getVolume() / 1000000;
+//				dryInPallet.getPalletCard().setVolume(vol);
 				
 				dryInPallet.setPalletCardCode(palletCard.getPalletCardCode());
 				if (palletCard.getRowNum() != 0 && dryInEditPanel != null) {
@@ -162,8 +162,8 @@ public class DryInPalletDialog extends JDialog {
 			} else {
 				if (palletCard.getRowNum() != 0 && dryInEditPanel != null) {
 					dryInPallet.setPalletCard(palletCard);
-					double vol = dryInPallet.getPalletCard().getVolume() / 1000000;
-					dryInPallet.getPalletCard().setVolume(vol);
+//					double vol = dryInPallet.getPalletCard().getVolume() / 1000000;
+//					dryInPallet.getPalletCard().setVolume(vol);
 					
 					dryInPallet.setPalletCardCode(palletCard.getPalletCardCode());
 					dryInPallet.setId(palletCard.getRowNum());
@@ -201,13 +201,13 @@ public class DryInPalletDialog extends JDialog {
 				for (DryInPallet dryInPallet : dryInEditPanel.getDryInPallets()) {
 					dryInPallet.getPalletCard().setRowNum(dryInPallet.getId());
 					if (!listOfPalletCard.contains(dryInPallet.getPalletCard())) {
-						double vol = dryInPallet.getPalletCard().getVolume() / 1000000;
-						dryInPallet.getPalletCard().setVolume(vol);
+//						double vol = dryInPallet.getPalletCard().getVolume() / 1000000;
+//						dryInPallet.getPalletCard().setVolume(vol);
 						listOfPalletCard.add(dryInPallet.getPalletCard());
 					} else {
 						Integer index = listOfPalletCard.indexOf(dryInPallet.getPalletCard());
-						double vol = dryInPallet.getPalletCard().getVolume() / 1000000;
-						dryInPallet.getPalletCard().setVolume(vol);
+//						double vol = dryInPallet.getPalletCard().getVolume() / 1000000;
+//						dryInPallet.getPalletCard().setVolume(vol);
 						listOfPalletCard.set(index, dryInPallet.getPalletCard());
 					}
 				}
