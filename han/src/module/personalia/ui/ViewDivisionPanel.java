@@ -101,6 +101,10 @@ public class ViewDivisionPanel extends JPanel implements Bridging{
 		printBtn.setBounds(724, 589, 90, 30);
 		add(printBtn);
 		
+		JButton button = new JButton("Kembali");
+		button.setBounds(10, 589, 90, 30);
+		add(button);
+		
 		printBtn.addActionListener(new ActionListener() {
 			
 			@Override

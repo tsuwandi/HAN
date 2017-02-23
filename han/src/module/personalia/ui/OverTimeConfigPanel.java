@@ -29,6 +29,7 @@ public class OverTimeConfigPanel extends JPanel implements Bridging{
 	private JTextField searchField;
 	private List<OverTime> overTimes = new ArrayList<>();
 	private OverTimeConfigTableModel overTimeConfigTableModel;
+	private PopUpSearchOverTimePanel popUpSearchOverTimePanel;
 	
 	public OverTimeConfigPanel() {
 		setSize(1024, 630);
@@ -93,7 +94,7 @@ public class OverTimeConfigPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.personalia.ui.SearchDivisionPanel");
+				showExplicitSearch();
 			}
 		});
 
@@ -122,6 +123,13 @@ public class OverTimeConfigPanel extends JPanel implements Bridging{
 		getUserData();
 	}
 	
+	protected void showExplicitSearch() {
+		popUpSearchOverTimePanel = new PopUpSearchOverTimePanel(this);
+		popUpSearchOverTimePanel.setLocationRelativeTo(null);
+		popUpSearchOverTimePanel.setTitle("Pencarian Lanjut Lembur");
+		popUpSearchOverTimePanel.setVisible(true);
+	}
+
 	protected Division getSelectedData() {
 		int row = overTimeConfigTable.getSelectedRow();
 
