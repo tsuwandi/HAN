@@ -99,21 +99,21 @@ public class ProdPKBL  {
 		}
 	}
 	
-	public List<ProdPK> getAllProdPK() throws SQLException {
+	public List<ProdPK> getAllProdPK(String type) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProdPKDAO(con).getAll();
+			return new ProdPKDAO(con).getAll(type);
 		} finally {
 			con.close();
 		}
 	}
 
-	public List<ProdPK> getAllProdPKBySimpleSearch(String value) throws SQLException {
+	public List<ProdPK> getAllProdPKBySimpleSearch(String value, String type) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProdPKDAO(con).getAllBySimpleSearch(value);
+			return new ProdPKDAO(con).getAllBySimpleSearch(value, type);
 		} finally {
 			con.close();
 		}
@@ -206,12 +206,12 @@ public class ProdPKBL  {
 		}
 	}
 	
-	public String getOrdinalOfCodeNumber(int year) throws SQLException {
+	public String getOrdinalOfCodeNumber(int year, String type) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			return String.format("%04d",
-					new ProdPKDAO(con).getOrdinalOfCodeNumberByYear(year) + 1);
+					new ProdPKDAO(con).getOrdinalOfCodeNumberByYearAndType(year,type) + 1);
 
 		} finally {
 			con.close();

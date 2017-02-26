@@ -38,7 +38,7 @@ public class ProdPKDAO {
 
 	private String insertQuery = new StringBuilder()
 			.append("insert into prod_pk (prod_pk_code, production_date, group_shift_code, shift_code, line_code, ")
-			.append("status, input_date, input_by) ").append(" values (?,?,?,?,?,?,?,?)")
+			.append("status, input_date, input_by,type) ").append(" values (?,?,?,?,?,?,?,?,?)")
 			.toString();
 
 	private String updateQuery = new StringBuilder()
@@ -48,18 +48,21 @@ public class ProdPKDAO {
 	private String deleteQuery = "update prod_pk set deleted_date=?, deleted_by=? where id=?";
 	
 	private String getOrdinalOfCodeNumberQuery = "SELECT CONVERT(SUBSTRING_INDEX(prod_pk_code, '/', 1),UNSIGNED INTEGER) AS ordinal FROM prod_pk "
-			+ "WHERE SUBSTRING_INDEX(prod_pk_code, '/', -1) = ? "
+			+ "WHERE SUBSTRING_INDEX(prod_pk_code, '/', -1) = ? AND type = ? "
 			+ "ORDER BY ordinal DESC LIMIT 1 ";
 
 	public ProdPKDAO(Connection connection) throws SQLException {
 		this.connection = connection;
 	}
 
-	public List<ProdPK> getAll() throws SQLException {
+	public List<ProdPK> getAll(String type) throws SQLException {
 		List<ProdPK> pprs = new ArrayList<ProdPK>();
 
 		try {
-			getAllStatement = connection.prepareStatement(getAllQuery);
+			String query = new StringBuilder().append(getAllQuery).append(" and p.type=?").toString();
+		
+			getAllStatement = connection.prepareStatement(query);
+			getAllStatement.setString(1, type);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
@@ -99,7 +102,7 @@ public class ProdPKDAO {
 		return pprs;
 	}
 
-	public List<ProdPK> getAllBySimpleSearch(String value) throws SQLException {
+	public List<ProdPK> getAllBySimpleSearch(String value, String type) throws SQLException {
 		List<ProdPK> pprs = new ArrayList<ProdPK>();
 		try {
 			if (null != value && !"".equals(value)) {
@@ -109,9 +112,9 @@ public class ProdPKDAO {
 						.append(" or lower(p.group_shift_code) like lower('%s')")
 						.append(" or lower(s.shift_code) like lower('%s')")
 						.append(" or lower(s.line_code) like lower('%s')")
-						.append(" or lower(p.status) like lower('%s'))").toString();
+						.append(" or lower(p.status) like lower('%s')) and type = '%s'").toString();
 				getAllStatement = connection
-						.prepareStatement(String.format(query, keyword, keyword, keyword, keyword, keyword));
+						.prepareStatement(String.format(query, keyword, keyword, keyword, keyword, keyword, type));
 			} else {
 				getAllStatement = connection.prepareStatement(getAllQuery);
 			}
@@ -182,6 +185,7 @@ public class ProdPKDAO {
 			insertStatement.setString(6, ppr.getStatus());
 			insertStatement.setDate(7, DateUtil.getCurrentDate());
 			insertStatement.setString(8, "timotius");
+			insertStatement.setString(9, ppr.getType());
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -262,11 +266,12 @@ public class ProdPKDAO {
 		return ppr;
 	}
 	
-	public int getOrdinalOfCodeNumberByYear(int year) throws SQLException {
+	public int getOrdinalOfCodeNumberByYearAndType(int year, String type) throws SQLException {
 		int ordinal = 0;
 		try {
 			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
 			getOrdinalOfCodeNumberStatement.setInt(1, year);
+			getOrdinalOfCodeNumberStatement.setString(2, type);
 
 			ResultSet rs = getOrdinalOfCodeNumberStatement.executeQuery();
 			while (rs.next()) {

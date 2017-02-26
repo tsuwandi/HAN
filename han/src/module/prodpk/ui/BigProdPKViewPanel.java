@@ -39,21 +39,18 @@ import module.production.model.GroupShift;
 import module.production.model.Line;
 import module.production.model.ProductionType;
 import module.production.model.Shift;
+import module.productionwaste.model.PWProduct;
+import module.productionwaste.model.ProductionWaste;
 import module.util.Bridging;
 import module.util.JTextFieldLimit;
 import module.prodpk.model.ProdPKMaterial;
 import module.prodpk.model.ProdPKResultProduct;
 
-public class ProdPKCreatePanel extends JPanel implements Bridging {
+public class BigProdPKViewPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	public void invokeObjects(Object... objects) {
-		// TODO Auto-generated method stub
-	}
-
-	private static final Logger LOGGER = Logger.getLogger(ProdPKCreatePanel.class);
+	private static final Logger LOGGER = Logger.getLogger(BigProdPKViewPanel.class);
 
 	JLabel lblProductionCode;
 	JLabel lblProductionDate;
@@ -71,6 +68,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 
 	JButton btnInsert;
 	JButton btnDelete;
+	JButton btnPrint;
 	JButton btnCancel;
 	JButton btnSave;
 
@@ -112,7 +110,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
 
-	public ProdPKCreatePanel() {
+	public BigProdPKViewPanel() {
 		prodPK = new ProdPK();
 
 		setLayout(null);
@@ -120,7 +118,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		panel.setPreferredSize(new Dimension(800, 600));
 		panel.setLayout(null);
 
-		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Produksi PK (Hasil Klem) 9");
+		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Produksi PK (Hasil Klem) 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 500, 25);
 		panel.add(lblBreadcrumb);
@@ -153,16 +151,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		dcProductionDate = new JDateChooser(new Date());
 		dcProductionDate.setBounds(220, 110, 150, 25);
 		dcProductionDate.setDateFormatString("dd-MM-yyyy");
-		dcProductionDate.getDateEditor().addPropertyChangeListener(
-			    new PropertyChangeListener() {
-			        @Override
-			        public void propertyChange(PropertyChangeEvent e) {
-			            if ("date".equals(e.getPropertyName())) {
-			               makeCodeNumber(dcProductionDate.getDate());
-			            }
-			        }
-			    });
-		makeCodeNumber(dcProductionDate.getDate());
+		dcProductionDate.setEnabled(false);
 		panel.add(dcProductionDate);
 
 		lblErrorProductionDate = new JLabel();
@@ -186,6 +175,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		cbGroupShift = new ComboBox<GroupShift>();
 		cbGroupShift.setList(listOfGroupShift);
 		cbGroupShift.setBounds(220, 140, 150, 25);
+		cbGroupShift.setEnabled(false);
 		panel.add(cbGroupShift);
 
 		lblErrorGroupShift = new JLabel();
@@ -209,6 +199,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		cbShift = new ComboBox<Shift>();
 		cbShift.setList(listOfShift);
 		cbShift.setBounds(220, 170, 150, 25);
+		cbShift.setEnabled(false);
 		panel.add(cbShift);
 
 		lblErrorShift = new JLabel();
@@ -232,6 +223,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		cbLine = new ComboBox<Line>();
 		cbLine.setList(listOfLine);
 		cbLine.setBounds(220, 200, 150, 25);
+		cbLine.setEnabled(false);
 		panel.add(cbLine);
 
 		lblErrorLine = new JLabel();
@@ -301,35 +293,52 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		panel.add(lblProductionResultTotalGradeB);
 		
 		txtProductionResultTotalGradeA = new NumberField(3);
+		txtProductionResultTotalGradeA.setEnabled(false);
 		txtProductionResultTotalGradeA.setBounds(220, 380, 150, 25);
 		panel.add(txtProductionResultTotalGradeA);
 		
 		txtProductionResultTotalGradeB = new NumberField(3);
+		txtProductionResultTotalGradeB.setEnabled(false);
 		txtProductionResultTotalGradeB.setBounds(220, 410, 150, 25);
 		panel.add(txtProductionResultTotalGradeB);
 	
-		btnSave = new JButton("Simpan");
+		btnSave = new JButton("Ubah");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (doValidate() == false) {
-					return;
-				}
-				int response = DialogBox.showInsertChoice();
-				if (response == JOptionPane.YES_OPTION) {
-					doSave();
-				}
+				MainPanel.changePanel("module.prodpk.ui.BigProdPKEditPanel", prodPK);
 			}
 		});
 		btnSave.setBounds(925, 570, 100, 25);
 		panel.add(btnSave);
+		
+		btnPrint = new JButton("Cetak");
+		btnPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//doPrint();
+			}
+		});
+		btnPrint.setBounds(715, 570, 100, 25);
+		panel.add(btnPrint);
+		
+		btnDelete = new JButton("Hapus");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int response = DialogBox.showDeleteChoice();
+				if (response == JOptionPane.YES_OPTION) {
+					doDelete();
+				}
+			}
+		});
+		btnDelete.setBounds(820, 570, 100, 25);
+		panel.add(btnDelete);
 
 		btnCancel = new JButton("Kembali");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 int response = DialogBox.showCloseChoice();
-				 if (response == JOptionPane.YES_OPTION) {
-					 MainPanel.changePanel("module.prodpk.ui.ProdPKListPanel");
-				 }
+				int response = DialogBox.showCloseChoice();
+				if (response == JOptionPane.YES_OPTION) {
+					MainPanel.changePanel("module.prodpk.ui.BigProdPKListPanel");
+				}
 			}
 		});
 		btnCancel.setBounds(50, 570, 100, 25);
@@ -354,150 +363,56 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 
 	}
 	
-	protected void doSave() {
-		prodPK = new ProdPK();
-		prodPK.setProdPKCode(txtProductionCode.getText());
-		prodPK.setProductionDate(dcProductionDate.getDate());
-		prodPK.setGroupShiftCode(cbGroupShift.getDataIndex().getGroupShiftCode());
-		prodPK.setShiftCode(cbShift.getDataIndex().getShiftCode());
-		prodPK.setLineCode(cbLine.getDataIndex().getLineCode());
-		
-		listOfProdPKMaterial = prodPKMaterialDetail();
-		listOfProdPKResultProduct = prodPKResultProductDetail();
-		
+	protected void doDelete() {
 		try {
-			ServiceFactory.getProductionPKBL().save(prodPK, listOfProdPKMaterial, listOfProdPKResultProduct);
-			DialogBox.showInsert();
-			MainPanel.changePanel("module.prodpk.ui.ProdPKListPanel");
-		} catch (SQLException e) {
-			LOGGER.error(e.getMessage());
+			ServiceFactory.getProductionPKBL().deleteAll(prodPK);
+			DialogBox.showDelete();
+			MainPanel.changePanel("module.prodpk.ui.BigProdPKListPanel");
+		} catch (SQLException e1) {
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
 	
-	private List<ProdPKMaterial> prodPKMaterialDetail() {
-		List<ProdPKMaterial> listOfProdPKMaterialTemp = new ArrayList<ProdPKMaterial>();
-		
-		ProdPKMaterial pwProductKlemGradeA = new ProdPKMaterial();
-		pwProductKlemGradeA.setProductCode(AppConstants.PRODUCT_CODE_KLEM_A_TYPE_9);
-		pwProductKlemGradeA.setQty(Integer.valueOf(txtRepairKlemTotalGradeA.getText()));
-		listOfProdPKMaterialTemp.add(pwProductKlemGradeA);
-		
-		ProdPKMaterial pwProductKlemGradeB = new ProdPKMaterial();
-		pwProductKlemGradeB.setProductCode(AppConstants.PRODUCT_CODE_KLEM_B_TYPE_9);
-		pwProductKlemGradeB.setQty(Integer.valueOf(txtRepairKlemTotalGradeB.getText()));
-		listOfProdPKMaterialTemp.add(pwProductKlemGradeB);
-		
-		return listOfProdPKMaterialTemp;
-	}
-	
-	private List<ProdPKResultProduct> prodPKResultProductDetail () {
-		List<ProdPKResultProduct> listOfProdPKResultProductTemp = new ArrayList<ProdPKResultProduct>();
-		
-		ProdPKResultProduct prodPKResultProductKlemGradeA = new ProdPKResultProduct();
-		prodPKResultProductKlemGradeA.setProductCode(AppConstants.PRODUCT_CODE_PROD_RESULT_A_TYPE_9);
-		prodPKResultProductKlemGradeA.setQty(Integer.valueOf(txtProductionResultTotalGradeA.getText()));
-		listOfProdPKResultProductTemp.add(prodPKResultProductKlemGradeA);
-		
-		ProdPKResultProduct prodPKResultProductKlemGradeB = new ProdPKResultProduct();
-		prodPKResultProductKlemGradeB.setProductCode(AppConstants.PRODUCT_CODE_PROD_RESULT_B_TYPE_9);
-		prodPKResultProductKlemGradeB.setQty(Integer.valueOf(txtProductionResultTotalGradeB.getText()));
-		listOfProdPKResultProductTemp.add(prodPKResultProductKlemGradeB);
-		
-		return listOfProdPKResultProductTemp;
-	}
-	
-	protected boolean doValidate() {
-		boolean isValid = true;
+	@Override
+	public void invokeObjects(Object... objects) {
+		this.prodPK = (ProdPK) objects[0];
 
-		lblErrorProductionCode.setText("");
-		lblErrorGroupShift.setText("");
-		lblErrorShift.setText("");
-		lblErrorLine.setText("");
-		lblErrorTxtRepairKlemTotalGradeA.setText("");
-		lblErrorTxtRepairKlemTotalGradeB.setText("");
-		lblErrorTxtProductionResultTotalGradeA.setText("");
-		lblErrorTxtProductionResultTotalGradeB.setText("");
-		
-		if (txtProductionCode.getText() == null || txtProductionCode.getText().length() == 0) {
-			lblErrorProductionCode.setText("Textbox Kode Produksi harus diisi.");
-			isValid = false;
-		} else {
-			try {
-				if (ServiceFactory.getProductionPKBL().isProdPKCodeExists(txtProductionCode.getText()) > 0) {
-					lblErrorProductionCode.setText("Kode Produksi sudah pernah diinput.");
-					isValid = false;
+		loadData(prodPK.getId());
+	}
+
+	protected void loadData(Integer pwId) {
+		try {
+			prodPK = ServiceFactory.getProductionPKBL().getProdPKById(pwId);
+			listOfProdPKMaterial = ServiceFactory.getProductionPKBL().getProdPKMaterialByProdPKCode(prodPK.getProdPKCode());
+			listOfProdPKResultProduct = ServiceFactory.getProductionPKBL().getProdPKResultProductByProdPKCode(prodPK.getProdPKCode());
+
+			if (prodPK != null) {
+				txtProductionCode.setText(prodPK.getProdPKCode());
+				dcProductionDate.setDate(prodPK.getProductionDate());
+				cbGroupShift.setSelectedItem(prodPK.getGroupShift().getDescription());
+				cbShift.setSelectedItem(prodPK.getShift().getShiftName());
+				cbLine.setSelectedItem(prodPK.getLine().getDescription());
+
+				for (ProdPKMaterial prodPKMaterial : listOfProdPKMaterial) {
+					if (AppConstants.PRODUCT_CODE_KLEM_A_TYPE_12.equals(prodPKMaterial.getProductCode()))
+						txtRepairKlemTotalGradeA.setText(String.valueOf(prodPKMaterial.getQty()));
+					else if (AppConstants.PRODUCT_CODE_KLEM_B_TYPE_12.equals(prodPKMaterial.getProductCode()))
+						txtRepairKlemTotalGradeB.setText(String.valueOf(prodPKMaterial.getQty()));
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				DialogBox.showErrorException();
-				isValid = false;
+				
+				for (ProdPKResultProduct prodPKMaterial : listOfProdPKResultProduct) {
+					if (AppConstants.PRODUCT_CODE_PROD_RESULT_A_TYPE_12.equals(prodPKMaterial.getProductCode()))
+						txtProductionResultTotalGradeA.setText(String.valueOf(prodPKMaterial.getQty()));
+					else if (AppConstants.PRODUCT_CODE_PROD_RESULT_B_TYPE_12.equals(prodPKMaterial.getProductCode()))
+						txtProductionResultTotalGradeB.setText(String.valueOf(prodPKMaterial.getQty()));
+				}
 			}
-		}
-
-		if (cbGroupShift.getSelectedItem() == null || cbGroupShift.getSelectedIndex() == 0) {
-			lblErrorGroupShift.setText("Combobox Group Shift harus dipilih.");
-			isValid = false;
-		} 
-
-		if (dcProductionDate.getDate() == null) {
-			lblErrorProductionDate.setText("Tanggal Produksi harus dipilih.");
-			isValid = false;
-		}
-		
-		if (cbShift.getSelectedItem() == null || cbShift.getSelectedIndex() == 0) {
-			lblErrorShift.setText("Combobox Shift harus dipilih.");
-			isValid = false;
-		}
-		
-		if (cbLine.getSelectedItem() == null || cbLine.getSelectedIndex() == 0) {
-			lblErrorLine.setText("Combobox Line harus dipilih.");
-			isValid = false;
-		}
-		
-		if (txtRepairKlemTotalGradeA.getText() == null || txtRepairKlemTotalGradeA.getText().length() == 0) {
-			lblErrorTxtRepairKlemTotalGradeA.setText("Textbox Jumlah Grade A harus diisi.");
-			isValid = false;
-		}
-		
-		if (txtRepairKlemTotalGradeB.getText() == null || txtRepairKlemTotalGradeB.getText().length() == 0) {
-			lblErrorTxtRepairKlemTotalGradeB.setText("Textbox Jumlah Grade B harus diisi.");
-			isValid = false;
-		}
-		
-		if (txtProductionResultTotalGradeA.getText() == null || txtProductionResultTotalGradeA.getText().length() == 0) {
-			lblErrorTxtProductionResultTotalGradeA.setText("Textbox Jumlah Grade A harus diisi.");
-			isValid = false;
-		}
-		
-		if (txtProductionResultTotalGradeB.getText() == null || txtProductionResultTotalGradeB.getText().length() == 0) {
-			lblErrorTxtProductionResultTotalGradeB.setText("Textbox Jumlah Grade B harus diisi.");
-			isValid = false;
-		}
-
-		return isValid;
-	}
-	
-	public void makeCodeNumber(Date producationDate) {
-		final String constant = "PK9";
-
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(producationDate);
-		
-		String date = String.valueOf(cal.get(Calendar.DATE));
-		String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
-		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
-
-		String ordinal = null;
-		try {
-			ordinal = ServiceFactory.getProductionPKBL().getOrdinalOfCodeNumber(Integer.valueOf(year), AppConstants.TYPE_9);
-		} catch (SQLException e) {
-			LOGGER.error(e.getMessage());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
-		txtProductionCode.setText(new StringBuilder().append(ordinal).append("/").append(constant)
-				.append("/").append(date).append("/").append(month)
-				.append("/").append(year).toString());
 	}
 	
 }

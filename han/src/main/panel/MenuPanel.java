@@ -18,11 +18,11 @@ public class MenuPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public MenuPanel() {
-		setPreferredSize(new Dimension(500, 830));
+		setPreferredSize(new Dimension(500, 840));
 		setLayout(null);
 
 		AccordionMenu menu = new AccordionMenu();
-		menu.setBounds(1, 0, 200, 400);
+		menu.setBounds(1, 0, 200, 450);
 		
 		menu.addNewMenu("General", "General");
 		menu.addNewLeafTo("General", "Supplier", "Supplier", "module.supplier.ui.SupplierListPanel");
@@ -55,13 +55,14 @@ public class MenuPanel extends JPanel {
 		
 		menu.addNewMenu("Produksi", "Produksi");
 		menu.addNewLeafTo("Produksi", "Produksi", "Produksi 9", "module.production.ui.ListProductionPanel");
-		menu.addNewLeafTo("Produksi", "Produksi", "Produksi 13", "module.production.ui.ListBigProductionPanel");
+		menu.addNewLeafTo("Produksi", "Produksi", "Produksi 12", "module.production.ui.ListBigProductionPanel");
 		menu.addNewLeafTo("Produksi", "Sisa Produksi", "Downsize (Sisa Produksi) 9", "module.productionwaste.ui.ProductionWasteListPanel");
-		menu.addNewLeafTo("Produksi", "Sisa Produksi", "Downsize (Sisa Produksi) 13", "module.productionwaste.ui.BigProductionWasteListPanel");
-		menu.addNewLeafTo("Produksi", "Produksi PK", "Hasil Klem (Produksi PK)", "module.prodpk.ui.ProdPKListPanel");
+		menu.addNewLeafTo("Produksi", "Sisa Produksi", "Downsize (Sisa Produksi) 12", "module.productionwaste.ui.BigProductionWasteListPanel");
+		menu.addNewLeafTo("Produksi", "Produksi PK", "Hasil Klem (Produksi PK) 9", "module.prodpk.ui.ProdPKListPanel");
+		menu.addNewLeafTo("Produksi", "Produksi PK", "Hasil Klem (Produksi PK) 12", "module.prodpk.ui.BigProdPKListPanel");
 		menu.addNewLeafTo("Produksi", "Pembelian", "Pembelian", "module.purchaseprodresult.ui.PurchaseProdResultListPanel");
 		menu.addNewLeafTo("Produksi", "Pembelian", "Hasil Packing 9", "module.packingresult.ui.ListPackingResultPanel");
-		menu.addNewLeafTo("Produksi", "Pembelian", "Hasil Packing 13", "module.packingresult.ui.ListBigPackingResultPanel");
+		menu.addNewLeafTo("Produksi", "Pembelian", "Hasil Packing 12", "module.packingresult.ui.ListBigPackingResultPanel");
 		menu.addNewLeafTo("Produksi", "Tutup Harian", "Tutup Harian", "module.dailyclosing.ui.DailyClosingProductionPanel");
 		
 		menu.calculateAvaiableSpace();

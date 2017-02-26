@@ -4,12 +4,22 @@ public class AppConstants {
 
 	public static final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
 	public static final String PRODUCTION_TYPE_BARECORE = "Barecore";
-	public static final String PRODUCT_CODE_KLEM_A = "PDC009-3";
-	public static final String PRODUCT_CODE_KLEM_B = "PDC009-4";
-	public static final String PRODUCT_CODE_PROD_RESULT_A = "PDC009-7";
-	public static final String PRODUCT_CODE_PROD_RESULT_B = "PDC009-8";
-	public static final String PRODUCT_CODE_NORMAL_A = "PDC009-1";
-	public static final String PRODUCT_CODE_NORMAL_B = "PDC009-2";
+	public static final String PRODUCT_CODE_KLEM_A_TYPE_9 = "PDC009-3";
+	public static final String PRODUCT_CODE_KLEM_B_TYPE_9 = "PDC009-4";
+	public static final String PRODUCT_CODE_PROD_RESULT_A_TYPE_9 = "PDC009-7";
+	public static final String PRODUCT_CODE_PROD_RESULT_B_TYPE_9 = "PDC009-8";
+	public static final String PRODUCT_CODE_NORMAL_A_TYPE_9 = "PDC009-1";
+	public static final String PRODUCT_CODE_NORMAL_B_TYPE_9 = "PDC009-2";
+	
+	public static final String PRODUCT_CODE_KLEM_A_TYPE_12 = "PDC009-19";
+	public static final String PRODUCT_CODE_KLEM_B_TYPE_12 = "PDC009-20";
+	public static final String PRODUCT_CODE_PROD_RESULT_A_TYPE_12 = "PDC009-23"; // masih bingung
+	public static final String PRODUCT_CODE_PROD_RESULT_B_TYPE_12 = "PDC009-24"; // masih bingung
+	public static final String PRODUCT_CODE_NORMAL_A_TYPE_12 = "PDC009-17";
+	public static final String PRODUCT_CODE_NORMAL_B_TYPE_12 = "PDC009-18";
+	
+	public static final String TYPE_12 = "12";
+	public static final String TYPE_9 = "9";
 	
 	public static final String STATUS_COMPLETED = "COMPLETED";
 	public static final String STATUS_FINAL = "FINAL";

@@ -44,7 +44,7 @@ import module.util.JTextFieldLimit;
 import module.prodpk.model.ProdPKMaterial;
 import module.prodpk.model.ProdPKResultProduct;
 
-public class ProdPKCreatePanel extends JPanel implements Bridging {
+public class BigProdPKCreatePanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
@@ -53,7 +53,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		// TODO Auto-generated method stub
 	}
 
-	private static final Logger LOGGER = Logger.getLogger(ProdPKCreatePanel.class);
+	private static final Logger LOGGER = Logger.getLogger(BigProdPKCreatePanel.class);
 
 	JLabel lblProductionCode;
 	JLabel lblProductionDate;
@@ -112,7 +112,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
 
-	public ProdPKCreatePanel() {
+	public BigProdPKCreatePanel() {
 		prodPK = new ProdPK();
 
 		setLayout(null);
@@ -120,7 +120,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		panel.setPreferredSize(new Dimension(800, 600));
 		panel.setLayout(null);
 
-		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Produksi PK (Hasil Klem) 9");
+		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Produksi PK (Hasil Klem) 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 500, 25);
 		panel.add(lblBreadcrumb);
@@ -368,7 +368,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		try {
 			ServiceFactory.getProductionPKBL().save(prodPK, listOfProdPKMaterial, listOfProdPKResultProduct);
 			DialogBox.showInsert();
-			MainPanel.changePanel("module.prodpk.ui.ProdPKListPanel");
+			MainPanel.changePanel("module.prodpk.ui.BigProdPKListPanel");
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
@@ -379,12 +379,12 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		List<ProdPKMaterial> listOfProdPKMaterialTemp = new ArrayList<ProdPKMaterial>();
 		
 		ProdPKMaterial pwProductKlemGradeA = new ProdPKMaterial();
-		pwProductKlemGradeA.setProductCode(AppConstants.PRODUCT_CODE_KLEM_A_TYPE_9);
+		pwProductKlemGradeA.setProductCode(AppConstants.PRODUCT_CODE_KLEM_A_TYPE_12);
 		pwProductKlemGradeA.setQty(Integer.valueOf(txtRepairKlemTotalGradeA.getText()));
 		listOfProdPKMaterialTemp.add(pwProductKlemGradeA);
 		
 		ProdPKMaterial pwProductKlemGradeB = new ProdPKMaterial();
-		pwProductKlemGradeB.setProductCode(AppConstants.PRODUCT_CODE_KLEM_B_TYPE_9);
+		pwProductKlemGradeB.setProductCode(AppConstants.PRODUCT_CODE_KLEM_B_TYPE_12);
 		pwProductKlemGradeB.setQty(Integer.valueOf(txtRepairKlemTotalGradeB.getText()));
 		listOfProdPKMaterialTemp.add(pwProductKlemGradeB);
 		
@@ -395,12 +395,12 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		List<ProdPKResultProduct> listOfProdPKResultProductTemp = new ArrayList<ProdPKResultProduct>();
 		
 		ProdPKResultProduct prodPKResultProductKlemGradeA = new ProdPKResultProduct();
-		prodPKResultProductKlemGradeA.setProductCode(AppConstants.PRODUCT_CODE_PROD_RESULT_A_TYPE_9);
+		prodPKResultProductKlemGradeA.setProductCode(AppConstants.PRODUCT_CODE_PROD_RESULT_A_TYPE_12);
 		prodPKResultProductKlemGradeA.setQty(Integer.valueOf(txtProductionResultTotalGradeA.getText()));
 		listOfProdPKResultProductTemp.add(prodPKResultProductKlemGradeA);
 		
 		ProdPKResultProduct prodPKResultProductKlemGradeB = new ProdPKResultProduct();
-		prodPKResultProductKlemGradeB.setProductCode(AppConstants.PRODUCT_CODE_PROD_RESULT_B_TYPE_9);
+		prodPKResultProductKlemGradeB.setProductCode(AppConstants.PRODUCT_CODE_PROD_RESULT_B_TYPE_12);
 		prodPKResultProductKlemGradeB.setQty(Integer.valueOf(txtProductionResultTotalGradeB.getText()));
 		listOfProdPKResultProductTemp.add(prodPKResultProductKlemGradeB);
 		
@@ -479,7 +479,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 	}
 	
 	public void makeCodeNumber(Date producationDate) {
-		final String constant = "PK9";
+		final String constant = "PK12";
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(producationDate);
@@ -490,7 +490,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 
 		String ordinal = null;
 		try {
-			ordinal = ServiceFactory.getProductionPKBL().getOrdinalOfCodeNumber(Integer.valueOf(year), AppConstants.TYPE_9);
+			ordinal = ServiceFactory.getProductionPKBL().getOrdinalOfCodeNumber(Integer.valueOf(year), AppConstants.TYPE_12);
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();

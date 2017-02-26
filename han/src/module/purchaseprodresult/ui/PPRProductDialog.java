@@ -102,7 +102,7 @@ public class PPRProductDialog extends JDialog {
 
 		listOfProduct = new ArrayList<Product>();
 		try {
-			listOfProduct = ServiceFactory.getPurchaseProductResultBL().getAllByProductCode(AppConstants.PRODUCT_CODE_NORMAL_A, AppConstants.PRODUCT_CODE_NORMAL_B);
+			listOfProduct = ServiceFactory.getPurchaseProductResultBL().getAllByProductCode(AppConstants.PRODUCT_CODE_NORMAL_A_TYPE_9, AppConstants.PRODUCT_CODE_NORMAL_B_TYPE_9);
 			listOfProduct.add(0, new Product("-- Pilih Produk --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());

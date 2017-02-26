@@ -27,9 +27,9 @@ import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.prodpk.model.ProdPK;
 
-public class ProdPKListPanel extends JPanel {
+public class BigProdPKListPanel extends JPanel {
 
-	private static final Logger LOGGER = Logger.getLogger(ProdPKListPanel.class);
+	private static final Logger LOGGER = Logger.getLogger(BigProdPKListPanel.class);
 
 	JButton btnCreateNew;
 	JButton btnExport;
@@ -48,17 +48,17 @@ public class ProdPKListPanel extends JPanel {
 
 	JTable tblProdPK;
 
-	private ProdPKListPanel prodPKListPanel;
+	private BigProdPKListPanel prodPKListPanel;
 
 	private static final long serialVersionUID = 1L;
 
-	public ProdPKListPanel() {
+	public BigProdPKListPanel() {
 		prodPKListPanel = this;
 		setLayout(null);
 
 		setPreferredSize(new Dimension(1024, 768));
 
-		lblBreadcrumb = new JLabel("ERP > Produksi > Input Hasil Produksi > Produksi PK (Hasil Klem) 9");
+		lblBreadcrumb = new JLabel("ERP > Produksi > Input Hasil Produksi > Produksi PK (Hasil Klem) 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 500, 30);
 		add(lblBreadcrumb);
@@ -71,7 +71,7 @@ public class ProdPKListPanel extends JPanel {
 		btnCreateNew = new JButton("Buat Baru");
 		btnCreateNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MainPanel.changePanel("module.prodpk.ui.ProdPKCreatePanel");
+				MainPanel.changePanel("module.prodpk.ui.BigProdPKCreatePanel");
 			}
 		});
 		btnCreateNew.setBounds(700, 80, 100, 30);
@@ -127,14 +127,14 @@ public class ProdPKListPanel extends JPanel {
 					int column = target.getSelectedColumn();
 
 					if (column == 6)
-						MainPanel.changePanel("module.prodpk.ui.ProdPKViewPanel", listOfProdPK.get(row));
+						MainPanel.changePanel("module.prodpk.ui.BigProdPKViewPanel", listOfProdPK.get(row));
 				}
 			}
 		});
 
 		try {
 			listOfProdPK = new ArrayList<ProdPK>();
-			listOfProdPK = ServiceFactory.getProductionPKBL().getAllProdPK(AppConstants.TYPE_9);
+			listOfProdPK = ServiceFactory.getProductionPKBL().getAllProdPK(AppConstants.TYPE_12);
 			refreshTableProdPK();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -163,7 +163,7 @@ public class ProdPKListPanel extends JPanel {
 	public void doSearch(String value) {
 		try {
 			listOfProdPK = new ArrayList<ProdPK>();
-			listOfProdPK = ServiceFactory.getProductionPKBL().getAllProdPKBySimpleSearch(value, AppConstants.TYPE_9);
+			listOfProdPK = ServiceFactory.getProductionPKBL().getAllProdPKBySimpleSearch(value, AppConstants.TYPE_12);
 			refreshTableProdPK();
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
@@ -174,7 +174,7 @@ public class ProdPKListPanel extends JPanel {
 	/**
 	 * Method to display advanced search dialog
 	 */
-	protected void showAdvancedSearchDialog(ProdPKListPanel prodPKListPanel) {
+	protected void showAdvancedSearchDialog(BigProdPKListPanel prodPKListPanel) {
 		
 	}
 

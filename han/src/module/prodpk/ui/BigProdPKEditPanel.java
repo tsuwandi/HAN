@@ -44,16 +44,52 @@ import module.util.JTextFieldLimit;
 import module.prodpk.model.ProdPKMaterial;
 import module.prodpk.model.ProdPKResultProduct;
 
-public class ProdPKCreatePanel extends JPanel implements Bridging {
+public class BigProdPKEditPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void invokeObjects(Object... objects) {
-		// TODO Auto-generated method stub
+		this.prodPK = (ProdPK) objects[0];
+
+		loadData(prodPK.getId());
 	}
 
-	private static final Logger LOGGER = Logger.getLogger(ProdPKCreatePanel.class);
+	protected void loadData(Integer pwId) {
+		try {
+			prodPK = ServiceFactory.getProductionPKBL().getProdPKById(pwId);
+			listOfProdPKMaterial = ServiceFactory.getProductionPKBL().getProdPKMaterialByProdPKCode(prodPK.getProdPKCode());
+			listOfProdPKResultProduct = ServiceFactory.getProductionPKBL().getProdPKResultProductByProdPKCode(prodPK.getProdPKCode());
+
+			if (prodPK != null) {
+				txtProductionCode.setText(prodPK.getProdPKCode());
+				dcProductionDate.setDate(prodPK.getProductionDate());
+				cbGroupShift.setSelectedItem(prodPK.getGroupShift().getDescription());
+				cbShift.setSelectedItem(prodPK.getShift().getShiftName());
+				cbLine.setSelectedItem(prodPK.getLine().getDescription());
+
+				for (ProdPKMaterial prodPKMaterial : listOfProdPKMaterial) {
+					if (AppConstants.PRODUCT_CODE_KLEM_A_TYPE_12.equals(prodPKMaterial.getProductCode()))
+						txtRepairKlemTotalGradeA.setText(String.valueOf(prodPKMaterial.getQty()));
+					else if (AppConstants.PRODUCT_CODE_KLEM_B_TYPE_12.equals(prodPKMaterial.getProductCode()))
+						txtRepairKlemTotalGradeB.setText(String.valueOf(prodPKMaterial.getQty()));
+				}
+				
+				for (ProdPKResultProduct prodPKMaterial : listOfProdPKResultProduct) {
+					if (AppConstants.PRODUCT_CODE_PROD_RESULT_A_TYPE_12.equals(prodPKMaterial.getProductCode()))
+						txtProductionResultTotalGradeA.setText(String.valueOf(prodPKMaterial.getQty()));
+					else if (AppConstants.PRODUCT_CODE_PROD_RESULT_B_TYPE_12.equals(prodPKMaterial.getProductCode()))
+						txtProductionResultTotalGradeB.setText(String.valueOf(prodPKMaterial.getQty()));
+				}
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
+		}
+	}
+
+	private static final Logger LOGGER = Logger.getLogger(BigProdPKEditPanel.class);
 
 	JLabel lblProductionCode;
 	JLabel lblProductionDate;
@@ -112,7 +148,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
 
-	public ProdPKCreatePanel() {
+	public BigProdPKEditPanel() {
 		prodPK = new ProdPK();
 
 		setLayout(null);
@@ -120,7 +156,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		panel.setPreferredSize(new Dimension(800, 600));
 		panel.setLayout(null);
 
-		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Produksi PK (Hasil Klem) 9");
+		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Produksi PK (Hasil Klem) 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 500, 25);
 		panel.add(lblBreadcrumb);
@@ -238,10 +274,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		lblErrorLine.setForeground(Color.RED);
 		lblErrorLine.setBounds(425, 200, 225, 25);
 		panel.add(lblErrorLine);
-		
-		
 
-		
 		lblErrorTxtRepairKlemTotalGradeA = new JLabel();
 		lblErrorTxtRepairKlemTotalGradeA.setForeground(Color.RED);
 		lblErrorTxtRepairKlemTotalGradeA.setBounds(425, 290, 225, 25);
@@ -328,7 +361,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 			public void actionPerformed(ActionEvent arg0) {
 				 int response = DialogBox.showCloseChoice();
 				 if (response == JOptionPane.YES_OPTION) {
-					 MainPanel.changePanel("module.prodpk.ui.ProdPKListPanel");
+					 MainPanel.changePanel("module.prodpk.ui.BigProdPKListPanel");
 				 }
 			}
 		});
@@ -354,8 +387,8 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 
 	}
 	
+	
 	protected void doSave() {
-		prodPK = new ProdPK();
 		prodPK.setProdPKCode(txtProductionCode.getText());
 		prodPK.setProductionDate(dcProductionDate.getDate());
 		prodPK.setGroupShiftCode(cbGroupShift.getDataIndex().getGroupShiftCode());
@@ -366,9 +399,9 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		listOfProdPKResultProduct = prodPKResultProductDetail();
 		
 		try {
-			ServiceFactory.getProductionPKBL().save(prodPK, listOfProdPKMaterial, listOfProdPKResultProduct);
-			DialogBox.showInsert();
-			MainPanel.changePanel("module.prodpk.ui.ProdPKListPanel");
+			ServiceFactory.getProductionPKBL().update(prodPK, listOfProdPKMaterial, listOfProdPKResultProduct);
+			DialogBox.showEdit();
+			MainPanel.changePanel("module.prodpk.ui.BigProdPKViewPanel", prodPK);
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
@@ -376,35 +409,27 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 	}
 	
 	private List<ProdPKMaterial> prodPKMaterialDetail() {
-		List<ProdPKMaterial> listOfProdPKMaterialTemp = new ArrayList<ProdPKMaterial>();
+		for(ProdPKMaterial p : listOfProdPKMaterial) {
+			if(AppConstants.PRODUCT_CODE_KLEM_A_TYPE_12.equals(p.getProductCode())) {
+				p.setQty(Integer.valueOf(txtRepairKlemTotalGradeA.getText()));
+			} else if (AppConstants.PRODUCT_CODE_KLEM_B_TYPE_12.equals(p.getProductCode())) {
+				p.setQty(Integer.valueOf(txtRepairKlemTotalGradeB.getText()));
+			}
+		}	
 		
-		ProdPKMaterial pwProductKlemGradeA = new ProdPKMaterial();
-		pwProductKlemGradeA.setProductCode(AppConstants.PRODUCT_CODE_KLEM_A_TYPE_9);
-		pwProductKlemGradeA.setQty(Integer.valueOf(txtRepairKlemTotalGradeA.getText()));
-		listOfProdPKMaterialTemp.add(pwProductKlemGradeA);
-		
-		ProdPKMaterial pwProductKlemGradeB = new ProdPKMaterial();
-		pwProductKlemGradeB.setProductCode(AppConstants.PRODUCT_CODE_KLEM_B_TYPE_9);
-		pwProductKlemGradeB.setQty(Integer.valueOf(txtRepairKlemTotalGradeB.getText()));
-		listOfProdPKMaterialTemp.add(pwProductKlemGradeB);
-		
-		return listOfProdPKMaterialTemp;
+		return listOfProdPKMaterial;
 	}
 	
 	private List<ProdPKResultProduct> prodPKResultProductDetail () {
-		List<ProdPKResultProduct> listOfProdPKResultProductTemp = new ArrayList<ProdPKResultProduct>();
+		for(ProdPKResultProduct p : listOfProdPKResultProduct) {
+			if(AppConstants.PRODUCT_CODE_PROD_RESULT_A_TYPE_12.equals(p.getProductCode())) {
+				p.setQty(Integer.valueOf(txtProductionResultTotalGradeA.getText()));
+			} else if (AppConstants.PRODUCT_CODE_PROD_RESULT_B_TYPE_12.equals(p.getProductCode())) {
+				p.setQty(Integer.valueOf(txtProductionResultTotalGradeB.getText()));
+			}
+		}			
 		
-		ProdPKResultProduct prodPKResultProductKlemGradeA = new ProdPKResultProduct();
-		prodPKResultProductKlemGradeA.setProductCode(AppConstants.PRODUCT_CODE_PROD_RESULT_A_TYPE_9);
-		prodPKResultProductKlemGradeA.setQty(Integer.valueOf(txtProductionResultTotalGradeA.getText()));
-		listOfProdPKResultProductTemp.add(prodPKResultProductKlemGradeA);
-		
-		ProdPKResultProduct prodPKResultProductKlemGradeB = new ProdPKResultProduct();
-		prodPKResultProductKlemGradeB.setProductCode(AppConstants.PRODUCT_CODE_PROD_RESULT_B_TYPE_9);
-		prodPKResultProductKlemGradeB.setQty(Integer.valueOf(txtProductionResultTotalGradeB.getText()));
-		listOfProdPKResultProductTemp.add(prodPKResultProductKlemGradeB);
-		
-		return listOfProdPKResultProductTemp;
+		return listOfProdPKResultProduct;
 	}
 	
 	protected boolean doValidate() {
@@ -479,7 +504,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 	}
 	
 	public void makeCodeNumber(Date producationDate) {
-		final String constant = "PK9";
+		final String constant = "PK12";
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(producationDate);
@@ -490,7 +515,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 
 		String ordinal = null;
 		try {
-			ordinal = ServiceFactory.getProductionPKBL().getOrdinalOfCodeNumber(Integer.valueOf(year), AppConstants.TYPE_9);
+			ordinal = ServiceFactory.getProductionPKBL().getOrdinalOfCodeNumber(Integer.valueOf(year), AppConstants.TYPE_12);
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();

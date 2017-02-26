@@ -118,9 +118,9 @@ public class ProdPKViewPanel extends JPanel implements Bridging {
 		panel.setPreferredSize(new Dimension(800, 600));
 		panel.setLayout(null);
 
-		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Produksi PK (Hasil Klem)");
+		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Produksi PK (Hasil Klem) 9");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblBreadcrumb.setBounds(50, 10, 414, 25);
+		lblBreadcrumb.setBounds(50, 10, 500, 25);
 		panel.add(lblBreadcrumb);
 
 		lblHeader = new JLabel("Buat Baru");
@@ -395,16 +395,16 @@ public class ProdPKViewPanel extends JPanel implements Bridging {
 				cbLine.setSelectedItem(prodPK.getLine().getDescription());
 
 				for (ProdPKMaterial prodPKMaterial : listOfProdPKMaterial) {
-					if (AppConstants.PRODUCT_CODE_KLEM_A.equals(prodPKMaterial.getProductCode()))
+					if (AppConstants.PRODUCT_CODE_KLEM_A_TYPE_9.equals(prodPKMaterial.getProductCode()))
 						txtRepairKlemTotalGradeA.setText(String.valueOf(prodPKMaterial.getQty()));
-					else if (AppConstants.PRODUCT_CODE_KLEM_B.equals(prodPKMaterial.getProductCode()))
+					else if (AppConstants.PRODUCT_CODE_KLEM_B_TYPE_9.equals(prodPKMaterial.getProductCode()))
 						txtRepairKlemTotalGradeB.setText(String.valueOf(prodPKMaterial.getQty()));
 				}
 				
 				for (ProdPKResultProduct prodPKMaterial : listOfProdPKResultProduct) {
-					if (AppConstants.PRODUCT_CODE_PROD_RESULT_A.equals(prodPKMaterial.getProductCode()))
+					if (AppConstants.PRODUCT_CODE_PROD_RESULT_A_TYPE_9.equals(prodPKMaterial.getProductCode()))
 						txtProductionResultTotalGradeA.setText(String.valueOf(prodPKMaterial.getQty()));
-					else if (AppConstants.PRODUCT_CODE_PROD_RESULT_B.equals(prodPKMaterial.getProductCode()))
+					else if (AppConstants.PRODUCT_CODE_PROD_RESULT_B_TYPE_9.equals(prodPKMaterial.getProductCode()))
 						txtProductionResultTotalGradeB.setText(String.valueOf(prodPKMaterial.getQty()));
 				}
 			}
