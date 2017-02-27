@@ -464,6 +464,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		
 		scrollPane = new JScrollPane(containerPnl);
 		scrollPane.setBounds(0,0,1100,630);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(scrollPane);
 		
 		//Code Label

@@ -140,6 +140,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	JButton deleteBtn;
 	JButton printBtn;
 	JButton backBtn;
+	JButton viewSummaryBtn;
 	
 	ReceivedDetailModel receivedDetailModel;
 	PicDockingTableModel picDockingTableModel;
@@ -244,7 +245,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 			}
 		});
 		
-		printBtn.addActionListener(new ActionListener() {
+		viewSummaryBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -326,6 +327,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		
 		scrollPane = new JScrollPane(containerPnl);
 		scrollPane.setBounds(0,0,1100,630);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(scrollPane);
 		
 		//Code Label
@@ -626,6 +628,10 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 		printBtn = new JButton("Cetak");
 		printBtn.setBounds(710,840,100,30);
 		containerPnl.add(printBtn);
+		
+		viewSummaryBtn = new JButton("Lihat Summary");
+		viewSummaryBtn.setBounds(560,840,130,30);
+		containerPnl.add(viewSummaryBtn);
 		
 		backBtn = new JButton("Kembali");
 		backBtn.setBounds(50,840,100,30);
