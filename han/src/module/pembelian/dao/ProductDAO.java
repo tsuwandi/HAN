@@ -58,4 +58,38 @@ public class ProductDAO {
 
 		return products;
 	}
+	
+	public List<Product> getAllProduct() throws SQLException {
+		Connection con = null;
+		ArrayList<Product> products = new ArrayList<Product>();
+
+		try {
+			con = dataSource.getConnection();
+			getAllStatement = con.prepareStatement("SELECT * FROM PRODUCT WHERE product_code like '%P%'");
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				Product product = new Product();
+				product.setId(rs.getInt("id"));
+				product.setProductName(rs.getString("product_name"));
+				product.setProductCode(rs.getString("product_code"));
+				product.setLength(rs.getDouble("length"));
+				product.setWidth(rs.getDouble("width"));
+				product.setThickness(rs.getDouble("thickness"));
+				products.add(product);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return products;
+	}
 }

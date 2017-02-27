@@ -8,7 +8,9 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -29,8 +31,12 @@ import main.component.PagingPanel;
 import main.component.TextField;
 import main.panel.MainPanel;
 import model.User;
+import module.pembelian.model.PalletCard;
+import module.pembelian.model.Product;
 import module.pembelian.model.Received;
 import module.production.model.Production;
+import module.production.model.ProductionResult;
+import module.production.model.ProductionResultProduct;
 import module.util.Pagination;
 
 public class ListBigProductionPanel extends JPanel {
@@ -48,6 +54,8 @@ public class ListBigProductionPanel extends JPanel {
 	ProductionTableModel productionTableModel;
 	List<Production> productions;
 	ListBigProductionPanel listProductionPanel;
+	Map<String, Product> productMap;
+	Map<String, PalletCard> palletMap;
 
 	public ListBigProductionPanel() {
 		createGUI();
@@ -64,7 +72,7 @@ public class ListBigProductionPanel extends JPanel {
 						MainPanel.changePanel("module.production.ui.CreateProductionPanel", productions.get(productionTable.getSelectedRow()));
 					}
 				}*/
-				if(productionTable.columnAtPoint(e.getPoint())==10){
+				if(productionTable.columnAtPoint(e.getPoint())==11){
 					MainPanel.changePanel("module.production.ui.ViewBigProductionPanel", pagingPanel.getSubListData().get(productionTable.getSelectedRow()));
 				}
 			}
@@ -116,6 +124,16 @@ public class ListBigProductionPanel extends JPanel {
 	private void initData(){
 		try {
 			productions = ServiceFactory.getProductionBL().getProduction(" AND type = '13'");
+			productMap = new HashMap<>();
+			palletMap = new HashMap<>();
+			for (Product product : ServiceFactory.getProductionBL().getAllProduct()) {
+				productMap.put(product.getProductCode(), product);
+			}
+
+			for (PalletCard palletCard : ServiceFactory.getProductionBL().getAllPalletCard()) {
+				palletMap.put(palletCard.getPalletCardCode(), palletCard);
+			}
+			
 			productionTable.setModel(new ProductionTableModel(productions));
 			
 			pagingPanel.setPage(1);
@@ -249,6 +267,8 @@ public class ListBigProductionPanel extends JPanel {
 	        this.productions = productions;
 	    }
 	    
+	    
+	    
 	    /**
 	     * Method to get row count
 	     * @return int
@@ -261,7 +281,7 @@ public class ListBigProductionPanel extends JPanel {
 	     * Method to get Column Count
 	     */
 	    public int getColumnCount() {
-	        return 11;
+	        return 12;
 	    }
 	    
 	    /**
@@ -272,6 +292,20 @@ public class ListBigProductionPanel extends JPanel {
 	     */
 	    public Object getValueAt(int rowIndex, int columnIndex) {
 	    	Production p = productions.get(rowIndex);
+	    	double productionTotal=0;
+		    double rendemen=0;
+		    if(p.getProductionResults()!=null){
+		    	for (ProductionResult pr : p.getProductionResults()) {
+					for (ProductionResultProduct prp : pr.getListProductionResultProduct()) {
+						if(productMap.get(prp.getProductCode())!=null){
+							Product prod = productMap.get(prp.getProductCode());
+							productionTotal+= (prp.getQty()*prod.getLength()*prod.getWidth()*prod.getThickness());
+						}
+					}
+				}
+		    }
+	    	
+	    	rendemen = (productionTotal/1000000)/p.getTotalVolume();
 	        switch(columnIndex){
 	        	case 0 :
 	        		return p.getId();
@@ -290,10 +324,12 @@ public class ListBigProductionPanel extends JPanel {
 	            case 7 :
 	                return p.getTotalVolume();
 	            case 8 :
-	                return p.getProductionResults()!=null ? p.getProductionResults().size() : 0;
+	                return productionTotal/1000000;
 	            case 9 :
-	                return p.getStatus();
+	                return p.getTotalVolume()==0 ? 0 : rendemen;
 	            case 10 :
+	                return p.getStatus();
+	            case 11 :
 	                return "View";
 	            default :
 	                return "";
@@ -328,10 +364,12 @@ public class ListBigProductionPanel extends JPanel {
 	            case 7 :
 	                return "Total Bahan Baku(cm3)";
 	            case 8 :
-	                return "Total Hasil Produksi";
+	                return "Total Hasil Produksi (M3)";
 	            case 9 :
-	                return "Status";
+	                return "Rendemen (%)";
 	            case 10 :
+	                return "Status";
+	            case 11 :
 	                return "Action";
 	            default :
 	                return "";

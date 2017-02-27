@@ -47,7 +47,8 @@ public class PalletCardDAO {
 			+ "INNER JOIN dry_in d ON d.dry_in_code = dp.dry_in_code ";
 	
 	private String updateDeleteQuery = "UPDATE pallet_card SET deleted_date=?, deleted_by = ? WHERE id = ?";
-
+	
+	
 	
 	public PalletCardDAO(DataSource dataSource) throws SQLException {
 		this.dataSource = dataSource;
@@ -210,6 +211,35 @@ public class PalletCardDAO {
 
 				palletCard.setReceived(received);
 
+				palletCards.add(palletCard);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return palletCards;
+	}
+	
+	public List<PalletCard> getPalletForProduction() throws SQLException {
+		List<PalletCard> palletCards = new ArrayList<PalletCard>();
+
+		try {
+			String query = new StringBuilder().append("SELECT * FROM `pallet_card` WHERE exists (SELECT * FROM prod_rm where deleted_date IS NULL AND pallet_card.pallet_card_code = prod_rm.pallet_card_code)")
+				.toString();
+			
+			getAllForDryInPalletStatement = connection.prepareStatement(query);
+
+			ResultSet rs = getAllForDryInPalletStatement.executeQuery();
+			while (rs.next()) {
+				PalletCard palletCard = new PalletCard();
+				palletCard.setId(rs.getInt("id"));
+				palletCard.setPalletCardCode(rs.getString("pallet_card_code"));
+				palletCard.setVolume(rs.getDouble("volume") / 1000000);
+				palletCard.setLength(rs.getDouble("length"));
+				palletCard.setWidth(rs.getDouble("width"));
+				palletCard.setThickness(rs.getDouble("thickness"));
 				palletCards.add(palletCard);
 			}
 

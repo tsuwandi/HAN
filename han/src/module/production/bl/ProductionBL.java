@@ -8,6 +8,10 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import module.pembelian.dao.PalletCardDAO;
+import module.pembelian.dao.ProductDAO;
+import module.pembelian.model.PalletCard;
+import module.pembelian.model.Product;
 import module.production.dao.GroupShiftDAO;
 import module.production.dao.LineDAO;
 import module.production.dao.MachineDAO;
@@ -42,6 +46,8 @@ public class ProductionBL {
 	private ProductionResultDAO productionResultDAO;
 	private ProductionResultDetailDAO productionResultDetailDAO;
 	private ProductionTypeDAO productionTypeDAO;
+	private ProductDAO productDAO;
+	private PalletCardDAO palletCardDAO;
 	
 	public ProductionBL(DataSource dataSource) {
 		Connection con = null;
@@ -57,6 +63,8 @@ public class ProductionBL {
 			productionResultDAO = new ProductionResultDAO(con);
 			productionResultDetailDAO = new ProductionResultDetailDAO(con);
 			productionTypeDAO = new ProductionTypeDAO(con);
+			productDAO = new ProductDAO(dataSource);
+			palletCardDAO = new PalletCardDAO(con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -78,6 +86,13 @@ public class ProductionBL {
 	}
 	public List<ProductionType> getProductionType() throws SQLException {
 		return productionTypeDAO.getAll();
+	}
+	
+	public List<Product> getAllProduct()throws SQLException{
+		return productDAO.getAllProduct();
+	}
+	public List<PalletCard> getAllPalletCard()throws SQLException{
+		return palletCardDAO.getPalletForProduction();
 	}
 	
 	public String getProductionLastCode() throws SQLException{
