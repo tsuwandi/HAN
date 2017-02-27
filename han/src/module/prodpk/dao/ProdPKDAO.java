@@ -116,7 +116,10 @@ public class ProdPKDAO {
 				getAllStatement = connection
 						.prepareStatement(String.format(query, keyword, keyword, keyword, keyword, keyword, type));
 			} else {
-				getAllStatement = connection.prepareStatement(getAllQuery);
+				String query = new StringBuilder().append(getAllQuery).append(" and p.type=?").toString();
+				
+				getAllStatement = connection.prepareStatement(query);
+				getAllStatement.setString(1, type);
 			}
 
 			ResultSet rs = getAllStatement.executeQuery();
