@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.packingresult.model.Packing;
 
 
@@ -105,7 +106,7 @@ public class PackingDAO {
 			insertStatement.setDate(2, new Date(packing.getPackingDate().getTime()));
 			insertStatement.setString(3, packing.getStatus());
 			insertStatement.setDate(4, new Date(new java.util.Date().getTime()));
-			insertStatement.setString(5, "Michael");
+			insertStatement.setString(5, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.setString(6, packing.getType());
 			insertStatement.executeUpdate();
 
@@ -120,7 +121,7 @@ public class PackingDAO {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			deleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
-			deleteStatement.setString(2, "Michael");
+			deleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			deleteStatement.setInt(3, packing.getId());
 			deleteStatement.executeUpdate();
 
@@ -136,7 +137,7 @@ public class PackingDAO {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setDate(1, new Date(packing.getPackingDate().getTime()));
 			updateStatement.setString(2, packing.getStatus());
-			updateStatement.setString(3, "Michael");
+			updateStatement.setString(3, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setDate(4, new Date(new java.util.Date().getTime()));
 			updateStatement.setInt(5, packing.getId());
 			updateStatement.executeUpdate();

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.production.model.ProdRM;
 import module.production.model.ProductionResultProduct;
 import module.productionpk.model.ProdPK;
@@ -97,7 +98,7 @@ public class ProdPKResultProductDAO {
 			insertStatement.setInt(1, prodPKResultProduct.getProdPKResultID());
 			insertStatement.setString(2, prodPKResultProduct.getProductCode());
 			insertStatement.setDouble(3, prodPKResultProduct.getQty());
-			insertStatement.setString(4, "Michael");
+			insertStatement.setString(4, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.setDate(5, new Date(new java.util.Date().getTime()));
 			insertStatement.executeUpdate();
 
@@ -114,7 +115,7 @@ public class ProdPKResultProductDAO {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, prodPKResultProduct.getProductCode());
 			updateStatement.setDouble(2, prodPKResultProduct.getQty());
-			updateStatement.setString(3, "Michael");
+			updateStatement.setString(3, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setDate(4, new Date(new java.util.Date().getTime()));
 			updateStatement.setInt(5, prodPKResultProduct.getProdPKResultID());
 			updateStatement.setInt(6, prodPKResultProduct.getId());
@@ -143,7 +144,7 @@ public class ProdPKResultProductDAO {
 		try {
 			updateDeleteStatement = connection.prepareStatement(updateDeleteQuery);
 			updateDeleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
-			updateDeleteStatement.setString(2, "Michael");
+			updateDeleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			updateDeleteStatement.setInt(3, productionResultProduct.getProdPKResultID());
 			updateDeleteStatement.setInt(4, productionResultProduct.getId());
 			updateDeleteStatement.executeUpdate();

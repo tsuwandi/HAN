@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.production.model.GroupShift;
 import module.production.model.Line;
 import module.production.model.ProductionType;
@@ -198,7 +199,7 @@ public class ProductionWasteDAO {
 			insertStatement.setString(6, ppr.getProductionTypeCode());
 			insertStatement.setString(7, ppr.getStatus());
 			insertStatement.setDate(8, DateUtil.getCurrentDate());
-			insertStatement.setString(9, "timotius");
+			insertStatement.setString(9, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.setString(10, ppr.getType());
 			insertStatement.executeUpdate();
 
@@ -218,7 +219,7 @@ public class ProductionWasteDAO {
 			updateStatement.setString(5, ppr.getProductionTypeCode());
 			updateStatement.setString(6, ppr.getStatus());
 			updateStatement.setDate(7, DateUtil.getCurrentDate());
-			updateStatement.setString(8, "timotius");
+			updateStatement.setString(8, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setString(9, ppr.getPwCode());
 			updateStatement.executeUpdate();
 
@@ -231,7 +232,7 @@ public class ProductionWasteDAO {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			deleteStatement.setDate(1, DateUtil.getCurrentDate());
-			deleteStatement.setString(2, "timotius");
+			deleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			deleteStatement.setInt(3, id);
 			deleteStatement.executeUpdate();
 		} catch (SQLException ex) {

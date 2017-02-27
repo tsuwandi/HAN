@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.productionwaste.model.ProductionResultProductWaste;
 
 
@@ -95,7 +96,7 @@ public class ProductionWasteResultProductDAO {
 			insertStatement.setInt(1, prodPKResultProduct.getProdResultID());
 			insertStatement.setString(2, prodPKResultProduct.getProductCode());
 			insertStatement.setDouble(3, prodPKResultProduct.getQty());
-			insertStatement.setString(4, "Michael");
+			insertStatement.setString(4, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.setDate(5, new Date(new java.util.Date().getTime()));
 			insertStatement.executeUpdate();
 
@@ -112,7 +113,7 @@ public class ProductionWasteResultProductDAO {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, prodPKResultProduct.getProductCode());
 			updateStatement.setDouble(2, prodPKResultProduct.getQty());
-			updateStatement.setString(3, "Michael");
+			updateStatement.setString(3, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setDate(4, new Date(new java.util.Date().getTime()));
 			updateStatement.setInt(5, prodPKResultProduct.getProdResultID());
 			updateStatement.setInt(6, prodPKResultProduct.getId());
@@ -142,7 +143,7 @@ public class ProductionWasteResultProductDAO {
 		try {
 			updateDeleteStatement = connection.prepareStatement(updateDeleteQuery);
 			updateDeleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
-			updateDeleteStatement.setString(2, "Michael");
+			updateDeleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			updateDeleteStatement.setInt(3, ProductionResultProductWaste.getProdResultID());
 			updateDeleteStatement.setInt(4, ProductionResultProductWaste.getId());
 			updateDeleteStatement.executeUpdate();

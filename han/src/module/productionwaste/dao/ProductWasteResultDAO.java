@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.productionwaste.model.ProductionResultWaste;
 
 
@@ -120,7 +121,7 @@ public class ProductWasteResultDAO {
 			insertStatement.setDouble(5, ProductionResultWaste.getTotalFineB());
 			insertStatement.setDouble(6, ProductionResultWaste.getTotalProtol());
 			insertStatement.setDouble(7, ProductionResultWaste.getTotalKlem());
-			insertStatement.setString(8, "Michael");
+			insertStatement.setString(8, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.setDate(9, new Date(new java.util.Date().getTime()));
 			insertStatement.setInt(10, ProductionResultWaste.getId());
 			insertStatement.executeUpdate();
@@ -141,7 +142,7 @@ public class ProductWasteResultDAO {
 			updateStatement.setDouble(4, ProductionResultWaste.getTotalFineB());
 			updateStatement.setDouble(5, ProductionResultWaste.getTotalProtol());
 			updateStatement.setDouble(6, ProductionResultWaste.getTotalKlem());
-			updateStatement.setString(7, "Michael");
+			updateStatement.setString(7, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setDate(8, new Date(new java.util.Date().getTime()));
 			updateStatement.setString(9, ProductionResultWaste.getProdCode());
 			updateStatement.setInt(10, ProductionResultWaste.getId());
@@ -158,7 +159,7 @@ public class ProductWasteResultDAO {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			deleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
-			deleteStatement.setString(2, "Michael");
+			deleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			deleteStatement.setString(3, ProductionResultWaste.getProdCode());
 			deleteStatement.setInt(4, ProductionResultWaste.getId());
 			deleteStatement.executeUpdate();

@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import controller.ServiceFactory;
 import main.panel.LoginPanel;
 import main.panel.MainPanel;
 import module.pembelian.model.PalletCard;
@@ -133,7 +134,7 @@ public class ReceivedDetailDAO {
     		insertStatement.setDouble(3, receivedDetail.getTotalVolume());
     		insertStatement.setInt(4, receivedDetail.getTotalLog());
     		insertStatement.setDate(5, new Date(new java.util.Date().getTime()));
-    		insertStatement.setString(6, "Michael");
+    		insertStatement.setString(6, ServiceFactory.getSystemBL().getUsernameActive());
     		insertStatement.executeUpdate();
             
         } catch (SQLException ex) {
@@ -158,7 +159,7 @@ public class ReceivedDetailDAO {
     		updateStatement.setDouble(3, receivedDetail.getTotalVolume());
     		updateStatement.setInt(4, receivedDetail.getTotalLog());
     		updateStatement.setDate(5, new Date(new java.util.Date().getTime()));
-    		updateStatement.setString(6, "Michael");
+    		updateStatement.setString(6, ServiceFactory.getSystemBL().getUsernameActive());
     		updateStatement.setInt(7, receivedDetail.getId());
     		updateStatement.executeUpdate();
             
@@ -200,7 +201,7 @@ public class ReceivedDetailDAO {
 	    		
 	    		updateDeleteStatement = con.prepareStatement(updateDeleteQuery);
 	    		updateDeleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
-	    		updateDeleteStatement.setString(2, "Michael");
+	    		updateDeleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 	    		updateDeleteStatement.setInt(3, id);
 	    		updateDeleteStatement.executeUpdate();
 	            

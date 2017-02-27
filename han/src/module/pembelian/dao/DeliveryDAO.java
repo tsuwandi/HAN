@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import controller.ServiceFactory;
 import module.pembelian.model.Delivery;
 
 public class DeliveryDAO {
@@ -126,7 +127,7 @@ public class DeliveryDAO {
     		insertStatement.setInt(6, delivery.getWoodTypeID());
     		insertStatement.setInt(7, delivery.getTotalLog());
     		insertStatement.setDouble(8, delivery.getTotalVolume());
-    		insertStatement.setString(9, "Michael");
+    		insertStatement.setString(9, ServiceFactory.getSystemBL().getUsernameActive());
     		insertStatement.setDate(10, new Date(new java.util.Date().getTime()));
     		insertStatement.setString(11, delivery.getReceivedCode());
     		insertStatement.executeUpdate();
@@ -157,7 +158,7 @@ public class DeliveryDAO {
     		updateStatement.setInt(7, delivery.getTotalLog());
     		updateStatement.setDouble(8, delivery.getTotalVolume());
     		updateStatement.setDate(9, new Date(new java.util.Date().getTime()));
-    		updateStatement.setString(10, "Michael");
+    		updateStatement.setString(10, ServiceFactory.getSystemBL().getUsernameActive());
     		updateStatement.setString(11, delivery.getReceivedCode());
     		updateStatement.setInt(12, delivery.getId());
     		updateStatement.executeUpdate();

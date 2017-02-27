@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.production.model.ProdRM;
 import module.productionpk.model.ProdPK;
 import module.productionpk.model.ProdPKMaterial;
@@ -97,7 +98,7 @@ public class ProdPKMaterialDAO {
 			insertStatement.setString(1, prodPKMaterial.getProdPKCode());
 			insertStatement.setString(2, prodPKMaterial.getProductCode());
 			insertStatement.setDouble(3, prodPKMaterial.getQty());
-			insertStatement.setString(4, "Michael");
+			insertStatement.setString(4, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.setDate(5, new Date(new java.util.Date().getTime()));
 			insertStatement.executeUpdate();
 
@@ -114,7 +115,7 @@ public class ProdPKMaterialDAO {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, prodPKMaterial.getProductCode());
 			updateStatement.setDouble(2, prodPKMaterial.getQty());
-			updateStatement.setString(3, "Michael");
+			updateStatement.setString(3, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setDate(4, new Date(new java.util.Date().getTime()));
 			updateStatement.setString(5, prodPKMaterial.getProdPKCode());
 			updateStatement.setInt(6, prodPKMaterial.getId());
@@ -143,7 +144,7 @@ public class ProdPKMaterialDAO {
 		try {
 			updateDeleteStatement = connection.prepareStatement(deleteUpdateQuery);
 			updateDeleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
-			updateDeleteStatement.setString(2, "Michael");
+			updateDeleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			updateDeleteStatement.setString(3, prodPkMaterial.getProdPKCode());
 			updateDeleteStatement.setInt(4, prodPkMaterial.getId());
 			updateDeleteStatement.executeUpdate();

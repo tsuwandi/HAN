@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.production.model.Production;
 import module.production.model.ProductionResult;
 import module.productionpk.model.ProdPKResult;
@@ -121,7 +122,7 @@ public class ProductionResultDAO {
 			insertStatement.setDouble(5, productionResult.getTotalFineB());
 			insertStatement.setDouble(6, productionResult.getTotalProtol());
 			insertStatement.setDouble(7, productionResult.getTotalKlem());
-			insertStatement.setString(8, "Michael");
+			insertStatement.setString(8, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.setDate(9, new Date(new java.util.Date().getTime()));
 			insertStatement.setInt(10, productionResult.getId());
 			insertStatement.executeUpdate();
@@ -142,7 +143,7 @@ public class ProductionResultDAO {
 			updateStatement.setDouble(4, productionResult.getTotalFineB());
 			updateStatement.setDouble(5, productionResult.getTotalProtol());
 			updateStatement.setDouble(6, productionResult.getTotalKlem());
-			updateStatement.setString(7, "Michael");
+			updateStatement.setString(7, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setDate(8, new Date(new java.util.Date().getTime()));
 			updateStatement.setString(9, productionResult.getProdCode());
 			updateStatement.setInt(10, productionResult.getId());
@@ -159,7 +160,7 @@ public class ProductionResultDAO {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			deleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
-			deleteStatement.setString(2, "Michael");
+			deleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			deleteStatement.setString(3, productionResult.getProdCode());
 			deleteStatement.setInt(4, productionResult.getId());
 			deleteStatement.executeUpdate();
@@ -215,7 +216,7 @@ public class ProductionResultDAO {
 			updateDailyClosingStatement.setDate(1, DateUtil.getCurrentDate());
 			updateDailyClosingStatement.setString(2, status);
 			updateDailyClosingStatement.setDate(3, DateUtil.getCurrentDate());
-			updateDailyClosingStatement.setString(4, "timotius");
+			updateDailyClosingStatement.setString(4, ServiceFactory.getSystemBL().getUsernameActive());
 			updateDailyClosingStatement.setString(5, code);
 			updateDailyClosingStatement.executeUpdate();
 

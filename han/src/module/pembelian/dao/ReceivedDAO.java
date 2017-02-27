@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import controller.ServiceFactory;
 import module.dryin.model.DryIn;
 import module.pembelian.model.PalletCard;
 import module.pembelian.model.Received;
@@ -317,7 +318,7 @@ public class ReceivedDAO {
 			insertStatement.setString(10, received.getSupplierCode());
 			insertStatement.setInt(11, received.getSupplierCpID());
 			insertStatement.setDate(12, new Date(new java.util.Date().getTime()));
-			insertStatement.setString(13, "Michael");
+			insertStatement.setString(13, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -345,7 +346,7 @@ public class ReceivedDAO {
 			updateStatement.setString(7, received.getSupplierCode());
 			updateStatement.setInt(8, received.getSupplierCpID());
 			updateStatement.setDate(9, new Date(new java.util.Date().getTime()));
-			updateStatement.setString(10, "Michael");
+			updateStatement.setString(10, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setInt(11, received.getId());
 			updateStatement.setString(12, received.getReceivedCode());
 			updateStatement.executeUpdate();
@@ -511,7 +512,7 @@ public class ReceivedDAO {
 			updateDailyClosingStatement.setDate(1, DateUtil.getCurrentDate());
 			updateDailyClosingStatement.setString(2, received.getReceivedStatus());
 			updateDailyClosingStatement.setDate(3, DateUtil.getCurrentDate());
-			updateDailyClosingStatement.setString(4, "timotius");
+			updateDailyClosingStatement.setString(4, ServiceFactory.getSystemBL().getUsernameActive());
 			updateDailyClosingStatement.setString(5, received.getReceivedCode());
 			updateDailyClosingStatement.executeUpdate();
 

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.product.model.Product;
 import module.productionwaste.model.PWProduct;
 import module.util.DateUtil;
@@ -74,7 +75,7 @@ public class PWProductDAO {
 			insertStatement.setString(2, pwProduct.getProductCode());
 			insertStatement.setInt(3, pwProduct.getQty());
 			insertStatement.setDate(4, DateUtil.getCurrentDate());
-			insertStatement.setString(5, "timotius");
+			insertStatement.setString(5, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -88,7 +89,7 @@ public class PWProductDAO {
 			updateStatement.setString(1, pwProduct.getProductCode());
 			updateStatement.setInt(2, pwProduct.getQty());
 			updateStatement.setDate(3, DateUtil.getCurrentDate());
-			updateStatement.setString(4, "timotius");
+			updateStatement.setString(4, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setInt(5, pwProduct.getId());
 			updateStatement.executeUpdate();
 
@@ -103,7 +104,7 @@ public class PWProductDAO {
 
 			deleteStatement = connection.prepareStatement(query);
 			deleteStatement.setDate(1, DateUtil.getCurrentDate());
-			deleteStatement.setString(2, "timotius");
+			deleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			deleteStatement.setString(3, pwCode);
 			deleteStatement.executeUpdate();
 
@@ -118,7 +119,7 @@ public class PWProductDAO {
 
 			deleteStatement = connection.prepareStatement(query);
 			deleteStatement.setDate(1, DateUtil.getCurrentDate());
-			deleteStatement.setString(2, "timotius");
+			deleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			deleteStatement.setInt(3, id);
 			deleteStatement.executeUpdate();
 

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.packingresult.model.PackingRM;
 
 public class PackingRMDAO {
@@ -93,7 +94,7 @@ public class PackingRMDAO {
 			insertStatement.setInt(1, packingResult.getPackingID());
 			insertStatement.setString(2, packingResult.getProductCode());
 			insertStatement.setDouble(3, packingResult.getQty());
-			insertStatement.setString(4, "Michael");
+			insertStatement.setString(4, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.setDate(5, new Date(new java.util.Date().getTime()));
 			insertStatement.executeUpdate();
 
@@ -110,7 +111,7 @@ public class PackingRMDAO {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, packingResult.getProductCode());
 			updateStatement.setDouble(2, packingResult.getQty());
-			updateStatement.setString(3, "Michael");
+			updateStatement.setString(3, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setDate(4, new Date(new java.util.Date().getTime()));
 			updateStatement.setInt(5, packingResult.getPackingID());
 			updateStatement.setInt(6, packingResult.getId());
@@ -140,7 +141,7 @@ public class PackingRMDAO {
 		try {
 			updateDeleteStatement = connection.prepareStatement(updateDeleteQuery);
 			updateDeleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
-			updateDeleteStatement.setString(2, "Michael");
+			updateDeleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			updateDeleteStatement.setInt(3, packingResult.getPackingID());
 			updateDeleteStatement.setInt(4, packingResult.getId());
 			updateDeleteStatement.executeUpdate();
