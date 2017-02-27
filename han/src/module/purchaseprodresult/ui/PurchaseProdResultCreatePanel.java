@@ -577,7 +577,7 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 	}
 	
 	public void makeCodeNumber(Date producationDate) {
-		final String constant = "STTB";
+		final String constant = "STTB12";
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(producationDate);
