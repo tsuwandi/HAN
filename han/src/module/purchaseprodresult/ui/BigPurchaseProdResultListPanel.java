@@ -27,9 +27,9 @@ import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.purchaseprodresult.model.PurchaseProdResult;
 
-public class PurchaseProdResultListPanel extends JPanel {
+public class BigPurchaseProdResultListPanel extends JPanel {
 
-	private static final Logger LOGGER = Logger.getLogger(PurchaseProdResultListPanel.class);
+	private static final Logger LOGGER = Logger.getLogger(BigPurchaseProdResultListPanel.class);
 
 	JButton btnCreateNew;
 	JButton btnExport;
@@ -48,21 +48,21 @@ public class PurchaseProdResultListPanel extends JPanel {
 
 	JTable tblPurchaseProdResult;
 
-	private PurchaseProdResultListPanel purchaseProdResultListPanel;
+	private BigPurchaseProdResultListPanel purchaseProdResultListPanel;
 
 	private static final long serialVersionUID = 1L;
 	
 	public static final String COMPLETED = "COMPLETED";
 
-	public PurchaseProdResultListPanel() {
+	public BigPurchaseProdResultListPanel() {
 		purchaseProdResultListPanel = this;
 		setLayout(null);
 
 		setPreferredSize(new Dimension(1024, 768));
 
-		lblBreadcrumb = new JLabel("ERP > Produksi > Input Hasil Produksi > Pembelian Tipe 9");
+		lblBreadcrumb = new JLabel("ERP > Produksi > Input Hasil Produksi > Pembelian Tipe 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblBreadcrumb.setBounds(50, 10, 500, 30);
+		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
 		lblHeader = new JLabel("Input Hasil Produksi Pembelian ");
@@ -73,7 +73,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 		btnCreateNew = new JButton("Buat Baru");
 		btnCreateNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultCreatePanel");
+				MainPanel.changePanel("module.purchaseprodresult.ui.BigPurchaseProdResultCreatePanel");
 			}
 		});
 		btnCreateNew.setBounds(700, 80, 100, 30);
@@ -129,14 +129,14 @@ public class PurchaseProdResultListPanel extends JPanel {
 					int column = target.getSelectedColumn();
 
 					if (column == 4)
-						MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultViewPanel", listOfPurchaseProdResult.get(row));
+						MainPanel.changePanel("module.purchaseprodresult.ui.BigPurchaseProdResultViewPanel", listOfPurchaseProdResult.get(row));
 				}
 			}
 		});
 
 		try {
 			listOfPurchaseProdResult = new ArrayList<PurchaseProdResult>();
-			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResult(COMPLETED, AppConstants.TYPE_9);
+			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResult(COMPLETED, AppConstants.TYPE_12);
 			refreshTablePurchaseProdResult();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -165,7 +165,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 	public void doSearch(String value) {
 		try {
 			listOfPurchaseProdResult = new ArrayList<PurchaseProdResult>();
-			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResultBySimpleSearch(value, COMPLETED, AppConstants.TYPE_9);
+			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResultBySimpleSearch(value, COMPLETED, AppConstants.TYPE_12);
 			refreshTablePurchaseProdResult();
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
@@ -176,7 +176,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 	/**
 	 * Method to display advanced search dialog
 	 */
-	protected void showAdvancedSearchDialog(PurchaseProdResultListPanel purchaseProdResultListPanel) {
+	protected void showAdvancedSearchDialog(BigPurchaseProdResultListPanel purchaseProdResultListPanel) {
 		
 	}
 

@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -34,49 +36,27 @@ import com.toedter.calendar.JDateChooser;
 import controller.ServiceFactory;
 import main.component.ComboBox;
 import main.component.DialogBox;
+import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
 import module.purchaseprodresult.model.PPRNote;
 import module.purchaseprodresult.model.PPRProduct;
 import module.purchaseprodresult.model.PurchaseProdResult;
-import module.purchaseprodresult.ui.PPRProductDialog;
+import module.sn.currency.model.Currency;
 import module.supplier.model.Supplier;
 import module.util.Bridging;
 import module.util.JTextFieldLimit;
 
-public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
+public class BigPurchaseProdResultCreatePanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void invokeObjects(Object... objects) {
-		this.purchaseProductResult = (PurchaseProdResult) objects[0];
-
-		loadData(purchaseProductResult.getId());
-	}
-	
-	protected void loadData(Integer pprId) {
-		try {
-			purchaseProductResult = ServiceFactory.getPurchaseProductResultBL().getPPRById(pprId);
-			listOfPPRProduct = ServiceFactory.getPurchaseProductResultBL().getPPRProductByPPRCode(purchaseProductResult.getPprCode());
-			listOfPPRNote = ServiceFactory.getPurchaseProductResultBL().getPPRNoteByPPRCode(purchaseProductResult.getPprCode());
-			
-			if (purchaseProductResult != null) {
-				txtPurchaseProductResultCode.setText(purchaseProductResult.getPprCode());
-				cbSupplier.setSelectedItem(purchaseProductResult.getSupplier().getSuppName());
-				dcPurchaseDate.setDate(purchaseProductResult.getPurchaseDate());
-				dcDueDate.setDate(purchaseProductResult.getDueDate());
-				
-				refreshTablePPRProduct();
-				refreshTablePPRNote();
-			}
-		} catch (SQLException e1) {
-			LOGGER.error(e1.getMessage());
-			DialogBox.showErrorException();
-		}
+		// TODO Auto-generated method stub
 	}
 
-	private static final Logger LOGGER = Logger.getLogger(PurchaseProdResultCreatePanel.class);
+	private static final Logger LOGGER = Logger.getLogger(BigPurchaseProdResultCreatePanel.class);
 
 	JLabel lblPurchaseProductResultCode;
 	JLabel lblSupplier;
@@ -123,27 +103,24 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 	PPRProductTableModel pprProductTableModel = null;
 	PPRNoteTableModel pprNoteTableModel = null;
 
-	PurchaseProdResultEditPanel pprEditPanel;
-	
-	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
-	
-	public List<PPRProduct> listOfDeletedPPRProduct = new ArrayList<PPRProduct>();
-	public List<PPRNote> listOfDeletedPPRNote = new ArrayList<PPRNote>();
+	BigPurchaseProdResultCreatePanel pprCreatePanel;
 	
 	JLabel lblPurchaseNote;
 	JLabel lblPPRProduct;
 	
-	public PurchaseProdResultEditPanel() {
+	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
+
+	public BigPurchaseProdResultCreatePanel() {
 		purchaseProductResult = new PurchaseProdResult();
 
-		pprEditPanel = this;
+		pprCreatePanel = this;
 
 		setLayout(null);
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(800, 700));
 		panel.setLayout(null);
 
-		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Pembelian Tipe 9");
+		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Pembelian Tipe 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 500, 25);
 		panel.add(lblBreadcrumb);
@@ -200,7 +177,17 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		dcPurchaseDate = new JDateChooser(new Date());
 		dcPurchaseDate.setBounds(220, 140, 150, 25);
 		dcPurchaseDate.setDateFormatString("dd-MM-yyyy");
-		dcPurchaseDate.setEnabled(false);
+		
+		dcPurchaseDate.getDateEditor().addPropertyChangeListener(
+			    new PropertyChangeListener() {
+			        @Override
+			        public void propertyChange(PropertyChangeEvent e) {
+			            if ("date".equals(e.getPropertyName())) {
+			               makeCodeNumber(dcPurchaseDate.getDate());
+			            }
+			        }
+			    });
+		  makeCodeNumber(dcPurchaseDate.getDate());
 		panel.add(dcPurchaseDate);
 
 		lblErrorPurchaseDate = new JLabel();
@@ -231,7 +218,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		btnInsertPPRProduct.setBounds(820, 430, 100, 25);
 		btnInsertPPRProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showAddPPRProductDialog(pprEditPanel);
+				showAddPPRProductDialog(pprCreatePanel);
 			}
 		});
 		panel.add(btnInsertPPRProduct);
@@ -270,7 +257,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 					int column = target.getSelectedColumn();
 
 					if (column == 3) {
-						showEditPPRProductDialog(listOfPPRProduct.get(row), pprEditPanel, row);
+						showEditPPRProductDialog(listOfPPRProduct.get(row), pprCreatePanel, row);
 					}
 				}
 			}
@@ -286,7 +273,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		btnInsertPPRNote.setBounds(820, 220, 100, 25);
 		btnInsertPPRNote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showAddPPRNoteDialog(pprEditPanel);
+				showAddPPRNoteDialog(pprCreatePanel);
 			}
 		});
 		panel.add(btnInsertPPRNote);
@@ -325,7 +312,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 //					int column = target.getSelectedColumn();
 //
 //					if (column == 2) {
-//						showEditPPRNoteDialog(listOfPPRNote.get(row), pprEditPanel, row);
+//						showEditPPRNoteDialog(listOfPPRNote.get(row), pprCreatePanel, row);
 //					}
 				}
 			}
@@ -352,7 +339,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 			public void actionPerformed(ActionEvent arg0) {
 				 int response = DialogBox.showCloseChoice();
 				 if (response == JOptionPane.YES_OPTION) {
-					 MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultViewPanel", purchaseProductResult);
+					 MainPanel.changePanel("module.purchaseprodresult.ui.BigPurchaseProdResultListPanel");
 				 }
 			}
 		});
@@ -374,15 +361,16 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 	}
 	
 	protected void doSave() {
+		purchaseProductResult = new PurchaseProdResult();
 		purchaseProductResult.setPprCode(txtPurchaseProductResultCode.getText());
 		purchaseProductResult.setSuppCode(cbSupplier.getDataIndex().getSuppCode());
 		purchaseProductResult.setPurchaseDate(dcPurchaseDate.getDate());
 		purchaseProductResult.setDueDate(dcDueDate.getDate());
 		
 		try {
-			ServiceFactory.getPurchaseProductResultBL().update(purchaseProductResult, listOfPPRProduct, listOfDeletedPPRProduct, listOfPPRNote, listOfDeletedPPRNote);
-			DialogBox.showEdit();
-			MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultViewPanel", purchaseProductResult);
+			ServiceFactory.getPurchaseProductResultBL().save(purchaseProductResult, listOfPPRProduct, listOfPPRNote);
+			DialogBox.showInsert();
+			MainPanel.changePanel("module.purchaseprodresult.ui.BigPurchaseProdResultListPanel");
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.error(e.getMessage());
@@ -401,7 +389,18 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		if (txtPurchaseProductResultCode.getText() == null || txtPurchaseProductResultCode.getText().length() == 0) {
 			lblErrorPurchaseProductResultCode.setText("Textbox Kode Pembelian harus diisi.");
 			isValid = false;
-		} 
+		} else {
+			try {
+				if (ServiceFactory.getPurchaseProductResultBL().isPPRCodeExists(txtPurchaseProductResultCode.getText()) > 0) {
+					lblErrorPurchaseProductResultCode.setText("Kode Pembelian sudah pernah diinput.");
+					isValid = false;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				DialogBox.showErrorException();
+				isValid = false;
+			}
+		}
 
 		if (cbSupplier.getSelectedItem() == null || cbSupplier.getSelectedIndex() == 0) {
 			lblErrorSupplier.setText("Combobox Supplier harus dipilih.");
@@ -421,16 +420,17 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		return isValid;
 	}
 
-	protected void showAddPPRProductDialog(PurchaseProdResultEditPanel pprEditPanel) {
-		PPRProductDialog pprProductDialog = new PPRProductDialog(false, new PPRProduct(), pprEditPanel, null);
+	protected void showAddPPRProductDialog(BigPurchaseProdResultCreatePanel pprCreatePanel) {
+		BigPPRProductDialog pprProductDialog = new BigPPRProductDialog(false, new PPRProduct(),
+				pprCreatePanel, null);
 		pprProductDialog.setTitle("Barang");
 		pprProductDialog.setLocationRelativeTo(null);
 		pprProductDialog.setVisible(true);
 	}
 
-	protected void showEditPPRProductDialog(PPRProduct pprProduct, PurchaseProdResultEditPanel pprEditPanel,
-			Integer index) {
-		PPRProductDialog pprProductDialog = new PPRProductDialog(true, pprProduct, pprEditPanel, index);
+	protected void showEditPPRProductDialog(PPRProduct pprProduct,
+			BigPurchaseProdResultCreatePanel pprCreatePanel, Integer index) {
+		BigPPRProductDialog pprProductDialog = new BigPPRProductDialog(true, pprProduct, pprCreatePanel, index);
 		pprProductDialog.setTitle("Barang");
 		pprProductDialog.setLocationRelativeTo(null);
 		pprProductDialog.setVisible(true);
@@ -455,10 +455,9 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 				DialogBox.showDeleteEmptyChoice();
 				return;
 			}
-			
+
 			if (Boolean.FALSE.equals(temp.isEmpty())) {
 				for (PPRProduct s : temp) {
-					listOfDeletedPPRProduct.add(s);
 					listOfPPRProduct.remove(s);
 				}
 				refreshTablePPRProduct();
@@ -577,40 +576,40 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		}
 	}
 	
-//	public void makeCodeNumber(Date producationDate) {
-//		final String constant = "STTB";
-//
-//		Calendar cal = Calendar.getInstance();
-//		cal.setTime(producationDate);
-//		
-//		String date = String.valueOf(cal.get(Calendar.DATE));
-//		String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
-//		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
-//
-//		String ordinal = null;
-//		try {
-//			ordinal = ServiceFactory.getPurchaseProductResultBL().getOrdinalOfCodeNumber(Integer.valueOf(year));
-//		} catch (SQLException e) {
-//			LOGGER.error(e.getMessage());
-//			DialogBox.showErrorException();
-//		}
-//		
-//		txtPurchaseProductResultCode.setText(new StringBuilder().append(ordinal).append("/").append(constant)
-//				.append("/").append(date).append("/").append(month)
-//				.append("/").append(year).toString());
-//	}
+	public void makeCodeNumber(Date producationDate) {
+		final String constant = "STTB";
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(producationDate);
+		
+		String date = String.valueOf(cal.get(Calendar.DATE));
+		String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
+		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
+
+		String ordinal = null;
+		try {
+			ordinal = ServiceFactory.getPurchaseProductResultBL().getOrdinalOfCodeNumber(Integer.valueOf(year));
+		} catch (SQLException e) {
+			LOGGER.error(e.getMessage());
+			DialogBox.showErrorException();
+		}
+		
+		txtPurchaseProductResultCode.setText(new StringBuilder().append(ordinal).append("/").append(constant)
+				.append("/").append(date).append("/").append(month)
+				.append("/").append(year).toString());
+	}
 	
-	protected void showAddPPRNoteDialog(PurchaseProdResultEditPanel pprEditPanel) {
-		PPRNoteDialog pprNoteDialog = new PPRNoteDialog(false, new PPRNote(),
-				pprEditPanel, null);
+	protected void showAddPPRNoteDialog(BigPurchaseProdResultCreatePanel pprCreatePanel) {
+		BigPPRNoteDialog pprNoteDialog = new BigPPRNoteDialog(false, new PPRNote(),
+				pprCreatePanel, null);
 		pprNoteDialog.setTitle("Nota Pembelian");
 		pprNoteDialog.setLocationRelativeTo(null);
 		pprNoteDialog.setVisible(true);
 	}
 
 	protected void showEditPPRNoteDialog(PPRNote pprNote,
-			PurchaseProdResultEditPanel pprEditPanel, Integer index) {
-		PPRNoteDialog pprNoteDialog = new PPRNoteDialog(true, pprNote, pprEditPanel, index);
+			BigPurchaseProdResultCreatePanel pprCreatePanel, Integer index) {
+		BigPPRNoteDialog pprNoteDialog = new BigPPRNoteDialog(true, pprNote, pprCreatePanel, index);
 		pprNoteDialog.setTitle("Nota Pembelian");
 		pprNoteDialog.setLocationRelativeTo(null);
 		pprNoteDialog.setVisible(true);
@@ -638,7 +637,6 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 
 			if (Boolean.FALSE.equals(temp.isEmpty())) {
 				for (PPRNote s : temp) {
-					listOfDeletedPPRNote.add(s);
 					listOfPPRNote.remove(s);
 				}
 				refreshTablePPRNote();

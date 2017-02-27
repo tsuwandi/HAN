@@ -44,7 +44,7 @@ import module.supplier.model.Supplier;
 import module.util.Bridging;
 import module.util.JTextFieldLimit;
 
-public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
+public class BigPurchaseProdResultEditPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
@@ -123,7 +123,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 	PPRProductTableModel pprProductTableModel = null;
 	PPRNoteTableModel pprNoteTableModel = null;
 
-	PurchaseProdResultEditPanel pprEditPanel;
+	BigPurchaseProdResultEditPanel pprEditPanel;
 	
 	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
 	
@@ -133,7 +133,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 	JLabel lblPurchaseNote;
 	JLabel lblPPRProduct;
 	
-	public PurchaseProdResultEditPanel() {
+	public BigPurchaseProdResultEditPanel() {
 		purchaseProductResult = new PurchaseProdResult();
 
 		pprEditPanel = this;
@@ -143,7 +143,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		panel.setPreferredSize(new Dimension(800, 700));
 		panel.setLayout(null);
 
-		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Pembelian Tipe 9");
+		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Pembelian Tipe 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 500, 25);
 		panel.add(lblBreadcrumb);
@@ -352,7 +352,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 			public void actionPerformed(ActionEvent arg0) {
 				 int response = DialogBox.showCloseChoice();
 				 if (response == JOptionPane.YES_OPTION) {
-					 MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultViewPanel", purchaseProductResult);
+					 MainPanel.changePanel("module.purchaseprodresult.ui.BigPurchaseProdResultViewPanel", purchaseProductResult);
 				 }
 			}
 		});
@@ -382,7 +382,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		try {
 			ServiceFactory.getPurchaseProductResultBL().update(purchaseProductResult, listOfPPRProduct, listOfDeletedPPRProduct, listOfPPRNote, listOfDeletedPPRNote);
 			DialogBox.showEdit();
-			MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultViewPanel", purchaseProductResult);
+			MainPanel.changePanel("module.purchaseprodresult.ui.BigPurchaseProdResultViewPanel", purchaseProductResult);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.error(e.getMessage());
@@ -421,16 +421,16 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		return isValid;
 	}
 
-	protected void showAddPPRProductDialog(PurchaseProdResultEditPanel pprEditPanel) {
-		PPRProductDialog pprProductDialog = new PPRProductDialog(false, new PPRProduct(), pprEditPanel, null);
+	protected void showAddPPRProductDialog(BigPurchaseProdResultEditPanel pprEditPanel) {
+		BigPPRProductDialog pprProductDialog = new BigPPRProductDialog(false, new PPRProduct(), pprEditPanel, null);
 		pprProductDialog.setTitle("Barang");
 		pprProductDialog.setLocationRelativeTo(null);
 		pprProductDialog.setVisible(true);
 	}
 
-	protected void showEditPPRProductDialog(PPRProduct pprProduct, PurchaseProdResultEditPanel pprEditPanel,
+	protected void showEditPPRProductDialog(PPRProduct pprProduct, BigPurchaseProdResultEditPanel pprEditPanel,
 			Integer index) {
-		PPRProductDialog pprProductDialog = new PPRProductDialog(true, pprProduct, pprEditPanel, index);
+		BigPPRProductDialog pprProductDialog = new BigPPRProductDialog(true, pprProduct, pprEditPanel, index);
 		pprProductDialog.setTitle("Barang");
 		pprProductDialog.setLocationRelativeTo(null);
 		pprProductDialog.setVisible(true);
@@ -600,8 +600,8 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 //				.append("/").append(year).toString());
 //	}
 	
-	protected void showAddPPRNoteDialog(PurchaseProdResultEditPanel pprEditPanel) {
-		PPRNoteDialog pprNoteDialog = new PPRNoteDialog(false, new PPRNote(),
+	protected void showAddPPRNoteDialog(BigPurchaseProdResultEditPanel pprEditPanel) {
+		BigPPRNoteDialog pprNoteDialog = new BigPPRNoteDialog(false, new PPRNote(),
 				pprEditPanel, null);
 		pprNoteDialog.setTitle("Nota Pembelian");
 		pprNoteDialog.setLocationRelativeTo(null);
@@ -609,8 +609,8 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 	}
 
 	protected void showEditPPRNoteDialog(PPRNote pprNote,
-			PurchaseProdResultEditPanel pprEditPanel, Integer index) {
-		PPRNoteDialog pprNoteDialog = new PPRNoteDialog(true, pprNote, pprEditPanel, index);
+			BigPurchaseProdResultEditPanel pprEditPanel, Integer index) {
+		BigPPRNoteDialog pprNoteDialog = new BigPPRNoteDialog(true, pprNote, pprEditPanel, index);
 		pprNoteDialog.setTitle("Nota Pembelian");
 		pprNoteDialog.setLocationRelativeTo(null);
 		pprNoteDialog.setVisible(true);

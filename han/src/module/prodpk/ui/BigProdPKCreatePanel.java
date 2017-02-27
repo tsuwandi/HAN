@@ -361,6 +361,7 @@ public class BigProdPKCreatePanel extends JPanel implements Bridging {
 		prodPK.setGroupShiftCode(cbGroupShift.getDataIndex().getGroupShiftCode());
 		prodPK.setShiftCode(cbShift.getDataIndex().getShiftCode());
 		prodPK.setLineCode(cbLine.getDataIndex().getLineCode());
+		prodPK.setType(AppConstants.TYPE_12);
 		
 		listOfProdPKMaterial = prodPKMaterialDetail();
 		listOfProdPKResultProduct = prodPKResultProductDetail();

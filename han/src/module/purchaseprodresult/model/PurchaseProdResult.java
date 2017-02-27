@@ -22,6 +22,7 @@ public class PurchaseProdResult implements Serializable {
 	private String editedBy;
 	private Date deletedDate;
 	private String deletedBy;
+	private String type;
 
 	public int getId() {
 		return id;
@@ -270,6 +271,14 @@ public class PurchaseProdResult implements Serializable {
 
 	public void setPaymentDate(Date paymentDate) {
 		this.paymentDate = paymentDate;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

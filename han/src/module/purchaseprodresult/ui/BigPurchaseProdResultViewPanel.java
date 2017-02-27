@@ -7,11 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -39,44 +36,15 @@ import main.panel.MainPanel;
 import module.purchaseprodresult.model.PPRNote;
 import module.purchaseprodresult.model.PPRProduct;
 import module.purchaseprodresult.model.PurchaseProdResult;
-import module.purchaseprodresult.ui.PPRProductDialog;
 import module.supplier.model.Supplier;
 import module.util.Bridging;
 import module.util.JTextFieldLimit;
 
-public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
+public class BigPurchaseProdResultViewPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	public void invokeObjects(Object... objects) {
-		this.purchaseProductResult = (PurchaseProdResult) objects[0];
-
-		loadData(purchaseProductResult.getId());
-	}
-	
-	protected void loadData(Integer pprId) {
-		try {
-			purchaseProductResult = ServiceFactory.getPurchaseProductResultBL().getPPRById(pprId);
-			listOfPPRProduct = ServiceFactory.getPurchaseProductResultBL().getPPRProductByPPRCode(purchaseProductResult.getPprCode());
-			listOfPPRNote = ServiceFactory.getPurchaseProductResultBL().getPPRNoteByPPRCode(purchaseProductResult.getPprCode());
-			
-			if (purchaseProductResult != null) {
-				txtPurchaseProductResultCode.setText(purchaseProductResult.getPprCode());
-				cbSupplier.setSelectedItem(purchaseProductResult.getSupplier().getSuppName());
-				dcPurchaseDate.setDate(purchaseProductResult.getPurchaseDate());
-				dcDueDate.setDate(purchaseProductResult.getDueDate());
-				
-				refreshTablePPRProduct();
-				refreshTablePPRNote();
-			}
-		} catch (SQLException e1) {
-			LOGGER.error(e1.getMessage());
-			DialogBox.showErrorException();
-		}
-	}
-
-	private static final Logger LOGGER = Logger.getLogger(PurchaseProdResultCreatePanel.class);
+	private static final Logger LOGGER = Logger.getLogger(BigPurchaseProdResultViewPanel.class);
 
 	JLabel lblPurchaseProductResultCode;
 	JLabel lblSupplier;
@@ -90,6 +58,8 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 	JButton btnDeletePPRNote;
 	JButton btnCancel;
 	JButton btnSave;
+	JButton btnDelete;
+	JButton btnPrint;
 
 	JPanel panel;
 	JScrollPane scrollPane;
@@ -123,27 +93,23 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 	PPRProductTableModel pprProductTableModel = null;
 	PPRNoteTableModel pprNoteTableModel = null;
 
-	PurchaseProdResultEditPanel pprEditPanel;
-	
 	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
 	
-	public List<PPRProduct> listOfDeletedPPRProduct = new ArrayList<PPRProduct>();
-	public List<PPRNote> listOfDeletedPPRNote = new ArrayList<PPRNote>();
+	private BigPurchaseProdResultViewPanel pprViewPanel;
 	
 	JLabel lblPurchaseNote;
 	JLabel lblPPRProduct;
-	
-	public PurchaseProdResultEditPanel() {
-		purchaseProductResult = new PurchaseProdResult();
 
-		pprEditPanel = this;
+	public BigPurchaseProdResultViewPanel() {
+		pprViewPanel = this;
+		purchaseProductResult = new PurchaseProdResult();
 
 		setLayout(null);
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(800, 700));
 		panel.setLayout(null);
 
-		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Pembelian Tipe 9");
+		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Pembelian Tipe 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 500, 25);
 		panel.add(lblBreadcrumb);
@@ -186,6 +152,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		cbSupplier = new ComboBox<Supplier>();
 		cbSupplier.setList(listOfSupplier);
 		cbSupplier.setBounds(220, 110, 150, 25);
+		cbSupplier.setEnabled(false);
 		panel.add(cbSupplier);
 
 		lblErrorSupplier = new JLabel();
@@ -199,8 +166,8 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 
 		dcPurchaseDate = new JDateChooser(new Date());
 		dcPurchaseDate.setBounds(220, 140, 150, 25);
-		dcPurchaseDate.setDateFormatString("dd-MM-yyyy");
 		dcPurchaseDate.setEnabled(false);
+		dcPurchaseDate.setDateFormatString("dd-MM-yyyy");
 		panel.add(dcPurchaseDate);
 
 		lblErrorPurchaseDate = new JLabel();
@@ -215,6 +182,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		dcDueDate = new JDateChooser();
 		dcDueDate.setBounds(220, 170, 150, 25);
 		dcDueDate.setDateFormatString("dd-MM-yyyy");
+		dcDueDate.setEnabled(false);
 		panel.add(dcDueDate);
 
 		lblErrorDueDate = new JLabel();
@@ -229,19 +197,13 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 
 		btnInsertPPRProduct = new JButton("Tambah");
 		btnInsertPPRProduct.setBounds(820, 430, 100, 25);
-		btnInsertPPRProduct.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				showAddPPRProductDialog(pprEditPanel);
-			}
-		});
+		btnInsertPPRProduct.setFocusable(false);
+		btnInsertPPRProduct.setEnabled(false);
 		panel.add(btnInsertPPRProduct);
 
 		btnDeletePPRProduct = new JButton("Hapus");
-		btnDeletePPRProduct.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				doDeletePPRProduct();
-			}
-		});
+		btnDeletePPRProduct.setFocusable(false);
+		btnDeletePPRProduct.setEnabled(false);
 		btnDeletePPRProduct.setBounds(925, 430, 100, 25);
 		panel.add(btnDeletePPRProduct);
 
@@ -257,20 +219,13 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		tblPPRProduct.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tblPPRProduct.getValueAt(tblPPRProduct.getSelectedRow(), 0).equals(true))
-					listOfPPRProduct.get(tblPPRProduct.getSelectedRow()).setFlag(false);
-				else
-					listOfPPRProduct.get(tblPPRProduct.getSelectedRow()).setFlag(true);
-
-				tblPPRProduct.updateUI();
-				
 				if (e.getClickCount() == 2) {
 					JTable target = (JTable) e.getSource();
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
 					if (column == 3) {
-						showEditPPRProductDialog(listOfPPRProduct.get(row), pprEditPanel, row);
+						showViewPPRProductDialog(listOfPPRProduct.get(row), pprViewPanel, row);
 					}
 				}
 			}
@@ -284,19 +239,13 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		
 		btnInsertPPRNote = new JButton("Tambah");
 		btnInsertPPRNote.setBounds(820, 220, 100, 25);
-		btnInsertPPRNote.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				showAddPPRNoteDialog(pprEditPanel);
-			}
-		});
+		btnInsertPPRNote.setFocusable(false);
+		btnInsertPPRNote.setEnabled(false);
 		panel.add(btnInsertPPRNote);
 
 		btnDeletePPRNote = new JButton("Hapus");
-		btnDeletePPRNote.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				doDeletePPRNote();
-			}
-		});
+		btnDeletePPRNote.setFocusable(false);
+		btnDeletePPRNote.setEnabled(false);
 		btnDeletePPRNote.setBounds(925, 220, 100, 25);
 		panel.add(btnDeletePPRNote);
 		
@@ -312,47 +261,56 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		tblPPRNote.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tblPPRNote.getValueAt(tblPPRNote.getSelectedRow(), 0).equals(true))
-					listOfPPRNote.get(tblPPRNote.getSelectedRow()).setFlag(false);
-				else
-					listOfPPRNote.get(tblPPRNote.getSelectedRow()).setFlag(true);
-
-				tblPPRNote.updateUI();
-				
 				if (e.getClickCount() == 2) {
-//					JTable target = (JTable) e.getSource();
-//					int row = target.getSelectedRow();
-//					int column = target.getSelectedColumn();
-//
-//					if (column == 2) {
-//						showEditPPRNoteDialog(listOfPPRNote.get(row), pprEditPanel, row);
-//					}
+					JTable target = (JTable) e.getSource();
+					int row = target.getSelectedRow();
+					int column = target.getSelectedColumn();
+
+					if (column == 2) {
+						//showViewPPRNoteDialog(listOfPPRNote.get(row), pprViewPanel, row);
+					}
 				}
 			}
 		});
 		scrollPanePPRNote.setViewportView(tblPPRNote);
 
-		btnSave = new JButton("Simpan");
+
+		btnSave = new JButton("Ubah");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (doValidate() == false) {
-					return;
-				}
-				int response = DialogBox.showInsertChoice();
-				if (response == JOptionPane.YES_OPTION) {
-					doSave();
-				}
+				MainPanel.changePanel("module.purchaseprodresult.ui.BigPurchaseProdResultEditPanel", purchaseProductResult);
 			}
 		});
 		btnSave.setBounds(925, 640, 100, 25);
 		panel.add(btnSave);
+		
+		btnPrint = new JButton("Cetak");
+		btnPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//doPrint();
+			}
+		});
+		btnPrint.setBounds(715, 640, 100, 25);
+		panel.add(btnPrint);
+		
+		btnDelete = new JButton("Hapus");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int response = DialogBox.showDeleteChoice();
+				if (response == JOptionPane.YES_OPTION) {
+					doDelete();
+				}
+			}
+		});
+		btnDelete.setBounds(820, 640, 100, 25);
+		panel.add(btnDelete);
 
 		btnCancel = new JButton("Kembali");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				 int response = DialogBox.showCloseChoice();
 				 if (response == JOptionPane.YES_OPTION) {
-					 MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultViewPanel", purchaseProductResult);
+					 MainPanel.changePanel("module.purchaseprodresult.ui.BigPurchaseProdResultListPanel");
 				 }
 			}
 		});
@@ -373,97 +331,22 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 
 	}
 	
-	protected void doSave() {
-		purchaseProductResult.setPprCode(txtPurchaseProductResultCode.getText());
-		purchaseProductResult.setSuppCode(cbSupplier.getDataIndex().getSuppCode());
-		purchaseProductResult.setPurchaseDate(dcPurchaseDate.getDate());
-		purchaseProductResult.setDueDate(dcDueDate.getDate());
-		
-		try {
-			ServiceFactory.getPurchaseProductResultBL().update(purchaseProductResult, listOfPPRProduct, listOfDeletedPPRProduct, listOfPPRNote, listOfDeletedPPRNote);
-			DialogBox.showEdit();
-			MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultViewPanel", purchaseProductResult);
-		} catch (Exception e) {
-			e.printStackTrace();
-			LOGGER.error(e.getMessage());
-			DialogBox.showErrorException();
-		}
+	protected void showViewPPRProductDialog(PPRProduct pprProduct,
+			BigPurchaseProdResultViewPanel pprViewPanel, Integer index) {
+		BigPPRProductDialog pprProductDialog = new BigPPRProductDialog(true, pprProduct, pprViewPanel, index);
+		pprProductDialog.setTitle("Barang");
+		pprProductDialog.setLocationRelativeTo(null);
+		pprProductDialog.setVisible(true);
 	}
 	
-	protected boolean doValidate() {
-		boolean isValid = true;
-
-		lblErrorPurchaseProductResultCode.setText("");
-		lblErrorSupplier.setText("");
-		lblErrorPurchaseDate.setText("");
-		lblErrorDueDate.setText("");
-		
-		if (txtPurchaseProductResultCode.getText() == null || txtPurchaseProductResultCode.getText().length() == 0) {
-			lblErrorPurchaseProductResultCode.setText("Textbox Kode Pembelian harus diisi.");
-			isValid = false;
-		} 
-
-		if (cbSupplier.getSelectedItem() == null || cbSupplier.getSelectedIndex() == 0) {
-			lblErrorSupplier.setText("Combobox Supplier harus dipilih.");
-			isValid = false;
-		} 
-
-		if (dcPurchaseDate.getDate() == null) {
-			lblErrorPurchaseDate.setText("Tanggal Pembelian harus dipilih.");
-			isValid = false;
-		}
-		
-		if (dcDueDate.getDate() == null) {
-			lblErrorDueDate.setText("Tanggal Jatuh Tempo harus dipilih.");
-			isValid = false;
-		}
-		
-		return isValid;
-	}
-
-	protected void showAddPPRProductDialog(PurchaseProdResultEditPanel pprEditPanel) {
-		PPRProductDialog pprProductDialog = new PPRProductDialog(false, new PPRProduct(), pprEditPanel, null);
-		pprProductDialog.setTitle("Barang");
-		pprProductDialog.setLocationRelativeTo(null);
-		pprProductDialog.setVisible(true);
-	}
-
-	protected void showEditPPRProductDialog(PPRProduct pprProduct, PurchaseProdResultEditPanel pprEditPanel,
-			Integer index) {
-		PPRProductDialog pprProductDialog = new PPRProductDialog(true, pprProduct, pprEditPanel, index);
-		pprProductDialog.setTitle("Barang");
-		pprProductDialog.setLocationRelativeTo(null);
-		pprProductDialog.setVisible(true);
-	}
-
-	protected void doDeletePPRProduct() {
-		if (listOfPPRProduct.isEmpty())
-			DialogBox.showDeleteEmptyChoice();
-		else {
-			int count = 0;
-
-			List<PPRProduct> temp = new ArrayList<PPRProduct>();
-			for (PPRProduct s : listOfPPRProduct) {
-				if (Boolean.TRUE.equals(s.isFlag())) {
-					temp.add(s);
-				} else {
-					count += 1;
-				}
-			}
-
-			if (count == listOfPPRProduct.size()) {
-				DialogBox.showDeleteEmptyChoice();
-				return;
-			}
-			
-			if (Boolean.FALSE.equals(temp.isEmpty())) {
-				for (PPRProduct s : temp) {
-					listOfDeletedPPRProduct.add(s);
-					listOfPPRProduct.remove(s);
-				}
-				refreshTablePPRProduct();
-				DialogBox.showDelete();
-			}
+	protected void doDelete() {
+		try {
+			ServiceFactory.getPurchaseProductResultBL().deleteAll(purchaseProductResult);
+			DialogBox.showDelete();
+			MainPanel.changePanel("module.purchaseprodresult.ui.BigPurchaseProdResultListPanel");
+		} catch (SQLException e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 	}
 
@@ -577,76 +460,13 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		}
 	}
 	
-//	public void makeCodeNumber(Date producationDate) {
-//		final String constant = "STTB";
-//
-//		Calendar cal = Calendar.getInstance();
-//		cal.setTime(producationDate);
-//		
-//		String date = String.valueOf(cal.get(Calendar.DATE));
-//		String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
-//		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
-//
-//		String ordinal = null;
-//		try {
-//			ordinal = ServiceFactory.getPurchaseProductResultBL().getOrdinalOfCodeNumber(Integer.valueOf(year));
-//		} catch (SQLException e) {
-//			LOGGER.error(e.getMessage());
-//			DialogBox.showErrorException();
-//		}
-//		
-//		txtPurchaseProductResultCode.setText(new StringBuilder().append(ordinal).append("/").append(constant)
-//				.append("/").append(date).append("/").append(month)
-//				.append("/").append(year).toString());
-//	}
-	
-	protected void showAddPPRNoteDialog(PurchaseProdResultEditPanel pprEditPanel) {
-		PPRNoteDialog pprNoteDialog = new PPRNoteDialog(false, new PPRNote(),
-				pprEditPanel, null);
+	protected void showViewPPRNoteDialog(PPRNote pprNote,
+			BigPurchaseProdResultViewPanel pprViewPanel, Integer index) {
+		BigPPRNoteDialog pprNoteDialog = new BigPPRNoteDialog(true, pprNote, pprViewPanel, index);
 		pprNoteDialog.setTitle("Nota Pembelian");
 		pprNoteDialog.setLocationRelativeTo(null);
 		pprNoteDialog.setVisible(true);
 	}
-
-	protected void showEditPPRNoteDialog(PPRNote pprNote,
-			PurchaseProdResultEditPanel pprEditPanel, Integer index) {
-		PPRNoteDialog pprNoteDialog = new PPRNoteDialog(true, pprNote, pprEditPanel, index);
-		pprNoteDialog.setTitle("Nota Pembelian");
-		pprNoteDialog.setLocationRelativeTo(null);
-		pprNoteDialog.setVisible(true);
-	}
-
-	protected void doDeletePPRNote() {
-		if (listOfPPRNote.isEmpty())
-			DialogBox.showDeleteEmptyChoice();
-		else {
-			int count = 0;
-
-			List<PPRNote> temp = new ArrayList<PPRNote>();
-			for (PPRNote s : listOfPPRNote) {
-				if (Boolean.TRUE.equals(s.isFlag())) {
-					temp.add(s);
-				} else {
-					count += 1;
-				}
-			}
-
-			if (count == listOfPPRNote.size()) {
-				DialogBox.showDeleteEmptyChoice();
-				return;
-			}
-
-			if (Boolean.FALSE.equals(temp.isEmpty())) {
-				for (PPRNote s : temp) {
-					listOfDeletedPPRNote.add(s);
-					listOfPPRNote.remove(s);
-				}
-				refreshTablePPRNote();
-				DialogBox.showDelete();
-			}
-		}
-	}
-	
 	
 	/**
 	 * Class as TableModel for PPR Note table
@@ -746,6 +566,34 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 		try {
 			tblPPRNote.setModel(new PPRNoteTableModel(listOfPPRNote));
 		} catch (Exception e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
+		}
+	}
+	
+	@Override
+	public void invokeObjects(Object... objects) {
+		this.purchaseProductResult = (PurchaseProdResult) objects[0];
+
+		loadData(purchaseProductResult.getId());
+	}
+	
+	protected void loadData(Integer pprId) {
+		try {
+			purchaseProductResult = ServiceFactory.getPurchaseProductResultBL().getPPRById(pprId);
+			listOfPPRProduct = ServiceFactory.getPurchaseProductResultBL().getPPRProductByPPRCode(purchaseProductResult.getPprCode());
+			listOfPPRNote = ServiceFactory.getPurchaseProductResultBL().getPPRNoteByPPRCode(purchaseProductResult.getPprCode());
+			
+			if (purchaseProductResult != null) {
+				txtPurchaseProductResultCode.setText(purchaseProductResult.getPprCode());
+				cbSupplier.setSelectedItem(purchaseProductResult.getSupplier().getSuppName());
+				dcPurchaseDate.setDate(purchaseProductResult.getPurchaseDate());
+				dcDueDate.setDate(purchaseProductResult.getDueDate());
+				
+				refreshTablePPRProduct();
+				refreshTablePPRNote();
+			}
+		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}

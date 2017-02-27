@@ -89,6 +89,26 @@ public class PurchaseProductResultBL  {
 		}
 	}
 
+	public List<PurchaseProdResult> getAllPurchaseProdResultBySimpleSearch(String value, String status, String type) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new PurchaseProdResultDAO(con).getAllBySimpleSearch(value, status,type);
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<PurchaseProdResult> getAllPurchaseProdResult(String status, String type) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new PurchaseProdResultDAO(con).getAll(status,type);
+		} finally {
+			con.close();
+		}
+	}
+
 	public List<PurchaseProdResult> getAllPurchaseProdResultBySimpleSearch(String value, String status) throws SQLException {
 		Connection con = null;
 		try {

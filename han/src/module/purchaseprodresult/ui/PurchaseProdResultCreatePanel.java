@@ -120,9 +120,9 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 		panel.setPreferredSize(new Dimension(800, 700));
 		panel.setLayout(null);
 
-		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Pembelian");
+		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Pembelian Tipe 9");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblBreadcrumb.setBounds(50, 10, 414, 25);
+		lblBreadcrumb.setBounds(50, 10, 500, 25);
 		panel.add(lblBreadcrumb);
 
 		lblHeader = new JLabel("Buat Baru");
