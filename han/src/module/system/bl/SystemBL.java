@@ -2,6 +2,7 @@ package module.system.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,7 @@ import module.system.dao.GroupDAO;
 import module.system.dao.LoginDAO;
 import module.system.dao.ScreenDAO;
 import module.system.dao.UserDAO;
+import module.system.dao.VersionDAO;
 import module.system.model.Group;
 import module.system.model.Login;
 import module.system.model.Screen;
@@ -227,6 +229,18 @@ public class SystemBL {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public Timestamp validateVersion() throws SQLException{
+		Connection connection = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			return new VersionDAO(connection).getVersionDate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw(e);
 		}
 	}
 }

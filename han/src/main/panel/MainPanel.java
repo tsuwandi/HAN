@@ -5,13 +5,21 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.io.File;
+import java.net.URISyntaxException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
+import controller.ServiceFactory;
+import main.component.DialogBox;
 import module.util.Bridging;
+import module.util.DateUtil;
 
 public class MainPanel extends JFrame {
 
@@ -64,15 +72,46 @@ public class MainPanel extends JFrame {
 					bodyPanel.setBounds(200, 100, 1166, 630);
 					bodyPanel.setBackground(Color.LIGHT_GRAY);
 					frame.add(bodyPanel);
-
-					loginPanel = new LoginPanel();
-					loginPanel.setBounds(450, 200, 450, 250);
-					glassPane.add(loginPanel);
+					
+					
+					Timestamp currentVersionDate = ServiceFactory.getSystemBL().validateVersion();
+					
+					if(currentVersionDate != null)
+					{
+						File path = getPath();
+						
+						String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(path.lastModified());
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+					    Date parsedDate = dateFormat.parse(timeStamp);
+					    Timestamp lastModified = new java.sql.Timestamp(parsedDate.getTime());
+						//Timestamp lastModified = new Timestamp(path.lastModified());
+						//int version = currentVersionDate.compareTo(lastModified);
+						if(currentVersionDate.compareTo(lastModified) == 0)
+						{
+							loginPanel = new LoginPanel();
+							loginPanel.setBounds(450, 200, 450, 250);
+							glassPane.add(loginPanel);
+						}
+						else
+						{
+							DialogBox.showError("Version app tidak sesuai.");
+							loginPanel = new LoginPanel();
+							loginPanel.setBounds(450, 200, 450, 250);
+							glassPane.add(loginPanel);
+						}
+					}
+					
+					
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+	}
+	
+	public static File getPath() throws URISyntaxException {
+		return new File(MainPanel.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
 	}
 
 	/**
