@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
@@ -366,7 +367,7 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 		purchaseProductResult.setSuppCode(cbSupplier.getDataIndex().getSuppCode());
 		purchaseProductResult.setPurchaseDate(dcPurchaseDate.getDate());
 		purchaseProductResult.setDueDate(dcDueDate.getDate());
-		
+		purchaseProductResult.setType(AppConstants.TYPE_9);
 		try {
 			ServiceFactory.getPurchaseProductResultBL().save(purchaseProductResult, listOfPPRProduct, listOfPPRNote);
 			DialogBox.showInsert();

@@ -62,7 +62,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 
 		lblBreadcrumb = new JLabel("ERP > Produksi > Input Hasil Produksi > Pembelian Tipe 9");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblBreadcrumb.setBounds(50, 10, 500, 30);
+		lblBreadcrumb.setBounds(50, 10, 600, 30);
 		add(lblBreadcrumb);
 
 		lblHeader = new JLabel("Input Hasil Produksi Pembelian ");
