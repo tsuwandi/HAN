@@ -141,9 +141,9 @@ public class CreateDepartmentPanel extends JPanel {
 		departement.setName(departmentNameField.getText());
 		departement.setDivisionId(divisionCmbBox.getDataIndex().getId());
 		departement.setInputDate(DateUtil.toDate(new Date()));
-		departement.setInputBy("");
+		departement.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		departement.setEditDate(DateUtil.toDate(new Date()));
-		departement.setEditBy("");
+		departement.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 
 		try {
 			ServiceFactory.getPersonaliaBL().saveDepartment(departement);

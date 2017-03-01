@@ -220,9 +220,9 @@ public class CreatePayrollComponentPanel extends JPanel {
 		else payrollComponent.setIsBonus(0);
 		payrollComponent.setReferenceDocument(referenceDocumentField.getText());
 		payrollComponent.setInputDate(new Date());
-		payrollComponent.setInputBy("");
+		payrollComponent.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		payrollComponent.setEditDate(new Date());
-		payrollComponent.setEditBy("");
+		payrollComponent.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 		try {
 			ServiceFactory.getPersonaliaBL().savePayrollComponent(payrollComponent);
 			option();

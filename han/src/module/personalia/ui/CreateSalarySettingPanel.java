@@ -554,9 +554,9 @@ public class CreateSalarySettingPanel extends JPanel {
 		salarySetting.setTax(new BigDecimal(totalCutField.getText()));
 		salarySetting.setSalaryNett(new BigDecimal(nettSalaryField.getText()));
 		salarySetting.setInputDate(new Date());
-		salarySetting.setInputBy("");
+		salarySetting.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		salarySetting.setEditDate(new Date());
-		salarySetting.setEditBy("");
+		salarySetting.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 
 		try {
 			ServiceFactory.getPersonaliaBL().saveSalarySetting(salarySetting);

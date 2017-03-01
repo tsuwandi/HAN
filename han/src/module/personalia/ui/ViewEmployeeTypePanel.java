@@ -105,7 +105,7 @@ public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 	protected void delete() {
 		if (DialogBox.showDeleteChoice()==0) {
 			employeeType.setDeleteDate(new Date());
-			employeeType.setDeleteBy("");
+			employeeType.setDeleteBy(ServiceFactory.getSystemBL().getUsernameActive());
 			ServiceFactory.getPersonaliaBL().deleteEmployeeType(employeeType);
 			MainPanel.changePanel("module.personalia.ui.EmployeeTypeConfigPanel");
 		} else {
@@ -118,7 +118,7 @@ public class ViewEmployeeTypePanel extends JPanel implements Bridging{
 		employeeType.setId(employeeTypeIdField.getText());
 		employeeType.setName(employeeTypeNameField.getText());
 		employeeType.setEditDate(new Date());
-		employeeType.setEditBy("");
+		employeeType.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 
 		try {
 			ServiceFactory.getPersonaliaBL().updateEmployeeType(employeeType);

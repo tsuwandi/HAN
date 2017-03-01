@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,7 +17,6 @@ import com.toedter.calendar.JDateChooser;
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.personalia.model.Division;
 import module.personalia.model.Employee;
 
 public class ViewOverTimePanel extends JPanel {

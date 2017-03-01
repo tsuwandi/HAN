@@ -156,9 +156,9 @@ public class CreateNonRoutineAllowanceMasterPanel extends JPanel {
 		nonRoutineAllowanceMaster.setTnrTypeId(nonRoutineAllowanceMasterTypeCmbox.getDataIndex().getId());
 		nonRoutineAllowanceMaster.setReferenceDocument(referenceDocumentField.getText());
 		nonRoutineAllowanceMaster.setInputDate(new Date());
-		nonRoutineAllowanceMaster.setInputBy("");
+		nonRoutineAllowanceMaster.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		nonRoutineAllowanceMaster.setEditDate(new Date());
-		nonRoutineAllowanceMaster.setEditBy("");
+		nonRoutineAllowanceMaster.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 		
 		try {
 			ServiceFactory.getPersonaliaBL().saveNonRoutineAllowanceMaster(nonRoutineAllowanceMaster);

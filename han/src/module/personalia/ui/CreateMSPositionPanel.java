@@ -181,9 +181,9 @@ public class CreateMSPositionPanel extends JPanel {
 		msPosition.setSalaryMin(salaryMinField.getValue());
 		msPosition.setSalaryMax(salaryMaxField.getValue());
 		msPosition.setInputDate(DateUtil.toDate(new Date()));
-		msPosition.setInputBy("");
+		msPosition.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		msPosition.setEditDate(DateUtil.toDate(new Date()));
-		msPosition.setEditBy("");
+		msPosition.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 		
 		try {
 			ServiceFactory.getPersonaliaBL().saveMSPosition(msPosition);

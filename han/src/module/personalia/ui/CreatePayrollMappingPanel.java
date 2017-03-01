@@ -220,9 +220,9 @@ public class CreatePayrollMappingPanel extends JPanel {
 		if (permitStatusYesRdbtn.isSelected()) payrollMapping.setIsLeave(1);
 		else payrollMapping.setIsLeave(0);
 		payrollMapping.setInputDate(new Date());
-		payrollMapping.setInputBy("");
+		payrollMapping.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		payrollMapping.setEditDate(new Date());
-		payrollMapping.setEditBy("");
+		payrollMapping.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 		
 		try {
 			ServiceFactory.getPersonaliaBL().savePayrollMapping(payrollMapping);

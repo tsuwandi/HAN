@@ -115,9 +115,9 @@ public class CreateEmployeeTypePanel extends JPanel {
 		employeeType.setId(employeeTypeIdField.getText());
 		employeeType.setName(employeeTypeNameField.getText());
 		employeeType.setInputDate(new Date());
-		employeeType.setInputBy("");
+		employeeType.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		employeeType.setEditDate(new Date());
-		employeeType.setEditBy("");
+		employeeType.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 		
 		try {
 			ServiceFactory.getPersonaliaBL().saveEmployeeType(employeeType);

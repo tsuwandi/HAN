@@ -223,9 +223,9 @@ public class CreateNonRoutineAllowanceTransactionPanel extends JPanel {
 		nonRoutineAllowanceTransaction.setNominal(new BigDecimal(nominalField.getText()));
 		nonRoutineAllowanceTransaction.setReferenceNumber(referenceNumberField.getText());
 		nonRoutineAllowanceTransaction.setInputDate(new Date());
-		nonRoutineAllowanceTransaction.setInputBy("");
+		nonRoutineAllowanceTransaction.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		nonRoutineAllowanceTransaction.setEditDate(new Date());
-		nonRoutineAllowanceTransaction.setEditBy("");
+		nonRoutineAllowanceTransaction.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 		
 		try {
 			ServiceFactory.getPersonaliaBL().saveNonRoutineAllowanceTransaction(nonRoutineAllowanceTransaction);

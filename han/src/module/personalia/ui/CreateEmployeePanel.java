@@ -475,9 +475,9 @@ public class CreateEmployeePanel extends JPanel {
 		employee.setGenderId(genderCmbox.getDataIndex().getId());
 		employee.setMaritalId(maritalCmbox.getDataIndex().getId());
 		employee.setInputDate(new Date());
-		employee.setInputBy("");
+		employee.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		employee.setEditDate(new Date());
-		employee.setEditBy("");
+		employee.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 		
 		try {
 			ServiceFactory.getPersonaliaBL().saveEmployee(employee);

@@ -229,7 +229,7 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 	protected void delete() {
 		if (DialogBox.showDeleteChoice()==0) {
 			payrollComponent.setDeleteDate(new Date());
-			payrollComponent.setDeleteBy("");
+			payrollComponent.setDeleteBy(ServiceFactory.getSystemBL().getUsernameActive());
 			ServiceFactory.getPersonaliaBL().deletePayrollComponent(payrollComponent);
 			MainPanel.changePanel("module.personalia.ui.PayrollComponentConfigPanel");
 		} else {
@@ -252,7 +252,7 @@ public class ViewPayrollComponentPanel extends JPanel implements Bridging{
 		
 		payrollComponent.setReferenceDocument(referenceDocumentField.getText());
 		payrollComponent.setEditDate(new Date());
-		payrollComponent.setEditBy("");
+		payrollComponent.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 		
 		try {
 			ServiceFactory.getPersonaliaBL().updatePayrollComponent(payrollComponent);

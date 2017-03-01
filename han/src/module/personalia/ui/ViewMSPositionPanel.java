@@ -187,7 +187,7 @@ public class ViewMSPositionPanel extends JPanel implements Bridging{
 		msPosition.setSalaryMax(Integer.parseInt(salaryMaxField.getText()));
 		msPosition.setSalaryMin(Integer.parseInt(salaryMinField.getText()));
 		msPosition.setEditDate(new Date());
-		msPosition.setEditBy("");
+		msPosition.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 		
 		try {
 			ServiceFactory.getPersonaliaBL().updateMSPosition(msPosition);
@@ -202,7 +202,7 @@ public class ViewMSPositionPanel extends JPanel implements Bridging{
 	protected void delete() {
 		if (DialogBox.showDeleteChoice()==0) {
 			msPosition.setDeleteDate(new Date());
-			msPosition.setDeleteBy("");
+			msPosition.setDeleteBy(ServiceFactory.getSystemBL().getUsernameActive());
 			ServiceFactory.getPersonaliaBL().deleteMSPosition(msPosition);
 			MainPanel.changePanel("module.personalia.ui.MSPositionConfigPanel");
 		} else {

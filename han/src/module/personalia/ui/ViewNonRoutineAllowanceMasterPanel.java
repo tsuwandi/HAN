@@ -154,9 +154,9 @@ public class ViewNonRoutineAllowanceMasterPanel extends JPanel implements Bridgi
 		nonRoutineAllowanceMaster.setNonRoutineAllowanceMasterType(nonRoutineAllowanceTypeCmbox.getDataIndex());
 		nonRoutineAllowanceMaster.setReferenceDocument(referenceDocumentField.getText());
 		nonRoutineAllowanceMaster.setInputDate(new Date());
-		nonRoutineAllowanceMaster.setInputBy("");
+		nonRoutineAllowanceMaster.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		nonRoutineAllowanceMaster.setEditDate(new Date());
-		nonRoutineAllowanceMaster.setEditBy("");
+		nonRoutineAllowanceMaster.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 
 		try {
 			ServiceFactory.getPersonaliaBL().updateNonRoutineAllowanceMaster(nonRoutineAllowanceMaster);
@@ -170,7 +170,7 @@ public class ViewNonRoutineAllowanceMasterPanel extends JPanel implements Bridgi
 	protected void delete() {
 		if (DialogBox.showDeleteChoice()==0) {
 			nonRoutineAllowanceMaster.setDeleteDate(new Date());
-			nonRoutineAllowanceMaster.setDeleteBy("");
+			nonRoutineAllowanceMaster.setDeleteBy(ServiceFactory.getSystemBL().getUsernameActive());
 			ServiceFactory.getPersonaliaBL().deleteNonRoutineAllowanceMaster(nonRoutineAllowanceMaster);
 			MainPanel.changePanel("module.personalia.ui.NonRoutineAllowanceTransactionConfigPanel");
 		} else {

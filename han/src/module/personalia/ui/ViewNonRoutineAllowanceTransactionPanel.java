@@ -263,7 +263,7 @@ public class ViewNonRoutineAllowanceTransactionPanel extends JPanel implements B
 		nonRoutineAllowanceTransaction.setNominal(new BigDecimal(nominalField.getText()));
 		nonRoutineAllowanceTransaction.setReferenceNumber(referenceNumberField.getText());
 		nonRoutineAllowanceTransaction.setEditDate(new Date());
-		nonRoutineAllowanceTransaction.setEditBy("");
+		nonRoutineAllowanceTransaction.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 
 		try {
 			ServiceFactory.getPersonaliaBL().updateNonRoutineAllowanceTransaction(nonRoutineAllowanceTransaction);
@@ -278,7 +278,7 @@ public class ViewNonRoutineAllowanceTransactionPanel extends JPanel implements B
 	protected void delete() {
 		if (DialogBox.showDeleteChoice()==0) {
 			nonRoutineAllowanceTransaction.setDeleteDate(new Date());
-			nonRoutineAllowanceTransaction.setDeleteBy("");
+			nonRoutineAllowanceTransaction.setDeleteBy(ServiceFactory.getSystemBL().getUsernameActive());
 			ServiceFactory.getPersonaliaBL().deleteNonRoutineAllowanceTransaction(nonRoutineAllowanceTransaction);
 			MainPanel.changePanel("module.personalia.ui.NonRoutineAllowanceTransactionConfigPanel");
 		} else {

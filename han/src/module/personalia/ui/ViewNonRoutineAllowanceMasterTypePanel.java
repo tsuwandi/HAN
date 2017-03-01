@@ -134,9 +134,9 @@ public class ViewNonRoutineAllowanceMasterTypePanel extends JPanel implements Br
 		NonRoutineAllowanceMasterType nonRoutineAllowanceMasterType = new NonRoutineAllowanceMasterType();
 
 		nonRoutineAllowanceMasterType.setInputDate(new Date());
-		nonRoutineAllowanceMasterType.setInputBy("");
+		nonRoutineAllowanceMasterType.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		nonRoutineAllowanceMasterType.setEditDate(new Date());
-		nonRoutineAllowanceMasterType.setEditBy("");
+		nonRoutineAllowanceMasterType.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 
 		try {
 			ServiceFactory.getPersonaliaBL().updateNonRoutineAllowanceMasterType(nonRoutineAllowanceMasterType);
@@ -149,7 +149,7 @@ public class ViewNonRoutineAllowanceMasterTypePanel extends JPanel implements Br
 	protected void delete() {
 		if (DialogBox.showDeleteChoice()==0) {
 			nonRoutineAllowanceMasterType.setDeleteDate(new Date());
-			nonRoutineAllowanceMasterType.setDeleteBy("");
+			nonRoutineAllowanceMasterType.setDeleteBy(ServiceFactory.getSystemBL().getUsernameActive());
 			ServiceFactory.getPersonaliaBL().deleteNonRoutineAllowanceMasterType(nonRoutineAllowanceMasterType);
 			MainPanel.changePanel("module.personalia.ui.DivisionConfigPanel");
 		} else {

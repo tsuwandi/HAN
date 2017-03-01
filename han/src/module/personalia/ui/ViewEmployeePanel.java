@@ -435,7 +435,6 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 	}
 	
 	protected void print() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -500,7 +499,7 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 	protected void delete() {
 		if (DialogBox.showDeleteChoice()==0) {
 			employee.setDeleteDate(new Date());
-			employee.setDeleteBy("");
+			employee.setDeleteBy(ServiceFactory.getSystemBL().getUsernameActive());
 			ServiceFactory.getPersonaliaBL().deleteEmployee(employee);
 			MainPanel.changePanel("module.personalia.ui.EmployeeConfigPanel");
 		} else {
@@ -510,8 +509,6 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 
 	protected void setEditMode(boolean editMode) {
 		this.editMode = editMode;
-		
-		
 		
 		editBtn.setText("Simpan");
 		editBtn.updateUI();
@@ -523,9 +520,9 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 
 	protected void update() {
 		employee.setInputDate(new Date());
-		employee.setInputBy("");
+		employee.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		employee.setEditDate(new Date());
-		employee.setEditBy("");
+		employee.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 		
 		try {
 			ServiceFactory.getPersonaliaBL().updateEmployee(employee);

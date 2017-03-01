@@ -456,9 +456,9 @@ public class ViewSalarySettingPanel extends JPanel implements Bridging{
 		salarySetting = new SalarySetting();
 
 		salarySetting.setInputDate(new Date());
-		salarySetting.setInputBy("");
+		salarySetting.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		salarySetting.setEditDate(new Date());
-		salarySetting.setEditBy("");
+		salarySetting.setEditBy(ServiceFactory.getSystemBL().getUsernameActive());
 
 		try {
 			//ServiceFactory.getPersonaliaBL().saveDivision(salarySetting);
