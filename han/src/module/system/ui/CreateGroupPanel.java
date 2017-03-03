@@ -65,6 +65,10 @@ public class CreateGroupPanel extends JPanel{
 		saveBtn.setBounds(924, 589, 90, 30);
 		add(saveBtn);
 		
+		JButton button = new JButton("Kembali");
+		button.setBounds(10, 593, 90, 30);
+		add(button);
+		
 		saveBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -85,15 +89,13 @@ public class CreateGroupPanel extends JPanel{
 		}
 		group.setGroupDesc(groupDescField.getText());
 		group.setInputDate(new Date());
-		group.setInputBy("");
+		group.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		group.setEditDate(new Date());
-		group.setEditedBy("");
+		group.setEditedBy(ServiceFactory.getSystemBL().getUsernameActive());
 		
 		try {
 			ServiceFactory.getSystemBL().saveGroup(group);
-			DialogBox.showInsert();
-			clearField();
-			MainPanel.changePanel("module.system.ui.GroupConfigPanel");
+			option();
 		} catch (Exception e) {
 			e.printStackTrace();
 			DialogBox.showError("Group baru tidak berhasil disimpan");
@@ -105,5 +107,11 @@ public class CreateGroupPanel extends JPanel{
 		groupDescField.setText("");
 	}
 	
-	
+	private void option() {
+		if (DialogBox.showAfterChoiceInsert()==0) {
+			clearField();
+		} else {
+			MainPanel.changePanel("module.personalia.ui.GroupConfigPanel");
+		}
+	}
 }

@@ -26,9 +26,8 @@ public class CreateUserPanel extends JPanel {
 	private static final long serialVersionUID = -1880292677617181414L;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
-	private JComboBox groupUserCombobox;
+	private JComboBox<Group> groupUserCombobox;
 	private List<Group> groups = new ArrayList<>();
-	private Integer groupId;
 
 	public CreateUserPanel() {
 		setSize(1024, 630);
@@ -85,7 +84,7 @@ public class CreateUserPanel extends JPanel {
 		label_5.setBounds(110, 178, 10, 30);
 		add(label_5);
 		
-		groupUserCombobox = new JComboBox();
+		groupUserCombobox = new JComboBox<Group>();
 		groupUserCombobox.setBounds(120, 178, 150, 30);
 		getGroupData();
 		add(groupUserCombobox);
@@ -112,9 +111,9 @@ public class CreateUserPanel extends JPanel {
 		user.setLastLogin(new Date());
 		user.setInputDate(new Date());
 		user.setEmployeeId("");
-		user.setInputBy("");
+		user.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		user.setEditDate(new Date());
-		user.setEditedBy("");
+		user.setEditedBy(ServiceFactory.getSystemBL().getUsernameActive());
 		
 		try {
 			ServiceFactory.getSystemBL().saveUser(user);

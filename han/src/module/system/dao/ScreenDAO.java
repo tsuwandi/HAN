@@ -28,30 +28,30 @@ private Connection connection;
 		this.connection = connection;
 	}
 	
-	public List<Screen> getAll(){
-		List<Screen> groups = new ArrayList<Screen>();
+	public List<Screen> getAll(String query){
+		List<Screen> screens = new ArrayList<Screen>();
 		try {
-			getAllGroupStatement = connection.prepareStatement(getAllGroupQuery);
-			
+			getAllGroupStatement = connection.prepareStatement(getAllGroupQuery+query);
+
 			ResultSet resultSet = getAllGroupStatement.executeQuery();
 			
 			while (resultSet.next()) {
-				Screen group = new Screen();
-				group.setId(resultSet.getInt("id"));
-				group.setMenuName(resultSet.getString("menu_name"));
-				group.setScreenName(resultSet.getString("screen_name"));
-				group.setScreenTitle(resultSet.getString("screen_title"));
-				group.setModuleName(resultSet.getString("module_name"));
-				group.setInputDate(resultSet.getDate("input_date"));
-				group.setInputBy(resultSet.getString("input_by"));
-				group.setEditDate(resultSet.getDate("edit_date"));
-				group.setEditedBy(resultSet.getString("edit_by"));
-				groups.add(group);
+				Screen screen = new Screen();
+				screen.setId(resultSet.getInt("id"));
+				screen.setMenuName(resultSet.getString("menu_name"));
+				screen.setScreenName(resultSet.getString("screen_name"));
+				screen.setScreenTitle(resultSet.getString("screen_title"));
+				screen.setModuleName(resultSet.getString("module_name"));
+				screen.setInputDate(resultSet.getDate("input_date"));
+				screen.setInputBy(resultSet.getString("input_by"));
+				screen.setEditDate(resultSet.getDate("edit_date"));
+				screen.setEditedBy(resultSet.getString("edit_by"));
+				screens.add(screen);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return groups;
+		return screens;
 	}
 	
 	public void insert(Screen screen){

@@ -45,7 +45,7 @@ public class GroupScreenDAO {
 				groupScreen.setInputDate(resultSet.getDate("input_date"));
 				groupScreen.setInputBy(resultSet.getString("input_by"));
 				groupScreen.setEditDate(resultSet.getDate("edit_date"));
-				groupScreen.setEditedBy(resultSet.getString("edit_by"));
+				groupScreen.setEditBy(resultSet.getString("edit_by"));
 				
 				groupScreens.add(groupScreen);
 			}

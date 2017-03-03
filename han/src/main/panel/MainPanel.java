@@ -74,7 +74,7 @@ public class MainPanel extends JFrame {
 					frame.add(bodyPanel);
 					
 					
-					Timestamp currentVersionDate = ServiceFactory.getSystemBL().validateVersion();
+					/*Timestamp currentVersionDate = ServiceFactory.getSystemBL().validateVersion();
 					
 					if(currentVersionDate != null)
 					{
@@ -99,9 +99,11 @@ public class MainPanel extends JFrame {
 							loginPanel.setBounds(450, 200, 450, 250);
 							glassPane.add(loginPanel);
 						}
-					}
+					}*/
 					
-					
+					loginPanel = new LoginPanel();
+					loginPanel.setBounds(450, 200, 450, 250);
+					glassPane.add(loginPanel);
 					
 				} catch (Exception e) {
 					e.printStackTrace();

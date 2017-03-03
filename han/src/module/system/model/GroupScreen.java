@@ -1,6 +1,6 @@
 package module.system.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class GroupScreen {
 
@@ -12,7 +12,7 @@ public class GroupScreen {
 	Date inputDate;
 	String inputBy;
 	Date editDate;
-	String editedBy;
+	String editBy;
 	Date deletedDate;
 	String deletedBy;
 	public Integer getId() {
@@ -57,17 +57,17 @@ public class GroupScreen {
 	public void setInputBy(String inputBy) {
 		this.inputBy = inputBy;
 	}
+	public String getEditBy() {
+		return editBy;
+	}
+	public void setEditBy(String editBy) {
+		this.editBy = editBy;
+	}
 	public Date getEditDate() {
 		return editDate;
 	}
 	public void setEditDate(Date editDate) {
 		this.editDate = editDate;
-	}
-	public String getEditedBy() {
-		return editedBy;
-	}
-	public void setEditedBy(String editedBy) {
-		this.editedBy = editedBy;
 	}
 	public Date getDeletedDate() {
 		return deletedDate;

@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 
 import module.system.dao.GroupDAO;
 import module.system.dao.LoginDAO;
+import module.system.dao.MenuDAO;
 import module.system.dao.ScreenDAO;
 import module.system.dao.UserDAO;
 import module.system.dao.VersionDAO;
@@ -18,6 +19,7 @@ import module.system.model.Group;
 import module.system.model.Login;
 import module.system.model.Screen;
 import module.system.model.User;
+import module.system.model.Menu;
 
 public class SystemBL {
 
@@ -167,11 +169,11 @@ public class SystemBL {
 	}
 	// Screen
 	public List<Screen> getAllScreen(String query) {
-		List<Screen> divisions = new ArrayList<Screen>();
+		List<Screen> screen = new ArrayList<Screen>();
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
-			divisions = new ScreenDAO(connection).getAll();
+			screen = new ScreenDAO(connection).getAll(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -181,7 +183,7 @@ public class SystemBL {
 				e.printStackTrace();
 			}
 		}
-		return divisions;
+		return screen;
 	}
 
 	public void saveScreen(Screen screen) {
@@ -242,5 +244,23 @@ public class SystemBL {
 			e.printStackTrace();
 			throw(e);
 		}
+	}
+	
+	public List<Menu> getAllMenu(){
+		List<Menu> menus = new ArrayList<Menu>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			menus = new MenuDAO(connection).getAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return menus;
 	}
 }

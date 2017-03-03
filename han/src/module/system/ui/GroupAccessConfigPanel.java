@@ -20,8 +20,6 @@ import main.panel.MainPanel;
 import module.system.model.Group;
 import module.system.model.GroupScreen;
 
-import javax.swing.JComboBox;
-
 public class GroupAccessConfigPanel extends JPanel {
 
 	private static final long serialVersionUID = -8643623752593867087L;
@@ -75,7 +73,7 @@ public class GroupAccessConfigPanel extends JPanel {
 		label.setBounds(110, 46, 10, 30);
 		add(label);
 		
-		groupCmbox = new ComboBox();
+		groupCmbox = new ComboBox<Group>();
 		groupCmbox.setBounds(120, 45, 150, 30);
 		add(groupCmbox);
 		
@@ -86,7 +84,7 @@ public class GroupAccessConfigPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.system.ui.CreateGroupPanel");
+				MainPanel.changePanel("module.system.ui.CreateGroupAccessPanel");
 			}
 		});
 		

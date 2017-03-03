@@ -15,6 +15,7 @@ public class Screen {
 	String editedBy;
 	Date deletedDate;
 	String deletedBy;
+	Boolean access;
 	
 	public Integer getId() {
 		return id;
@@ -81,5 +82,11 @@ public class Screen {
 	}
 	public void setDeletedBy(String deletedBy) {
 		this.deletedBy = deletedBy;
-	}	
+	}
+	public Boolean getAccess() {
+		return access;
+	}
+	public void setAccess(Boolean access) {
+		this.access = access;
+	}
 }

@@ -15,7 +15,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumn;
 
 import controller.ServiceFactory;
 import main.panel.MainPanel;
@@ -194,7 +193,7 @@ public class GroupConfigPanel extends JPanel {
 		groupConfigTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		groupConfigTable.getTableHeader().setResizingAllowed(false);
 		
-		TableColumn column1 = groupConfigTable.getColumnModel().getColumn(0);
+		/*TableColumn column1 = groupConfigTable.getColumnModel().getColumn(0);
 		TableColumn column2 = groupConfigTable.getColumnModel().getColumn(1);
 		TableColumn column3 = groupConfigTable.getColumnModel().getColumn(2);
 		TableColumn column4 = groupConfigTable.getColumnModel().getColumn(3);
@@ -213,6 +212,6 @@ public class GroupConfigPanel extends JPanel {
 		
 		column4.setPreferredWidth(70);
 		column4.setMinWidth(60);
-		column4.setMinWidth(80);
+		column4.setMinWidth(80);*/
 	}
 }

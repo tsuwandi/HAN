@@ -47,7 +47,10 @@ public class UserDAO {
 				user.setPassword(resultSet.getString("password"));
 				user.setEmployeeId(resultSet.getString("employee_id"));
 				user.setLastLogin(resultSet.getDate("last_login"));
-				
+				user.setInputDate(DateUtil.toDate(resultSet.getDate("input_date")));
+				user.setInputBy(resultSet.getString("input_by"));
+				user.setEditDate(DateUtil.toDate(resultSet.getDate("edit_date")));
+				user.setEditedBy(resultSet.getString("edit_by"));
 				users.add(user);
 			}
 		} catch (SQLException e) {
