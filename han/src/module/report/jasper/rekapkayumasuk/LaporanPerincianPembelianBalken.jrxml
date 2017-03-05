@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-02-09T23:56:57 -->
+<!-- 2017-03-05T12:13:57 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LaporanPerincianPembelianBalken" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="062d5954-cbaa-48ab-b784-93e4a87a8661">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
@@ -38,7 +38,7 @@
 		<field name="date" class="java.util.Date"/>
 		<field name="ritNo" class="java.lang.String"/>
 		<field name="supplierName" class="java.lang.String"/>
-		<field name="length" class="java.lang.String"/>
+		<field name="length" class="java.lang.Double"/>
 		<field name="width" class="java.lang.Double"/>
 		<field name="thickness" class="java.lang.Double"/>
 		<field name="total" class="java.lang.Integer"/>
