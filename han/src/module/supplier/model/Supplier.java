@@ -35,6 +35,7 @@ public class Supplier implements Serializable, ComboBoxProperties {
 	private SuppType suppType;
 	private Bank bank;
 	private Currency currency;
+	private String city;
 	
 	private boolean isFlag;
 
@@ -374,5 +375,13 @@ public class Supplier implements Serializable, ComboBoxProperties {
 	@Override
 	public Object getField() {
 		return suppName;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 }

@@ -206,7 +206,7 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 6)
+					if (column == 2)
 						showViewSuppAddressDialog(listOfSuppAddress.get(row), supplierView, row);
 				}
 			}
@@ -416,12 +416,13 @@ public class SupplierViewPanel extends JPanel implements Bridging {
 	}
 
 	public void refreshTableSuppVehicle() {
-		try {
-			tblSuppVehicle.setModel(new SuppVehicleTableModel(listOfSuppVehicle));
-		} catch (Exception e1) {
-			LOGGER.error(e1.getMessage());
-			DialogBox.showErrorException();
-		}
+//		try {
+//			tblSuppVehicle.setModel(new SuppVehicleTableModel(listOfSuppVehicle));
+//		} catch (Exception e1) {
+//			e1.printStackTrace();
+//			LOGGER.error(e1.getMessage());
+//			DialogBox.showErrorException();
+//		}
 	}
 
 	protected void doPrint() {

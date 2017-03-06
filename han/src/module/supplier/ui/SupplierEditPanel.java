@@ -895,11 +895,11 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 	}
 
 	public void refreshTableSuppVehicle() {
-		try {
-			tblSuppVehicle.setModel(new SuppVehicleTableModel(listOfSuppVehicle));
-		} catch (Exception e1) {
-			LOGGER.error(e1.getMessage());
-			DialogBox.showErrorException();
-		}
+//		try {
+//			tblSuppVehicle.setModel(new SuppVehicleTableModel(listOfSuppVehicle));
+//		} catch (Exception e1) {
+//			LOGGER.error(e1.getMessage());
+//			DialogBox.showErrorException();
+//		}
 	}
 }

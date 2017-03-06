@@ -24,9 +24,10 @@ public class SupplierDAO {
 
 	private String getAllQuery = "select s.id, s.supp_code, s.supp_name, s.pt, s.npwp, "
 			+ "s.supp_type_id, s.default_tax, s.account_no,"
-			+ "s.bank_id, s.account_name, s.currency_id, s.top, "
+			+ "s.bank_id, s.account_name, s.currency_id, s.top, sa.city, "
 			+ "st.supp_type, b.bank, b.bank_abbr, c.currency, c.currency_abbr from supplier s "
 			+ "inner join supp_type st on s.supp_type_id = st.id left join bank b on s.bank_id = b.id "
+			+ "left join supp_address sa on s.supp_code = sa.supp_code "
 			+ "left join currency c on s.currency_id = c.id "
 			+ "where s.deleted_date is null and st.deleted_date is null "
 			+ "and b.deleted_date is null and c.deleted_date is null ";
@@ -69,6 +70,7 @@ public class SupplierDAO {
 				supplier.setAccountName(rs.getString("account_name"));
 				supplier.setCurrencyId(rs.getInt("currency_id"));
 				supplier.setTop(rs.getInt("top"));
+				supplier.setCity(rs.getString("city"));
 
 				SuppType suppType = new SuppType();
 				suppType.setId(rs.getInt("supp_type_id"));
@@ -128,7 +130,8 @@ public class SupplierDAO {
 				supplier.setAccountName(rs.getString("account_name"));
 				supplier.setCurrencyId(rs.getInt("currency_id"));
 				supplier.setTop(rs.getInt("top"));
-
+				supplier.setCity(rs.getString("city"));
+				
 				SuppType suppType = new SuppType();
 				suppType.setId(rs.getInt("supp_type_id"));
 				suppType.setSuppType(rs.getString("supp_type"));
@@ -199,7 +202,8 @@ public class SupplierDAO {
 				supplier.setAccountName(rs.getString("account_name"));
 				supplier.setCurrencyId(rs.getInt("currency_id"));
 				supplier.setTop(rs.getInt("top"));
-
+				supplier.setCity(rs.getString("city"));
+				
 				SuppType suppType = new SuppType();
 				suppType.setId(rs.getInt("supp_type_id"));
 				suppType.setSuppType(rs.getString("supp_type"));
@@ -337,7 +341,8 @@ public class SupplierDAO {
 				supplier.setAccountName(rs.getString("account_name"));
 				supplier.setCurrencyId(rs.getInt("currency_id"));
 				supplier.setTop(rs.getInt("top"));
-
+				supplier.setCity(rs.getString("city"));
+				
 				SuppType suppType = new SuppType();
 				suppType.setId(rs.getInt("supp_type_id"));
 				suppType.setSuppType(rs.getString("supp_type"));
@@ -388,7 +393,8 @@ public class SupplierDAO {
 				supplier.setAccountName(rs.getString("account_name"));
 				supplier.setCurrencyId(rs.getInt("currency_id"));
 				supplier.setTop(rs.getInt("top"));
-
+				supplier.setCity(rs.getString("city"));
+				
 				SuppType suppType = new SuppType();
 				suppType.setId(rs.getInt("supp_type_id"));
 				suppType.setSuppType(rs.getString("supp_type"));

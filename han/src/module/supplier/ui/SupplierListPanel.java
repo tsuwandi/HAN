@@ -234,6 +234,8 @@ public class SupplierListPanel extends JPanel {
 				return String.class;
 			case 2:
 				return String.class;
+			case 3:
+				return String.class;
 			default:
 				return String.class;
 			}
@@ -256,8 +258,10 @@ public class SupplierListPanel extends JPanel {
 			case 1:
 				return p.getSuppName();
 			case 2:
-				return p.getSuppType().getSuppType();
+				return p.getCity();
 			case 3:
+				return p.getSuppType().getSuppType();
+			case 4:
 				return "<html><a><u>View</u></a></html>";
 			default:
 	            throw new IllegalArgumentException("Invalid column index");
@@ -278,8 +282,10 @@ public class SupplierListPanel extends JPanel {
 			case 1:
 				return "Nama Supplier";
 			case 2:
-				return "Tipe Supplier";
+				return "Alamat / Kota";
 			case 3:
+				return "Tipe Supplier";
+			case 4:
 				return "Tindakan";
 			default:
 				return "";
