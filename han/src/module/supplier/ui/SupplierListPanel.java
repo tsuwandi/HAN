@@ -135,7 +135,7 @@ public class SupplierListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 3)
+					if (column == 4)
 						MainPanel.changePanel("module.supplier.ui.SupplierViewPanel", listOfSupplier.get(row));
 				}
 			}
@@ -218,7 +218,7 @@ public class SupplierListPanel extends JPanel {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 4;
+			return 5;
 		}
 
 		public boolean isCellEditable(int row, int column) {
