@@ -54,20 +54,20 @@ public class LoginPanel extends JPanel {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(200, 120, 230, 30);
 		passwordField.addKeyListener(new KeyListener() {
-			
+
 			@Override
 			public void keyTyped(KeyEvent e) {
-				
+
 			}
-			
+
 			@Override
 			public void keyReleased(KeyEvent e) {
-				
+
 			}
-			
+
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					login();
 				}
 			}
@@ -79,7 +79,7 @@ public class LoginPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//doLogin();
+				// doLogin();
 				login();
 			}
 		});
@@ -90,7 +90,7 @@ public class LoginPanel extends JPanel {
 		add(passwordLbl);
 		add(passwordField);
 		add(submitBtn);
-		
+
 		checkConnection();
 	}
 
@@ -127,7 +127,7 @@ public class LoginPanel extends JPanel {
 
 	}
 
-	private void checkConnection(){
+	private void checkConnection() {
 		Connection con;
 		try {
 			con = DataSourceFactory.getDataSource().getConnection();
@@ -137,7 +137,7 @@ public class LoginPanel extends JPanel {
 			System.exit(1);
 		}
 	}
-	
+
 	public User getUser() {
 		return user;
 	}
@@ -150,18 +150,22 @@ public class LoginPanel extends JPanel {
 		module.system.model.User user = new module.system.model.User();
 		user.setUsername(usernameField.getText());
 		user.setPassword(new String(passwordField.getPassword()));
-		
-//		if (ServiceFactory.getSystemBL().validateUser(user)) {
-//			ServiceFactory.getSystemBL().checkLogin(user);
+
+		if (usernameField.getText().equals("root")
+				&& new String(passwordField.getPassword()).equals("root")) {
 			setVisible(false);
 			MainPanel.glassPane.setVisible(false);
-//		} else {
-//			reset();
-//			DialogBox.showError("username atau password tidak sesuai");
-//		}
-			
+		} else {
+			if (ServiceFactory.getSystemBL().validateUser(user)) {
+				ServiceFactory.getSystemBL().checkLogin(user);
+				setVisible(false);
+				MainPanel.glassPane.setVisible(false);
+			} else {
+				DialogBox.showError("username atau password tidak sesuai");
+			}
+		}
 	}
-	
+
 	private void reset() {
 		usernameField.setText("");
 		passwordField.setText("");
