@@ -7,6 +7,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import main.component.AppConstants;
+import module.dailyclosing.dao.InventoryDAO;
+import module.dailyclosing.model.Inventory;
 import module.production.dao.GroupShiftDAO;
 import module.production.dao.LineDAO;
 import module.production.dao.ProductionTypeDAO;
@@ -213,6 +215,16 @@ public class ProdPKBL  {
 			return String.format("%04d",
 					new ProdPKDAO(con).getOrdinalOfCodeNumberByYearAndType(year,type) + 1);
 
+		} finally {
+			con.close();
+		}
+	}
+	
+	public Inventory getInventoryByProductCode(String productCode) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new InventoryDAO(con).getInventoryByProductCodeAndWarehouse(productCode, AppConstants.WAREHOUSE_0);
 		} finally {
 			con.close();
 		}

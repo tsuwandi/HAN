@@ -35,6 +35,7 @@ import main.component.AppConstants;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
+import module.dailyclosing.model.Inventory;
 import module.dryout.model.DryOutPallet;
 import module.prodpk.model.ProdPK;
 import module.production.model.GroupShift;
@@ -289,17 +290,27 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		lblRepairKlemTotalGradeB.setBounds(120, 320, 150, 25);
 		panel.add(lblRepairKlemTotalGradeB);
 		
-		txtRepairKlemTotalGradeA = new NumberField(3);
-		txtRepairKlemTotalGradeA.setEnabled(false);
-		txtRepairKlemTotalGradeA.setText("0");
-		txtRepairKlemTotalGradeA.setBounds(220, 290, 150, 25);
-		panel.add(txtRepairKlemTotalGradeA);
+		try {
+			Inventory inventoryKlemGradeA = ServiceFactory.getProductionPKBL().getInventoryByProductCode(AppConstants.PRODUCT_CODE_KLEM_A_TYPE_9);
+			Inventory inventoryKlemGradeB = ServiceFactory.getProductionPKBL().getInventoryByProductCode(AppConstants.PRODUCT_CODE_KLEM_B_TYPE_9);
 		
-		txtRepairKlemTotalGradeB = new NumberField(3);
-		txtRepairKlemTotalGradeB.setEnabled(false);
-		txtRepairKlemTotalGradeB.setText("0");
-		txtRepairKlemTotalGradeB.setBounds(220, 320, 150, 25);
-		panel.add(txtRepairKlemTotalGradeB);
+			
+			txtRepairKlemTotalGradeA = new NumberField(3);
+			txtRepairKlemTotalGradeA.setEnabled(false);
+			txtRepairKlemTotalGradeA.setText(inventoryKlemGradeA != null ? inventoryKlemGradeA.getQty().toString() : "0");
+			txtRepairKlemTotalGradeA.setBounds(220, 290, 150, 25);
+			panel.add(txtRepairKlemTotalGradeA);
+			
+			txtRepairKlemTotalGradeB = new NumberField(3);
+			txtRepairKlemTotalGradeB.setEnabled(false);
+			txtRepairKlemTotalGradeB.setText(inventoryKlemGradeB != null ? inventoryKlemGradeB.getQty().toString() : "0");
+			txtRepairKlemTotalGradeB.setBounds(220, 320, 150, 25);
+			panel.add(txtRepairKlemTotalGradeB);
+		
+		} catch (SQLException e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
+		}
 		
 		lblProductionResult = new JLabel("Hasil Produksi (Hasil Klem)");
 		lblProductionResult.setBounds(50, 350, 200, 25);

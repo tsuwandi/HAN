@@ -62,4 +62,6 @@ public class AppConstants {
 	public static final int SUPP_TYPE_VENEER_ID = 3;
 	public static final int SUPP_TYPE_FACEBACK_ID = 4;
 	public static final int SUPP_TYPE_PROD_SUPP_ID = 5;
+	
+	public static final int WAREHOUSE_0 = 0;
 }
