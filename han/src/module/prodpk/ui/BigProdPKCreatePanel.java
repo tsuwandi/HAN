@@ -85,8 +85,8 @@ public class BigProdPKCreatePanel extends JPanel implements Bridging {
 	ComboBox<Shift> cbShift;
 	ComboBox<Line> cbLine;
 	
-	NumberField txtRepairKlemTotalGradeA;
-	NumberField txtRepairKlemTotalGradeB;
+	JTextField txtRepairKlemTotalGradeA;
+	JTextField txtRepairKlemTotalGradeB;
 	NumberField txtProductionResultTotalGradeA;
 	NumberField txtProductionResultTotalGradeB;
 	
@@ -286,13 +286,13 @@ public class BigProdPKCreatePanel extends JPanel implements Bridging {
 			Inventory inventoryKlemGradeA = ServiceFactory.getProductionPKBL().getInventoryByProductCode(AppConstants.PRODUCT_CODE_KLEM_A_TYPE_12);
 			Inventory inventoryKlemGradeB = ServiceFactory.getProductionPKBL().getInventoryByProductCode(AppConstants.PRODUCT_CODE_KLEM_B_TYPE_12);
 		
-			txtRepairKlemTotalGradeA = new NumberField(3);
+			txtRepairKlemTotalGradeA = new JTextField();
 			txtRepairKlemTotalGradeA.setEnabled(false);
 			txtRepairKlemTotalGradeA.setText(inventoryKlemGradeA != null ? inventoryKlemGradeA.getQty().toString() : "0");
 			txtRepairKlemTotalGradeA.setBounds(220, 290, 150, 25);
 			panel.add(txtRepairKlemTotalGradeA);
 			
-			txtRepairKlemTotalGradeB = new NumberField(3);
+			txtRepairKlemTotalGradeB = new JTextField();
 			txtRepairKlemTotalGradeB.setEnabled(false);
 			txtRepairKlemTotalGradeB.setText(inventoryKlemGradeB != null ? inventoryKlemGradeB.getQty().toString() : "0");
 			txtRepairKlemTotalGradeB.setBounds(220, 320, 150, 25);
@@ -364,8 +364,6 @@ public class BigProdPKCreatePanel extends JPanel implements Bridging {
 		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
 		
-		txtRepairKlemTotalGradeA.setText("0");
-		txtRepairKlemTotalGradeB.setText("0");
 		txtProductionResultTotalGradeA.setText("0");
 		txtProductionResultTotalGradeB.setText("0");
 
