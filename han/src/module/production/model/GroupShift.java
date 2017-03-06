@@ -8,6 +8,14 @@ public class GroupShift implements ComboBoxProperties{
 	String description;
 	String employeeLeaderCode;
 	String lineCode;
+	String lineDescription;
+	
+	public String getLineDescription() {
+		return lineDescription;
+	}
+	public void setLineDescription(String lineDescription) {
+		this.lineDescription = lineDescription;
+	}
 	public String getLineCode() {
 		return lineCode;
 	}

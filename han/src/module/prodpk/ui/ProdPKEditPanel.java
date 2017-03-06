@@ -236,7 +236,7 @@ public class ProdPKEditPanel extends JPanel implements Bridging {
 				
 				try {
 					listOfLine = new ArrayList<Line>();
-					listOfLine.add(0, new Line(cbGroupShift.getDataIndex().getLineCode()));
+					listOfLine.add(0, new Line(cbGroupShift.getDataIndex().getLineDescription()));
 					cbLine.setList(listOfLine);
 				} catch (Exception e1) {
 					LOGGER.error(e1.getMessage());
