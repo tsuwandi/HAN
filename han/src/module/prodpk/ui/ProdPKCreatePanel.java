@@ -35,6 +35,7 @@ import main.component.AppConstants;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
+import module.dryout.model.DryOutPallet;
 import module.prodpk.model.ProdPK;
 import module.production.model.GroupShift;
 import module.production.model.Line;
@@ -184,9 +185,31 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 			DialogBox.showErrorException();
 		}
 
+		
+		cbLine = new ComboBox<Line>();
+		listOfLine = new ArrayList<Line>();
+		listOfLine.add(0, new Line("-- Pilih Line --"));
+		cbLine.setList(listOfLine);
+		cbLine.setBounds(220, 200, 150, 25);
+		panel.add(cbLine);
+		
 		cbGroupShift = new ComboBox<GroupShift>();
 		cbGroupShift.setList(listOfGroupShift);
 		cbGroupShift.setBounds(220, 140, 150, 25);
+		cbGroupShift.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+					listOfLine = new ArrayList<Line>();
+					listOfLine.add(0, new Line(cbGroupShift.getDataIndex().getLineCode()));
+					cbLine.setList(listOfLine);
+				} catch (Exception e1) {
+					LOGGER.error(e1.getMessage());
+					DialogBox.showErrorException();
+				}
+			}
+		});
+		
 		panel.add(cbGroupShift);
 
 		lblErrorGroupShift = new JLabel();
@@ -221,19 +244,9 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		lblLine.setBounds(50, 200, 150, 25);
 		panel.add(lblLine);
 		
-		listOfLine = new ArrayList<Line>();
-		try {
-			listOfLine = ServiceFactory.getProductionPKBL().getAllLine();
-			listOfLine.add(0, new Line("-- Pilih Line --"));
-		} catch (SQLException e1) {
-			LOGGER.error(e1.getMessage());
-			DialogBox.showErrorException();
-		}
+		
 
-		cbLine = new ComboBox<Line>();
-		cbLine.setList(listOfLine);
-		cbLine.setBounds(220, 200, 150, 25);
-		panel.add(cbLine);
+		
 
 		lblErrorLine = new JLabel();
 		lblErrorLine.setForeground(Color.RED);
@@ -362,7 +375,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 		prodPK.setGroupShiftCode(cbGroupShift.getDataIndex().getGroupShiftCode());
 		prodPK.setShiftCode(cbShift.getDataIndex().getShiftCode());
 		prodPK.setLineCode(cbLine.getDataIndex().getLineCode());
-		prodPK.setType(AppConstants.TYPE_9);
+		prodPK.setProductionTypeCode(AppConstants.BC_TYPE_9);
 		listOfProdPKMaterial = prodPKMaterialDetail();
 		listOfProdPKResultProduct = prodPKResultProductDetail();
 		
@@ -491,7 +504,7 @@ public class ProdPKCreatePanel extends JPanel implements Bridging {
 
 		String ordinal = null;
 		try {
-			ordinal = ServiceFactory.getProductionPKBL().getOrdinalOfCodeNumber(Integer.valueOf(year), AppConstants.TYPE_9);
+			ordinal = ServiceFactory.getProductionPKBL().getOrdinalOfCodeNumber(Integer.valueOf(year), AppConstants.BC_TYPE_9);
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();

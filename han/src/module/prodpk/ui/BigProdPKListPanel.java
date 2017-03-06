@@ -134,7 +134,7 @@ public class BigProdPKListPanel extends JPanel {
 
 		try {
 			listOfProdPK = new ArrayList<ProdPK>();
-			listOfProdPK = ServiceFactory.getProductionPKBL().getAllProdPK(AppConstants.TYPE_12);
+			listOfProdPK = ServiceFactory.getProductionPKBL().getAllProdPK(AppConstants.BC_TYPE_12);
 			refreshTableProdPK();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -163,7 +163,7 @@ public class BigProdPKListPanel extends JPanel {
 	public void doSearch(String value) {
 		try {
 			listOfProdPK = new ArrayList<ProdPK>();
-			listOfProdPK = ServiceFactory.getProductionPKBL().getAllProdPKBySimpleSearch(value, AppConstants.TYPE_12);
+			listOfProdPK = ServiceFactory.getProductionPKBL().getAllProdPKBySimpleSearch(value, AppConstants.BC_TYPE_12);
 			refreshTableProdPK();
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());

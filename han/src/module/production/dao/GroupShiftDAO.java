@@ -13,7 +13,7 @@ public class GroupShiftDAO {
 	private Connection connection;
 	private PreparedStatement getAllStatement;
 	
-	private String getAllQuery = "SELECT id, group_shift_code, description FROM group_shift WHERE deleted_date IS NULL ";
+	private String getAllQuery = "SELECT id, group_shift_code, description, line_code FROM group_shift WHERE deleted_date IS NULL ";
 	
 	public GroupShiftDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -31,6 +31,7 @@ public class GroupShiftDAO {
 				shift.setId(rs.getInt("id"));
 				shift.setGroupShiftCode(rs.getString("group_shift_code"));
 				shift.setDescription(rs.getString("description"));
+				shift.setLineCode(rs.getString("line_code"));
 				shifts.add(shift);
 			}
 

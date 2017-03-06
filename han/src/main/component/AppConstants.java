@@ -18,8 +18,8 @@ public class AppConstants {
 	public static final String PRODUCT_CODE_NORMAL_A_TYPE_12 = "PDC009-17";
 	public static final String PRODUCT_CODE_NORMAL_B_TYPE_12 = "PDC009-18";
 	
-	public static final String TYPE_12 = "12";
-	public static final String TYPE_9 = "9";
+	public static final String BC_TYPE_12 = "BC12";
+	public static final String BC_TYPE_9 = "BC9";
 	
 	public static final String STATUS_COMPLETED = "COMPLETED";
 	public static final String STATUS_FINAL = "FINAL";

@@ -27,7 +27,6 @@ public class ProdPK implements Serializable {
 	private String editedBy;
 	private Date deletedDate;
 	private String deletedBy;
-	private String type;
 
 	public int getId() {
 		return id;
@@ -304,15 +303,14 @@ public class ProdPK implements Serializable {
 			shift = new Shift();
 		this.shift = shift;
 	}
-
-	public String getType() {
-		return type;
+	
+	public String getProductionTypeCode() {
+		return productionTypeCode;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setProductionTypeCode(String productionTypeCode) {
+		this.productionTypeCode = productionTypeCode;
 	}
-	
-	
 
+	private String productionTypeCode;
 }

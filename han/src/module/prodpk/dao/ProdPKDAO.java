@@ -38,7 +38,7 @@ public class ProdPKDAO {
 
 	private String insertQuery = new StringBuilder()
 			.append("insert into prod_pk (prod_pk_code, production_date, group_shift_code, shift_code, line_code, ")
-			.append("status, input_date, input_by,type) ").append(" values (?,?,?,?,?,?,?,?,?)")
+			.append("status, input_date, input_by,production_type_code) ").append(" values (?,?,?,?,?,?,?,?,?)")
 			.toString();
 
 	private String updateQuery = new StringBuilder()
@@ -48,21 +48,21 @@ public class ProdPKDAO {
 	private String deleteQuery = "update prod_pk set deleted_date=?, deleted_by=? where id=?";
 	
 	private String getOrdinalOfCodeNumberQuery = "SELECT CONVERT(SUBSTRING_INDEX(prod_pk_code, '/', 1),UNSIGNED INTEGER) AS ordinal FROM prod_pk "
-			+ "WHERE SUBSTRING_INDEX(prod_pk_code, '/', -1) = ? AND type = ? "
+			+ "WHERE SUBSTRING_INDEX(prod_pk_code, '/', -1) = ? AND production_type_code = ? "
 			+ "ORDER BY ordinal DESC LIMIT 1 ";
 
 	public ProdPKDAO(Connection connection) throws SQLException {
 		this.connection = connection;
 	}
 
-	public List<ProdPK> getAll(String type) throws SQLException {
+	public List<ProdPK> getAll(String productionTypeCode) throws SQLException {
 		List<ProdPK> pprs = new ArrayList<ProdPK>();
 
 		try {
-			String query = new StringBuilder().append(getAllQuery).append(" and p.type=?").toString();
+			String query = new StringBuilder().append(getAllQuery).append(" and p.production_type_code=?").toString();
 		
 			getAllStatement = connection.prepareStatement(query);
-			getAllStatement.setString(1, type);
+			getAllStatement.setString(1, productionTypeCode);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
@@ -102,7 +102,7 @@ public class ProdPKDAO {
 		return pprs;
 	}
 
-	public List<ProdPK> getAllBySimpleSearch(String value, String type) throws SQLException {
+	public List<ProdPK> getAllBySimpleSearch(String value, String productionTypeCode) throws SQLException {
 		List<ProdPK> pprs = new ArrayList<ProdPK>();
 		try {
 			if (null != value && !"".equals(value)) {
@@ -112,14 +112,14 @@ public class ProdPKDAO {
 						.append(" or lower(p.group_shift_code) like lower('%s')")
 						.append(" or lower(s.shift_code) like lower('%s')")
 						.append(" or lower(s.line_code) like lower('%s')")
-						.append(" or lower(p.status) like lower('%s')) and type = '%s'").toString();
+						.append(" or lower(p.status) like lower('%s')) and production_type_code = '%s'").toString();
 				getAllStatement = connection
-						.prepareStatement(String.format(query, keyword, keyword, keyword, keyword, keyword, type));
+						.prepareStatement(String.format(query, keyword, keyword, keyword, keyword, keyword, productionTypeCode));
 			} else {
-				String query = new StringBuilder().append(getAllQuery).append(" and p.type=?").toString();
+				String query = new StringBuilder().append(getAllQuery).append(" and p.production_type_code=?").toString();
 				
 				getAllStatement = connection.prepareStatement(query);
-				getAllStatement.setString(1, type);
+				getAllStatement.setString(1, productionTypeCode);
 			}
 
 			ResultSet rs = getAllStatement.executeQuery();
@@ -188,7 +188,7 @@ public class ProdPKDAO {
 			insertStatement.setString(6, ppr.getStatus());
 			insertStatement.setDate(7, DateUtil.getCurrentDate());
 			insertStatement.setString(8, "timotius");
-			insertStatement.setString(9, ppr.getType());
+			insertStatement.setString(9, ppr.getProductionTypeCode());
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -269,12 +269,12 @@ public class ProdPKDAO {
 		return ppr;
 	}
 	
-	public int getOrdinalOfCodeNumberByYearAndType(int year, String type) throws SQLException {
+	public int getOrdinalOfCodeNumberByYearAndType(int year, String productionTypeCode) throws SQLException {
 		int ordinal = 0;
 		try {
 			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
 			getOrdinalOfCodeNumberStatement.setInt(1, year);
-			getOrdinalOfCodeNumberStatement.setString(2, type);
+			getOrdinalOfCodeNumberStatement.setString(2, productionTypeCode);
 
 			ResultSet rs = getOrdinalOfCodeNumberStatement.executeQuery();
 			while (rs.next()) {

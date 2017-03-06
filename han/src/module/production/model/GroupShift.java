@@ -7,7 +7,13 @@ public class GroupShift implements ComboBoxProperties{
 	String groupShiftCode;
 	String description;
 	String employeeLeaderCode;
-	
+	String lineCode;
+	public String getLineCode() {
+		return lineCode;
+	}
+	public void setLineCode(String lineCode) {
+		this.lineCode = lineCode;
+	}
 	public GroupShift(){
 	}
 	public GroupShift(String description){
