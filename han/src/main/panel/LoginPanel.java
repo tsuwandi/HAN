@@ -151,14 +151,15 @@ public class LoginPanel extends JPanel {
 		user.setUsername(usernameField.getText());
 		user.setPassword(new String(passwordField.getPassword()));
 		
-		if (ServiceFactory.getSystemBL().validateUser(user)) {
-			ServiceFactory.getSystemBL().checkLogin(user);
+//		if (ServiceFactory.getSystemBL().validateUser(user)) {
+//			ServiceFactory.getSystemBL().checkLogin(user);
 			setVisible(false);
 			MainPanel.glassPane.setVisible(false);
-		} else {
-			reset();
-			DialogBox.showError("username atau password tidak sesuai");
-		}
+//		} else {
+//			reset();
+//			DialogBox.showError("username atau password tidak sesuai");
+//		}
+			
 	}
 	
 	private void reset() {
