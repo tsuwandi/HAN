@@ -1,6 +1,7 @@
 package module.purchaseprodresult.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import module.sn.currency.model.Currency;
@@ -227,41 +228,41 @@ public class PurchaseProdResult implements Serializable {
 
 	private Supplier supplier;
 	
-	private Double total;
-	private Double discount;
-	private Double tax;
-	private Double grandTotal;
+	private BigDecimal total;
+	private BigDecimal discount;
+	private BigDecimal tax;
+	private BigDecimal grandTotal;
 	private Date paymentDate;
 	
-	public Double getTotal() {
+	public BigDecimal getTotal() {
 		return total;
 	}
 
-	public void setTotal(Double total) {
+	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
 
-	public Double getDiscount() {
+	public BigDecimal getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(Double discount) {
+	public void setDiscount(BigDecimal discount) {
 		this.discount = discount;
 	}
 
-	public Double getTax() {
+	public BigDecimal getTax() {
 		return tax;
 	}
 
-	public void setTax(Double tax) {
+	public void setTax(BigDecimal tax) {
 		this.tax = tax;
 	}
 
-	public Double getGrandTotal() {
+	public BigDecimal getGrandTotal() {
 		return grandTotal;
 	}
 
-	public void setGrandTotal(Double grandTotal) {
+	public void setGrandTotal(BigDecimal grandTotal) {
 		this.grandTotal = grandTotal;
 	}
 

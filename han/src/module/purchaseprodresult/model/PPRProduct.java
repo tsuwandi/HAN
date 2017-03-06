@@ -1,6 +1,7 @@
 package module.purchaseprodresult.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import module.product.model.Product;
@@ -12,7 +13,7 @@ public class PPRProduct implements Serializable {
 	private int id;
 	private String pprCode;
 	private String productCode;
-	private int qty;
+	private BigDecimal qty;
 	private Date inputDate;
 	private String inputBy;
 	private Date editDate;
@@ -38,10 +39,10 @@ public class PPRProduct implements Serializable {
 	public void setProductCode(String productCode) {
 		this.productCode = productCode;
 	}
-	public int getQty() {
+	public BigDecimal getQty() {
 		return qty;
 	}
-	public void setQty(int qty) {
+	public void setQty(BigDecimal qty) {
 		this.qty = qty;
 	}
 	public Date getInputDate() {
@@ -100,7 +101,7 @@ public class PPRProduct implements Serializable {
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
 		result = prime * result + ((pprCode == null) ? 0 : pprCode.hashCode());
 		result = prime * result + ((productCode == null) ? 0 : productCode.hashCode());
-		result = prime * result + qty;
+		result = prime * result + ((qty == null) ? 0 : qty.hashCode());
 		return result;
 	}
 	@Override
@@ -154,7 +155,10 @@ public class PPRProduct implements Serializable {
 				return false;
 		} else if (!productCode.equals(other.productCode))
 			return false;
-		if (qty != other.qty)
+		if (qty == null) {
+			if (other.qty != null)
+				return false;
+		} else if (!qty.equals(other.qty))
 			return false;
 		return true;
 	}
@@ -181,19 +185,19 @@ public class PPRProduct implements Serializable {
 		this.isFlag = isFlag;
 	}
 	
-	private Double unitPrice;
-	private Double subTotal;
+	private BigDecimal unitPrice;
+	private BigDecimal subTotal;
 	
-	public Double getUnitPrice() {
+	public BigDecimal getUnitPrice() {
 		return unitPrice;
 	}
-	public void setUnitPrice(Double unitPrice) {
+	public void setUnitPrice(BigDecimal unitPrice) {
 		this.unitPrice = unitPrice;
 	}
-	public Double getSubTotal() {
+	public BigDecimal getSubTotal() {
 		return subTotal;
 	}
-	public void setSubTotal(Double subTotal) {
+	public void setSubTotal(BigDecimal subTotal) {
 		this.subTotal = subTotal;
 	}
 }

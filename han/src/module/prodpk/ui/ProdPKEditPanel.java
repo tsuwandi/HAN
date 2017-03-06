@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -411,9 +412,9 @@ public class ProdPKEditPanel extends JPanel implements Bridging {
 	private List<ProdPKMaterial> prodPKMaterialDetail() {
 		for(ProdPKMaterial p : listOfProdPKMaterial) {
 			if(AppConstants.PRODUCT_CODE_KLEM_A_TYPE_9.equals(p.getProductCode())) {
-				p.setQty(Integer.valueOf(txtRepairKlemTotalGradeA.getText()));
+				p.setQty(new BigDecimal(txtRepairKlemTotalGradeA.getText()));
 			} else if (AppConstants.PRODUCT_CODE_KLEM_B_TYPE_9.equals(p.getProductCode())) {
-				p.setQty(Integer.valueOf(txtRepairKlemTotalGradeB.getText()));
+				p.setQty(new BigDecimal(txtRepairKlemTotalGradeB.getText()));
 			}
 		}	
 		
@@ -423,9 +424,9 @@ public class ProdPKEditPanel extends JPanel implements Bridging {
 	private List<ProdPKResultProduct> prodPKResultProductDetail () {
 		for(ProdPKResultProduct p : listOfProdPKResultProduct) {
 			if(AppConstants.PRODUCT_CODE_PROD_RESULT_A_TYPE_9.equals(p.getProductCode())) {
-				p.setQty(Integer.valueOf(txtProductionResultTotalGradeA.getText()));
+				p.setQty(new BigDecimal(txtProductionResultTotalGradeA.getText()));
 			} else if (AppConstants.PRODUCT_CODE_PROD_RESULT_B_TYPE_9.equals(p.getProductCode())) {
-				p.setQty(Integer.valueOf(txtProductionResultTotalGradeB.getText()));
+				p.setQty(new BigDecimal(txtProductionResultTotalGradeB.getText()));
 			}
 		}			
 		

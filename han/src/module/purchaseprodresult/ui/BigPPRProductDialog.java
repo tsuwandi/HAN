@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -179,7 +180,7 @@ public class BigPPRProductDialog extends JDialog {
 
 	protected void doInsert() {
 		pprProduct.setProductCode(cbProduct.getDataIndex().getProductCode());
-		pprProduct.setQty(Integer.valueOf(txtQty.getText()));
+		pprProduct.setQty(new BigDecimal(txtQty.getText()));
 		
 		Product product = new Product();
 		product.setProductCode(cbProduct.getDataIndex().getProductCode());
@@ -192,8 +193,8 @@ public class BigPPRProductDialog extends JDialog {
 					
 					for(PPRProduct p : pprCreatePanel.listOfPPRProduct) {
 						if(pprProduct.getProductCode().equals(p.getProductCode())) {
-							int qty = Integer.valueOf(txtQty.getText());
-							p.setQty(p.getQty() + qty);
+							BigDecimal qty = new BigDecimal(txtQty.getText());
+							p.setQty(p.getQty().add(qty));
 							isExists = true;
 							break;
 						}
@@ -207,8 +208,8 @@ public class BigPPRProductDialog extends JDialog {
 					
 					for(PPRProduct p : pprEditPanel.listOfPPRProduct) {
 						if(pprProduct.getProductCode().equals(p.getProductCode())) {
-							int qty = Integer.valueOf(txtQty.getText());
-							p.setQty(p.getQty() + qty);
+							BigDecimal qty = new BigDecimal(txtQty.getText());
+							p.setQty(p.getQty().add(qty));
 							isExists = true;
 							break;
 						}

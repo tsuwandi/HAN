@@ -1,5 +1,7 @@
 package module.dailyclosing.bl;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -90,7 +92,7 @@ public class DailyClosingBL {
 				InventoryLogTemp inventoryLogTemp = new InventoryLogTemp();
 				inventoryLogTemp.setProductCode(received.getPalletCard().getProductCode());
 				inventoryLogTemp.setWarehouse(0);
-				inventoryLogTemp.setQty(received.getPalletCard().getTotal());
+				inventoryLogTemp.setQty(new BigDecimal(received.getPalletCard().getTotal()));
 				inventoryLogTemp.setMutasi(AppConstants.DEBET);
 				inventoryLogTemp.setSrcTable(AppConstants.RECEIVED);
 				inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
@@ -106,7 +108,7 @@ public class DailyClosingBL {
 				InventoryLogTemp inventoryLogTempCredit = new InventoryLogTemp();
 				inventoryLogTempCredit.setProductCode(dryIn.getPalletCard().getProductCode());
 				inventoryLogTempCredit.setWarehouse(0);
-				inventoryLogTempCredit.setQty(dryIn.getPalletCard().getTotal());
+				inventoryLogTempCredit.setQty(new BigDecimal(dryIn.getPalletCard().getTotal()));
 				inventoryLogTempCredit.setMutasi(AppConstants.CREDIT);
 				inventoryLogTempCredit.setSrcTable(AppConstants.DRY_IN);
 				inventoryLogTempCredit.setConfirmCode(confirm.getConfirmCode());
@@ -116,7 +118,7 @@ public class DailyClosingBL {
 				InventoryLogTemp inventoryLogTempDebet = new InventoryLogTemp();
 				inventoryLogTempDebet.setProductCode(dryIn.getPalletCard().getProductCode());
 				inventoryLogTempDebet.setWarehouse(dryIn.getChamberId());
-				inventoryLogTempDebet.setQty(dryIn.getPalletCard().getTotal());
+				inventoryLogTempDebet.setQty(new BigDecimal (dryIn.getPalletCard().getTotal()));
 				inventoryLogTempDebet.setMutasi(AppConstants.DEBET);
 				inventoryLogTempDebet.setSrcTable(AppConstants.DRY_IN);
 				inventoryLogTempDebet.setConfirmCode(confirm.getConfirmCode());
@@ -132,7 +134,7 @@ public class DailyClosingBL {
 				InventoryLogTemp inventoryLogTempCredit = new InventoryLogTemp();
 				inventoryLogTempCredit.setProductCode(dryOut.getPalletCard().getProductCode());
 				inventoryLogTempCredit.setWarehouse(dryOut.getChamberId());
-				inventoryLogTempCredit.setQty(dryOut.getPalletCard().getTotal());
+				inventoryLogTempCredit.setQty(new BigDecimal (dryOut.getPalletCard().getTotal()));
 				inventoryLogTempCredit.setMutasi(AppConstants.CREDIT);
 				inventoryLogTempCredit.setSrcTable(AppConstants.DRY_OUT);
 				inventoryLogTempCredit.setConfirmCode(confirm.getConfirmCode());
@@ -145,7 +147,7 @@ public class DailyClosingBL {
 
 				inventoryLogTempDebet.setProductCode(productCodeBalkenKering);
 				inventoryLogTempDebet.setWarehouse(dryOut.getChamberId());
-				inventoryLogTempDebet.setQty(dryOut.getPalletCard().getTotal());
+				inventoryLogTempDebet.setQty(new BigDecimal(dryOut.getPalletCard().getTotal()));
 				inventoryLogTempDebet.setMutasi(AppConstants.DEBET);
 				inventoryLogTempDebet.setSrcTable(AppConstants.DRY_OUT);
 				inventoryLogTempDebet.setConfirmCode(confirm.getConfirmCode());
@@ -212,7 +214,7 @@ public class DailyClosingBL {
 
 				 inventoryLogTemp.setProductCode(productCodeBalkenKering);
 				 inventoryLogTemp.setWarehouse(0);
-				 inventoryLogTemp.setQty(production.getPalletCard().getTotal());
+				 inventoryLogTemp.setQty(new BigDecimal(production.getPalletCard().getTotal()));
 				 inventoryLogTemp.setMutasi(AppConstants.CREDIT);
 				 inventoryLogTemp.setSrcTable(AppConstants.PRODUCTION_PROD_RM);
 				 inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
@@ -236,7 +238,7 @@ public class DailyClosingBL {
 				 InventoryLogTemp inventoryLogTemp = new InventoryLogTemp();
 				 inventoryLogTemp.setProductCode(production.getProductionResultProduct().getProductCode());
 				 inventoryLogTemp.setWarehouse(0);
-				 inventoryLogTemp.setQty(production.getProductionResultProduct().getQty());
+				 inventoryLogTemp.setQty(new BigDecimal(production.getProductionResultProduct().getQty()));
 				 inventoryLogTemp.setMutasi(AppConstants.DEBET);
 				 inventoryLogTemp.setSrcTable(AppConstants.PROD_RESULT);
 				 inventoryLogTemp.setConfirmCode(confirm.getConfirmCode());
@@ -284,7 +286,7 @@ public class DailyClosingBL {
 		}
 		return builder.toString();
 	}
-
+	
 	public void doProcessDailyClosing() throws Exception {
 		Connection con = null;
 		try {
@@ -293,7 +295,7 @@ public class DailyClosingBL {
 			List<InventoryLogTemp> inventoryLogTemps = new InventoryLogTempDAO(con).getAll();
 
 			for (InventoryLogTemp inventoryLogTemp : inventoryLogTemps) {
-				double currStock = 0;
+				BigDecimal currStock = new BigDecimal(0);
 				Inventory inventory = null;
 				inventory = new InventoryDAO(con).getInventoryByProductCodeAndWarehouse(
 						inventoryLogTemp.getProductCode(), inventoryLogTemp.getWarehouse());
@@ -303,13 +305,13 @@ public class DailyClosingBL {
 				inventoryLog.setWarehouse(inventoryLogTemp.getWarehouse());
 				inventoryLog.setConfirmCode(makeConfirmCode());
 				if (inventoryLogTemp.getMutasi().equals(AppConstants.DEBET)) {
-					inventoryLog.setPrevStock((double) 0);
+					inventoryLog.setPrevStock(BigDecimal.ZERO);
 					inventoryLog.setPlusStock(inventoryLogTemp.getQty());
-					inventoryLog.setMinStock((double) 0);
+					inventoryLog.setMinStock(BigDecimal.ZERO);
 				} else if (inventoryLogTemp.getMutasi().equals(AppConstants.CREDIT)) {
-					inventoryLog.setPrevStock((double) 0);
+					inventoryLog.setPrevStock(BigDecimal.ZERO);
 					inventoryLog.setMinStock(inventoryLogTemp.getQty());
-					inventoryLog.setPlusStock((double) 0);
+					inventoryLog.setPlusStock(BigDecimal.ZERO);
 					// currStock = inventoryLog.getPrevStock() -
 					// inventoryLog.getMinStock();
 					// inventoryLog.setCurrStock(currStock);
@@ -319,13 +321,13 @@ public class DailyClosingBL {
 				}
 
 				if (inventory == null) {
-					currStock = inventoryLog.getPrevStock() + inventoryLog.getPlusStock() - inventoryLog.getMinStock();
+					currStock = inventoryLog.getPrevStock().add(inventoryLog.getPlusStock()).subtract(inventoryLog.getMinStock());
 					inventoryLog.setCurrStock(currStock);
 					inventoryLog.setPrevStockDate(new Date());
 					inventoryLog.setCurrStockDate(new Date());
 
 					inventoryLog = new InventoryLogDAO(con).save(inventoryLog);
-					currStock = inventoryLog.getPrevStock() + inventoryLog.getPlusStock() - inventoryLog.getMinStock();
+					currStock = inventoryLog.getPrevStock().add(inventoryLog.getPlusStock()).subtract(inventoryLog.getMinStock());
 					inventoryLog.setCurrStock(currStock);
 
 					inventory = new Inventory();
@@ -338,18 +340,18 @@ public class DailyClosingBL {
 
 					new InventoryDAO(con).save(inventory);
 				} else {
-					currStock = inventoryLog.getPrevStock() + inventoryLog.getPlusStock() - inventoryLog.getMinStock();
+					currStock = inventoryLog.getPrevStock().add(inventoryLog.getPlusStock()).subtract(inventoryLog.getMinStock());
 					inventoryLog.setCurrStock(currStock);
 					inventoryLog.setPrevStock(inventory.getQty());
 
 					// override curr_stock
-					inventoryLog.setCurrStock(inventory.getQty() + currStock);
+					inventoryLog.setCurrStock(inventory.getQty().add(currStock));
 
 					inventoryLog.setPrevStockDate(inventory.getStockDate());
 					inventoryLog.setCurrStockDate(new Date());
 
 					inventoryLog = new InventoryLogDAO(con).save(inventoryLog);
-					currStock = inventoryLog.getPrevStock() + inventoryLog.getPlusStock() - inventoryLog.getMinStock();
+					currStock = inventoryLog.getPrevStock().add(inventoryLog.getPlusStock()).subtract(inventoryLog.getMinStock());
 					inventoryLog.setCurrStock(currStock);
 
 					inventory.setProductCode(inventoryLogTemp.getProductCode());

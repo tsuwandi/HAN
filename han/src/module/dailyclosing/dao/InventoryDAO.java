@@ -38,7 +38,7 @@ public class InventoryDAO {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setString(1, inventory.getProductCode());
-			insertStatement.setDouble(2, inventory.getQty());
+			insertStatement.setBigDecimal(2, inventory.getQty());
 			insertStatement.setInt(3, inventory.getWarehouse());
 			insertStatement.setDate(4, DateUtil.toDate(inventory.getStockDate()));
 			insertStatement.setInt(5, inventory.getInventoryLogId());
@@ -54,7 +54,7 @@ public class InventoryDAO {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, inventory.getProductCode());
-			updateStatement.setDouble(2, inventory.getQty());
+			updateStatement.setBigDecimal(2, inventory.getQty());
 			updateStatement.setInt(3, inventory.getWarehouse());
 			updateStatement.setDate(4, DateUtil.toDate(inventory.getStockDate()));
 			updateStatement.setInt(5, inventory.getInventoryLogId());
@@ -80,7 +80,7 @@ public class InventoryDAO {
 				inventory = new Inventory();
 				inventory.setId(rs.getInt("id"));
 				inventory.setProductCode(rs.getString("product_code"));
-				inventory.setQty(rs.getDouble("qty"));
+				inventory.setQty(rs.getBigDecimal("qty"));
 				inventory.setWarehouse(rs.getInt("warehouse"));
 				inventory.setStockDate(rs.getDate("stock_date"));
 				inventory.setInventoryLogId(rs.getInt("inventory_log_id"));
@@ -104,7 +104,7 @@ public class InventoryDAO {
 				Inventory inventory = new Inventory();
 				inventory.setId(rs.getInt("id"));
 				inventory.setProductCode(rs.getString("product_code"));
-				inventory.setQty(rs.getDouble("qty"));
+				inventory.setQty(rs.getBigDecimal("qty"));
 				inventory.setWarehouse(rs.getInt("warehouse"));
 				inventory.setStockDate(rs.getDate("stock_date"));
 				inventory.setInventoryLogId(rs.getInt("inventory_log_id"));

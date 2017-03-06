@@ -8,6 +8,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -518,9 +519,9 @@ public class DryInCreatePanel extends JPanel implements Bridging {
 		dryIn.setChamberId(cbChamber.getDataIndex().getId());
 		
 		if(!txtTotalVolume.getText().equals(""))
-			dryIn.setTotalVolume(Double.parseDouble(txtTotalVolume.getText()));
+			dryIn.setTotalVolume(new BigDecimal(txtTotalVolume.getText()));
 		else
-			dryIn.setTotalVolume(0);
+			dryIn.setTotalVolume(BigDecimal.ZERO);
 		
 		try {
 			ServiceFactory.getDryInBL().save(dryIn, listOfDryInPallet);

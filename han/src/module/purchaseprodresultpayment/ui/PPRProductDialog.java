@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.DocumentFilter;
 
-import org.apache.log4j.Logger;
-
-import controller.ServiceFactory;
 import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
@@ -26,6 +24,10 @@ import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import module.product.model.Product;
 import module.purchaseprodresult.model.PPRProduct;
+
+import org.apache.log4j.Logger;
+
+import controller.ServiceFactory;
 
 public class PPRProductDialog extends JDialog {
 
@@ -233,9 +235,9 @@ public class PPRProductDialog extends JDialog {
 
 		// suppVehicle = new SuppVehicle();
 		pprProduct.setProductCode(cbProduct.getDataIndex().getProductCode());
-		pprProduct.setQty(Integer.valueOf(txtQty.getText()));
-		pprProduct.setUnitPrice(Double.valueOf(txtUnitPrice.getText()));
-		pprProduct.setSubTotal(Double.valueOf(getSubTotal()));
+		pprProduct.setQty(new BigDecimal(txtQty.getText()));
+		pprProduct.setUnitPrice(new BigDecimal(txtUnitPrice.getText()));
+		pprProduct.setSubTotal(new BigDecimal(getSubTotal()));
 		// add object vehicle type
 		Product product = new Product();
 		product.setProductCode(cbProduct.getDataIndex().getProductCode());

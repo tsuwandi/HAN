@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -381,12 +382,12 @@ public class BigProdPKCreatePanel extends JPanel implements Bridging {
 		
 		ProdPKMaterial pwProductKlemGradeA = new ProdPKMaterial();
 		pwProductKlemGradeA.setProductCode(AppConstants.PRODUCT_CODE_KLEM_A_TYPE_12);
-		pwProductKlemGradeA.setQty(Integer.valueOf(txtRepairKlemTotalGradeA.getText()));
+		pwProductKlemGradeA.setQty(new BigDecimal(txtRepairKlemTotalGradeA.getText()));
 		listOfProdPKMaterialTemp.add(pwProductKlemGradeA);
 		
 		ProdPKMaterial pwProductKlemGradeB = new ProdPKMaterial();
 		pwProductKlemGradeB.setProductCode(AppConstants.PRODUCT_CODE_KLEM_B_TYPE_12);
-		pwProductKlemGradeB.setQty(Integer.valueOf(txtRepairKlemTotalGradeB.getText()));
+		pwProductKlemGradeB.setQty(new BigDecimal(txtRepairKlemTotalGradeB.getText()));
 		listOfProdPKMaterialTemp.add(pwProductKlemGradeB);
 		
 		return listOfProdPKMaterialTemp;
@@ -397,12 +398,12 @@ public class BigProdPKCreatePanel extends JPanel implements Bridging {
 		
 		ProdPKResultProduct prodPKResultProductKlemGradeA = new ProdPKResultProduct();
 		prodPKResultProductKlemGradeA.setProductCode(AppConstants.PRODUCT_CODE_PROD_RESULT_A_TYPE_12);
-		prodPKResultProductKlemGradeA.setQty(Integer.valueOf(txtProductionResultTotalGradeA.getText()));
+		prodPKResultProductKlemGradeA.setQty(new BigDecimal(txtProductionResultTotalGradeA.getText()));
 		listOfProdPKResultProductTemp.add(prodPKResultProductKlemGradeA);
 		
 		ProdPKResultProduct prodPKResultProductKlemGradeB = new ProdPKResultProduct();
 		prodPKResultProductKlemGradeB.setProductCode(AppConstants.PRODUCT_CODE_PROD_RESULT_B_TYPE_12);
-		prodPKResultProductKlemGradeB.setQty(Integer.valueOf(txtProductionResultTotalGradeB.getText()));
+		prodPKResultProductKlemGradeB.setQty(new BigDecimal(txtProductionResultTotalGradeB.getText()));
 		listOfProdPKResultProductTemp.add(prodPKResultProductKlemGradeB);
 		
 		return listOfProdPKResultProductTemp;

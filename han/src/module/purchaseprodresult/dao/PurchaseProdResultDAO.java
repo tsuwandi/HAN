@@ -68,10 +68,10 @@ public class PurchaseProdResultDAO {
 				ppr.setPurchaseDate(rs.getDate("purchase_date"));
 				ppr.setDueDate(rs.getDate("due_date"));
 				ppr.setStatus(rs.getString("status"));
-				ppr.setTotal(rs.getDouble("total"));
-				ppr.setDiscount(rs.getDouble("discount"));
-				ppr.setTax(rs.getDouble("tax"));
-				ppr.setGrandTotal(rs.getDouble("grand_total"));
+				ppr.setTotal(rs.getBigDecimal("total"));
+				ppr.setDiscount(rs.getBigDecimal("discount"));
+				ppr.setTax(rs.getBigDecimal("tax"));
+				ppr.setGrandTotal(rs.getBigDecimal("grand_total"));
 				ppr.setPaymentDate(rs.getDate("payment_date"));
 				
 				Supplier supplier = new Supplier();
@@ -110,10 +110,10 @@ public class PurchaseProdResultDAO {
 				ppr.setPurchaseDate(rs.getDate("purchase_date"));
 				ppr.setDueDate(rs.getDate("due_date"));
 				ppr.setStatus(rs.getString("status"));
-				ppr.setTotal(rs.getDouble("total"));
-				ppr.setDiscount(rs.getDouble("discount"));
-				ppr.setTax(rs.getDouble("tax"));
-				ppr.setGrandTotal(rs.getDouble("grand_total"));
+				ppr.setTotal(rs.getBigDecimal("total"));
+				ppr.setDiscount(rs.getBigDecimal("discount"));
+				ppr.setTax(rs.getBigDecimal("tax"));
+				ppr.setGrandTotal(rs.getBigDecimal("grand_total"));
 				ppr.setPaymentDate(rs.getDate("payment_date"));
 				
 				Supplier supplier = new Supplier();
@@ -163,10 +163,10 @@ public class PurchaseProdResultDAO {
 				ppr.setPurchaseDate(rs.getDate("purchase_date"));
 				ppr.setDueDate(rs.getDate("due_date"));
 				ppr.setStatus(rs.getString("status"));
-				ppr.setTotal(rs.getDouble("total"));
-				ppr.setDiscount(rs.getDouble("discount"));
-				ppr.setTax(rs.getDouble("tax"));
-				ppr.setGrandTotal(rs.getDouble("grand_total"));
+				ppr.setTotal(rs.getBigDecimal("total"));
+				ppr.setDiscount(rs.getBigDecimal("discount"));
+				ppr.setTax(rs.getBigDecimal("tax"));
+				ppr.setGrandTotal(rs.getBigDecimal("grand_total"));
 				ppr.setPaymentDate(rs.getDate("payment_date"));
 				
 				Supplier supplier = new Supplier();
@@ -217,10 +217,10 @@ public class PurchaseProdResultDAO {
 				ppr.setPurchaseDate(rs.getDate("purchase_date"));
 				ppr.setDueDate(rs.getDate("due_date"));
 				ppr.setStatus(rs.getString("status"));
-				ppr.setTotal(rs.getDouble("total"));
-				ppr.setDiscount(rs.getDouble("discount"));
-				ppr.setTax(rs.getDouble("tax"));
-				ppr.setGrandTotal(rs.getDouble("grand_total"));
+				ppr.setTotal(rs.getBigDecimal("total"));
+				ppr.setDiscount(rs.getBigDecimal("discount"));
+				ppr.setTax(rs.getBigDecimal("tax"));
+				ppr.setGrandTotal(rs.getBigDecimal("grand_total"));
 				ppr.setPaymentDate(rs.getDate("payment_date"));
 				
 				Supplier supplier = new Supplier();
@@ -288,10 +288,10 @@ public class PurchaseProdResultDAO {
 			updateStatement.setDate(2, DateUtil.toDate(ppr.getPurchaseDate()));
 			updateStatement.setDate(3, DateUtil.toDate(ppr.getDueDate()));
 			updateStatement.setString(4, ppr.getStatus());
-			updateStatement.setDouble(5, ppr.getTotal());
-			updateStatement.setDouble(6, ppr.getDiscount());
-			updateStatement.setDouble(7, ppr.getTax());
-			updateStatement.setDouble(8, ppr.getGrandTotal());
+			updateStatement.setBigDecimal(5, ppr.getTotal());
+			updateStatement.setBigDecimal(6, ppr.getDiscount());
+			updateStatement.setBigDecimal(7, ppr.getTax());
+			updateStatement.setBigDecimal(8, ppr.getGrandTotal());
 			updateStatement.setDate(9, DateUtil.getCurrentDate());
 			updateStatement.setString(10, "timotius");
 			if(ppr.getPaymentDate() == null) {
@@ -336,10 +336,10 @@ public class PurchaseProdResultDAO {
 				ppr.setPurchaseDate(rs.getDate("purchase_date"));
 				ppr.setDueDate(rs.getDate("due_date"));
 				ppr.setStatus(rs.getString("status"));
-				ppr.setTotal(rs.getDouble("total"));
-				ppr.setDiscount(rs.getDouble("discount"));
-				ppr.setTax(rs.getDouble("tax"));
-				ppr.setGrandTotal(rs.getDouble("grand_total"));
+				ppr.setTotal(rs.getBigDecimal("total"));
+				ppr.setDiscount(rs.getBigDecimal("discount"));
+				ppr.setTax(rs.getBigDecimal("tax"));
+				ppr.setGrandTotal(rs.getBigDecimal("grand_total"));
 				ppr.setPaymentDate(rs.getDate("payment_date"));
 				Supplier supplier = new Supplier();
 				supplier.setId(rs.getInt("supp_id"));

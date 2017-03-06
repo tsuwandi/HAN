@@ -44,10 +44,10 @@ public class InventoryLogDAO {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setString(1, inventoryLog.getProductCode());
 			insertStatement.setInt(2, inventoryLog.getWarehouse());
-			insertStatement.setDouble(3, inventoryLog.getPrevStock());
-			insertStatement.setDouble(4, inventoryLog.getPlusStock());
-			insertStatement.setDouble(5, inventoryLog.getMinStock());
-			insertStatement.setDouble(6, inventoryLog.getCurrStock());
+			insertStatement.setBigDecimal(3, inventoryLog.getPrevStock());
+			insertStatement.setBigDecimal(4, inventoryLog.getPlusStock());
+			insertStatement.setBigDecimal(5, inventoryLog.getMinStock());
+			insertStatement.setBigDecimal(6, inventoryLog.getCurrStock());
 			insertStatement.setDate(7, DateUtil.toDate(inventoryLog.getPrevStockDate()));
 			insertStatement.setDate(8, DateUtil.toDate(inventoryLog.getCurrStockDate()));
 			insertStatement.setString(9, inventoryLog.getConfirmCode());
@@ -87,10 +87,10 @@ public class InventoryLogDAO {
 				} else {
 					inventoryLog.setWarehouseName("Chamber 1");
 				}
-				inventoryLog.setPrevStock(rs.getDouble("prev"));
-				inventoryLog.setPlusStock(rs.getDouble("plus"));
-				inventoryLog.setMinStock(rs.getDouble("min"));
-				inventoryLog.setCurrStock(rs.getDouble("curr"));
+				inventoryLog.setPrevStock(rs.getBigDecimal("prev"));
+				inventoryLog.setPlusStock(rs.getBigDecimal("plus"));
+				inventoryLog.setMinStock(rs.getBigDecimal("min"));
+				inventoryLog.setCurrStock(rs.getBigDecimal("curr"));
 				inventoryLog.setPrevStockDate(rs.getDate("prev_stock_date"));
 				inventoryLog.setCurrStockDate(rs.getDate("curr_stock_date"));
 				inventoryLog.setProductName(rs.getString("product_name"));

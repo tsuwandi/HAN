@@ -1,6 +1,7 @@
 package module.dailyclosing.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class InventoryLog implements Serializable {
@@ -10,10 +11,10 @@ public class InventoryLog implements Serializable {
 	private int id;
 	private String productCode;
 	private int warehouse;
-	private Double prevStock;
-	private Double plusStock;
-	private Double minStock;
-	private Double currStock;
+	private BigDecimal prevStock;
+	private BigDecimal plusStock;
+	private BigDecimal minStock;
+	private BigDecimal currStock;
 	private Date prevStockDate;
 	private Date currStockDate;
 	private String confirmCode;
@@ -42,28 +43,28 @@ public class InventoryLog implements Serializable {
 	public void setWarehouse(int warehouse) {
 		this.warehouse = warehouse;
 	}
-	public Double getPrevStock() {
+	public BigDecimal getPrevStock() {
 		return prevStock;
 	}
-	public void setPrevStock(Double prevStock) {
+	public void setPrevStock(BigDecimal prevStock) {
 		this.prevStock = prevStock;
 	}
-	public Double getPlusStock() {
+	public BigDecimal getPlusStock() {
 		return plusStock;
 	}
-	public void setPlusStock(Double plusStock) {
+	public void setPlusStock(BigDecimal plusStock) {
 		this.plusStock = plusStock;
 	}
-	public Double getMinStock() {
+	public BigDecimal getMinStock() {
 		return minStock;
 	}
-	public void setMinStock(Double minStock) {
+	public void setMinStock(BigDecimal minStock) {
 		this.minStock = minStock;
 	}
-	public Double getCurrStock() {
+	public BigDecimal getCurrStock() {
 		return currStock;
 	}
-	public void setCurrStock(Double currStock) {
+	public void setCurrStock(BigDecimal currStock) {
 		this.currStock = currStock;
 	}
 	public Date getPrevStockDate() {

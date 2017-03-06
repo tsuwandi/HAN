@@ -50,7 +50,7 @@ public class ProdPKResultProductDAO {
 				prodPKResultProduct.setId(rs.getInt("id"));
 				prodPKResultProduct.setProdPKCode(rs.getString("prod_pk_code"));
 				prodPKResultProduct.setProductCode(rs.getString("product_code"));
-				prodPKResultProduct.setQty(rs.getInt("qty"));
+				prodPKResultProduct.setQty(rs.getBigDecimal("qty"));
 
 				Product product = new Product();
 				product.setProductCode(rs.getString("product_code"));
@@ -72,7 +72,7 @@ public class ProdPKResultProductDAO {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setString(1, prodPKResultProduct.getProdPKCode());
 			insertStatement.setString(2, prodPKResultProduct.getProductCode());
-			insertStatement.setInt(3, prodPKResultProduct.getQty());
+			insertStatement.setBigDecimal(3, prodPKResultProduct.getQty());
 			insertStatement.setDate(4, DateUtil.getCurrentDate());
 			insertStatement.setString(5, "timotius");
 			insertStatement.executeUpdate();
@@ -86,7 +86,7 @@ public class ProdPKResultProductDAO {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, prodPKResultProduct.getProductCode());
-			updateStatement.setInt(2, prodPKResultProduct.getQty());
+			updateStatement.setBigDecimal(2, prodPKResultProduct.getQty());
 			updateStatement.setDate(3, DateUtil.getCurrentDate());
 			updateStatement.setString(4, "timotius");
 			updateStatement.setInt(5, prodPKResultProduct.getId());

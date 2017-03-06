@@ -9,7 +9,7 @@ public class Inventory implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String productCode;
-	private Double qty;
+	private BigDecimal qty;
 	private int warehouse;
 	private Date stockDate;
 	private int inventoryLogId;
@@ -36,11 +36,11 @@ public class Inventory implements Serializable {
 		this.productCode = productCode;
 	}
 
-	public Double getQty() {
+	public BigDecimal getQty() {
 		return qty;
 	}
 
-	public void setQty(Double qty) {
+	public void setQty(BigDecimal qty) {
 		this.qty = qty;
 	}
 

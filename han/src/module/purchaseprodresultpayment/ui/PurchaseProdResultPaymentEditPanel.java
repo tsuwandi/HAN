@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -634,7 +635,7 @@ public class PurchaseProdResultPaymentEditPanel extends JPanel implements Bridgi
 			case 3:
 				return p.getUnitPrice();
 			case 4:
-				return p.getQty() * p.getUnitPrice();
+				return p.getQty().multiply(p.getUnitPrice());
 			case 5:
 				return "<html><u>View</u></html>";
 			default:
@@ -880,32 +881,32 @@ public class PurchaseProdResultPaymentEditPanel extends JPanel implements Bridgi
 		}
 	}
 
-	public int getTotal() {
-		int total = 0;
+	public BigDecimal getTotal() {
+		BigDecimal total = new BigDecimal(0);
 
 		for (PPRProduct p : listOfPPRProduct)
-			total += (p.getQty() * p.getUnitPrice());
+			total = (p.getQty().multiply(p.getUnitPrice()));
 
-		return Integer.valueOf(total);
+		return total;
 
 	}
 
-	public int getGrandTotal() {
+	public BigDecimal getGrandTotal() {
 		if ("".equals(txtDiscount.getText())) {
 			if ("".equals(txtTax.getText()))
 				return getTotal();
 			else
-				return getTotal() + Integer.valueOf(txtTax.getText());
+				return getTotal().add(new BigDecimal(txtTax.getText()));
 		} else if ("".equals(txtTax.getText())) {
 			if ("".equals(txtDiscount.getText()))
 				return getTotal();
 			else
-				return getTotal() - Integer.valueOf(txtDiscount.getText());
+				return getTotal().subtract(new BigDecimal(txtDiscount.getText()));
 		} else {
-			int discount = Integer.valueOf(txtDiscount.getText().replace(".0", ""));
-			int tax = Integer.valueOf(txtTax.getText().replace(".0", ""));
-			int total = this.getTotal();
-			int grandTotal = (total - discount + tax);
+			BigDecimal discount = new BigDecimal(txtDiscount.getText());
+			BigDecimal tax = new BigDecimal(txtTax.getText());
+			BigDecimal total = this.getTotal();
+			BigDecimal grandTotal = (total.subtract(discount).add(tax));
 			return grandTotal;
 		}
 	}

@@ -50,7 +50,7 @@ public class ProdPKMaterialDAO {
 				prodPKMaterial.setId(rs.getInt("id"));
 				prodPKMaterial.setProdPKCode(rs.getString("prod_pk_code"));
 				prodPKMaterial.setProductCode(rs.getString("product_code"));
-				prodPKMaterial.setQty(rs.getInt("qty"));
+				prodPKMaterial.setQty(rs.getBigDecimal("qty"));
 
 				Product product = new Product();
 				product.setProductCode(rs.getString("product_code"));
@@ -72,7 +72,7 @@ public class ProdPKMaterialDAO {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setString(1, prodPKMaterial.getProdPKCode());
 			insertStatement.setString(2, prodPKMaterial.getProductCode());
-			insertStatement.setInt(3, prodPKMaterial.getQty());
+			insertStatement.setBigDecimal(3, prodPKMaterial.getQty());
 			insertStatement.setDate(4, DateUtil.getCurrentDate());
 			insertStatement.setString(5, "timotius");
 			insertStatement.executeUpdate();
@@ -86,7 +86,7 @@ public class ProdPKMaterialDAO {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, prodPKMaterial.getProductCode());
-			updateStatement.setInt(2, prodPKMaterial.getQty());
+			updateStatement.setBigDecimal(2, prodPKMaterial.getQty());
 			updateStatement.setDate(3, DateUtil.getCurrentDate());
 			updateStatement.setString(4, "timotius");
 			updateStatement.setInt(5, prodPKMaterial.getId());

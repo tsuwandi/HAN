@@ -59,7 +59,7 @@ public class DryOutDAO {
 				dryOut.setDryOutCode(rs.getString("dry_out_code"));
 				dryOut.setDateOut(rs.getTimestamp("date_out"));
 				dryOut.setChamberId(rs.getInt("chamber_id"));
-				dryOut.setTotalVolume(rs.getDouble("total_volume"));
+				dryOut.setTotalVolume(rs.getBigDecimal("total_volume"));
 				dryOut.setStatus(rs.getString("status"));
 				
 				Chamber chamber = new Chamber();
@@ -97,7 +97,7 @@ public class DryOutDAO {
 				dryOut.setDryOutCode(rs.getString("dry_out_code"));
 				dryOut.setDateOut(rs.getTimestamp("date_out"));
 				dryOut.setChamberId(rs.getInt("chamber_id"));
-				dryOut.setTotalVolume(rs.getDouble("total_volume"));
+				dryOut.setTotalVolume(rs.getBigDecimal("total_volume"));
 				dryOut.setStatus(rs.getString("status"));
 				
 				Chamber chamber = new Chamber();
@@ -158,7 +158,7 @@ public class DryOutDAO {
 			insertStatement.setString(1, dryOut.getDryOutCode());
 			insertStatement.setTimestamp(2, dryOut.getDateOut());
 			insertStatement.setInt(3, dryOut.getChamberId());
-			insertStatement.setDouble(4, dryOut.getTotalVolume());
+			insertStatement.setBigDecimal(4, dryOut.getTotalVolume());
 			insertStatement.setString(5, dryOut.getStatus());
 			insertStatement.setDate(6, DateUtil.getCurrentDate());
 			insertStatement.setString(7, "timotius");
@@ -174,7 +174,7 @@ public class DryOutDAO {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setTimestamp(1, dryOut.getDateOut());
 			updateStatement.setInt(2, dryOut.getChamberId());
-			updateStatement.setDouble(3, dryOut.getTotalVolume());
+			updateStatement.setBigDecimal(3, dryOut.getTotalVolume());
 			updateStatement.setDate(4, DateUtil.getCurrentDate());
 			updateStatement.setString(5, "timotius");
 			updateStatement.setString(6, dryOut.getDryOutCode());
@@ -214,7 +214,7 @@ public class DryOutDAO {
 				dryOut.setDryOutCode(rs.getString("dry_out_code"));
 				dryOut.setDateOut(rs.getTimestamp("date_out"));
 				dryOut.setChamberId(rs.getInt("chamber_id"));
-				dryOut.setTotalVolume(rs.getDouble("total_volume"));
+				dryOut.setTotalVolume(rs.getBigDecimal("total_volume"));
 				dryOut.setStatus(rs.getString("status"));
 				
 				Chamber chamber = new Chamber();
@@ -261,7 +261,7 @@ public class DryOutDAO {
 				dryOut.setDryOutCode(rs.getString("dry_out_code"));
 				dryOut.setDateOut(rs.getTimestamp("date_out"));
 				dryOut.setChamberId(rs.getInt("chamber_id"));
-				dryOut.setTotalVolume(rs.getDouble("total_volume"));
+				dryOut.setTotalVolume(rs.getBigDecimal("total_volume"));
 				dryOut.setConfirmDate(rs.getDate("confirm_date"));
 				dryOut.setStatus(rs.getString("status"));
 				

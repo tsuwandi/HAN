@@ -16,7 +16,7 @@ public class RekapKayuMasukDAO {
 	private String getAllPerincianPembelianBalkenQuery = 
 					"SELECT rcv.received_date,"
 					+"  rcv.received_code,"
-					+"  rcv.rit_no"
+					+"  rcv.rit_no, "
 					+"  MAX(confirm_date) AS 'TGL_EFEKTIV_LAPORAN',"
 					+"  rcv.supplier_cp_id,cp.name AS 'supp_name',"
 					+"  rcvdtl.id,"

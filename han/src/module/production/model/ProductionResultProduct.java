@@ -1,5 +1,6 @@
 package module.production.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ProductionResultProduct{

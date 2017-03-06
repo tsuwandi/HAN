@@ -1,6 +1,7 @@
 package module.prodpk.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import module.product.model.Product;
@@ -12,7 +13,7 @@ public class ProdPKMaterial implements Serializable {
 	private int id;
 	private String prodPKCode;
 	private String productCode;
-	private int qty;
+	private BigDecimal qty;
 	private Date inputDate;
 	private String inputBy;
 	private Date editDate;
@@ -44,11 +45,11 @@ public class ProdPKMaterial implements Serializable {
 		this.productCode = productCode;
 	}
 
-	public int getQty() {
+	public BigDecimal getQty() {
 		return qty;
 	}
 
-	public void setQty(int qty) {
+	public void setQty(BigDecimal qty) {
 		this.qty = qty;
 	}
 
@@ -113,7 +114,7 @@ public class ProdPKMaterial implements Serializable {
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
 		result = prime * result + ((productCode == null) ? 0 : productCode.hashCode());
 		result = prime * result + ((prodPKCode == null) ? 0 : prodPKCode.hashCode());
-		result = prime * result + qty;
+		result = prime * result + ((qty == null) ? 0 : qty.hashCode());
 		return result;
 	}
 
@@ -168,7 +169,10 @@ public class ProdPKMaterial implements Serializable {
 				return false;
 		} else if (!prodPKCode.equals(other.prodPKCode))
 			return false;
-		if (qty != other.qty)
+		if (qty == null) {
+			if (other.qty != null)
+				return false;
+		} else if (!qty.equals(other.qty))
 			return false;
 		return true;
 	}

@@ -1,6 +1,7 @@
 package module.dryout.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -15,7 +16,7 @@ public class DryOut implements Serializable {
 	private String dryOutCode;
 	private Timestamp dateOut;
 	private int chamberId;
-	private double totalVolume;
+	private BigDecimal totalVolume;
 	private Date inputDate;
 	private String inputBy;
 	private Date editDate;
@@ -55,11 +56,11 @@ public class DryOut implements Serializable {
 		this.chamberId = chamberId;
 	}
 
-	public double getTotalVolume() {
+	public BigDecimal getTotalVolume() {
 		return totalVolume;
 	}
 
-	public void setTotalVolume(double totalVolume) {
+	public void setTotalVolume(BigDecimal totalVolume) {
 		this.totalVolume = totalVolume;
 	}
 
@@ -125,9 +126,7 @@ public class DryOut implements Serializable {
 		result = prime * result + id;
 		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(totalVolume);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((totalVolume == null) ? 0 : totalVolume.hashCode());
 		return result;
 	}
 
@@ -184,7 +183,10 @@ public class DryOut implements Serializable {
 				return false;
 		} else if (!inputDate.equals(other.inputDate))
 			return false;
-		if (Double.doubleToLongBits(totalVolume) != Double.doubleToLongBits(other.totalVolume))
+		if (totalVolume == null) {
+			if (other.totalVolume != null)
+				return false;
+		} else if (!totalVolume.equals(other.totalVolume))
 			return false;
 		return true;
 	}

@@ -50,9 +50,9 @@ public class PPRProductDAO {
 				pprProduct.setId(rs.getInt("id"));
 				pprProduct.setPprCode(rs.getString("ppr_code"));
 				pprProduct.setProductCode(rs.getString("product_code"));
-				pprProduct.setQty(rs.getInt("qty"));
-				pprProduct.setUnitPrice(rs.getDouble("unit_price"));
-				pprProduct.setSubTotal(rs.getDouble("sub_total"));
+				pprProduct.setQty(rs.getBigDecimal("qty"));
+				pprProduct.setUnitPrice(rs.getBigDecimal("unit_price"));
+				pprProduct.setSubTotal(rs.getBigDecimal("sub_total"));
 				
 				Product	product = new Product();
 				product.setProductCode(rs.getString("product_code"));
@@ -74,7 +74,7 @@ public class PPRProductDAO {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setString(1, pprProduct.getPprCode());
 			insertStatement.setString(2, pprProduct.getProductCode());
-			insertStatement.setInt(3, pprProduct.getQty());
+			insertStatement.setBigDecimal(3, pprProduct.getQty());
 			insertStatement.setDate(4, DateUtil.getCurrentDate());
 			insertStatement.setString(5, "timotius");
 			insertStatement.executeUpdate();
@@ -88,9 +88,9 @@ public class PPRProductDAO {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, pprProduct.getProductCode());
-			updateStatement.setInt(2, pprProduct.getQty());
-			updateStatement.setDouble(3, pprProduct.getUnitPrice());
-			updateStatement.setDouble(4, pprProduct.getSubTotal());
+			updateStatement.setBigDecimal(2, pprProduct.getQty());
+			updateStatement.setBigDecimal(3, pprProduct.getUnitPrice());
+			updateStatement.setBigDecimal(4, pprProduct.getSubTotal());
 			updateStatement.setDate(5, DateUtil.getCurrentDate());
 			updateStatement.setString(6, "timotius");
 			updateStatement.setInt(7, pprProduct.getId());
