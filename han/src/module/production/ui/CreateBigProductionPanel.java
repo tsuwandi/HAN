@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.TextField;
@@ -158,7 +159,8 @@ public class CreateBigProductionPanel extends JPanel implements Bridging{
 			shiftCmb.setList(shifts);
 			groupShiftCmb.setList(groupShifts);
 			productionTypeCmb.setList(productionTypes);
-			productionTypeCmb.setSelectedItem("Barecore");
+			productionTypeCmb.setSelectedItem(AppConstants.BC_TYPE_12);
+			productionTypeCmb.setEnabled(false);
 			
 			lastProductionCode = ServiceFactory.getProductionBL().getProductionLastCode();
 			
@@ -178,12 +180,12 @@ public class CreateBigProductionPanel extends JPanel implements Bridging{
 		setLayout(null);
 		
 		//TODO Title Area
-		JLabel lblBreadcrumb = new JLabel("ERP > Produksi 13");
+		JLabel lblBreadcrumb = new JLabel("ERP > Produksi 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("INPUT PRODUKSI 13");
+		JLabel lblHeader = new JLabel("INPUT PRODUKSI 12");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -322,7 +324,7 @@ public class CreateBigProductionPanel extends JPanel implements Bridging{
 						ServiceFactory.getProductionBL().updateAll(production);
 						DialogBox.showEdit();
 					}else {
-						production.setType("13");
+						production.setType("12");
 						ServiceFactory.getProductionBL().saveAll(production);
 						DialogBox.showInsert();
 					}

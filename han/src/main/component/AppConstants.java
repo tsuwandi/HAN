@@ -1,5 +1,8 @@
 package main.component;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class AppConstants {
 
 	public static final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
@@ -64,4 +67,15 @@ public class AppConstants {
 	public static final int SUPP_TYPE_PROD_SUPP_ID = 5;
 	
 	public static final int WAREHOUSE_0 = 0;
+	
+	public static final int DIVIDER_VOLUME=1000000;
+	
+	public static final DecimalFormat FOUR_DIGIT_DECIMAL_FORMAT = new DecimalFormat("#.####");
+	public static final String TYPE_12 = "12";
+	public static final String TYPE_9 = "9";
+
+	
+
+
+	
 }

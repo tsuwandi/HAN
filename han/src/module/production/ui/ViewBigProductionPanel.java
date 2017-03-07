@@ -169,12 +169,12 @@ public class ViewBigProductionPanel extends JPanel implements Bridging{
 		setLayout(null);
 		
 		//TODO Title Area
-		JLabel lblBreadcrumb = new JLabel("ERP > Produksi 13");
+		JLabel lblBreadcrumb = new JLabel("ERP > Produksi 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("VIEW PRODUKSI 13");
+		JLabel lblHeader = new JLabel("VIEW PRODUKSI 12");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);

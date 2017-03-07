@@ -170,28 +170,28 @@ public class PopUpBigInputMaterial extends JDialog{
 		
 		//TODO thick part
 		thickLbl = new JLabel("Tebal");
-		thickLbl.setBounds(50, 220, 150, 20);
+		thickLbl.setBounds(50, 260, 150, 20);
 		add(thickLbl);
 		
 		thickField = new TextField();
-		thickField.setBounds(200, 220, 150, 20);
+		thickField.setBounds(200, 260, 150, 20);
 		add(thickField);
 		
 		uomThickLbl = new JLabel("cm");
-		uomThickLbl.setBounds(352,220,20,20);
+		uomThickLbl.setBounds(352,260,20,20);
 		add(uomThickLbl);
 		
 		//TODO width part
 		widthLbl = new JLabel("Lebar");
-		widthLbl.setBounds(50, 260, 150, 20);
+		widthLbl.setBounds(50, 220, 150, 20);
 		add(widthLbl);
 		
 		widthField = new TextField();
-		widthField.setBounds(200, 260, 150, 20);
+		widthField.setBounds(200, 220, 150, 20);
 		add(widthField);
 		
 		uomWidthLbl = new JLabel("cm");
-		uomWidthLbl.setBounds(352,260,20,20);
+		uomWidthLbl.setBounds(352,220,20,20);
 		add(uomWidthLbl);
 		
 		//TODO log part

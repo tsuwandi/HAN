@@ -26,6 +26,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.DialogBox;
 import main.component.PagingPanel;
 import main.component.TextField;
@@ -103,7 +104,7 @@ public class ListProductionPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				if(!searchField.getText().equals("")){
 					try {
-						List<Production> productions = ServiceFactory.getProductionBL().searchProduction(" AND type='9' AND production_code LIKE '%"+searchField.getText()+"%'");
+						List<Production> productions = ServiceFactory.getProductionBL().searchProduction(" AND e.production_type='"+AppConstants.BC_TYPE_9+"' AND production_code LIKE '%"+searchField.getText()+"%'");
 						updateTableData(productions);
 					} catch (SQLException e) {
 						log.error(e.getMessage());
@@ -304,7 +305,7 @@ public class ListProductionPanel extends JPanel {
 				}
 		    }
 	    	
-	    	rendemen = (productionTotal/1000000)/p.getTotalVolume();
+	    	rendemen = (productionTotal/AppConstants.DIVIDER_VOLUME)/p.getTotalVolume();
 	        switch(columnIndex){
 	        	case 0 :
 	        		return p.getId();
@@ -321,11 +322,11 @@ public class ListProductionPanel extends JPanel {
 	            case 6 :
 	                return p.getProductionTypeDescription();
 	            case 7 :
-	                return p.getTotalVolume();
+	                return AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(p.getTotalVolume());
 	            case 8 :
-	                return productionTotal/1000000;
+	                return AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(productionTotal/AppConstants.DIVIDER_VOLUME);
 	            case 9 :
-	                return p.getTotalVolume()==0 ? 0 : rendemen;
+	                return p.getTotalVolume()==0 ? 0 : AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(rendemen);
 	            case 10 :
 	                return p.getStatus();
 	            case 11 :

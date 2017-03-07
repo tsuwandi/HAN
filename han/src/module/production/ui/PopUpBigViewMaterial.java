@@ -22,6 +22,7 @@ import javax.swing.table.AbstractTableModel;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import main.component.AppConstants;
 import main.component.NumberField;
 import main.component.TextField;
 import model.User;
@@ -344,7 +345,7 @@ public class PopUpBigViewMaterial extends JDialog{
 		}
 		totalPalletCard = prodRms.size();
 		totalLogField.setText(totalLog+"");
-		totalVolumeField.setText(totalVolume/1000000+"");
+		totalVolumeField.setText(AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(totalVolume/AppConstants.DIVIDER_VOLUME)+"");
 		palletCardField.setText(totalPalletCard+"");
 	}
 	
@@ -399,7 +400,7 @@ public class PopUpBigViewMaterial extends JDialog{
 		            case 4 :
 		                return p.getLog();
 		            case 5 :
-		                return p.getVolume();
+		                return AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(p.getVolume()/AppConstants.DIVIDER_VOLUME);
 		            case 6 :
 		            	return "Delete";
 		            default :

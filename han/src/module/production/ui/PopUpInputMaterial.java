@@ -33,6 +33,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.TextField;
@@ -462,7 +463,7 @@ public class PopUpInputMaterial extends JDialog{
 					widthField.setText(prodRM.getWidth()+"");
 					thickField.setText(prodRM.getThick()+"");
 					logField.setText(prodRM.getLog()+"");
-					volumeField.setText(prodRM.getVolume()/1000000+"");
+					volumeField.setText(AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(prodRM.getVolume()/AppConstants.DIVIDER_VOLUME)+"");
 				}
 			} catch (SQLException e) {
 				log.error(e.getMessage());
@@ -490,7 +491,7 @@ public class PopUpInputMaterial extends JDialog{
 		}
 		totalPalletCard = prodRms.size();
 		totalLogField.setText(totalLog+"");
-		totalVolumeField.setText(totalVolume/1000000+"");
+		totalVolumeField.setText(AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(totalVolume/AppConstants.DIVIDER_VOLUME)+"");
 		palletCardField.setText(totalPalletCard+"");
 	}
 	

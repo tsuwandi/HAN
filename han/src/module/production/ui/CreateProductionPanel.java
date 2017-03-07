@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.TextField;
@@ -157,7 +158,8 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			shiftCmb.setList(shifts);
 			groupShiftCmb.setList(groupShifts);
 			productionTypeCmb.setList(productionTypes);
-			productionTypeCmb.setSelectedItem("Barecore");
+			productionTypeCmb.setSelectedItem(AppConstants.BC_TYPE_9);
+			productionTypeCmb.setEnabled(false);
 			
 			lastProductionCode = ServiceFactory.getProductionBL().getProductionLastCode();
 			

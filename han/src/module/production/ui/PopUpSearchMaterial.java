@@ -19,6 +19,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.TextField;
 import model.User;
 import module.production.model.ProdRM;
@@ -161,7 +162,7 @@ public class PopUpSearchMaterial extends JDialog{
 		            case 6 :
 		                return p.getLog();
 		            case 7 :
-		                return p.getVolume();
+		                return AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(p.getVolume()/AppConstants.DIVIDER_VOLUME);
 		            default :
 		                return "";
 		        }

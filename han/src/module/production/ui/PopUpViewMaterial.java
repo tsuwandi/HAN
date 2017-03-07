@@ -23,6 +23,7 @@ import javax.swing.table.AbstractTableModel;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import main.component.AppConstants;
 import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.TextField;
@@ -160,28 +161,28 @@ public class PopUpViewMaterial extends JDialog{
 		
 		//TODO thick part
 		thickLbl = new JLabel("Tebal");
-		thickLbl.setBounds(50, 220, 150, 20);
+		thickLbl.setBounds(50, 260, 150, 20);
 		add(thickLbl);
 		
 		thickField = new TextField();
-		thickField.setBounds(200, 220, 150, 20);
+		thickField.setBounds(200, 260, 150, 20);
 		add(thickField);
 		
 		uomThickLbl = new JLabel("cm");
-		uomThickLbl.setBounds(352,220,20,20);
+		uomThickLbl.setBounds(352,260,20,20);
 		add(uomThickLbl);
 		
 		//TODO width part
 		widthLbl = new JLabel("Lebar");
-		widthLbl.setBounds(50, 260, 150, 20);
+		widthLbl.setBounds(50, 220, 150, 20);
 		add(widthLbl);
 		
 		widthField = new TextField();
-		widthField.setBounds(200, 260, 150, 20);
+		widthField.setBounds(200, 220, 150, 20);
 		add(widthField);
 		
 		uomWidthLbl = new JLabel("cm");
-		uomWidthLbl.setBounds(352,260,20,20);
+		uomWidthLbl.setBounds(352,220,20,20);
 		add(uomWidthLbl);
 		
 		//TODO log part
@@ -346,7 +347,7 @@ public class PopUpViewMaterial extends JDialog{
 		}
 		totalPalletCard = prodRms.size();
 		totalLogField.setText(totalLog+"");
-		totalVolumeField.setText(totalVolume/1000000+"");
+		totalVolumeField.setText(AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(totalVolume/AppConstants.DIVIDER_VOLUME)+"");
 		palletCardField.setText(totalPalletCard+"");
 	}
 	
@@ -401,7 +402,7 @@ public class PopUpViewMaterial extends JDialog{
 		            case 4 :
 		                return p.getLog();
 		            case 5 :
-		                return p.getVolume();
+		                return AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(p.getVolume()/AppConstants.DIVIDER_VOLUME);
 		            case 6 :
 		            	return "Delete";
 		            default :
