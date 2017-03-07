@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.UppercaseDocumentFilter;
@@ -108,7 +109,6 @@ public class BigProductionWasteViewPanel extends JPanel implements Bridging {
 	
 
 	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
-	final String PRODUCTION_TYPE_BARECORE = "Barecore";
 	
 	private BigProductionWasteViewPanel parent;
 
@@ -121,7 +121,7 @@ public class BigProductionWasteViewPanel extends JPanel implements Bridging {
 		panel.setPreferredSize(new Dimension(800, 600));
 		panel.setLayout(null);
 
-		lblBreadcrumb = new JLabel("ERP > Pembelian > View Hasil Produksi > Sisa Produksi 13");
+		lblBreadcrumb = new JLabel("ERP > Pembelian > View Hasil Produksi > Sisa Produksi 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 414, 25);
 		panel.add(lblBreadcrumb);
@@ -248,7 +248,7 @@ public class BigProductionWasteViewPanel extends JPanel implements Bridging {
 
 		cbProductionType.setList(listOfProductionType);
 		for(int i = 0; i < listOfProductionType.size(); i++) {
-			if(PRODUCTION_TYPE_BARECORE.equalsIgnoreCase(listOfProductionType.get(i).getProductionType())) {
+			if(AppConstants.BC_TYPE_12.equalsIgnoreCase(listOfProductionType.get(i).getProductionTypeCode())) {
 				cbProductionType.setSelectedIndex(i);
 				break;
 			}

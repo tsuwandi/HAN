@@ -138,7 +138,7 @@ public class PopUpInputBigProductionResult extends JDialog{
 	private void createGUI(){
 		setLayout(null);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		setTitle("Input Hasil Produksi 13");
+		setTitle("Input Hasil Produksi 12");
 		setSize(1020, 750);
 		
 		containerPnl = new JPanel();
@@ -150,7 +150,7 @@ public class PopUpInputBigProductionResult extends JDialog{
 		containerScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(containerScrollPane);
 		
-		titleLbl = new JLabel("Input Hasil Produksi 13");
+		titleLbl = new JLabel("Input Hasil Produksi 12");
 		titleLbl.setBounds(50,10,200,30);
 		titleLbl.setFont(new Font("Arial", 1, 18));
 		containerPnl.add(titleLbl);

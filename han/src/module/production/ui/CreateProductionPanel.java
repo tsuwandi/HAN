@@ -3,6 +3,8 @@ package module.production.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
@@ -134,6 +136,13 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 				}
 			}
 		});
+		groupShiftCmb.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				lineCmb.setSelectedItem(groupShiftCmb.getDataIndex().getLineDescription());
+			}
+		});
 	}
 	
 	private void initData(){
@@ -155,10 +164,17 @@ public class CreateProductionPanel extends JPanel implements Bridging{
 			productionTypes.add(0,new ProductionType("--Pilih--"));
 			
 			lineCmb.setList(lines);
+			lineCmb.setEnabled(false);
 			shiftCmb.setList(shifts);
 			groupShiftCmb.setList(groupShifts);
 			productionTypeCmb.setList(productionTypes);
-			productionTypeCmb.setSelectedItem(AppConstants.BC_TYPE_9);
+			productTypeLoop:
+				for(int i = 0; i < productionTypes.size(); i++) {
+					if(AppConstants.BC_TYPE_9.equalsIgnoreCase(productionTypes.get(i).getProductionTypeCode())) {
+						productionTypeCmb.setSelectedIndex(i);
+						break productTypeLoop;
+					}
+				}
 			productionTypeCmb.setEnabled(false);
 			
 			lastProductionCode = ServiceFactory.getProductionBL().getProductionLastCode();

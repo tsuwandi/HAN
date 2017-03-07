@@ -368,7 +368,7 @@ public class PopUpInputMaterial extends JDialog{
 				Production prod = createProductionPanel.getProduction();
 				prod.setTotalLog(Integer.parseInt(totalLogField.getText()));
 				prod.setTotalPalletCard(Integer.parseInt(totalLogField.getText()));
-				prod.setTotalVolume(Double.parseDouble(totalVolumeField.getText()));
+				prod.setTotalVolume(Double.parseDouble(totalVolumeField.getText())*AppConstants.DIVIDER_VOLUME);
 				for (ProdRM prodRM : prodRms) {
 					prodRM.setProductionCode(productionCode);
 				}
@@ -574,7 +574,7 @@ public class PopUpInputMaterial extends JDialog{
 		            case 4 :
 		                return p.getLog();
 		            case 5 :
-		                return p.getVolume()/1000000;
+		                return AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(p.getVolume()/AppConstants.DIVIDER_VOLUME);
 		            case 6 :
 		            	return "Delete";
 		            default :

@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.UppercaseDocumentFilter;
@@ -56,7 +57,7 @@ public class BigProductionWasteCreatePanel extends JPanel implements Bridging {
 			cbProductionType.setSelectedItem(productionWaste.getProductionType().getProductionType());
 			editMode = true;
 			dcProductionDate.setEnabled(false);
-			lblBreadcrumb.setText("ERP > Pembelian > Edit Hasil Produksi > Sisa Produksi 13");
+			lblBreadcrumb.setText("ERP > Pembelian > Edit Hasil Produksi > Sisa Produksi 12");
 		}
 	}
 
@@ -105,7 +106,6 @@ public class BigProductionWasteCreatePanel extends JPanel implements Bridging {
 	private boolean editMode;
 
 	final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
-	final String PRODUCTION_TYPE_BARECORE = "Barecore";
 	String title = "";
 	
 	private BigProductionWasteCreatePanel parent;
@@ -122,7 +122,7 @@ public class BigProductionWasteCreatePanel extends JPanel implements Bridging {
 		
 		
 		
-		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Sisa Produksi 13");
+		lblBreadcrumb = new JLabel("ERP > Pembelian > Input Hasil Produksi > Sisa Produksi 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 414, 25);
 		panel.add(lblBreadcrumb);
@@ -260,10 +260,11 @@ public class BigProductionWasteCreatePanel extends JPanel implements Bridging {
 		}
 
 		cbProductionType.setList(listOfProductionType);
+		productTypeLoop:
 		for(int i = 0; i < listOfProductionType.size(); i++) {
-			if(PRODUCTION_TYPE_BARECORE.equalsIgnoreCase(listOfProductionType.get(i).getProductionType())) {
+			if(AppConstants.BC_TYPE_12.equalsIgnoreCase(listOfProductionType.get(i).getProductionTypeCode())) {
 				cbProductionType.setSelectedIndex(i);
-				break;
+				break productTypeLoop;
 			}
 		}
 		cbProductionType.setBounds(220, 230, 150, 25);
@@ -343,7 +344,7 @@ public class BigProductionWasteCreatePanel extends JPanel implements Bridging {
 				DialogBox.showEdit();
 			}
 			else {
-				productionWaste.setType("13");
+				productionWaste.setType("12");
 				ServiceFactory.getProductionWasteBL().save(productionWaste);
 				DialogBox.showInsert();
 			}

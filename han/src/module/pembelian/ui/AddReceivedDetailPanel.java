@@ -985,7 +985,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 		woodDomicileField.setText(received.getWoodDomicile());
 		woodResourceField.setText(received.getWoodResource());
 		woodTypeField.setText(received.getWoodTypeName());
-		subSupplierField.setText(received.getSubSupplierName());
+		subSupplierField.setText(received.getCity());
 		totalVolumeByAdminField.setText(received.getTotalVolume()+"");
 		receivedByField.setText(received.getReceivedBy());
 		

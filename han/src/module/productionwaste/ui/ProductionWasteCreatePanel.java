@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
@@ -271,12 +272,13 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
-
+		
 		cbProductionType.setList(listOfProductionType);
+		productionTypeLoop:
 		for(int i = 0; i < listOfProductionType.size(); i++) {
-			if(PRODUCTION_TYPE_BARECORE.equalsIgnoreCase(listOfProductionType.get(i).getProductionType())) {
+			if(AppConstants.BC_TYPE_9.equalsIgnoreCase(listOfProductionType.get(i).getProductionTypeCode())) {
 				cbProductionType.setSelectedIndex(i);
-				break;
+				break productionTypeLoop;
 			}
 		}
 		cbProductionType.setBounds(220, 230, 150, 25);

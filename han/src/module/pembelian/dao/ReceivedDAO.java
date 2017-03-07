@@ -38,11 +38,12 @@ public class ReceivedDAO {
 			+ " WHERE id=? AND received_code=?";
 	private String deleteQuery = "update received set deleted_date=? , " + "deleted_by=? where received_code=?";
 	private String getAllQuery = "select a.id, received_by, a.received_code, received_date, rit_no, a.license_plate, a.supplier_code, a.supplier_cp_id, s.name, "
-			+ "driver, a.delivery_note, a.wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource, a.emp_code, a.total_volume "
+			+ "driver, a.delivery_note, a.wood_type_id, supp_name, driver_id, received_status, wood_type, wood_domicile, wood_resource, a.emp_code, a.total_volume, sa.city "
 			+ "FROM received a " + "INNER JOIN supplier c ON a.supplier_code = c.supp_code "
 			+ "INNER JOIN supp_cp s ON a.supplier_cp_id = s.id "
 			+ "INNER JOIN wood_type d ON a.wood_type_id = d.id "
 			+ "INNER JOIN delivery f ON a.received_code = f.received_code "
+			+ "INNER JOIN supp_address sa ON s.supp_address_id = sa.id "
 			+ "INNER JOIN wood_resource e ON f.wood_resource_id = e.id WHERE 1=1 AND a.deleted_date IS NULL";
 
 	private String lastID = "SELECT received_code FROM received WHERE MONTH(received_date)=MONTH(NOW()) ORDER BY ID DESC LIMIT 1";
@@ -174,6 +175,7 @@ public class ReceivedDAO {
 				received.setSubSupplierName(rs.getString("name"));
 				received.setEmpCode(rs.getString("emp_code"));
 				received.setTotalVolume(rs.getDouble("total_volume"));
+				received.setCity(rs.getString("city"));
 				receiveds.add(received);
 
 			}
@@ -222,6 +224,7 @@ public class ReceivedDAO {
 				received.setSubSupplierName(rs.getString("name"));
 				received.setEmpCode(rs.getString("emp_code"));
 				received.setTotalVolume(rs.getDouble("total_volume"));
+				received.setCity(rs.getString("city"));
 				receiveds.add(received);
 			}
 
@@ -285,6 +288,7 @@ public class ReceivedDAO {
 				received.setSubSupplierName(rs.getString("name"));
 				received.setEmpCode(rs.getString("emp_code"));
 				received.setTotalVolume(rs.getDouble("total_volume"));
+				received.setCity(rs.getString("city"));
 				receiveds.add(received);
 			}
 		} catch (SQLException ex) {

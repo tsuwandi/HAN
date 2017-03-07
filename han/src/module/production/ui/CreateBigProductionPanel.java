@@ -3,6 +3,8 @@ package module.production.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
@@ -135,6 +137,14 @@ public class CreateBigProductionPanel extends JPanel implements Bridging{
 				}
 			}
 		});
+		
+		groupShiftCmb.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				lineCmb.setSelectedItem(groupShiftCmb.getDataIndex().getLineDescription());
+			}
+		});
 	}
 	
 	private void initData(){
@@ -156,9 +166,17 @@ public class CreateBigProductionPanel extends JPanel implements Bridging{
 			productionTypes.add(0,new ProductionType("--Pilih--"));
 			
 			lineCmb.setList(lines);
+			lineCmb.setEnabled(false);
 			shiftCmb.setList(shifts);
 			groupShiftCmb.setList(groupShifts);
 			productionTypeCmb.setList(productionTypes);
+			productTypeLoop:
+			for(int i = 0; i < productionTypes.size(); i++) {
+				if(AppConstants.BC_TYPE_12.equalsIgnoreCase(productionTypes.get(i).getProductionTypeCode())) {
+					productionTypeCmb.setSelectedIndex(i);
+					break productTypeLoop;
+				}
+			}
 			productionTypeCmb.setSelectedItem(AppConstants.BC_TYPE_12);
 			productionTypeCmb.setEnabled(false);
 			
@@ -320,7 +338,6 @@ public class CreateBigProductionPanel extends JPanel implements Bridging{
 					production.setProductionDate(productionDateChooser.getDate());
 					production.setProductionTypeCode(productionTypeCmb.getDataIndex().getProductionTypeCode());
 					if(editMode){
-						System.out.println(production.getDeletedProductionResult().size());
 						ServiceFactory.getProductionBL().updateAll(production);
 						DialogBox.showEdit();
 					}else {
@@ -344,7 +361,6 @@ public class CreateBigProductionPanel extends JPanel implements Bridging{
 			editMode=true;
 			productionDateChooser.setEnabled(false);
 			lastProductionCode=production.getProductionCode().split("/")[0];
-			System.out.println(lastProductionCode);
 			productionCodeField.setText(production.getProductionCode());
 			productionDateChooser.setDate(production.getProductionDate());
 			groupShiftCmb.setSelectedItem(production.getGroupShiftDescription());

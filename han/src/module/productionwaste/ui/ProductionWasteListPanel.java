@@ -22,6 +22,7 @@ import javax.swing.table.AbstractTableModel;
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.productionwaste.model.ProductionWaste;
@@ -133,7 +134,7 @@ public class ProductionWasteListPanel extends JPanel {
 
 		try {
 			listOfProductionWaste = new ArrayList<ProductionWaste>();
-			listOfProductionWaste = ServiceFactory.getProductionWasteBL().getAllProductionWaste(" AND TYPE = '9' ");
+			listOfProductionWaste = ServiceFactory.getProductionWasteBL().getAllProductionWaste("  AND p.production_type_code='"+AppConstants.BC_TYPE_9+"'");
 			refreshTableProductionWaste();
 		} catch (SQLException e1) {
 			e1.printStackTrace();

@@ -23,6 +23,7 @@ public class Received {
 	String empCode;
 	double totalVolume;
 	String receivedBy;
+	String city;
 	
 
 	public String getWoodDomicile() {
@@ -222,4 +223,13 @@ public class Received {
 			palletCard = new PalletCard();
 		this.palletCard = palletCard;
 	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+	
 }

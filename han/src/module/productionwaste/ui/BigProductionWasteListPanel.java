@@ -22,6 +22,7 @@ import javax.swing.table.AbstractTableModel;
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.productionwaste.model.ProductionWaste;
@@ -57,12 +58,12 @@ public class BigProductionWasteListPanel extends JPanel {
 
 		setPreferredSize(new Dimension(1024, 768));
 
-		lblBreadcrumb = new JLabel("ERP > Produksi > Input Hasil Produksi > Sisa Produksi 13");
+		lblBreadcrumb = new JLabel("ERP > Produksi > Input Hasil Produksi > Sisa Produksi 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		lblHeader = new JLabel("Input Hasil Produksi Sisa Produksi 13");
+		lblHeader = new JLabel("Input Hasil Produksi Sisa Produksi 12");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -133,7 +134,7 @@ public class BigProductionWasteListPanel extends JPanel {
 
 		try {
 			listOfProductionWaste = new ArrayList<ProductionWaste>();
-			listOfProductionWaste = ServiceFactory.getProductionWasteBL().getAllProductionWaste(" AND TYPE = '13' ");
+			listOfProductionWaste = ServiceFactory.getProductionWasteBL().getAllProductionWaste("  AND p.production_type_code='"+AppConstants.BC_TYPE_12+"'");
 			refreshTableProductionWaste();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -162,7 +163,7 @@ public class BigProductionWasteListPanel extends JPanel {
 	public void doSearch(String value) {
 		try {
 			listOfProductionWaste = new ArrayList<ProductionWaste>();
-			listOfProductionWaste = ServiceFactory.getProductionWasteBL().getAllProductionWasteBySimpleSearch("13",value);
+			listOfProductionWaste = ServiceFactory.getProductionWasteBL().getAllProductionWasteBySimpleSearch("12",value);
 			refreshTableProductionWaste();
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());

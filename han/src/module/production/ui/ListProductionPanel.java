@@ -104,7 +104,7 @@ public class ListProductionPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				if(!searchField.getText().equals("")){
 					try {
-						List<Production> productions = ServiceFactory.getProductionBL().searchProduction(" AND e.production_type='"+AppConstants.BC_TYPE_9+"' AND production_code LIKE '%"+searchField.getText()+"%'");
+						List<Production> productions = ServiceFactory.getProductionBL().searchProduction(" AND e.production_type_code='"+AppConstants.BC_TYPE_9+"' AND production_code LIKE '%"+searchField.getText()+"%'");
 						updateTableData(productions);
 					} catch (SQLException e) {
 						log.error(e.getMessage());
@@ -124,7 +124,7 @@ public class ListProductionPanel extends JPanel {
 	
 	private void initData(){
 		try {
-			productions = ServiceFactory.getProductionBL().getProduction(" AND type = 9");
+			productions = ServiceFactory.getProductionBL().getProduction(" AND e.production_type_code='"+AppConstants.BC_TYPE_9+"'");
 			
 			productMap = new HashMap<>();
 			palletMap = new HashMap<>();
@@ -305,7 +305,7 @@ public class ListProductionPanel extends JPanel {
 				}
 		    }
 	    	
-	    	rendemen = (productionTotal/AppConstants.DIVIDER_VOLUME)/p.getTotalVolume();
+	    	rendemen = (productionTotal/p.getTotalVolume())/AppConstants.DIVIDER_VOLUME;
 	        switch(columnIndex){
 	        	case 0 :
 	        		return p.getId();
