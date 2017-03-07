@@ -254,6 +254,7 @@ public class ProductionWasteViewPanel extends JPanel implements Bridging {
 			}
 		}
 		cbProductionType.setBounds(220, 230, 150, 25);
+		cbProductionType.setEnabled(false);
 		panel.add(cbProductionType);
 
 		lblErrorProductionType = new JLabel();

@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -249,6 +251,7 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 
 		cbLine = new ComboBox<Line>();
 		cbLine.setList(listOfLine);
+		cbLine.setEnabled(false);
 		cbLine.setBounds(220, 200, 150, 25);
 		panel.add(cbLine);
 
@@ -340,6 +343,13 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 
 		add(scrollPane);
 
+		cbGroupShift.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				cbLine.setSelectedItem(cbGroupShift.getDataIndex().getLineDescription());
+			}
+		});
 	}
 	
 	
