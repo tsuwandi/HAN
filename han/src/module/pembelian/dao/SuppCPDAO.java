@@ -16,7 +16,7 @@ public class SuppCPDAO {
 
 	private PreparedStatement getAllStatement;
 
-	private String getAllQuery = "SELECT a.id, a.supp_code, a.supp_address_id, b.address, a.name, a.department, a.phone, a.email "
+	private String getAllQuery = "SELECT a.id, a.supp_code, a.supp_address_id, b.address, a.name, a.department, a.phone, a.email, b.city "
 			+ "FROM supp_cp a INNER JOIN supp_address b ON a.supp_address_id = b.id WHERE 1 = 1 ";
 
 	public SuppCPDAO(DataSource dataSource) throws SQLException {
@@ -44,6 +44,7 @@ public class SuppCPDAO {
 				suppCp.setDepartment(rs.getString("department"));
 				suppCp.setPhone(rs.getString("phone"));
 				suppCp.setEmail(rs.getString("email"));
+				suppCp.setCity(rs.getString("city"));
 				suppCps.add(suppCp);
 				
 			}
@@ -81,7 +82,8 @@ public class SuppCPDAO {
 			suppCp.setDepartment(rs.getString("department"));
 			suppCp.setPhone(rs.getString("phone"));
 			suppCp.setEmail(rs.getString("email"));
-				
+			suppCp.setCity(rs.getString("city"));
+			
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());

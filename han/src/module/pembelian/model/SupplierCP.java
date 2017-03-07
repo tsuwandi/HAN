@@ -11,13 +11,14 @@ public class SupplierCP implements ComboBoxProperties {
 	String department;
 	String phone;
 	String email;
+	String city;
 	
 	public SupplierCP(){
 		
 	}
 	
-	public SupplierCP(String name){
-		this.name = name;
+	public SupplierCP(String city){
+		this.city = city;
 	}
 	
 	public int getId() {
@@ -71,7 +72,15 @@ public class SupplierCP implements ComboBoxProperties {
 
 	@Override
 	public Object getField() {	
-		return name;
+		return city;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 	
 	
