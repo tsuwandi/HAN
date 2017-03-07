@@ -30,6 +30,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import controller.ReceivedDAOFactory;
+import main.component.AppConstants;
 import main.component.NumberField;
 import main.component.TextField;
 import model.User;
@@ -110,7 +111,6 @@ public class ViewPopUpPalletCard extends JDialog{
 	String totalVolumeHidden="";
 	Map<Integer, PalletCard> deletedPallets;
 	
-	final static double DIVIDER = 1000000;
 	public ViewPopUpPalletCard(ViewReceivedDetailPanel parent, ReceivedDetail receivedDetail, int index) {
 		super((JFrame)parent.getTopLevelAncestor());
 		addReceivedDetail = parent;
@@ -343,7 +343,7 @@ public class ViewPopUpPalletCard extends JDialog{
 			volume+=pcd.getVolume();
 		}
 		totalLogField.setText(total+"");
-		totalVolumeField.setText(volume/DIVIDER+"");
+		totalVolumeField.setText(AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(volume/AppConstants.DIVIDER_VOLUME)+"");
 		totalVolumeHidden=volume+"";
 		
 	
@@ -369,7 +369,7 @@ public class ViewPopUpPalletCard extends JDialog{
 	public void calculateVolume(){
 		if(!longField.getText().equals("")&&!wideField.getText().equals("")&&!thicknessField.getText().equals("")&&!totalField.getText().equals("")){
 			double volume = Double.valueOf(longField.getText())*Double.valueOf(wideField.getText())*Double.valueOf(thicknessField.getText())*Double.valueOf(totalField.getText());
-			volumeField.setText(volume/DIVIDER+"");
+			volumeField.setText(AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(volume/AppConstants.DIVIDER_VOLUME)+"");
 			volumeHidden = volume+"";
 		}
 	}
@@ -416,7 +416,7 @@ public class ViewPopUpPalletCard extends JDialog{
 	            case 4 :
 	                return p.getTotal();
 	            case 5 :
-	                return p.getVolume()/DIVIDER;
+	                return AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(p.getVolume()/AppConstants.DIVIDER_VOLUME);
 	            case 6 :
 	            	return p.getProductName();
 	            case 7 :

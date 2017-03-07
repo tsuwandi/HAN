@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 
 import controller.DataSourceFactory;
 import controller.ReceivedDAOFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
@@ -252,7 +253,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 				try {
 					java.sql.Connection conn = DataSourceFactory.getDataSource().getConnection();
 					JasperDesign jDesign = JRXmlLoader.load("src/module/pembelian/report/ReceivedReport.jrxml");
-					String sql = "SELECT RIGHT(pallet_card_code,4) AS rit_no,length,thickness,width,grade,total,(volume/1000000) AS volume FROM received_detail a INNER JOIN pallet_card b ON a.id = b.received_detail_id INNER JOIN grade c ON  a.grade_id = c.id WHERE a.received_code = '"+received.getReceivedCode()+"'";
+					String sql = "SELECT RIGHT(pallet_card_code,4) AS rit_no,length,thickness,width,grade,total,ROUND((volume/1000000),4) AS volume FROM received_detail a INNER JOIN pallet_card b ON a.id = b.received_detail_id INNER JOIN grade c ON  a.grade_id = c.id WHERE a.received_code = '"+received.getReceivedCode()+"'";
 					JRDesignQuery jDesignQuery = new JRDesignQuery();		
 					jDesignQuery.setText(sql);
 					jDesign.setQuery(jDesignQuery);
@@ -691,7 +692,7 @@ public class ViewReceivedDetailPanel extends JPanel implements Bridging{
 	            case 2 :
 	                return p.getTotalLog();
 	            case 3 :
-	                return p.getTotalVolume()/1000000;
+	                return AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(p.getTotalVolume()/AppConstants.DIVIDER_VOLUME);
 	            case 4 :
 	                return p.getPallets().size();
 	            case 5 :

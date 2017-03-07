@@ -34,6 +34,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import controller.ReceivedDAOFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
@@ -830,7 +831,7 @@ public class AddReceivedDetailPanel extends JPanel implements Bridging{
 	            case 2 :
 	                return p.getTotalLog();
 	            case 3 :
-	                return p.getTotalVolume()/1000000;
+	                return AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(p.getTotalVolume()/AppConstants.DIVIDER_VOLUME);
 	            case 4 :
 	                return p.getPallets().size();
 	            case 5 :

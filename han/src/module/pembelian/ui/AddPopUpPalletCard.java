@@ -30,6 +30,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import controller.ReceivedDAOFactory;
+import main.component.AppConstants;
 import main.component.NumberField;
 import main.component.TextField;
 import model.User;
@@ -110,7 +111,7 @@ public class AddPopUpPalletCard extends JDialog{
 	Map<String, PalletCard> tempPallet;
 	String volumeHidden="";
 	String totalVolumeHidden="";
-	final static double DIVIDER = 1000000;
+	
 	Map<Integer, PalletCard> deletedPallets;
 	public AddPopUpPalletCard(AddReceivedDetailPanel parent) {
 		super((JFrame)parent.getTopLevelAncestor());
@@ -176,36 +177,36 @@ public class AddPopUpPalletCard extends JDialog{
 		
 		//Thickness
 		thickLbl = new JLabel("<html>Tebal <font color='red'>*</font></html>");
-		thickLbl.setBounds(30,150,100,20);
+		thickLbl.setBounds(30,190,100,20);
 		add(thickLbl);
 		
 		thicknessField = new NumberField(10);
-		thicknessField.setBounds(150, 150, 150, 20);
+		thicknessField.setBounds(150, 190, 150, 20);
 		add(thicknessField);
 		
 		uomThickLbl = new JLabel("cm");
-		uomThickLbl.setBounds(302,150,15,20);
+		uomThickLbl.setBounds(302,190,15,20);
 		add(uomThickLbl);
 		
 		errorThickLbl = new JLabel();
-		errorThickLbl.setBounds(325,150,150,20);
+		errorThickLbl.setBounds(325,190,150,20);
 		add(errorThickLbl);
 		
 		//Wide
 		wideLbl = new JLabel("<html>Lebar <font color='red'>*</font></html>");
-		wideLbl.setBounds(30,190,100,20);
+		wideLbl.setBounds(30,150,100,20);
 		add(wideLbl);
 		
 		wideField = new NumberField(10);
-		wideField.setBounds(150, 190, 150, 20);
+		wideField.setBounds(150, 150, 150, 20);
 		add(wideField);
 		
 		uomWideLbl = new JLabel("cm");
-		uomWideLbl.setBounds(302,190,15,20);
+		uomWideLbl.setBounds(302,150,15,20);
 		add(uomWideLbl);
 		
 		errorWideLbl = new JLabel();
-		errorWideLbl.setBounds(325,190,150,20);
+		errorWideLbl.setBounds(325,150,150,20);
 		add(errorWideLbl);
 	
 		//Total
@@ -485,7 +486,7 @@ public class AddPopUpPalletCard extends JDialog{
 					productNameField.setText(pc.getProductName());
 					productCode.setText(pc.getProductCode());
 					totalField.setText(pc.getTotal()+"");
-					volumeField.setText(pc.getVolume()/DIVIDER+"");
+					volumeField.setText(AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(pc.getVolume()/AppConstants.DIVIDER_VOLUME)+"");
 					volumeHidden=pc.getVolume()+"";
 					descriptionArea.setText(pc.getDescription());
 				}
@@ -503,7 +504,7 @@ public class AddPopUpPalletCard extends JDialog{
 						volume+=pcd.getVolume();
 					}
 					totalLogField.setText(total+"");
-					totalVolumeField.setText(volume/DIVIDER+"");
+					totalVolumeField.setText(AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(volume/AppConstants.DIVIDER_VOLUME)+"");
 					totalVolumeHidden=volume+"";
 					
 				}
@@ -597,7 +598,7 @@ public class AddPopUpPalletCard extends JDialog{
 							volume+=pcd.getVolume();
 						}
 						totalLogField.setText(total+"");
-						totalVolumeField.setText(volume/DIVIDER+"");
+						totalVolumeField.setText(AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(volume/AppConstants.DIVIDER_VOLUME)+"");
 						totalVolumeHidden=volume+"";
 						clear();
 					}else{
@@ -743,7 +744,7 @@ public class AddPopUpPalletCard extends JDialog{
 	public void calculateVolume(){
 		if(!longField.getText().equals("")&&!wideField.getText().equals("")&&!thicknessField.getText().equals("")&&!totalField.getText().equals("")){
 			double volume = Double.valueOf(longField.getText())*Double.valueOf(wideField.getText())*Double.valueOf(thicknessField.getText())*Double.valueOf(totalField.getText());
-			volumeField.setText(volume/DIVIDER+"");
+			volumeField.setText(AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(volume/AppConstants.DIVIDER_VOLUME)+"");
 			volumeHidden=volume+"";
 		}
 	}
@@ -790,7 +791,7 @@ public class AddPopUpPalletCard extends JDialog{
 	            case 4 :
 	                return p.getTotal();
 	            case 5 :
-	                return p.getVolume()/DIVIDER;
+	                return AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(p.getVolume()/AppConstants.DIVIDER_VOLUME);
 	            case 6 :
 	            	return p.getProductName();
 	            case 7 :
