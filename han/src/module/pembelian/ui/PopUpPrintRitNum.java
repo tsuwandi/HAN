@@ -110,8 +110,6 @@ public class PopUpPrintRitNum extends JDialog {
 		      return Printable.PAGE_EXISTS;
 		    }
 		  });
-		  if (pj.printDialog() == false)
-		  return;
 
 		  try {
 		        pj.print();
