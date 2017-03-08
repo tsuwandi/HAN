@@ -110,6 +110,9 @@ public class ProdPKViewPanel extends JPanel implements Bridging {
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
+	
+	private JLabel lblProductionType;
+	private ComboBox<ProductionType> cbProductionType;
 
 	public ProdPKViewPanel() {
 		prodPK = new ProdPK();
@@ -232,7 +235,26 @@ public class ProdPKViewPanel extends JPanel implements Bridging {
 		lblErrorLine.setBounds(425, 200, 225, 25);
 		panel.add(lblErrorLine);
 		
+		listOfProductionType = new ArrayList<ProductionType>();
+		try {
+			listOfProductionType = ServiceFactory.getProductionPKBL().getAllProductionType();
+			listOfProductionType.add(0, new ProductionType("-- Pilih Tipe Produksi --"));
+		} catch (SQLException e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
+		}
+		cbProductionType = new ComboBox<ProductionType>();
+		cbProductionType.setList(listOfProductionType);
+		cbProductionType.setBounds(220, 230, 150, 25);
+		for(int i = 0; i < listOfProductionType.size(); i++) {
+			if(AppConstants.BC_TYPE_9.equalsIgnoreCase(listOfProductionType.get(i).getProductionTypeCode())) {
+				cbProductionType.setSelectedIndex(i);
+				break;
+			}
+		}
+		cbProductionType.setEnabled(false);
 		
+		panel.add(cbProductionType);
 
 		
 		lblErrorTxtRepairKlemTotalGradeA = new JLabel();
