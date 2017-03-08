@@ -147,8 +147,6 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 	private static final String CRATE_WASTE_A="PDC009-3";
 	private static final String CRATE_WASTE_B="PDC009-4";
 	
-	private static final String KA = "PDC009-3";
-	private static final String KB = "PDC009-4";
 	private static final String NA = "PDC009-1";
 	private static final String NB = "PDC009-2";
 	
@@ -173,7 +171,7 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 		setLayout(null);
 		
 		containerPnl = new JPanel();
-		containerPnl.setPreferredSize(new Dimension(1050, 950));
+		containerPnl.setPreferredSize(new Dimension(1050, 850));
 		
 		containerPnl.setLayout(null);
 		
@@ -212,306 +210,306 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 		stockTable.setRowHeight(40);
 		
 		tableScrollPane = new JScrollPane(stockTable);
-		tableScrollPane.setBounds(50,165,200,187);
+		tableScrollPane.setBounds(50,165,200,107);
 		containerPnl.add(tableScrollPane);
 		
 		packingResultLbl = new JLabel("<html><b>Hasil Produksi</b></html>");
-		packingResultLbl.setBounds(50,385,150,20);
+		packingResultLbl.setBounds(50,285,150,20);
 		containerPnl.add(packingResultLbl);
 		
 		//Big Crate A
 		bigCrateALbl= new JLabel("Crate Besar A");
-		bigCrateALbl.setBounds(50,425,150,20);
+		bigCrateALbl.setBounds(50,325,150,20);
 		containerPnl.add(bigCrateALbl);
 		
 		bigCrateAField= new NumberField(7);
-		bigCrateAField.setBounds(210,425,150,20);
+		bigCrateAField.setBounds(210,325,150,20);
 		containerPnl.add(bigCrateAField);
 		
 		bigCrateAEqualsLbl= new JLabel(EQUALS);
-		bigCrateAEqualsLbl.setBounds(368,425,150,20);
+		bigCrateAEqualsLbl.setBounds(368,325,150,20);
 		containerPnl.add(bigCrateAEqualsLbl);
 		
 		bigCrateAResultField= new TextField();
-		bigCrateAResultField.setBounds(380,425,150,20);
+		bigCrateAResultField.setBounds(380,325,150,20);
 		containerPnl.add(bigCrateAResultField);
 		
 		bigCrateAResultLbl= new JLabel(NORMAL_A);
-		bigCrateAResultLbl.setBounds(540,425,150,20);
+		bigCrateAResultLbl.setBounds(540,325,150,20);
 		containerPnl.add(bigCrateAResultLbl);
 		
 		bigCrateAErrorLbl = new JLabel();
-		bigCrateAErrorLbl.setBounds(700,425,150,20);
+		bigCrateAErrorLbl.setBounds(700,325,150,20);
 		containerPnl.add(bigCrateAErrorLbl);
 		
 		//Small Crate A
 		smallCrateALbl= new JLabel("Crate Kecil A");
-		smallCrateALbl.setBounds(50,465,150,20);
+		smallCrateALbl.setBounds(50,365,150,20);
 		containerPnl.add(smallCrateALbl);
 		
 		smallCrateAField= new NumberField(7);
-		smallCrateAField.setBounds(210,465,150,20);
+		smallCrateAField.setBounds(210,365,150,20);
 		containerPnl.add(smallCrateAField);
 		
 		smallCrateAEqualsLbl= new JLabel(EQUALS);
-		smallCrateAEqualsLbl.setBounds(368,465,150,20);
+		smallCrateAEqualsLbl.setBounds(368,365,150,20);
 		containerPnl.add(smallCrateAEqualsLbl);
 		
 		smallCrateAResultField= new TextField();
-		smallCrateAResultField.setBounds(380,465,150,20);
+		smallCrateAResultField.setBounds(380,365,150,20);
 		containerPnl.add(smallCrateAResultField);
 		
 		smallCrateAResultLbl= new JLabel(NORMAL_A);
-		smallCrateAResultLbl.setBounds(540,465,150,20);
+		smallCrateAResultLbl.setBounds(540,365,150,20);
 		containerPnl.add(smallCrateAResultLbl);
 		
 		smallCrateAErrorLbl = new JLabel();
-		smallCrateAErrorLbl.setBounds(700,465,150,20);
+		smallCrateAErrorLbl.setBounds(700,365,150,20);
 		containerPnl.add(smallCrateAErrorLbl);
 		
 		//Big Crate A1
 		bigCrateA1Lbl= new JLabel("Crate Besar A1");
-		bigCrateA1Lbl.setBounds(50,505,150,20);
+		bigCrateA1Lbl.setBounds(50,405,150,20);
 		containerPnl.add(bigCrateA1Lbl);
 		
 		bigCrateA1Field= new NumberField(7);
-		bigCrateA1Field.setBounds(210,505,150,20);
+		bigCrateA1Field.setBounds(210,405,150,20);
 		containerPnl.add(bigCrateA1Field);
 		
 		bigCrateA1EqualsLbl= new JLabel(EQUALS);
-		bigCrateA1EqualsLbl.setBounds(368,505,150,20);
+		bigCrateA1EqualsLbl.setBounds(368,405,150,20);
 		containerPnl.add(bigCrateA1EqualsLbl);
 		
 		bigCrateA1ResultField= new TextField();
-		bigCrateA1ResultField.setBounds(380,505,150,20);
+		bigCrateA1ResultField.setBounds(380,405,150,20);
 		containerPnl.add(bigCrateA1ResultField);
 		
 		bigCrateA1ResultLbl= new JLabel(NORMAL_A);
-		bigCrateA1ResultLbl.setBounds(540,505,150,20);
+		bigCrateA1ResultLbl.setBounds(540,405,150,20);
 		containerPnl.add(bigCrateA1ResultLbl);
 		
 		bigCrateA1ErrorLbl = new JLabel();
-		bigCrateA1ErrorLbl.setBounds(700,505,150,20);
+		bigCrateA1ErrorLbl.setBounds(700,405,150,20);
 		containerPnl.add(bigCrateA1ErrorLbl);
 	
 		//Small Crate A1
 		smallCrateA1Lbl= new JLabel("Crate Kecil A1");
-		smallCrateA1Lbl.setBounds(50,545,150,20);
+		smallCrateA1Lbl.setBounds(50,445,150,20);
 		containerPnl.add(smallCrateA1Lbl);
 		
 		smallCrateA1Field= new NumberField(7);
-		smallCrateA1Field.setBounds(210,545,150,20);
+		smallCrateA1Field.setBounds(210,445,150,20);
 		containerPnl.add(smallCrateA1Field);
 		
 		smallCrateA1EqualsLbl= new JLabel(EQUALS);
-		smallCrateA1EqualsLbl.setBounds(368,545,150,20);
+		smallCrateA1EqualsLbl.setBounds(368,445,150,20);
 		containerPnl.add(smallCrateA1EqualsLbl);
 		
 		smallCrateA1ResultField= new TextField();
-		smallCrateA1ResultField.setBounds(380,545,150,20);
+		smallCrateA1ResultField.setBounds(380,445,150,20);
 		containerPnl.add(smallCrateA1ResultField);
 		
 		smallCrateA1ResultLbl= new JLabel(NORMAL_A);
-		smallCrateA1ResultLbl.setBounds(540,545,150,20);
+		smallCrateA1ResultLbl.setBounds(540,445,150,20);
 		containerPnl.add(smallCrateA1ResultLbl);
 		
 		smallCrateA1ErrorLbl = new JLabel();
-		smallCrateA1ErrorLbl.setBounds(700,545,150,20);
+		smallCrateA1ErrorLbl.setBounds(700,445,150,20);
 		containerPnl.add(smallCrateA1ErrorLbl);
 		
 		//Big Crate B
 		bigCrateBLbl= new JLabel("Crate Besar B");
-		bigCrateBLbl.setBounds(50,585,150,20);
+		bigCrateBLbl.setBounds(50,485,150,20);
 		containerPnl.add(bigCrateBLbl);
 		
 		bigCrateBField= new NumberField(7);
-		bigCrateBField.setBounds(210,585,150,20);
+		bigCrateBField.setBounds(210,485,150,20);
 		containerPnl.add(bigCrateBField);
 		
 		bigCrateBEqualsLbl= new JLabel(EQUALS);
-		bigCrateBEqualsLbl.setBounds(368,585,150,20);
+		bigCrateBEqualsLbl.setBounds(368,485,150,20);
 		containerPnl.add(bigCrateBEqualsLbl);
 		
 		bigCrateBResultField= new TextField();
-		bigCrateBResultField.setBounds(380,585,150,20);
+		bigCrateBResultField.setBounds(380,485,150,20);
 		containerPnl.add(bigCrateBResultField);
 		
 		bigCrateBResultLbl= new JLabel(NORMAL_B);
-		bigCrateBResultLbl.setBounds(540,585,150,20);
+		bigCrateBResultLbl.setBounds(540,485,150,20);
 		containerPnl.add(bigCrateBResultLbl);
 		
 		bigCrateBErrorLbl = new JLabel();
-		bigCrateBErrorLbl.setBounds(700,585,150,20);
+		bigCrateBErrorLbl.setBounds(700,485,150,20);
 		containerPnl.add(bigCrateBErrorLbl);
 		
 		//Small Crate B
 		smallCrateBLbl= new JLabel("Crate Kecil B");
-		smallCrateBLbl.setBounds(50,625,150,20);
+		smallCrateBLbl.setBounds(50,525,150,20);
 		containerPnl.add(smallCrateBLbl);
 		
 		smallCrateBField= new NumberField(7);
-		smallCrateBField.setBounds(210,625,150,20);
+		smallCrateBField.setBounds(210,525,150,20);
 		containerPnl.add(smallCrateBField);
 		
 		smallCrateBEqualsLbl= new JLabel(EQUALS);
-		smallCrateBEqualsLbl.setBounds(368,625,150,20);
+		smallCrateBEqualsLbl.setBounds(368,525,150,20);
 		containerPnl.add(smallCrateBEqualsLbl);
 		
 		smallCrateBResultField= new TextField();
-		smallCrateBResultField.setBounds(380,625,150,20);
+		smallCrateBResultField.setBounds(380,525,150,20);
 		containerPnl.add(smallCrateBResultField);
 		
 		smallCrateBResultLbl= new JLabel(NORMAL_B);
-		smallCrateBResultLbl.setBounds(540,625,150,20);
+		smallCrateBResultLbl.setBounds(540,525,150,20);
 		containerPnl.add(smallCrateBResultLbl);
 		
 		smallCrateBErrorLbl = new JLabel();
-		smallCrateBErrorLbl.setBounds(700,625,150,20);
+		smallCrateBErrorLbl.setBounds(700,525,150,20);
 		containerPnl.add(smallCrateBErrorLbl);
 		
 		//Big Crate BNP
 		bigCrateBNPLbl= new JLabel("Crate Besar BNP");
-		bigCrateBNPLbl.setBounds(50,665,150,20);
+		bigCrateBNPLbl.setBounds(50,565,150,20);
 		containerPnl.add(bigCrateBNPLbl);
 		
 		bigCrateBNPField= new NumberField(7);
-		bigCrateBNPField.setBounds(210,665,150,20);
+		bigCrateBNPField.setBounds(210,565,150,20);
 		containerPnl.add(bigCrateBNPField);
 		
 		bigCrateBNPEqualsLbl= new JLabel(EQUALS);
-		bigCrateBNPEqualsLbl.setBounds(368,665,150,20);
+		bigCrateBNPEqualsLbl.setBounds(368,565,150,20);
 		containerPnl.add(bigCrateBNPEqualsLbl);
 		
 		bigCrateBNPResultField= new TextField();
-		bigCrateBNPResultField.setBounds(380,665,150,20);
+		bigCrateBNPResultField.setBounds(380,565,150,20);
 		containerPnl.add(bigCrateBNPResultField);
 		
 		bigCrateBNPResultLbl= new JLabel(NORMAL_B);
-		bigCrateBNPResultLbl.setBounds(540,665,150,20);
+		bigCrateBNPResultLbl.setBounds(540,565,150,20);
 		containerPnl.add(bigCrateBNPResultLbl);
 		
 		bigCrateBNPErrorLbl = new JLabel();
-		bigCrateBNPErrorLbl.setBounds(700,665,150,20);
+		bigCrateBNPErrorLbl.setBounds(700,565,150,20);
 		containerPnl.add(bigCrateBNPErrorLbl);
 		
 		//Small Crate BNP
 		smallCrateBNPLbl= new JLabel("Crate Kecil BNP");
-		smallCrateBNPLbl.setBounds(50,705,150,20);
+		smallCrateBNPLbl.setBounds(50,605,150,20);
 		containerPnl.add(smallCrateBNPLbl);
 		
 		smallCrateBNPField= new NumberField(7);
-		smallCrateBNPField.setBounds(210,705,150,20);
+		smallCrateBNPField.setBounds(210,605,150,20);
 		containerPnl.add(smallCrateBNPField);
 		
 		smallCrateBNPEqualsLbl= new JLabel(EQUALS);
-		smallCrateBNPEqualsLbl.setBounds(368,705,150,20);
+		smallCrateBNPEqualsLbl.setBounds(368,605,150,20);
 		containerPnl.add(smallCrateBNPEqualsLbl);
 		
 		smallCrateBNPResultField= new TextField();
-		smallCrateBNPResultField.setBounds(380,705,150,20);
+		smallCrateBNPResultField.setBounds(380,605,150,20);
 		containerPnl.add(smallCrateBNPResultField);
 		
 		smallCrateBNPResultLbl= new JLabel(NORMAL_B);
-		smallCrateBNPResultLbl.setBounds(540,705,150,20);
+		smallCrateBNPResultLbl.setBounds(540,605,150,20);
 		containerPnl.add(smallCrateBNPResultLbl);
 		
 		smallCrateBNPErrorLbl = new JLabel();
-		smallCrateBNPErrorLbl.setBounds(700,705,150,20);
+		smallCrateBNPErrorLbl.setBounds(700,605,150,20);
 		containerPnl.add(smallCrateBNPErrorLbl);
 		
 		
 		//Big Crate C
 		bigCrateCLbl= new JLabel("Crate Besar C");
-		bigCrateCLbl.setBounds(50,745,150,20);
+		bigCrateCLbl.setBounds(50,645,150,20);
 		containerPnl.add(bigCrateCLbl);
 		
 		bigCrateCField= new NumberField(7);
-		bigCrateCField.setBounds(210,745,150,20);
+		bigCrateCField.setBounds(210,645,150,20);
 		containerPnl.add(bigCrateCField);
 		
 		bigCrateCEqualsLbl= new JLabel(EQUALS);
-		bigCrateCEqualsLbl.setBounds(368,745,150,20);
+		bigCrateCEqualsLbl.setBounds(368,645,150,20);
 		containerPnl.add(bigCrateCEqualsLbl);
 		
 		bigCrateCResultField= new TextField();
-		bigCrateCResultField.setBounds(380,745,150,20);
+		bigCrateCResultField.setBounds(380,645,150,20);
 		containerPnl.add(bigCrateCResultField);
 		
 		bigCrateCResultLbl= new JLabel(NORMAL_B);
-		bigCrateCResultLbl.setBounds(540,745,150,20);
+		bigCrateCResultLbl.setBounds(540,645,150,20);
 		containerPnl.add(bigCrateCResultLbl);
 
 		
 		//Small Crate C
 		smallCrateCLbl= new JLabel("Crate Kecil C");
-		smallCrateCLbl.setBounds(50,785,150,20);
+		smallCrateCLbl.setBounds(50,685,150,20);
 		containerPnl.add(smallCrateCLbl);
 		
 		smallCrateCField= new NumberField(7);
-		smallCrateCField.setBounds(210,785,150,20);
+		smallCrateCField.setBounds(210,685,150,20);
 		containerPnl.add(smallCrateCField);
 		
 		smallCrateCEqualsLbl= new JLabel(EQUALS);
-		smallCrateCEqualsLbl.setBounds(368,785,150,20);
+		smallCrateCEqualsLbl.setBounds(368,685,150,20);
 		containerPnl.add(smallCrateCEqualsLbl);
 		
 		smallCrateCResultField= new TextField();
-		smallCrateCResultField.setBounds(380,785,150,20);
+		smallCrateCResultField.setBounds(380,685,150,20);
 		containerPnl.add(smallCrateCResultField);
 		
 		smallCrateCResultLbl= new JLabel(NORMAL_B);
-		smallCrateCResultLbl.setBounds(540,785,150,20);
+		smallCrateCResultLbl.setBounds(540,685,150,20);
 		containerPnl.add(smallCrateCResultLbl);
 		
 		//Crate Waste A
 		crateWasteALbl= new JLabel("Cacat Finishing A");
-		crateWasteALbl.setBounds(50,825,150,20);
+		crateWasteALbl.setBounds(50,725,150,20);
 		containerPnl.add(crateWasteALbl);
 		
 		crateWasteAField= new NumberField(7);
-		crateWasteAField.setBounds(210,825,150,20);
+		crateWasteAField.setBounds(210,725,150,20);
 		containerPnl.add(crateWasteAField);
 		
 		crateWasteAEqualsLbl= new JLabel(EQUALS);
-		crateWasteAEqualsLbl.setBounds(368,825,150,20);
+		crateWasteAEqualsLbl.setBounds(368,725,150,20);
 		containerPnl.add(crateWasteAEqualsLbl);
 		
 		crateWasteAResultField= new TextField();
-		crateWasteAResultField.setBounds(380,825,150,20);
+		crateWasteAResultField.setBounds(380,725,150,20);
 		containerPnl.add(crateWasteAResultField);
 		
 		crateWasteAResultLbl= new JLabel(NORMAL_A);
-		crateWasteAResultLbl.setBounds(540,825,150,20);
+		crateWasteAResultLbl.setBounds(540,725,150,20);
 		containerPnl.add(crateWasteAResultLbl);
 
 		
 		//Crate Waste B
 		crateWasteBLbl= new JLabel("Cacat Finishing B");
-		crateWasteBLbl.setBounds(50,865,150,20);
+		crateWasteBLbl.setBounds(50,765,150,20);
 		containerPnl.add(crateWasteBLbl);
 		
 		crateWasteBField= new NumberField(7);
-		crateWasteBField.setBounds(210,865,150,20);
+		crateWasteBField.setBounds(210,765,150,20);
 		containerPnl.add(crateWasteBField);
 		
 		crateWasteBEqualsLbl= new JLabel(EQUALS);
-		crateWasteBEqualsLbl.setBounds(368,865,150,20);
+		crateWasteBEqualsLbl.setBounds(368,765,150,20);
 		containerPnl.add(crateWasteBEqualsLbl);
 		
 		crateWasteBResultField= new TextField();
-		crateWasteBResultField.setBounds(380,865,150,20);
+		crateWasteBResultField.setBounds(380,765,150,20);
 		containerPnl.add(crateWasteBResultField);
 		
 		crateWasteBResultLbl= new JLabel(NORMAL_B);
-		crateWasteBResultLbl.setBounds(540,865,150,20);
+		crateWasteBResultLbl.setBounds(540,765,150,20);
 		containerPnl.add(crateWasteBResultLbl);
 
 		saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(850,905,150,30);
+		saveBtn.setBounds(850,805,150,30);
 		containerPnl.add(saveBtn);
 		
 		backBtn = new JButton("Kembali");
-		backBtn.setBounds(30,905,150,30);
+		backBtn.setBounds(30,805,150,30);
 		backBtn.setFocusable(false);
 		containerPnl.add(backBtn);
 	}
@@ -535,14 +533,13 @@ public class CreateNewPackingPanel extends JPanel implements Bridging {
 		packing = new Packing();
 		
 		try {
-			String queryInventoryCode = " AND product_code IN ('"+NA+"','"+NB+"','"+KA+"','"+KB+"')";
+			String queryInventoryCode = " AND product_code IN ('"+NA+"','"+NB+"')";
 			inventories = ServiceFactory.getPackingBL().getLastInventoryData(queryInventoryCode);
 			if(inventories!=null||inventories.size()!=0){
 				for (Inventory inventory : inventories) {
 					if(inventory.getProductCode().equals(NA)) inventoryTableData.put(NA, "Barecore Normal A");
 					else if(inventory.getProductCode().equals(NB)) inventoryTableData.put(NB, "Barecore Normal B");
-					else if(inventory.getProductCode().equals(KA)) inventoryTableData.put(KA, "Barecore Klem A");
-					else if(inventory.getProductCode().equals(KB)) inventoryTableData.put(KB, "Barecore Klem B");
+
 				}
 			}
 			stockTableModel = new StockTableModel(inventories);

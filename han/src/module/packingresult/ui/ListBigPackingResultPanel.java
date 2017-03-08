@@ -125,7 +125,7 @@ public class ListBigPackingResultPanel extends JPanel{
 	
 	private void initData(){
 		try {
-			packings = ServiceFactory.getPackingBL().getPackings(" AND type='13' ");
+			packings = ServiceFactory.getPackingBL().getPackings(" AND type='12' ");
 			packingTable.setModel(new PackingTableModel(packings));
 			
 			pagingPanel.setPage(1);
@@ -148,7 +148,7 @@ public class ListBigPackingResultPanel extends JPanel{
 		setLayout(null);
 		listPackagingResultPanel = this;
 		
-		JLabel lblBreadcrumb = new JLabel("ERP > PACKING 13");
+		JLabel lblBreadcrumb = new JLabel("ERP > PACKING 12");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
@@ -340,7 +340,7 @@ public class ListBigPackingResultPanel extends JPanel{
 	        	case 0 :
 	        		return p.getId();
 	            case 1 : 
-	            	 new SimpleDateFormat("dd-MM-yyyy").format(p.getPackingDate());
+	            	return  new SimpleDateFormat("dd-MM-yyyy").format(p.getPackingDate());
 	            case 2 :
 	                return bigCrateA;
 	            case 3 :
