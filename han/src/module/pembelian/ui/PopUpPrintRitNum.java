@@ -2,8 +2,14 @@ package module.pembelian.ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
@@ -26,6 +32,8 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
+import main.component.DialogBox;
 
 public class PopUpPrintRitNum extends JDialog {
 	
@@ -65,25 +73,7 @@ public class PopUpPrintRitNum extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String defaultPrinter = 
-				    PrintServiceLookup.lookupDefaultPrintService().getName();
-				    System.out.println("Default printer: " + defaultPrinter);
-				    PrintService service = PrintServiceLookup.lookupDefaultPrintService();
-
-				    // prints the famous hello world! plus a form feed
-				    InputStream is = new ByteArrayInputStream(addReceivedDetailSecurityPanel.getRitNumberField().getText().getBytes("UTF8"));
-
-				    PrintRequestAttributeSet  pras = new HashPrintRequestAttributeSet();
-				    pras.add(new Copies(1));
-
-				    DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
-				    Doc doc = new SimpleDoc(is, flavor, null);
-				    DocPrintJob job = service.createPrintJob();
-
-				    PrintJobWatcher pjw = new PrintJobWatcher(job);
-				    job.print(doc, pras);
-				    pjw.waitForDone();
-				    is.close();
+					printComponenet(panel);
 				    dialog.dispose();
 				    addReceivedDetailSecurityPanel.save();
 				} catch (Exception e2) {
@@ -103,40 +93,32 @@ public class PopUpPrintRitNum extends JDialog {
 //		});
 	}
 	
-	class PrintJobWatcher {
-		  boolean done = false;
+	public void printComponenet(JPanel panel){
 
-		  PrintJobWatcher(DocPrintJob job) {
-		    job.addPrintJobListener(new PrintJobAdapter() {
-		      public void printJobCanceled(PrintJobEvent pje) {
-		        allDone();
+		  PrinterJob pj = PrinterJob.getPrinterJob();
+		  pj.setJobName(" Print Component ");
+
+		  pj.setPrintable (new Printable() {    
+		    public int print(Graphics pg, PageFormat pf, int pageNum){
+		      if (pageNum > 0){
+		      return Printable.NO_SUCH_PAGE;
 		      }
-		      public void printJobCompleted(PrintJobEvent pje) {
-		        allDone();
-		      }
-		      public void printJobFailed(PrintJobEvent pje) {
-		        allDone();
-		      }
-		      public void printJobNoMoreEvents(PrintJobEvent pje) {
-		        allDone();
-		      }
-		      void allDone() {
-		        synchronized (PrintJobWatcher.this) {
-		          done = true;
-		          System.out.println("Printing done ...");
-		          log.info("Printin done ...");
-		          PrintJobWatcher.this.notify();
-		        }
-		      }
-		    });
-		  }
-		  public synchronized void waitForDone() {
-		    try {
-		      while (!done) {
-		        wait();
-		      }
-		    } catch (InterruptedException e) {
+
+		      Graphics2D g2 = (Graphics2D) pg;
+		      g2.translate(pf.getImageableX(), pf.getImageableY());
+		      panel.paint(g2);
+		      return Printable.PAGE_EXISTS;
 		    }
+		  });
+		  if (pj.printDialog() == false)
+		  return;
+
+		  try {
+		        pj.print();
+		  } catch (PrinterException ex) {
+		      log.error(ex.getMessage());
+		      DialogBox.showError("Error While printing");
 		  }
 		}
+
 }
