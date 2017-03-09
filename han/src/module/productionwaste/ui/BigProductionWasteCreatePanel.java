@@ -50,6 +50,7 @@ public class BigProductionWasteCreatePanel extends JPanel implements Bridging {
 	@Override
 	public void invokeObjects(Object... objects) {
 		if(objects.length>0){
+			editMode = true;
 			productionWaste = (ProductionWaste) objects[0];
 			txtProductionCode.setText(productionWaste.getPwCode());
 			dcProductionDate.setDate(productionWaste.getProductionDate());
@@ -57,7 +58,6 @@ public class BigProductionWasteCreatePanel extends JPanel implements Bridging {
 			cbShift.setSelectedItem(productionWaste.getShift().getShiftName());
 			cbLine.setSelectedItem(productionWaste.getLine().getDescription());
 			cbProductionType.setSelectedItem(productionWaste.getProductionType().getProductionType());
-			editMode = true;
 			dcProductionDate.setEnabled(false);
 			lblBreadcrumb.setText("ERP > Pembelian > Edit Hasil Produksi > Sisa Produksi 12");
 		}

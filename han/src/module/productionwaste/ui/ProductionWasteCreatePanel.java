@@ -63,6 +63,7 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 	@Override
 	public void invokeObjects(Object... objects) {
 		if(objects.length>0){
+			editMode = true;
 			productionWaste = (ProductionWaste) objects[0];
 			txtProductionCode.setText(productionWaste.getPwCode());
 			dcProductionDate.setDate(productionWaste.getProductionDate());
@@ -70,9 +71,9 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 			cbShift.setSelectedItem(productionWaste.getShift().getShiftName());
 			cbLine.setSelectedItem(productionWaste.getLine().getDescription());
 			cbProductionType.setSelectedItem(productionWaste.getProductionType().getProductionType());
-			editMode = true;
 			dcProductionDate.setEnabled(false);
 			lblBreadcrumb.setText("ERP > Pembelian > Edit Hasil Produksi > Sisa Produksi 9");
+			System.out.println("Edit mode Invoke "+editMode);
 		}
 	}
 
@@ -285,6 +286,7 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 			}
 		}
 		cbProductionType.setBounds(220, 230, 150, 25);
+		cbProductionType.setEnabled(false);
 		panel.add(cbProductionType);
 
 		lblErrorProductionType = new JLabel();
@@ -437,24 +439,26 @@ public class ProductionWasteCreatePanel extends JPanel implements Bridging {
 	
 	public void makeCodeNumber(Date producationDate) {
 		final String constant = "PW";
+		System.out.println("Edit mode "+editMode);
+		if(!editMode){
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(producationDate);
+			
+			String date = String.valueOf(cal.get(Calendar.DATE));
+			String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
+			String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
 
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(producationDate);
-		
-		String date = String.valueOf(cal.get(Calendar.DATE));
-		String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
-		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
-
-		String ordinal = null;
-		try {
-			ordinal = ServiceFactory.getProductionWasteBL().getOrdinalOfCodeNumber(Integer.valueOf(year));
-		} catch (SQLException e) {
-			LOGGER.error(e.getMessage());
-			DialogBox.showErrorException();
+			String ordinal = null;
+			try {
+				ordinal = ServiceFactory.getProductionWasteBL().getOrdinalOfCodeNumber(Integer.valueOf(year));
+			} catch (SQLException e) {
+				LOGGER.error(e.getMessage());
+				DialogBox.showErrorException();
+			}
+			txtProductionCode.setText(new StringBuilder().append(ordinal).append("/").append(constant)
+					.append("/").append(date).append("/").append(month)
+					.append("/").append(year).toString());
 		}
-		txtProductionCode.setText(new StringBuilder().append(ordinal).append("/").append(constant)
-				.append("/").append(date).append("/").append(month)
-				.append("/").append(year).toString());
 	}
 
 
