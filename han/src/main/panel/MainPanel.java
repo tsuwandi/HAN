@@ -8,8 +8,11 @@ import java.awt.GridLayout;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,6 +20,7 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
 import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.DialogBox;
 import module.util.Bridging;
 import module.util.DateUtil;
@@ -104,6 +108,11 @@ public class MainPanel extends JFrame {
 					loginPanel = new LoginPanel();
 					loginPanel.setBounds(450, 200, 450, 250);
 					glassPane.add(loginPanel);
+					
+					DecimalFormatSymbols df = new DecimalFormatSymbols(Locale.ENGLISH);
+					df.setDecimalSeparator('.');
+					df.setGroupingSeparator(',');
+					AppConstants.FOUR_DIGIT_DECIMAL_FORMAT = new DecimalFormat("0.0000",df);
 					
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -71,7 +71,7 @@ public class AppConstants {
 	
 	public static final int DIVIDER_VOLUME=1000000;
 	
-	public static final DecimalFormat FOUR_DIGIT_DECIMAL_FORMAT = new DecimalFormat("0.0000");
+	public static DecimalFormat FOUR_DIGIT_DECIMAL_FORMAT= null;
 	public static final String TYPE_12 = "12";
 	public static final String TYPE_9 = "9";
 	

@@ -322,7 +322,7 @@ public class ListProductionPanel extends JPanel {
 	            case 6 :
 	                return p.getProductionTypeDescription();
 	            case 7 :
-	                return AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(p.getTotalVolume());
+	                return AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(p.getTotalVolume()/AppConstants.DIVIDER_VOLUME);
 	            case 8 :
 	                return AppConstants.FOUR_DIGIT_DECIMAL_FORMAT.format(productionTotal/AppConstants.DIVIDER_VOLUME);
 	            case 9 :
