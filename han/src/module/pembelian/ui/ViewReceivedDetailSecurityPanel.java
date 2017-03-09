@@ -701,7 +701,7 @@ public class ViewReceivedDetailSecurityPanel extends JPanel implements Bridging{
 		receivedDateChooser.setDate(received.getReceivedDate());
 		ritNumberField.setText(received.getRitNo());
 		supplierComboBox.setSelectedItem(received.getSupplier());
-		supplierCPComboBox.setSelectedItem(received.getSubSupplierName());
+		supplierCPComboBox.setSelectedItem(received.getCity());
 		licensePlateField.setText(received.getLicensePlate());
 		driverField.setText(received.getDriver());
 		driverIDField.setText(received.getDriverID());
