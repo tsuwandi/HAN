@@ -17,29 +17,28 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import main.panel.MainPanel;
-import module.personalia.model.OverTime;
+import module.personalia.model.Attendance;
+import module.personalia.model.Division;
 import module.util.Bridging;
 
-public class OverTimeConfigPanel extends JPanel implements Bridging{
+public class AttendanceConfigPanel extends JPanel implements Bridging{
 
-	private static final long serialVersionUID = -2723703481779319127L;
-
-	private JTable overTimeConfigTable;
+	private static final long serialVersionUID = -3127283027621703632L;
+	private JTable attendanceConfigTable;
 	private JTextField searchField;
-	private List<OverTime> overTimes = new ArrayList<>();
-	private OverTimeConfigTableModel overTimeConfigTableModel;
-	private PopUpSearchOverTimePanel popUpSearchOverTimePanel;
-	
-	public OverTimeConfigPanel() {
+	private List<Attendance> attendances = new ArrayList<>();
+	private AttendanceConfigTableModel attendanceConfigTableModel;
+
+	public AttendanceConfigPanel() {
 		setSize(1024, 630);
 		setLayout(null);
 
-		JLabel breadCrumbLbl = new JLabel("Personalia > Lembur");
+		JLabel breadCrumbLbl = new JLabel("Personalia > Presensi");
 		breadCrumbLbl.setFont(new Font("Tahoma", Font.BOLD, 12));
-		breadCrumbLbl.setBounds(50, 10, 134, 25);
+		breadCrumbLbl.setBounds(50, 10, 190, 25);
 		add(breadCrumbLbl);
 
-		JLabel lblHeader = new JLabel("DAFTAR LEMBUR");
+		JLabel lblHeader = new JLabel("DAFTAR PRESENSI");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 46, 150, 25);
 		add(lblHeader);
@@ -53,15 +52,15 @@ public class OverTimeConfigPanel extends JPanel implements Bridging{
 		scrollPane.setBounds(0, 0, 1004, 363);
 		pnlTable.add(scrollPane);
 
-		overTimeConfigTable = new JTable();
-		overTimeConfigTable.setFocusable(false);
-		overTimeConfigTable.setAutoCreateRowSorter(true);
-		scrollPane.setViewportView(overTimeConfigTable);
-		overTimeConfigTable.addMouseListener(new MouseAdapter() {
+		attendanceConfigTable = new JTable();
+		attendanceConfigTable.setFocusable(false);
+		attendanceConfigTable.setAutoCreateRowSorter(true);
+		scrollPane.setViewportView(attendanceConfigTable);
+		attendanceConfigTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (overTimeConfigTable.columnAtPoint(e.getPoint())==3) {
-					MainPanel.changePanel("module.personalia.ui.ViewDivisionPanel", getSelectedData());
+				if (attendanceConfigTable.columnAtPoint(e.getPoint())==3) {
+					MainPanel.changePanel("module.personalia.ui.ViewAttendancePanel", getSelectedData());
 				}
 			}
 		});
@@ -78,7 +77,7 @@ public class OverTimeConfigPanel extends JPanel implements Bridging{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.personalia.ui.CreateOverTimePanel");
+				MainPanel.changePanel("module.personalia.ui.CreateAttendancePanel");
 			}
 		});
 
@@ -93,7 +92,7 @@ public class OverTimeConfigPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				showExplicitSearch();
+				MainPanel.changePanel("module.personalia.ui.SearchAttendancePanel");
 			}
 		});
 
@@ -113,80 +112,77 @@ public class OverTimeConfigPanel extends JPanel implements Bridging{
 				sb.append(" or name like '%");
 				sb.append(var);
 				sb.append("%' ");
-				//overTimes = ServiceFactory.getPersonaliaBL().getDivisions(sb.toString());
-				overTimeConfigTableModel.setDivisions(overTimes);
-				overTimeConfigTable.updateUI();
+				//attendances = ServiceFactory.getPersonaliaBL().getDivisions(sb.toString());
+				//attendanceConfigTableModel.setDivisions(attendances);
+				attendanceConfigTable.updateUI();
 			}
 		});
 
 		getUserData();
 	}
-	
-	protected void showExplicitSearch() {
-		popUpSearchOverTimePanel = new PopUpSearchOverTimePanel(this);
-		popUpSearchOverTimePanel.setLocationRelativeTo(null);
-		popUpSearchOverTimePanel.setTitle("Pencarian Lanjut Lembur");
-		popUpSearchOverTimePanel.setVisible(true);
-	}
 
-	protected OverTime getSelectedData() {
-		return overTimes.get(overTimeConfigTable.getSelectedRow());
+	protected Division getSelectedData() {
+		int row = attendanceConfigTable.getSelectedRow();
+
+		Division division = new Division();
+		division.setId(attendanceConfigTable.getValueAt(row, 1).toString());
+		division.setName(attendanceConfigTable.getValueAt(row, 2).toString());
+
+		return division;
 	}
 
 	private void getUserData() {
-		overTimes.clear();
-		//divisions = ServiceFactory.getPersonaliaBL().getDivisions("");
-		overTimeConfigTableModel = new OverTimeConfigTableModel(overTimes);
-		overTimeConfigTable.setModel(overTimeConfigTableModel);
+		attendances.clear();
+		//attendances = ServiceFactory.getPersonaliaBL().getA
+		attendanceConfigTableModel = new AttendanceConfigTableModel(attendances);
+		attendanceConfigTable.setModel(attendanceConfigTableModel);
 	}
 
-	class OverTimeConfigTableModel extends AbstractTableModel {
+	class AttendanceConfigTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = -5786040815921137590L;
-		private List<OverTime> overTimes;
+		private List<Attendance> attendances;
 
-		public OverTimeConfigTableModel(List<OverTime> overTimes) {
-			this.overTimes = overTimes;
+		public AttendanceConfigTableModel(List<Attendance> attendances) {
+			this.attendances = attendances;
 		}
 
-		public void setDivisions(List<OverTime> overTimes) {
-			this.overTimes = overTimes;
+		public void setDivisions(List<Attendance> divisions) {
+			this.attendances = divisions;
 		}
 
 		@Override
 		public int getColumnCount() {
-			return 10;
+			return 8;
 		}
 
 		@Override
 		public int getRowCount() {
-			return overTimes == null ? 0 : overTimes.size();
+			return attendances == null ? 0 : attendances.size();
 		}
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			OverTime division = overTimes.get(rowIndex);
+			Attendance attendance = attendances.get(rowIndex);
 
 			switch (columnIndex) {
 			case 0:
-				return overTimes.indexOf(division) + 1;
+				return attendances.indexOf(attendance) + 1;
 			case 1:
-				return division.getEmployeeCode();
+				return attendance.getEmployee().getEmpCode();
 			case 2:
-				return division.getEmployeeName();
+				return attendance.getEmployeeName();
 			case 3:
-				return division.getMsPosition().getName();
+				return attendance.getEmployee().getMsPosition().getName();
 			case 4:
-				return division.getDepartment().getName();
+				return attendance.getEmployee().getDepartment().getName();
 			case 5:
-				return division.getOverTimeDate();
+				return attendance.getEmployee().getDivision().getName();
 			case 6:
-				return division.getStartTime();
+				return attendance.getAttendanceDate();
 			case 7:
-				return division.getEndTime();
+				return attendance.getAttendanceTime();
 			case 8:
-				return division.getDocumentRef();
-			case 9:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
@@ -214,8 +210,6 @@ public class OverTimeConfigPanel extends JPanel implements Bridging{
 				return String.class;
 			case 8:
 				return String.class;
-			case 9:
-				return String.class;
 			default:
 				return String.class;
 			}
@@ -237,24 +231,26 @@ public class OverTimeConfigPanel extends JPanel implements Bridging{
 			case 5:
 				return "Divisi";
 			case 6:
-				return "Tanggal Lembur";
+				return "Tanggal Presensi";
 			case 7:
-				return "Jam Mulai";
+				return "Jam Presensi";
 			case 8:
-				return "Jam Selesai";
-			case 9:
 				return "Action";
+			/*case 8:
+				return "Jam Keluar";
+			case 9:
+				return "Sumber data";*/
 			default:
 				return "";
 			}
 		}
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void invokeObjects(Object... objects) {
-		overTimes = (List<OverTime>) objects[0];
-		overTimeConfigTableModel = new OverTimeConfigTableModel(overTimes);
-		overTimeConfigTable.setModel(overTimeConfigTableModel);
+		attendances = (List<Attendance>) objects[0];
+		attendanceConfigTableModel = new AttendanceConfigTableModel(attendances);
+		attendanceConfigTable.setModel(attendanceConfigTableModel);
 	}
-
 }
