@@ -18,7 +18,6 @@ import javax.swing.table.AbstractTableModel;
 
 import main.panel.MainPanel;
 import module.personalia.model.Attendance;
-import module.personalia.model.Division;
 import module.util.Bridging;
 
 public class AttendanceConfigPanel extends JPanel implements Bridging{
@@ -28,6 +27,7 @@ public class AttendanceConfigPanel extends JPanel implements Bridging{
 	private JTextField searchField;
 	private List<Attendance> attendances = new ArrayList<>();
 	private AttendanceConfigTableModel attendanceConfigTableModel;
+	private PopUpSearchAttendancePanel popUpSearchAttendancePanel = new PopUpSearchAttendancePanel(this);
 
 	public AttendanceConfigPanel() {
 		setSize(1024, 630);
@@ -77,7 +77,7 @@ public class AttendanceConfigPanel extends JPanel implements Bridging{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.personalia.ui.CreateAttendancePanel");
+				MainPanel.changePanel("module.personalia.ui.CreateManualAttendancePanel");
 			}
 		});
 
@@ -89,19 +89,19 @@ public class AttendanceConfigPanel extends JPanel implements Bridging{
 		explicitSearchBtn.setBounds(924, 100, 90, 30);
 		add(explicitSearchBtn);
 		explicitSearchBtn.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.personalia.ui.SearchAttendancePanel");
+				popUpSearchAttendancePanel.setVisible(true);
 			}
 		});
 
 		JButton searchBtn = new JButton("Pencarian");
 		searchBtn.setBounds(924, 140, 90, 30);
 		add(searchBtn);
-		
+
 		searchBtn.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String var  = searchField.getText();
@@ -121,14 +121,8 @@ public class AttendanceConfigPanel extends JPanel implements Bridging{
 		getUserData();
 	}
 
-	protected Division getSelectedData() {
-		int row = attendanceConfigTable.getSelectedRow();
-
-		Division division = new Division();
-		division.setId(attendanceConfigTable.getValueAt(row, 1).toString());
-		division.setName(attendanceConfigTable.getValueAt(row, 2).toString());
-
-		return division;
+	protected Attendance getSelectedData() {
+		return attendances.get(attendanceConfigTable.getSelectedRow());
 	}
 
 	private void getUserData() {
@@ -236,7 +230,7 @@ public class AttendanceConfigPanel extends JPanel implements Bridging{
 				return "Jam Presensi";
 			case 8:
 				return "Action";
-			/*case 8:
+				/*case 8:
 				return "Jam Keluar";
 			case 9:
 				return "Sumber data";*/
@@ -252,5 +246,13 @@ public class AttendanceConfigPanel extends JPanel implements Bridging{
 		attendances = (List<Attendance>) objects[0];
 		attendanceConfigTableModel = new AttendanceConfigTableModel(attendances);
 		attendanceConfigTable.setModel(attendanceConfigTableModel);
+	}
+
+	public List<Attendance> getAttendances() {
+		return attendances;
+	}
+
+	public void setAttendances(List<Attendance> attendances) {
+		this.attendances = attendances;
 	}
 }

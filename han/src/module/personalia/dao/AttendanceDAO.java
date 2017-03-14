@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import module.personalia.model.Attendance;
-import module.personalia.model.Division;
 import module.util.DateUtil;
 
 public class AttendanceDAO {
@@ -74,25 +73,24 @@ public class AttendanceDAO {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 
-			insertStatement.setInt(1, attendance.getId());
-			insertStatement.setString(2, attendance.getAttendanceCode());
-			insertStatement.setInt(3, attendance.getPin());
-			insertStatement.setInt(4, attendance.getNik());
-			insertStatement.setString(5, attendance.getEmployeeName());
-			insertStatement.setDate(6, DateUtil.toDate(attendance.getAttendanceDate()));
-			insertStatement.setDate(7, DateUtil.toDate(attendance.getAttendanceTime()));
-			insertStatement.setString(8, attendance.getMachineSerialNumber());
-			insertStatement.setString(9, attendance.getMachineName());
-			insertStatement.setString(10, attendance.getVerificationType());
-			insertStatement.setString(11, attendance.getMode());
-			insertStatement.setString(12, attendance.getUpdateMode());
-			insertStatement.setString(13, attendance.getDepartment());
-			insertStatement.setString(14, attendance.getRole());
-			insertStatement.setString(15, attendance.getDocumentReference());
-			insertStatement.setDate(3, DateUtil.toDate(attendance.getInputDate()));
-			insertStatement.setString(4, attendance.getInputBy());
-			insertStatement.setDate(5, DateUtil.toDate(attendance.getEditDate()));
-			insertStatement.setString(6, attendance.getEditBy());
+			insertStatement.setString(1, attendance.getAttendanceCode());
+			insertStatement.setInt(2, attendance.getPin());
+			insertStatement.setInt(3, attendance.getNik());
+			insertStatement.setString(4, attendance.getEmployeeName());
+			insertStatement.setDate(5, DateUtil.toDate(attendance.getAttendanceDate()));
+			insertStatement.setDate(6, DateUtil.toDate(attendance.getAttendanceTime()));
+			insertStatement.setString(7, attendance.getMachineSerialNumber());
+			insertStatement.setString(8, attendance.getMachineName());
+			insertStatement.setString(9, attendance.getVerificationType());
+			insertStatement.setString(10, attendance.getMode());
+			insertStatement.setString(11, attendance.getUpdateMode());
+			insertStatement.setString(12, attendance.getDepartment());
+			insertStatement.setString(13, attendance.getRole());
+			insertStatement.setString(14, attendance.getDocumentReference());
+			insertStatement.setDate(15, DateUtil.toDate(attendance.getInputDate()));
+			insertStatement.setString(16, attendance.getInputBy());
+			insertStatement.setDate(17, DateUtil.toDate(attendance.getEditDate()));
+			insertStatement.setString(18, attendance.getEditBy());
 
 			insertStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -100,14 +98,27 @@ public class AttendanceDAO {
 		}
 	}
 
-	public void update(Division division) {
+	public void update(Attendance attendance) {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 
-			updateStatement.setString(1, division.getName());
-			updateStatement.setDate(2, DateUtil.toDate(division.getEditDate()));
-			updateStatement.setString(3, division.getEditBy());
-			updateStatement.setString(4, division.getId());
+			updateStatement.setString(1, attendance.getAttendanceCode());
+			updateStatement.setInt(2, attendance.getPin());
+			updateStatement.setInt(3, attendance.getNik());
+			updateStatement.setString(4, attendance.getEmployeeName());
+			updateStatement.setDate(5, DateUtil.toDate(attendance.getAttendanceDate()));
+			updateStatement.setDate(6, DateUtil.toDate(attendance.getAttendanceTime()));
+			updateStatement.setString(7, attendance.getMachineSerialNumber());
+			updateStatement.setString(8, attendance.getMachineName());
+			updateStatement.setString(9, attendance.getVerificationType());
+			updateStatement.setString(10, attendance.getMode());
+			updateStatement.setString(11, attendance.getUpdateMode());
+			updateStatement.setString(12, attendance.getDepartment());
+			updateStatement.setString(13, attendance.getRole());
+			updateStatement.setString(14, attendance.getDocumentReference());
+			updateStatement.setDate(15, DateUtil.toDate(attendance.getEditDate()));
+			updateStatement.setString(16, attendance.getEditBy());
+			updateStatement.setInt(17, attendance.getId());
 
 			updateStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -115,13 +126,13 @@ public class AttendanceDAO {
 		}
 	}
 
-	public void delete(Division division) {
+	public void delete(Attendance attendance) {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 
-			deleteStatement.setDate(1, DateUtil.toDate(division.getDeleteDate()));
-			deleteStatement.setString(2, division.getDeleteBy());
-			deleteStatement.setString(3, division.getId());
+			deleteStatement.setDate(1, DateUtil.toDate(attendance.getDeleteDate()));
+			deleteStatement.setString(2, attendance.getDeleteBy());
+			deleteStatement.setInt(3, attendance.getId());
 
 			deleteStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -130,27 +141,27 @@ public class AttendanceDAO {
 	}
 
 	public Integer getLastId() {
-		List<Division> divisions = null;
+		List<Attendance> attendances = null;
 		
 		try {
-			divisions = new ArrayList<>();
+			attendances = new ArrayList<>();
 			
 			getLastIdStatment = connection.prepareStatement(getLastIdQuery);
 			
 			ResultSet resultSet = getLastIdStatment.executeQuery();
 			
 			while (resultSet.next()) {
-				Division division = new Division();
-				division.setId(resultSet.getString("id"));
-				division.setName(resultSet.getString("name"));
+				Attendance division = new Attendance();
+				division.setId(resultSet.getInt("id"));
+				division.setAttendanceCode(resultSet.getString("name"));
 
-				divisions.add(division);
+				attendances.add(division);
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 1;
 		}
-		return divisions.size() < 1 ? 1 : Integer.parseInt(divisions.get(0).getId().substring(3))+1;
+		return attendances.size() < 1 ? 1 :attendances.get(0).getId()+1;
 	}
 }

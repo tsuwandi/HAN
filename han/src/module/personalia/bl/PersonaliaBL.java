@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import module.personalia.dao.AttendanceDAO;
 import module.personalia.dao.DepartmentDAO;
 import module.personalia.dao.DivisionDAO;
 import module.personalia.dao.EmpPositionDAO;
@@ -24,6 +25,7 @@ import module.personalia.dao.SalarySettingDAO;
 import module.personalia.dao.SsSalaryCompDAO;
 import module.personalia.dao.SsTaxDAO;
 import module.personalia.dao.TaxDAO;
+import module.personalia.model.Attendance;
 import module.personalia.model.Department;
 import module.personalia.model.Division;
 import module.personalia.model.EmpPosition;
@@ -1160,4 +1162,70 @@ public class PersonaliaBL {
 	}
 	// overtime
 	
+	// attendance
+	public List<Attendance> getAttendances(String query) {
+		List<Attendance> attendances = new ArrayList<Attendance>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			attendances = new AttendanceDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return attendances;
+	}
+	
+	public void saveAttendance(Attendance attendance) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new AttendanceDAO(connection).insert(attendance);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateAttendance(Attendance attendance) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new AttendanceDAO(connection).update(attendance);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteAttendance(Attendance attendance) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new AttendanceDAO(connection).delete(attendance);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
