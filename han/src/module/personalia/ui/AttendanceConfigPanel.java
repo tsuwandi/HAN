@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import controller.ServiceFactory;
 import main.panel.MainPanel;
 import module.personalia.model.Attendance;
 import module.util.Bridging;
@@ -60,7 +61,7 @@ public class AttendanceConfigPanel extends JPanel implements Bridging{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (attendanceConfigTable.columnAtPoint(e.getPoint())==3) {
-					MainPanel.changePanel("module.personalia.ui.ViewAttendancePanel", getSelectedData());
+					MainPanel.changePanel("module.personalia.ui.ViewManualAttendancePanel", getSelectedData());
 				}
 			}
 		});
@@ -127,7 +128,7 @@ public class AttendanceConfigPanel extends JPanel implements Bridging{
 
 	private void getUserData() {
 		attendances.clear();
-		//attendances = ServiceFactory.getPersonaliaBL().getA
+		attendances = ServiceFactory.getPersonaliaBL().getAttendances("");
 		attendanceConfigTableModel = new AttendanceConfigTableModel(attendances);
 		attendanceConfigTable.setModel(attendanceConfigTableModel);
 	}
