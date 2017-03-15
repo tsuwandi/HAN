@@ -1228,4 +1228,70 @@ public class PersonaliaBL {
 			}
 		}
 	}
+	// import fingerprint
+	public List<Attendance> getImportFingerprints(String query) {
+		List<Attendance> attendances = new ArrayList<Attendance>();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			attendances = new AttendanceDAO(connection).getAllData(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return attendances;
+	}
+	
+	public void saveImportFingerprint(Attendance attendance) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new AttendanceDAO(connection).insert(attendance);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateImportFingerprint(Attendance attendance) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new AttendanceDAO(connection).update(attendance);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteImportFingerprint(Attendance attendance) {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new AttendanceDAO(connection).delete(attendance);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
