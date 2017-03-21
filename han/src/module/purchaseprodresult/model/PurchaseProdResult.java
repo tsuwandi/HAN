@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import module.sn.currency.model.Currency;
 import module.supplier.model.Supplier;
 
 public class PurchaseProdResult implements Serializable {
@@ -15,15 +14,15 @@ public class PurchaseProdResult implements Serializable {
 	private String pprCode;
 	private String suppCode;
 	private Date purchaseDate;
-	private Date dueDate;
 	private String status;
+	private String confirmCode;
+	private Date confirmDate;
 	private Date inputDate;
 	private String inputBy;
 	private Date editDate;
 	private String editedBy;
 	private Date deletedDate;
 	private String deletedBy;
-	private String type;
 
 	public int getId() {
 		return id;
@@ -55,14 +54,6 @@ public class PurchaseProdResult implements Serializable {
 
 	public void setPurchaseDate(Date purchaseDate) {
 		this.purchaseDate = purchaseDate;
-	}
-
-	public Date getDueDate() {
-		return dueDate;
-	}
-
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
 	}
 
 	public String getStatus() {
@@ -127,7 +118,6 @@ public class PurchaseProdResult implements Serializable {
 		int result = 1;
 		result = prime * result + ((deletedBy == null) ? 0 : deletedBy.hashCode());
 		result = prime * result + ((deletedDate == null) ? 0 : deletedDate.hashCode());
-		result = prime * result + ((dueDate == null) ? 0 : dueDate.hashCode());
 		result = prime * result + ((editDate == null) ? 0 : editDate.hashCode());
 		result = prime * result + ((editedBy == null) ? 0 : editedBy.hashCode());
 		result = prime * result + id;
@@ -158,11 +148,6 @@ public class PurchaseProdResult implements Serializable {
 			if (other.deletedDate != null)
 				return false;
 		} else if (!deletedDate.equals(other.deletedDate))
-			return false;
-		if (dueDate == null) {
-			if (other.dueDate != null)
-				return false;
-		} else if (!dueDate.equals(other.dueDate))
 			return false;
 		if (editDate == null) {
 			if (other.editDate != null)
@@ -229,10 +214,6 @@ public class PurchaseProdResult implements Serializable {
 	private Supplier supplier;
 	
 	private BigDecimal total;
-	private BigDecimal discount;
-	private BigDecimal tax;
-	private BigDecimal grandTotal;
-	private Date paymentDate;
 	
 	public BigDecimal getTotal() {
 		return total;
@@ -242,44 +223,19 @@ public class PurchaseProdResult implements Serializable {
 		this.total = total;
 	}
 
-	public BigDecimal getDiscount() {
-		return discount;
+	public String getConfirmCode() {
+		return confirmCode;
 	}
 
-	public void setDiscount(BigDecimal discount) {
-		this.discount = discount;
+	public void setConfirmCode(String confirmCode) {
+		this.confirmCode = confirmCode;
 	}
 
-	public BigDecimal getTax() {
-		return tax;
+	public Date getConfirmDate() {
+		return confirmDate;
 	}
 
-	public void setTax(BigDecimal tax) {
-		this.tax = tax;
+	public void setConfirmDate(Date confirmDate) {
+		this.confirmDate = confirmDate;
 	}
-
-	public BigDecimal getGrandTotal() {
-		return grandTotal;
-	}
-
-	public void setGrandTotal(BigDecimal grandTotal) {
-		this.grandTotal = grandTotal;
-	}
-
-	public Date getPaymentDate() {
-		return paymentDate;
-	}
-
-	public void setPaymentDate(Date paymentDate) {
-		this.paymentDate = paymentDate;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
 }

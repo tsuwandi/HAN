@@ -1,5 +1,6 @@
 package module.purchaseprodresult.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,13 +21,14 @@ public class PPRProductDAO {
 
 	private String getAllByPPRCodeQuery = new StringBuilder()
 			.append("select pp.id, pp.ppr_code, pp.product_code, pp.qty, ")
-			.append("pp.unit_price, pp.sub_total, p.product_name, p.id as product_id from ppr_product pp ")
+			.append("pp.unit_price, pp.sub_total, p.product_name, p.id as product_id, p.production_type_id, pt.production_type from ppr_product pp ")
 			.append("inner join product p on pp.product_code = p.product_code ")
-			.append("where pp.ppr_code = ? and pp.deleted_date is null and p.deleted_date is null ").toString();
+			.append("inner join production_type pt on pt.id = p.production_type_id ")
+			.append("where pp.ppr_code = ? and pp.deleted_date is null and p.deleted_date is null and pt.deleted_date is null ").toString();
 
 	private String insertQuery = new StringBuilder()
-			.append("insert into ppr_product (ppr_code, product_code, qty, ")
-			.append("input_date, input_by) values (?,?,?,?,?)").toString();
+			.append("insert into ppr_product (ppr_code, product_code, qty, unit_price, sub_total, ")
+			.append("input_date, input_by) values (?,?,?,?,?,?,?)").toString();
 
 	private String updateQuery = "update ppr_product set product_code=?, qty=?, unit_price=?, sub_total=?, edit_date=?, edited_by=? where id=?";
 
@@ -51,12 +53,22 @@ public class PPRProductDAO {
 				pprProduct.setPprCode(rs.getString("ppr_code"));
 				pprProduct.setProductCode(rs.getString("product_code"));
 				pprProduct.setQty(rs.getBigDecimal("qty"));
-				pprProduct.setUnitPrice(rs.getBigDecimal("unit_price"));
-				pprProduct.setSubTotal(rs.getBigDecimal("sub_total"));
 				
+				BigDecimal qty = pprProduct.getQty().setScale(2, BigDecimal.ROUND_DOWN);
+				
+				pprProduct.setUnitPrice(rs.getBigDecimal("unit_price"));
+				BigDecimal unitPrice =  pprProduct.getUnitPrice().setScale(2, BigDecimal.ROUND_DOWN);
+				pprProduct.setSubTotal(rs.getBigDecimal("sub_total"));
+				BigDecimal subTotal =  pprProduct.getSubTotal().setScale(2, BigDecimal.ROUND_DOWN);
+				
+				pprProduct.setQty(qty);
+				pprProduct.setUnitPrice(unitPrice);
+				pprProduct.setSubTotal(subTotal);
 				Product	product = new Product();
 				product.setProductCode(rs.getString("product_code"));
 				product.setProductName(rs.getString("product_name"));
+				product.setProductionType(rs.getString("production_type"));
+				product.setProductionTypeId(rs.getInt("production_type_id"));
 				
 				pprProduct.setProduct(product);
 				pprProducts.add(pprProduct);
@@ -75,8 +87,10 @@ public class PPRProductDAO {
 			insertStatement.setString(1, pprProduct.getPprCode());
 			insertStatement.setString(2, pprProduct.getProductCode());
 			insertStatement.setBigDecimal(3, pprProduct.getQty());
-			insertStatement.setDate(4, DateUtil.getCurrentDate());
-			insertStatement.setString(5, "timotius");
+			insertStatement.setBigDecimal(4, pprProduct.getUnitPrice());
+			insertStatement.setBigDecimal(5, pprProduct.getSubTotal());
+			insertStatement.setDate(6, DateUtil.getCurrentDate());
+			insertStatement.setString(7, "timotius");
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {

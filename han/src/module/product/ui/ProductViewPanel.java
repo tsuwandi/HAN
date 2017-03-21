@@ -25,6 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.panel.MainPanel;
@@ -34,7 +35,6 @@ import module.product.model.Product;
 import module.product.model.ProductCategory;
 import module.product.model.ProductPP;
 import module.product.model.Uom;
-import module.purchaseprodresult.model.PPRNote;
 import module.sn.production.quality.model.ProductionQuality;
 import module.sn.production.type.model.ProductionType;
 import module.sn.woodtype.model.WoodType;
@@ -42,7 +42,6 @@ import module.util.Bridging;
 
 import org.apache.log4j.Logger;
 
-import main.component.AppConstants;
 import controller.ServiceFactory;
 
 public class ProductViewPanel extends JPanel implements Bridging {
@@ -659,7 +658,7 @@ public class ProductViewPanel extends JPanel implements Bridging {
 		 *            rowIndex of selected table
 		 * @param columnIndex
 		 *            columnIndex of selected table
-		 * @return ({@link PPRNote}) Object
+		 * @return ({@link RPRNote}) Object
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			ProductPP p = listOfProductPP.get(rowIndex);

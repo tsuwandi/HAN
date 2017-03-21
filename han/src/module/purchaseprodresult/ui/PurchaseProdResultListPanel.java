@@ -60,12 +60,12 @@ public class PurchaseProdResultListPanel extends JPanel {
 
 		setPreferredSize(new Dimension(1024, 768));
 
-		lblBreadcrumb = new JLabel("ERP > Produksi > Input Hasil Produksi > Pembelian Tipe 9");
+		lblBreadcrumb = new JLabel("ERP > Produksi > Hasil Produksi");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 600, 30);
 		add(lblBreadcrumb);
 
-		lblHeader = new JLabel("Input Hasil Produksi Pembelian ");
+		lblHeader = new JLabel("List PO Hasil Produksi ");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -128,7 +128,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 4)
+					if (column == 5)
 						MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultViewPanel", listOfPurchaseProdResult.get(row));
 				}
 			}
@@ -136,7 +136,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 
 		try {
 			listOfPurchaseProdResult = new ArrayList<PurchaseProdResult>();
-			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResult(COMPLETED, AppConstants.TYPE_9);
+			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResult(COMPLETED);
 			refreshTablePurchaseProdResult();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -165,7 +165,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 	public void doSearch(String value) {
 		try {
 			listOfPurchaseProdResult = new ArrayList<PurchaseProdResult>();
-			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResultBySimpleSearch(value, COMPLETED, AppConstants.TYPE_9);
+			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultBL().getAllPurchaseProdResultBySimpleSearch(value, COMPLETED);
 			refreshTablePurchaseProdResult();
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
@@ -209,7 +209,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 5;
+			return 6;
 		}
 
 		public boolean isCellEditable(int row, int column) {
@@ -226,6 +226,8 @@ public class PurchaseProdResultListPanel extends JPanel {
 			case 2:
 				return String.class;
 			case 3:
+				return String.class;	
+			case 4:
 				return String.class;
 			default:
 				return String.class;
@@ -251,8 +253,10 @@ public class PurchaseProdResultListPanel extends JPanel {
 			case 2:
 				return p.getSupplier().getSuppName();
 			case 3:
-				return p.getStatus();
+				return p.getPurchaseDate();
 			case 4:
+				return p.getStatus();
+			case 5:
 				return "<html><a><u>View</u></a></html>";
 			default:
 	            throw new IllegalArgumentException("Invalid column index");
@@ -275,8 +279,10 @@ public class PurchaseProdResultListPanel extends JPanel {
 			case 2:
 				return "Nama Supplier";
 			case 3:
-				return "Status";
+				return "Tanngal Pembelian";
 			case 4:
+				return "Status";
+			case 5:
 				return "Tindakan";
 			default:
 				return "";

@@ -1,12 +1,8 @@
-package module.purchaseprodresult.ui;
+package module.receiveprodresult.ui;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -16,21 +12,18 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.DocumentFilter;
 
-import org.apache.log4j.Logger;
-
-import controller.ServiceFactory;
-import main.component.ComboBox;
 import main.component.DialogBox;
-import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import module.product.model.Product;
-import module.purchaseprodresult.model.PPRNote;
+import module.receiveprodresult.model.RPRNote;
 
-public class PPRNoteDialog extends JDialog {
+import org.apache.log4j.Logger;
+
+public class RPRNoteDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(PPRNoteDialog.class);
+	private static final Logger LOGGER = Logger.getLogger(RPRNoteDialog.class);
 
 	JPanel panel;
 
@@ -45,39 +38,39 @@ public class PPRNoteDialog extends JDialog {
 
 	private boolean isEdit;
 	private boolean isView;
-	private PPRNote pprNote;
-	private PurchaseProdResultCreatePanel pprCreatePanel;
-	private PurchaseProdResultEditPanel pprEditPanel;
-	private PurchaseProdResultViewPanel pprViewPanel;
+	private RPRNote rprNote;
+	private ReceiveProdResultCreatePanel rprCreatePanel;
+	//private ReceiveProdResultEditPanel rprEditPanel;
+	private ReceiveProdResultViewPanel pprViewPanel;
 	List<Product> listOfProduct = null;
 
 	private Integer index;
 
-	public PPRNoteDialog(boolean edit, PPRNote pprNote, PurchaseProdResultCreatePanel pprCreatePanel,
+	public RPRNoteDialog(boolean edit, RPRNote rprNote, ReceiveProdResultCreatePanel rprCreatePanel,
 			Integer index) {
 		this.isEdit = edit;
 		this.isView = false;
-		this.pprNote = pprNote;
-		this.pprCreatePanel = pprCreatePanel;
+		this.rprNote = rprNote;
+		this.rprCreatePanel = rprCreatePanel;
 		this.index = index;
 		init();
 	}
 
-	public PPRNoteDialog(boolean edit, PPRNote pprNote, PurchaseProdResultEditPanel pprEditPanel,
-			Integer index) {
-		this.isEdit = edit;
-		this.isView = false;
-		this.pprNote = pprNote;
-		this.pprEditPanel = pprEditPanel;
-		this.index = index;
-		init();
-	}
+//	public RPRNoteDialog(boolean edit, RPRNote rprNote, ReceiveProdResultEditPanel rprEditPanel,
+//			Integer index) {
+//		this.isEdit = edit;
+//		this.isView = false;
+//		this.rprNote = rprNote;
+//		this.rprEditPanel = rprEditPanel;
+//		this.index = index;
+//		init();
+//	}
 	
-	public PPRNoteDialog(boolean view, PPRNote pprNote, PurchaseProdResultViewPanel pprViewPanel,
+	public RPRNoteDialog(boolean view, RPRNote rprNote, ReceiveProdResultViewPanel pprViewPanel,
 			Integer index) {
 		this.isEdit = true;
 		this.isView = view;
-		this.pprNote = pprNote;
+		this.rprNote = rprNote;
 		this.pprViewPanel = pprViewPanel;
 		this.index = index;
 		init();
@@ -119,7 +112,7 @@ public class PPRNoteDialog extends JDialog {
 		getContentPane().add(btnInsert);
 
 		if (isEdit == true) {
-			txtNote.setText(String.valueOf(pprNote.getNote()));
+			txtNote.setText(String.valueOf(rprNote.getNote()));
 		}
 		
 		if(isView == true) {
@@ -142,25 +135,25 @@ public class PPRNoteDialog extends JDialog {
 	}
 
 	protected void doInsert() {
-		pprNote.setNote(txtNote.getText());
+		rprNote.setNote(txtNote.getText());
 		
 		try {
 			if (isEdit == false) {
-				if (pprCreatePanel != null) {
-					pprCreatePanel.listOfPPRNote.add(pprNote);
+				if (rprCreatePanel != null) {
+					rprCreatePanel.listOfRPRNote.add(rprNote);
 				} 
-				else if (pprEditPanel != null) {
-					pprEditPanel.listOfPPRNote.add(pprNote);
-				}
+//				else if (rprEditPanel != null) {
+//					rprEditPanel.listOfRPRNote.add(rprNote);
+//				}
 
 				DialogBox.showInsert();
 			} else {
-				if (pprCreatePanel != null) {
-					pprCreatePanel.listOfPPRNote.set(index, pprNote);
+				if (rprCreatePanel != null) {
+					rprCreatePanel.listOfRPRNote.set(index, rprNote);
 				} 
-				else if (pprEditPanel != null) {
-					pprEditPanel.listOfPPRNote.set(index, pprNote);
-				}
+//				else if (rprEditPanel != null) {
+//					rprEditPanel.listOfRPRNote.set(index, rprNote);
+//				}
 
 				DialogBox.showInsert();
 			}
@@ -173,10 +166,10 @@ public class PPRNoteDialog extends JDialog {
 	}
 
 	protected void closeDialog() {
-		if (pprCreatePanel != null)
-			pprCreatePanel.refreshTablePPRNote();
-		 else if (pprEditPanel != null)
-			 pprEditPanel.refreshTablePPRNote();
+		if (rprCreatePanel != null)
+			rprCreatePanel.refreshTableRPRNote();
+//		 else if (rprEditPanel != null)
+//			 rprEditPanel.refreshTableRPRNote();
 
 		dispose();
 	}

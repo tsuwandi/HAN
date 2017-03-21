@@ -1,4 +1,4 @@
-package module.purchaseprodresult.model;
+package module.receiveprodresult.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -6,12 +6,12 @@ import java.util.Date;
 
 import module.product.model.Product;
 
-public class PPRProduct implements Serializable {
+public class RPRProduct implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	private int id;
-	private String pprCode;
+	private String rprCode;
 	private String productCode;
 	private BigDecimal qty;
 	private Date inputDate;
@@ -27,11 +27,11 @@ public class PPRProduct implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getPprCode() {
-		return pprCode;
+	public String getRprCode() {
+		return rprCode;
 	}
-	public void setPprCode(String pprCode) {
-		this.pprCode = pprCode;
+	public void setRprCode(String rprCode) {
+		this.rprCode = rprCode;
 	}
 	public String getProductCode() {
 		return productCode;
@@ -83,7 +83,7 @@ public class PPRProduct implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "PurchaseProductResultProduct [id=" + id + ", pprCode=" + pprCode + ", productCode=" + productCode
+		return "PurchaseProductResultProduct [id=" + id + ", rprCode=" + rprCode + ", productCode=" + productCode
 				+ ", qty=" + qty + ", inputDate=" + inputDate
 				+ ", inputBy=" + inputBy + ", editDate=" + editDate + ", editedBy=" + editedBy + ", deletedDate="
 				+ deletedDate + ", deletedBy=" + deletedBy + "]";
@@ -99,7 +99,7 @@ public class PPRProduct implements Serializable {
 		result = prime * result + id;
 		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
-		result = prime * result + ((pprCode == null) ? 0 : pprCode.hashCode());
+		result = prime * result + ((rprCode == null) ? 0 : rprCode.hashCode());
 		result = prime * result + ((productCode == null) ? 0 : productCode.hashCode());
 		result = prime * result + ((qty == null) ? 0 : qty.hashCode());
 		return result;
@@ -112,7 +112,7 @@ public class PPRProduct implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PPRProduct other = (PPRProduct) obj;
+		RPRProduct other = (RPRProduct) obj;
 		if (deletedBy == null) {
 			if (other.deletedBy != null)
 				return false;
@@ -145,10 +145,10 @@ public class PPRProduct implements Serializable {
 				return false;
 		} else if (!inputDate.equals(other.inputDate))
 			return false;
-		if (pprCode == null) {
-			if (other.pprCode != null)
+		if (rprCode == null) {
+			if (other.rprCode != null)
 				return false;
-		} else if (!pprCode.equals(other.pprCode))
+		} else if (!rprCode.equals(other.rprCode))
 			return false;
 		if (productCode == null) {
 			if (other.productCode != null)
@@ -175,26 +175,21 @@ public class PPRProduct implements Serializable {
 	}
 
 	private Product product;
-	private BigDecimal unitPrice;
-	private BigDecimal subTotal;
 	private boolean isFlag;
 	
-	public BigDecimal getUnitPrice() {
-		return unitPrice;
-	}
-	public void setUnitPrice(BigDecimal unitPrice) {
-		this.unitPrice = unitPrice;
-	}
-	public BigDecimal getSubTotal() {
-		return subTotal;
-	}
-	public void setSubTotal(BigDecimal subTotal) {
-		this.subTotal = subTotal;
-	}
 	public boolean isFlag() {
 		return isFlag;
 	}
 	public void setFlag(boolean isFlag) {
 		this.isFlag = isFlag;
 	}
+	
+	public String getPprCode() {
+		return pprCode;
+	}
+	public void setPprCode(String pprCode) {
+		this.pprCode = pprCode;
+	}
+
+	private String pprCode;
 }

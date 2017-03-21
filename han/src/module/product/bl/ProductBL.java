@@ -2,13 +2,11 @@ package module.product.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import main.component.AppConstants;
-import module.dryin.dao.DryInDAO;
 import module.product.dao.ProductDAO;
 import module.product.dao.ProductPPDAO;
 import module.product.model.Condition;
@@ -17,10 +15,6 @@ import module.product.model.Product;
 import module.product.model.ProductCategory;
 import module.product.model.ProductPP;
 import module.product.model.Uom;
-import module.purchaseprodresult.dao.PPRNoteDAO;
-import module.purchaseprodresult.dao.PPRProductDAO;
-import module.purchaseprodresult.model.PPRNote;
-import module.purchaseprodresult.model.PPRProduct;
 import module.sn.production.quality.dao.ProductionQualityDAO;
 import module.sn.production.quality.model.ProductionQuality;
 import module.sn.production.type.dao.ProductionTypeDAO;

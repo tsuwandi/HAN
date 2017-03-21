@@ -1,4 +1,4 @@
-package module.purchaseprodresult.bl;
+package module.receiveprodresult.bl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -9,10 +9,12 @@ import javax.sql.DataSource;
 import main.component.AppConstants;
 import module.product.dao.ProductDAO;
 import module.product.model.Product;
-import module.purchaseprodresult.dao.PPRProductDAO;
-import module.purchaseprodresult.dao.PurchaseProdResultDAO;
-import module.purchaseprodresult.model.PPRProduct;
-import module.purchaseprodresult.model.PurchaseProdResult;
+import module.receiveprodresult.dao.RPRNoteDAO;
+import module.receiveprodresult.dao.RPRProductDAO;
+import module.receiveprodresult.dao.ReceiveProdResultDAO;
+import module.receiveprodresult.model.RPRNote;
+import module.receiveprodresult.model.RPRProduct;
+import module.receiveprodresult.model.ReceiveProdResult;
 import module.sn.currency.dao.CurrencyDAO;
 import module.sn.currency.model.Currency;
 import module.sn.production.type.dao.ProductionTypeDAO;
@@ -20,10 +22,10 @@ import module.sn.production.type.model.ProductionType;
 import module.supplier.dao.SupplierDAO;
 import module.supplier.model.Supplier;
 
-public class PurchaseProductResultBL  {
+public class ReceiveProductResultBL  {
 	private DataSource dataSource;
 
-	public PurchaseProductResultBL(DataSource dataSource) {
+	public ReceiveProductResultBL(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
 	
@@ -57,60 +59,95 @@ public class PurchaseProductResultBL  {
 		}
 	}
 	
-	public PurchaseProdResult getPPRById(int id) throws SQLException {
+	public ReceiveProdResult getRPRById(int id) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PurchaseProdResultDAO(con).getById(id);
+			return new ReceiveProdResultDAO(con).getRPRById(id);
 		} finally {
 			con.close();
 		}
 	}
 	
-	public List<PPRProduct> getPPRProductByPPRCode(String pprCode) throws SQLException {
+	public ReceiveProdResult getPPRById(int id) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PPRProductDAO(con).getAllByPPRCode(pprCode);
+			return new ReceiveProdResultDAO(con).getPPRById(id);
 		} finally {
 			con.close();
 		}
 	}
 	
-	public List<PurchaseProdResult> getAllPurchaseProdResult(String status) throws SQLException {
+	public List<RPRProduct> getRPRProductByRPRCode(String rprCode) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PurchaseProdResultDAO(con).getAll(status);
+			return new RPRProductDAO(con).getAllByRPRCode(rprCode);
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<RPRProduct> getPPRProductByPPRCode(String pprCode) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new RPRProductDAO(con).getAllByPPRCode(pprCode);
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<RPRNote> getRPRNoteByRPRCode(String rprCode) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new RPRNoteDAO(con).getAllByRPRCode(rprCode);
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<ReceiveProdResult> getAllReceiveProdResult() throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ReceiveProdResultDAO(con).getAll();
 		} finally {
 			con.close();
 		}
 	}
 
-	public List<PurchaseProdResult> getAllPurchaseProdResultBySimpleSearch(String value, String status) throws SQLException {
+	public List<ReceiveProdResult> getAllReceiveProdResultBySimpleSearch(String value) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PurchaseProdResultDAO(con).getAllBySimpleSearch(value, status);
+			return new ReceiveProdResultDAO(con).getAllBySimpleSearch(value);
 		} finally {
 			con.close();
 		}
 	}
 	
-	public void save(PurchaseProdResult ppr, List<PPRProduct> pprProducts)
+	public void save(ReceiveProdResult rpr, List<RPRProduct> rprProducts, List<RPRNote> rprNotes)
 			throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 			
-			ppr.setStatus(AppConstants.STATUS_COMPLETED);
+			rpr.setStatus(AppConstants.STATUS_COMPLETED);
 			
-			new PurchaseProdResultDAO(con).save(ppr);
+			new ReceiveProdResultDAO(con).save(rpr);
 
-			for (PPRProduct s : pprProducts) {
-				s.setPprCode(ppr.getPprCode());
-				new PPRProductDAO(con).save(s);
+			for (RPRProduct s : rprProducts) {
+				s.setRprCode(rpr.getRprCode());
+				new RPRProductDAO(con).save(s);
+			}
+			
+			for (RPRNote s : rprNotes) {
+				s.setRprCode(rpr.getRprCode());
+				new RPRNoteDAO(con).save(s);
 			}
 			
 			con.commit();
@@ -123,27 +160,42 @@ public class PurchaseProductResultBL  {
 		}
 	}
 	
-	public void update(PurchaseProdResult ppr, List<PPRProduct> pprProducts, List<PPRProduct> pprProductsDeleted)
+	public void update(ReceiveProdResult rpr, List<RPRProduct> rprProducts, List<RPRProduct> rprProductsDeleted,
+			List<RPRNote> rprNotes, List<RPRNote> rprNotesDeleted)
 			throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 
-			new PurchaseProdResultDAO(con).update(ppr);
+			new ReceiveProdResultDAO(con).update(rpr);
 
-			for (PPRProduct s : pprProducts) {
+			for (RPRProduct s : rprProducts) {
 				if (s.getId() == 0) {
-					s.setPprCode(ppr.getPprCode());
-					new PPRProductDAO(con).save(s);
+					s.setRprCode(rpr.getRprCode());
+					new RPRProductDAO(con).save(s);
 				} else {
-					new PPRProductDAO(con).update(s);
+					new RPRProductDAO(con).update(s);
 				}
 			}
 
-			for (PPRProduct s : pprProductsDeleted) {
+			for (RPRProduct s : rprProductsDeleted) {
 				if (s.getId() != 0)
-					new PPRProductDAO(con).deleteById(s.getId());
+					new RPRProductDAO(con).deleteById(s.getId());
+			}
+			
+			for (RPRNote s : rprNotes) {
+				if (s.getId() == 0) {
+					s.setRprCode(rpr.getRprCode());
+					new RPRNoteDAO(con).save(s);
+				} else {
+					new RPRNoteDAO(con).update(s);
+				}
+			}
+
+			for (RPRNote s : rprNotesDeleted) {
+				if (s.getId() != 0)
+					new RPRNoteDAO(con).deleteById(s.getId());
 			}
 			
 			con.commit();
@@ -156,14 +208,14 @@ public class PurchaseProductResultBL  {
 		}
 	}
 	
-	public void deleteAll(PurchaseProdResult ppr) throws SQLException {
+	public void deleteAll(ReceiveProdResult rpr) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 
-			new PurchaseProdResultDAO(con).delete(ppr.getId());
-			new PPRProductDAO(con).deleteAll(ppr.getPprCode());
+			new ReceiveProdResultDAO(con).delete(rpr.getId());
+			new RPRProductDAO(con).deleteAll(rpr.getPprCode());
 
 			con.commit();
 		} catch (SQLException e) {
@@ -175,11 +227,11 @@ public class PurchaseProductResultBL  {
 		}
 	}
 	
-	public int isPPRCodeExists(String pprCode) throws SQLException {
+	public int isRPRCodeExists(String rprCode) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PurchaseProdResultDAO(con).isPPRCodeExists(pprCode);
+			return new ReceiveProdResultDAO(con).isRPRCodeExists(rprCode);
 		} finally {
 			con.close();
 		}
@@ -190,7 +242,7 @@ public class PurchaseProductResultBL  {
 		try {
 			con = dataSource.getConnection();
 			return String.format("%04d",
-					new PurchaseProdResultDAO(con).getOrdinalOfCodeNumberByYear(year) + 1);
+					new ReceiveProdResultDAO(con).getOrdinalOfCodeNumberByYear(year) + 1);
 
 		} finally {
 			con.close();

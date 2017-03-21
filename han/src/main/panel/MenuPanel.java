@@ -60,10 +60,10 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Produksi", "Sisa Produksi", "Downsize (Sisa Produksi) 12", "module.productionwaste.ui.BigProductionWasteListPanel");
 		menu.addNewLeafTo("Produksi", "Produksi PK", "Hasil Klem (Produksi PK) 9", "module.prodpk.ui.ProdPKListPanel");
 		menu.addNewLeafTo("Produksi", "Produksi PK", "Hasil Klem (Produksi PK) 12", "module.prodpk.ui.BigProdPKListPanel");
-		menu.addNewLeafTo("Produksi", "Pembelian", "Pembelian 9", "module.purchaseprodresult.ui.PurchaseProdResultListPanel");
-		menu.addNewLeafTo("Produksi", "Pembelian", "Pembelian 12", "module.purchaseprodresult.ui.BigPurchaseProdResultListPanel");
-		menu.addNewLeafTo("Produksi", "Pembelian", "Hasil Packing 9", "module.packingresult.ui.ListPackingResultPanel");
-		menu.addNewLeafTo("Produksi", "Pembelian", "Hasil Packing 12", "module.packingresult.ui.ListBigPackingResultPanel");
+		menu.addNewLeafTo("Produksi", "Pembelian", "Pembelian", "module.purchaseprodresult.ui.PurchaseProdResultListPanel");
+		menu.addNewLeafTo("Produksi", "Penerimaan", "Penerimaan", "module.receiveprodresult.ui.ReceiveProdResultListPanel");
+		menu.addNewLeafTo("Produksi", "Hasil Packing 9", "Hasil Packing 9", "module.packingresult.ui.ListPackingResultPanel");
+		menu.addNewLeafTo("Produksi", "Hasil Packing 12", "Hasil Packing 12", "module.packingresult.ui.ListBigPackingResultPanel");
 		menu.addNewLeafTo("Produksi", "Tutup Harian", "Tutup Harian", "module.dailyclosing.ui.DailyClosingProductionPanel");
 		
 		menu.calculateAvaiableSpace();

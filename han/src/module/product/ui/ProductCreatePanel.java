@@ -49,7 +49,6 @@ import module.util.JTextFieldLimit;
 
 import org.apache.log4j.Logger;
 
-import module.purchaseprodresult.model.PPRNote;
 import controller.ServiceFactory;
 
 public class ProductCreatePanel extends JPanel {
@@ -1074,7 +1073,7 @@ public class ProductCreatePanel extends JPanel {
 		 *            rowIndex of selected table
 		 * @param columnIndex
 		 *            columnIndex of selected table
-		 * @return ({@link PPRNote}) Object
+		 * @return ({@link RPRNote}) Object
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			ProductPP p = listOfProductPP.get(rowIndex);

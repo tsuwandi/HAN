@@ -1,19 +1,21 @@
-package module.purchaseprodresult.model;
+package module.receiveprodresult.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
-import module.product.model.Product;
+import module.purchaseprodresult.model.PurchaseProdResult;
 
-public class PPRProduct implements Serializable {
+public class ReceiveProdResult implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private int id;
+	private String rprCode;
 	private String pprCode;
-	private String productCode;
-	private BigDecimal qty;
+	private Date receiveDate;
+	private String status;
+	private String confirmCode;
+	private Date confirmDate;
 	private Date inputDate;
 	private String inputBy;
 	private Date editDate;
@@ -27,23 +29,35 @@ public class PPRProduct implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
+	public String getRprCode() {
+		return rprCode;
+	}
+	public void setRprCode(String rprCode) {
+		this.rprCode = rprCode;
+	}
 	public String getPprCode() {
 		return pprCode;
 	}
 	public void setPprCode(String pprCode) {
 		this.pprCode = pprCode;
 	}
-	public String getProductCode() {
-		return productCode;
+	public String getStatus() {
+		return status;
 	}
-	public void setProductCode(String productCode) {
-		this.productCode = productCode;
+	public void setStatus(String status) {
+		this.status = status;
 	}
-	public BigDecimal getQty() {
-		return qty;
+	public String getConfirmCode() {
+		return confirmCode;
 	}
-	public void setQty(BigDecimal qty) {
-		this.qty = qty;
+	public void setConfirmCode(String confirmCode) {
+		this.confirmCode = confirmCode;
+	}
+	public Date getConfirmDate() {
+		return confirmDate;
+	}
+	public void setConfirmDate(Date confirmDate) {
+		this.confirmDate = confirmDate;
 	}
 	public Date getInputDate() {
 		return inputDate;
@@ -82,26 +96,30 @@ public class PPRProduct implements Serializable {
 		this.deletedBy = deletedBy;
 	}
 	@Override
-	public String toString() {
-		return "PurchaseProductResultProduct [id=" + id + ", pprCode=" + pprCode + ", productCode=" + productCode
-				+ ", qty=" + qty + ", inputDate=" + inputDate
-				+ ", inputBy=" + inputBy + ", editDate=" + editDate + ", editedBy=" + editedBy + ", deletedDate="
-				+ deletedDate + ", deletedBy=" + deletedBy + "]";
-	}
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((deletedBy == null) ? 0 : deletedBy.hashCode());
-		result = prime * result + ((deletedDate == null) ? 0 : deletedDate.hashCode());
-		result = prime * result + ((editDate == null) ? 0 : editDate.hashCode());
-		result = prime * result + ((editedBy == null) ? 0 : editedBy.hashCode());
+		result = prime * result
+				+ ((confirmCode == null) ? 0 : confirmCode.hashCode());
+		result = prime * result
+				+ ((confirmDate == null) ? 0 : confirmDate.hashCode());
+		result = prime * result
+				+ ((deletedBy == null) ? 0 : deletedBy.hashCode());
+		result = prime * result
+				+ ((deletedDate == null) ? 0 : deletedDate.hashCode());
+		result = prime * result
+				+ ((editDate == null) ? 0 : editDate.hashCode());
+		result = prime * result
+				+ ((editedBy == null) ? 0 : editedBy.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
-		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
+		result = prime * result
+				+ ((inputDate == null) ? 0 : inputDate.hashCode());
 		result = prime * result + ((pprCode == null) ? 0 : pprCode.hashCode());
-		result = prime * result + ((productCode == null) ? 0 : productCode.hashCode());
-		result = prime * result + ((qty == null) ? 0 : qty.hashCode());
+		result = prime * result
+				+ ((receiveDate == null) ? 0 : receiveDate.hashCode());
+		result = prime * result + ((rprCode == null) ? 0 : rprCode.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
 	@Override
@@ -112,7 +130,17 @@ public class PPRProduct implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PPRProduct other = (PPRProduct) obj;
+		ReceiveProdResult other = (ReceiveProdResult) obj;
+		if (confirmCode == null) {
+			if (other.confirmCode != null)
+				return false;
+		} else if (!confirmCode.equals(other.confirmCode))
+			return false;
+		if (confirmDate == null) {
+			if (other.confirmDate != null)
+				return false;
+		} else if (!confirmDate.equals(other.confirmDate))
+			return false;
 		if (deletedBy == null) {
 			if (other.deletedBy != null)
 				return false;
@@ -150,51 +178,40 @@ public class PPRProduct implements Serializable {
 				return false;
 		} else if (!pprCode.equals(other.pprCode))
 			return false;
-		if (productCode == null) {
-			if (other.productCode != null)
+		if (receiveDate == null) {
+			if (other.receiveDate != null)
 				return false;
-		} else if (!productCode.equals(other.productCode))
+		} else if (!receiveDate.equals(other.receiveDate))
 			return false;
-		if (qty == null) {
-			if (other.qty != null)
+		if (rprCode == null) {
+			if (other.rprCode != null)
 				return false;
-		} else if (!qty.equals(other.qty))
+		} else if (!rprCode.equals(other.rprCode))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
 			return false;
 		return true;
 	}
-	
-	public Product getProduct() {
-		if(product == null)
-			product = new Product();
-		return product;
+	public Date getReceiveDate() {
+		return receiveDate;
 	}
-	public void setProduct(Product product) {
-		if(product == null)
-			product = new Product();
-		this.product = product;
+	public void setReceiveDate(Date receiveDate) {
+		this.receiveDate = receiveDate;
+	}
+	
+	public PurchaseProdResult getPurchaseProdResult() {
+		if(purchaseProdResult == null)
+			purchaseProdResult = new PurchaseProdResult();
+		return purchaseProdResult;
+	}
+	public void setPurchaseProdResult(PurchaseProdResult purchaseProdResult) {
+		if(purchaseProdResult == null)
+			purchaseProdResult = new PurchaseProdResult();
+		this.purchaseProdResult = purchaseProdResult;
 	}
 
-	private Product product;
-	private BigDecimal unitPrice;
-	private BigDecimal subTotal;
-	private boolean isFlag;
-	
-	public BigDecimal getUnitPrice() {
-		return unitPrice;
-	}
-	public void setUnitPrice(BigDecimal unitPrice) {
-		this.unitPrice = unitPrice;
-	}
-	public BigDecimal getSubTotal() {
-		return subTotal;
-	}
-	public void setSubTotal(BigDecimal subTotal) {
-		this.subTotal = subTotal;
-	}
-	public boolean isFlag() {
-		return isFlag;
-	}
-	public void setFlag(boolean isFlag) {
-		this.isFlag = isFlag;
-	}
+	private PurchaseProdResult purchaseProdResult;
 }

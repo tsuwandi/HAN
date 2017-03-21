@@ -1,16 +1,16 @@
-package module.purchaseprodresult.model;
+package module.receiveprodresult.model;
 
 import java.io.Serializable;
 import java.util.Date;
 
 import module.product.model.Product;
 
-public class PPRNote implements Serializable {
+public class RPRNote implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	private int id;
-	private String pprCode;
+	private String rprCode;
 	private String note;
 	private Date inputDate;
 	private String inputBy;
@@ -25,11 +25,11 @@ public class PPRNote implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getPprCode() {
-		return pprCode;
+	public String getRprCode() {
+		return rprCode;
 	}
-	public void setPprCode(String pprCode) {
-		this.pprCode = pprCode;
+	public void setRprCode(String rprCode) {
+		this.rprCode = rprCode;
 	}
 	public String getNote() {
 		return note;
@@ -75,7 +75,7 @@ public class PPRNote implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "PurchaseProductResultProduct [id=" + id + ", pprCode=" + pprCode + ", note=" + note
+		return "PurchaseProductResultProduct [id=" + id + ", rprCode=" + rprCode + ", note=" + note
 				+ ", inputDate=" + inputDate
 				+ ", inputBy=" + inputBy + ", editDate=" + editDate + ", editedBy=" + editedBy + ", deletedDate="
 				+ deletedDate + ", deletedBy=" + deletedBy + "]";
@@ -91,7 +91,7 @@ public class PPRNote implements Serializable {
 		result = prime * result + id;
 		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
-		result = prime * result + ((pprCode == null) ? 0 : pprCode.hashCode());
+		result = prime * result + ((rprCode == null) ? 0 : rprCode.hashCode());
 		result = prime * result + ((note == null) ? 0 : note.hashCode());
 		return result;
 	}
@@ -103,7 +103,7 @@ public class PPRNote implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PPRNote other = (PPRNote) obj;
+		RPRNote other = (RPRNote) obj;
 		if (deletedBy == null) {
 			if (other.deletedBy != null)
 				return false;
@@ -136,10 +136,10 @@ public class PPRNote implements Serializable {
 				return false;
 		} else if (!inputDate.equals(other.inputDate))
 			return false;
-		if (pprCode == null) {
-			if (other.pprCode != null)
+		if (rprCode == null) {
+			if (other.rprCode != null)
 				return false;
-		} else if (!pprCode.equals(other.pprCode))
+		} else if (!rprCode.equals(other.rprCode))
 			return false;
 		if (note == null) {
 			if (other.note != null)

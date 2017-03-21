@@ -1,4 +1,4 @@
-package module.purchaseprodresultpayment.ui;
+package module.receiveprodresult.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -19,21 +19,21 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
+import main.component.DialogBox;
+import main.panel.MainPanel;
+import module.receiveprodresult.model.ReceiveProdResult;
+
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
-import main.component.AppConstants;
-import main.component.DialogBox;
-import main.panel.MainPanel;
-import module.purchaseprodresult.model.PurchaseProdResult;
 
-public class PurchaseProdResultPaymentListPanel extends JPanel {
+public class ReceiveProdResultListPanel extends JPanel {
 
-	private static final Logger LOGGER = Logger.getLogger(PurchaseProdResultPaymentListPanel.class);
+	private static final Logger LOGGER = Logger.getLogger(ReceiveProdResultListPanel.class);
 
-	//JButton btnCreateNew;
-	JButton btnExport;
-	JButton btnAdvancedSearch;
+//	JButton btnCreateNew;
+//	JButton btnExport;
+//	JButton btnAdvancedSearch;
 	JButton btnSearch;
 
 	JTextField txtSearch;
@@ -41,29 +41,31 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
 
-	JScrollPane scrollPanePurchaseProdResult;
+	JScrollPane scrollPaneReceiveProdResult;
 
-	private PurchaseProdResultTableModel purchaseProdResultTableModel;
-	public List<PurchaseProdResult> listOfPurchaseProdResult = new ArrayList<PurchaseProdResult>();
+	private ReceiveProdResultTableModel purchaseProdResultTableModel;
+	public List<ReceiveProdResult> listOfReceiveProdResult = new ArrayList<ReceiveProdResult>();
 
-	JTable tblPurchaseProdResult;
+	JTable tblReceiveProdResult;
 
-	private PurchaseProdResultPaymentListPanel purchaseProdResultListPanel;
+	private ReceiveProdResultListPanel receiveProdResultListPanel;
 
 	private static final long serialVersionUID = 1L;
+	
+	public static final String COMPLETED = "COMPLETED";
 
-	public PurchaseProdResultPaymentListPanel() {
-		purchaseProdResultListPanel = this;
+	public ReceiveProdResultListPanel() {
+		receiveProdResultListPanel = this;
 		setLayout(null);
 
 		setPreferredSize(new Dimension(1024, 768));
 
-		lblBreadcrumb = new JLabel("ERP > Produksi > Input Hasil Produksi > Pembelian");
+		lblBreadcrumb = new JLabel("ERP > Produksi > Hasil Produksi");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblBreadcrumb.setBounds(50, 10, 320, 30);
+		lblBreadcrumb.setBounds(50, 10, 600, 30);
 		add(lblBreadcrumb);
 
-		lblHeader = new JLabel("Input Hasil Produksi Pembelian ");
+		lblHeader = new JLabel("List Penerimaan Hasil Produksi ");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -71,29 +73,29 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 //		btnCreateNew = new JButton("Buat Baru");
 //		btnCreateNew.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent arg0) {
-//				MainPanel.changePanel("module.purchaseprodresult.ui.PurchaseProdResultCreatePanel");
+//				MainPanel.changePanel("module.purchaseprodresult.ui.ReceiveProdResultCreatePanel");
 //			}
 //		});
 //		btnCreateNew.setBounds(700, 80, 100, 30);
 //		add(btnCreateNew);
-
-		btnExport = new JButton("Export");
-		btnExport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		btnExport.setBounds(800, 80, 100, 30);
-		add(btnExport);
-
-		btnAdvancedSearch = new JButton("Pencarian Lanjut");
-		btnAdvancedSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//showAdvancedSearchDialog(purchaseProdResultListPanel);
-			}
-		});
-		btnAdvancedSearch.setBounds(900, 80, 150, 30);
-		add(btnAdvancedSearch);
+//
+//		btnExport = new JButton("Export");
+//		btnExport.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//
+//			}
+//		});
+//		btnExport.setBounds(800, 80, 100, 30);
+//		add(btnExport);
+//
+//		btnAdvancedSearch = new JButton("Pencarian Lanjut");
+//		btnAdvancedSearch.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				//showAdvancedSearchDialog(receiveProdResultListPanel);
+//			}
+//		});
+//		btnAdvancedSearch.setBounds(900, 80, 150, 30);
+//		add(btnAdvancedSearch);
 
 		txtSearch = new JTextField();
 		txtSearch.setBounds(800, 131, 150, 28);
@@ -108,17 +110,17 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 		btnSearch.setBounds(950, 130, 100, 30);
 		add(btnSearch);
 
-		scrollPanePurchaseProdResult = new JScrollPane();
-		scrollPanePurchaseProdResult.setBounds(50, 200, 1000, 300);
-		add(scrollPanePurchaseProdResult);
+		scrollPaneReceiveProdResult = new JScrollPane();
+		scrollPaneReceiveProdResult.setBounds(50, 200, 1000, 300);
+		add(scrollPaneReceiveProdResult);
 
-		purchaseProdResultTableModel = new PurchaseProdResultTableModel(new ArrayList<PurchaseProdResult>());
-		tblPurchaseProdResult = new JTable(purchaseProdResultTableModel);
-		tblPurchaseProdResult.setFocusable(false);
-		tblPurchaseProdResult.setAutoCreateRowSorter(true);
-		scrollPanePurchaseProdResult.setViewportView(tblPurchaseProdResult);
+		purchaseProdResultTableModel = new ReceiveProdResultTableModel(new ArrayList<ReceiveProdResult>());
+		tblReceiveProdResult = new JTable(purchaseProdResultTableModel);
+		tblReceiveProdResult.setFocusable(false);
+		tblReceiveProdResult.setAutoCreateRowSorter(true);
+		scrollPaneReceiveProdResult.setViewportView(tblReceiveProdResult);
 
-		tblPurchaseProdResult.addMouseListener(new MouseAdapter() {
+		tblReceiveProdResult.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -126,16 +128,16 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 4)
-						MainPanel.changePanel("module.purchaseprodresultpayment.ui.PurchaseProdResultPaymentViewPanel", listOfPurchaseProdResult.get(row));
+					if (column == 5)
+						MainPanel.changePanel("module.receiveprodresult.ui.ReceiveProdResultViewPanel", listOfReceiveProdResult.get(row));
 				}
 			}
 		});
 
 		try {
-			listOfPurchaseProdResult = new ArrayList<PurchaseProdResult>();
-			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultPaymentBL().getAllPurchaseProdResult(AppConstants.STATUS_FINAL);
-			refreshTablePurchaseProdResult();
+			listOfReceiveProdResult = new ArrayList<ReceiveProdResult>();
+			listOfReceiveProdResult = ServiceFactory.getReceiveProductResultBL().getAllReceiveProdResult();
+			refreshTableReceiveProdResult();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
@@ -145,15 +147,15 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				btnExport.requestFocusInWindow();
+				btnSearch.requestFocusInWindow();
 			}
 		});
 
 	}
 
-	public void refreshTablePurchaseProdResult() {
+	public void refreshTableReceiveProdResult() {
 		try {
-			tblPurchaseProdResult.setModel(new PurchaseProdResultTableModel(listOfPurchaseProdResult));
+			tblReceiveProdResult.setModel(new ReceiveProdResultTableModel(listOfReceiveProdResult));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
@@ -162,9 +164,9 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 
 	public void doSearch(String value) {
 		try {
-			listOfPurchaseProdResult = new ArrayList<PurchaseProdResult>();
-			listOfPurchaseProdResult = ServiceFactory.getPurchaseProductResultPaymentBL().getAllPurchaseProdResultBySimpleSearch(value, AppConstants.STATUS_FINAL);
-			refreshTablePurchaseProdResult();
+			listOfReceiveProdResult = new ArrayList<ReceiveProdResult>();
+			listOfReceiveProdResult = ServiceFactory.getReceiveProductResultBL().getAllReceiveProdResultBySimpleSearch(value);
+			refreshTableReceiveProdResult();
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
@@ -174,24 +176,24 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 	/**
 	 * Method to display advanced search dialog
 	 */
-	protected void showAdvancedSearchDialog(PurchaseProdResultPaymentListPanel purchaseProdResultListPanel) {
+	protected void showAdvancedSearchDialog(ReceiveProdResultListPanel receiveProdResultListPanel) {
 		
 	}
 
 	/**
-	 * Class as TableModel for PurchaseProdResult table
+	 * Class as TableModel for ReceiveProdResult table
 	 * 
 	 * @author TSI
 	 *
 	 */
-	class PurchaseProdResultTableModel extends AbstractTableModel {
+	class ReceiveProdResultTableModel extends AbstractTableModel {
 		
 		private static final long serialVersionUID = 1L;
 
-		private List<PurchaseProdResult> listOfPurchaseProdResult;
+		private List<ReceiveProdResult> listOfReceiveProdResult;
 
-		public PurchaseProdResultTableModel(List<PurchaseProdResult> listOfPurchaseProdResult) {
-			this.listOfPurchaseProdResult = listOfPurchaseProdResult;
+		public ReceiveProdResultTableModel(List<ReceiveProdResult> listOfReceiveProdResult) {
+			this.listOfReceiveProdResult = listOfReceiveProdResult;
 		}
 
 		/**
@@ -200,14 +202,14 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 		 * @return int
 		 */
 		public int getRowCount() {
-			return listOfPurchaseProdResult.size();
+			return listOfReceiveProdResult.size();
 		}
 
 		/**
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 5;
+			return 6;
 		}
 
 		public boolean isCellEditable(int row, int column) {
@@ -224,6 +226,8 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 			case 2:
 				return String.class;
 			case 3:
+				return String.class;	
+			case 4:
 				return String.class;
 			default:
 				return String.class;
@@ -237,20 +241,22 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 		 *            rowIndex of selected table
 		 * @param columnIndex
 		 *            columnIndex of selected table
-		 * @return ({@link PurchaseProdResultAddress}) Object
+		 * @return ({@link ReceiveProdResultAddress}) Object
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			PurchaseProdResult p = listOfPurchaseProdResult.get(rowIndex);
+			ReceiveProdResult p = listOfReceiveProdResult.get(rowIndex);
 			switch (columnIndex) {
 			case 0:
 				return p.getPprCode();
 			case 1:
-				return p.getSuppCode();
+				return p.getPurchaseProdResult().getPurchaseDate();
 			case 2:
-				return p.getSupplier().getSuppName();
+				return p.getRprCode();
 			case 3:
-				return p.getStatus();
+				return p.getReceiveDate();
 			case 4:
+				return p.getStatus();
+			case 5:
 				return "<html><a><u>View</u></a></html>";
 			default:
 	            throw new IllegalArgumentException("Invalid column index");
@@ -269,12 +275,14 @@ public class PurchaseProdResultPaymentListPanel extends JPanel {
 			case 0:
 				return "Kode Pembelian";
 			case 1:
-				return "Kode Supplier";
+				return "Tanggal Pembelian";
 			case 2:
-				return "Nama Supplier";
+				return "Kode Penerimaan";
 			case 3:
-				return "Status";
+				return "Tanngal Penerimaan";
 			case 4:
+				return "Status";
+			case 5:
 				return "Tindakan";
 			default:
 				return "";

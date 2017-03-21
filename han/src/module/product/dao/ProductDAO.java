@@ -659,18 +659,17 @@ public class ProductDAO {
 		return product;
 	}
 	
-	private PreparedStatement getAllByProductCodeStatement;
-	private String getAllByProductCodeQuery = "select product_code, product_name from product where product_code IN (?,?)";
+	private PreparedStatement getAllByProductionTypeIdStatement;
+	private String getAllByProductionTypeIdQuery = "select product_code, product_name from product where production_type_id = ? and deleted_date is null";
 
-	public List<Product> getAllByProductCode(String normal1, String normal2) throws SQLException {
+	public List<Product> getAllByProductionTypeId(int productionTypeId) throws SQLException {
 		List<Product> products = new ArrayList<Product>();
 
 		try {
-			getAllByProductCodeStatement = connection.prepareStatement(getAllByProductCodeQuery);
-			getAllByProductCodeStatement.setString(1, normal1);
-			getAllByProductCodeStatement.setString(2, normal2);
+			getAllByProductionTypeIdStatement = connection.prepareStatement(getAllByProductionTypeIdQuery);
+			getAllByProductionTypeIdStatement.setInt(1, productionTypeId);
 			
-			ResultSet rs = getAllByProductCodeStatement.executeQuery();
+			ResultSet rs = getAllByProductionTypeIdStatement.executeQuery();
 			while (rs.next()) {
 				Product product = new Product();
 				product.setProductCode(rs.getString("product_code"));

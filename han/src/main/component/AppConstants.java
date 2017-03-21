@@ -69,6 +69,10 @@ public class AppConstants {
 	
 	public static final int WAREHOUSE_0 = 0;
 	
+	public static final String NEW = "NEW";
+	public static final String COMPLETED = "COMPLETED";
+	public static final String FINAL = "FINAL";
+	
 	public static final int DIVIDER_VOLUME=1000000;
 	
 	public static DecimalFormat FOUR_DIGIT_DECIMAL_FORMAT= null;

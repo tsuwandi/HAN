@@ -1,4 +1,4 @@
-package module.purchaseprodresult.dao;
+package module.receiveprodresult.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,46 +7,46 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import module.purchaseprodresult.model.PPRNote;
+import module.receiveprodresult.model.RPRNote;
 import module.util.DateUtil;
 
-public class PPRNoteDAO {
+public class RPRNoteDAO {
 	private Connection connection;
-	private PreparedStatement getAllByPPRCodeStatement;
+	private PreparedStatement getAllByRPRCodeStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 
-	private String getAllByPPRCodeQuery = new StringBuilder()
-			.append("select pp.id, pp.ppr_code, pp.note ")
-			.append("from ppr_note pp ")
-			.append("where pp.ppr_code = ? and pp.deleted_date is null ").toString();
+	private String getAllByRPRCodeQuery = new StringBuilder()
+			.append("select pp.id, pp.rpr_code, pp.note ")
+			.append("from rpr_note pp ")
+			.append("where pp.rpr_code = ? and pp.deleted_date is null ").toString();
 
 	private String insertQuery = new StringBuilder()
-			.append("insert into ppr_note (ppr_code, note, ")
+			.append("insert into rpr_note (rpr_code, note, ")
 			.append("input_date, input_by) values (?,?,?,?)").toString();
 
-	private String updateQuery = "update ppr_note set note=?, edit_date=?, edited_by=? where id=?";
+	private String updateQuery = "update rpr_note set note=?, edit_date=?, edited_by=? where id=?";
 
-	private String deleteQuery = "update ppr_note set deleted_date=?, deleted_by=? ";
+	private String deleteQuery = "update rpr_note set deleted_date=?, deleted_by=? ";
 	
-	public PPRNoteDAO(Connection connection) throws SQLException {
+	public RPRNoteDAO(Connection connection) throws SQLException {
 		this.connection = connection;
 	}
 
 	
-	public List<PPRNote> getAllByPPRCode(String pprCode) throws SQLException {
-		List<PPRNote> pprNotes = new ArrayList<PPRNote>();
+	public List<RPRNote> getAllByRPRCode(String pprCode) throws SQLException {
+		List<RPRNote> pprNotes = new ArrayList<RPRNote>();
 
 		try {
-			getAllByPPRCodeStatement = connection.prepareStatement(getAllByPPRCodeQuery);
-			getAllByPPRCodeStatement.setString(1, pprCode);
+			getAllByRPRCodeStatement = connection.prepareStatement(getAllByRPRCodeQuery);
+			getAllByRPRCodeStatement.setString(1, pprCode);
 			
-			ResultSet rs = getAllByPPRCodeStatement.executeQuery();
+			ResultSet rs = getAllByRPRCodeStatement.executeQuery();
 			while (rs.next()) {
-				PPRNote pprNote = new PPRNote();
+				RPRNote pprNote = new RPRNote();
 				pprNote.setId(rs.getInt("id"));
-				pprNote.setPprCode(rs.getString("ppr_code"));
+				pprNote.setRprCode(rs.getString("rpr_code"));
 				pprNote.setNote(rs.getString("note"));
 				
 				pprNotes.add(pprNote);
@@ -59,10 +59,10 @@ public class PPRNoteDAO {
 		return pprNotes;
 	}
 	
-	public void save(PPRNote pprNote) throws SQLException {
+	public void save(RPRNote pprNote) throws SQLException {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
-			insertStatement.setString(1, pprNote.getPprCode());
+			insertStatement.setString(1, pprNote.getRprCode());
 			insertStatement.setString(2, pprNote.getNote());
 			insertStatement.setDate(3, DateUtil.getCurrentDate());
 			insertStatement.setString(4, "timotius");
@@ -73,7 +73,7 @@ public class PPRNoteDAO {
 		}
 	}
 	
-	public void update(PPRNote pprNote) throws SQLException {
+	public void update(RPRNote pprNote) throws SQLException {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, pprNote.getNote());
@@ -89,7 +89,7 @@ public class PPRNoteDAO {
 	
 	public void deleteAll(String pprCode) throws SQLException {
 		try {
-			String query = new StringBuilder().append(deleteQuery).append("where ppr_code=? ").toString();
+			String query = new StringBuilder().append(deleteQuery).append("where rpr_code=? ").toString();
 
 			deleteStatement = connection.prepareStatement(query);
 			deleteStatement.setDate(1, DateUtil.getCurrentDate());
