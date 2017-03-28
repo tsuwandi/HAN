@@ -79,5 +79,6 @@ public class AppConstants {
 	public static final String TYPE_12 = "12";
 	public static final String TYPE_9 = "9";
 	
-	
+	public static final String SOURCE_PAYMENT = "PAYMENT";
+	public static final String SOURCE_RECEIVE = "RECEIVE";
 }

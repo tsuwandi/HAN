@@ -18,11 +18,11 @@ public class MenuPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public MenuPanel() {
-		setPreferredSize(new Dimension(500, 840));
+		setPreferredSize(new Dimension(500, 860));
 		setLayout(null);
 
 		AccordionMenu menu = new AccordionMenu();
-		menu.setBounds(1, 0, 200, 450);
+		menu.setBounds(1, 0, 200, 470);
 		
 		menu.addNewMenu("General", "General");
 		menu.addNewLeafTo("General", "Supplier", "Supplier", "module.supplier.ui.SupplierListPanel");
@@ -62,15 +62,16 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Produksi", "Produksi PK", "Hasil Klem (Produksi PK) 12", "module.prodpk.ui.BigProdPKListPanel");
 		menu.addNewLeafTo("Produksi", "Pembelian", "Pembelian", "module.purchaseprodresult.ui.PurchaseProdResultListPanel");
 		menu.addNewLeafTo("Produksi", "Penerimaan", "Penerimaan", "module.receiveprodresult.ui.ReceiveProdResultListPanel");
+		menu.addNewLeafTo("Produksi", "Pembayaran", "Pembayaran", "module.paymentprodresult.ui.PaymentProdResultListPanel");
 		menu.addNewLeafTo("Produksi", "Hasil Packing 9", "Hasil Packing 9", "module.packingresult.ui.ListPackingResultPanel");
 		menu.addNewLeafTo("Produksi", "Hasil Packing 12", "Hasil Packing 12", "module.packingresult.ui.ListBigPackingResultPanel");
 		menu.addNewLeafTo("Produksi", "Tutup Harian", "Tutup Harian", "module.dailyclosing.ui.DailyClosingProductionPanel");
 		
 		menu.calculateAvaiableSpace();
 		
-		menu.addNewMenu("Finance", "Finance");
-		menu.addNewLeafTo("Finance", "Finance", "Finance", "module.purchaseprodresultpayment.ui.PurchaseProdResultPaymentListPanel");
-		menu.calculateAvaiableSpace();
+//		menu.addNewMenu("Finance", "Finance");
+//		menu.addNewLeafTo("Finance", "Finance", "Finance", "module.purchaseprodresultpayment.ui.PurchaseProdResultPaymentListPanel");
+//		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Konfigurasi", "Konfigurasi");
 		menu.addNewLeafTo("Konfigurasi", "Nama Latin Kayu", "Nama Latin Kayu", "module.sn.woodgenus.ui.WoodGenusListPanel");
