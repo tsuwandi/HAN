@@ -34,7 +34,7 @@ public class ReceiveProdResultDAO {
 			.append("select ppr.id as id, '' as rpr_code, ppr.ppr_code, null as receive_date,  ")
 			.append("'NEW' as status, ppr.purchase_date ")
 			.append("from purchase_prod_result ppr ")
-			.append("where ppr.deleted_date is null and ppr.ppr_code not in (select ppr_code from receive_prod_result)) result ")
+			.append("where ppr.deleted_date is null and ppr.status = 'FINAL' and ppr.ppr_code not in (select ppr_code from receive_prod_result)) result ")
 			.toString();
 
 	private String getAllRPRQuery = new StringBuilder()
@@ -49,7 +49,7 @@ public class ReceiveProdResultDAO {
 			.append("select ppr.id as id, '' as rpr_code, ppr.ppr_code, null as receive_date,  ")
 			.append("'NEW' as status, ppr.purchase_date ")
 			.append("from purchase_prod_result ppr ")
-			.append("where ppr.deleted_date is null and ppr.ppr_code not in (select ppr_code from receive_prod_result) ")
+			.append("where ppr.deleted_date is null  and ppr.status = 'FINAL' and ppr.ppr_code not in (select ppr_code from receive_prod_result) ")
 			.toString();
 
 	private String isRPRCodeExistsQuery = "select count(*) as is_exists from receive_prod_result where rpr_code = ? and deleted_date is null ";

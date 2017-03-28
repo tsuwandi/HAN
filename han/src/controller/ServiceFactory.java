@@ -18,6 +18,7 @@ import module.sn.woodgenus.bl.WoodGenusBL;
 import module.sn.woodtype.bl.WoodTypeBL;
 import module.supplier.bl.SupplierBL;
 import module.system.bl.SystemBL;
+import module.paymentprodresult.bl.PaymentProductResultBL;
 
 public class ServiceFactory {
 	// private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
@@ -42,6 +43,7 @@ public class ServiceFactory {
 	private static module.prodpk.bl.ProdPKBL productionPKBL = null;
 	private static PackingBL packingBL = null;
 	private static ReceiveProductResultBL receiveProductResultBL = null;
+	private static PaymentProductResultBL paymentProductResultBL = null;
 	
 	/**
 	 * Method to init or return {@link SupplierBL}
@@ -201,5 +203,13 @@ public class ServiceFactory {
 			receiveProductResultBL = new ReceiveProductResultBL(DataSourceFactory.getDataSource());
 		}
 		return receiveProductResultBL;
+	}
+	
+	
+	public static PaymentProductResultBL getPaymentProductResultBL() {
+		if (paymentProductResultBL == null) {
+			paymentProductResultBL = new PaymentProductResultBL(DataSourceFactory.getDataSource());
+		}
+		return paymentProductResultBL;
 	}
 }

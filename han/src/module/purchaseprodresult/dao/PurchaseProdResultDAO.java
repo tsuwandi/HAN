@@ -53,11 +53,12 @@ public class PurchaseProdResultDAO {
 	public List<PurchaseProdResult> getAll(String status) throws SQLException {
 		List<PurchaseProdResult> pprs = new ArrayList<PurchaseProdResult>();
 
-		String query = new StringBuilder().append(getAllQuery).append("and status = ? ").toString();
+		String query = new StringBuilder().append(getAllQuery).toString();
+				//.append("and status = ? ").toString();
 		
 		try {
 			getAllStatement = connection.prepareStatement(query);
-			getAllStatement.setString(1, status);
+			//getAllStatement.setString(1, status);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
@@ -101,9 +102,10 @@ public class PurchaseProdResultDAO {
 						.append(" or lower(p.status) like lower('%s'))").toString();
 				getAllStatement = connection.prepareStatement(String.format(query, status,keyword, keyword, keyword, keyword));
 			} else {
-				String query = new StringBuilder().append(getAllQuery).append("and status = ? ").toString();
+				String query = new StringBuilder().append(getAllQuery).toString();
+						//.append("and status = ? ").toString();
 				getAllStatement = connection.prepareStatement(query);
-				getAllStatement.setString(1, status);
+				//getAllStatement.setString(1, status);
 			}
 
 			ResultSet rs = getAllStatement.executeQuery();

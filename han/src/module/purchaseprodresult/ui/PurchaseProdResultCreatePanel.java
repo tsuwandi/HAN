@@ -562,24 +562,27 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 		final String constant = "POH";
 
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(producationDate);
+		if(producationDate != null) {
+			cal.setTime(producationDate);
 
-		String date = String.valueOf(cal.get(Calendar.DATE));
-		String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
-		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
+			String date = String.valueOf(cal.get(Calendar.DATE));
+			String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
+			String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
 
-		String ordinal = null;
-		try {
-			ordinal = ServiceFactory.getPurchaseProductResultBL()
-					.getOrdinalOfCodeNumber(Integer.valueOf(year));
-		} catch (SQLException e) {
-			LOGGER.error(e.getMessage());
-			DialogBox.showErrorException();
+			String ordinal = null;
+			try {
+				ordinal = ServiceFactory.getPurchaseProductResultBL()
+						.getOrdinalOfCodeNumber(Integer.valueOf(year));
+			} catch (SQLException e) {
+				LOGGER.error(e.getMessage());
+				DialogBox.showErrorException();
+			}
+
+			txtPurchaseProductResultCode.setText(new StringBuilder()
+					.append(ordinal).append("/").append(constant).append("/")
+					.append(date).append("/").append(month).append("/")
+					.append(year).toString());
 		}
-
-		txtPurchaseProductResultCode.setText(new StringBuilder()
-				.append(ordinal).append("/").append(constant).append("/")
-				.append(date).append("/").append(month).append("/")
-				.append(year).toString());
+		
 	}
 }
