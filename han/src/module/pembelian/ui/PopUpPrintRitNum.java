@@ -10,25 +10,18 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 
-import javax.print.Doc;
-import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
-import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Copies;
-import javax.print.event.PrintJobAdapter;
-import javax.print.event.PrintJobEvent;
+import javax.print.attribute.Size2DSyntax;
+import javax.print.attribute.standard.MediaPrintableArea;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -73,7 +66,8 @@ public class PopUpPrintRitNum extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					printComponenet(panel);
+//					printComponenet(panel);
+					print(addReceivedDetailSecurityPanel.getRitNumberField().getText());
 				    dialog.dispose();
 				    addReceivedDetailSecurityPanel.save();
 				} catch (Exception e2) {
@@ -118,5 +112,25 @@ public class PopUpPrintRitNum extends JDialog {
 		      DialogBox.showError("Error While printing");
 		  }
 		}
+	
+	public void print(String ritNo){
+		try {
+			JTextArea text = new JTextArea();
+			text.setText(ritNo);
+			text.setAlignmentX(CENTER_ALIGNMENT);
+			text.setFont(new Font("Courier New", Font.BOLD, 40));
+			PrintRequestAttributeSet attrSet = new HashPrintRequestAttributeSet();
+
+			// Set Margins
+			// For A4 paper(width = 210mm X height = 297mm)
+			attrSet.add(new MediaPrintableArea(50,10,200,50,Size2DSyntax.MM));
+			
+			//
+			text.print(null, null, false, PrintServiceLookup.lookupDefaultPrintService(), attrSet, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 
 }
