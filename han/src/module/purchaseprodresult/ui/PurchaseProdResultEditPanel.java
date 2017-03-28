@@ -159,7 +159,7 @@ public class PurchaseProdResultEditPanel extends JPanel implements Bridging {
 
 		listOfSupplier = new ArrayList<Supplier>();
 		try {
-			listOfSupplier = ServiceFactory.getPurchaseProductResultBL().getAllSupplierBySuppTypeId(AppConstants.SUPP_TYPE_ID_HASIL_PRODUKSI);
+			listOfSupplier = ServiceFactory.getPurchaseProductResultBL().getAllSupplierBySuppTypeId(AppConstants.SUPP_TYPE_ID_BARECORE);
 			listOfSupplier.add(0, new Supplier("-- Pilih Supplier --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());

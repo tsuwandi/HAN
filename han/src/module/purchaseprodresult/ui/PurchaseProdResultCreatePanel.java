@@ -151,7 +151,7 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 		try {
 			listOfSupplier = ServiceFactory.getPurchaseProductResultBL()
 					.getAllSupplierBySuppTypeId(
-							AppConstants.SUPP_TYPE_ID_HASIL_PRODUKSI);
+							AppConstants.SUPP_TYPE_ID_BARECORE);
 			listOfSupplier.add(0, new Supplier("-- Pilih Supplier --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
@@ -173,7 +173,7 @@ public class PurchaseProdResultCreatePanel extends JPanel implements Bridging {
 		lblPurchaseDate.setBounds(50, 140, 150, 25);
 		panel.add(lblPurchaseDate);
 
-		dcPurchaseDate = new JDateChooser();
+		dcPurchaseDate = new JDateChooser(new Date());
 		dcPurchaseDate.setBounds(220, 140, 150, 25);
 		dcPurchaseDate.setDateFormatString("dd-MM-yyyy");
 

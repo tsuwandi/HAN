@@ -25,6 +25,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
 
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.UppercaseDocumentFilter;
@@ -132,7 +133,7 @@ public class PurchaseProdResultViewPanel extends JPanel implements Bridging {
 
 		listOfSupplier = new ArrayList<Supplier>();
 		try {
-			listOfSupplier = ServiceFactory.getPurchaseProductResultBL().getAllSupplierBySuppTypeId(3);
+			listOfSupplier = ServiceFactory.getPurchaseProductResultBL().getAllSupplierBySuppTypeId(AppConstants.SUPP_TYPE_ID_BARECORE);
 			listOfSupplier.add(0, new Supplier("-- Pilih Supplier --"));
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());

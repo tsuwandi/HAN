@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 
 public class AppConstants {
 
+	public static final int SUPP_TYPE_ID_BARECORE = 2;
 	public static final int SUPP_TYPE_ID_HASIL_PRODUKSI = 3;
 	public static final String PRODUCTION_TYPE_BARECORE = "Barecore";
 	public static final String PRODUCT_CODE_KLEM_A_TYPE_9 = "PDC009-3";

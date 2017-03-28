@@ -238,4 +238,20 @@ public class PurchaseProdResult implements Serializable {
 	public void setConfirmDate(Date confirmDate) {
 		this.confirmDate = confirmDate;
 	}
+	
+	public PPRProduct getPprProduct() {
+		if(pprProduct == null)
+			pprProduct = new PPRProduct();
+		return pprProduct;
+	}
+
+	public void setPprProduct(PPRProduct pprProduct) {
+		if(pprProduct == null)
+			pprProduct = new PPRProduct();
+		this.pprProduct = pprProduct;
+	}
+
+	private PPRProduct pprProduct;
+	
+	
 }

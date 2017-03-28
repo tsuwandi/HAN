@@ -60,19 +60,21 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Produksi", "Sisa Produksi", "Downsize (Sisa Produksi) 12", "module.productionwaste.ui.BigProductionWasteListPanel");
 		menu.addNewLeafTo("Produksi", "Produksi PK", "Hasil Klem (Produksi PK) 9", "module.prodpk.ui.ProdPKListPanel");
 		menu.addNewLeafTo("Produksi", "Produksi PK", "Hasil Klem (Produksi PK) 12", "module.prodpk.ui.BigProdPKListPanel");
-		menu.addNewLeafTo("Produksi", "Pembelian", "Pembelian", "module.purchaseprodresult.ui.PurchaseProdResultListPanel");
 		menu.addNewLeafTo("Produksi", "Penerimaan", "Penerimaan", "module.receiveprodresult.ui.ReceiveProdResultListPanel");
-		menu.addNewLeafTo("Produksi", "Pembayaran", "Pembayaran", "module.paymentprodresult.ui.PaymentProdResultListPanel");
 		menu.addNewLeafTo("Produksi", "Hasil Packing 9", "Hasil Packing 9", "module.packingresult.ui.ListPackingResultPanel");
 		menu.addNewLeafTo("Produksi", "Hasil Packing 12", "Hasil Packing 12", "module.packingresult.ui.ListBigPackingResultPanel");
 		menu.addNewLeafTo("Produksi", "Tutup Harian", "Tutup Harian", "module.dailyclosing.ui.DailyClosingProductionPanel");
 		
 		menu.calculateAvaiableSpace();
 		
-//		menu.addNewMenu("Finance", "Finance");
-//		menu.addNewLeafTo("Finance", "Finance", "Finance", "module.purchaseprodresultpayment.ui.PurchaseProdResultPaymentListPanel");
-//		menu.calculateAvaiableSpace();
+		menu.addNewMenu("Purchasing", "Purchasing");
+		menu.addNewLeafTo("Purchasing", "Pembelian", "Pembelian", "module.purchaseprodresult.ui.PurchaseProdResultListPanel");
+		menu.calculateAvaiableSpace();
 		
+		menu.addNewMenu("Finance", "Finance");
+		menu.addNewLeafTo("Finance", "Pembayaran", "Pembayaran", "module.paymentprodresult.ui.PaymentProdResultListPanel");
+		menu.calculateAvaiableSpace();
+
 		menu.addNewMenu("Konfigurasi", "Konfigurasi");
 		menu.addNewLeafTo("Konfigurasi", "Nama Latin Kayu", "Nama Latin Kayu", "module.sn.woodgenus.ui.WoodGenusListPanel");
 		menu.addNewLeafTo("Konfigurasi", "Jenis Kayu", "Jenis Kayu", "module.sn.woodtype.ui.WoodTypeListPanel");
