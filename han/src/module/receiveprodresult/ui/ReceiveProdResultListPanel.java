@@ -22,6 +22,7 @@ import javax.swing.table.AbstractTableModel;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.receiveprodresult.model.ReceiveProdResult;
+import module.util.DateUtil;
 
 import org.apache.log4j.Logger;
 
@@ -249,11 +250,11 @@ public class ReceiveProdResultListPanel extends JPanel {
 			case 0:
 				return p.getPprCode();
 			case 1:
-				return p.getPurchaseProdResult().getPurchaseDate();
+				return DateUtil.setFormatedDate(DateUtil.toDate(p.getPurchaseProdResult().getPurchaseDate()));
 			case 2:
 				return p.getRprCode();
 			case 3:
-				return p.getReceiveDate();
+				return DateUtil.setFormatedDate(DateUtil.toDate(p.getReceiveDate()));
 			case 4:
 				return p.getStatus();
 			case 5:

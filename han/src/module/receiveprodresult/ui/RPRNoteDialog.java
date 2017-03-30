@@ -10,6 +10,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
 
 import main.component.DialogBox;
@@ -45,6 +46,8 @@ public class RPRNoteDialog extends JDialog {
 	List<Product> listOfProduct = null;
 
 	private Integer index;
+	
+	DocumentFilter filter = new UppercaseDocumentFilter();
 
 	public RPRNoteDialog(boolean edit, RPRNote rprNote, ReceiveProdResultCreatePanel rprCreatePanel,
 			Integer index) {
@@ -96,6 +99,7 @@ public class RPRNoteDialog extends JDialog {
 		
 		txtNote = new JTextField(20);
 		txtNote.setBounds(150, 15, 150, 25);
+		((AbstractDocument) txtNote.getDocument()).setDocumentFilter(filter);
 		getContentPane().add(txtNote);
 
 		btnInsert = new JButton("Insert");

@@ -325,14 +325,14 @@ public class PPRProductDialog extends JDialog {
 					
 					for(PPRProduct p : pprCreatePanel.listOfPPRProduct) {
 						if(pprProduct.getProductCode().equals(p.getProductCode())) {
-							BigDecimal qty = new BigDecimal(txtQty.getText());
-							p.setQty(p.getQty().add(qty));
-							
-							BigDecimal unitPrice = new BigDecimal(txtUnitPrice.getText());
-							p.setUnitPrice(p.getUnitPrice().add(unitPrice));
-							
-							BigDecimal subtotal = new BigDecimal(txtSubTotal.getText());
-							p.setSubTotal(p.getSubTotal().add(subtotal));
+//							BigDecimal qty = new BigDecimal(txtQty.getText());
+//							p.setQty(p.getQty().add(qty));
+//							
+//							BigDecimal unitPrice = new BigDecimal(txtUnitPrice.getText());
+//							p.setUnitPrice(p.getUnitPrice().add(unitPrice));
+//							
+//							BigDecimal subtotal = new BigDecimal(txtSubTotal.getText());
+//							p.setSubTotal(p.getSubTotal().add(subtotal));
 							
 							isExists = true;
 							break;
@@ -340,6 +340,9 @@ public class PPRProductDialog extends JDialog {
 					}
 					if(isExists == false) {
 						pprCreatePanel.listOfPPRProduct.add(pprProduct);
+						DialogBox.showInsert();
+					} else {
+						DialogBox.showError("Produk sudah pernah diinput, jika ada perubahan qty dan harga silahkan diedit.");
 					}
 					
 				} else if (pprEditPanel != null) {
@@ -347,14 +350,14 @@ public class PPRProductDialog extends JDialog {
 					
 					for(PPRProduct p : pprEditPanel.listOfPPRProduct) {
 						if(pprProduct.getProductCode().equals(p.getProductCode())) {
-							BigDecimal qty = new BigDecimal(txtQty.getText());
-							p.setQty(p.getQty().add(qty));
-							
-							BigDecimal unitPrice = new BigDecimal(txtUnitPrice.getText());
-							p.setUnitPrice(p.getUnitPrice().add(unitPrice));
-							
-							BigDecimal subtotal = new BigDecimal(txtSubTotal.getText());
-							p.setSubTotal(p.getSubTotal().add(subtotal));
+//							BigDecimal qty = new BigDecimal(txtQty.getText());
+//							p.setQty(p.getQty().add(qty));
+//							
+//							BigDecimal unitPrice = new BigDecimal(txtUnitPrice.getText());
+//							p.setUnitPrice(p.getUnitPrice().add(unitPrice));
+//							
+//							BigDecimal subtotal = new BigDecimal(txtSubTotal.getText());
+//							p.setSubTotal(p.getSubTotal().add(subtotal));
 							
 							isExists = true;
 							break;
@@ -362,10 +365,14 @@ public class PPRProductDialog extends JDialog {
 					}
 					if(isExists == false) {
 						pprEditPanel.listOfPPRProduct.add(pprProduct);
+						DialogBox.showInsert();
+					} else {
+						DialogBox.showError("Produk sudah pernah diinput, jika ada perubahan qty dan harga silahkan diedit.");
 					}
+					
 				}
 
-				DialogBox.showInsert();
+				
 			} else {
 				if (pprCreatePanel != null) {
 					pprCreatePanel.listOfPPRProduct.set(index, pprProduct);

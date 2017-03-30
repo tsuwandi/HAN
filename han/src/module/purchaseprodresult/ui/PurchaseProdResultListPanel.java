@@ -26,6 +26,7 @@ import main.component.AppConstants;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.purchaseprodresult.model.PurchaseProdResult;
+import module.util.DateUtil;
 
 public class PurchaseProdResultListPanel extends JPanel {
 
@@ -253,7 +254,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 			case 2:
 				return p.getSupplier().getSuppName();
 			case 3:
-				return p.getPurchaseDate();
+				return DateUtil.setFormatedDate(DateUtil.toDate(p.getPurchaseDate()));
 			case 4:
 				return p.getStatus();
 			case 5:
@@ -279,7 +280,7 @@ public class PurchaseProdResultListPanel extends JPanel {
 			case 2:
 				return "Nama Supplier";
 			case 3:
-				return "Tanngal Pembelian";
+				return "Tanggal Pembelian";
 			case 4:
 				return "Status";
 			case 5:

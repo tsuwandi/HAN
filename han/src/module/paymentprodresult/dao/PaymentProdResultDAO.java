@@ -40,7 +40,7 @@ public class PaymentProdResultDAO {
 			.append("inner join purchase_prod_result ppr on r.ppr_code = ppr.ppr_code ")
 			.append("inner join supplier s on s.supp_code = ppr.supp_code ")
 			.append("left join currency c on c.id = s.currency_id ")
-			.append("where s.deleted_date is null and ppr.deleted_date is null and r.deleted_date is null and r.rpr_code not in (select rpr_code from payment_prod_result)) result ")
+			.append("where s.deleted_date is null and ppr.deleted_date is null and r.status = 'FINAL' and r.deleted_date is null and r.rpr_code not in (select rpr_code from payment_prod_result)) result ")
 			.toString();
 
 	private String getAllPayPrQuery = new StringBuilder()

@@ -25,6 +25,7 @@ import main.panel.MainPanel;
 import org.apache.log4j.Logger;
 
 import module.paymentprodresult.model.PaymentProdResult;
+import module.util.DateUtil;
 import controller.ServiceFactory;
 
 public class PaymentProdResultListPanel extends JPanel {
@@ -253,11 +254,11 @@ public class PaymentProdResultListPanel extends JPanel {
 			case 0:
 				return p.getPprCode();
 			case 1:
-				return p.getPurchaseDate();
+				return DateUtil.setFormatedDate(DateUtil.toDate(p.getPurchaseDate()));
 			case 2:
 				return p.getRprCode();
 			case 3:
-				return p.getReceiveDate();
+				return DateUtil.setFormatedDate(DateUtil.toDate(p.getReceiveDate()));
 			case 4:
 				return p.getSuppName();
 			case 5:

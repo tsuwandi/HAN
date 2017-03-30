@@ -250,6 +250,7 @@ public class ReceiveProdResultCreatePanel extends JPanel implements Bridging {
 		panel.add(lblRPRProduct);
 
 		btnInsertRPRProduct = new JButton("Tambah");
+		btnInsertRPRProduct.setEnabled(false);
 		btnInsertRPRProduct.setBounds(820, 430, 100, 25);
 		btnInsertRPRProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -259,6 +260,7 @@ public class ReceiveProdResultCreatePanel extends JPanel implements Bridging {
 		panel.add(btnInsertRPRProduct);
 
 		btnDeleteRPRProduct = new JButton("Hapus");
+		btnDeleteRPRProduct.setEnabled(false);
 		btnDeleteRPRProduct.setBounds(925, 430, 100, 25);
 		btnDeleteRPRProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
