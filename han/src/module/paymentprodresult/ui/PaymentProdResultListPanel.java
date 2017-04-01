@@ -66,7 +66,7 @@ public class PaymentProdResultListPanel extends JPanel {
 		lblBreadcrumb.setBounds(50, 10, 600, 30);
 		add(lblBreadcrumb);
 
-		lblHeader = new JLabel("List Penerimaan Hasil Produksi ");
+		lblHeader = new JLabel("List Pembayaran Hasil Produksi ");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);

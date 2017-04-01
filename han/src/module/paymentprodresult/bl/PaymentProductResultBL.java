@@ -76,11 +76,11 @@ public class PaymentProductResultBL {
 		}
 	}
 	
-	public List<PayPrProduct> getPayPrProductByRPRCode(String rprCode) throws SQLException {
+	public List<PayPrProduct> getPayPrProductByIdInvPr(int idInvPr) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new PayPrProductDAO(con).getAllByRPRCode(rprCode);
+			return new PayPrProductDAO(con).getAllByIdInvPr(idInvPr);
 		} finally {
 			con.close();
 		}

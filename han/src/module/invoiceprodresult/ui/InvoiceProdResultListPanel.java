@@ -1,4 +1,4 @@
-package module.receiveprodresult.ui;
+package module.invoiceprodresult.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -21,16 +21,16 @@ import javax.swing.table.AbstractTableModel;
 
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.receiveprodresult.model.ReceiveProdResult;
 import module.util.DateUtil;
 
 import org.apache.log4j.Logger;
 
+import module.invoiceprodresult.model.InvoiceProdResult;
 import controller.ServiceFactory;
 
-public class ReceiveProdResultListPanel extends JPanel {
+public class InvoiceProdResultListPanel extends JPanel {
 
-	private static final Logger LOGGER = Logger.getLogger(ReceiveProdResultListPanel.class);
+	private static final Logger LOGGER = Logger.getLogger(InvoiceProdResultListPanel.class);
 
 //	JButton btnCreateNew;
 //	JButton btnExport;
@@ -42,21 +42,21 @@ public class ReceiveProdResultListPanel extends JPanel {
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
 
-	JScrollPane scrollPaneReceiveProdResult;
+	JScrollPane scrollPaneInvoiceProdResult;
 
-	private ReceiveProdResultTableModel purchaseProdResultTableModel;
-	public List<ReceiveProdResult> listOfReceiveProdResult = new ArrayList<ReceiveProdResult>();
+	private InvoiceProdResultTableModel invoiceProdResultTableModel;
+	public List<InvoiceProdResult> listOfInvoiceProdResult = new ArrayList<InvoiceProdResult>();
 
-	JTable tblReceiveProdResult;
+	JTable tblInvoiceProdResult;
 
-	private ReceiveProdResultListPanel receiveProdResultListPanel;
+	private InvoiceProdResultListPanel invoiceProdResultListPanel;
 
 	private static final long serialVersionUID = 1L;
 	
 	public static final String COMPLETED = "COMPLETED";
 
-	public ReceiveProdResultListPanel() {
-		receiveProdResultListPanel = this;
+	public InvoiceProdResultListPanel() {
+		invoiceProdResultListPanel = this;
 		setLayout(null);
 
 		setPreferredSize(new Dimension(1024, 768));
@@ -66,7 +66,7 @@ public class ReceiveProdResultListPanel extends JPanel {
 		lblBreadcrumb.setBounds(50, 10, 600, 30);
 		add(lblBreadcrumb);
 
-		lblHeader = new JLabel("List Penerimaan Hasil Produksi ");
+		lblHeader = new JLabel("List Invoice Hasil Produksi ");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -74,7 +74,7 @@ public class ReceiveProdResultListPanel extends JPanel {
 //		btnCreateNew = new JButton("Buat Baru");
 //		btnCreateNew.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent arg0) {
-//				MainPanel.changePanel("module.purchaseprodresult.ui.ReceiveProdResultCreatePanel");
+//				MainPanel.changePanel("module.invoiceprodresult.ui.InvoiceProdResultCreatePanel");
 //			}
 //		});
 //		btnCreateNew.setBounds(700, 80, 100, 30);
@@ -92,7 +92,7 @@ public class ReceiveProdResultListPanel extends JPanel {
 //		btnAdvancedSearch = new JButton("Pencarian Lanjut");
 //		btnAdvancedSearch.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent arg0) {
-//				//showAdvancedSearchDialog(receiveProdResultListPanel);
+//				//showAdvancedSearchDialog(invoiceProdResultListPanel);
 //			}
 //		});
 //		btnAdvancedSearch.setBounds(900, 80, 150, 30);
@@ -111,17 +111,17 @@ public class ReceiveProdResultListPanel extends JPanel {
 		btnSearch.setBounds(950, 130, 100, 30);
 		add(btnSearch);
 
-		scrollPaneReceiveProdResult = new JScrollPane();
-		scrollPaneReceiveProdResult.setBounds(50, 200, 1000, 300);
-		add(scrollPaneReceiveProdResult);
+		scrollPaneInvoiceProdResult = new JScrollPane();
+		scrollPaneInvoiceProdResult.setBounds(50, 200, 1000, 300);
+		add(scrollPaneInvoiceProdResult);
 
-		purchaseProdResultTableModel = new ReceiveProdResultTableModel(new ArrayList<ReceiveProdResult>());
-		tblReceiveProdResult = new JTable(purchaseProdResultTableModel);
-		tblReceiveProdResult.setFocusable(false);
-		tblReceiveProdResult.setAutoCreateRowSorter(true);
-		scrollPaneReceiveProdResult.setViewportView(tblReceiveProdResult);
+		invoiceProdResultTableModel = new InvoiceProdResultTableModel(new ArrayList<InvoiceProdResult>());
+		tblInvoiceProdResult = new JTable(invoiceProdResultTableModel);
+		tblInvoiceProdResult.setFocusable(false);
+		tblInvoiceProdResult.setAutoCreateRowSorter(true);
+		scrollPaneInvoiceProdResult.setViewportView(tblInvoiceProdResult);
 
-		tblReceiveProdResult.addMouseListener(new MouseAdapter() {
+		tblInvoiceProdResult.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -129,16 +129,16 @@ public class ReceiveProdResultListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 5)
-						MainPanel.changePanel("module.receiveprodresult.ui.ReceiveProdResultViewPanel", listOfReceiveProdResult.get(row));
+					if (column == 6)
+						MainPanel.changePanel("module.invoiceprodresult.ui.InvoiceProdResultViewPanel", listOfInvoiceProdResult.get(row));
 				}
 			}
 		});
 
 		try {
-			listOfReceiveProdResult = new ArrayList<ReceiveProdResult>();
-			listOfReceiveProdResult = ServiceFactory.getReceiveProductResultBL().getAllReceiveProdResult();
-			refreshTableReceiveProdResult();
+			listOfInvoiceProdResult = new ArrayList<InvoiceProdResult>();
+			listOfInvoiceProdResult = ServiceFactory.getInvoiceProductResultBL().getAllInvoiceProdResult();
+			refreshTableInvoiceProdResult();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
@@ -154,9 +154,9 @@ public class ReceiveProdResultListPanel extends JPanel {
 
 	}
 
-	public void refreshTableReceiveProdResult() {
+	public void refreshTableInvoiceProdResult() {
 		try {
-			tblReceiveProdResult.setModel(new ReceiveProdResultTableModel(listOfReceiveProdResult));
+			tblInvoiceProdResult.setModel(new InvoiceProdResultTableModel(listOfInvoiceProdResult));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
@@ -165,9 +165,9 @@ public class ReceiveProdResultListPanel extends JPanel {
 
 	public void doSearch(String value) {
 		try {
-			listOfReceiveProdResult = new ArrayList<ReceiveProdResult>();
-			listOfReceiveProdResult = ServiceFactory.getReceiveProductResultBL().getAllReceiveProdResultBySimpleSearch(value);
-			refreshTableReceiveProdResult();
+			listOfInvoiceProdResult = new ArrayList<InvoiceProdResult>();
+			listOfInvoiceProdResult = ServiceFactory.getInvoiceProductResultBL().getAllInvoiceProdResultBySimpleSearch(value);
+			refreshTableInvoiceProdResult();
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
@@ -177,24 +177,24 @@ public class ReceiveProdResultListPanel extends JPanel {
 	/**
 	 * Method to display advanced search dialog
 	 */
-	protected void showAdvancedSearchDialog(ReceiveProdResultListPanel receiveProdResultListPanel) {
+	protected void showAdvancedSearchDialog(InvoiceProdResultListPanel invoiceProdResultListPanel) {
 		
 	}
 
 	/**
-	 * Class as TableModel for ReceiveProdResult table
+	 * Class as TableModel for InvoiceProdResult table
 	 * 
 	 * @author TSI
 	 *
 	 */
-	class ReceiveProdResultTableModel extends AbstractTableModel {
+	class InvoiceProdResultTableModel extends AbstractTableModel {
 		
 		private static final long serialVersionUID = 1L;
 
-		private List<ReceiveProdResult> listOfReceiveProdResult;
+		private List<InvoiceProdResult> listOfInvoiceProdResult;
 
-		public ReceiveProdResultTableModel(List<ReceiveProdResult> listOfReceiveProdResult) {
-			this.listOfReceiveProdResult = listOfReceiveProdResult;
+		public InvoiceProdResultTableModel(List<InvoiceProdResult> listOfInvoiceProdResult) {
+			this.listOfInvoiceProdResult = listOfInvoiceProdResult;
 		}
 
 		/**
@@ -203,14 +203,14 @@ public class ReceiveProdResultListPanel extends JPanel {
 		 * @return int
 		 */
 		public int getRowCount() {
-			return listOfReceiveProdResult.size();
+			return listOfInvoiceProdResult.size();
 		}
 
 		/**
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 6;
+			return 7;
 		}
 
 		public boolean isCellEditable(int row, int column) {
@@ -230,6 +230,10 @@ public class ReceiveProdResultListPanel extends JPanel {
 				return String.class;	
 			case 4:
 				return String.class;
+			case 5:
+				return String.class;
+			case 6:
+				return String.class;
 			default:
 				return String.class;
 			}
@@ -242,22 +246,24 @@ public class ReceiveProdResultListPanel extends JPanel {
 		 *            rowIndex of selected table
 		 * @param columnIndex
 		 *            columnIndex of selected table
-		 * @return ({@link ReceiveProdResultAddress}) Object
+		 * @return ({@link InvoiceProdResultAddress}) Object
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			ReceiveProdResult p = listOfReceiveProdResult.get(rowIndex);
+			InvoiceProdResult p = listOfInvoiceProdResult.get(rowIndex);
 			switch (columnIndex) {
 			case 0:
 				return p.getPprCode();
 			case 1:
-				return (p.getPurchaseProdResult().getPurchaseDate() != null) ? DateUtil.setFormatedDate(DateUtil.toDate(p.getPurchaseProdResult().getPurchaseDate())) : null;
+				return DateUtil.setFormatedDate(DateUtil.toDate(p.getPurchaseDate()));
 			case 2:
 				return p.getRprCode();
 			case 3:
-				return (p.getReceiveDate() != null) ? DateUtil.setFormatedDate(DateUtil.toDate(p.getReceiveDate())) : null;
+				return DateUtil.setFormatedDate(DateUtil.toDate(p.getReceiveDate()));
 			case 4:
-				return p.getStatus();
+				return p.getSuppName();
 			case 5:
+				return p.getPaymentStatus();
+			case 6:
 				return "<html><a><u>View</u></a></html>";
 			default:
 	            throw new IllegalArgumentException("Invalid column index");
@@ -280,10 +286,12 @@ public class ReceiveProdResultListPanel extends JPanel {
 			case 2:
 				return "Kode Penerimaan";
 			case 3:
-				return "Tanngal Penerimaan";
+				return "Tanggal Penerimaan";
 			case 4:
-				return "Status";
+				return "Supplier";
 			case 5:
+				return "Status Pembayaran";
+			case 6:
 				return "Tindakan";
 			default:
 				return "";

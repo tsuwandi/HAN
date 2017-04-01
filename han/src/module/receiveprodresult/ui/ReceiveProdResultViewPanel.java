@@ -627,7 +627,7 @@ public class ReceiveProdResultViewPanel extends JPanel implements Bridging {
 				refreshTableRPRProduct();
 				refreshTableRPRNote();
 				
-				if(AppConstants.FINAL.equals(receiveProductResult.getStatus()))
+				if(AppConstants.FINAL.equals(receiveProductResult.getStatus()) && !AppConstants.NEW.equals(status))
 				{
 					btnSave.setEnabled(false);
 				}

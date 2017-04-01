@@ -1,4 +1,4 @@
-package module.paymentprodresult.dao;
+package module.invoiceprodresult.dao;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -8,94 +8,84 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import module.invoiceprodresult.model.InvPrProduct;
 import module.product.model.Product;
 import module.util.DateUtil;
-import module.paymentprodresult.model.PayPrProduct;
 
-public class PayPrProductDAO {
+public class InvPrProductDAO {
 	private Connection connection;
 	private PreparedStatement getAllByPayPrCodeStatement;
-	private PreparedStatement getAllByIdInvPrStatement;
+	private PreparedStatement getAllByRPRCodeStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 
 	private String getAllByPayPrCodeQuery = new StringBuilder()
-			.append("select pp.id, pp.pay_pr_code, pp.product_code, pp.qty, pp.price, pp.idr_price, pp.subtotal, ")
-			.append("p.product_name, p.id as product_id, rpr_p.qty as qty_receive, ppr_p.qty as qty_purchase ")
-			.append("from pay_pr_product pp ")
+			.append("select pp.id, pp.id_inv_pr, pp.product_code, pp.qty, pp.price, pp.idr_price, pp.subtotal, ")
+			.append("p.product_name, p.id as product_id, rpr_p.qty as qty_receive, ppr_p.qty as qty_purchase from inv_pr_product pp ")
 			.append("inner join product p on pp.product_code = p.product_code ")
-			.append("inner join payment_prod_result pay_pr on pp.pay_pr_code = pay_pr.pay_pr_code ")
-			.append("inner join invoice_prod_result ipr on ipr.id = pay_pr.id_inv_pr ")
-			.append("inner join inv_pr_product iprd on iprd.id_inv_pr = ipr.id and p.product_code = iprd.product_code ")
-			.append("inner join receive_prod_result rpr on rpr.rpr_code = ipr.rpr_code ")
+			.append("inner join invoice_prod_result pay_pr on pp.id_inv_pr = pay_pr.id ")
+			.append("inner join receive_prod_result rpr on rpr.rpr_code = pay_pr.rpr_code ")
 			.append("inner join rpr_product rpr_p on rpr_p.rpr_code = rpr.rpr_code and p.product_code = rpr_p.product_code ")
 			.append("inner join purchase_prod_result ppr on ppr.ppr_code = rpr.ppr_code ")
 			.append("inner join ppr_product ppr_p on ppr_p.ppr_code = ppr.ppr_code and p.product_code = ppr_p.product_code ")
-			.append("where pp.pay_pr_code = ? and pp.deleted_date is null and p.deleted_date is null ")
+			.append("where pp.id_inv_pr = ? and pp.deleted_date is null and p.deleted_date is null ")
 			.toString();
-
-	private String getAllByIdInvPrQuery = new StringBuilder()
-			.append("select iprd.id, null as pay_pr_code, iprd.id_inv_pr, iprd.product_code, iprd.qty, iprd.price as price, iprd.idr_price as idr_price, iprd.subtotal as subtotal, ")
+	
+	private String getAllByRprCodeQuery = new StringBuilder()
+			.append("select rpr_p.id, null as id_inv_pr, rpr_p.product_code, rpr_p.qty, ppr_p.unit_price as price, ppr_p.unit_price as idr_price, ppr_p.sub_total as subtotal, ")
 			.append("p.product_name, p.id as product_id, rpr_p.qty as qty_receive, ppr_p.qty as qty_purchase ")
-			.append("from invoice_prod_result ipr ")
-			.append("inner join inv_pr_product iprd on ipr.id = iprd.id_inv_pr ")
-			.append("inner join product p on iprd.product_code = p.product_code ")
-			.append("inner join receive_prod_result rpr on rpr.rpr_code = ipr.rpr_code ")
-			.append("inner join rpr_product rpr_p on rpr_p.rpr_code = rpr.rpr_code and p.product_code = rpr_p.product_code ")
+			.append("from receive_prod_result rpr ")
+			.append("inner join rpr_product rpr_p on rpr_p.rpr_code = rpr.rpr_code ")
+			.append("inner join product p on rpr_p.product_code = p.product_code ")
 			.append("inner join purchase_prod_result ppr on ppr.ppr_code = rpr.ppr_code ")
 			.append("inner join ppr_product ppr_p on ppr_p.ppr_code = ppr.ppr_code and p.product_code = ppr_p.product_code ")
-			.append("where iprd.id_inv_pr = ? and ipr.deleted_date is null and p.deleted_date is null ")
+			.append("where rpr.rpr_code = ? and rpr.deleted_date is null and p.deleted_date is null ")
 			.toString();
 
 	private String insertQuery = new StringBuilder()
-			.append("insert into pay_pr_product (pay_pr_code, product_code, qty, price, idr_price, subtotal, ")
-			.append("input_date, input_by) values (?,?,?,?,?,?,?,?)")
-			.toString();
+			.append("insert into inv_pr_product (id_inv_pr, product_code, qty, price, idr_price, subtotal, ")
+			.append("input_date, input_by) values (?,?,?,?,?,?,?,?)").toString();
 
-	private String updateQuery = "update pay_pr_product set product_code=?, qty=?, price=?, idr_price=?, subtotal=?, edit_date=?, edited_by=? where id=?";
+	private String updateQuery = "update inv_pr_product set product_code=?, qty=?, price=?, idr_price=?, subtotal=?, edit_date=?, edited_by=? where id=?";
 
-	private String deleteQuery = "update pay_pr_product set deleted_date=?, deleted_by=? ";
+	private String deleteQuery = "update inv_pr_product set deleted_date=?, deleted_by=? ";
 
-	public PayPrProductDAO(Connection connection) throws SQLException {
+	public InvPrProductDAO(Connection connection) throws SQLException {
 		this.connection = connection;
 	}
-
-	public List<PayPrProduct> getAllByPPRCode(String pprCode)
-			throws SQLException {
-		List<PayPrProduct> rprProducts = new ArrayList<PayPrProduct>();
+	
+	public List<InvPrProduct> getAllByPPRCode(int idInvPr) throws SQLException {
+		List<InvPrProduct> rprProducts = new ArrayList<InvPrProduct>();
 
 		try {
 			getAllByPayPrCodeStatement = connection
 					.prepareStatement(getAllByPayPrCodeQuery);
-			getAllByPayPrCodeStatement.setString(1, pprCode);
+			getAllByPayPrCodeStatement.setInt(1, idInvPr);
 
 			ResultSet rs = getAllByPayPrCodeStatement.executeQuery();
 			while (rs.next()) {
-				PayPrProduct rprProduct = new PayPrProduct();
+				InvPrProduct rprProduct = new InvPrProduct();
 				rprProduct.setId(rs.getInt("id"));
-				rprProduct.setPayPrCode(rs.getString("pay_pr_code"));
+				rprProduct.setIdInvPr(rs.getInt("id_inv_pr"));
 				rprProduct.setProductCode(rs.getString("product_code"));
 				rprProduct.setQty(rs.getBigDecimal("qty"));
 				rprProduct.setPrice(rs.getBigDecimal("price"));
 				rprProduct.setIdrPrice(rs.getBigDecimal("idr_price"));
-
-				if (rprProduct.getQty() != null) {
-					BigDecimal qty = rprProduct.getQty().setScale(2,
-							BigDecimal.ROUND_DOWN);
+				
+				if(rprProduct.getQty() != null) {
+					BigDecimal qty = rprProduct.getQty().setScale(2, BigDecimal.ROUND_DOWN);
 					rprProduct.setQty(qty);
 				}
-				if (rprProduct.getPrice() != null) {
-					BigDecimal price = rprProduct.getPrice().setScale(2,
-							BigDecimal.ROUND_DOWN);
+				if(rprProduct.getPrice() != null) {
+					BigDecimal price = rprProduct.getPrice().setScale(2, BigDecimal.ROUND_DOWN);
 					rprProduct.setPrice(price);
 				}
-				if (rprProduct.getIdrPrice() != null) {
-					BigDecimal idrPrice = rprProduct.getIdrPrice().setScale(2,
-							BigDecimal.ROUND_DOWN);
+				if(rprProduct.getIdrPrice() != null) {
+					BigDecimal idrPrice = rprProduct.getIdrPrice().setScale(2, BigDecimal.ROUND_DOWN);
 					rprProduct.setIdrPrice(idrPrice);
 				}
-
+			
 				rprProduct.setSubtotal(rs.getBigDecimal("subtotal"));
 				if(rprProduct.getSubtotal() != null) {
 					BigDecimal subtotal = rprProduct.getSubtotal().setScale(2, BigDecimal.ROUND_DOWN);
@@ -103,21 +93,20 @@ public class PayPrProductDAO {
 				} else {
 					rprProduct.setSubtotal(new BigDecimal("0.00"));
 				}
+				
 				Product product = new Product();
 				product.setProductCode(rs.getString("product_code"));
 				product.setProductName(rs.getString("product_name"));
 
 				rprProduct.setProduct(product);
-
+				
 				rprProduct.setQtyReceive(rs.getBigDecimal("qty_receive"));
-				BigDecimal qtyReceive = rprProduct.getQtyReceive().setScale(2,
-						BigDecimal.ROUND_DOWN);
+				BigDecimal qtyReceive = rprProduct.getQtyReceive().setScale(2, BigDecimal.ROUND_DOWN);
 				rprProduct.setQtyReceive(qtyReceive);
 				rprProduct.setQtyPurchase(rs.getBigDecimal("qty_purchase"));
-				BigDecimal qtyPurchase = rprProduct.getQtyPurchase().setScale(
-						2, BigDecimal.ROUND_DOWN);
+				BigDecimal qtyPurchase = rprProduct.getQtyPurchase().setScale(2, BigDecimal.ROUND_DOWN);
 				rprProduct.setQtyPurchase(qtyPurchase);
-
+				
 				rprProducts.add(rprProduct);
 			}
 
@@ -128,44 +117,41 @@ public class PayPrProductDAO {
 		return rprProducts;
 	}
 
-	public List<PayPrProduct> getAllByIdInvPr(int idInvPr) throws SQLException {
-		List<PayPrProduct> rprProducts = new ArrayList<PayPrProduct>();
+	public List<InvPrProduct> getAllByRPRCode(String rprCode) throws SQLException {
+		List<InvPrProduct> rprProducts = new ArrayList<InvPrProduct>();
 
 		try {
-			getAllByIdInvPrStatement = connection
-					.prepareStatement(getAllByIdInvPrQuery);
-			getAllByIdInvPrStatement.setInt(1, idInvPr);
-			
-			ResultSet rs = getAllByIdInvPrStatement.executeQuery();
+			getAllByRPRCodeStatement = connection
+					.prepareStatement(getAllByRprCodeQuery);
+			getAllByRPRCodeStatement.setString(1, rprCode);
+
+			ResultSet rs = getAllByRPRCodeStatement.executeQuery();
 			while (rs.next()) {
-				PayPrProduct rprProduct = new PayPrProduct();
+				InvPrProduct rprProduct = new InvPrProduct();
 				rprProduct.setId(rs.getInt("id"));
-				rprProduct.setPayPrCode(rs.getString("pay_pr_code"));
+				rprProduct.setIdInvPr(rs.getInt("id_inv_pr"));
 				rprProduct.setProductCode(rs.getString("product_code"));
 				rprProduct.setQty(rs.getBigDecimal("qty"));
 				rprProduct.setPrice(rs.getBigDecimal("price"));
 				rprProduct.setIdrPrice(rs.getBigDecimal("idr_price"));
-
-				if (rprProduct.getQty() != null) {
-					BigDecimal qty = rprProduct.getQty().setScale(2,
-							BigDecimal.ROUND_DOWN);
+				
+				if(rprProduct.getQty() != null) {
+					BigDecimal qty = rprProduct.getQty().setScale(2, BigDecimal.ROUND_DOWN);
 					rprProduct.setQty(qty);
 				}
-				if (rprProduct.getPrice() != null) {
-					BigDecimal price = rprProduct.getPrice().setScale(2,
-							BigDecimal.ROUND_DOWN);
+				if(rprProduct.getPrice() != null) {
+					BigDecimal price = rprProduct.getPrice().setScale(2, BigDecimal.ROUND_DOWN);
 					rprProduct.setPrice(price);
 				} else {
 					rprProduct.setPrice(new BigDecimal("0.00"));
 				}
-				if (rprProduct.getIdrPrice() != null) {
-					BigDecimal idrPrice = rprProduct.getIdrPrice().setScale(2,
-							BigDecimal.ROUND_DOWN);
+				if(rprProduct.getIdrPrice() != null) {
+					BigDecimal idrPrice = rprProduct.getIdrPrice().setScale(2, BigDecimal.ROUND_DOWN);
 					rprProduct.setIdrPrice(idrPrice);
 				} else {
 					rprProduct.setIdrPrice(new BigDecimal("0.00"));
 				}
-
+				
 				rprProduct.setSubtotal(rs.getBigDecimal("subtotal"));
 				if(rprProduct.getSubtotal() != null) {
 					BigDecimal subtotal = rprProduct.getSubtotal().setScale(2, BigDecimal.ROUND_DOWN);
@@ -173,24 +159,23 @@ public class PayPrProductDAO {
 				} else {
 					rprProduct.setSubtotal(new BigDecimal("0.00"));
 				}
+				
 				Product product = new Product();
 				product.setProductCode(rs.getString("product_code"));
 				product.setProductName(rs.getString("product_name"));
 
 				rprProduct.setProduct(product);
 				rprProduct.setQtyReceive(rs.getBigDecimal("qty_receive"));
-				if (rprProduct.getQtyReceive() != null) {
-					BigDecimal qtyReceive = rprProduct.getQtyReceive()
-							.setScale(2, BigDecimal.ROUND_DOWN);
+				if(rprProduct.getQtyReceive() != null) {
+					BigDecimal qtyReceive = rprProduct.getQtyReceive().setScale(2, BigDecimal.ROUND_DOWN);
 					rprProduct.setQtyReceive(qtyReceive);
 				}
 				rprProduct.setQtyPurchase(rs.getBigDecimal("qty_purchase"));
-				if (rprProduct.getQtyPurchase() != null) {
-					BigDecimal qtyPurchase = rprProduct.getQtyPurchase()
-							.setScale(2, BigDecimal.ROUND_DOWN);
+				if(rprProduct.getQtyPurchase() != null) {
+					BigDecimal qtyPurchase = rprProduct.getQtyPurchase().setScale(2, BigDecimal.ROUND_DOWN);
 					rprProduct.setQtyPurchase(qtyPurchase);
 				}
-
+				
 				rprProducts.add(rprProduct);
 			}
 
@@ -201,10 +186,10 @@ public class PayPrProductDAO {
 		return rprProducts;
 	}
 
-	public void save(PayPrProduct pprProduct) throws SQLException {
+	public void save(InvPrProduct pprProduct) throws SQLException {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
-			insertStatement.setString(1, pprProduct.getPayPrCode());
+			insertStatement.setInt(1, pprProduct.getIdInvPr());
 			insertStatement.setString(2, pprProduct.getProductCode());
 			insertStatement.setBigDecimal(3, pprProduct.getQty());
 			insertStatement.setBigDecimal(4, pprProduct.getPrice());
@@ -219,7 +204,7 @@ public class PayPrProductDAO {
 		}
 	}
 
-	public void update(PayPrProduct pprProduct) throws SQLException {
+	public void update(InvPrProduct pprProduct) throws SQLException {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, pprProduct.getProductCode());
@@ -237,15 +222,15 @@ public class PayPrProductDAO {
 		}
 	}
 
-	public void deleteAll(String pprCode) throws SQLException {
+	public void deleteAll(int idInvPr) throws SQLException {
 		try {
 			String query = new StringBuilder().append(deleteQuery)
-					.append("where pay_pr_code=? ").toString();
+					.append("where id_inv_pr=? ").toString();
 
 			deleteStatement = connection.prepareStatement(query);
 			deleteStatement.setDate(1, DateUtil.getCurrentDate());
 			deleteStatement.setString(2, "timotius");
-			deleteStatement.setString(3, pprCode);
+			deleteStatement.setInt(3, idInvPr);
 			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {

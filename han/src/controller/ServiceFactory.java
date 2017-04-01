@@ -4,6 +4,7 @@ import module.dailyclosing.bl.DailyClosingBL;
 import module.dryin.bl.DryInBL;
 import module.dryout.bl.DryOutBL;
 import module.employee.bl.EmployeeBL;
+import module.invoiceprodresult.bl.InvoiceProductResultBL;
 import module.packingresult.bl.PackingBL;
 import module.personalia.bl.PersonaliaBL;
 import module.product.bl.ProductBL;
@@ -43,6 +44,7 @@ public class ServiceFactory {
 	private static module.prodpk.bl.ProdPKBL productionPKBL = null;
 	private static PackingBL packingBL = null;
 	private static ReceiveProductResultBL receiveProductResultBL = null;
+	private static InvoiceProductResultBL invoiceProductResultBL = null;
 	private static PaymentProductResultBL paymentProductResultBL = null;
 	
 	/**
@@ -205,6 +207,12 @@ public class ServiceFactory {
 		return receiveProductResultBL;
 	}
 	
+	public static InvoiceProductResultBL getInvoiceProductResultBL() {
+		if (invoiceProductResultBL == null) {
+			invoiceProductResultBL = new InvoiceProductResultBL(DataSourceFactory.getDataSource());
+		}
+		return invoiceProductResultBL;
+	}
 	
 	public static PaymentProductResultBL getPaymentProductResultBL() {
 		if (paymentProductResultBL == null) {
