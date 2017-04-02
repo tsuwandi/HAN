@@ -21,16 +21,16 @@ public class ImportFingerprintDAO {
 	private PreparedStatement deleteStatement;
 
 	private String getLastIdQuery = "select * from import_fingerprint order by id desc limit 1";
-	private String getAllQuery = "select * from import_fingerprint where delete_date is null and delete_by is null";
-	private String insertQuery = "insert into import_fingerprint (id, name, input_date, input_by, edit_date, edit_by) values (?, ?, ?, ?, ?, ?)";
+	private String getAllQuery = "select * from import_fingerprint where deleted_date is null and deleted_by is null";
+	private String insertQuery = "insert into import_fingerprint (id, name, input_date, input_by, edited_date, edited_by) values (?, ?, ?, ?, ?, ?)";
 	private String updateQuery = "update import_fingerprint set name = ?, edit_date = ?, edit_by = ? where id = ?";
-	private String deleteQuery = "update import_fingerprint set delete_date = ?, delete_by = ? where id = ?";
+	private String deleteQuery = "update import_fingerprint set deleted_date = ?, deleted_by = ? where id = ?";
 
 	public ImportFingerprintDAO(Connection connection) {
 		this.connection = connection;
 	}
 
-	public List<ImportFingerprint> getAllData(String query){
+	public List<ImportFingerprint> getAllData(String query) throws SQLException{
 		List<ImportFingerprint> attendances = new ArrayList<>();
 
 		try {
@@ -45,7 +45,7 @@ public class ImportFingerprintDAO {
 				importFingerprint.setInputDate(resultSet.getDate("input_date"));
 				importFingerprint.setInputBy(resultSet.getString("input_by"));
 				importFingerprint.setEditDate(resultSet.getDate("edit_date"));
-				importFingerprint.setDeleteDate(resultSet.getDate("delete_date"));
+				importFingerprint.setDeleteDate(resultSet.getDate("deleted_date"));
 				importFingerprint.setDeleteBy(resultSet.getString("delete_by"));
 				attendances.add(importFingerprint);
 			}
@@ -56,7 +56,7 @@ public class ImportFingerprintDAO {
 		return attendances;
 	}
 
-	public void insert(ImportFingerprint importFingerprint) {
+	public void insert(ImportFingerprint importFingerprint) throws SQLException {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 
@@ -72,7 +72,7 @@ public class ImportFingerprintDAO {
 		}
 	}
 
-	public void update(ImportFingerprint importFingerprint) {
+	public void update(ImportFingerprint importFingerprint) throws SQLException{
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 
@@ -87,7 +87,7 @@ public class ImportFingerprintDAO {
 		}
 	}
 
-	public void delete(ImportFingerprint importFingerprint) {
+	public void delete(ImportFingerprint importFingerprint) throws SQLException {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 

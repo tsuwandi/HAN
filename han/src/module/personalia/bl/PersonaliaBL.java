@@ -14,6 +14,7 @@ import module.personalia.dao.EmpPositionDAO;
 import module.personalia.dao.EmployeeDAO;
 import module.personalia.dao.EmployeeTypeDAO;
 import module.personalia.dao.GenderDAO;
+import module.personalia.dao.ImportFingerprintDAO;
 import module.personalia.dao.MSPositionDAO;
 import module.personalia.dao.MaritalDAO;
 import module.personalia.dao.NonRoutineAllowanceMasterDAO;
@@ -32,6 +33,7 @@ import module.personalia.model.EmpPosition;
 import module.personalia.model.Employee;
 import module.personalia.model.EmployeeType;
 import module.personalia.model.Gender;
+import module.personalia.model.ImportFingerprint;
 import module.personalia.model.MSPosition;
 import module.personalia.model.Marital;
 import module.personalia.model.NonRoutineAllowanceMaster;
@@ -1229,12 +1231,12 @@ public class PersonaliaBL {
 		}
 	}
 	// import fingerprint
-	public List<Attendance> getImportFingerprints(String query) {
-		List<Attendance> attendances = new ArrayList<Attendance>();
+	public List<ImportFingerprint> getImportFingerprints(String query)throws SQLException  {
+		List<ImportFingerprint> importFingerPrint = new ArrayList<ImportFingerprint>();
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
-			attendances = new AttendanceDAO(connection).getAllData(query);
+			importFingerPrint = new ImportFingerprintDAO(connection).getAllData(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -1244,30 +1246,14 @@ public class PersonaliaBL {
 				e.printStackTrace();
 			}
 		}
-		return attendances;
+		return importFingerPrint;
 	}
 	
-	public void saveImportFingerprint(Attendance attendance) {
+	public void saveImportFingerprint(ImportFingerprint importFingerPrint)throws SQLException  {
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
-			new AttendanceDAO(connection).insert(attendance);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void updateImportFingerprint(Attendance attendance) {
-		Connection connection = null;
-		try {
-			connection = dataSource.getConnection();
-			new AttendanceDAO(connection).update(attendance);
+			new ImportFingerprintDAO(connection).insert(importFingerPrint);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -1279,11 +1265,27 @@ public class PersonaliaBL {
 		}
 	}
 	
-	public void deleteImportFingerprint(Attendance attendance) {
+	public void updateImportFingerprint(ImportFingerprint importFingerPrint) throws SQLException {
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
-			new AttendanceDAO(connection).delete(attendance);
+			new ImportFingerprintDAO(connection).update(importFingerPrint);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteImportFingerprint(ImportFingerprint importFingerPrint) throws SQLException {
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			new ImportFingerprintDAO(connection).delete(importFingerPrint);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

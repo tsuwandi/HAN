@@ -2,3 +2,23 @@
 ALTER TABLE `production` ADD `type` VARCHAR(5) NOT NULL AFTER `status`;
 ALTER TABLE `production_waste` ADD `type` VARCHAR(10) NOT NULL AFTER `total_material_klem`;
 ALTER TABLE `packing` ADD `type` VARCHAR(10) NOT NULL AFTER `status`;
+
+
+CREATE TABLE `import_fingerprint` (
+  `id` int(3) NOT NULL,
+  `import_code` varchar(4) NOT NULL,
+  `file_name` varchar(200) NOT NULL,
+  `date` date NOT NULL,
+  `upload_status` varchar(9) NOT NULL,
+  `salary_status` varchar(12) NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE `import_fingerprint` ADD PRIMARY KEY(`id`);
+ALTER TABLE `import_fingerprint` CHANGE `id` `id` INT NOT NULL AUTO_INCREMENT;

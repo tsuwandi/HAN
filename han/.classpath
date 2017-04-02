@@ -27,5 +27,10 @@
 	<classpathentry kind="lib" path="lib/jasperreports-chart-themes-6.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jasperreports-fonts-6.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/jasperreports-functions-6.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/curvesapi-1.04.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.15.jar"/>
+	<classpathentry kind="lib" path="lib/poi-ooxml-3.15.jar"/>
+	<classpathentry kind="lib" path="lib/poi-ooxml-schemas-3.15.jar"/>
+	<classpathentry kind="lib" path="lib/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
