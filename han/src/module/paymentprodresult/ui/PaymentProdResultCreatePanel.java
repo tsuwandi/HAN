@@ -898,10 +898,12 @@ public class PaymentProdResultCreatePanel extends JPanel implements Bridging {
 				if("Ya".equals(paymentProductResult.getPaymentStatus())) {
 					cbPaymentStatus.setEnabled(false);
 					txtCurrencyRate.setEnabled(false);
-					txtDiscount.setEnabled(false);
-					txtTax.setEnabled(false);
-					txtOtherFee.setEnabled(false);
+					
 				}
+				
+				txtDiscount.setEnabled(false);
+				txtTax.setEnabled(false);
+				txtOtherFee.setEnabled(false);
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();

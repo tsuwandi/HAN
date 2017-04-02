@@ -18,6 +18,7 @@ public class InvoiceProdResultDAO {
 	private PreparedStatement getAllRPRStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
+	private PreparedStatement updatePaymentStatusStatement;
 	private PreparedStatement deleteStatement;
 
 	private String getAllQuery = new StringBuilder()
@@ -33,7 +34,7 @@ public class InvoiceProdResultDAO {
 			.append("where s.deleted_date is null and ppr.deleted_date is null and rpr.deleted_date is null and pay_pr.deleted_date is null ")
 			.append("union ")
 			.append("select r.id, r.rpr_code, null as due_date, null as rate, 'Belum' as payment_status, null as payment_date, null as subtotal, ")
-			.append("null as disc, null as tax, null as other_fee, null as total, r.status, r.receive_date, s.supp_name, ppr.ppr_code, ppr.purchase_date, 'RECEIVE' as source, c.currency_abbr ")
+			.append("null as disc, null as tax, null as other_fee, null as total, '' as status, r.receive_date, s.supp_name, ppr.ppr_code, ppr.purchase_date, 'RECEIVE' as source, c.currency_abbr ")
 			.append("from receive_prod_result r ")
 			.append("inner join purchase_prod_result ppr on r.ppr_code = ppr.ppr_code ")
 			.append("inner join supplier s on s.supp_code = ppr.supp_code ")
@@ -54,7 +55,7 @@ public class InvoiceProdResultDAO {
 
 	private String getAllRPRQuery = new StringBuilder()
 			.append("select r.id, r.rpr_code, null as due_date, null as rate, 'Belum' as payment_status, null as payment_date, null as subtotal, ")
-			.append("null as disc, null as tax, null as other_fee, null as total, r.status, r.receive_date, s.supp_name, ppr.ppr_code, ppr.purchase_date, 'RECEIVE' as source, c.currency_abbr ")
+			.append("null as disc, null as tax, null as other_fee, null as total, '' as status, r.receive_date, s.supp_name, ppr.ppr_code, ppr.purchase_date, 'RECEIVE' as source, c.currency_abbr ")
 			.append("from receive_prod_result r ")
 			.append("inner join purchase_prod_result ppr on r.ppr_code = ppr.ppr_code ")
 			.append("inner join supplier s on s.supp_code = ppr.supp_code ")
@@ -73,6 +74,10 @@ public class InvoiceProdResultDAO {
 			.append("edit_date=?, edited_by=?, payment_date=? where id=?").toString();
 
 	private String deleteQuery = "update invoice_prod_result set deleted_date=?, deleted_by=? where id=?";
+	
+	private String updatePaymentStatusQuery = new StringBuilder()
+		.append("update invoice_prod_result set payment_status=?, ")
+		.append("payment_date=? where id=?").toString();
 
 	public InvoiceProdResultDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -219,6 +224,7 @@ public class InvoiceProdResultDAO {
 			} else {
 				updateStatement.setDate(2, DateUtil.toDate(rpr.getDueDate()));
 			}
+		
 			updateStatement.setBigDecimal(3, rpr.getRate());
 			updateStatement.setString(4, rpr.getPaymentStatus());
 			updateStatement.setBigDecimal(5, rpr.getSubtotal());
@@ -272,6 +278,7 @@ public class InvoiceProdResultDAO {
 				ppr.setDueDate(rs.getDate("due_date"));
 				ppr.setPaymentStatus(rs.getString("payment_status"));
 				ppr.setSubtotal(rs.getBigDecimal("subtotal"));
+				ppr.setRate(rs.getBigDecimal("rate"));
 				ppr.setDisc(rs.getBigDecimal("disc"));
 				ppr.setTax(rs.getBigDecimal("tax"));
 				ppr.setOtherFee(rs.getBigDecimal("other_fee"));
@@ -311,6 +318,7 @@ public class InvoiceProdResultDAO {
 				ppr.setPaymentStatus(rs.getString("payment_status"));
 				ppr.setSubtotal(rs.getBigDecimal("subtotal"));
 				ppr.setDisc(rs.getBigDecimal("disc"));
+				ppr.setRate(rs.getBigDecimal("rate"));
 				ppr.setTax(rs.getBigDecimal("tax"));
 				ppr.setOtherFee(rs.getBigDecimal("other_fee"));
 				ppr.setTotal(rs.getBigDecimal("total"));
@@ -330,5 +338,23 @@ public class InvoiceProdResultDAO {
 		}
 
 		return ppr;
+	}
+	
+	public void updatePaymentStatusStatement(InvoiceProdResult rpr) throws SQLException {
+		try {
+			updatePaymentStatusStatement = connection.prepareStatement(updatePaymentStatusQuery);
+			
+			updatePaymentStatusStatement.setString(1, rpr.getPaymentStatus());
+			if(rpr.getPaymentDate() == null) {
+				updatePaymentStatusStatement.setDate(2, null);
+			} else {
+				updatePaymentStatusStatement.setDate(2,  DateUtil.toDate(rpr.getPaymentDate()));
+			}
+			updatePaymentStatusStatement.setInt(3, rpr.getId());
+			updatePaymentStatusStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			throw new SQLException(ex.getMessage());
+		}
 	}
 }

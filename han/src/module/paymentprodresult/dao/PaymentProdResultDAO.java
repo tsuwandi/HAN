@@ -36,7 +36,7 @@ public class PaymentProdResultDAO {
 			.append("where s.deleted_date is null and ppr.deleted_date is null and rpr.deleted_date is null and pay_pr.deleted_date is null ")
 			.append("union ")
 			.append("select r.id, null as pay_pr_code, r.id as id_inv_pr, r.due_date as due_date, r.rate as rate, r.payment_status as payment_status, r.payment_date as payment_date, r.subtotal as subtotal, ")
-			.append("r.disc as disc, r.tax as tax, r.other_fee as other_fee, r.total as total, r.status, rpr.rpr_code, rpr.receive_date, s.supp_name, ppr.ppr_code, ppr.purchase_date, 'INVOICE' as source, c.currency_abbr ")
+			.append("r.disc as disc, r.tax as tax, r.other_fee as other_fee, r.total as total, '' as status, rpr.rpr_code, rpr.receive_date, s.supp_name, ppr.ppr_code, ppr.purchase_date, 'INVOICE' as source, c.currency_abbr ")
 			.append("from invoice_prod_result r ")
 			.append("inner join receive_prod_result rpr on rpr.rpr_code = r.rpr_code ")
 			.append("inner join purchase_prod_result ppr on rpr.ppr_code = ppr.ppr_code ")
@@ -59,7 +59,7 @@ public class PaymentProdResultDAO {
 
 	private String getAllRPRQuery = new StringBuilder()
 			.append("select r.id, null as pay_pr_code, r.id as id_inv_pr, r.due_date as due_date, r.rate as rate, r.payment_status as payment_status, r.payment_date, r.subtotal as subtotal, ")
-			.append("r.disc as disc, r.tax as tax, r.other_fee as other_fee, r.total as total, r.status, rpr.rpr_code, rpr.receive_date, s.supp_name, ppr.ppr_code, ppr.purchase_date, 'INVOICE' as source, c.currency_abbr ")
+			.append("r.disc as disc, r.tax as tax, r.other_fee as other_fee, r.total as total,  '' as status, rpr.rpr_code, rpr.receive_date, s.supp_name, ppr.ppr_code, ppr.purchase_date, 'INVOICE' as source, c.currency_abbr ")
 			.append("from invoice_prod_result r ")
 			.append("inner join receive_prod_result rpr on rpr.rpr_code = r.rpr_code ")
 			.append("inner join purchase_prod_result ppr on rpr.ppr_code = ppr.ppr_code ")
@@ -76,7 +76,7 @@ public class PaymentProdResultDAO {
 			.append("values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)").toString();
 
 	private String updateQuery = new StringBuilder()
-			.append("update payment_prod_result set rpr_code=?, due_date=?, rate=?, payment_status=?, ")
+			.append("update payment_prod_result set id_inv_pr=?, due_date=?, rate=?, payment_status=?, ")
 			.append("subtotal=?, disc=?, tax=?, other_fee=?, total=?, status=?, ")
 			.append("edit_date=?, edited_by=?, payment_date=? where pay_pr_code=?").toString();
 
@@ -288,6 +288,7 @@ public class PaymentProdResultDAO {
 				ppr.setDueDate(rs.getDate("due_date"));
 				ppr.setPaymentStatus(rs.getString("payment_status"));
 				ppr.setSubtotal(rs.getBigDecimal("subtotal"));
+				ppr.setRate(rs.getBigDecimal("rate"));
 				ppr.setDisc(rs.getBigDecimal("disc"));
 				ppr.setTax(rs.getBigDecimal("tax"));
 				ppr.setOtherFee(rs.getBigDecimal("other_fee"));
@@ -328,6 +329,7 @@ public class PaymentProdResultDAO {
 				ppr.setDueDate(rs.getDate("due_date"));
 				ppr.setPaymentStatus(rs.getString("payment_status"));
 				ppr.setSubtotal(rs.getBigDecimal("subtotal"));
+				ppr.setRate(rs.getBigDecimal("rate"));
 				ppr.setDisc(rs.getBigDecimal("disc"));
 				ppr.setTax(rs.getBigDecimal("tax"));
 				ppr.setOtherFee(rs.getBigDecimal("other_fee"));

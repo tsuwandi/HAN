@@ -7,6 +7,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import main.component.AppConstants;
+import module.invoiceprodresult.dao.InvoiceProdResultDAO;
+import module.invoiceprodresult.model.InvoiceProdResult;
 import module.paymentprodresult.dao.PayPrProductDAO;
 import module.paymentprodresult.dao.PaymentProdResultDAO;
 import module.paymentprodresult.model.PayPrProduct;
@@ -124,6 +126,14 @@ public class PaymentProductResultBL {
 				new PayPrProductDAO(con).save(s);
 			}
 			
+			if("Ya".equals(ppr.getPaymentStatus())) {
+				InvoiceProdResult ipr = new InvoiceProdResult();
+				ipr.setId(ppr.getIdInvPr());
+				ipr.setPaymentStatus(ppr.getPaymentStatus());
+				ipr.setPaymentDate(ppr.getPaymentDate());
+				new InvoiceProdResultDAO(con).updatePaymentStatusStatement(ipr);
+			}
+			
 			con.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -150,6 +160,14 @@ public class PaymentProductResultBL {
 				} else {
 					new PayPrProductDAO(con).update(s);
 				}
+			}
+			
+			if("Ya".equals(ppr.getPaymentStatus())) {
+				InvoiceProdResult ipr = new InvoiceProdResult();
+				ipr.setId(ppr.getIdInvPr());
+				ipr.setPaymentStatus(ppr.getPaymentStatus());
+				ipr.setPaymentDate(ppr.getPaymentDate());
+				new InvoiceProdResultDAO(con).updatePaymentStatusStatement(ipr);
 			}
 			
 			con.commit();

@@ -841,7 +841,7 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 				if(invoiceProductResult.getRate() == null) {
 					txtCurrencyRate.setText(new BigDecimal("1").toString());
 				} else {
-					txtCurrencyRate.setText(invoiceProductResult.getRate().toString());
+					txtCurrencyRate.setText(invoiceProductResult.getRate().setScale(2, BigDecimal.ROUND_DOWN).toString());
 				}
 				
 				if(invoiceProductResult.getSubtotal() == null) {

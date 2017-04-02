@@ -129,7 +129,7 @@ public class PaymentProdResultListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 6)
+					if (column == 7)
 						MainPanel.changePanel("module.paymentprodresult.ui.PaymentProdResultViewPanel", listOfPaymentProdResult.get(row));
 				}
 			}
@@ -210,7 +210,7 @@ public class PaymentProdResultListPanel extends JPanel {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 7;
+			return 8;
 		}
 
 		public boolean isCellEditable(int row, int column) {
@@ -233,6 +233,8 @@ public class PaymentProdResultListPanel extends JPanel {
 			case 5:
 				return String.class;
 			case 6:
+				return String.class;
+			case 7:
 				return String.class;
 			default:
 				return String.class;
@@ -264,6 +266,8 @@ public class PaymentProdResultListPanel extends JPanel {
 			case 5:
 				return p.getPaymentStatus();
 			case 6:
+				return p.getStatus();
+			case 7:
 				return "<html><a><u>View</u></a></html>";
 			default:
 	            throw new IllegalArgumentException("Invalid column index");
@@ -292,6 +296,8 @@ public class PaymentProdResultListPanel extends JPanel {
 			case 5:
 				return "Status Pembayaran";
 			case 6:
+				return "Status Tutup Harian";
+			case 7:
 				return "Tindakan";
 			default:
 				return "";
