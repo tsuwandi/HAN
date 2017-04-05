@@ -5,23 +5,25 @@ import java.util.Date;
 public class Attendance {
 
 	Integer id;
-	String attendanceCode;
+	String fileName;
+	Date importDate;
+	String importBy;
 	Integer pin;
 	Integer nik;
 	String employeeName;
 	Employee employee;
 	Date attendanceDate;
 	Date attendanceTime;
-	String status;
 	String machineSerialNumber;
 	String machineName;
 	String verificationType;
 	String mode;
 	String updateMode;
-	String branch;
+	String branchOffice;
 	String department;
-	String role;
-	String documentReference;
+	String employeeRole;
+	String status;
+	String notes;
 	Date inputDate;
 	String inputBy;
 	Date editDate;
@@ -34,11 +36,23 @@ public class Attendance {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getAttendanceCode() {
-		return attendanceCode;
+	public String getFileName() {
+		return fileName;
 	}
-	public void setAttendanceCode(String attendanceCode) {
-		this.attendanceCode = attendanceCode;
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public Date getImportDate() {
+		return importDate;
+	}
+	public void setImportDate(Date importDate) {
+		this.importDate = importDate;
+	}
+	public String getImportBy() {
+		return importBy;
+	}
+	public void setImportBy(String importBy) {
+		this.importBy = importBy;
 	}
 	public Integer getPin() {
 		return pin;
@@ -76,12 +90,6 @@ public class Attendance {
 	public void setAttendanceTime(Date attendanceTime) {
 		this.attendanceTime = attendanceTime;
 	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
 	public String getMachineSerialNumber() {
 		return machineSerialNumber;
 	}
@@ -112,11 +120,11 @@ public class Attendance {
 	public void setUpdateMode(String updateMode) {
 		this.updateMode = updateMode;
 	}
-	public String getBranch() {
-		return branch;
+	public String getBranchOffice() {
+		return branchOffice;
 	}
-	public void setBranch(String branch) {
-		this.branch = branch;
+	public void setBranchOffice(String branchOffice) {
+		this.branchOffice = branchOffice;
 	}
 	public String getDepartment() {
 		return department;
@@ -124,17 +132,23 @@ public class Attendance {
 	public void setDepartment(String department) {
 		this.department = department;
 	}
-	public String getRole() {
-		return role;
+	public String getEmployeeRole() {
+		return employeeRole;
 	}
-	public void setRole(String role) {
-		this.role = role;
+	public void setEmployeeRole(String employeeRole) {
+		this.employeeRole = employeeRole;
 	}
-	public String getDocumentReference() {
-		return documentReference;
+	public String getStatus() {
+		return status;
 	}
-	public void setDocumentReference(String documentReference) {
-		this.documentReference = documentReference;
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getNotes() {
+		return notes;
+	}
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 	public Date getInputDate() {
 		return inputDate;
@@ -172,6 +186,4 @@ public class Attendance {
 	public void setDeleteBy(String deleteBy) {
 		this.deleteBy = deleteBy;
 	}
-	
-	
 }

@@ -41,7 +41,9 @@ public class AttendanceDAO {
 			while (resultSet.next()) {
 				Attendance attendance = new Attendance();
 				attendance.setId(resultSet.getInt("id"));
-				attendance.setAttendanceCode(resultSet.getString("attendance_code"));
+				attendance.setFileName(resultSet.getString("file_name"));
+				attendance.setImportDate(resultSet.getDate("import_date"));
+				attendance.setImportBy(resultSet.getString("import_by"));
 				attendance.setPin(resultSet.getInt("pin"));
 				attendance.setNik(resultSet.getInt("nik"));
 				attendance.setEmployeeName(resultSet.getString("employee_name"));
@@ -52,9 +54,11 @@ public class AttendanceDAO {
 				attendance.setVerificationType(resultSet.getString("verification_type"));
 				attendance.setMode(resultSet.getString("mode"));
 				attendance.setUpdateMode(resultSet.getString("update_mode"));
+				attendance.setBranchOffice(resultSet.getString("branch_office"));
 				attendance.setDepartment(resultSet.getString("department"));
-				attendance.setRole(resultSet.getString("role"));
-				attendance.setDocumentReference(resultSet.getString("document_reference"));
+				attendance.setEmployeeRole(resultSet.getString("employee_role"));
+				attendance.setStatus(resultSet.getString("status"));
+				attendance.setNotes(resultSet.getString("notes"));
 				attendance.setInputDate(resultSet.getDate("input_date"));
 				attendance.setInputBy(resultSet.getString("input_by"));
 				attendance.setEditDate(resultSet.getDate("edit_date"));
@@ -72,25 +76,28 @@ public class AttendanceDAO {
 	public void insert(Attendance attendance) {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
-
-			insertStatement.setString(1, attendance.getAttendanceCode());
-			insertStatement.setInt(2, attendance.getPin());
-			insertStatement.setInt(3, attendance.getNik());
-			insertStatement.setString(4, attendance.getEmployeeName());
-			insertStatement.setDate(5, DateUtil.toDate(attendance.getAttendanceDate()));
-			insertStatement.setDate(6, DateUtil.toDate(attendance.getAttendanceTime()));
-			insertStatement.setString(7, attendance.getMachineSerialNumber());
-			insertStatement.setString(8, attendance.getMachineName());
-			insertStatement.setString(9, attendance.getVerificationType());
-			insertStatement.setString(10, attendance.getMode());
-			insertStatement.setString(11, attendance.getUpdateMode());
-			insertStatement.setString(12, attendance.getDepartment());
-			insertStatement.setString(13, attendance.getRole());
-			insertStatement.setString(14, attendance.getDocumentReference());
-			insertStatement.setDate(15, DateUtil.toDate(attendance.getInputDate()));
-			insertStatement.setString(16, attendance.getInputBy());
-			insertStatement.setDate(17, DateUtil.toDate(attendance.getEditDate()));
-			insertStatement.setString(18, attendance.getEditBy());
+			insertStatement.setString(1, attendance.getFileName());
+			insertStatement.setDate(2, DateUtil.toDate(attendance.getImportDate()));
+			insertStatement.setString(3, attendance.getImportBy());
+			insertStatement.setInt(4, attendance.getPin());
+			insertStatement.setInt(5, attendance.getNik());
+			insertStatement.setString(6, attendance.getEmployeeName());
+			insertStatement.setDate(7, DateUtil.toDate(attendance.getAttendanceDate()));
+			insertStatement.setDate(8, DateUtil.toDate(attendance.getAttendanceTime()));
+			insertStatement.setString(9, attendance.getMachineSerialNumber());
+			insertStatement.setString(10, attendance.getMachineName());
+			insertStatement.setString(11, attendance.getVerificationType());
+			insertStatement.setString(12, attendance.getMode());
+			insertStatement.setString(13, attendance.getUpdateMode());
+			insertStatement.setString(14, attendance.getBranchOffice());
+			insertStatement.setString(15, attendance.getDepartment());
+			insertStatement.setString(16, attendance.getEmployeeRole());
+			insertStatement.setString(17, attendance.getStatus());
+			insertStatement.setString(18, attendance.getNotes());
+			insertStatement.setDate(19, DateUtil.toDate(attendance.getInputDate()));
+			insertStatement.setString(20, attendance.getInputBy());
+			insertStatement.setDate(21, DateUtil.toDate(attendance.getEditDate()));
+			insertStatement.setString(22, attendance.getEditBy());
 
 			insertStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -102,23 +109,27 @@ public class AttendanceDAO {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
 
-			updateStatement.setString(1, attendance.getAttendanceCode());
-			updateStatement.setInt(2, attendance.getPin());
-			updateStatement.setInt(3, attendance.getNik());
-			updateStatement.setString(4, attendance.getEmployeeName());
-			updateStatement.setDate(5, DateUtil.toDate(attendance.getAttendanceDate()));
-			updateStatement.setDate(6, DateUtil.toDate(attendance.getAttendanceTime()));
-			updateStatement.setString(7, attendance.getMachineSerialNumber());
-			updateStatement.setString(8, attendance.getMachineName());
-			updateStatement.setString(9, attendance.getVerificationType());
-			updateStatement.setString(10, attendance.getMode());
-			updateStatement.setString(11, attendance.getUpdateMode());
-			updateStatement.setString(12, attendance.getDepartment());
-			updateStatement.setString(13, attendance.getRole());
-			updateStatement.setString(14, attendance.getDocumentReference());
-			updateStatement.setDate(15, DateUtil.toDate(attendance.getEditDate()));
-			updateStatement.setString(16, attendance.getEditBy());
-			updateStatement.setInt(17, attendance.getId());
+			updateStatement.setString(1, attendance.getFileName());
+			updateStatement.setDate(2, DateUtil.toDate(attendance.getImportDate()));
+			updateStatement.setString(3, attendance.getImportBy());
+			updateStatement.setInt(3, attendance.getPin());
+			updateStatement.setInt(4, attendance.getNik());
+			updateStatement.setString(5, attendance.getEmployeeName());
+			updateStatement.setDate(6, DateUtil.toDate(attendance.getAttendanceDate()));
+			updateStatement.setDate(7, DateUtil.toDate(attendance.getAttendanceTime()));
+			updateStatement.setString(8, attendance.getMachineSerialNumber());
+			updateStatement.setString(9, attendance.getMachineName());
+			updateStatement.setString(10, attendance.getVerificationType());
+			updateStatement.setString(12, attendance.getMode());
+			updateStatement.setString(13, attendance.getUpdateMode());
+			updateStatement.setString(14, attendance.getBranchOffice());
+			updateStatement.setString(15, attendance.getDepartment());
+			updateStatement.setString(16, attendance.getEmployeeRole());
+			updateStatement.setString(17, attendance.getStatus());
+			updateStatement.setString(18, attendance.getNotes());
+			updateStatement.setDate(19, DateUtil.toDate(attendance.getEditDate()));
+			updateStatement.setString(20, attendance.getEditBy());
+			updateStatement.setInt(21, attendance.getId());
 
 			updateStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -151,11 +162,10 @@ public class AttendanceDAO {
 			ResultSet resultSet = getLastIdStatment.executeQuery();
 			
 			while (resultSet.next()) {
-				Attendance division = new Attendance();
-				division.setId(resultSet.getInt("id"));
-				division.setAttendanceCode(resultSet.getString("name"));
+				Attendance attendance = new Attendance();
+				attendance.setId(resultSet.getInt("id"));
 
-				attendances.add(division);
+				attendances.add(attendance);
 			}
 			
 		} catch (SQLException e) {

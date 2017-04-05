@@ -164,20 +164,34 @@ public class AttendanceConfigPanel extends JPanel implements Bridging{
 			case 0:
 				return attendances.indexOf(attendance) + 1;
 			case 1:
-				return attendance.getEmployee().getEmpCode();
+				return attendance.getPin();
 			case 2:
-				return attendance.getEmployeeName();
+				return attendance.getNik();
 			case 3:
 				return attendance.getEmployee().getMsPosition().getName();
 			case 4:
-				return attendance.getEmployee().getDepartment().getName();
-			case 5:
-				return attendance.getEmployee().getDivision().getName();
-			case 6:
 				return attendance.getAttendanceDate();
-			case 7:
+			case 5:
 				return attendance.getAttendanceTime();
+			case 6:
+				return attendance.getMachineSerialNumber();
+			case 7:
+				return attendance.getMachineName();
 			case 8:
+				return attendance.getVerificationType();
+			case 9:
+				return attendance.getMode();
+			case 10:
+				return attendance.getUpdateMode();
+			case 11:
+				return attendance.getBranchOffice();
+			case 12:
+				return attendance.getDepartment();
+			case 13:
+				return attendance.getEmployeeRole();
+			case 14:
+				return attendance.getStatus();
+			case 15:
 				return "<html><u>View</u></html>";
 			default:
 				return "";
@@ -205,6 +219,22 @@ public class AttendanceConfigPanel extends JPanel implements Bridging{
 				return String.class;
 			case 8:
 				return String.class;
+			case 9:
+				return String.class;
+			case 10:
+				return String.class;
+			case 11:
+				return String.class;
+			case 12:
+				return String.class;
+			case 13:
+				return String.class;
+			case 14:
+				return String.class;
+			case 15:
+				return String.class;
+			case 16:
+				return String.class;
 			default:
 				return String.class;
 			}
@@ -216,25 +246,35 @@ public class AttendanceConfigPanel extends JPanel implements Bridging{
 			case 0:
 				return "No";
 			case 1:
-				return "NIK Karyawan";
+				return "PIN";
 			case 2:
-				return "Nama Karyawan";
+				return "NIK";
 			case 3:
-				return "Jabatan";
+				return "Nama Karyawan";
 			case 4:
-				return "Departemen";
+				return "Tanggal";
 			case 5:
-				return "Divisi";
+				return "Jam";
 			case 6:
-				return "Tanggal Presensi";
+				return "SN Mesin";
 			case 7:
-				return "Jam Presensi";
+				return "Nama Mesin";
 			case 8:
-				return "Action";
-				/*case 8:
-				return "Jam Keluar";
+				return "Verifikasi";
 			case 9:
-				return "Sumber data";*/
+				return "Mode";
+			case 10:
+				return "Mode Update";
+			case 12:
+				return "Cabang";
+			case 13:
+				return "Departemen";
+			case 14:
+				return "Jabatan";
+			case 15:
+				return "Sumber Data";
+			case 16:
+				return "Action";
 			default:
 				return "";
 			}
