@@ -22,3 +22,10 @@ CREATE TABLE `import_fingerprint` (
 
 ALTER TABLE `import_fingerprint` ADD PRIMARY KEY(`id`);
 ALTER TABLE `import_fingerprint` CHANGE `id` `id` INT NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `set_so_schedule_prod` ADD PRIMARY KEY(`id`);
+ALTER TABLE `set_so_schedule_prod` CHANGE `id` `id` INT(12) NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE `set_so_schedule` ADD PRIMARY KEY(`id`);
+ALTER TABLE `set_so_schedule` CHANGE `id` `id` INT(3) NOT NULL AUTO_INCREMENT;

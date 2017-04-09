@@ -5,7 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,11 +23,14 @@ import main.component.NumberField;
 import main.component.TextField;
 import model.User;
 import module.personalia.model.ImportFingerprint;
+import module.production.model.Production;
+import module.stockopname.model.ProductSO;
 import module.stockopname.model.SetSOScheduled;
 import module.stockopname.model.SetSoScheduledProduct;
+import module.util.Bridging;
 import module.util.Pagination;
 
-public class CreateNewScheduledSOPanel extends JPanel {
+public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 	private JLabel soNameLbl;
 	private JLabel soReccurenceLbl;
 	private JLabel soDayLbl;
@@ -49,82 +54,98 @@ public class CreateNewScheduledSOPanel extends JPanel {
 	private JScrollPane scrollPane;
 	private JTable soProductTable;
 	private CreateNewScheduledSOPanel parent;
+	private Map<Integer, ProductSO> productMap;
+	private SetSOScheduled setSoScheduled;
 	
 	public CreateNewScheduledSOPanel(){
 		parent=this;
 		createGUI();
 		listener();
 	}
+	
+	private void initData(){
+		productMap = new HashMap<Integer, ProductSO>();
+		setSoScheduled = new SetSOScheduled();
+		
+	}
 	private void createGUI(){
 		setLayout(null);
 		
-		JLabel lblBreadcrumb = new JLabel("ERP > Produksi 12");
+		JLabel lblBreadcrumb = new JLabel("ERP > Stock Opname Terjadwal");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("INPUT PRODUKSI 12");
+		JLabel lblHeader = new JLabel("Stock Opname Terjadwal");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
 		
 		soNameLbl = new JLabel("Nama Stock Opname");
-		soNameLbl.setBounds(30,120,150,20);
+		soNameLbl.setBounds(30,100,150,20);
 		add(soNameLbl);
 		
 		soNameField = new TextField();
-		soNameField.setBounds(190, 120, 150, 20);
+		soNameField.setBounds(190, 100, 150, 20);
 		add(soNameField);
 		
 		soNameErrorLbl = new JLabel();
-		soNameErrorLbl.setBounds(350,120,150,20);
+		soNameErrorLbl.setBounds(350,100,150,20);
 		add(soNameErrorLbl);
 		
 		soReccurenceLbl = new JLabel("Perulangan");
-		soReccurenceLbl.setBounds(30,160,150,20);
+		soReccurenceLbl.setBounds(30,140,150,20);
 		add(soReccurenceLbl);
 		
 		soReccurenceCmb = new JComboBox<>();
-		soReccurenceCmb.setBounds(190,160,150,20);
+		soReccurenceCmb.setBounds(190,140,150,20);
 		add(soReccurenceCmb);
 		
 		soReccurenceErrorLbl = new JLabel();
-		soReccurenceErrorLbl.setBounds(350,160,150,20);
+		soReccurenceErrorLbl.setBounds(350,140,150,20);
 		add(soReccurenceErrorLbl);
 		
 		soDayLbl = new JLabel("Hari");
-		soDayLbl.setBounds(30,200,150,20);
+		soDayLbl.setBounds(30,180,150,20);
 		add(soDayLbl);
 		
 		soDayCmb = new JComboBox<>();
-		soDayCmb.setBounds(190,200,150,20);
+		soDayCmb.setBounds(190,180,150,20);
 		add(soDayCmb);
 		
 		soDayErrorLbl = new JLabel();
-		soDayErrorLbl.setBounds(350, 200, 150, 20);
+		soDayErrorLbl.setBounds(350, 180, 150, 20);
 		add(soDayErrorLbl);
 		
 		soDateLbl = new JLabel("Tanggal");
-		soDateLbl.setBounds(30,240,150,20);
+		soDateLbl.setBounds(30,220,150,20);
 		add(soDateLbl);
 		
 		soDateField = new NumberField(2);
-		soDateField.setBounds(190,240,150,20);
+		soDateField.setBounds(190,220,150,20);
 		add(soDateField);
 		
 		soDateErrorLbl = new JLabel();
-		soDateErrorLbl.setBounds(350, 240, 150, 20);
+		soDateErrorLbl.setBounds(350, 220, 150, 20);
 		add(soDateErrorLbl);
 		
 		productBtn = new JButton("Pilih Produk");
-		productBtn.setBounds(30,280,150,30);
+		productBtn.setBounds(30,260,150,30);
 		add(productBtn);
 		
 		soProductTable = new JTable(new SoScheduleTableModel(new ArrayList<>()));
 		
 		scrollPane = new JScrollPane(soProductTable);
-		scrollPane.setBounds(30,500,150,30);
+		scrollPane.setBounds(30,300,1000,250);
 		add(scrollPane);
+		
+		saveBtn = new JButton("Simpan");
+		saveBtn.setBounds(850,560,150,30);
+		add(saveBtn);
+		
+		backBtn = new JButton("Kembali");
+		backBtn.setBounds(30,560,150,30);
+		add(backBtn);
 		
 		
 	}
@@ -221,5 +242,22 @@ public class CreateNewScheduledSOPanel extends JPanel {
 			setSoScheduledProducts = (List<SetSoScheduledProduct>) list;
 		}
 
+	}
+
+
+
+	@Override
+	public void invokeObjects(Object... objects) {
+		if(objects.length!=0)setSoScheduled = (SetSOScheduled)objects[0];
+		if(setSoScheduled!=null){
+			soNameField.setText(setSoScheduled.getSoName());
+			soReccurenceCmb.setSelectedItem(setSoScheduled.getReccurence());
+			if(setSoScheduled.getDay()!=null)soDayCmb.setSelectedItem(setSoScheduled.getDay());
+			soDateField.setText(setSoScheduled.getDate()+"");
+			if(setSoScheduled.getSetSoScheduledProducts().size()!=0){
+				soProductTable.setModel(new SoScheduleTableModel(setSoScheduled.getSetSoScheduledProducts()));
+			}
+		}
+		
 	}
 }

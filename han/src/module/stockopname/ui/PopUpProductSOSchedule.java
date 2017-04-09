@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,12 +22,11 @@ import org.apache.log4j.Logger;
 
 import main.component.TextField;
 import model.User;
-import module.pembelian.ui.PopUpPicDocking;
 import module.stockopname.model.ProductSO;
 
 public class PopUpProductSOSchedule extends JDialog{
-	Logger log = LogManager.getLogger(PopUpPicDocking.class.getName());
-	JTable picTable;
+	Logger log = LogManager.getLogger(PopUpProductSOSchedule.class.getName());
+	JTable productSOTable;
 	ProductTableModel productSOTableModel;
 	List<ProductSO> picDockings;
 	JScrollPane picScrollPane;
@@ -48,55 +48,56 @@ public class PopUpProductSOSchedule extends JDialog{
 		super((JFrame)parentPanel.getTopLevelAncestor());
 		setLayout(null);
 		setSize(500,500);
+		setTitle("Cari Produk");
 		this.dialog = this;
 		createNewScheduledSOPanel = (CreateNewScheduledSOPanel)parentPanel;
 		
-		searchBtn = new JButton("Search");
-		searchBtn.setBounds(270,20,100,30);
+		searchBtn = new JButton("Cari");
+		searchBtn.setBounds(350,20,100,30);
 		add(searchBtn);
 		
-		productCategoryLbl = new JLabel();
+		productCategoryLbl = new JLabel("Kategori Produk");
 		productCategoryLbl.setBounds(30,20,150,30);
 		add(productCategoryLbl);
 		
 		productCategoryField = new TextField();
-		productCategoryField.setBounds(30,20,150,30);
+		productCategoryField.setBounds(190,20,150,30);
 		add(productCategoryField);
 		
-		productCodeLbl = new JLabel();
+		productCodeLbl = new JLabel("Kode Produk");
 		productCodeLbl.setBounds(30,60,150,30);
 		add(productCodeLbl);
 		
 		productCodeField = new TextField();
-		productCodeField.setBounds(30,60,150,30);
+		productCodeField.setBounds(190,60,150,30);
 		add(productCodeField);
 		
-		productNameLbl = new JLabel();
+		productNameLbl = new JLabel("Nama Produk");
 		productNameLbl.setBounds(30,100,150,30);
 		add(productNameLbl);
 		
 		productNameField = new TextField();
-		productNameField.setBounds(30,100,150,30);
+		productNameField.setBounds(190,100,150,30);
 		add(productNameField);
 
-		picTable = new JTable(productSOTableModel);
+		productSOTable = new JTable(new ProductTableModel(new ArrayList<>()));
 		
-		picScrollPane = new JScrollPane(picTable);
-		picScrollPane.setBounds(20,140,350,200);
+		picScrollPane = new JScrollPane(productSOTable);
+		picScrollPane.setBounds(20,140,450,200);
 		add(picScrollPane);
 		
-		addBtn = new JButton("Add");
-		addBtn.setBounds(270,360,100,30);
+		addBtn = new JButton("Tambah");
+		addBtn.setBounds(360,360,100,30);
 		add(addBtn);
 		
-		picTable.addMouseListener(new MouseAdapter() {
+		productSOTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(picDockings.get(picTable.getSelectedRow()).isFlag())
-					picDockings.get(picTable.getSelectedRow()).setFlag(false);
+				if(picDockings.get(productSOTable.getSelectedRow()).isFlag())
+					picDockings.get(productSOTable.getSelectedRow()).setFlag(false);
 				else	
-					picDockings.get(picTable.getSelectedRow()).setFlag(true);
-				picTable.updateUI();
+					picDockings.get(productSOTable.getSelectedRow()).setFlag(true);
+				productSOTable.updateUI();
 			}
 		});
 		
@@ -134,7 +135,7 @@ public class PopUpProductSOSchedule extends JDialog{
 	     * Method to get Column Count
 	     */
 	    public int getColumnCount() {
-	        return 4;
+	        return 5;
 	    }
 	    
 	    public Class<?> getColumnClass(int col) {
@@ -168,6 +169,8 @@ public class PopUpProductSOSchedule extends JDialog{
 	                return p.getProductCode();
 	            case 3 :
 	                return p.getProductName();
+	            case 4 :
+	            	return p.getId();
 	            default :
 	                return "";
 	        }
@@ -188,6 +191,8 @@ public class PopUpProductSOSchedule extends JDialog{
 	                return "Kode Produk";
 	            case 3 :
 	                return "Nama Produk";
+	            case 4 :
+	            	return "ID";
 	            default :
 	                return "";
 	        }

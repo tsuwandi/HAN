@@ -7,6 +7,7 @@ public class SetSoScheduledProduct {
 	String productName;
 	String productCategory;
 	int productCategoryID;
+	int productID;
 	
 	public int getId() {
 		return id;
@@ -43,6 +44,12 @@ public class SetSoScheduledProduct {
 	}
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+	public int getProductID() {
+		return productID;
+	}
+	public void setProductID(int productID) {
+		this.productID = productID;
 	}
 	
 	
