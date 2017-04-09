@@ -31,7 +31,7 @@ public class PaymentProdResultDAO {
 			.append("inner join invoice_prod_result ipr on ipr.id = pay_pr.id_inv_pr ")
 			.append("inner join receive_prod_result rpr on rpr.rpr_code = ipr.rpr_code ")
 			.append("inner join purchase_prod_result ppr on rpr.ppr_code = ppr.ppr_code ")
-			.append("inner join supplier s on s.supp_code = ppr.supp_code ")
+			.append("left join supplier s on s.supp_code = ppr.supp_code ")
 			.append("left join currency c on c.id = s.currency_id ")
 			.append("where s.deleted_date is null and ppr.deleted_date is null and rpr.deleted_date is null and pay_pr.deleted_date is null ")
 			.append("union ")
@@ -52,7 +52,7 @@ public class PaymentProdResultDAO {
 			.append("inner join invoice_prod_result ipr on ipr.id = pay_pr.id_inv_pr ")
 			.append("inner join receive_prod_result rpr on rpr.rpr_code = ipr.rpr_code ")
 			.append("inner join purchase_prod_result ppr on rpr.ppr_code = ppr.ppr_code ")
-			.append("inner join supplier s on s.supp_code = ppr.supp_code ")
+			.append("left join supplier s on s.supp_code = ppr.supp_code ")
 			.append("left join currency c on c.id = s.currency_id ")
 			.append("where s.deleted_date is null and ppr.deleted_date is null and rpr.deleted_date is null and pay_pr.deleted_date is null ")
 			.toString();
@@ -63,7 +63,7 @@ public class PaymentProdResultDAO {
 			.append("from invoice_prod_result r ")
 			.append("inner join receive_prod_result rpr on rpr.rpr_code = r.rpr_code ")
 			.append("inner join purchase_prod_result ppr on rpr.ppr_code = ppr.ppr_code ")
-			.append("inner join supplier s on s.supp_code = ppr.supp_code ")
+			.append("left join supplier s on s.supp_code = ppr.supp_code ")
 			.append("left join currency c on c.id = s.currency_id ")
 			.append("where s.deleted_date is null and ppr.deleted_date is null and r.status = 'FINAL' and r.deleted_date is null and r.id not in (select id_inv_pr from payment_prod_result) ")
 			.toString();

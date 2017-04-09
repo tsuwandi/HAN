@@ -4,8 +4,10 @@ import module.dailyclosing.bl.DailyClosingBL;
 import module.dryin.bl.DryInBL;
 import module.dryout.bl.DryOutBL;
 import module.employee.bl.EmployeeBL;
+import module.invoicebalken.bl.InvoiceBalkenBL;
 import module.invoiceprodresult.bl.InvoiceProductResultBL;
 import module.packingresult.bl.PackingBL;
+import module.paymentprodresult.bl.PaymentProductResultBL;
 import module.personalia.bl.PersonaliaBL;
 import module.product.bl.ProductBL;
 import module.production.bl.ProductionBL;
@@ -19,7 +21,7 @@ import module.sn.woodgenus.bl.WoodGenusBL;
 import module.sn.woodtype.bl.WoodTypeBL;
 import module.supplier.bl.SupplierBL;
 import module.system.bl.SystemBL;
-import module.paymentprodresult.bl.PaymentProductResultBL;
+import module.paymentbalken.bl.PaymentBalkenBL;
 
 public class ServiceFactory {
 	// private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
@@ -46,6 +48,8 @@ public class ServiceFactory {
 	private static ReceiveProductResultBL receiveProductResultBL = null;
 	private static InvoiceProductResultBL invoiceProductResultBL = null;
 	private static PaymentProductResultBL paymentProductResultBL = null;
+	private static InvoiceBalkenBL invoiceBalkenBL = null;
+	private static PaymentBalkenBL paymentBalkenBL = null;
 	
 	/**
 	 * Method to init or return {@link SupplierBL}
@@ -220,4 +224,20 @@ public class ServiceFactory {
 		}
 		return paymentProductResultBL;
 	}
+	
+	public static InvoiceBalkenBL getInvoiceBalkenBL() {
+		if (invoiceBalkenBL == null) {
+			invoiceBalkenBL = new InvoiceBalkenBL(DataSourceFactory.getDataSource());
+		}
+		return invoiceBalkenBL;
+	}
+	
+	public static PaymentBalkenBL getPaymentBalkenBL() {
+		if (paymentBalkenBL == null) {
+			paymentBalkenBL = new PaymentBalkenBL(DataSourceFactory.getDataSource());
+		}
+		return paymentBalkenBL;
+	}
+	
+	
 }
