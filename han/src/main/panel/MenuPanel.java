@@ -107,6 +107,11 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Konfigurasi Sistem", "Screen", "Screen", "module.system.ui.ScreenConfigPanel");
 		menu.calculateAvaiableSpace();
 		
+		menu.addNewMenu("Stock Opname", "Stock Opname");
+		menu.addNewLeafTo("Stock Opname", "Jadwal Stock Opname", "Jadwal Stock Opname", "module.stockopname.ui.ListScheduledSOPanel");
+		menu.addNewLeafTo("Stock Opname", "Stock Opname", "Stock Opname", "module.stockopname.ui.ListScheduledSOPanel");
+		menu.calculateAvaiableSpace();
+		
 		setMouseAdapter(menu);
 
 		add(menu);

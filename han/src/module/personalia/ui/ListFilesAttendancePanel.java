@@ -121,7 +121,7 @@ public class ListFilesAttendancePanel extends JPanel {
 			pagingPanel.setBounds(450,510,130,50);
 
 
-			setTableSize();
+//			setTableSize();
 		} catch (Exception e1) {
 			DialogBox.showError(e1.getMessage());
 			log.error(e1.getMessage());
@@ -147,7 +147,7 @@ public class ListFilesAttendancePanel extends JPanel {
 					importFingerPrints = ServiceFactory.getPersonaliaBL().getImportFingerprints("");
 					importFingerPrintTable.setModel(new ImportFingerPrintTableModel(importFingerPrints));
 					importFingerPrintTable.updateUI();
-					setTableSize();
+//					setTableSize();
 				} catch (Exception e) {
 					log.error(e.getMessage());
 					e.printStackTrace();
@@ -293,7 +293,7 @@ public class ListFilesAttendancePanel extends JPanel {
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 5;
+			return 3;
 		}
 
 		/**
@@ -311,10 +311,6 @@ public class ListFilesAttendancePanel extends JPanel {
 				return new SimpleDateFormat("dd-MM-yyyy").format(p.getDate());
 			case 2 :
 				return p.getFileName();
-			case 3 :
-				return p.getUploadStatus();
-			case 4 :
-				return p.getSalaryStatus();
 			default :
 				return "";
 			}
@@ -337,10 +333,6 @@ public class ListFilesAttendancePanel extends JPanel {
 				return "Tanggal Absensi";
 			case 2 :
 				return "Nama File";
-			case 3 :
-				return "Status Upload";
-			case 4 :
-				return "Status Gajian";
 			default :
 				return "";
 			}

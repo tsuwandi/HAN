@@ -70,7 +70,7 @@ public class ListScheduledSOPanel extends JPanel {
 		searchField.setBounds(800, 131, 150, 28);
 		add(searchField);
 
-		createNewBtn = new JButton("Import");
+		createNewBtn = new JButton("Buat Baru");
 		createNewBtn.setBounds(750,80,150,30);
 		add(createNewBtn);
 
@@ -144,6 +144,14 @@ public class ListScheduledSOPanel extends JPanel {
 
 			}
 		});
+		
+		createNewBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.stockopname.ui.CreateNewScheduledSOPanel");
+			}
+		});
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -151,6 +159,7 @@ public class ListScheduledSOPanel extends JPanel {
 				searchField.requestFocusInWindow();
 			}
 		});
+		
 
 	}
 

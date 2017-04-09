@@ -4,6 +4,10 @@ public class SetSoScheduledProduct {
 	int id;
 	int setSOScheduledID;
 	String productCode;
+	String productName;
+	String productCategory;
+	int productCategoryID;
+	
 	public int getId() {
 		return id;
 	}
@@ -21,6 +25,24 @@ public class SetSoScheduledProduct {
 	}
 	public void setProductCode(String productCode) {
 		this.productCode = productCode;
+	}
+	public String getProductCategory() {
+		return productCategory;
+	}
+	public void setProductCategory(String productCategory) {
+		this.productCategory = productCategory;
+	}
+	public int getProductCategoryID() {
+		return productCategoryID;
+	}
+	public void setProductCategoryID(int productCategoryID) {
+		this.productCategoryID = productCategoryID;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 	
 	
