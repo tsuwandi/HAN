@@ -1,4 +1,4 @@
-package module.invoiceprodresult.ui;
+package module.paymentbalken.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -25,12 +25,12 @@ import module.util.DateUtil;
 
 import org.apache.log4j.Logger;
 
-import module.invoiceprodresult.model.InvoiceProdResult;
+import module.paymentbalken.model.PaymentBalken;
 import controller.ServiceFactory;
 
-public class InvoiceProdResultListPanel extends JPanel {
+public class PaymentBalkenListPanel extends JPanel {
 
-	private static final Logger LOGGER = Logger.getLogger(InvoiceProdResultListPanel.class);
+	private static final Logger LOGGER = Logger.getLogger(PaymentBalkenListPanel.class);
 
 //	JButton btnCreateNew;
 //	JButton btnExport;
@@ -42,31 +42,31 @@ public class InvoiceProdResultListPanel extends JPanel {
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
 
-	JScrollPane scrollPaneInvoiceProdResult;
+	JScrollPane scrollPanePaymentBalken;
 
-	private InvoiceProdResultTableModel invoiceProdResultTableModel;
-	public List<InvoiceProdResult> listOfInvoiceProdResult = new ArrayList<InvoiceProdResult>();
+	private PaymentBalkenTableModel purchaseProdResultTableModel;
+	public List<PaymentBalken> listOfPaymentBalken = new ArrayList<PaymentBalken>();
 
-	JTable tblInvoiceProdResult;
+	JTable tblPaymentBalken;
 
-	private InvoiceProdResultListPanel invoiceProdResultListPanel;
+	private PaymentBalkenListPanel paymentBalkenListPanel;
 
 	private static final long serialVersionUID = 1L;
 	
 	public static final String COMPLETED = "COMPLETED";
 
-	public InvoiceProdResultListPanel() {
-		invoiceProdResultListPanel = this;
+	public PaymentBalkenListPanel() {
+		paymentBalkenListPanel = this;
 		setLayout(null);
 
 		setPreferredSize(new Dimension(1024, 768));
 
-		lblBreadcrumb = new JLabel("ERP > Finance > Hasil Produksi");
+		lblBreadcrumb = new JLabel("ERP > Finance > Pembayaran Balken");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 600, 30);
 		add(lblBreadcrumb);
 
-		lblHeader = new JLabel("List Invoice Hasil Produksi ");
+		lblHeader = new JLabel("List Pembayaran Balken ");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -74,7 +74,7 @@ public class InvoiceProdResultListPanel extends JPanel {
 //		btnCreateNew = new JButton("Buat Baru");
 //		btnCreateNew.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent arg0) {
-//				MainPanel.changePanel("module.invoiceprodresult.ui.InvoiceProdResultCreatePanel");
+//				MainPanel.changePanel("module.purchaseprodresult.ui.PaymentBalkenCreatePanel");
 //			}
 //		});
 //		btnCreateNew.setBounds(700, 80, 100, 30);
@@ -92,7 +92,7 @@ public class InvoiceProdResultListPanel extends JPanel {
 //		btnAdvancedSearch = new JButton("Pencarian Lanjut");
 //		btnAdvancedSearch.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent arg0) {
-//				//showAdvancedSearchDialog(invoiceProdResultListPanel);
+//				//showAdvancedSearchDialog(paymentBalkenListPanel);
 //			}
 //		});
 //		btnAdvancedSearch.setBounds(900, 80, 150, 30);
@@ -111,17 +111,17 @@ public class InvoiceProdResultListPanel extends JPanel {
 		btnSearch.setBounds(950, 130, 100, 30);
 		add(btnSearch);
 
-		scrollPaneInvoiceProdResult = new JScrollPane();
-		scrollPaneInvoiceProdResult.setBounds(50, 200, 1000, 300);
-		add(scrollPaneInvoiceProdResult);
+		scrollPanePaymentBalken = new JScrollPane();
+		scrollPanePaymentBalken.setBounds(50, 200, 1000, 300);
+		add(scrollPanePaymentBalken);
 
-		invoiceProdResultTableModel = new InvoiceProdResultTableModel(new ArrayList<InvoiceProdResult>());
-		tblInvoiceProdResult = new JTable(invoiceProdResultTableModel);
-		tblInvoiceProdResult.setFocusable(false);
-		tblInvoiceProdResult.setAutoCreateRowSorter(true);
-		scrollPaneInvoiceProdResult.setViewportView(tblInvoiceProdResult);
+		purchaseProdResultTableModel = new PaymentBalkenTableModel(new ArrayList<PaymentBalken>());
+		tblPaymentBalken = new JTable(purchaseProdResultTableModel);
+		tblPaymentBalken.setFocusable(false);
+		tblPaymentBalken.setAutoCreateRowSorter(true);
+		scrollPanePaymentBalken.setViewportView(tblPaymentBalken);
 
-		tblInvoiceProdResult.addMouseListener(new MouseAdapter() {
+		tblPaymentBalken.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -129,16 +129,16 @@ public class InvoiceProdResultListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 7)
-						MainPanel.changePanel("module.invoiceprodresult.ui.InvoiceProdResultViewPanel", listOfInvoiceProdResult.get(row));
+					if (column == 6)
+						MainPanel.changePanel("module.paymentbalken.ui.PaymentBalkenViewPanel", listOfPaymentBalken.get(row));
 				}
 			}
 		});
 
 		try {
-			listOfInvoiceProdResult = new ArrayList<InvoiceProdResult>();
-			listOfInvoiceProdResult = ServiceFactory.getInvoiceProductResultBL().getAllInvoiceProdResult();
-			refreshTableInvoiceProdResult();
+			listOfPaymentBalken = new ArrayList<PaymentBalken>();
+			listOfPaymentBalken = ServiceFactory.getPaymentBalkenBL().getAllPaymentBalken();
+			refreshTablePaymentBalken();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
@@ -154,9 +154,9 @@ public class InvoiceProdResultListPanel extends JPanel {
 
 	}
 
-	public void refreshTableInvoiceProdResult() {
+	public void refreshTablePaymentBalken() {
 		try {
-			tblInvoiceProdResult.setModel(new InvoiceProdResultTableModel(listOfInvoiceProdResult));
+			tblPaymentBalken.setModel(new PaymentBalkenTableModel(listOfPaymentBalken));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
@@ -165,9 +165,9 @@ public class InvoiceProdResultListPanel extends JPanel {
 
 	public void doSearch(String value) {
 		try {
-			listOfInvoiceProdResult = new ArrayList<InvoiceProdResult>();
-			listOfInvoiceProdResult = ServiceFactory.getInvoiceProductResultBL().getAllInvoiceProdResultBySimpleSearch(value);
-			refreshTableInvoiceProdResult();
+			listOfPaymentBalken = new ArrayList<PaymentBalken>();
+			listOfPaymentBalken = ServiceFactory.getPaymentBalkenBL().getAllPaymentBalkenBySimpleSearch(value);
+			refreshTablePaymentBalken();
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
@@ -177,24 +177,24 @@ public class InvoiceProdResultListPanel extends JPanel {
 	/**
 	 * Method to display advanced search dialog
 	 */
-	protected void showAdvancedSearchDialog(InvoiceProdResultListPanel invoiceProdResultListPanel) {
+	protected void showAdvancedSearchDialog(PaymentBalkenListPanel paymentBalkenListPanel) {
 		
 	}
 
 	/**
-	 * Class as TableModel for InvoiceProdResult table
+	 * Class as TableModel for PaymentBalken table
 	 * 
 	 * @author TSI
 	 *
 	 */
-	class InvoiceProdResultTableModel extends AbstractTableModel {
+	class PaymentBalkenTableModel extends AbstractTableModel {
 		
 		private static final long serialVersionUID = 1L;
 
-		private List<InvoiceProdResult> listOfInvoiceProdResult;
+		private List<PaymentBalken> listOfPaymentBalken;
 
-		public InvoiceProdResultTableModel(List<InvoiceProdResult> listOfInvoiceProdResult) {
-			this.listOfInvoiceProdResult = listOfInvoiceProdResult;
+		public PaymentBalkenTableModel(List<PaymentBalken> listOfPaymentBalken) {
+			this.listOfPaymentBalken = listOfPaymentBalken;
 		}
 
 		/**
@@ -203,14 +203,14 @@ public class InvoiceProdResultListPanel extends JPanel {
 		 * @return int
 		 */
 		public int getRowCount() {
-			return listOfInvoiceProdResult.size();
+			return listOfPaymentBalken.size();
 		}
 
 		/**
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 8;
+			return 7;
 		}
 
 		public boolean isCellEditable(int row, int column) {
@@ -234,8 +234,6 @@ public class InvoiceProdResultListPanel extends JPanel {
 				return String.class;
 			case 6:
 				return String.class;
-			case 7:
-				return String.class;
 			default:
 				return String.class;
 			}
@@ -248,26 +246,24 @@ public class InvoiceProdResultListPanel extends JPanel {
 		 *            rowIndex of selected table
 		 * @param columnIndex
 		 *            columnIndex of selected table
-		 * @return ({@link InvoiceProdResultAddress}) Object
+		 * @return ({@link PaymentBalkenAddress}) Object
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			InvoiceProdResult p = listOfInvoiceProdResult.get(rowIndex);
+			PaymentBalken p = listOfPaymentBalken.get(rowIndex);
 			switch (columnIndex) {
 			case 0:
-				return p.getPprCode();
+				return p.getReceivedCode();
 			case 1:
-				return DateUtil.setFormatedDate(DateUtil.toDate(p.getPurchaseDate()));
+				return DateUtil.setFormatedDate(DateUtil.toDate(p.getReceivedDate()));
 			case 2:
-				return p.getRprCode();
-			case 3:
-				return DateUtil.setFormatedDate(DateUtil.toDate(p.getReceiveDate()));
-			case 4:
 				return p.getSuppName();
-			case 5:
+			case 3:
+				return p.getDeliveryNote();
+			case 4:
 				return p.getPaymentStatus();
-			case 6:
+			case 5:
 				return p.getStatus();
-			case 7:
+			case 6:
 				return "<html><a><u>View</u></a></html>";
 			default:
 	            throw new IllegalArgumentException("Invalid column index");
@@ -284,20 +280,18 @@ public class InvoiceProdResultListPanel extends JPanel {
 		public String getColumnName(int column) {
 			switch (column) {
 			case 0:
-				return "Kode Pembelian";
-			case 1:
-				return "Tanggal Pembelian";
-			case 2:
 				return "Kode Penerimaan";
-			case 3:
+			case 1:
 				return "Tanggal Penerimaan";
-			case 4:
+			case 2:
 				return "Supplier";
-			case 5:
+			case 3:
+				return "No Dokumen";
+			case 4:
 				return "Status Pembayaran";
-			case 6:
+			case 5:
 				return "Status Tutup Harian";
-			case 7:
+			case 6:
 				return "Tindakan";
 			default:
 				return "";

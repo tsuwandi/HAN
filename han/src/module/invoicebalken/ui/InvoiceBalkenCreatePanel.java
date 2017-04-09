@@ -1,4 +1,4 @@
-package module.invoiceprodresult.ui;
+package module.invoicebalken.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -34,28 +33,24 @@ import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
-import module.invoiceprodresult.model.InvPrProduct;
+import module.invoicebalken.model.InvBalkenProduct;
+import module.invoicebalken.model.InvoiceBalken;
 import module.util.Bridging;
-import module.util.DateUtil;
 import module.util.JTextFieldLimit;
 
 import org.apache.log4j.Logger;
-
-import module.invoiceprodresult.model.InvoiceProdResult;
 
 import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
 
-public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
+public class InvoiceBalkenCreatePanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = Logger
-			.getLogger(InvoiceProdResultCreatePanel.class);
+			.getLogger(InvoiceBalkenCreatePanel.class);
 
-	JLabel lblPurchaseProductResultCode;
-	JLabel lblPurchaseDate;
 	JLabel lblReceiveProductResultCode;
 	JLabel lblReceiveDate;
 	JLabel lblDueDate;
@@ -76,8 +71,8 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 	NumberField txtOtherFee;
 	JTextField txtTotal;
 	
-	JButton btnInsertInvPrProduct;
-	JButton btnDeleteInvPrProduct;
+	JButton btnInsertInvBalkenProduct;
+	JButton btnDeleteInvBalkenProduct;
 
 	JButton btnCancel;
 	JButton btnSave;
@@ -87,19 +82,15 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 	JPanel panel;
 	JScrollPane scrollPane;
 
-	JTextField txtPurchaseProductResultCode;
 	JTextField txtReceiveProductResultCode;
-	JDateChooser dcPurchaseDate;
 	JDateChooser dcReceiveDate;
 	JDateChooser dcDueDate;
 	JTextField txtSupplier;
-	JTextField txtCurrency;
+	public JTextField txtCurrency;
 	NumberField txtCurrencyRate;
 	JComboBox<String> cbPaymentStatus;
 	JDateChooser dcPaymentDate;
 	
-	JLabel lblErrorPurchaseProductResultCode;
-	JLabel lblErrorPurchaseDate;
 	JLabel lblErrorReceiveProductResultCode;
 	JLabel lblErrorReceiveDate;
 	JLabel lblErrorDueDate;
@@ -109,83 +100,49 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 	JLabel lblErrorPaymentStatus;
 	JLabel lblErrorPaymentDate;
 	
-	InvoiceProdResult invoiceProductResult;
+	InvoiceBalken invoiceBalken;
 	DocumentFilter filter = new UppercaseDocumentFilter();
 
-	List<InvPrProduct> listOfInvPrProduct = null;
+	List<InvBalkenProduct> listOfInvBalkenProduct = null;
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
 
-	JScrollPane scrollPaneInvPrProduct;
-	JTable tblInvPrProduct;
+	JScrollPane scrollPaneInvBalkenProduct;
+	JTable tblInvBalkenProduct;
 
-	InvPrProductTableModel payPrProductTableModel = null;
+	InvBalkenProductTableModel payPrProductTableModel = null;
 
-	private InvoiceProdResultCreatePanel invProdResultCreatePanel;
+	private InvoiceBalkenCreatePanel invProdResultCreatePanel;
 
-	JLabel lblInvPrProduct;
+	JLabel lblInvBalkenProduct;
 
-	public InvoiceProdResultCreatePanel() {
+	public InvoiceBalkenCreatePanel() {
 		invProdResultCreatePanel = this;
-		invoiceProductResult = new InvoiceProdResult();
+		invoiceBalken = new InvoiceBalken();
 
 		setLayout(null);
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(800, 750));
 		panel.setLayout(null);
 
-		lblBreadcrumb = new JLabel("ERP > Finance > Invoice Hasil Produksi");
+		lblBreadcrumb = new JLabel("ERP > Finance > Invoice Balken");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 500, 25);
 		panel.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("Input Invoice Hasil Produksi");
+		lblHeader = new JLabel("Input Invoice Balken");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 25);
 		panel.add(lblHeader);
 
-		lblPurchaseProductResultCode = new JLabel(
-				"Kode Pembelian ");
-		lblPurchaseProductResultCode.setBounds(50, 80, 150, 25);
-		panel.add(lblPurchaseProductResultCode);
-
-		txtPurchaseProductResultCode = new JTextField();
-		txtPurchaseProductResultCode.setBounds(220, 80, 150, 25);
-		txtPurchaseProductResultCode.setDocument(new JTextFieldLimit(15));
-		((AbstractDocument) txtPurchaseProductResultCode.getDocument())
-				.setDocumentFilter(filter);
-		txtPurchaseProductResultCode.setEnabled(false);
-		panel.add(txtPurchaseProductResultCode);
-
-		lblErrorPurchaseProductResultCode = new JLabel();
-		lblErrorPurchaseProductResultCode.setForeground(Color.RED);
-		lblErrorPurchaseProductResultCode.setBounds(425, 80, 225, 25);
-		panel.add(lblErrorPurchaseProductResultCode);
-
-		lblPurchaseDate = new JLabel(
-				"Tanggal Pembelian ");
-		lblPurchaseDate.setBounds(50, 110, 150, 25);
-		panel.add(lblPurchaseDate);
-
-		dcPurchaseDate = new JDateChooser();
-		dcPurchaseDate.setBounds(220, 110, 150, 25);
-		dcPurchaseDate.setEnabled(false);
-		dcPurchaseDate.setDateFormatString("dd-MM-yyyy");
-		panel.add(dcPurchaseDate);
-
-		lblErrorPurchaseDate = new JLabel();
-		lblErrorPurchaseDate.setForeground(Color.RED);
-		lblErrorPurchaseDate.setBounds(425, 110, 225, 25);
-		panel.add(lblErrorPurchaseDate);
-
 		lblReceiveProductResultCode = new JLabel(
 				"Kode Penerimaan ");
-		lblReceiveProductResultCode.setBounds(50, 140, 150, 25);
+		lblReceiveProductResultCode.setBounds(50, 80, 150, 25);
 		panel.add(lblReceiveProductResultCode);
 
 		txtReceiveProductResultCode = new JTextField();
-		txtReceiveProductResultCode.setBounds(220, 140, 150, 25);
+		txtReceiveProductResultCode.setBounds(220, 80, 150, 25);
 		txtReceiveProductResultCode.setDocument(new JTextFieldLimit(15));
 		((AbstractDocument) txtReceiveProductResultCode.getDocument())
 				.setDocumentFilter(filter);
@@ -194,109 +151,109 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 
 		lblErrorReceiveProductResultCode = new JLabel();
 		lblErrorReceiveProductResultCode.setForeground(Color.RED);
-		lblErrorReceiveProductResultCode.setBounds(425, 140, 225, 25);
+		lblErrorReceiveProductResultCode.setBounds(425, 80, 225, 25);
 		panel.add(lblErrorReceiveProductResultCode);
 
 		lblReceiveDate = new JLabel(
 				"Tanggal Penerimaan");
-		lblReceiveDate.setBounds(50, 170, 150, 25);
+		lblReceiveDate.setBounds(50, 110, 150, 25);
 		panel.add(lblReceiveDate);
 
 		dcReceiveDate = new JDateChooser();
-		dcReceiveDate.setBounds(220, 170, 150, 25);
+		dcReceiveDate.setBounds(220, 110, 150, 25);
 		dcReceiveDate.setEnabled(false);
 		dcReceiveDate.setDateFormatString("dd-MM-yyyy");
 		panel.add(dcReceiveDate);
 
 		lblErrorReceiveDate = new JLabel();
 		lblErrorReceiveDate.setForeground(Color.RED);
-		lblErrorReceiveDate.setBounds(425, 170, 225, 25);
+		lblErrorReceiveDate.setBounds(425, 110, 225, 25);
 		panel.add(lblErrorReceiveDate);
 		
 		lblDueDate = new JLabel(
 				"<html>Tanggal Jatuh Tempo <font color=\"red\">*</font></html>");
-		lblDueDate.setBounds(50, 200, 150, 25);
+		lblDueDate.setBounds(50, 140, 150, 25);
 		panel.add(lblDueDate);
 
 		dcDueDate = new JDateChooser();
-		dcDueDate.setBounds(220, 200, 150, 25);
+		dcDueDate.setBounds(220, 140, 150, 25);
 		dcDueDate.setDateFormatString("dd-MM-yyyy");
 		panel.add(dcDueDate);
 
 		lblErrorDueDate = new JLabel();
 		lblErrorDueDate.setForeground(Color.RED);
-		lblErrorDueDate.setBounds(425, 200, 225, 25);
+		lblErrorDueDate.setBounds(425, 140, 225, 25);
 		panel.add(lblErrorDueDate);
 		
 		lblSupplier = new JLabel("Supplier");
-		lblSupplier.setBounds(50, 230, 150, 25);
+		lblSupplier.setBounds(50, 170, 150, 25);
 		panel.add(lblSupplier);
 
 		txtSupplier = new JTextField();
-		txtSupplier.setBounds(220, 230, 150, 25);
+		txtSupplier.setBounds(220, 170, 150, 25);
 		txtSupplier.setEnabled(false);
 		panel.add(txtSupplier);
 
 		lblErrorSupplier = new JLabel();
 		lblErrorSupplier.setForeground(Color.RED);
-		lblErrorSupplier.setBounds(425, 230, 225, 25);
+		lblErrorSupplier.setBounds(425, 170, 225, 25);
 		panel.add(lblErrorSupplier);
 		
 		lblCurrency = new JLabel("Kurs");
-		lblCurrency.setBounds(50, 260, 150, 25);
+		lblCurrency.setBounds(50, 200, 150, 25);
 		panel.add(lblCurrency);
 
 		txtCurrency = new JTextField();
-		txtCurrency.setBounds(220, 260, 150, 25);
+		txtCurrency.setBounds(220, 200, 150, 25);
 		txtCurrency.setEnabled(false);
 		panel.add(txtCurrency);
 
 		lblErrorCurrency = new JLabel();
 		lblErrorCurrency.setForeground(Color.RED);
-		lblErrorCurrency.setBounds(425, 260, 225, 25);
+		lblErrorCurrency.setBounds(425, 200, 225, 25);
 		panel.add(lblErrorCurrency);
 		
 		lblCurrencyRate = new JLabel("Kurs Rate");
-		lblCurrencyRate.setBounds(50, 290, 150, 25);
+		lblCurrencyRate.setBounds(50, 230, 150, 25);
 		panel.add(lblCurrencyRate);
 
 		txtCurrencyRate = new NumberField(10);
-		txtCurrencyRate.setBounds(220, 290, 150, 25);
+		txtCurrencyRate.setBounds(220, 230, 150, 25);
 		panel.add(txtCurrencyRate);
 
 		lblErrorCurrencyRate = new JLabel();
 		lblErrorCurrencyRate.setForeground(Color.RED);
-		lblErrorCurrencyRate.setBounds(425, 290, 225, 25);
+		lblErrorCurrencyRate.setBounds(425, 230, 225, 25);
 		panel.add(lblErrorCurrencyRate);
 		
 		lblPaymentStatus = new JLabel("Status Pembayaran");
-		lblPaymentStatus.setBounds(50, 320, 150, 25);
+		lblPaymentStatus.setBounds(50, 260, 150, 25);
 		panel.add(lblPaymentStatus);
 
 		String paymentStatus[]={"Ya", "Belum"}; 
 		cbPaymentStatus = new JComboBox<String>(paymentStatus);
-		cbPaymentStatus.setBounds(220, 320, 150, 25);
+		cbPaymentStatus.setBounds(220, 260, 150, 25);
 		panel.add(cbPaymentStatus);
 
 		lblErrorPaymentStatus = new JLabel();
 		lblErrorPaymentStatus.setForeground(Color.RED);
-		lblErrorPaymentStatus.setBounds(425, 320, 225, 25);
+		lblErrorPaymentStatus.setBounds(425, 260, 225, 25);
 		panel.add(lblErrorPaymentStatus);
 
 		lblPaymentDate = new JLabel(
 				"Tanggal Pembayaran");
-		lblPaymentDate.setBounds(50, 350, 150, 25);
+		lblPaymentDate.setBounds(50, 290, 150, 25);
 		panel.add(lblPaymentDate);
 
 		dcPaymentDate = new JDateChooser();
-		dcPaymentDate.setBounds(220, 350, 150, 25);
+		dcPaymentDate.setBounds(220, 290, 150, 25);
 		dcPaymentDate.setEnabled(false);
 		dcPaymentDate.setDateFormatString("dd-MM-yyyy");
 		panel.add(dcPaymentDate);
 
 		lblErrorPaymentDate = new JLabel();
 		lblErrorPaymentDate.setForeground(Color.RED);
-		lblErrorPaymentDate.setBounds(425, 350, 225, 25);
+		lblErrorPaymentDate.setBounds(425, 290, 225, 25);
 		panel.add(lblErrorPaymentDate);
 		
 		cbPaymentStatus.addActionListener (new ActionListener () {
@@ -309,16 +266,16 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 		    }
 		});
 
-		scrollPaneInvPrProduct = new JScrollPane();
-		scrollPaneInvPrProduct.setBounds(50, 390, 975, 150);
-		panel.add(scrollPaneInvPrProduct);
+		scrollPaneInvBalkenProduct = new JScrollPane();
+		scrollPaneInvBalkenProduct.setBounds(50, 390, 975, 150);
+		panel.add(scrollPaneInvBalkenProduct);
 
-		listOfInvPrProduct = new ArrayList<InvPrProduct>();
-		payPrProductTableModel = new InvPrProductTableModel(listOfInvPrProduct);
-		tblInvPrProduct = new JTable(payPrProductTableModel);
-		tblInvPrProduct.setBorder(new EmptyBorder(5, 5, 5, 5));
-		tblInvPrProduct.setFocusable(false);
-		tblInvPrProduct.addMouseListener(new MouseAdapter() {
+		listOfInvBalkenProduct = new ArrayList<InvBalkenProduct>();
+		payPrProductTableModel = new InvBalkenProductTableModel(listOfInvBalkenProduct);
+		tblInvBalkenProduct = new JTable(payPrProductTableModel);
+		tblInvBalkenProduct.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tblInvBalkenProduct.setFocusable(false);
+		tblInvBalkenProduct.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -326,13 +283,13 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 7) {
-						//showEditInvPrProductDialog(listOfInvPrProduct.get(row), invProdResultCreatePanel, row);
+					if (column == 6) {
+						showEditInvBalkenProductDialog(listOfInvBalkenProduct.get(row), invProdResultCreatePanel, row);
 					}
 				}
 			}
 		});
-		scrollPaneInvPrProduct.setViewportView(tblInvPrProduct);
+		scrollPaneInvBalkenProduct.setViewportView(tblInvBalkenProduct);
 		
 		lblSubtotal = new JLabel("Subtotal");
 		lblSubtotal.setBounds(800, 550, 150, 25);
@@ -429,7 +386,7 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 			public void focusLost(FocusEvent arg0) {
 				calculateIdrPrice();
 
-				refreshTableInvPrProduct();
+				refreshTableInvBalkenProduct();
 			}
         });
 
@@ -477,7 +434,7 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 				int response = DialogBox.showCloseChoice();
 				if (response == JOptionPane.YES_OPTION) {
 					MainPanel
-							.changePanel("module.invoiceprodresult.ui.InvoiceProdResultViewPanel", invoiceProductResult);
+							.changePanel("module.paymentprodresult.ui.InvoiceBalkenViewPanel", invoiceBalken);
 				}
 			}
 		});
@@ -520,54 +477,52 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 		
 	}
 	
-	protected void showEditInvPrProductDialog(InvPrProduct payPrProduct,
-			InvoiceProdResultCreatePanel payPrProductCreatePanel, Integer index) {
-//		InvPrProductDialog payPrProductDialog = new InvPrProductDialog(true, payPrProduct, payPrProductCreatePanel, index);
-//		payPrProductDialog.setTitle("Edit Harga Produk");
-//		payPrProductDialog.setLocationRelativeTo(null);
-//		payPrProductDialog.setVisible(true);
+	protected void showEditInvBalkenProductDialog(InvBalkenProduct invBalkenProduct,
+			InvoiceBalkenCreatePanel invoiceBalkenCreatePanel, Integer index) {
+		InvBalkenProductDialog invBalkenProductDialog = new InvBalkenProductDialog(true, invBalkenProduct, invoiceBalkenCreatePanel, index);
+		invBalkenProductDialog.setTitle("Edit Harga Produk");
+		invBalkenProductDialog.setLocationRelativeTo(null);
+		invBalkenProductDialog.setVisible(true);
 	}
 	
 	protected void doSave() {
-		if(AppConstants.SOURCE_RECEIVE.equals(invoiceProductResult.getSource())) {
+		if(AppConstants.SOURCE_RECEIVED.equals(invoiceBalken.getSource())) {
 			try {
-				invoiceProductResult = new InvoiceProdResult();
-				invoiceProductResult.setPprCode(txtPurchaseProductResultCode.getText());
-				invoiceProductResult.setRprCode(txtReceiveProductResultCode.getText());
-				invoiceProductResult.setDueDate(dcDueDate.getDate());
-				invoiceProductResult.setRate(new BigDecimal(txtCurrencyRate.getText()));
-				invoiceProductResult.setSubtotal(new BigDecimal(txtSubtotal.getText()));
-				invoiceProductResult.setDisc(new BigDecimal(txtDiscount.getText()));
-				invoiceProductResult.setTax(new BigDecimal(txtTax.getText()));
-				invoiceProductResult.setOtherFee(new BigDecimal(txtOtherFee.getText()));
-				invoiceProductResult.setTotal(new BigDecimal(txtTotal.getText()));
-				invoiceProductResult.setPaymentStatus(cbPaymentStatus.getSelectedItem().toString());
-				invoiceProductResult.setPaymentDate(dcPaymentDate.getDate());
+				invoiceBalken = new InvoiceBalken();
+				invoiceBalken.setReceivedCode(txtReceiveProductResultCode.getText());
+				invoiceBalken.setDueDate(dcDueDate.getDate());
+				invoiceBalken.setRate(new BigDecimal(txtCurrencyRate.getText()));
+				invoiceBalken.setSubtotal(new BigDecimal(txtSubtotal.getText()));
+				invoiceBalken.setDisc(new BigDecimal(txtDiscount.getText()));
+				invoiceBalken.setTax(new BigDecimal(txtTax.getText()));
+				invoiceBalken.setOtherFee(new BigDecimal(txtOtherFee.getText()));
+				invoiceBalken.setTotal(new BigDecimal(txtTotal.getText()));
+				invoiceBalken.setPaymentStatus(cbPaymentStatus.getSelectedItem().toString());
+				invoiceBalken.setPaymentDate(dcPaymentDate.getDate());
 				
-				ServiceFactory.getInvoiceProductResultBL().save(invoiceProductResult, listOfInvPrProduct);
+				ServiceFactory.getInvoiceBalkenBL().save(invoiceBalken, listOfInvBalkenProduct);
 				DialogBox.showInsert();
-				MainPanel.changePanel("module.invoiceprodresult.ui.InvoiceProdResultListPanel");
+				MainPanel.changePanel("module.invoicebalken.ui.InvoiceBalkenListPanel");
 			} catch (Exception e) {
 				e.printStackTrace();
 				LOGGER.error(e.getMessage());
 				DialogBox.showErrorException();
 			}
-		} else if(AppConstants.SOURCE_INVOICE.equals(invoiceProductResult.getSource())) {
+		} else if(AppConstants.SOURCE_INVOICE_BALKEN.equals(invoiceBalken.getSource())) {
 			try {
-				invoiceProductResult.setPprCode(txtPurchaseProductResultCode.getText());
-				invoiceProductResult.setRprCode(txtReceiveProductResultCode.getText());
-				invoiceProductResult.setDueDate(dcDueDate.getDate());
-				invoiceProductResult.setRate(new BigDecimal(txtCurrencyRate.getText()));
-				invoiceProductResult.setSubtotal(new BigDecimal(txtSubtotal.getText()));
-				invoiceProductResult.setDisc(new BigDecimal(txtDiscount.getText()));
-				invoiceProductResult.setTax(new BigDecimal(txtTax.getText()));
-				invoiceProductResult.setOtherFee(new BigDecimal(txtOtherFee.getText()));
-				invoiceProductResult.setTotal(new BigDecimal(txtTotal.getText()));
-				invoiceProductResult.setPaymentStatus(cbPaymentStatus.getSelectedItem().toString());
-				invoiceProductResult.setPaymentDate(dcPaymentDate.getDate());
-				ServiceFactory.getInvoiceProductResultBL().update(invoiceProductResult, listOfInvPrProduct);
+				invoiceBalken.setReceivedCode(txtReceiveProductResultCode.getText());
+				invoiceBalken.setDueDate(dcDueDate.getDate());
+				invoiceBalken.setRate(new BigDecimal(txtCurrencyRate.getText()));
+				invoiceBalken.setSubtotal(new BigDecimal(txtSubtotal.getText()));
+				invoiceBalken.setDisc(new BigDecimal(txtDiscount.getText()));
+				invoiceBalken.setTax(new BigDecimal(txtTax.getText()));
+				invoiceBalken.setOtherFee(new BigDecimal(txtOtherFee.getText()));
+				invoiceBalken.setTotal(new BigDecimal(txtTotal.getText()));
+				invoiceBalken.setPaymentStatus(cbPaymentStatus.getSelectedItem().toString());
+				invoiceBalken.setPaymentDate(dcPaymentDate.getDate());
+				ServiceFactory.getInvoiceBalkenBL().update(invoiceBalken, listOfInvBalkenProduct);
 				DialogBox.showEdit();
-				MainPanel.changePanel("module.invoiceprodresult.ui.InvoiceProdResultViewPanel", invoiceProductResult);
+				MainPanel.changePanel("module.invoicebalken.ui.InvoiceBalkenViewPanel", invoiceBalken);
 			} catch (Exception e) {
 				e.printStackTrace();
 				LOGGER.error(e.getMessage());
@@ -579,25 +534,13 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 	protected boolean doValidate() {
 		boolean isValid = true;
 
-		lblErrorPurchaseProductResultCode.setText("");
 		lblErrorReceiveProductResultCode.setText("");
-		lblErrorPurchaseDate.setText("");
 		lblErrorReceiveDate.setText("");
 		lblErrorDueDate.setText("");
 		lblErrorSupplier.setText("");
 		lblErrorCurrency.setText("");
 		lblErrorCurrencyRate.setText("");
 		lblErrorPaymentStatus.setText("");
-		
-		if (txtPurchaseProductResultCode.getText() == null || txtPurchaseProductResultCode.getText().length() == 0) {
-			lblErrorPurchaseProductResultCode.setText("Textbox Kode Pembelian harus diisi.");
-			isValid = false;
-		}
-		
-		if (dcPurchaseDate.getDate() == null) {
-			lblErrorPurchaseDate.setText("Tanggal Pembelian harus dipilih.");
-			isValid = false;
-		}
 		
 		if (txtReceiveProductResultCode.getText() == null || txtReceiveProductResultCode.getText().length() == 0) {
 			lblErrorReceiveProductResultCode.setText("Textbox Kode Penerimaan harus diisi.");
@@ -639,7 +582,7 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 
 	protected String doCalculateSubTotal() {
 		BigDecimal subtotal = new BigDecimal("0.00");
-		for (InvPrProduct pprProduct : listOfInvPrProduct) {
+		for (InvBalkenProduct pprProduct : listOfInvBalkenProduct) {
 			subtotal = subtotal.add(pprProduct.getSubtotal());
 		}
 
@@ -649,7 +592,7 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 	protected void calculateIdrPrice() {
 		BigDecimal rate = new BigDecimal(txtCurrencyRate.getText());
 		
-		for (InvPrProduct pprProduct : listOfInvPrProduct) {
+		for (InvBalkenProduct pprProduct : listOfInvBalkenProduct) {
 			BigDecimal newIdrPrice = new BigDecimal("0.00");
 			newIdrPrice = pprProduct.getPrice().multiply(rate).setScale(2, BigDecimal.ROUND_DOWN);
 			pprProduct.setIdrPrice(newIdrPrice);
@@ -666,14 +609,14 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 	 * @author TSI
 	 *
 	 */
-	class InvPrProductTableModel extends AbstractTableModel {
+	class InvBalkenProductTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 1L;
 
-		private List<InvPrProduct> listOfInvPrProduct;
+		private List<InvBalkenProduct> listOfInvBalkenProduct;
 
-		public InvPrProductTableModel(List<InvPrProduct> listOfInvPrProduct) {
-			this.listOfInvPrProduct = listOfInvPrProduct;
+		public InvBalkenProductTableModel(List<InvBalkenProduct> listOfInvBalkenProduct) {
+			this.listOfInvBalkenProduct = listOfInvBalkenProduct;
 		}
 
 		/**
@@ -682,7 +625,7 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 		 * @return int
 		 */
 		public int getRowCount() {
-			return listOfInvPrProduct.size();
+			return listOfInvBalkenProduct.size();
 		}
 
 		/**
@@ -702,24 +645,22 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 		 * @return ({@link PPRProduct}) Object
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			InvPrProduct p = listOfInvPrProduct.get(rowIndex);
+			InvBalkenProduct p = listOfInvBalkenProduct.get(rowIndex);
 			switch (columnIndex) {
 			case 0:
 				return p.getProductCode();
 			case 1:
 				return p.getProduct().getProductName();
 			case 2:
-				return p.getQtyPurchase();
-			case 3:
 				return p.getQtyReceive();
-			case 4:
+			case 3:
 				return p.getPrice();
-			case 5:
+			case 4:
 				return p.getIdrPrice();
-			case 6:
+			case 5:
 				return p.getSubtotal();
-//			case 7:
-//				return "<html><u>Edit</u></html>";
+			case 6:
+				return "<html><u>Edit</u></html>";
 			default:
 				return "";
 			}
@@ -745,7 +686,7 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 			case 5:
 				return BigDecimal.class;
 			case 6:
-				return BigDecimal.class;
+				return String.class;
 			default:
 				return String.class;
 			}
@@ -765,17 +706,15 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 			case 1:
 				return "Nama Produk";
 			case 2:
-				return "Qty Pembelian (m3)";
-			case 3:
 				return "Qty Penerimaan (m3)";
-			case 4:
+			case 3:
 				return "Harga Satuan";
-			case 5:
+			case 4:
 				return "Harga Satuan (IDR)";
-			case 6:
+			case 5:
 				return "Subtotal";
-//			case 7:
-//				return "Tindakan";
+			case 6:
+				return "Tindakan";
 			default:
 				return "";
 			}
@@ -783,9 +722,9 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 
 	}
 
-	public void refreshTableInvPrProduct() {
+	public void refreshTableInvBalkenProduct() {
 		try {
-			tblInvPrProduct.setModel(new InvPrProductTableModel(listOfInvPrProduct));
+			tblInvBalkenProduct.setModel(new InvBalkenProductTableModel(listOfInvBalkenProduct));
 			
 			String subtotal = doCalculateSubTotal();
 
@@ -805,83 +744,81 @@ public class InvoiceProdResultCreatePanel extends JPanel implements Bridging {
 
 	@Override
 	public void invokeObjects(Object... objects) {
-		this.invoiceProductResult = (InvoiceProdResult) objects[0];
+		this.invoiceBalken = (InvoiceBalken) objects[0];
 
-		loadData(invoiceProductResult.getId(), invoiceProductResult.getSource());
+		loadData(invoiceBalken.getId(), invoiceBalken.getSource());
 	}
 
 	protected void loadData(Integer id, String source) {
 		try {
-			if(AppConstants.SOURCE_INVOICE.equals(source)) {
-				invoiceProductResult = ServiceFactory.getInvoiceProductResultBL().getPayPrById(id);
-				if (invoiceProductResult != null) {
-					listOfInvPrProduct = ServiceFactory.getInvoiceProductResultBL().getInvPrProductByPPRCode(invoiceProductResult.getId());
+			if(AppConstants.SOURCE_INVOICE_BALKEN.equals(source)) {
+				invoiceBalken = ServiceFactory.getInvoiceBalkenBL().getPayPrById(id);
+				if (invoiceBalken != null) {
+					listOfInvBalkenProduct = ServiceFactory.getInvoiceBalkenBL().getInvBalkenProductByPPRCode(invoiceBalken.getId());
 				}
 				btnSave.setText("Ubah");
 			} 
-			else if(AppConstants.SOURCE_RECEIVE.equals(source)) {
-				invoiceProductResult = ServiceFactory.getInvoiceProductResultBL().getRPRById(id);
+			else if(AppConstants.SOURCE_RECEIVED.equals(source)) {
+				invoiceBalken = ServiceFactory.getInvoiceBalkenBL().getRPRById(id);
 				
-				if (invoiceProductResult != null) {
-					listOfInvPrProduct = ServiceFactory.getInvoiceProductResultBL().getInvPrProductByRPRCode(invoiceProductResult.getRprCode());
+				if (invoiceBalken != null) {
+					listOfInvBalkenProduct = ServiceFactory.getInvoiceBalkenBL().getInvBalkenProductByRPRCode(invoiceBalken.getReceivedCode());
 				}
 				btnSave.setText("Simpan");
 			}
 		
-			if (invoiceProductResult != null) {
-				txtPurchaseProductResultCode.setText(invoiceProductResult.getPprCode());
-				dcPurchaseDate.setDate(invoiceProductResult.getPurchaseDate());
-				txtReceiveProductResultCode.setText(invoiceProductResult.getRprCode());
-				dcReceiveDate.setDate(invoiceProductResult.getReceiveDate());
-				dcDueDate.setDate(invoiceProductResult.getDueDate());
-				txtSupplier.setText(invoiceProductResult.getSuppName());
-				txtCurrency.setText(invoiceProductResult.getCurrency());
-				dcPaymentDate.setDate(invoiceProductResult.getPaymentDate());
+			if (invoiceBalken != null) {
+				txtReceiveProductResultCode.setText(invoiceBalken.getReceivedCode());
+				dcReceiveDate.setDate(invoiceBalken.getReceivedDate());
+				dcDueDate.setDate(invoiceBalken.getDueDate());
+				txtSupplier.setText(invoiceBalken.getSuppName());
+				txtCurrency.setText(invoiceBalken.getCurrency());
+				dcPaymentDate.setDate(invoiceBalken.getPaymentDate());
 				
-				if(invoiceProductResult.getRate() == null) {
+				if(invoiceBalken.getRate() == null) {
 					txtCurrencyRate.setText(new BigDecimal("1").toString());
 				} else {
-					txtCurrencyRate.setText(invoiceProductResult.getRate().setScale(2, BigDecimal.ROUND_DOWN).toString());
+					txtCurrencyRate.setText(invoiceBalken.getRate().setScale(2, BigDecimal.ROUND_DOWN).toString());
 				}
 				
-				if(invoiceProductResult.getSubtotal() == null) {
+				if(invoiceBalken.getSubtotal() == null) {
 					String subtotal = doCalculateSubTotal();
 					txtSubtotal.setText(subtotal);
 				} else {
-					txtSubtotal.setText(invoiceProductResult.getSubtotal().toString());
+					txtSubtotal.setText(invoiceBalken.getSubtotal().toString());
 				}
 				
-				if(invoiceProductResult.getDisc() == null) {
+				if(invoiceBalken.getDisc() == null) {
 					txtDiscount.setText(new BigDecimal("0.00").toString());
 				} else {
-					txtDiscount.setText(invoiceProductResult.getDisc().setScale(2, BigDecimal.ROUND_DOWN).toString());
+					txtDiscount.setText(invoiceBalken.getDisc().setScale(2, BigDecimal.ROUND_DOWN).toString());
 				}
 				
-				if(invoiceProductResult.getTax() == null) {
+				if(invoiceBalken.getTax() == null) {
 					txtTax.setText(new BigDecimal("0.00").toString());
 				} else {
-					txtTax.setText(invoiceProductResult.getTax().setScale(2, BigDecimal.ROUND_DOWN).toString());
+					txtTax.setText(invoiceBalken.getTax().setScale(2, BigDecimal.ROUND_DOWN).toString());
 				}
 				
-				if(invoiceProductResult.getOtherFee() == null) {
+				if(invoiceBalken.getOtherFee() == null) {
 					txtOtherFee.setText(new BigDecimal("0.00").toString());
 				} else {
-					txtOtherFee.setText(invoiceProductResult.getOtherFee().setScale(2, BigDecimal.ROUND_DOWN).toString());
+					txtOtherFee.setText(invoiceBalken.getOtherFee().setScale(2, BigDecimal.ROUND_DOWN).toString());
 				}
 				
-				if(invoiceProductResult.getTotal() == null) {
+				if(invoiceBalken.getTotal() == null) {
 					String total = calculateTotal(txtSubtotal.getText(), txtTax.getText()
 							, txtDiscount.getText(), txtOtherFee.getText()).toString();
 					txtTotal.setText(total);
 				} else {
-					txtTotal.setText(invoiceProductResult.getTotal().toString());
+					txtTotal.setText(invoiceBalken.getTotal().toString());
 				}
 				
-				cbPaymentStatus.setSelectedItem(invoiceProductResult.getPaymentStatus());
+				cbPaymentStatus.setSelectedItem(invoiceBalken.getPaymentStatus());
 				
-				refreshTableInvPrProduct();
+				refreshTableInvBalkenProduct();
 				
-				if(AppConstants.FINAL.equals(invoiceProductResult.getStatus()) && AppConstants.SOURCE_INVOICE.equals(source))
+				if(AppConstants.FINAL.equals(invoiceBalken.getStatus()) && AppConstants.SOURCE_INVOICE.equals(source))
 				{
 					btnSave.setEnabled(false);
 				}

@@ -72,8 +72,11 @@ public class MenuPanel extends JPanel {
 		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Finance", "Finance");
-		menu.addNewLeafTo("Finance", "Invoice", "Invoice", "module.invoiceprodresult.ui.InvoiceProdResultListPanel");
-		menu.addNewLeafTo("Finance", "Pembayaran", "Pembayaran", "module.paymentprodresult.ui.PaymentProdResultListPanel");
+		menu.addNewLeafTo("Finance", "Invoice Hasil Produksi", "Invoice Hasil Produksi", "module.invoiceprodresult.ui.InvoiceProdResultListPanel");
+		menu.addNewLeafTo("Finance", "Pembayaran Hasil Produksi", "Pembayaran Hasil Produksi", "module.paymentprodresult.ui.PaymentProdResultListPanel");
+		menu.addNewLeafTo("Finance", "Invoice Balken", "Invoice Balken", "module.invoicebalken.ui.InvoiceBalkenListPanel");
+		menu.addNewLeafTo("Finance", "Pembayaran Balken", "Pembayaran Balken", "module.paymentbalken.ui.PaymentBalkenListPanel");
+		
 		menu.calculateAvaiableSpace();
 
 		menu.addNewMenu("Konfigurasi", "Konfigurasi");

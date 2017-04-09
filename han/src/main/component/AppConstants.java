@@ -83,4 +83,7 @@ public class AppConstants {
 	public static final String SOURCE_INVOICE = "INVOICE";
 	public static final String SOURCE_PAYMENT = "PAYMENT";
 	public static final String SOURCE_RECEIVE = "RECEIVE";
+	public static final String SOURCE_INVOICE_BALKEN = "INVOICE_BALKEN";
+	public static final String SOURCE_RECEIVED = "RECEIVED";
+	public static final String SOURCE_PAYMENT_BALKEN = "PAYMENT_BALKEN";
 }
