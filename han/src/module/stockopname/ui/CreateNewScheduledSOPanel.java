@@ -133,7 +133,7 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 		productBtn.setBounds(30,260,150,30);
 		add(productBtn);
 		
-		soProductTable = new JTable(new SoScheduleTableModel(new ArrayList<>()));
+		soProductTable = new JTable(new SoScheduleTableModel(new ArrayList<SetSoScheduledProduct>()));
 		
 		scrollPane = new JScrollPane(soProductTable);
 		scrollPane.setBounds(30,300,1000,250);

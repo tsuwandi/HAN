@@ -4,6 +4,12 @@ public class StockOpnameProduct {
 	int id;
 	int stockOpnameID;
 	String productCode;
+	String productName;
+	int productID;
+	String productCategory;
+	int productCategoryID;
+	int productUomID;
+	String uom;
 	String location;
 	double qtySystem;
 	double qtyActual;
@@ -11,6 +17,8 @@ public class StockOpnameProduct {
 	double valueSystem;
 	double valueActual;
 	double selisihValue;
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -70,6 +78,42 @@ public class StockOpnameProduct {
 	}
 	public void setSelisihValue(double selisihValue) {
 		this.selisihValue = selisihValue;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	public int getProductID() {
+		return productID;
+	}
+	public void setProductID(int productID) {
+		this.productID = productID;
+	}
+	public String getProductCategory() {
+		return productCategory;
+	}
+	public void setProductCategory(String productCategory) {
+		this.productCategory = productCategory;
+	}
+	public int getProductCategoryID() {
+		return productCategoryID;
+	}
+	public void setProductCategoryID(int productCategoryID) {
+		this.productCategoryID = productCategoryID;
+	}
+	public int getProductUomID() {
+		return productUomID;
+	}
+	public void setProductUomID(int productUomID) {
+		this.productUomID = productUomID;
+	}
+	public String getUom() {
+		return uom;
+	}
+	public void setUom(String uom) {
+		this.uom = uom;
 	}
 	
 }

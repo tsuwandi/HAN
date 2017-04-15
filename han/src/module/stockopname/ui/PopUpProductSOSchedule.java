@@ -80,7 +80,7 @@ public class PopUpProductSOSchedule extends JDialog{
 		productNameField.setBounds(190,100,150,30);
 		add(productNameField);
 
-		productSOTable = new JTable(new ProductTableModel(new ArrayList<>()));
+		productSOTable = new JTable(new ProductTableModel(new ArrayList<ProductSO>()));
 		
 		picScrollPane = new JScrollPane(productSOTable);
 		picScrollPane.setBounds(20,140,450,200);
