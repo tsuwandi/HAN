@@ -57,7 +57,11 @@ public class StockOpnameBL {
 	}
 	
 	public List<SetSOScheduled> getSetSoSchedule() throws SQLException{
-		return setSOScheduleDAO.getAll();
+		List<SetSOScheduled> setSoScheduled = setSOScheduleDAO.getAll();
+		for(SetSOScheduled setSO : setSoScheduled){
+			if(getSetSoScheduledProduct(setSO.getId())!=null)setSO.setSetSoScheduledProducts(getSetSoScheduledProduct(setSO.getId()));
+		}
+		return setSoScheduled;
 	}
 	
 	public List<SetSoScheduledProduct> getSetSoScheduledProduct(int setSOID) throws SQLException{

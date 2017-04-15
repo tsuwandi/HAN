@@ -41,7 +41,6 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 	private JLabel soDayErrorLbl;
 	private JLabel soDateErrorLbl;
 	
-	
 	private TextField soNameField;
 	private JComboBox<String> soReccurenceCmb;
 	private JComboBox<String> soDayCmb;

@@ -1,6 +1,7 @@
 package module.stockopname.model;
 
 public class StockOpnameProduct {
+	boolean flag;
 	int id;
 	int stockOpnameID;
 	String productCode;
@@ -19,6 +20,12 @@ public class StockOpnameProduct {
 	double selisihValue;
 	
 	
+	public boolean isFlag() {
+		return flag;
+	}
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
 	public int getId() {
 		return id;
 	}

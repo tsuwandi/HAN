@@ -21,7 +21,7 @@ public class SetSoScheduledDAO {
 	private PreparedStatement updateDeleteStatement;
 	private PreparedStatement lastIDStatement;
 	
-	private String getAllQuery = "SELECT a.id, so_name, reccurence, day, date, so_type FROM set_so_schedule  WHERE deleted_date IS NULL";
+	private String getAllQuery = "SELECT id, so_name, reccurence, day, date, so_type FROM set_so_schedule  WHERE deleted_date IS NULL";
 	
 	private String updateDeleteQuery = "UPDATE set_so_schedule SET deleted_date = ? , deleted_by=? WHERE id=?";
 	

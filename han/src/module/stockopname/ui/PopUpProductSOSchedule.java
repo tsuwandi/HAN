@@ -23,6 +23,8 @@ import org.apache.log4j.Logger;
 import main.component.TextField;
 import model.User;
 import module.stockopname.model.ProductSO;
+import module.stockopname.model.SetSOScheduled;
+import module.stockopname.model.SetSoScheduledProduct;
 
 public class PopUpProductSOSchedule extends JDialog{
 	Logger log = LogManager.getLogger(PopUpProductSOSchedule.class.getName());
@@ -80,7 +82,7 @@ public class PopUpProductSOSchedule extends JDialog{
 		productNameField.setBounds(190,100,150,30);
 		add(productNameField);
 
-		productSOTable = new JTable(new ProductTableModel(new ArrayList<ProductSO>()));
+		productSOTable = new JTable(new ProductTableModel(new ArrayList<SetSoScheduledProduct>()));
 		
 		picScrollPane = new JScrollPane(productSOTable);
 		picScrollPane.setBounds(20,140,450,200);
@@ -117,9 +119,9 @@ public class PopUpProductSOSchedule extends JDialog{
 	
 
 	class ProductTableModel extends AbstractTableModel {
-	    private List<ProductSO> productSOs;
+	    private List<SetSoScheduledProduct> productSOs;
 	    
-	    public ProductTableModel(List<ProductSO> productSOs) {
+	    public ProductTableModel(List<SetSoScheduledProduct> productSOs) {
 	        this.productSOs = productSOs;
 	    }
 	    
@@ -159,12 +161,12 @@ public class PopUpProductSOSchedule extends JDialog{
 	     * @return ({@link User}) Object 
 	     */
 	    public Object getValueAt(int rowIndex, int columnIndex) {
-	    	ProductSO p = productSOs.get(rowIndex);
+	    	SetSoScheduledProduct p = productSOs.get(rowIndex);
 	        switch(columnIndex){
 	        	case 0 :
 	        		return p.isFlag();
 	            case 1 : 
-	                return p.getProductCategoryName();
+	                return p.getProductCategory();
 	            case 2 :
 	                return p.getProductCode();
 	            case 3 :

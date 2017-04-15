@@ -1,6 +1,7 @@
 package module.stockopname.model;
 
 public class SetSoScheduledProduct {
+	boolean flag;
 	int id;
 	int setSOScheduledID;
 	String productCode;
@@ -9,6 +10,12 @@ public class SetSoScheduledProduct {
 	int productCategoryID;
 	int productID;
 	
+	public boolean isFlag() {
+		return flag;
+	}
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
 	public int getId() {
 		return id;
 	}

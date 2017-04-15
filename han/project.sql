@@ -29,3 +29,19 @@ ALTER TABLE `set_so_schedule_prod` CHANGE `id` `id` INT(12) NOT NULL AUTO_INCREM
 
 ALTER TABLE `set_so_schedule` ADD PRIMARY KEY(`id`);
 ALTER TABLE `set_so_schedule` CHANGE `id` `id` INT(3) NOT NULL AUTO_INCREMENT;
+
+
+CREATE TABLE `completed_so_schedule` (
+  `id` int(5) NOT NULL,
+  `set_so_schedule_id` varchar(50) NOT NULL,
+  `date` date NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+);
+
+ALTER TABLE `completed_so_schedule` ADD PRIMARY KEY(`id`);
+ALTER TABLE `completed_so_schedule` CHANGE `id` `id` INT(5) NOT NULL AUTO_INCREMENT;
