@@ -20,6 +20,7 @@ public class StockOpnameProductDAO {
 	private PreparedStatement deleteStatement;
 	private PreparedStatement updateDeleteStatement;
 	
+	
 	private String getAllQuery = "SELECT a.id, a.stock_opname_id, b.id AS product_id ,a.product_code, product_name, product_category, uom, location, qty_system, qty_actual, selisih_qty, "
 			+" value_system, value_actual, selisih_value "
 			+" FROM stock_opname_prod a INNER JOIN product b ON a.product_code = b.product_code "
@@ -39,7 +40,6 @@ public class StockOpnameProductDAO {
 	public StockOpnameProductDAO(Connection connection) throws SQLException {
 		this.connection = connection;
 	}
-	
 	
 	public List<StockOpnameProduct> getAll() throws SQLException {
 		List<StockOpnameProduct> stockOpnameProducts = new ArrayList<StockOpnameProduct>();

@@ -19,6 +19,7 @@ public class SetSoScheduledDAO {
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 	private PreparedStatement updateDeleteStatement;
+	private PreparedStatement lastIDStatement;
 	
 	private String getAllQuery = "SELECT a.id, so_name, reccurence, day, date, so_type FROM set_so_schedule  WHERE deleted_date IS NULL";
 	
@@ -30,6 +31,8 @@ public class SetSoScheduledDAO {
 			+ "WHERE id=?";
 	
 	private String deleteQuery = "DELETE FROM set_so_schedule WHERE id = ?";
+	
+	private String lastIDQuery = "SELECT ID from set_so_schedule ORDER BY ID DESC LIMIT 1";
 	
 	public SetSoScheduledDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -60,6 +63,24 @@ public class SetSoScheduledDAO {
 		}
 
 		return setSoScheduleds;
+	}
+	
+	public int getLastID() throws SQLException {
+		int id=0;
+		try {
+			lastIDStatement = connection.prepareStatement(lastIDQuery);
+
+			ResultSet rs = lastIDStatement.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return id;
 	}
 	
 	public List<SetSOScheduled> getAdvancedSearch(String sql, List<Object> objs) throws SQLException {

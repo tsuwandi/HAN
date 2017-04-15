@@ -20,6 +20,7 @@ public class StockOpnameDAO {
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 	private PreparedStatement updateDeleteStatement;
+	private PreparedStatement lastIDStatement;
 	
 	private String getAllQuery = "SELECT a.id, so_name, so_date, so_type, status, confirm_code, confirm_date FROM stock_opname  WHERE deleted_date IS NULL";
 	
@@ -32,8 +33,27 @@ public class StockOpnameDAO {
 	
 	private String deleteQuery = "DELETE FROM stock_opname WHERE id = ?";
 	
+	private String getLastIDQuery = "SELECT id FROM stock_opname ORDER BY ID DESC LIMIT 1";
+	
 	public StockOpnameDAO(Connection connection) throws SQLException {
 		this.connection = connection;
+	}
+	
+	public int getLastID() throws SQLException{
+		int id = 0;
+		try {
+			lastIDStatement = connection.prepareStatement(getLastIDQuery);
+
+			ResultSet rs = lastIDStatement.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+		return id;
 	}
 	
 	

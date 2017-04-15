@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import module.dailyclosing.model.Inventory;
 import module.stockopname.model.ProductSO;
 import module.stockopname.model.SetSoScheduledProduct;
 import module.stockopname.model.StockOpnameProduct;
@@ -15,18 +18,17 @@ public class ProductSODAO {
 	private Connection connection;
 
 	private PreparedStatement getAllStatement;
+	private PreparedStatement getInventoryStatement;
 
 	private String getAllQuery = "SELECT a.id, product_code, product_name, a.product_category_id, d.product_category, e.uom " 
 			+"FROM product a INNER JOIN product_category d on a.product_category_id = d.id INNER JOIN uom e ON a.product_uom_id = e.id WHERE  a.deleted_date IS NULL";
-
+	
+	private String getInventoryQuery = "SELECT * FROM inventory";
 
 	public ProductSODAO(Connection connection) throws SQLException {
 		this.connection = connection;
 
 	}
-
-	
-	
 	public List<ProductSO> getAllProduct() throws SQLException {
 		ArrayList<ProductSO> products = new ArrayList<ProductSO>();
 
@@ -102,6 +104,29 @@ public class ProductSODAO {
 
 		return products;
 	}
+	
+	public Map<String, Inventory> getInventory() throws SQLException {
+		Map<String,Inventory> inventories = new HashMap<>();
+
+		try {
+			getInventoryStatement = connection.prepareStatement(getInventoryQuery);
+
+			ResultSet rs = getInventoryStatement.executeQuery();
+			while (rs.next()) {
+				Inventory inventory = new Inventory();
+				inventory.setId(rs.getInt("id"));
+				inventory.setProductCode(rs.getString("product_code"));
+				inventory.setQty(rs.getBigDecimal("qty"));
+				inventories.put(inventory.getProductCode(), inventory);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+		return inventories;
+	}
+	
 	
 	
 }
