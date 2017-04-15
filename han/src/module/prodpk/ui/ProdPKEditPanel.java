@@ -536,7 +536,7 @@ public class ProdPKEditPanel extends JPanel implements Bridging {
 			isValid = false;
 		}
 		
-		if (cbLine.getSelectedItem() == null || cbLine.getSelectedIndex() == 0) {
+		if (cbLine.getSelectedItem() == null) {
 			lblErrorLine.setText("Combobox Line harus dipilih.");
 			isValid = false;
 		}
