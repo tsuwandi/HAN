@@ -5,8 +5,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -20,6 +22,8 @@ import javax.swing.table.AbstractTableModel;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import controller.ServiceFactory;
+import main.component.DialogBox;
 import main.component.TextField;
 import model.User;
 import module.stockopname.model.ProductSO;
@@ -30,8 +34,8 @@ public class PopUpProductSOSchedule extends JDialog{
 	Logger log = LogManager.getLogger(PopUpProductSOSchedule.class.getName());
 	JTable productSOTable;
 	ProductTableModel productSOTableModel;
-	List<ProductSO> picDockings;
-	JScrollPane picScrollPane;
+	List<SetSoScheduledProduct> soScheduledProducts;
+	JScrollPane setSoScrollPane;
 	
 	JLabel productCategoryLbl;
 	JLabel productCodeLbl;
@@ -45,6 +49,7 @@ public class PopUpProductSOSchedule extends JDialog{
 	JButton searchBtn;
 	CreateNewScheduledSOPanel createNewScheduledSOPanel;
 	JDialog dialog;
+	Map<Integer, SetSoScheduledProduct> productMap;
 	
 	public PopUpProductSOSchedule(JPanel parentPanel) {
 		super((JFrame)parentPanel.getTopLevelAncestor());
@@ -84,21 +89,28 @@ public class PopUpProductSOSchedule extends JDialog{
 
 		productSOTable = new JTable(new ProductTableModel(new ArrayList<SetSoScheduledProduct>()));
 		
-		picScrollPane = new JScrollPane(productSOTable);
-		picScrollPane.setBounds(20,140,450,200);
-		add(picScrollPane);
+		setSoScrollPane = new JScrollPane(productSOTable);
+		setSoScrollPane.setBounds(20,140,450,200);
+		add(setSoScrollPane);
 		
 		addBtn = new JButton("Tambah");
 		addBtn.setBounds(360,360,100,30);
 		add(addBtn);
 		
+		setData();
+		
 		productSOTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(picDockings.get(productSOTable.getSelectedRow()).isFlag())
-					picDockings.get(productSOTable.getSelectedRow()).setFlag(false);
-				else	
-					picDockings.get(productSOTable.getSelectedRow()).setFlag(true);
+				SetSoScheduledProduct setSoScheduledProduct = soScheduledProducts.get(productSOTable.getSelectedRow());
+				if(setSoScheduledProduct.isFlag()){
+					setSoScheduledProduct.setFlag(false);
+					productMap.remove(setSoScheduledProduct.getProductID());
+				}
+				else{	
+					setSoScheduledProduct.setFlag(true);
+					productMap.put(setSoScheduledProduct.getProductID(), setSoScheduledProduct);
+				}
 				productSOTable.updateUI();
 			}
 		});
@@ -107,14 +119,34 @@ public class PopUpProductSOSchedule extends JDialog{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				Iterator<ProductSO> i = picDockings.iterator();
+				Iterator<SetSoScheduledProduct> i = productMap.values().iterator();
 				while (i.hasNext()) {
 				   if(i.next().isFlag()==false)i.remove();
 				}
+				createNewScheduledSOPanel.setProductMap(productMap);
 				dialog.dispose();
 			}
 		});
-		
+	}
+	
+	private void setData(){
+		try {
+			soScheduledProducts = ServiceFactory.getStockOpnameBL().getSOScheduledProduct();
+			productMap = createNewScheduledSOPanel.getProductMap()!=null ?createNewScheduledSOPanel.getProductMap():new HashMap<>();
+			if(productMap!=null){
+				for (SetSoScheduledProduct setSoScheduledProduct : soScheduledProducts) {
+					if(productMap.get(setSoScheduledProduct.getProductID())!=null)setSoScheduledProduct.setFlag(true);
+				}
+			}
+			
+			productSOTableModel = new ProductTableModel(soScheduledProducts);
+			productSOTable.setModel(productSOTableModel);
+			productSOTable.updateUI();
+		} catch (Exception e) {
+			e.printStackTrace();
+			DialogBox.showError(e.getMessage());
+			return;
+		}
 	}
 	
 

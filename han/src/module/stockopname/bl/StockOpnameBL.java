@@ -37,6 +37,7 @@ public class StockOpnameBL {
 			setSOScheduledProductDAO = new SetSoScheduledProductDAO(con);
 			stockOpnameDAO = new StockOpnameDAO(con);
 			stockOpnameProductDAO = new StockOpnameProductDAO(con);
+			productSODAO = new ProductSODAO(con);
 			inventoryMap = getAllInventory();
 		} catch (Exception e) {
 			e.getMessage();
@@ -81,15 +82,29 @@ public class StockOpnameBL {
 	}
 	
 	public int getLastIDSO() throws SQLException{
-		return stockOpnameDAO.getLastID();
+		return stockOpnameDAO.getLastID()==0?1:stockOpnameDAO.getLastID();
 	}
 	
-	public int getLastStockOpnameID() throws SQLException{
-		return setSOScheduleDAO.getLastID();
+	public int getLastSetSOID() throws SQLException{
+		return setSOScheduleDAO.getLastID()==0? 1 : setSOScheduleDAO.getLastID();
 	} 
 	
 	public Map<String, Inventory> getAllInventory() throws SQLException{
 		return productSODAO.getInventory();
+	}
+	
+	public void saveSetSoSchedule(SetSOScheduled setSoSchedule) throws SQLException{
+		int lastID = getLastSetSOID();
+		setSoSchedule.setId(lastID);
+		for(SetSoScheduledProduct setSOScheduledProduct : setSoSchedule.getSetSoScheduledProducts()){
+			setSOScheduledProduct.setSetSOScheduledID(lastID);
+			setSOScheduledProductDAO.save(setSOScheduledProduct);
+		}
+		setSOScheduleDAO.save(setSoSchedule);
+	}
+	
+	public void updateSetSoSchedule(SetSOScheduled setSoSchedule){
+		
 	}
 	
 	

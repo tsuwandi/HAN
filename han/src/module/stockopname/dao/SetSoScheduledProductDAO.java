@@ -24,7 +24,7 @@ public class SetSoScheduledProductDAO {
 	
 	private String updateDeleteQuery = "UPDATE set_so_schedule_prod SET deleted_date = ? , deleted_by=? WHERE set_so_schedule_id = ? AND id=?";
 	
-	private String insertQuery = "INSERT INTO set_so_schedule_prod (set_so_scheduled_id, product_code, input_by, input_date) "
+	private String insertQuery = "INSERT INTO set_so_schedule_prod (set_so_schedule_id, product_code, input_by, input_date) "
 			+ "VALUES (?,?,?,?)";
 	private String updateQuery = "UPDATE set_so_schedule_prod SET product_code=?, edited_by=?, edited_date=? "
 			+ "WHERE set_so_scheduled_id =? AND id=?";

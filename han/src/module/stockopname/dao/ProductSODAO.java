@@ -63,7 +63,7 @@ public class ProductSODAO {
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
 				SetSoScheduledProduct product = new SetSoScheduledProduct();
-				product.setId(rs.getInt("id"));
+				product.setProductID(rs.getInt("id"));
 				product.setProductName(rs.getString("product_name"));
 				product.setProductCode(rs.getString("product_code"));
 				product.setProductCategory(rs.getString("product_category"));
@@ -75,7 +75,6 @@ public class ProductSODAO {
 			ex.printStackTrace();
 			throw new SQLException(ex.getMessage());
 		}
-
 		return products;
 	}
 	
@@ -88,7 +87,7 @@ public class ProductSODAO {
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
 				StockOpnameProduct product = new StockOpnameProduct();
-				product.setId(rs.getInt("id"));
+				product.setProductID(rs.getInt("id"));
 				product.setProductName(rs.getString("product_name"));
 				product.setProductCode(rs.getString("product_code"));
 				product.setProductCategory(rs.getString("product_category"));

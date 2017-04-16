@@ -19,6 +19,7 @@ import module.report.bl.ReportBL;
 import module.sendtofinance.bl.SendToFinanceBL;
 import module.sn.woodgenus.bl.WoodGenusBL;
 import module.sn.woodtype.bl.WoodTypeBL;
+import module.stockopname.bl.StockOpnameBL;
 import module.supplier.bl.SupplierBL;
 import module.system.bl.SystemBL;
 import module.paymentbalken.bl.PaymentBalkenBL;
@@ -50,6 +51,7 @@ public class ServiceFactory {
 	private static PaymentProductResultBL paymentProductResultBL = null;
 	private static InvoiceBalkenBL invoiceBalkenBL = null;
 	private static PaymentBalkenBL paymentBalkenBL = null;
+	private static StockOpnameBL stockOpnameBL = null;
 	
 	/**
 	 * Method to init or return {@link SupplierBL}
@@ -237,6 +239,13 @@ public class ServiceFactory {
 			paymentBalkenBL = new PaymentBalkenBL(DataSourceFactory.getDataSource());
 		}
 		return paymentBalkenBL;
+	}
+	
+	public static StockOpnameBL getStockOpnameBL() {
+		if (stockOpnameBL == null) {
+			stockOpnameBL = new StockOpnameBL(DataSourceFactory.getDataSource());
+		}
+		return stockOpnameBL;
 	}
 	
 	

@@ -37,7 +37,7 @@ public class ListScheduledSOPanel extends JPanel {
 	Logger log = LogManager.getLogger(ListFilesAttendancePanel.class.getName());
 	private JButton searchBtn;
 	private TextField searchField;
-	JTable importFingerPrintTable;
+	JTable setSoScheduleTable;
 	private JScrollPane scrollPane;
 
 	private JButton advancedSearchBtn;
@@ -46,7 +46,7 @@ public class ListScheduledSOPanel extends JPanel {
 
 
 	SetScheduledSOTableModel receivedTableModel;
-	List<SetSOScheduled> importFingerPrints;
+	List<SetSOScheduled> setSoSchedule;
 	ListScheduledSOPanel listFilesAttendancePanel;
 	public ListScheduledSOPanel() {
 		setLayout(null);
@@ -78,34 +78,34 @@ public class ListScheduledSOPanel extends JPanel {
 		advancedSearchBtn.setBounds(900,80,150,30);
 		add(advancedSearchBtn);
 
-		importFingerPrints = new ArrayList<>();
-		receivedTableModel = new SetScheduledSOTableModel(importFingerPrints);
-		importFingerPrintTable = new JTable(receivedTableModel);
-		importFingerPrintTable.setFocusable(false);
+		setSoSchedule = new ArrayList<>();
+		receivedTableModel = new SetScheduledSOTableModel(setSoSchedule);
+		setSoScheduleTable = new JTable(receivedTableModel);
+		setSoScheduleTable.setFocusable(false);
 
-		scrollPane =  new JScrollPane(importFingerPrintTable);
+		scrollPane =  new JScrollPane(setSoScheduleTable);
 		scrollPane.setBounds(50,200,1000,300);
 		add(scrollPane);
 
 		pagingPanel =new PagingPanel<>();
 		add(pagingPanel);
-		importFingerPrintTable.addMouseListener(new MouseAdapter() {
+		setSoScheduleTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(importFingerPrintTable.columnAtPoint(e.getPoint())==7)
-					MainPanel.changePanel("module.pembelian.ui.ViewReceivedDetailPanel", pagingPanel.getSubListData().get(importFingerPrintTable.getSelectedRow()));
+				if(setSoScheduleTable.columnAtPoint(e.getPoint())==7)
+					MainPanel.changePanel("module.pembelian.ui.ViewReceivedDetailPanel", pagingPanel.getSubListData().get(setSoScheduleTable.getSelectedRow()));
 			}
 		});
 
 		try {
-//			importFingerPrints = ServiceFactory.getPersonaliaBL().getImportFingerprints("");
-			importFingerPrintTable.setModel(new SetScheduledSOTableModel(importFingerPrints));
-			importFingerPrintTable.updateUI();
+			setSoSchedule = ServiceFactory.getStockOpnameBL().getSetSoSchedule();
+			setSoScheduleTable.setModel(new SetScheduledSOTableModel(setSoSchedule));
+			setSoScheduleTable.updateUI();
 
 			pagingPanel.setPage(1);
 			pagingPanel.setMaxDataPerPage(20);
-			pagingPanel.setData(importFingerPrints);
-			pagingPanel.setTable(importFingerPrintTable);
+			pagingPanel.setData(setSoSchedule);
+			pagingPanel.setTable(setSoScheduleTable);
 			pagingPanel.setTableModel(receivedTableModel);
 			pagingPanel.setBounds(450,510,130,50);
 
@@ -134,8 +134,8 @@ public class ListScheduledSOPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 //					importFingerPrints = ServiceFactory.getPersonaliaBL().getImportFingerprints("");
-					importFingerPrintTable.setModel(new SetScheduledSOTableModel(importFingerPrints));
-					importFingerPrintTable.updateUI();
+					setSoScheduleTable.setModel(new SetScheduledSOTableModel(setSoSchedule));
+					setSoScheduleTable.updateUI();
 					setTableSize();
 				} catch (Exception e) {
 					log.error(e.getMessage());
@@ -166,29 +166,29 @@ public class ListScheduledSOPanel extends JPanel {
 
 
 	public void setTableSize(){
-		importFingerPrintTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		importFingerPrintTable.getTableHeader().setResizingAllowed(false);
-		TableColumn column1 = importFingerPrintTable.getColumnModel().getColumn(0);
-		TableColumn column2 = importFingerPrintTable.getColumnModel().getColumn(1);
-		TableColumn column3 = importFingerPrintTable.getColumnModel().getColumn(2);
-		TableColumn column4 = importFingerPrintTable.getColumnModel().getColumn(3);
+		setSoScheduleTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		setSoScheduleTable.getTableHeader().setResizingAllowed(false);
+		TableColumn column1 = setSoScheduleTable.getColumnModel().getColumn(0);
+		TableColumn column2 = setSoScheduleTable.getColumnModel().getColumn(1);
+		TableColumn column3 = setSoScheduleTable.getColumnModel().getColumn(2);
+		TableColumn column4 = setSoScheduleTable.getColumnModel().getColumn(3);
 
 
 		column1.setPreferredWidth(0);
 		column1.setMinWidth(0);
 		column1.setMaxWidth(0);
 
-		column2.setPreferredWidth(200);
-		column2.setMinWidth(200);
-		column2.setMaxWidth(200);
+		column2.setPreferredWidth(700);
+		column2.setMinWidth(700);
+		column2.setMaxWidth(700);
 
-		column3.setPreferredWidth(150);
-		column3.setMinWidth(150);
-		column3.setMaxWidth(150);
+		column3.setPreferredWidth(200);
+		column3.setMinWidth(200);
+		column3.setMaxWidth(200);
 
-		column4.setPreferredWidth(150);
-		column4.setMinWidth(150);
-		column4.setMaxWidth(150);
+		column4.setPreferredWidth(100);
+		column4.setMinWidth(100);
+		column4.setMaxWidth(100);
 
 
 	}

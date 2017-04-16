@@ -21,13 +21,13 @@ public class SetSoScheduledDAO {
 	private PreparedStatement updateDeleteStatement;
 	private PreparedStatement lastIDStatement;
 	
-	private String getAllQuery = "SELECT id, so_name, reccurence, day, date, so_type FROM set_so_schedule  WHERE deleted_date IS NULL";
+	private String getAllQuery = "SELECT id, so_name, reccurance, day, date, so_type FROM set_so_schedule  WHERE deleted_date IS NULL";
 	
 	private String updateDeleteQuery = "UPDATE set_so_schedule SET deleted_date = ? , deleted_by=? WHERE id=?";
 	
-	private String insertQuery = "INSERT INTO set_so_schedule (so_name, reccurence, day, date, so_type, input_by, input_date) "
-			+ "VALUES (?,?,?,?,?,?,?)";
-	private String updateQuery = "UPDATE set_so_schedule SET so_name=?, reccurence=?, day=?, date=?, so_type=?, edited_by=?, edited_date=? "
+	private String insertQuery = "INSERT INTO set_so_schedule (so_name, reccurance, day, date, so_type, input_by, input_date,id) "
+			+ "VALUES (?,?,?,?,?,?,?,?)";
+	private String updateQuery = "UPDATE set_so_schedule SET so_name=?, reccurance=?, day=?, date=?, so_type=?, edited_by=?, edited_date=? "
 			+ "WHERE id=?";
 	
 	private String deleteQuery = "DELETE FROM set_so_schedule WHERE id = ?";
@@ -50,7 +50,7 @@ public class SetSoScheduledDAO {
 				SetSOScheduled setSoScheduled = new SetSOScheduled();
 				setSoScheduled.setId(rs.getInt("id"));
 				setSoScheduled.setSoName(rs.getString("so_name"));
-				setSoScheduled.setReccurence(rs.getString("reccurence"));
+				setSoScheduled.setReccurence(rs.getString("reccurance"));
 				setSoScheduled.setDay(rs.getString("day"));
 				setSoScheduled.setDate(rs.getInt("date"));
 				setSoScheduled.setSoType(rs.getString("so_type"));
@@ -136,6 +136,7 @@ public class SetSoScheduledDAO {
 			insertStatement.setString(5, setSoScheduledProduct.getSoType());
 			insertStatement.setString(6, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.setDate(7, new Date(new java.util.Date().getTime()));
+			insertStatement.setInt(8, setSoScheduledProduct.getId());
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
