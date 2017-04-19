@@ -92,8 +92,8 @@ public class ListScheduledSOPanel extends JPanel {
 		setSoScheduleTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(setSoScheduleTable.columnAtPoint(e.getPoint())==7)
-					MainPanel.changePanel("module.pembelian.ui.ViewReceivedDetailPanel", pagingPanel.getSubListData().get(setSoScheduleTable.getSelectedRow()));
+				if(setSoScheduleTable.columnAtPoint(e.getPoint())==3)
+					MainPanel.changePanel("module.stockopname.ui.ViewScheduledSOPanel", pagingPanel.getSubListData().get(setSoScheduleTable.getSelectedRow()));
 			}
 		});
 

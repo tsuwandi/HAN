@@ -81,6 +81,10 @@ public class StockOpnameBL {
 		return productSODAO.getAllProductSchedule();
 	}
 	
+	public List<SetSoScheduledProduct> getSOSearchScheduledProduct(String sql, List<Object> objs) throws SQLException{
+		return productSODAO.getAllSearchProductSchedule(sql, objs);
+	}
+	
 	public int getLastIDSO() throws SQLException{
 		return stockOpnameDAO.getLastID()==0?1:stockOpnameDAO.getLastID();
 	}
@@ -103,8 +107,19 @@ public class StockOpnameBL {
 		setSOScheduleDAO.save(setSoSchedule);
 	}
 	
-	public void updateSetSoSchedule(SetSOScheduled setSoSchedule){
-		
+	public void updateSetSoSchedule(SetSOScheduled setSoSchedule) throws SQLException{
+		for(SetSoScheduledProduct setSOScheduledProduct : setSoSchedule.getSetSoScheduledProducts()){
+			setSOScheduledProduct.setSetSOScheduledID(setSoSchedule.getId());
+			if(setSOScheduledProduct.getId()!=0)setSOScheduledProductDAO.update(setSOScheduledProduct);
+			else setSOScheduledProductDAO.save(setSOScheduledProduct);
+			
+			if(setSoSchedule.getDeletedProducts()!=null){
+				for (SetSoScheduledProduct setSOScheduledDeletedProduct : setSoSchedule.getDeletedProducts()) {
+					setSOScheduledProductDAO.updateDelete(setSOScheduledDeletedProduct);
+				}
+			}
+		}
+		setSOScheduleDAO.update(setSoSchedule);
 	}
 	
 	

@@ -1,6 +1,7 @@
 package module.stockopname.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,6 +60,45 @@ public class ProductSODAO {
 
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery);
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				SetSoScheduledProduct product = new SetSoScheduledProduct();
+				product.setProductID(rs.getInt("id"));
+				product.setProductName(rs.getString("product_name"));
+				product.setProductCode(rs.getString("product_code"));
+				product.setProductCategory(rs.getString("product_category"));
+				product.setProductCategoryID(rs.getInt("product_category_id"));
+				products.add(product);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+		return products;
+	}
+	
+	public List<SetSoScheduledProduct> getAllSearchProductSchedule(String sql, List<Object> objs) throws SQLException {
+		ArrayList<SetSoScheduledProduct> products = new ArrayList<SetSoScheduledProduct>();
+		try {
+			getAllStatement = connection.prepareStatement(getAllQuery+sql);
+			int i = 1;
+			for (int j = 0; j < objs.size(); j++) {
+				Object obj = objs.get(j);
+				if (obj instanceof String) {
+					if (obj != null) {
+						getAllStatement.setString(i, (String) "%" + obj + "%");
+						i++;
+					}
+				} else {
+					if (obj != null) {
+						getAllStatement.setDate(i, new Date(((java.util.Date) obj).getTime()));
+						i++;
+					}
+				}
+			}
+			
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {

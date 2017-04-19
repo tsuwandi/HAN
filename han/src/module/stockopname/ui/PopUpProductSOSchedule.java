@@ -26,6 +26,9 @@ import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.component.TextField;
 import model.User;
+import module.production.model.Production;
+import module.production.ui.ListBigProductionPanel;
+import module.production.ui.ListProductionPanel;
 import module.stockopname.model.ProductSO;
 import module.stockopname.model.SetSOScheduled;
 import module.stockopname.model.SetSoScheduledProduct;
@@ -127,6 +130,42 @@ public class PopUpProductSOSchedule extends JDialog{
 				dialog.dispose();
 			}
 		});
+		
+		searchBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				StringBuffer sb = new StringBuffer();
+				List<Object> objs = new ArrayList<>();
+				if(!productCategoryField.getText().equals("")){
+					sb.append(" AND product_category LIKE ?");
+					objs.add(productCategoryField.getText());
+				}
+				if(!productCodeField.getText().equals("")){
+					sb.append(" AND product_code LIKE ?");
+					objs.add(productCodeField.getText());
+				}
+				if(!productNameField.getText().equals("")){
+					sb.append(" AND product_name LIKE ?");
+					objs.add(productNameField.getText());
+				}
+				try {
+					soScheduledProducts = ServiceFactory.getStockOpnameBL().getSOSearchScheduledProduct(sb.toString(), objs);
+					if(productMap!=null){
+						for (SetSoScheduledProduct setSoScheduledProduct : soScheduledProducts) {
+							if(productMap.get(setSoScheduledProduct.getProductID())!=null)setSoScheduledProduct.setFlag(true);
+						}
+					}
+					productSOTableModel = new ProductTableModel(soScheduledProducts);
+					productSOTable.setModel(productSOTableModel);
+					productSOTable.updateUI();
+				} catch (Exception e2) {
+					log.error(e2.getMessage());
+					e2.printStackTrace();
+				}
+			
+			}
+		});
 	}
 	
 	private void setData(){
@@ -138,7 +177,6 @@ public class PopUpProductSOSchedule extends JDialog{
 					if(productMap.get(setSoScheduledProduct.getProductID())!=null)setSoScheduledProduct.setFlag(true);
 				}
 			}
-			
 			productSOTableModel = new ProductTableModel(soScheduledProducts);
 			productSOTable.setModel(productSOTableModel);
 			productSOTable.updateUI();

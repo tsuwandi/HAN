@@ -10,6 +10,15 @@ public class SetSOScheduled {
 	int date;
 	String soType;
 	List<SetSoScheduledProduct> setSoScheduledProducts;
+	List<SetSoScheduledProduct> deletedProducts;
+	
+	
+	public List<SetSoScheduledProduct> getDeletedProducts() {
+		return deletedProducts;
+	}
+	public void setDeletedProducts(List<SetSoScheduledProduct> deletedProducts) {
+		this.deletedProducts = deletedProducts;
+	}
 	public int getId() {
 		return id;
 	}

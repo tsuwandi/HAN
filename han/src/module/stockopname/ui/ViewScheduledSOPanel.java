@@ -5,9 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
@@ -27,12 +28,15 @@ import main.component.NumberField;
 import main.component.TextField;
 import main.panel.MainPanel;
 import model.User;
+import module.personalia.model.ImportFingerprint;
+import module.production.model.Production;
+import module.stockopname.model.ProductSO;
 import module.stockopname.model.SetSOScheduled;
 import module.stockopname.model.SetSoScheduledProduct;
 import module.util.Bridging;
 import module.util.Pagination;
 
-public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
+public class ViewScheduledSOPanel extends JPanel implements Bridging{
 	private JLabel soNameLbl;
 	private JLabel soReccurenceLbl;
 	private JLabel soDayLbl;
@@ -49,21 +53,19 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 	private NumberField soDateField;
 	
 	private JButton productBtn;
-	private JButton saveBtn;
+	private JButton editBtn;
 	private JButton backBtn;
 	
 	private JScrollPane scrollPane;
 	private JTable soProductTable;
-	private CreateNewScheduledSOPanel parent;
+	private ViewScheduledSOPanel parent;
 	private Map<Integer, SetSoScheduledProduct> productMap;
 	private List<SetSoScheduledProduct> products;
 	private SetSOScheduled setSoScheduled;
 	private String [] days = {"-Pilih-","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu"};
 	private String [] reccure = {"-Pilih-","Harian","Mingguan","Bulanan"};
-	List<SetSoScheduledProduct> deletedProducts;
 	
-	boolean editMode=false;
-	public CreateNewScheduledSOPanel(){
+	public ViewScheduledSOPanel(){
 		parent=this;
 		createGUI();
 		initData();
@@ -73,7 +75,7 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 	private void initData(){
 		productMap = new HashMap<Integer, SetSoScheduledProduct>();
 		products = new ArrayList<>();
-		setSoScheduled = new SetSOScheduled();
+		setSoScheduled = new SetSOScheduled();	
 		setTableSize();
 		
 	}
@@ -148,90 +150,15 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 		scrollPane.setBounds(30,300,1000,250);
 		add(scrollPane);
 		
-		saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(850,560,150,30);
-		add(saveBtn);
+		editBtn = new JButton("Ubah");
+		editBtn.setBounds(850,560,150,30);
+		add(editBtn);
 		
 		backBtn = new JButton("Kembali");
 		backBtn.setBounds(30,560,150,30);
 		add(backBtn);
 		
 		
-	}
-	
-	public void save(){
-		int error=0;
-		
-			if(soReccurenceCmb.getSelectedIndex()==0){
-				soReccurenceErrorLbl.setText("<html><font color='red'>Perulangan harus dipilih !</font></html>");
-				error++;
-			}else{
-				soReccurenceErrorLbl.setText("");
-			}
-			
-			if(soReccurenceCmb.getSelectedIndex()==2){
-				if(soDayCmb.getSelectedIndex()==0){
-					soDayErrorLbl.setText("<html><font color='red'>Hari harus dipilih !</font></html>");
-					error++;
-				}else{
-					soDayErrorLbl.setText("");
-				}
-			}
-			if(soReccurenceCmb.getSelectedIndex()==3){
-				if(soDateField.getText().equals("")){
-					soDateErrorLbl.setText("<html><font color='red'>Tanggal harus diisi !</font></html>");
-					error++;
-				}else{
-					soDateErrorLbl.setText("");
-				}
-			}
-			if(soNameField.getText().equals("")){
-				soNameErrorLbl.setText("<html><font color='red'>Nama harus diisi !</font></html>");
-				error++;
-			}else{
-				soNameErrorLbl.setText("");
-			}
-			
-			if(error==0){
-				try {
-					if(editMode){
-						if(DialogBox.showEditChoice()==JOptionPane.YES_OPTION){
-							setSoScheduled.setReccurence(soReccurenceCmb.getSelectedItem().toString());
-							if(soReccurenceCmb.getSelectedIndex()==2)setSoScheduled.setDay(soDayCmb.getSelectedItem().toString());
-							else setSoScheduled.setDay("");
-							if(soReccurenceCmb.getSelectedIndex()==3)setSoScheduled.setDate(Integer.valueOf(soDateField.getText()));
-							else setSoScheduled.setDate(0);
-							setSoScheduled.setSoName(soNameField.getText());
-							setSoScheduled.setSetSoScheduledProducts(products);
-							Iterator<SetSoScheduledProduct> i = deletedProducts.iterator();
-							while (i.hasNext()) {
-								if(productMap.get(i.next().getProductID())!=null)i.remove();
-							}
-							setSoScheduled.setDeletedProducts(deletedProducts);
-							ServiceFactory.getStockOpnameBL().updateSetSoSchedule(setSoScheduled);
-							DialogBox.showEdit();
-						}
-					}else{
-						if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
-							setSoScheduled.setReccurence(soReccurenceCmb.getSelectedItem().toString());
-							if(soReccurenceCmb.getSelectedIndex()==2)setSoScheduled.setDay(soDayCmb.getSelectedItem().toString());
-							if(soReccurenceCmb.getSelectedIndex()==3)setSoScheduled.setDate(Integer.valueOf(soDateField.getText()));
-							setSoScheduled.setSoName(soNameField.getText());
-							setSoScheduled.setSoType("Stock Opname Terjadwal");
-							setSoScheduled.setSetSoScheduledProducts(products);
-							ServiceFactory.getStockOpnameBL().saveSetSoSchedule(setSoScheduled);
-							DialogBox.showInsert();
-						}
-					}
-					MainPanel.changePanel("module.stockopname.ui.ListScheduledSOPanel");
-				} catch (Exception e) {
-					e.printStackTrace();
-					DialogBox.showError(e.getMessage());
-				}
-				
-			}
-	
-	
 	}
 	
 	
@@ -246,38 +173,15 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 		soProductTable.setModel(new SoScheduleTableModel(products));
 		setTableSize();
 		soProductTable.updateUI();
+		
 	}
 
 	private void listener(){
-		productBtn.addActionListener(new ActionListener() {
+		editBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PopUpProductSOSchedule pop = new PopUpProductSOSchedule(parent);
-				pop.setVisible(true);
-				pop.setLocationRelativeTo(null);
-				pop.setModal(true);
-			}
-		});
-		
-		soProductTable.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(soProductTable.columnAtPoint(e.getPoint())==4){
-					SetSoScheduledProduct so = products.get(soProductTable.getSelectedRow());
-					productMap.remove(so.getProductID());
-					products.remove(so);
-					setTableSize();
-					soProductTable.updateUI();
-				}
-			}
-		});
-		
-		saveBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				save();
+				MainPanel.changePanel("module.stockopname.ui.CreateNewScheduledSOPanel",setSoScheduled);
 			}
 		});
 		
@@ -285,11 +189,11 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)MainPanel.changePanel("module.stockopname.ui.ListScheduledSOPanel");
+				MainPanel.changePanel("module.stockopname.ui.ListScheduledSOPanel");
+				
 			}
 		});
 	}
-	
 	public void setTableSize(){
 		soProductTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		soProductTable.getTableHeader().setResizingAllowed(false);
@@ -322,7 +226,7 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 
 
 	}
-
+	
 	
 	public class SoScheduleTableModel extends AbstractTableModel implements Pagination {
 		private List<SetSoScheduledProduct> setSoScheduledProducts;
@@ -409,14 +313,10 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 	public void invokeObjects(Object... objects) {
 		if(objects.length!=0)setSoScheduled = (SetSOScheduled)objects[0];
 		if(setSoScheduled!=null){
-			editMode=true;
-			saveBtn.setText("Ubah");
 			products = setSoScheduled.getSetSoScheduledProducts();
 			for (SetSoScheduledProduct o : products) {
-				o.setFlag(true);
 				productMap.put(o.getId(), o);
 			}
-			deletedProducts = new ArrayList<>(setSoScheduled.getSetSoScheduledProducts());
 			soNameField.setText(setSoScheduled.getSoName());
 			soReccurenceCmb.setSelectedItem(setSoScheduled.getReccurence());
 			if(setSoScheduled.getDay()!=null)soDayCmb.setSelectedItem(setSoScheduled.getDay());
@@ -426,6 +326,13 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 				setTableSize();
 				soProductTable.updateUI();
 			}
+			
+			soNameField.setEnabled(false);
+			soReccurenceCmb.setEnabled(false);
+			soDayCmb.setEnabled(false);
+			soDateField.setEnabled(false);
+			soProductTable.setEnabled(false);
+			productBtn.setEnabled(false);
 		}
 		
 	}
