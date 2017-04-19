@@ -12,6 +12,15 @@ public class StockOpname {
 	String confirmCode;
 	Date confirmDate;
 	List<StockOpnameProduct> stockOpnameProduct;
+	List<StockOpnameProduct> deletedProducts;
+	
+	
+	public List<StockOpnameProduct> getDeletedProducts() {
+		return deletedProducts;
+	}
+	public void setDeletedProducts(List<StockOpnameProduct> deletedProducts) {
+		this.deletedProducts = deletedProducts;
+	}
 	public int getId() {
 		return id;
 	}

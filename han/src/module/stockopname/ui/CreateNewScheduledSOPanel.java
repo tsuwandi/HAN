@@ -210,6 +210,7 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 							setSoScheduled.setDeletedProducts(deletedProducts);
 							ServiceFactory.getStockOpnameBL().updateSetSoSchedule(setSoScheduled);
 							DialogBox.showEdit();
+							MainPanel.changePanel("module.stockopname.ui.ListScheduledSOPanel");
 						}
 					}else{
 						if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
@@ -221,9 +222,10 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 							setSoScheduled.setSetSoScheduledProducts(products);
 							ServiceFactory.getStockOpnameBL().saveSetSoSchedule(setSoScheduled);
 							DialogBox.showInsert();
+							MainPanel.changePanel("module.stockopname.ui.ListScheduledSOPanel");
 						}
 					}
-					MainPanel.changePanel("module.stockopname.ui.ListScheduledSOPanel");
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 					DialogBox.showError(e.getMessage());
@@ -414,7 +416,7 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 			products = setSoScheduled.getSetSoScheduledProducts();
 			for (SetSoScheduledProduct o : products) {
 				o.setFlag(true);
-				productMap.put(o.getId(), o);
+				productMap.put(o.getProductID(), o);
 			}
 			deletedProducts = new ArrayList<>(setSoScheduled.getSetSoScheduledProducts());
 			soNameField.setText(setSoScheduled.getSoName());

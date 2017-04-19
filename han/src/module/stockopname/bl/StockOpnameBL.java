@@ -85,12 +85,16 @@ public class StockOpnameBL {
 		return productSODAO.getAllSearchProductSchedule(sql, objs);
 	}
 	
+	public List<StockOpnameProduct> getSearchSOManualProduct(String sql, List<Object> objs) throws SQLException{
+		return productSODAO.getAllSearchProductSO(sql, objs);
+	}
+	
 	public int getLastIDSO() throws SQLException{
-		return stockOpnameDAO.getLastID()==0?1:stockOpnameDAO.getLastID();
+		return stockOpnameDAO.getLastID()==0?1:stockOpnameDAO.getLastID()+1;
 	}
 	
 	public int getLastSetSOID() throws SQLException{
-		return setSOScheduleDAO.getLastID()==0? 1 : setSOScheduleDAO.getLastID();
+		return setSOScheduleDAO.getLastID()==0? 1 : setSOScheduleDAO.getLastID()+1;
 	} 
 	
 	public Map<String, Inventory> getAllInventory() throws SQLException{
@@ -120,6 +124,28 @@ public class StockOpnameBL {
 			}
 		}
 		setSOScheduleDAO.update(setSoSchedule);
+	}
+	
+	public void saveSO(StockOpname so) throws SQLException{
+		int lastID = getLastIDSO();
+		so.setId(lastID);
+		for(StockOpnameProduct soProduct : so.getStockOpnameProduct()){
+			soProduct.setStockOpnameID(lastID);
+			stockOpnameProductDAO.save(soProduct);
+		}
+		stockOpnameDAO.save(so);
+	}
+	
+	public void updateSO(StockOpname so) throws SQLException{
+		for(StockOpnameProduct soProduct : so.getStockOpnameProduct()){
+			soProduct.setStockOpnameID(so.getId());
+			if(soProduct.getId()!=0)stockOpnameProductDAO.update(soProduct);
+			else stockOpnameProductDAO.save(soProduct);
+		}
+		for(StockOpnameProduct soProduct : so.getDeletedProducts()){
+			stockOpnameProductDAO.updateDelete(soProduct);
+		}
+		stockOpnameDAO.update(so);
 	}
 	
 	

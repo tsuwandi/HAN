@@ -22,12 +22,12 @@ public class StockOpnameDAO {
 	private PreparedStatement updateDeleteStatement;
 	private PreparedStatement lastIDStatement;
 	
-	private String getAllQuery = "SELECT a.id, so_name, so_date, so_type, status, confirm_code, confirm_date FROM stock_opname  WHERE deleted_date IS NULL";
+	private String getAllQuery = "SELECT id, so_name, so_date, so_type, status, confirm_code, confirm_date FROM stock_opname  WHERE deleted_date IS NULL";
 	
 	private String updateDeleteQuery = "UPDATE stock_opname SET deleted_date = ? , deleted_by=? WHERE id=?";
 	
-	private String insertQuery = "INSERT INTO stock_opname (so_name, so_date, so_type, status, input_by, input_date) "
-			+ "VALUES (?,?,?,?,?,?)";
+	private String insertQuery = "INSERT INTO stock_opname (so_name, so_date, so_type, status, input_by, input_date, id) "
+			+ "VALUES (?,?,?,?,?,?,?)";
 	private String updateQuery = "UPDATE stock_opname SET so_name=?, so_date=?, so_type=?, status=?, edited_by=?, edited_date=? "
 			+ "WHERE id=?";
 	
@@ -137,6 +137,7 @@ public class StockOpnameDAO {
 			insertStatement.setString(4, stockOpname.getStatus());
 			insertStatement.setString(5, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.setDate(6, new Date(new java.util.Date().getTime()));
+			insertStatement.setInt(7, stockOpname.getId());
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {

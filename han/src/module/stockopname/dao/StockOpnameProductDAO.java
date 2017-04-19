@@ -171,13 +171,13 @@ public class StockOpnameProductDAO {
 		}
 
 	}
-	public void updateDelete(SetSoScheduledProduct setSoScheduledProduct) throws SQLException {
+	public void updateDelete(StockOpnameProduct stockOpnameProduct) throws SQLException {
 		try {
 			updateDeleteStatement = connection.prepareStatement(updateDeleteQuery);
 			updateDeleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
 			updateDeleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
-			updateDeleteStatement.setInt(3, setSoScheduledProduct.getSetSOScheduledID());
-			updateDeleteStatement.setInt(4, setSoScheduledProduct.getId());
+			updateDeleteStatement.setInt(3, stockOpnameProduct.getStockOpnameID());
+			updateDeleteStatement.setInt(4, stockOpnameProduct.getId());
 			updateDeleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {

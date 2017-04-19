@@ -9,7 +9,6 @@ import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +29,6 @@ import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
-import main.component.NumberField;
-import main.component.NumericField;
 import main.component.TextField;
 import main.panel.MainPanel;
 import model.User;
@@ -43,7 +40,7 @@ import module.stockopname.ui.CreateNewScheduledSOPanel.SoScheduleTableModel;
 import module.util.Bridging;
 import module.util.Pagination;
 
-public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
+public class ViewStockOpnamePanel extends JPanel implements Bridging {
 	private JLabel soNameLbl;
 	private JLabel soDateLbl;
 	private JLabel soTypeLbl;
@@ -54,22 +51,19 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 	private JDateChooser soDateChooser;
 	
 	private JButton productBtn;
-	private JButton saveBtn;
+	private JButton editBtn;
 	private JButton backBtn;
-	private JButton draftBtn;
 	
-	private SODetailTableModel soDetailTableModel;
 	private JScrollPane soScrollPane;
 	private JTable soTable;
 	private Map<Integer, StockOpnameProduct> productMap;
 	private StockOpname stockOpname;
 	private List<StockOpnameProduct> products;
-	private List<StockOpnameProduct> deletedProducts;
-	private CreateNewStockOpnamePanel parent;
+	private ViewStockOpnamePanel parent;
 	boolean editMode=false;
 	boolean scheduled=false;
 	
-	public CreateNewStockOpnamePanel(){
+	public ViewStockOpnamePanel(){
 		parent = this;
 		createGUI();
 		setData();
@@ -84,7 +78,7 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("Stock Opname");
+		JLabel lblHeader = new JLabel("View Stock Opname");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -136,13 +130,10 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 		backBtn.setBounds(30,560,150,30);
 		add(backBtn);
 		
-		saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(830,560,150,30);
-		add(saveBtn);
+		editBtn = new JButton("Ubah");
+		editBtn.setBounds(990,560,150,30);
+		add(editBtn);
 		
-		draftBtn = new JButton("Simpan Draft");
-		draftBtn.setBounds(990,560,150,30);
-		add(draftBtn);
 		
 	}
 	
@@ -155,23 +146,12 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 	}
 	
 	private void listener(){
-		productBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				PopUpSOManualProduct pop = new PopUpSOManualProduct(parent);
-				pop.setVisible(true);
-				pop.setLocationRelativeTo(null);
-				pop.setModal(true);
-				
-			}
-		});
 		
-		saveBtn.addActionListener(new ActionListener() {
+		editBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				save("New");
+				MainPanel.changePanel("module.stockopname.ui.CreateNewStockOpnamePanel",stockOpname);
 				
 			}
 		});
@@ -188,51 +168,7 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 		soTable.setModel(new SODetailTableModel(products));
 		setTableSize();
 		soTable.updateUI();
-	}
 	
-	public void save(String status){
-		int error=0;
-		if(soNameField.getText().equals("")){
-			soNameErrorLbl.setText("<html><font color='red'>Nama harus diisi</font></html>");
-			error++;
-		}else{
-			soNameErrorLbl.setText("");
-		}
-		try {
-			if(error==0){
-				if(editMode){
-					if(DialogBox.showEditChoice()==JOptionPane.YES_OPTION){
-						stockOpname.setSoName(soNameField.getText());
-						stockOpname.setStockOpnameProduct(products);
-						Iterator<StockOpnameProduct> i = deletedProducts.iterator();
-						while (i.hasNext()) {
-							if(productMap.get(i.next().getProductID())!=null)i.remove();
-						}
-						stockOpname.setDeletedProducts(deletedProducts);
-						ServiceFactory.getStockOpnameBL().updateSO(stockOpname);
-						DialogBox.showEdit();
-						MainPanel.changePanel("module.stockopname.ui.ListSOManualPanel");
-					}
-				}else if(!editMode){
-					if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
-						stockOpname.setSoName(soNameField.getText());
-						stockOpname.setSoDate(soDateChooser.getDate());
-						stockOpname.setSoType(soTypeField.getText());
-						stockOpname.setStockOpnameProduct(products);
-						stockOpname.setStatus(status);
-						ServiceFactory.getStockOpnameBL().saveSO(stockOpname);
-						DialogBox.showInsert();
-						MainPanel.changePanel("module.stockopname.ui.ListSOManualPanel");
-					}
-				}
-				
-			}
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			DialogBox.showError(e.getMessage());
-		}
 	}
 	
 	public void setTableSize(){
@@ -266,11 +202,15 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 
 		TableColumn tc= soTable.getColumnModel().getColumn(7);
 		tc.setCellRenderer(new MyRenderer());
-		NumberField textField = new NumberField(5);
+		JTextField textField = new JTextField();
 		textField.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
 				textField.selectAll();
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				soTable.setValueAt(Double.valueOf(textField.getText()), soTable.getSelectedRow(), 7);
 			}
 		});
 		tc.setCellEditor(new DefaultCellEditor(textField));
@@ -342,8 +282,7 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 			}
 		}
 		public boolean isCellEditable(int row, int column) {
-			if(column==7)return true;
-			else return false;
+			return false;
 		}
 
 
@@ -424,19 +363,12 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 				soNameField.setText(stockOpname.getSoName());
 				soDateChooser.setDate(stockOpname.getSoDate());
 				soTypeField.setText(stockOpname.getSoType());
+				soNameField.setEnabled(false);
 				products = stockOpname.getStockOpnameProduct();
-				for (StockOpnameProduct o : products) {
-					o.setFlag(true);
-					productMap.put(o.getProductID(), o);
-				}
-				deletedProducts = new ArrayList<>(products);
 				soTable.setModel(new SODetailTableModel(products));
 				setTableSize();
 				soTable.updateUI();
-				draftBtn.setVisible(false);
-				saveBtn.setBounds(990,560,150,30);
-				saveBtn.setText("Ubah");
-				
+				productBtn.setEnabled(false);
 			}
 		}
 		

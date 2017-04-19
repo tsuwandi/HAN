@@ -118,6 +118,47 @@ public class ProductSODAO {
 		return products;
 	}
 	
+	public List<StockOpnameProduct> getAllSearchProductSO(String sql, List<Object> objs) throws SQLException {
+		ArrayList<StockOpnameProduct> products = new ArrayList<StockOpnameProduct>();
+
+		try {
+			getAllStatement = connection.prepareStatement(getAllQuery+sql);
+			int i = 1;
+			for (int j = 0; j < objs.size(); j++) {
+				Object obj = objs.get(j);
+				if (obj instanceof String) {
+					if (obj != null) {
+						getAllStatement.setString(i, (String) "%" + obj + "%");
+						i++;
+					}
+				} else {
+					if (obj != null) {
+						getAllStatement.setDate(i, new Date(((java.util.Date) obj).getTime()));
+						i++;
+					}
+				}
+			}
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				StockOpnameProduct product = new StockOpnameProduct();
+				product.setProductID(rs.getInt("id"));
+				product.setProductName(rs.getString("product_name"));
+				product.setProductCode(rs.getString("product_code"));
+				product.setProductCategory(rs.getString("product_category"));
+				product.setProductCategoryID(rs.getInt("product_category_id"));
+				product.setUom(rs.getString("UOM"));
+				products.add(product);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return products;
+	}
+	
 	public List<StockOpnameProduct> getAllProductSO() throws SQLException {
 		ArrayList<StockOpnameProduct> products = new ArrayList<StockOpnameProduct>();
 

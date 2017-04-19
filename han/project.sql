@@ -45,3 +45,10 @@ CREATE TABLE `completed_so_schedule` (
 
 ALTER TABLE `completed_so_schedule` ADD PRIMARY KEY(`id`);
 ALTER TABLE `completed_so_schedule` CHANGE `id` `id` INT(5) NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE `stock_opname` ADD PRIMARY KEY(`id`);
+ALTER TABLE `stock_opname` CHANGE `id` `id` INT(12) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `stock_opname_prod` ADD PRIMARY KEY(`id`);
+ALTER TABLE `stock_opname_prod` CHANGE `id` `id` INT(12) NOT NULL AUTO_INCREMENT;

@@ -31,6 +31,8 @@ import module.util.Pagination;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import controller.ServiceFactory;
+
 public class ListSOManualPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	Logger log = LogManager.getLogger(ListSOManualPanel.class.getName());
@@ -44,9 +46,10 @@ public class ListSOManualPanel extends JPanel{
 	private PagingPanel<StockOpname> pagingPanel;
 
 
-	SetScheduledSOTableModel receivedTableModel;
-	List<StockOpname> setSoManuals;
+	SOManualTableModel receivedTableModel;
+	List<StockOpname> stockOpnames;
 	ListSOManualPanel listSoManual;
+	
 	public ListSOManualPanel() {
 		setLayout(null);
 		listSoManual = this;
@@ -77,8 +80,8 @@ public class ListSOManualPanel extends JPanel{
 		advancedSearchBtn.setBounds(900,80,150,30);
 		add(advancedSearchBtn);
 
-		setSoManuals = new ArrayList<>();
-		receivedTableModel = new SetScheduledSOTableModel(setSoManuals);
+		stockOpnames = new ArrayList<>();
+		receivedTableModel = new SOManualTableModel(stockOpnames);
 		stockOpnameTable = new JTable(receivedTableModel);
 		stockOpnameTable.setFocusable(false);
 
@@ -91,19 +94,19 @@ public class ListSOManualPanel extends JPanel{
 		stockOpnameTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(stockOpnameTable.columnAtPoint(e.getPoint())==7)
+				if(stockOpnameTable.columnAtPoint(e.getPoint())==5)
 					MainPanel.changePanel("module.stockopname.ui.ViewStockOpnamePanel", pagingPanel.getSubListData().get(stockOpnameTable.getSelectedRow()));
 			}
 		});
 
 		try {
-//			importFingerPrints = ServiceFactory.getPersonaliaBL().getImportFingerprints("");
-			stockOpnameTable.setModel(new SetScheduledSOTableModel(setSoManuals));
+			stockOpnames = ServiceFactory.getStockOpnameBL().getStockOpname();
+			stockOpnameTable.setModel(new SOManualTableModel(stockOpnames));
 			stockOpnameTable.updateUI();
 
 			pagingPanel.setPage(1);
 			pagingPanel.setMaxDataPerPage(20);
-			pagingPanel.setData(setSoManuals);
+			pagingPanel.setData(stockOpnames);
 			pagingPanel.setTable(stockOpnameTable);
 			pagingPanel.setTableModel(receivedTableModel);
 			pagingPanel.setBounds(450,510,130,50);
@@ -132,8 +135,8 @@ public class ListSOManualPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-//					importFingerPrints = ServiceFactory.getPersonaliaBL().getImportFingerprints("");
-					stockOpnameTable.setModel(new SetScheduledSOTableModel(setSoManuals));
+					stockOpnames = ServiceFactory.getStockOpnameBL().getStockOpname();
+					stockOpnameTable.setModel(new SOManualTableModel(stockOpnames));
 					stockOpnameTable.updateUI();
 					setTableSize();
 				} catch (Exception e) {
@@ -179,17 +182,17 @@ public class ListSOManualPanel extends JPanel{
 		column1.setMinWidth(0);
 		column1.setMaxWidth(0);
 
-		column2.setPreferredWidth(200);
-		column2.setMinWidth(200);
-		column2.setMaxWidth(200);
+		column2.setPreferredWidth(300);
+		column2.setMinWidth(300);
+		column2.setMaxWidth(300);
 
-		column3.setPreferredWidth(150);
-		column3.setMinWidth(150);
-		column3.setMaxWidth(150);
+		column3.setPreferredWidth(200);
+		column3.setMinWidth(200);
+		column3.setMaxWidth(200);
 
-		column4.setPreferredWidth(150);
-		column4.setMinWidth(150);
-		column4.setMaxWidth(150);
+		column4.setPreferredWidth(200);
+		column4.setMinWidth(200);
+		column4.setMaxWidth(200);
 
 		column5.setPreferredWidth(150);
 		column5.setMinWidth(150);
@@ -202,11 +205,11 @@ public class ListSOManualPanel extends JPanel{
 
 	}
 
-	public class SetScheduledSOTableModel extends AbstractTableModel implements Pagination {
+	public class SOManualTableModel extends AbstractTableModel implements Pagination {
 		private static final long serialVersionUID = 1L;
 		private List<StockOpname> stockOpnames;
 
-		public SetScheduledSOTableModel(List<StockOpname> importFingerPrint) {
+		public SOManualTableModel(List<StockOpname> importFingerPrint) {
 			this.stockOpnames = importFingerPrint;
 		}
 

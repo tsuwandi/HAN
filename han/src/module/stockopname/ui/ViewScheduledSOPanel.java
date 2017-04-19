@@ -87,7 +87,7 @@ public class ViewScheduledSOPanel extends JPanel implements Bridging{
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("Stock Opname Terjadwal");
+		JLabel lblHeader = new JLabel("View Stock Opname Terjadwal");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
