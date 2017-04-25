@@ -3,6 +3,8 @@ package module.stockopname.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -288,6 +290,31 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)MainPanel.changePanel("module.stockopname.ui.ListScheduledSOPanel");
+			}
+		});
+		
+		soReccurenceCmb.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(soReccurenceCmb.getSelectedIndex()==1){
+					soDateField.setEnabled(false);
+					soDateField.setText("");
+					soDayCmb.setEnabled(false);
+					soDayCmb.setSelectedIndex(0);
+				}else if(soReccurenceCmb.getSelectedIndex()==2){
+					soDayCmb.setEnabled(true);
+					soDateField.setEnabled(false);
+					soDateField.setText("");
+				}else if(soReccurenceCmb.getSelectedIndex()==3){
+					soDateField.setEnabled(true);
+					soDayCmb.setEnabled(false);
+					soDayCmb.setSelectedIndex(0);
+				}else{
+					soDateField.setEnabled(true);
+					soDayCmb.setEnabled(true);
+				}
+				
 			}
 		});
 	}
