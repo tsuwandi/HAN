@@ -5,7 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -208,7 +211,7 @@ public class ListSOManualPanel extends JPanel{
 	public class SOManualTableModel extends AbstractTableModel implements Pagination {
 		private static final long serialVersionUID = 1L;
 		private List<StockOpname> stockOpnames;
-
+		private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		public SOManualTableModel(List<StockOpname> importFingerPrint) {
 			this.stockOpnames = importFingerPrint;
 		}
@@ -242,7 +245,7 @@ public class ListSOManualPanel extends JPanel{
 			case 1 : 
 				return p.getSoName();
 			case 2 :
-				return p.getSoDate();
+				return sdf.format(p.getSoDate());
 			case 3 :
 				return p.getSoType();
 			case 4 :

@@ -13,8 +13,17 @@ public class StockOpname {
 	Date confirmDate;
 	List<StockOpnameProduct> stockOpnameProduct;
 	List<StockOpnameProduct> deletedProducts;
+	int setSoScheduleID;
 	
 	
+	
+	
+	public int getSetSoScheduleID() {
+		return setSoScheduleID;
+	}
+	public void setSetSoScheduleID(int setSoScheduleID) {
+		this.setSoScheduleID = setSoScheduleID;
+	}
 	public List<StockOpnameProduct> getDeletedProducts() {
 		return deletedProducts;
 	}

@@ -44,6 +44,7 @@ import module.util.Bridging;
 import module.util.Pagination;
 
 public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
+	private static final long serialVersionUID = 1L;
 	private JLabel soNameLbl;
 	private JLabel soDateLbl;
 	private JLabel soTypeLbl;
@@ -58,7 +59,6 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 	private JButton backBtn;
 	private JButton draftBtn;
 	
-	private SODetailTableModel soDetailTableModel;
 	private JScrollPane soScrollPane;
 	private JTable soTable;
 	private Map<Integer, StockOpnameProduct> productMap;
@@ -171,7 +171,7 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				save("New");
+				save("Completed");
 				
 			}
 		});
@@ -200,7 +200,7 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 		}
 		try {
 			if(error==0){
-				if(editMode){
+				if(editMode&&!scheduled){
 					if(DialogBox.showEditChoice()==JOptionPane.YES_OPTION){
 						stockOpname.setSoName(soNameField.getText());
 						stockOpname.setStockOpnameProduct(products);
@@ -213,7 +213,7 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 						DialogBox.showEdit();
 						MainPanel.changePanel("module.stockopname.ui.ListSOManualPanel");
 					}
-				}else if(!editMode){
+				}else if(!editMode&&!scheduled){
 					if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
 						stockOpname.setSoName(soNameField.getText());
 						stockOpname.setSoDate(soDateChooser.getDate());
@@ -222,6 +222,30 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 						stockOpname.setStatus(status);
 						ServiceFactory.getStockOpnameBL().saveSO(stockOpname);
 						DialogBox.showInsert();
+						MainPanel.changePanel("module.stockopname.ui.ListSOManualPanel");
+					}
+				}else if(!editMode&&scheduled){
+					if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
+						stockOpname.setSoName(soNameField.getText());
+						stockOpname.setSoDate(soDateChooser.getDate());
+						stockOpname.setSoType(soTypeField.getText());
+						stockOpname.setStockOpnameProduct(products);
+						stockOpname.setStatus(status);
+						ServiceFactory.getStockOpnameBL().saveSOScheduled(stockOpname);
+						DialogBox.showInsert();
+						MainPanel.changePanel("module.stockopname.ui.ListSOManualPanel");
+					}
+				}else if(editMode&&scheduled){
+					if(DialogBox.showEditChoice()==JOptionPane.YES_OPTION){
+						stockOpname.setSoName(soNameField.getText());
+						stockOpname.setStockOpnameProduct(products);
+						Iterator<StockOpnameProduct> i = deletedProducts.iterator();
+						while (i.hasNext()) {
+							if(productMap.get(i.next().getProductID())!=null)i.remove();
+						}
+						stockOpname.setDeletedProducts(deletedProducts);
+						ServiceFactory.getStockOpnameBL().updateSO(stockOpname);
+						DialogBox.showEdit();
 						MainPanel.changePanel("module.stockopname.ui.ListSOManualPanel");
 					}
 				}
@@ -278,6 +302,7 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 	}
 
 	public class SODetailTableModel extends AbstractTableModel implements Pagination {
+		private static final long serialVersionUID = 1L;
 		private List<StockOpnameProduct> soProducts;
 		
 		
@@ -416,9 +441,26 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 	public void invokeObjects(Object... objects) {
 		if(objects.length!=0)stockOpname = (StockOpname)objects[0];
 		if(stockOpname!=null){
-			if(stockOpname.getSoType().equals("Stock Opname Terjadwal")){
+			if(stockOpname.getSoType().equals("STOCK OPNAME TERJADWAL")){
 				scheduled=true;
-				if(stockOpname.getId()!=0)editMode=true;
+				if(stockOpname.getId()!=0){
+					editMode=true;
+					draftBtn.setVisible(false);
+					saveBtn.setBounds(990,560,150,30);
+					saveBtn.setText("Ubah");
+				}
+				soNameField.setText(stockOpname.getSoName());
+				soDateChooser.setDate(stockOpname.getSoDate());
+				soTypeField.setText(stockOpname.getSoType());
+				products = stockOpname.getStockOpnameProduct();
+				for (StockOpnameProduct o : products) {
+					o.setFlag(true);
+					productMap.put(o.getProductID(), o);
+				}
+				soTable.setModel(new SODetailTableModel(products));
+				setTableSize();
+				soTable.updateUI();
+				productBtn.setEnabled(false);
 			}else{
 				editMode=true;
 				soNameField.setText(stockOpname.getSoName());

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.pembelian.model.PalletCard;
 import module.pembelian.model.Received;
 import module.production.model.Production;
@@ -146,7 +147,7 @@ public class ProductionDAO {
 			insertStatement.setInt(8, production.getTotalLog());
 			insertStatement.setDouble(9, production.getTotalVolume());
 			insertStatement.setString(10, production.getStatus());
-			insertStatement.setString(11, "Michael");
+			insertStatement.setString(11, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.setDate(12, new Date(new java.util.Date().getTime()));
 			insertStatement.setString(13, production.getProductionTypeCode());
 			insertStatement.setString(14, production.getType());
@@ -163,7 +164,7 @@ public class ProductionDAO {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			deleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
-			deleteStatement.setString(2, "Michael");
+			deleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			deleteStatement.setString(3, production.getProductionCode());
 			deleteStatement.executeUpdate();
 
@@ -186,7 +187,7 @@ public class ProductionDAO {
 			updateStatement.setInt(7, production.getTotalLog());
 			updateStatement.setDouble(8, production.getTotalVolume());
 			updateStatement.setString(9, production.getStatus());
-			updateStatement.setString(10, "Michael");
+			updateStatement.setString(10, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setDate(11, new Date(new java.util.Date().getTime()));
 			updateStatement.setString(12, production.getProductionTypeCode());
 			updateStatement.setString(13, production.getProductionCode());
@@ -377,7 +378,7 @@ public class ProductionDAO {
 			updateDailyClosingStatement.setDate(1, DateUtil.getCurrentDate());
 			updateDailyClosingStatement.setString(2, production.getStatus());
 			updateDailyClosingStatement.setDate(3, DateUtil.getCurrentDate());
-			updateDailyClosingStatement.setString(4, "timotius");
+			updateDailyClosingStatement.setString(4, ServiceFactory.getSystemBL().getUsernameActive());
 			updateDailyClosingStatement.setString(5, production.getProductionCode());
 			updateDailyClosingStatement.executeUpdate();
 

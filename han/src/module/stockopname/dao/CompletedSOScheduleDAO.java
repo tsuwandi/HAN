@@ -67,7 +67,7 @@ public class CompletedSOScheduleDAO {
 			insertStatement.setDate(2, new Date(completedSoSchedule.getDate().getTime()));
 			insertStatement.setString(3, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.setDate(4, new Date(new java.util.Date().getTime()));
-			insertStatement.executeUpdate();
+			System.out.println(insertStatement.executeUpdate());
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -80,8 +80,8 @@ public class CompletedSOScheduleDAO {
 	public void update(CompletedSOSchedule completedSoSchedule) throws SQLException {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
-			insertStatement.setInt(1, completedSoSchedule.getSetSOScheduleID());
-			insertStatement.setDate(2, new Date(completedSoSchedule.getDate().getTime()));
+			updateStatement.setInt(1, completedSoSchedule.getSetSOScheduleID());
+			updateStatement.setDate(2, new Date(completedSoSchedule.getDate().getTime()));
 			updateStatement.setString(3, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setDate(4, new Date(new java.util.Date().getTime()));
 			updateStatement.setInt(5, completedSoSchedule.getId());

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.production.model.ProdRM;
 import module.production.model.Production;
 import module.util.DateUtil;
@@ -165,7 +166,7 @@ public class ProdRMDAO {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setString(1, productionResultDetail.getProductionCode());
 			insertStatement.setString(2, productionResultDetail.getPalletCardCode());
-			insertStatement.setString(3, "Michael");
+			insertStatement.setString(3, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.setDate(4, new Date(new java.util.Date().getTime()));
 			insertStatement.executeUpdate();
 
@@ -180,7 +181,7 @@ public class ProdRMDAO {
 		try {
 			updateStatement = connection.prepareStatement(updateDeletedQuery);
 			updateStatement.setDate(1, new Date(new java.util.Date().getTime()));
-			updateStatement.setString(2, "Michael");
+			updateStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setString(3, productionResultDetail.getProductionCode());
 			updateStatement.setString(4, productionResultDetail.getPalletCardCode());
 			updateStatement.executeUpdate();
@@ -244,7 +245,7 @@ public class ProdRMDAO {
 			updateDailyClosingStatement.setDate(1, DateUtil.getCurrentDate());
 			updateDailyClosingStatement.setString(2, status);
 			updateDailyClosingStatement.setDate(3, DateUtil.getCurrentDate());
-			updateDailyClosingStatement.setString(4, "timotius");
+			updateDailyClosingStatement.setString(4, ServiceFactory.getSystemBL().getUsernameActive());
 			updateDailyClosingStatement.setString(5, code);
 			updateDailyClosingStatement.executeUpdate();
 

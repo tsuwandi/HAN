@@ -220,7 +220,7 @@ public class CreateNewScheduledSOPanel extends JPanel implements Bridging{
 							if(soReccurenceCmb.getSelectedIndex()==2)setSoScheduled.setDay(soDayCmb.getSelectedItem().toString());
 							if(soReccurenceCmb.getSelectedIndex()==3)setSoScheduled.setDate(Integer.valueOf(soDateField.getText()));
 							setSoScheduled.setSoName(soNameField.getText());
-							setSoScheduled.setSoType("Stock Opname Terjadwal");
+							setSoScheduled.setSoType("STOCK OPNAME TERJADWAL");
 							setSoScheduled.setSetSoScheduledProducts(products);
 							ServiceFactory.getStockOpnameBL().saveSetSoSchedule(setSoScheduled);
 							DialogBox.showInsert();

@@ -34,10 +34,39 @@ public class SetSoScheduledDAO {
 	
 	private String lastIDQuery = "SELECT ID from set_so_schedule ORDER BY ID DESC LIMIT 1";
 	
+	private String getAllNotCompleteScheduleQuery = "SELECT id, so_name, reccurance, day, date, so_type "
+			+ "FROM set_so_schedule  WHERE deleted_date IS NULL AND id NOT IN (SELECT set_so_schedule_id FROM completed_so_schedule WHERE CAST(`date` AS DATE) = CAST(NOW() AS DATE))";
+	
 	public SetSoScheduledDAO(Connection connection) throws SQLException {
 		this.connection = connection;
 	}
 	
+	
+	public List<SetSOScheduled> getAllNotCompletedSOToday() throws SQLException {
+		List<SetSOScheduled> setSoScheduleds = new ArrayList<SetSOScheduled>();
+
+		try {
+			getAllStatement = connection.prepareStatement(getAllNotCompleteScheduleQuery);
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				SetSOScheduled setSoScheduled = new SetSOScheduled();
+				setSoScheduled.setId(rs.getInt("id"));
+				setSoScheduled.setSoName(rs.getString("so_name"));
+				setSoScheduled.setReccurence(rs.getString("reccurance"));
+				setSoScheduled.setDay(rs.getString("day"));
+				setSoScheduled.setDate(rs.getInt("date"));
+				setSoScheduled.setSoType(rs.getString("so_type"));
+				setSoScheduleds.add(setSoScheduled);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return setSoScheduleds;
+	}
 	
 	public List<SetSOScheduled> getAll() throws SQLException {
 		List<SetSOScheduled> setSoScheduleds = new ArrayList<SetSOScheduled>();
