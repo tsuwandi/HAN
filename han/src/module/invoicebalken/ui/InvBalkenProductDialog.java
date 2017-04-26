@@ -112,7 +112,7 @@ public class InvBalkenProductDialog extends JDialog {
 		lblErrorProductName.setBounds(335, 45, 225, 25);
 		getContentPane().add(lblErrorProductName);
 		
-		lblQtyReceived = new JLabel("Nama Produk");
+		lblQtyReceived = new JLabel("Qty Penerimaan (m3)");
 		lblQtyReceived.setBounds(25, 75, 150, 25);
 		getContentPane().add(lblQtyReceived);
 		
