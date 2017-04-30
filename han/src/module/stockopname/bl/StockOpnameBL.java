@@ -245,5 +245,28 @@ public class StockOpnameBL {
 		stockOpnameDAO.update(so);
 	}
 	
+	public void deleteStockOpname(StockOpname stockOpname){
+		try {
+			for (StockOpnameProduct soProd : stockOpname.getStockOpnameProduct()) {
+				stockOpnameProductDAO.updateDelete(soProd);
+			}
+			stockOpnameDAO.updateDelete(stockOpname);
+		} catch (SQLException e) {
+			DialogBox.showError(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteScheduleSO(SetSOScheduled setSoScheduled){
+		try {
+			for (SetSoScheduledProduct soProd : setSoScheduled.getSetSoScheduledProducts()) {
+				setSOScheduledProductDAO.updateDelete(soProd);
+			}
+			setSOScheduleDAO.updateDelete(setSoScheduled);
+		} catch (SQLException e) {
+			DialogBox.showError(e.getMessage());
+			e.printStackTrace();
+		}
+	}
 	
 }

@@ -53,6 +53,7 @@ public class ViewStockOpnamePanel extends JPanel implements Bridging {
 	private JButton productBtn;
 	private JButton editBtn;
 	private JButton backBtn;
+	private JButton deleteBtn;
 	
 	private JScrollPane soScrollPane;
 	private JTable soTable;
@@ -134,6 +135,9 @@ public class ViewStockOpnamePanel extends JPanel implements Bridging {
 		editBtn.setBounds(990,560,150,30);
 		add(editBtn);
 		
+		deleteBtn = new JButton("Hapus");
+		deleteBtn.setBounds(830,560,150,30);
+		add(deleteBtn);
 		
 	}
 	
@@ -152,6 +156,18 @@ public class ViewStockOpnamePanel extends JPanel implements Bridging {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainPanel.changePanel("module.stockopname.ui.CreateNewStockOpnamePanel",stockOpname);
+				
+			}
+		});
+		
+		deleteBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
+					ServiceFactory.getStockOpnameBL().deleteStockOpname(stockOpname);
+					MainPanel.changePanel("module.stockopname.ui.ListSOManualPanel");
+				}
 				
 			}
 		});
@@ -371,6 +387,7 @@ public class ViewStockOpnamePanel extends JPanel implements Bridging {
 				productBtn.setEnabled(false);
 			}
 		}
+		if(stockOpname.getStatus().equals("FINAL"))editBtn.setEnabled(false);
 		
 	}
 	

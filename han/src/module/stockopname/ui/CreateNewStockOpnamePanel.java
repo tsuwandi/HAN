@@ -175,6 +175,14 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 				
 			}
 		});
+		
+		draftBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				save("Draft");
+			}
+		});
 	}
 	
 	public Map<Integer, StockOpnameProduct> getProductMap() {

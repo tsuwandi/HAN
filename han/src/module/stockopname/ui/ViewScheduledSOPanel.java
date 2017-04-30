@@ -55,6 +55,7 @@ public class ViewScheduledSOPanel extends JPanel implements Bridging{
 	private JButton productBtn;
 	private JButton editBtn;
 	private JButton backBtn;
+	private JButton deleteBtn;
 	
 	private JScrollPane scrollPane;
 	private JTable soProductTable;
@@ -154,6 +155,10 @@ public class ViewScheduledSOPanel extends JPanel implements Bridging{
 		editBtn.setBounds(850,560,150,30);
 		add(editBtn);
 		
+		deleteBtn = new JButton("Hapus");
+		deleteBtn.setBounds(690,560,150,30);
+		add(deleteBtn);
+		
 		backBtn = new JButton("Kembali");
 		backBtn.setBounds(30,560,150,30);
 		add(backBtn);
@@ -191,6 +196,17 @@ public class ViewScheduledSOPanel extends JPanel implements Bridging{
 			public void actionPerformed(ActionEvent e) {
 				MainPanel.changePanel("module.stockopname.ui.ListScheduledSOPanel");
 				
+			}
+		});
+		
+		deleteBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION){
+					ServiceFactory.getStockOpnameBL().deleteScheduleSO(setSoScheduled);
+					MainPanel.changePanel("module.stockopname.ui.ListScheduledSOPanel");
+				}
 			}
 		});
 	}

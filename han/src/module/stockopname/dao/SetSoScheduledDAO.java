@@ -208,7 +208,7 @@ public class SetSoScheduledDAO {
 		}
 
 	}
-	public void updateDelete(SetSoScheduledProduct setSoScheduledProduct) throws SQLException {
+	public void updateDelete(SetSOScheduled setSoScheduledProduct) throws SQLException {
 		try {
 			updateDeleteStatement = connection.prepareStatement(updateDeleteQuery);
 			updateDeleteStatement.setDate(1, new Date(new java.util.Date().getTime()));
