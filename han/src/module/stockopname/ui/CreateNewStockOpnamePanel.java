@@ -6,6 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +20,7 @@ import java.util.Map;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -68,6 +74,7 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 	private CreateNewStockOpnamePanel parent;
 	boolean editMode=false;
 	boolean scheduled=false;
+	JFormattedTextField textField;
 	
 	public CreateNewStockOpnamePanel(){
 		parent = this;
@@ -150,6 +157,7 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 		stockOpname = new StockOpname();
 		productMap = new HashMap<>();
 		products = new ArrayList<>();
+		deletedProducts= new ArrayList<>();
 		setTableSize();
 		soTypeField.setText("Stock Opname Manual");
 	}
@@ -181,6 +189,14 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				save("Draft");
+			}
+		});
+		
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)MainPanel.changePanel("module.stockopname.ui.ListSOManualPanel");
 			}
 		});
 	}
@@ -297,15 +313,27 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 		column5.setMaxWidth(100);
 
 		TableColumn tc= soTable.getColumnModel().getColumn(7);
-		tc.setCellRenderer(new MyRenderer());
-		NumberField textField = new NumberField(5);
+		NumberFormat amountFormat = NumberFormat.getInstance();
+		textField = new JFormattedTextField(amountFormat);
 		textField.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
 				textField.selectAll();
 			}
 		});
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracter = e.getKeyChar();
+	                if (((caracter < '0') || (caracter > '9'))
+	                        && (caracter != '\b')) {
+	                    e.consume();
+                }
+			}
+		});
 		tc.setCellEditor(new DefaultCellEditor(textField));
+		tc.setCellRenderer(new MyRenderer());
+		
 
 	}
 
@@ -425,7 +453,11 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 		
 		@Override
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-			soProducts.get(rowIndex).setQtyActual(Double.valueOf((String)aValue));
+			if(!((String)aValue).equals("")){
+				soProducts.get(rowIndex).setQtyActual(Double.valueOf((String)aValue));
+				double d = soProducts.get(rowIndex).getQtySystem()-soProducts.get(rowIndex).getQtyActual();
+				soProducts.get(rowIndex).setSelisihQty(d);
+			}
 			fireTableCellUpdated(rowIndex, columnIndex);
 		}
 
@@ -491,5 +523,4 @@ public class CreateNewStockOpnamePanel extends JPanel implements Bridging {
 		}
 		
 	}
-	
 }

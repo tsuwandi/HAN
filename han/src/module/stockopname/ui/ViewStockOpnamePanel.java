@@ -171,6 +171,14 @@ public class ViewStockOpnamePanel extends JPanel implements Bridging {
 				
 			}
 		});
+		
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.stockopname.ui.ListSOManualPanel");	
+			}
+		});
 	}
 	
 	public Map<Integer, StockOpnameProduct> getProductMap() {
