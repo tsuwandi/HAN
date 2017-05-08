@@ -57,7 +57,7 @@ public class ListScheduledSOPanel extends JPanel {
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("IMPORT FINGER PRINT");
+		JLabel lblHeader = new JLabel("Jadwal Stock Opname");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
