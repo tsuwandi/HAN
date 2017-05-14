@@ -1,7 +1,12 @@
 package module.stockopname.ui;
 
+import java.awt.Checkbox;
+import java.awt.Component;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -11,19 +16,27 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
+import main.component.EditableHeaderRenderer;
 import main.component.TextField;
 import model.User;
 import module.production.model.Production;
@@ -159,6 +172,7 @@ public class PopUpProductSOSchedule extends JDialog{
 					productSOTableModel = new ProductTableModel(soScheduledProducts);
 					productSOTable.setModel(productSOTableModel);
 					productSOTable.updateUI();
+					setTableHeader();
 				} catch (Exception e2) {
 					log.error(e2.getMessage());
 					e2.printStackTrace();
@@ -180,11 +194,71 @@ public class PopUpProductSOSchedule extends JDialog{
 			productSOTableModel = new ProductTableModel(soScheduledProducts);
 			productSOTable.setModel(productSOTableModel);
 			productSOTable.updateUI();
+			setTableHeader();
 		} catch (Exception e) {
 			e.printStackTrace();
 			DialogBox.showError(e.getMessage());
 			return;
 		}
+		
+	}
+	
+	public void setTableHeader(){
+		TableColumn col = productSOTable.getColumnModel().getColumn(0);
+		JPanel panel = new JPanel();
+		JCheckBox checkBox = new JCheckBox();
+		productSOTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		productSOTable.getTableHeader().setResizingAllowed(false);
+		TableColumn column2 = productSOTable.getColumnModel().getColumn(1);
+		TableColumn column3 = productSOTable.getColumnModel().getColumn(2);
+		TableColumn column4 = productSOTable.getColumnModel().getColumn(3);
+		TableColumn column5 = productSOTable.getColumnModel().getColumn(4);
+
+
+		col.setPreferredWidth(50);
+		col.setMinWidth(50);
+		col.setMaxWidth(50);
+
+		column2.setPreferredWidth(100);
+		column2.setMinWidth(100);
+		column2.setMaxWidth(100);
+
+		column3.setPreferredWidth(100);
+		column3.setMinWidth(100);
+		column3.setMaxWidth(100);
+
+		column4.setPreferredWidth(200);
+		column4.setMinWidth(200);
+		column4.setMaxWidth(200);
+		
+		column5.setPreferredWidth(0);
+		column5.setMinWidth(0);
+		column5.setMaxWidth(0);
+		
+		checkBox.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(checkBox.isSelected()==true){
+					for (SetSoScheduledProduct setSoScheduledProduct : soScheduledProducts) {
+						setSoScheduledProduct.setFlag(true);
+						if(productMap.get(setSoScheduledProduct.getProductID())==null){
+							productMap.put(setSoScheduledProduct.getProductID(), setSoScheduledProduct);
+						}
+					}
+				}else{
+					for (SetSoScheduledProduct setSoScheduledProduct : soScheduledProducts) {
+						setSoScheduledProduct.setFlag(false);
+						if(productMap.get(setSoScheduledProduct.getProductID())!=null){
+							productMap.remove(setSoScheduledProduct.getProductID());
+						}
+					}
+				}
+			}
+		});
+		panel.add(checkBox);
+		col.setHeaderRenderer(new EditableHeaderRenderer(panel));
+		
 	}
 	
 
@@ -271,4 +345,6 @@ public class PopUpProductSOSchedule extends JDialog{
 	    }
 
 	}
+	
+	
 }
