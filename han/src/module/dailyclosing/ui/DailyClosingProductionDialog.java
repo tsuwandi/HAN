@@ -28,10 +28,14 @@ import com.sun.istack.internal.logging.Logger;
 
 import controller.ServiceFactory;
 import module.pembelian.model.Received;
+import module.prodpk.model.ProdPKMaterial;
+import module.prodpk.model.ProdPKResultProduct;
 import module.production.model.ProdRM;
 import module.production.model.Production;
 import module.production.model.ProductionResult;
 import module.production.model.ProductionResultProduct;
+import module.productionwaste.model.ProductionResultProductWaste;
+import module.purchaseprodresult.model.PPRProduct;
 import module.sendtofinance.ui.SendToFinanceDialog;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -42,6 +46,8 @@ import net.sf.jasperreports.view.JasperViewer;
 import module.dailyclosing.bl.DailyClosingBL;
 import module.dryin.model.DryIn;
 import module.dryout.model.DryOut;
+import module.packingresult.model.PackingRM;
+import module.packingresult.model.PackingResult;
 
 public class DailyClosingProductionDialog extends JDialog {
 
@@ -68,18 +74,37 @@ public class DailyClosingProductionDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					String confirmCode = DailyClosingBL.makeConfirmCode();
-					List<Production> listOfProdRM = ServiceFactory.getDailyClosingBL().getAllProductionCreditForDailyClosing();
-					List<Production> listOfProductionResult = ServiceFactory.getDailyClosingBL().getAllProductionDebetForDailyClosing();
-				
+					List<ProdRM> listOfProdRM = ServiceFactory.getDailyClosingBL().getAllProdRM();
+					List<ProductionResultProduct> listOfProductionResultProduct = ServiceFactory.getDailyClosingBL().getAllProdResult();
+					List<ProductionResultProductWaste> listOfProductionResultProductWaste = ServiceFactory.getDailyClosingBL().getAllProdWasteResult();
+					List<ProdPKMaterial> listOfProdPKMaterial = ServiceFactory.getDailyClosingBL().getAllProdPKMaterial();
+					List<ProdPKResultProduct> listOfProdPKResultProduct = ServiceFactory.getDailyClosingBL().getAllProdPKResultProduct();
+					List<PPRProduct> listOfPPRProduct = ServiceFactory.getDailyClosingBL().getAllPPRProduct();
+					List<PackingRM> listOfPackingRM = ServiceFactory.getDailyClosingBL().getAllPackingRM();
+					List<PackingResult> listOfPackingResult = ServiceFactory.getDailyClosingBL().getAllPackingResult();
+					
 					
 					/* Convert List to JRBeanCollectionDataSource */
 					JRBeanCollectionDataSource itemsJRBeanListOfProdRM = new JRBeanCollectionDataSource(listOfProdRM);
-					JRBeanCollectionDataSource itemsJRBeanListOfProductionResult = new JRBeanCollectionDataSource(listOfProductionResult);
-				
+					JRBeanCollectionDataSource itemsJRBeanListOfProductionResultProduct = new JRBeanCollectionDataSource(listOfProductionResultProduct);
+					JRBeanCollectionDataSource itemsJRBeanListOfProductionResultProductWaste = new JRBeanCollectionDataSource(listOfProductionResultProductWaste);
+					JRBeanCollectionDataSource itemsJRBeanListOfProdPKMaterial = new JRBeanCollectionDataSource(listOfProdPKMaterial);
+					JRBeanCollectionDataSource itemsJRBeanListOfProdPKResultProduct = new JRBeanCollectionDataSource(listOfProdPKResultProduct);
+					JRBeanCollectionDataSource itemsJRBeanListOfPPRProduct = new JRBeanCollectionDataSource(listOfPPRProduct);
+					JRBeanCollectionDataSource itemsJRBeanListOfPackingRM = new JRBeanCollectionDataSource(listOfPackingRM);
+					JRBeanCollectionDataSource itemsJRBeanListOfPackingResult = new JRBeanCollectionDataSource(listOfPackingResult);
+					
 					/* Map to hold Jasper report Parameters */
 					Map<String, Object> parameters = new HashMap<String, Object>();
 					parameters.put("ItemDataSourceListOfProdRM", itemsJRBeanListOfProdRM);
-					parameters.put("ItemDataSourceListOfProductionResult", itemsJRBeanListOfProductionResult);
+					parameters.put("ItemDataSourceListOfProductionResultProduct", itemsJRBeanListOfProductionResultProduct);
+					parameters.put("ItemDataSourceListOfProductionResultProductWaste", itemsJRBeanListOfProductionResultProductWaste);
+					parameters.put("ItemDataSourceListOfProdPKMaterial", itemsJRBeanListOfProdPKMaterial);
+					parameters.put("ItemDataSourceListOfProdPKResultProduct", itemsJRBeanListOfProdPKResultProduct);
+					parameters.put("ItemDataSourceListOfPPRProduct", itemsJRBeanListOfPPRProduct);
+					parameters.put("ItemDataSourceListOfPackingRM", itemsJRBeanListOfPackingRM);
+					parameters.put("ItemDataSourceListOfPackingResult", itemsJRBeanListOfPackingResult);
+					
 					/*
 					 * Using compiled version(.jasper) of Jasper report to
 					 * generate PDF
@@ -88,7 +113,8 @@ public class DailyClosingProductionDialog extends JDialog {
 //							"src/module/dailyclosing/jasper/DailyClosing.jasper", parameters, new JREmptyDataSource());
 
 					if (rdbtnMonitor.isSelected()) {
-						if (isValid(listOfProdRM, listOfProductionResult) == true) {
+						if (isValid(listOfProdRM, listOfProductionResultProduct, listOfProductionResultProductWaste,
+								listOfProdPKMaterial, listOfProdPKResultProduct, listOfPPRProduct, listOfPackingRM, listOfPackingResult) == true) {
 							//JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
 
 //							JDialog dialog = new JDialog();
@@ -107,7 +133,8 @@ public class DailyClosingProductionDialog extends JDialog {
 									if (response == JOptionPane.YES_OPTION) {
 										//dialog.dispose();
 										try {
-											save(listOfProdRM, listOfProductionResult, confirmCode);
+											save(listOfProdRM,  listOfProductionResultProduct, listOfProductionResultProductWaste,
+													listOfProdPKMaterial, listOfProdPKResultProduct, listOfPPRProduct, listOfPackingRM, listOfPackingResult, confirmCode);
 										} catch (SQLException e1) {
 											e1.printStackTrace();
 											JOptionPane.showMessageDialog(null, "Gagal Memproses Tutup Harian",
@@ -205,20 +232,35 @@ public class DailyClosingProductionDialog extends JDialog {
 
 	}
 	
-	public boolean isValid(List<Production> listOfProdRM
-			, List<Production> listOfProductionResult) {
-		if (!listOfProductionResult.isEmpty() || !listOfProductionResult.isEmpty())
-			return true;
-
-		return false;
+	protected boolean isValid(List<ProdRM> listOfProdRM, List<ProductionResultProduct> listOfProductionResultProduct,
+			List<ProductionResultProductWaste> listOfProductionResultProductWaste,
+			List<ProdPKMaterial> listOfProdPKMaterial, List<ProdPKResultProduct> listOfProdPKResultProduct,
+			List<PPRProduct> listOfPPRProduct,
+			List<PackingRM> listOfPackingRM, List<PackingResult> listOfPackingResult) {
+		if (listOfProdRM.isEmpty() 
+				|| listOfProductionResultProduct.isEmpty()
+				|| listOfProductionResultProductWaste.isEmpty()
+				|| listOfProdPKMaterial.isEmpty()
+				|| listOfProdPKResultProduct.isEmpty()
+				|| listOfPPRProduct.isEmpty()
+				|| listOfPackingRM.isEmpty()
+				|| listOfProductionResultProduct.isEmpty())
+		{
+			return false;
+		}
+		
+		return true;
 	}
 
-	public void save(List<Production> listOfProdRM
-			, List<Production> listOfProductionResult,
+	public void save(List<ProdRM> listOfProdRM, List<ProductionResultProduct> listOfProductionResultProduct,
+			List<ProductionResultProductWaste> listOfProductionResultProductWaste,
+			List<ProdPKMaterial> listOfProdPKMaterial, List<ProdPKResultProduct> listOfProdPKResultProduct,
+			List<PPRProduct> listOfPPRProduct,
+			List<PackingRM> listOfPackingRM, List<PackingResult> listOfPackingResult,
 			String confirmCode) throws SQLException {
-System.out.println(listOfProdRM);
-System.out.println(listOfProductionResult);
-		ServiceFactory.getDailyClosingBL().save(listOfProdRM, listOfProductionResult, confirmCode);
+
+		ServiceFactory.getDailyClosingBL().save(listOfProdRM,  listOfProductionResultProduct, listOfProductionResultProductWaste,
+				listOfProdPKMaterial, listOfProdPKResultProduct, listOfPPRProduct, listOfPackingRM, listOfPackingResult, confirmCode);
 
 		JOptionPane.showMessageDialog(null, "Tutup Harian Berhasil", "Tutup Harian Produksi", JOptionPane.INFORMATION_MESSAGE);
 

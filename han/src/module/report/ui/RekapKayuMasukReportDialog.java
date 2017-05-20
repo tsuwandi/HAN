@@ -18,6 +18,7 @@ import module.dailyclosing.ui.DailyClosingDialog;
 import module.dryin.model.DryIn;
 import module.dryout.model.DryOut;
 import module.pembelian.model.Received;
+import module.product.model.Product;
 import module.production.model.Production;
 import module.report.model.DryStockFlow;
 import module.report.model.RekapKayuMasuk;
@@ -105,9 +106,9 @@ private static final long serialVersionUID = 1L;
 					JasperPrint jasperPrint;
 					try {
 						RekapKayuMasuk rekapKayuMasuk = new RekapKayuMasuk();
-						List<RekapKayuMasuk> results = new ArrayList<RekapKayuMasuk>();
-						results = ServiceFactory.getReportBL().getAllPerincianPembelianBalken(rekapKayuMasuk);
-						
+						List<Product> results = new ArrayList<Product>();
+						results = ServiceFactory.getReportBL().getAll(new Product());
+						System.out.println(results.size());
 						JRBeanCollectionDataSource itemsJRBeanResults = new JRBeanCollectionDataSource(
 								results);
 						
@@ -124,7 +125,7 @@ private static final long serialVersionUID = 1L;
 						parameters.put("endDate",endDate);
 						
 						jasperPrint = JasperFillManager.fillReport(
-								"src/module/report/jasper/rekapkayumasuk/LaporanPerincianPembelianBalken.jasper", parameters, new JREmptyDataSource());
+								"src/module/report/jasper/reportGroup.jasper", parameters, new JREmptyDataSource());
 					
 						JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
 	

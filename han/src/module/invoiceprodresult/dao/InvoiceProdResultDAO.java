@@ -90,7 +90,7 @@ public class InvoiceProdResultDAO {
 
 		try {
 			getAllStatement = connection.prepareStatement(query);
-
+System.out.println(getAllStatement);
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
 				InvoiceProdResult ppr = new InvoiceProdResult();

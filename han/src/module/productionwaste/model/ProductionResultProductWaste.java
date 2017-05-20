@@ -31,6 +31,21 @@ public class ProductionResultProductWaste{
 		this.qty = qty;
 	}
 
+	public int getProdWasteResultId() {
+		return prodWasteResultId;
+	}
+	public void setProdWasteResultId(int prodWasteResultId) {
+		this.prodWasteResultId = prodWasteResultId;
+	}
 
+	public String getPwCode() {
+		return pwCode;
+	}
+	public void setPwCode(String pwCode) {
+		this.pwCode = pwCode;
+	}
+
+	private int prodWasteResultId;
+	private String pwCode;
 }
 

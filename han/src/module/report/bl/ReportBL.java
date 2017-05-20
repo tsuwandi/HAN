@@ -14,6 +14,8 @@ import module.pembelian.dao.ThicknessDAO;
 import module.pembelian.model.Grade;
 import module.pembelian.model.Received;
 import module.pembelian.model.Thickness;
+import module.product.dao.ProductDAO;
+import module.product.model.Product;
 import module.report.dao.ReceivedReportDAO;
 import module.report.dao.RekapKayuMasukDAO;
 import module.report.model.DryStockFlow;
@@ -95,6 +97,16 @@ public class ReportBL {
 		try {
 			con = dataSource.getConnection();
 			return new RekapKayuMasukDAO(con).getAllRekapitulasiPembelianBalken(rekapKayuMasuk);
+		} finally {
+			con.close();
+		}
+	} 
+	
+	public List<Product> getAll(Product product) throws SQLException{
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductDAO(con).getAll();
 		} finally {
 			con.close();
 		}

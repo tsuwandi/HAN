@@ -36,8 +36,6 @@ public class AppConstants {
 	public static final String DRY_OUT = "DRY_OUT";
 	public static final String DEBET = "D";
 	public static final String CREDIT = "C";
-	public static final String PRODUCTION_PROD_RM = "PROD_RM";
-	public static final String PROD_RESULT = "PROD_RESULT";
 	
 	public static final String BALKEN_BASAH_CD = "B";
 	public static final String BALKEN_KERING_CD = "K";
@@ -86,4 +84,13 @@ public class AppConstants {
 	public static final String SOURCE_INVOICE_BALKEN = "INVOICE_BALKEN";
 	public static final String SOURCE_RECEIVED = "RECEIVED";
 	public static final String SOURCE_PAYMENT_BALKEN = "PAYMENT_BALKEN";
+	
+	public static final String PROD_RM = "PROD_RM";
+	public static final String PROD_RESULT_PRODUCT = "PROD_RESULT_PRODUCT";
+	public static final String PROD_WASTE_RESULT_PRODUCT = "PROD_WASTE_RESULT_PRODUCT";
+	public static final String PROD_PK_MATERIAL = "PROD_PK_MATERIAL";
+	public static final String PROD_PK_RESULT_PRODUCT = "PROD_PK_RESULT_PRODUCT";
+	public static final String PPR_PRODUCT = "PPR_PRODUCT";
+	public static final String PACKING_RM = "PACKING_RM";
+	public static final String PACKING_RESULT = "PACKING_RESULT";
 }

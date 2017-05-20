@@ -87,7 +87,7 @@ public class InvoiceBalkenDAO {
 
 		try {
 			getAllStatement = connection.prepareStatement(query);
-
+			
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
 				InvoiceBalken ppr = new InvoiceBalken();

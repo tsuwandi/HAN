@@ -5,6 +5,14 @@ public class ProdPKResultProduct{
 	int prodPKResultID;
 	String productCode;
 	double qty;
+	String prodPKCode;
+	
+	public String getProdPKCode() {
+		return prodPKCode;
+	}
+	public void setProdPKCode(String prodPKCode) {
+		this.prodPKCode = prodPKCode;
+	}
 	public int getId() {
 		return id;
 	}

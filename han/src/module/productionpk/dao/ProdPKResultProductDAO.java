@@ -155,4 +155,32 @@ public class ProdPKResultProductDAO {
 		}
 
 	}
+	
+	public List<ProdPKResultProduct> getAllProdPKResultProductForInventoryTemp() throws SQLException {
+		
+		List<ProdPKResultProduct> prodPKResultProducts = new ArrayList<ProdPKResultProduct>();
+		String query = new StringBuilder()
+				.append(" SELECT id, prod_pk_code, product_code, qty FROM prod_pk_result_product prp")
+				.append(" INNER JOIN prod_pk pr on prp.prod_pk_code = pr.prod_pk_code")
+				.append(" WHERE pr.confirm_date is null and pr.deleted_date is null and prp.deleted_date is null")
+				.append(" AND prp.input_date <= CURDATE()").toString();
+		try {
+			getAllStatement = connection.prepareStatement(query);
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				ProdPKResultProduct prodPKResultProduct = new ProdPKResultProduct();
+				prodPKResultProduct.setId(rs.getInt("id"));
+				prodPKResultProduct.setProdPKCode(rs.getString("prod_pk_code"));
+				prodPKResultProduct.setProductCode(rs.getString("product_code"));
+				prodPKResultProduct.setQty(rs.getDouble("qty"));
+				prodPKResultProducts.add(prodPKResultProduct);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return prodPKResultProducts;
+	}
 }

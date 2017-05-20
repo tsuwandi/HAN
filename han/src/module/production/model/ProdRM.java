@@ -1,5 +1,6 @@
 package module.production.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ProdRM {
@@ -13,9 +14,21 @@ public class ProdRM {
 	int log;
 	double volume;
 	Date dateDryOut;
+	BigDecimal total;
+	String productCode;
 	
-	
-	
+	public String getProductCode() {
+		return productCode;
+	}
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
+	}
+	public BigDecimal getTotal() {
+		return total;
+	}
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
 	public boolean isFlag() {
 		return flag;
 	}

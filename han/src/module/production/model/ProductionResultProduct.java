@@ -34,28 +34,16 @@ public class ProductionResultProduct{
 		this.qty = qty;
 	}
 
-	//timotius@20170107_start_tutup_harian_produksi
-	private Date confirmDate;
-	private String confirmCode;
-	private String status;
-	public Date getConfirmDate() {
-		return confirmDate;
+	public String getProductionCode() {
+		return productionCode;
 	}
-	public void setConfirmDate(Date confirmDate) {
-		this.confirmDate = confirmDate;
+	public void setProductionCode(String productionCode) {
+		this.productionCode = productionCode;
 	}
-	public String getConfirmCode() {
-		return confirmCode;
-	}
-	public void setConfirmCode(String confirmCode) {
-		this.confirmCode = confirmCode;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	//timotius@20170107_end_tutup_harian_produksi
+
+	private String productionCode;
+	
+	
 }
+
 

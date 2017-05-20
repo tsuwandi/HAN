@@ -13,6 +13,7 @@ import module.util.DateUtil;
 
 public class ProdPKMaterialDAO {
 	private Connection connection;
+	private PreparedStatement getAllStatement;
 	private PreparedStatement getAllByProdPKCodeStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
