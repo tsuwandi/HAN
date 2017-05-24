@@ -1,4 +1,4 @@
-package module.stockopname.ui;
+package module.mastershift.ui;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -21,43 +21,40 @@ import javax.swing.table.TableColumn;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.component.PagingPanel;
 import main.component.TextField;
 import main.panel.MainPanel;
 import model.User;
-import module.personalia.model.ImportFingerprint;
-import module.personalia.ui.ListFilesAttendancePanel;
-import module.stockopname.model.SetSOScheduled;
+import module.mastershift.model.MasterShift;
 import module.util.Pagination;
 
-public class ListScheduledSOPanel extends JPanel {
+public class ListMasterShiftPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
-	Logger log = LogManager.getLogger(ListScheduledSOPanel.class.getName());
+	Logger log = LogManager.getLogger(ListMasterShiftPanel.class.getName());
 	private JButton searchBtn;
 	private TextField searchField;
-	JTable setSoScheduleTable;
+	private JTable masterShiftTable;
 	private JScrollPane scrollPane;
 
 	private JButton advancedSearchBtn;
 	private JButton createNewBtn;
-	private PagingPanel<SetSOScheduled> pagingPanel;
+	private PagingPanel<MasterShift> pagingPanel;
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-
-	SetScheduledSOTableModel setScheduledTableModel;
-	List<SetSOScheduled> setSoSchedule;
-	ListScheduledSOPanel listScheduledSOPanel;
-	public ListScheduledSOPanel() {
+	MasterShiftTableModel masterShiftTableModel;
+	List<MasterShift> masterShifts;
+	ListMasterShiftPanel listMasterShiftPanel;
+	public ListMasterShiftPanel() {
 		setLayout(null);
-		listScheduledSOPanel = this;
+		listMasterShiftPanel = this;
 
-		JLabel lblBreadcrumb = new JLabel("ERP > Stock Opname Product");
+		JLabel lblBreadcrumb = new JLabel("ERP > Master Shift");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		JLabel lblHeader = new JLabel("Jadwal Stock Opname");
+		JLabel lblHeader = new JLabel("Master Shift");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -78,35 +75,35 @@ public class ListScheduledSOPanel extends JPanel {
 		advancedSearchBtn.setBounds(900,80,150,30);
 		add(advancedSearchBtn);
 
-		setSoSchedule = new ArrayList<>();
-		setScheduledTableModel = new SetScheduledSOTableModel(setSoSchedule);
-		setSoScheduleTable = new JTable(setScheduledTableModel);
-		setSoScheduleTable.setFocusable(false);
+		masterShifts = new ArrayList<>();
+		masterShiftTableModel = new MasterShiftTableModel(masterShifts);
+		masterShiftTable = new JTable(masterShiftTableModel);
+		masterShiftTable.setFocusable(false);
 
-		scrollPane =  new JScrollPane(setSoScheduleTable);
+		scrollPane =  new JScrollPane(masterShiftTable);
 		scrollPane.setBounds(50,200,1000,300);
 		add(scrollPane);
 
 		pagingPanel =new PagingPanel<>();
 		add(pagingPanel);
-		setSoScheduleTable.addMouseListener(new MouseAdapter() {
+		masterShiftTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(setSoScheduleTable.columnAtPoint(e.getPoint())==3)
-					MainPanel.changePanel("module.stockopname.ui.ViewScheduledSOPanel", pagingPanel.getSubListData().get(setSoScheduleTable.getSelectedRow()));
+				if(masterShiftTable.columnAtPoint(e.getPoint())==3)
+					MainPanel.changePanel("module.mastershift.ui.ViewMasterShiftPanel", pagingPanel.getSubListData().get(masterShiftTable.getSelectedRow()));
 			}
 		});
 
 		try {
-			setSoSchedule = ServiceFactory.getStockOpnameBL().getSetSoSchedule();
-			setSoScheduleTable.setModel(new SetScheduledSOTableModel(setSoSchedule));
-			setSoScheduleTable.updateUI();
+//			setSoSchedule = ServiceFactory.getStockOpnameBL().getSetSoSchedule();
+			masterShiftTable.setModel(new MasterShiftTableModel(masterShifts));
+			masterShiftTable.updateUI();
 
 			pagingPanel.setPage(1);
 			pagingPanel.setMaxDataPerPage(20);
-			pagingPanel.setData(setSoSchedule);
-			pagingPanel.setTable(setSoScheduleTable);
-			pagingPanel.setTableModel(setScheduledTableModel);
+			pagingPanel.setData(masterShifts);
+			pagingPanel.setTable(masterShiftTable);
+			pagingPanel.setTableModel(masterShiftTableModel);
 			pagingPanel.setBounds(450,510,130,50);
 
 
@@ -134,8 +131,8 @@ public class ListScheduledSOPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 //					importFingerPrints = ServiceFactory.getPersonaliaBL().getImportFingerprints("");
-					setSoScheduleTable.setModel(new SetScheduledSOTableModel(setSoSchedule));
-					setSoScheduleTable.updateUI();
+					masterShiftTable.setModel(new MasterShiftTableModel(masterShifts));
+					masterShiftTable.updateUI();
 					setTableSize();
 				} catch (Exception e) {
 					log.error(e.getMessage());
@@ -149,7 +146,7 @@ public class ListScheduledSOPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainPanel.changePanel("module.stockopname.ui.CreateNewScheduledSOPanel");
+				MainPanel.changePanel("module.mastershift.ui.CreateNewMasterShiftPanel");
 			}
 		});
 
@@ -166,12 +163,12 @@ public class ListScheduledSOPanel extends JPanel {
 
 
 	public void setTableSize(){
-		setSoScheduleTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		setSoScheduleTable.getTableHeader().setResizingAllowed(false);
-		TableColumn column1 = setSoScheduleTable.getColumnModel().getColumn(0);
-		TableColumn column2 = setSoScheduleTable.getColumnModel().getColumn(1);
-		TableColumn column3 = setSoScheduleTable.getColumnModel().getColumn(2);
-		TableColumn column4 = setSoScheduleTable.getColumnModel().getColumn(3);
+		masterShiftTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		masterShiftTable.getTableHeader().setResizingAllowed(false);
+		TableColumn column1 = masterShiftTable.getColumnModel().getColumn(0);
+		TableColumn column2 = masterShiftTable.getColumnModel().getColumn(1);
+		TableColumn column3 = masterShiftTable.getColumnModel().getColumn(2);
+		TableColumn column4 = masterShiftTable.getColumnModel().getColumn(3);
 
 
 		column1.setPreferredWidth(0);
@@ -193,11 +190,12 @@ public class ListScheduledSOPanel extends JPanel {
 
 	}
 
-	public class SetScheduledSOTableModel extends AbstractTableModel implements Pagination {
-		private List<SetSOScheduled> setSOSchedules;
+	public class MasterShiftTableModel extends AbstractTableModel implements Pagination {
+		private List<MasterShift> masterShifts;
+		
 
-		public SetScheduledSOTableModel(List<SetSOScheduled> setSOSchedules) {
-			this.setSOSchedules = setSOSchedules;
+		public MasterShiftTableModel(List<MasterShift> masterShifts) {
+			this.masterShifts = masterShifts;
 		}
 
 		/**
@@ -205,7 +203,7 @@ public class ListScheduledSOPanel extends JPanel {
 		 * @return int
 		 */
 		public int getRowCount() {
-			return setSOSchedules.size();
+			return masterShifts.size();
 		}
 
 		/**
@@ -222,15 +220,19 @@ public class ListScheduledSOPanel extends JPanel {
 		 * @return ({@link User}) Object 
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			SetSOScheduled p = setSOSchedules.get(rowIndex);
+			MasterShift p = masterShifts.get(rowIndex);
 			switch(columnIndex){
 			case 0 :
 				return p.getId();
 			case 1 : 
-				return p.getSoName();
+				return p.getShiftCode();
 			case 2 :
-				return p.getReccurence();
+				return p.getShiftName();
 			case 3 :
+				return p.getType();
+			case 4 :
+				return p.getInputDate();
+			case 5 :
 				return "View";
 			default :
 				return "";
@@ -263,7 +265,7 @@ public class ListScheduledSOPanel extends JPanel {
 
 		@Override
 		public <T> void setList(List<T> list) {
-			setSOSchedules = (List<SetSOScheduled>) list;
+			masterShifts = (List<MasterShift>) list;
 		}
 
 	}

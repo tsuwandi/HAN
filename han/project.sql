@@ -52,3 +52,27 @@ ALTER TABLE `stock_opname` CHANGE `id` `id` INT(12) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `stock_opname_prod` ADD PRIMARY KEY(`id`);
 ALTER TABLE `stock_opname_prod` CHANGE `id` `id` INT(12) NOT NULL AUTO_INCREMENT;
+
+
+--master shift
+ALTER TABLE `shift` ADD `type` VARCHAR(10) NOT NULL AFTER `shift_name`;
+
+CREATE TABLE `shift_detail` (
+  `id` int(5) NOT NULL,
+  `shift_id` int NOT NULL,
+  `day` varchar(200) NOT NULL,
+  `week` int NOT NULL,
+  `in` varchar(10) NOT NULL,  
+  `out` varchar(10) NOT NULL,
+  `holiday` varchar(1) NOT NULL,
+  `rest` int NOT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+);
+
+ALTER TABLE `shift_detail` ADD PRIMARY KEY(`id`);
+ALTER TABLE `shift_detail` CHANGE `id` `id` INT(5) NOT NULL AUTO_INCREMENT;
