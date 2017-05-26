@@ -27,6 +27,7 @@ public class MenuPanel extends JPanel {
 		menu.addNewMenu("General", "General");
 		menu.addNewLeafTo("General", "Supplier", "Supplier", "module.supplier.ui.SupplierListPanel");
 		menu.addNewLeafTo("General", "Produk", "Produk", "module.product.ui.ProductListPanel");
+		menu.addNewLeafTo("General", "Shift", "Shift", "module.mastershift.ui.ListMasterShiftPanel");
 		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Penerimaan", "Penerimaan");

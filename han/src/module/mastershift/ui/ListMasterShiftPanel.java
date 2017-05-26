@@ -169,24 +169,38 @@ public class ListMasterShiftPanel extends JPanel{
 		TableColumn column2 = masterShiftTable.getColumnModel().getColumn(1);
 		TableColumn column3 = masterShiftTable.getColumnModel().getColumn(2);
 		TableColumn column4 = masterShiftTable.getColumnModel().getColumn(3);
+		TableColumn column5 = masterShiftTable.getColumnModel().getColumn(4);
+		TableColumn column6 = masterShiftTable.getColumnModel().getColumn(5);
+		TableColumn column7 = masterShiftTable.getColumnModel().getColumn(6);
 
 
 		column1.setPreferredWidth(0);
 		column1.setMinWidth(0);
 		column1.setMaxWidth(0);
 
-		column2.setPreferredWidth(700);
-		column2.setMinWidth(700);
-		column2.setMaxWidth(700);
+		column2.setPreferredWidth(200);
+		column2.setMinWidth(200);
+		column2.setMaxWidth(200);
 
-		column3.setPreferredWidth(200);
-		column3.setMinWidth(200);
-		column3.setMaxWidth(200);
+		column3.setPreferredWidth(300);
+		column3.setMinWidth(300);
+		column3.setMaxWidth(300);
 
 		column4.setPreferredWidth(100);
 		column4.setMinWidth(100);
 		column4.setMaxWidth(100);
 
+		column5.setPreferredWidth(150);
+		column5.setMinWidth(150);
+		column5.setMaxWidth(150);
+
+		column6.setPreferredWidth(150);
+		column6.setMinWidth(150);
+		column6.setMaxWidth(150);
+		
+		column7.setPreferredWidth(100);
+		column7.setMinWidth(100);
+		column7.setMaxWidth(100);
 
 	}
 
@@ -210,7 +224,7 @@ public class ListMasterShiftPanel extends JPanel{
 		 * Method to get Column Count
 		 */
 		public int getColumnCount() {
-			return 4;
+			return 7;
 		}
 
 		/**
@@ -233,6 +247,8 @@ public class ListMasterShiftPanel extends JPanel{
 			case 4 :
 				return p.getInputDate();
 			case 5 :
+				return p.getEditedDate();
+			case 6 :
 				return "View";
 			default :
 				return "";
@@ -253,10 +269,16 @@ public class ListMasterShiftPanel extends JPanel{
 			case 0 : 
 				return "ID";
 			case 1 :
-				return "Nama Stock Opname";
+				return "Shfit Code";
 			case 2 :
-				return "Perulangan";
+				return "Shift Name";
 			case 3 :
+				return "Type";
+			case 4 :
+				return "Input Date";
+			case 5 :
+				return "Edited Date";
+			case 6 :
 				return "Tindakan";
 			default :
 				return "";
