@@ -1,6 +1,7 @@
 package module.mastershift.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class MasterShift {
 	int id;
@@ -9,6 +10,21 @@ public class MasterShift {
 	String type;
 	Date inputDate;
 	Date editedDate;
+	List<MasterShiftDetail> masterShiftDetails;
+	List<MasterShiftDetail> deletedShiftDetails;
+	
+	public List<MasterShiftDetail> getDeletedShiftDetails() {
+		return deletedShiftDetails;
+	}
+	public void setDeletedShiftDetails(List<MasterShiftDetail> deletedShiftDetails) {
+		this.deletedShiftDetails = deletedShiftDetails;
+	}
+	public List<MasterShiftDetail> getMasterShiftDetails() {
+		return masterShiftDetails;
+	}
+	public void setMasterShiftDetails(List<MasterShiftDetail> masterShiftDetails) {
+		this.masterShiftDetails = masterShiftDetails;
+	}
 	public int getId() {
 		return id;
 	}

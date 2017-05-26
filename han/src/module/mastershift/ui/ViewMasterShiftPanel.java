@@ -13,9 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -39,13 +37,11 @@ import main.component.NumberField;
 import main.component.TextField;
 import main.panel.MainPanel;
 import model.User;
-import module.mastershift.bl.MasterShiftBL;
 import module.mastershift.model.MasterShift;
 import module.mastershift.model.MasterShiftDetail;
-import module.mastershift.ui.ViewMasterShiftPanel.ShiftDtlTableModel;
 import module.util.Bridging;
 
-public class CreateNewMasterShiftPanel extends JPanel implements Bridging{
+public class ViewMasterShiftPanel extends JPanel implements Bridging {
 	Logger log = LogManager.getLogger(CreateNewMasterShiftPanel.class.getName());
 	private static final long serialVersionUID = 1L;
 	
@@ -89,7 +85,7 @@ public class CreateNewMasterShiftPanel extends JPanel implements Bridging{
 	private ButtonGroup bgHoliday;
 	
 	private JButton addShiftDtlBtn;
-	private JButton saveBtn;
+	private JButton editBtn;
 	private JButton backBtn;
 	
 	private List<JCheckBox> unAssignedDates;
@@ -112,7 +108,7 @@ public class CreateNewMasterShiftPanel extends JPanel implements Bridging{
 	private List<MasterShiftDetail> deletedDetails;
 	DecimalFormat df = new DecimalFormat("#.00"); 
 	
-	public CreateNewMasterShiftPanel(){
+	public ViewMasterShiftPanel(){
 		createGUI();
 		listener();
 		initData();
@@ -153,122 +149,12 @@ public class CreateNewMasterShiftPanel extends JPanel implements Bridging{
 			}
 		});
 		
-		yesRadio.addActionListener(new ActionListener() {
+		editBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				disableHolidayComponent();
-			}
-		});
-		
-		noRadio.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				enableHolidayComponent();
-			}
-		});
-		
-		addShiftDtlBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				add();
-			}
-		});
-		
-		saveBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				save();
-			}
-		});
-		
-		shiftDtlTable.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(shiftDtlTable.columnAtPoint(e.getPoint())==8){
-					MasterShiftDetail msd = masterShiftDtls.get(shiftDtlTable.getSelectedRow());
-					if(msd.getHoliday().equals("y")){
-						yesRadio.setSelected(true);
-					}else{
-						noRadio.setSelected(true);
-						String [] in = msd.getIn().split(":");
-						inHourField.setText(in[0]);
-						inMinuteField.setText(in[1]);
-						
-						String [] out = msd.getOut().split(":");
-						outHourField.setText(out[0]);
-						outMinuteField.setText(out[1]);
-						
-						restField.setText(msd.getRest()+"");
-						if(typeCmb.getSelectedIndex()==1){
-							String [] dateSplit = msd.getDay().split(",");
-							List<String> listOfDate=  new ArrayList<String>(Arrays.asList(dateSplit));
-							for(JCheckBox cb : unAssignedDates){
-								if(listOfDate.contains(cb.getText())){
-									cb.setVisible(true);
-									cb.setSelected(true);
-								}
-							}
-							datePanel.updateUI();
-						}
-						if(typeCmb.getSelectedIndex()==2){
-							String [] dateSplit = msd.getDay().split(",");
-							List<String> listOfDate=  new ArrayList<String>(Arrays.asList(dateSplit));
-							for(JCheckBox cb : unAssignedDays){
-								if(listOfDate.contains(cb.getText())){
-									cb.setVisible(true);
-									cb.setSelected(true);
-								}
-							}
-							dayPanel.updateUI();
-						}
-						if(typeCmb.getSelectedIndex()==3){
-							weekField.setText(msd.getWeek()+"");
-							String [] dateSplit = msd.getDay().split(",");
-							List<String> listOfDate=  new ArrayList<String>(Arrays.asList(dateSplit));
-							for(JCheckBox cb : unAssignedDays){
-								if(listOfDate.contains(cb.getText())){
-									cb.setSelected(true);
-								}
-							}
-							dayPanel.updateUI();
-						}
-						editDetailMode=true;
-						indexEdited = shiftDtlTable.getSelectedRow();
-						addShiftDtlBtn.setText("Ubah");
-					}
-				}
+				MainPanel.changePanel("module.mastershift.ui.CreateNewMasterShiftPanel",masterShift);
 				
-				if(shiftDtlTable.columnAtPoint(e.getPoint())==9){
-					MasterShiftDetail msd = masterShiftDtls.get(shiftDtlTable.getSelectedRow());
-					if(typeCmb.getSelectedIndex()==1){
-						String [] dateSplit = msd.getDay().split(",");
-						List<String> listOfDate=  new ArrayList<String>(Arrays.asList(dateSplit));
-						for(JCheckBox cb : unAssignedDates){
-							if(listOfDate.contains(cb.getText())){
-								cb.setVisible(true);
-							}
-						}
-						datePanel.updateUI();
-					}
-					if(typeCmb.getSelectedIndex()==2){
-						String [] dateSplit = msd.getDay().split(",");
-						List<String> listOfDate=  new ArrayList<String>(Arrays.asList(dateSplit));
-						for(JCheckBox cb : unAssignedDays){
-							if(listOfDate.contains(cb.getText())){
-								cb.setVisible(true);
-							}
-						}
-						dayPanel.updateUI();
-					}
-					deletedDetails.add(msd);
-					masterShiftDtls.remove(msd);
-					shiftDtlTable.updateUI();
-					if(masterShiftDtls.size()==0)typeCmb.setEnabled(true);
-				}
 			}
 		});
 		
@@ -276,24 +162,12 @@ public class CreateNewMasterShiftPanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)MainPanel.changePanel("module.mastershift.ui.ListMasterShiftPanel");
+				MainPanel.changePanel("module.mastershift.ui.ListMasterShiftPanel");
 			}
 		});
 	}
 	
-	private void clearData(){
-		inHourField.setText("");
-		inMinuteField.setText("");
-		outHourField.setText("");
-		outMinuteField.setText("");
-		weekField.setText("");
-		restField.setText("");
-		if(editDetailMode){
-			addShiftDtlBtn.setText("Tambah");
-			editDetailMode=false;
-			indexEdited=0;
-		}
-	}
+	
 	
 	private void initData(){
 		dayPanel.setVisible(false);
@@ -302,7 +176,6 @@ public class CreateNewMasterShiftPanel extends JPanel implements Bridging{
 		deletedDetails = new ArrayList<>();
 		noRadio.setSelected(true);
 		weekField.setEnabled(false);
-		shiftCodeField.setText(ServiceFactory.getMasterShiftBL().getLastShiftCode()+"/S/"+new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
 		shiftCodeField.setEnabled(false);
 		masterShift = new MasterShift();
 	}
@@ -331,15 +204,6 @@ public class CreateNewMasterShiftPanel extends JPanel implements Bridging{
 	
 	private void createGUI(){
 		setLayout(null);
-		
-//		container = new JPanel();
-//		container.setLayout(null);
-//		container.setPreferredSize(new Dimension(1100, 900));
-//		
-//		containerPane = new JScrollPane(container);
-//		containerPane.setBounds(0,0,1170,630);
-//		containerPane.getVerticalScrollBar().setUnitIncrement(16);
-//		add(containerPane);
 		
 		JLabel lblBreadcrumb = new JLabel("ERP > Master Shift");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -479,9 +343,9 @@ public class CreateNewMasterShiftPanel extends JPanel implements Bridging{
 		add(scrollPane);
 		
 		
-		saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(900,595,150,30);
-		add(saveBtn);
+		editBtn = new JButton("Ubah");
+		editBtn.setBounds(900,595,150,30);
+		add(editBtn);
 		
 		backBtn = new JButton("Kembali");
 		backBtn.setBounds(50,595,150,30);
@@ -491,173 +355,6 @@ public class CreateNewMasterShiftPanel extends JPanel implements Bridging{
 		createDateCheckBoxs();
 		createDayCheckBoxs();
 	}
-		
-	private void save(){
-		int error = 0;
-		if(shiftNameField.getText().equals("")){
-			shiftNameErrorLbl.setText("<html><font color='red'>Nama harus diisi !</font></html>");
-			error++;
-		}else{
-			shiftNameErrorLbl.setText("");
-		}
-		
-		if(error==0){
-			masterShift.setShiftCode(shiftCodeField.getText());
-			masterShift.setShiftName(shiftNameField.getText());
-			masterShift.setType(String.valueOf(typeCmb.getSelectedItem()));
-			masterShift.setMasterShiftDetails(masterShiftDtls);
-			masterShift.setDeletedShiftDetails(deletedDetails);
-			if(!editMode){
-				if (DialogBox.showInsertChoice()==JOptionPane.YES_OPTION) {
-					ServiceFactory.getMasterShiftBL().save(masterShift);
-					MainPanel.changePanel("module.mastershift.ui.ListMasterShiftPanel");
-				}
-			}else{
-				if (DialogBox.showEditChoice()==JOptionPane.YES_OPTION) {
-					ServiceFactory.getMasterShiftBL().update(masterShift);
-					MainPanel.changePanel("module.mastershift.ui.ListMasterShiftPanel");
-				}
-			}
-		}
-	
-		
-	}
-	private void add(){
-		int error=0;
-		if(typeCmb.getSelectedIndex()==0){
-			shiftTypeErrorLbl.setText("<html><font color='red'>Tipe harus dipilih !</font></html>");
-			error++;
-		}else{
-			shiftTypeErrorLbl.setText("");
-		}
-		if(noRadio.isSelected()) {
-			if(inHourField.getText().length()!=2||inMinuteField.getText().length()!=2){
-				inErrorLbl.setText("<html><font color='red'>Format Jam masuk harus 00:00 !</font></html>");
-				error++;
-			}else{
-				if(Integer.valueOf(inHourField.getText())>23||Integer.valueOf(inMinuteField.getText())>59){
-					inErrorLbl.setText("<html><font color='red'>Format Jam keluar Tidak boleh lebih dari 23:59 !</font></html>");
-					error++;
-				}else{
-					inErrorLbl.setText("");
-				}
-			}
-			if(outHourField.getText().length()!=2||outMinuteField.getText().length()!=2){
-				outErrorLbl.setText("<html><font color='red'>Format Jam keluar harus 00:00 !</font></html>");
-				error++;
-			}else{
-				if(Integer.valueOf(outHourField.getText())>23||Integer.valueOf(outMinuteField.getText())>59){
-					outErrorLbl.setText("<html><font color='red'>Format Jam keluar Tidak boleh lebih dari 23:59 !</font></html>");
-					error++;
-				}else{
-					outErrorLbl.setText("");
-				}
-			}
-			if(restField.getText().equals("")){
-				restErrorLbl.setText("<html><font color='red'>Istirahat harus diisi !</font></html>");
-				error++;
-			}else{
-				restErrorLbl.setText("");
-			}
-		}else{
-			restErrorLbl.setText("");
-			inErrorLbl.setText("");
-			outErrorLbl.setText("");
-		}
-		if(typeCmb.getSelectedIndex()==1){
-			boolean comboFlag = false;
-			cbLoop:
-			for(JCheckBox cb : unAssignedDates){
-				if(cb.isSelected()==true){
-					comboFlag=true;
-					break cbLoop;
-				}
-			}
-			if(!comboFlag){
-				dateErrorLbl.setText("<html><font color='red'>Tanggal harus dipilih !</font></html>");
-				error++;
-			}else{
-				dateErrorLbl.setText("");
-			}
-		}
-		
-		if(typeCmb.getSelectedIndex()==2||typeCmb.getSelectedIndex()==3){
-			boolean comboFlag = false;
-			cbLoop:
-			for(JCheckBox cb : unAssignedDays){
-				if(cb.isSelected()==true){
-					comboFlag=true;
-					break cbLoop;
-				}
-			}
-			if(!comboFlag){
-				dayErrorLbl.setText("<html><font color='red'>Hari harus dipilih !</font></html>");
-				error++;
-			}else{
-				dayErrorLbl.setText("");
-			}
-		}
-		if(typeCmb.getSelectedIndex()==3){
-			if(weekField.getText().equals("")){
-				weekErrorLbl.setText("<html><font color='red'>Minggu harus diisi !</font></html>");
-				error++;
-			}else{
-				if(Integer.valueOf(weekField.getText())>4){
-					weekErrorLbl.setText("<html><font color='red'>Minggu maksimal 4 !</font></html>");
-				}else{
-					weekErrorLbl.setText("");
-				}
-			}
-		}
-		
-		if(error==0){
-			MasterShiftDetail msd = new MasterShiftDetail();
-			if(editDetailMode)msd = masterShiftDtls.get(indexEdited);
-			if(yesRadio.isSelected()){
-				msd.setHoliday("y");
-			}else{
-				msd.setHoliday("n");
-				msd.setIn(inHourField.getText()+":"+inMinuteField.getText());
-				msd.setOut(outHourField.getText()+":"+outMinuteField.getText());
-				msd.setRest(Integer.valueOf(restField.getText()));
-			}
-
-			StringBuffer dates=new StringBuffer();
-			if(typeCmb.getSelectedIndex()==1){
-				for (JCheckBox cb : unAssignedDates) {
-					if(cb.isSelected()){
-						dates.append(cb.getText()+",");
-						cb.setVisible(false);
-						cb.setSelected(false);
-					};
-				}
-			}else{
-				for (JCheckBox cb : unAssignedDays) {
-					if(cb.isSelected()){
-						dates.append(cb.getText()+",");
-						if(typeCmb.getSelectedIndex()==2)cb.setVisible(false);
-						cb.setSelected(false);
-					};
-				}
-			}
-			if(!weekField.getText().equals(""))msd.setWeek(Integer.valueOf(weekField.getText()));
-			msd.setDay(removeLastCharacter(dates.toString()));
-			if(!editDetailMode)masterShiftDtls.add(msd);
-			shiftDtlTable.setModel(new ShiftDtlTableModel(masterShiftDtls));
-			shiftDtlTable.updateUI();
-			typeCmb.setEnabled(false);
-			clearData();
-		}
-	
-	}
-	public String removeLastCharacter(String str) {
-	    if (str != null && str.length() > 0 && str.charAt(str.length()-1)==',') {
-	      str = str.substring(0, str.length()-1);
-	    }
-	    return str;
-	}
-
-	
 	private void createDateCheckBoxs(){
 		datePanel = new JPanel();
 		datePanel.setBounds(600, 85, 400, 250);
@@ -858,6 +555,13 @@ public class CreateNewMasterShiftPanel extends JPanel implements Bridging{
 	public void invokeObjects(Object... objects) {
 		if(objects.length>0){
 			masterShift = (MasterShift) objects[0];
+			disableHolidayComponent();
+			typeCmb.setEnabled(false);
+			shiftNameField.setEnabled(false);
+			addShiftDtlBtn.setEnabled(false);
+			yesRadio.setEnabled(false);
+			noRadio.setEnabled(false);
+			
 			typeCmb.setSelectedItem(masterShift.getType());
 			shiftNameField.setText(masterShift.getShiftName());
 			shiftCodeField.setText(masterShift.getShiftCode());
@@ -867,6 +571,7 @@ public class CreateNewMasterShiftPanel extends JPanel implements Bridging{
 					String [] dateSplit = msd.getDay().split(",");
 					List<String> listOfDate=  new ArrayList<String>(Arrays.asList(dateSplit));
 					for(JCheckBox cb : unAssignedDates){
+						cb.setEnabled(false);
 						if(listOfDate.contains(cb.getText())){
 							cb.setVisible(false);
 						}
@@ -877,20 +582,22 @@ public class CreateNewMasterShiftPanel extends JPanel implements Bridging{
 					String [] dateSplit = msd.getDay().split(",");
 					List<String> listOfDate=  new ArrayList<String>(Arrays.asList(dateSplit));
 					for(JCheckBox cb : unAssignedDays){
+						cb.setEnabled(false);
 						if(listOfDate.contains(cb.getText())){
 							cb.setVisible(false);
 						}
 					}
 					dayPanel.updateUI();
 				}
+				if(typeCmb.getSelectedIndex()==3){
+					for(JCheckBox cb : unAssignedDays){
+						cb.setEnabled(false);
+					}
+					dayPanel.updateUI();
+				}
 			}
-			if(masterShiftDtls.size()>0)typeCmb.setEnabled(false);
 			shiftDtlTable.setModel(new ShiftDtlTableModel(masterShiftDtls));
 			shiftDtlTable.updateUI();
-			editMode=true;
 		}
-		
 	}
-	
-	
 }

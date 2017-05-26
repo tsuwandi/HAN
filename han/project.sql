@@ -76,3 +76,5 @@ CREATE TABLE `shift_detail` (
 
 ALTER TABLE `shift_detail` ADD PRIMARY KEY(`id`);
 ALTER TABLE `shift_detail` CHANGE `id` `id` INT(5) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `shift` CHANGE `shift_code` `shift_code` VARCHAR(25) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `shift` CHANGE `shift_name` `shift_name` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;

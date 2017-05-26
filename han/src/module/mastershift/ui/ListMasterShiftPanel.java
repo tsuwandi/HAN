@@ -21,6 +21,7 @@ import javax.swing.table.TableColumn;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.component.PagingPanel;
 import main.component.TextField;
@@ -40,7 +41,6 @@ public class ListMasterShiftPanel extends JPanel{
 	private JButton advancedSearchBtn;
 	private JButton createNewBtn;
 	private PagingPanel<MasterShift> pagingPanel;
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	MasterShiftTableModel masterShiftTableModel;
 	List<MasterShift> masterShifts;
@@ -89,13 +89,13 @@ public class ListMasterShiftPanel extends JPanel{
 		masterShiftTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(masterShiftTable.columnAtPoint(e.getPoint())==3)
+				if(masterShiftTable.columnAtPoint(e.getPoint())==6)
 					MainPanel.changePanel("module.mastershift.ui.ViewMasterShiftPanel", pagingPanel.getSubListData().get(masterShiftTable.getSelectedRow()));
 			}
 		});
 
 		try {
-//			setSoSchedule = ServiceFactory.getStockOpnameBL().getSetSoSchedule();
+			masterShifts = ServiceFactory.getMasterShiftBL().getMasterShift();
 			masterShiftTable.setModel(new MasterShiftTableModel(masterShifts));
 			masterShiftTable.updateUI();
 
