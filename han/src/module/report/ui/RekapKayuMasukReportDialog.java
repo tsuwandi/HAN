@@ -179,7 +179,9 @@ private static final long serialVersionUID = 1L;
 				else if (rdbtnPerincianPembelianBarecore.isSelected()) {
 					JasperPrint jasperPrint;
 					try {
+						RekapKayuMasuk rekapKayuMasuk = new RekapKayuMasuk();
 						List<RekapKayuMasuk> results = new ArrayList<RekapKayuMasuk>();
+						results = ServiceFactory.getReportBL().getAllPerincianPembelianBarecore(rekapKayuMasuk);
 						
 						JRBeanCollectionDataSource itemsJRBeanResults = new JRBeanCollectionDataSource(
 								results);
@@ -203,7 +205,7 @@ private static final long serialVersionUID = 1L;
 						
 						showDialog(jasperViewer, "Laporan Perincian Pembelian Barecore");
 						
-					} catch (JRException e1) {
+					} catch (JRException | SQLException e1) {
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(null, "Gagal Memproses Laporan Perincian Pembelian Barecore", "Perincian Pembelian Barecore",
 								JOptionPane.ERROR_MESSAGE);

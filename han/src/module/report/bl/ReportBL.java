@@ -111,4 +111,14 @@ public class ReportBL {
 			con.close();
 		}
 	} 
+	
+	public List<RekapKayuMasuk> getAllPerincianPembelianBarecore(RekapKayuMasuk rekapKayuMasuk) throws SQLException{
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new RekapKayuMasukDAO(con).getAllPerincianPembelianBarecore(rekapKayuMasuk);
+		} finally {
+			con.close();
+		}
+	} 
 }

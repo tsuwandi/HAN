@@ -1,5 +1,6 @@
 package module.report.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class RekapKayuMasuk {
@@ -8,19 +9,19 @@ public class RekapKayuMasuk {
 	private Date date;
 	private String ritNo;
 	private String supplierName;
-	private Double length;
-	private Double width;
-	private Double thickness;
-	private Integer totalGradeA;
-	private Double volumeGradeA;
-	private Integer totalGradeB;
-	private Double volumeGradeB;
-	private Integer totalAllGrade;
-	private Double volumeAllGrade;
-	private Integer totalAval;
-	private Double volumeAval;
-	private Integer total;
-	private Double volume;
+	private BigDecimal length;
+	private BigDecimal width;
+	private BigDecimal thickness;
+	private BigDecimal totalGradeA;
+	private BigDecimal volumeGradeA;
+	private BigDecimal totalGradeB;
+	private BigDecimal volumeGradeB;
+	private BigDecimal totalAllGrade;
+	private BigDecimal volumeAllGrade;
+	private BigDecimal totalAval;
+	private BigDecimal volumeAval;
+	private BigDecimal total;
+	private BigDecimal volume;
 	private Date dateIn;
 	private Date dateOut;
 
@@ -48,107 +49,107 @@ public class RekapKayuMasuk {
 		this.supplierName = supplierName;
 	}
 
-	public Double getLength() {
+	public BigDecimal getLength() {
 		return length;
 	}
 
-	public void setLength(Double length) {
+	public void setLength(BigDecimal length) {
 		this.length = length;
 	}
 
-	public Double getWidth() {
+	public BigDecimal getWidth() {
 		return width;
 	}
 
-	public void setWidth(Double width) {
+	public void setWidth(BigDecimal width) {
 		this.width = width;
 	}
 
-	public Double getThickness() {
+	public BigDecimal getThickness() {
 		return thickness;
 	}
 
-	public void setThickness(Double thickness) {
+	public void setThickness(BigDecimal thickness) {
 		this.thickness = thickness;
 	}
 
-	public Integer getTotalGradeA() {
+	public BigDecimal getTotalGradeA() {
 		return totalGradeA;
 	}
 
-	public void setTotalGradeA(Integer totalGradeA) {
+	public void setTotalGradeA(BigDecimal totalGradeA) {
 		this.totalGradeA = totalGradeA;
 	}
 
-	public Double getVolumeGradeA() {
+	public BigDecimal getVolumeGradeA() {
 		return volumeGradeA;
 	}
 
-	public void setVolumeGradeA(Double volumeGradeA) {
+	public void setVolumeGradeA(BigDecimal volumeGradeA) {
 		this.volumeGradeA = volumeGradeA;
 	}
 
-	public Integer getTotalGradeB() {
+	public BigDecimal getTotalGradeB() {
 		return totalGradeB;
 	}
 
-	public void setTotalGradeB(Integer totalGradeB) {
+	public void setTotalGradeB(BigDecimal totalGradeB) {
 		this.totalGradeB = totalGradeB;
 	}
 
-	public Double getVolumeGradeB() {
+	public BigDecimal getVolumeGradeB() {
 		return volumeGradeB;
 	}
 
-	public void setVolumeGradeB(Double volumeGradeB) {
+	public void setVolumeGradeB(BigDecimal volumeGradeB) {
 		this.volumeGradeB = volumeGradeB;
 	}
 
-	public Integer getTotalAllGrade() {
+	public BigDecimal getTotalAllGrade() {
 		return totalAllGrade;
 	}
 
-	public void setTotalAllGrade(Integer totalAllGrade) {
+	public void setTotalAllGrade(BigDecimal totalAllGrade) {
 		this.totalAllGrade = totalAllGrade;
 	}
 
-	public Double getVolumeAllGrade() {
+	public BigDecimal getVolumeAllGrade() {
 		return volumeAllGrade;
 	}
 
-	public void setVolumeAllGrade(Double volumeAllGrade) {
+	public void setVolumeAllGrade(BigDecimal volumeAllGrade) {
 		this.volumeAllGrade = volumeAllGrade;
 	}
 
-	public Integer getTotalAval() {
+	public BigDecimal getTotalAval() {
 		return totalAval;
 	}
 
-	public void setTotalAval(Integer totalAval) {
+	public void setTotalAval(BigDecimal totalAval) {
 		this.totalAval = totalAval;
 	}
 
-	public Double getVolumeAval() {
+	public BigDecimal getVolumeAval() {
 		return volumeAval;
 	}
 
-	public void setVolumeAval(Double volumeAval) {
+	public void setVolumeAval(BigDecimal volumeAval) {
 		this.volumeAval = volumeAval;
 	}
 
-	public Integer getTotal() {
+	public BigDecimal getTotal() {
 		return total;
 	}
 
-	public void setTotal(Integer total) {
+	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
 
-	public Double getVolume() {
+	public BigDecimal getVolume() {
 		return volume;
 	}
 
-	public void setVolume(Double volume) {
+	public void setVolume(BigDecimal volume) {
 		this.volume = volume;
 	}
 
