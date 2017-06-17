@@ -1,24 +1,33 @@
 package module.personalia.ui;
 
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
@@ -40,6 +49,7 @@ import main.component.PagingPanel;
 import main.component.TextField;
 import main.panel.MainPanel;
 import model.User;
+import module.personalia.model.Attendance;
 import module.personalia.model.ImportFingerprint;
 import module.util.Pagination;
 
@@ -59,6 +69,8 @@ public class ListFilesAttendancePanel extends JPanel {
 	ImportFingerPrintTableModel receivedTableModel;
 	List<ImportFingerprint> importFingerPrints;
 	ListFilesAttendancePanel listFilesAttendancePanel;
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	
 	public ListFilesAttendancePanel() {
 		setLayout(null);
 		listFilesAttendancePanel = this;
@@ -121,7 +133,7 @@ public class ListFilesAttendancePanel extends JPanel {
 			pagingPanel.setBounds(450,510,130,50);
 
 
-//			setTableSize();
+			//			setTableSize();
 		} catch (Exception e1) {
 			DialogBox.showError(e1.getMessage());
 			log.error(e1.getMessage());
@@ -147,7 +159,7 @@ public class ListFilesAttendancePanel extends JPanel {
 					importFingerPrints = ServiceFactory.getPersonaliaBL().getImportFingerprints("");
 					importFingerPrintTable.setModel(new ImportFingerPrintTableModel(importFingerPrints));
 					importFingerPrintTable.updateUI();
-//					setTableSize();
+					//					setTableSize();
 				} catch (Exception e) {
 					log.error(e.getMessage());
 					e.printStackTrace();
@@ -166,31 +178,19 @@ public class ListFilesAttendancePanel extends JPanel {
 				chooser.setFileFilter(xmlFilter);
 				try {
 					int returnVal = chooser.showOpenDialog(listFilesAttendancePanel);
-//					OldExcelExtractor old = new OldExcelExtractor(input)
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						FileInputStream fileInputStream = new FileInputStream(chooser.getSelectedFile());
-						Workbook workbook = getWorkbook(fileInputStream, chooser.getSelectedFile().getName());
-						Sheet datatypeSheet = workbook.getSheetAt(0);
-				        Iterator<Row> iterator = datatypeSheet.iterator();
-				        while (iterator.hasNext()) {
-
-			                Row currentRow = iterator.next();
-			                Iterator<Cell> cellIterator = currentRow.iterator();
-
-			                while (cellIterator.hasNext()) {
-
-			                    Cell currentCell = cellIterator.next();
-			                    System.out.println(getCellValues(currentCell));
-			                }
-			                System.out.println();
-
-			            }
-						log.info("Opening: " + chooser.getSelectedFile());
+						File file = chooser.getSelectedFile();
+						FileInputStream fileInputStream = new FileInputStream(file);
+						Workbook workbook = getWorkbook(fileInputStream, file.getName());
+						Sheet dataTypeSheet = workbook.getSheetAt(0);
+						new TaskProcessFile(file.getName(),dataTypeSheet,dataTypeSheet.getPhysicalNumberOfRows()).execute();
+						workbook.close();
+						fileInputStream.close();
 					} else {
 						log.info("Open command cancelled by user.");
 					}
 				} catch (IOException e1) {
-					DialogBox.showError(e1.getMessage());
+					DialogBox.showError("Proses File Gagal : "+e1.getMessage());
 					log.error(e1.getMessage());
 					e1.printStackTrace();
 				}
@@ -206,6 +206,7 @@ public class ListFilesAttendancePanel extends JPanel {
 		});
 
 	}
+	
 
 	private Workbook getWorkbook(FileInputStream inputStream,String excelFilePath)
 			throws IOException {
@@ -221,29 +222,29 @@ public class ListFilesAttendancePanel extends JPanel {
 
 		return workbook;
 	}
-	
+
 	private Object getCellValues(Cell cell) {
-	    switch (cell.getCellTypeEnum()) {
-	    case STRING:
-	        return cell.getStringCellValue();
-	 
-	    case BOOLEAN:
-	        return cell.getBooleanCellValue();
-	 
-	    case NUMERIC:
-	        return cell.getNumericCellValue();
-	        
-	    case _NONE:
-	    	return null;
-	    case BLANK:
-	    	return null;
-	    case ERROR:
-	    	return null;
-	    case FORMULA:
-	    	return null;
-	    }
-	 
-	    return null;
+		switch (cell.getCellTypeEnum()) {
+		case STRING:
+			return cell.getStringCellValue();
+
+		case BOOLEAN:
+			return cell.getBooleanCellValue();
+
+		case NUMERIC:
+			return cell.getNumericCellValue();
+
+		case _NONE:
+			return null;
+		case BLANK:
+			return null;
+		case ERROR:
+			return null;
+		case FORMULA:
+			return null;
+		}
+
+		return null;
 	}
 
 	public void setTableSize(){
@@ -275,6 +276,8 @@ public class ListFilesAttendancePanel extends JPanel {
 	}
 
 	public class ImportFingerPrintTableModel extends AbstractTableModel implements Pagination {
+
+		private static final long serialVersionUID = 1L;
 		private List<ImportFingerprint> importFingerPrints;
 
 		public ImportFingerPrintTableModel(List<ImportFingerprint> importFingerPrint) {
@@ -343,5 +346,130 @@ public class ListFilesAttendancePanel extends JPanel {
 			importFingerPrints = (List<ImportFingerprint>) list;
 		}
 
+	}
+	
+	class TaskProcessFile extends SwingWorker<Void, Integer>{
+		String fileName;
+		private JProgressBar progressBar;
+		private JDialog dialog;
+		private int maxSize;
+		private Sheet dataTypeSheet;
+		public TaskProcessFile(String fileName, Sheet dataTypeSheet, int maxSize) {
+			this.fileName=fileName;
+			this.maxSize= maxSize;
+			this.dataTypeSheet = dataTypeSheet;
+			progressBar = new JProgressBar();
+			progressBar.setStringPainted(true);
+			progressBar.setIndeterminate(false);
+			progressBar.setBounds(0,0,300,60);
+			
+			dialog = new JDialog();
+			dialog.setSize(300,100);
+			dialog.setTitle("Proses File");
+			dialog.setLayout(null);
+			dialog.setLocationRelativeTo(null);
+			dialog.setVisible(true);
+			dialog.add(progressBar);
+		}
+		@Override
+		protected void process(List<Integer> chunks) {
+			progressBar.setValue((chunks.get(chunks.size()-1)*100/maxSize));
+		}
+		
+		@Override
+		protected Void doInBackground() throws Exception {
+			Iterator<Row> iterator = dataTypeSheet.iterator();
+			log.info("Opening: " + fileName);
+			while (iterator.hasNext()) {
+				Row currentRow = iterator.next();
+				publish(currentRow.getRowNum());
+				Iterator<Cell> cellIterator = currentRow.iterator();
+				Attendance attendance = new Attendance();
+				
+				while (cellIterator.hasNext()) {
+					Cell currentCell = cellIterator.next();
+					if(currentRow.getRowNum()!=0){
+						switch (currentCell.getColumnIndex()) {
+						case 0:
+							attendance.setPin(Integer.valueOf(getCellValues(currentCell).toString().trim()));
+							break;
+						case 1:
+							attendance.setNik(Integer.valueOf(getCellValues(currentCell).toString().trim()));
+							break;
+						case 2:
+							attendance.setEmployeeName(getCellValues(currentCell).toString());
+							break;
+						case 3:
+							attendance.setAttendanceDate(sdf.parse(getCellValues(currentCell).toString()));
+							break;
+						case 4:
+							attendance.setAttendanceTime(getCellValues(currentCell).toString().trim());
+							break;
+						case 5:
+							attendance.setMachineSerialNumber(getCellValues(currentCell).toString().trim());
+							break;
+						case 6:
+							attendance.setMachineName(getCellValues(currentCell).toString().trim());
+							break;
+						case 7:
+							attendance.setVerificationType(getCellValues(currentCell).toString().trim());
+							break;
+						case 8:
+							attendance.setMode(getCellValues(currentCell).toString().trim());
+							break;
+						case 9:
+							attendance.setUpdateMode(getCellValues(currentCell).toString().trim());
+							break;
+						case 10:
+							attendance.setBranchOffice(getCellValues(currentCell).toString().trim());
+							break;
+						case 11:
+							attendance.setDepartment(getCellValues(currentCell).toString().trim());
+							break;
+						case 12:
+							attendance.setEmployeeRole(getCellValues(currentCell).toString().trim());
+							break;
+						default:
+							break;
+						}
+					}
+				}
+
+				if(currentRow.getRowNum()!=0)ServiceFactory.getPersonaliaBL().saveAttendance(attendance);
+	
+			}
+			log.info("Finished Reading File");
+			return null;
+		}
+		
+		@Override
+		protected void done() {
+			try {
+				get();
+				dialog.dispose();
+				ImportFingerprint o = new ImportFingerprint();
+				o.setFileName(fileName);
+				o.setDate(new Date());
+				ServiceFactory.getPersonaliaBL().saveImportFingerprint(o);
+				importFingerPrints = ServiceFactory.getPersonaliaBL().getImportFingerprints("");
+				importFingerPrintTable.setModel(new ImportFingerPrintTableModel(importFingerPrints));
+				importFingerPrintTable.updateUI();
+				DialogBox.showInfo("Berhasil Memproses File : "+fileName);
+			} catch (InterruptedException e) {
+				DialogBox.showError("Proses File Gagal : "+e.getMessage());
+				log.error(e.getMessage());
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				DialogBox.showError("Proses File Gagal : "+e.getMessage());
+				log.error(e.getMessage());
+				e.printStackTrace();
+			} catch (SQLException e) {
+				DialogBox.showError("Proses File Gagal : "+e.getMessage());
+				log.error(e.getMessage());
+				e.printStackTrace();
+			}
+			
+		}
+		
 	}
 }

@@ -5,15 +5,12 @@ import java.util.Date;
 public class Attendance {
 
 	Integer id;
-	String fileName;
-	Date importDate;
-	String importBy;
 	Integer pin;
 	Integer nik;
 	String employeeName;
 	Employee employee;
 	Date attendanceDate;
-	Date attendanceTime;
+	String attendanceTime;
 	String machineSerialNumber;
 	String machineName;
 	String verificationType;
@@ -36,24 +33,7 @@ public class Attendance {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getFileName() {
-		return fileName;
-	}
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-	public Date getImportDate() {
-		return importDate;
-	}
-	public void setImportDate(Date importDate) {
-		this.importDate = importDate;
-	}
-	public String getImportBy() {
-		return importBy;
-	}
-	public void setImportBy(String importBy) {
-		this.importBy = importBy;
-	}
+	
 	public Integer getPin() {
 		return pin;
 	}
@@ -84,10 +64,10 @@ public class Attendance {
 	public void setAttendanceDate(Date attendanceDate) {
 		this.attendanceDate = attendanceDate;
 	}
-	public Date getAttendanceTime() {
+	public String getAttendanceTime() {
 		return attendanceTime;
 	}
-	public void setAttendanceTime(Date attendanceTime) {
+	public void setAttendanceTime(String attendanceTime) {
 		this.attendanceTime = attendanceTime;
 	}
 	public String getMachineSerialNumber() {
@@ -186,4 +166,17 @@ public class Attendance {
 	public void setDeleteBy(String deleteBy) {
 		this.deleteBy = deleteBy;
 	}
+	@Override
+	public String toString() {
+		return "Attendance [id=" + id + ", pin=" + pin + ", nik=" + nik + ", employeeName=" + employeeName
+				+ ", employee=" + employee + ", attendanceDate=" + attendanceDate + ", attendanceTime=" + attendanceTime
+				+ ", machineSerialNumber=" + machineSerialNumber + ", machineName=" + machineName
+				+ ", verificationType=" + verificationType + ", mode=" + mode + ", updateMode=" + updateMode
+				+ ", branchOffice=" + branchOffice + ", department=" + department + ", employeeRole=" + employeeRole
+				+ ", status=" + status + ", notes=" + notes + ", inputDate=" + inputDate + ", inputBy=" + inputBy
+				+ ", editDate=" + editDate + ", editBy=" + editBy + ", deleteDate=" + deleteDate + ", deleteBy="
+				+ deleteBy + "]";
+	}
+	
+	
 }

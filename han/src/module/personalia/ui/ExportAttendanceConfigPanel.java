@@ -156,12 +156,7 @@ public class ExportAttendanceConfigPanel extends JPanel implements Bridging{
 				return importFingerprints.indexOf(attendance) + 1;
 			case 1:
 				return DateUtil.setFormatedDate(attendance.getDate());
-			case 2:
-				return DateUtil.setFormatedDate(attendance.getFileName()); 
-			case 3:
-				return attendance.getUploadStatus();
-			case 4:
-				return attendance.getSalaryStatus();
+		
 			default:
 				return "";
 			}

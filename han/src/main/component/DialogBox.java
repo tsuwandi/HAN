@@ -44,6 +44,10 @@ public class DialogBox extends JOptionPane {
 	public static void showError(String errorMessage) {
 		JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
 	}
+	
+	public static void showInfo(String infoMessage) {
+		JOptionPane.showMessageDialog(null, infoMessage, "Information", JOptionPane.INFORMATION_MESSAGE);
+	}
 
 	public static int showCloseChoice() {
 		return JOptionPane.showConfirmDialog(null,

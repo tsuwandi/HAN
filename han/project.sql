@@ -78,3 +78,11 @@ ALTER TABLE `shift_detail` ADD PRIMARY KEY(`id`);
 ALTER TABLE `shift_detail` CHANGE `id` `id` INT(5) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `shift` CHANGE `shift_code` `shift_code` VARCHAR(25) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 ALTER TABLE `shift` CHANGE `shift_name` `shift_name` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
+
+
+
+--attendance
+
+ALTER TABLE `attendance` ADD `input_date` DATE NOT NULL AFTER `role`, ADD `inputed_by` VARCHAR(100) NOT NULL AFTER `input_date`, ADD `edit_date` DATE NOT NULL AFTER `inputed_by`, ADD `edited_by` VARCHAR(100) NOT NULL AFTER `edit_date`, ADD `delete_date` DATE NOT NULL AFTER `edited_by`, ADD `deleted_by` VARCHAR(100) NOT NULL AFTER `delete_date`;
+ALTER TABLE `attendance` CHANGE `input_date` `input_date` DATE NULL, CHANGE `inputed_by` `inputed_by` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL, CHANGE `edit_date` `edit_date` DATE NULL, CHANGE `edited_by` `edited_by` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL, CHANGE `delete_date` `delete_date` DATE NULL, CHANGE `deleted_by` `deleted_by` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;
+ALTER TABLE `import_fingerprint` DROP `import_code`, DROP `upload_status`, DROP `salary_status`;
