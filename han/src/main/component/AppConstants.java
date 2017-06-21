@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+import com.sun.javafx.collections.MappingChange.Map;
+
 public class AppConstants {
 
 	public static final int SUPP_TYPE_ID_BARECORE = 2;
@@ -77,6 +79,8 @@ public class AppConstants {
 	public static DecimalFormat FOUR_DIGIT_DECIMAL_FORMAT= null;
 	public static final String TYPE_12 = "12";
 	public static final String TYPE_9 = "9";
+
+	
 	
 	public static final String SOURCE_INVOICE = "INVOICE";
 	public static final String SOURCE_PAYMENT = "PAYMENT";

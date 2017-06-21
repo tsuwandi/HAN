@@ -86,3 +86,14 @@ ALTER TABLE `shift` CHANGE `shift_name` `shift_name` VARCHAR(50) CHARACTER SET l
 ALTER TABLE `attendance` ADD `input_date` DATE NOT NULL AFTER `role`, ADD `inputed_by` VARCHAR(100) NOT NULL AFTER `input_date`, ADD `edit_date` DATE NOT NULL AFTER `inputed_by`, ADD `edited_by` VARCHAR(100) NOT NULL AFTER `edit_date`, ADD `delete_date` DATE NOT NULL AFTER `edited_by`, ADD `deleted_by` VARCHAR(100) NOT NULL AFTER `delete_date`;
 ALTER TABLE `attendance` CHANGE `input_date` `input_date` DATE NULL, CHANGE `inputed_by` `inputed_by` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL, CHANGE `edit_date` `edit_date` DATE NULL, CHANGE `edited_by` `edited_by` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL, CHANGE `delete_date` `delete_date` DATE NULL, CHANGE `deleted_by` `deleted_by` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;
 ALTER TABLE `import_fingerprint` DROP `import_code`, DROP `upload_status`, DROP `salary_status`;
+
+--common config
+
+CREATE TABLE common_config(
+	id int AUTO_INCREMENT PRIMARY KEY,
+    `key_config` varchar(100),
+    `value_config` varchar(100)
+);
+INSERT INTO `common_config` (`id`, `key_config`, `value_config`) VALUES (NULL, 'salary_cycle', '20');
+
+ALTER TABLE `attendance_log` CHANGE `nik` `nik` VARCHAR(10) NULL DEFAULT NULL, CHANGE `attendance_time` `attendance_time` VARCHAR(5) NULL DEFAULT NULL, CHANGE `attendance_out` `attendance_out` VARCHAR(5) NULL DEFAULT NULL, CHANGE `shift_in` `shift_in` VARCHAR(5) NULL DEFAULT NULL, CHANGE `shift_out` `shift_out` VARCHAR(5) NULL DEFAULT NULL;
