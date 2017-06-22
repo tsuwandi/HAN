@@ -97,3 +97,12 @@ CREATE TABLE common_config(
 INSERT INTO `common_config` (`id`, `key_config`, `value_config`) VALUES (NULL, 'salary_cycle', '20');
 
 ALTER TABLE `attendance_log` CHANGE `nik` `nik` VARCHAR(10) NULL DEFAULT NULL, CHANGE `attendance_time` `attendance_time` VARCHAR(5) NULL DEFAULT NULL, CHANGE `attendance_out` `attendance_out` VARCHAR(5) NULL DEFAULT NULL, CHANGE `shift_in` `shift_in` VARCHAR(5) NULL DEFAULT NULL, CHANGE `shift_out` `shift_out` VARCHAR(5) NULL DEFAULT NULL;
+ALTER TABLE `shift_detail` CHANGE `in` `in` VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL, CHANGE `out` `out` VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;
+ALTER TABLE `shift` CHANGE `shift_code` `shift_code` VARCHAR(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+create table shift_department(
+	id int primary key AUTO_INCREMENT,
+    shift_id int,
+    dept_id int
+);
+INSERT INTO `shift_department` (`id`, `shift_id`, `dept_id`) VALUES (NULL, '1', '1'), (NULL, '2', '2'), (NULL, '3', '3');

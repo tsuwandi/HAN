@@ -15,6 +15,7 @@ public class Department implements ComboBoxProperties{
 	String editBy;
 	Date deleteDate;
 	String deleteBy;
+	int shiftID;
 		
 	public String getId() {
 		return id;
@@ -73,5 +74,12 @@ public class Department implements ComboBoxProperties{
 	@Override
 	public Object getField() {
 		return name;
+	}
+	public int getShiftID() {
+		return shiftID;
+	}
+	public void setShiftID(int shiftID) {
+		this.shiftID = shiftID;
 	}	
+	
 }
