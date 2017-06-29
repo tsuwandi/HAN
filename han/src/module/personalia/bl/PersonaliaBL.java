@@ -12,6 +12,7 @@ import module.personalia.dao.DepartmentDAO;
 import module.personalia.dao.DivisionDAO;
 import module.personalia.dao.EmpPositionDAO;
 import module.personalia.dao.EmployeeDAO;
+import module.personalia.dao.EmployeeRDAO;
 import module.personalia.dao.EmployeeTypeDAO;
 import module.personalia.dao.GenderDAO;
 import module.personalia.dao.ImportFingerprintDAO;
@@ -31,6 +32,7 @@ import module.personalia.model.Department;
 import module.personalia.model.Division;
 import module.personalia.model.EmpPosition;
 import module.personalia.model.Employee;
+import module.personalia.model.EmployeeR;
 import module.personalia.model.EmployeeType;
 import module.personalia.model.Gender;
 import module.personalia.model.ImportFingerprint;
@@ -47,11 +49,26 @@ import module.personalia.model.SsTax;
 import module.personalia.model.Tax;
 
 public class PersonaliaBL {
-	
+	EmployeeRDAO employeeRDAO;
 	private DataSource dataSource;
 	
 	public PersonaliaBL(DataSource dataSource) {
 		this.dataSource = dataSource;
+		try {
+			employeeRDAO = new EmployeeRDAO(dataSource.getConnection());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public List<EmployeeR> getAllEmployeeR(){
+		try {
+			return employeeRDAO.getAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 	
 	public List<Division> getDivisions(String query) {
