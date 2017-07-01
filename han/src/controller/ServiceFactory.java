@@ -1,5 +1,6 @@
 package controller;
 
+import module.customer.bl.CustomerBL;
 import module.dailyclosing.bl.DailyClosingBL;
 import module.dryin.bl.DryInBL;
 import module.dryout.bl.DryOutBL;
@@ -29,6 +30,7 @@ public class ServiceFactory {
 	// private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
 
 	private static SupplierBL supplierBL = null;
+	private static CustomerBL customerBL = null;
 	private static EmployeeBL employeeBL = null;
 	private static DryInBL dryInBL = null;
 	private static DryOutBL dryOutBL = null;
@@ -65,6 +67,18 @@ public class ServiceFactory {
 			supplierBL = new SupplierBL(DataSourceFactory.getDataSource());
 		}
 		return supplierBL;
+	}
+	
+	/**
+	 * Method to init or return {@link CustomerBL}
+	 * 
+	 * @return {@link CustomerBL}
+	 */
+	public static CustomerBL getCustomerBL() {
+		if (customerBL == null) {
+			customerBL = new CustomerBL(DataSourceFactory.getDataSource());
+		}
+		return customerBL;
 	}
 
 	/**

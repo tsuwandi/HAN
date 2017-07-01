@@ -117,6 +117,10 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Stock Opname", "Stock Opname", "Stock Opname", "module.stockopname.ui.ListSOManualPanel");
 		menu.calculateAvaiableSpace();
 		
+		menu.addNewMenu("Penjualan", "Penjualan");
+		menu.addNewLeafTo("Penjualan", "Customer", "Customer", "module.customer.ui.CustomerListPanel");
+		menu.calculateAvaiableSpace();
+		
 		setMouseAdapter(menu);
 
 		add(menu);
