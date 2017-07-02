@@ -32,11 +32,11 @@ public class AttendanceLogDAO {
 		this.connection = connection;
 	}
 	
-	public List<AttendanceLog> getAll() throws SQLException {
+	public List<AttendanceLog> getAll(String query) throws SQLException {
 		List<AttendanceLog> attendanceLogs = new ArrayList<AttendanceLog>();
 
 		try {
-			getAllStatement = connection.prepareStatement(getAllQuery);
+			getAllStatement = connection.prepareStatement(getAllQuery+query);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {

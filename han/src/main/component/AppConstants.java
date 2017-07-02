@@ -77,6 +77,7 @@ public class AppConstants {
 	public static final int DIVIDER_VOLUME=1000000;
 	
 	public static DecimalFormat FOUR_DIGIT_DECIMAL_FORMAT= null;
+	public static java.util.Map<String, String> commonMap;
 	public static final String TYPE_12 = "12";
 	public static final String TYPE_9 = "9";
 

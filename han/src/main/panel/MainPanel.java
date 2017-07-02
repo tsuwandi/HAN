@@ -109,16 +109,21 @@ public class MainPanel extends JFrame {
 					loginPanel.setBounds(450, 200, 450, 250);
 					glassPane.add(loginPanel);
 					
-					DecimalFormatSymbols df = new DecimalFormatSymbols(Locale.ENGLISH);
-					df.setDecimalSeparator('.');
-					df.setGroupingSeparator(',');
-					AppConstants.FOUR_DIGIT_DECIMAL_FORMAT = new DecimalFormat("0.0000",df);
+					load();
 					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+	}
+	private static void load(){
+		DecimalFormatSymbols df = new DecimalFormatSymbols(Locale.ENGLISH);
+		df.setDecimalSeparator('.');
+		df.setGroupingSeparator(',');
+		AppConstants.FOUR_DIGIT_DECIMAL_FORMAT = new DecimalFormat("0.0000",df);
+		
+		AppConstants.commonMap = ServiceFactory.getSystemBL().commonConfigMap();
 	}
 	
 	public static File getPath() throws URISyntaxException {

@@ -1,0 +1,57 @@
+2017-06-17 13:06:17,656 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:188) - Opening: E:\absensi_kar97.xls
+2017-06-17 13:07:18,391 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:190) - Open command cancelled by user.
+2017-06-17 13:07:31,976 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:188) - Opening: E:\absensi_kar97.xls
+2017-06-17 13:52:13,355 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:187) - Opening: E:\absensi_kar97.xls
+2017-06-17 13:52:13,357 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:188) - Finished Reading File
+2017-06-17 15:44:28,635 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:235) - Opening: E:\absensi_kar97.xls
+2017-06-17 15:44:28,638 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:236) - Finished Reading File
+2017-06-17 16:05:53,740 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:241) - Opening: E:\absensi_kar97.xls
+2017-06-17 16:05:53,744 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:242) - Finished Reading File
+2017-06-17 16:20:07,067 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:241) - Opening: E:\absensi_kar97.xls
+2017-06-17 16:20:07,073 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:242) - Finished Reading File
+2017-06-17 16:24:58,990 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:179) - Opening: E:\absensi_kar97.xls
+2017-06-17 16:25:25,351 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:245) - Finished Reading File
+2017-06-17 17:02:39,716 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:183) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:03:04,035 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:253) - Finished Reading File
+2017-06-17 17:04:26,702 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:183) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:04:57,517 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:183) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:06:06,327 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:183) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:06:08,074 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:253) - Finished Reading File
+2017-06-17 17:06:47,743 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:183) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:06:49,293 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:253) - Finished Reading File
+2017-06-17 17:07:16,627 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:183) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:07:17,675 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:253) - Finished Reading File
+2017-06-17 17:08:43,709 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:183) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:08:43,851 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:255) - Finished Reading File
+2017-06-17 17:15:01,208 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:183) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:15:01,350 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:255) - Finished Reading File
+2017-06-17 17:15:58,724 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:183) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:15:59,036 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:256) - Finished Reading File
+2017-06-17 17:45:08,169 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:383) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:45:08,243 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:454) - Finished Reading File
+2017-06-17 17:47:28,775 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:381) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:47:28,853 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:452) - Finished Reading File
+2017-06-17 17:48:40,282 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:381) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:48:40,363 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:453) - Finished Reading File
+2017-06-17 17:51:09,049 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:383) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:51:34,216 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:447) - Finished Reading File
+2017-06-17 17:54:36,243 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:384) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:54:57,846 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:446) - Finished Reading File
+2017-06-17 17:56:36,867 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:384) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:57:46,550 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:384) - Opening: E:\absensi_kar97.xls
+2017-06-17 17:59:13,863 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:384) - Opening: E:\absensi_kar97.xls
+2017-06-17 18:01:44,790 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:383) - Opening: E:\absensi_kar97.xls
+2017-06-17 18:03:23,273 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:384) - Opening: E:\absensi_kar97.xls
+2017-06-17 18:05:37,788 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:386) - Opening: E:\absensi_kar97.xls
+2017-06-17 18:06:34,748 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:387) - Opening: E:\absensi_kar97.xls
+2017-06-17 18:10:50,935 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:387) - Opening: E:\absensi_kar97.xls
+2017-06-17 18:17:32,604 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:384) - Opening: absensi_kar97.xls
+2017-06-17 18:19:05,269 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:384) - Opening: absensi_kar97.xls
+2017-06-17 18:20:35,733 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:385) - Opening: absensi_kar97.xls
+2017-06-17 18:21:42,152 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:384) - Opening: absensi_kar97.xls
+2017-06-17 18:22:24,987 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:444) - Finished Reading File
+2017-06-17 18:26:26,897 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:382) - Opening: absensi_kar97.xls
+2017-06-17 18:30:09,339 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:383) - Opening: absensi_kar97.xls
+2017-06-17 18:30:37,896 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:383) - Opening: absensi_kar97.xls
+2017-06-17 18:30:59,139 [SwingWorker-pool-2-thread-1] INFO (ListFilesAttendancePanel.java:442) - Finished Reading File
+2017-06-17 18:31:04,451 [AWT-EventQueue-0] INFO (ListFilesAttendancePanel.java:190) - Open command cancelled by user.

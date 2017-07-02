@@ -17,6 +17,7 @@ import module.productionwaste.bl.ProductionWasteBL;
 import module.purchaseprodresult.bl.PurchaseProductResultBL;
 import module.receiveprodresult.bl.ReceiveProductResultBL;
 import module.report.bl.ReportBL;
+import module.salary.bl.CalculateSalaryBL;
 import module.sendtofinance.bl.SendToFinanceBL;
 import module.sn.woodgenus.bl.WoodGenusBL;
 import module.sn.woodtype.bl.WoodTypeBL;
@@ -54,6 +55,7 @@ public class ServiceFactory {
 	private static PaymentBalkenBL paymentBalkenBL = null;
 	private static StockOpnameBL stockOpnameBL = null;
 	private static MasterShiftBL masterShiftBL = null;
+	private static CalculateSalaryBL calculateSalaryBL = null;
 	
 	/**
 	 * Method to init or return {@link SupplierBL}
@@ -255,6 +257,13 @@ public class ServiceFactory {
 			masterShiftBL = new MasterShiftBL(DataSourceFactory.getDataSource());
 		}
 		return masterShiftBL;
+	}
+	
+	public static CalculateSalaryBL getCalculateSalaryBL() {
+		if (calculateSalaryBL == null) {
+			calculateSalaryBL = new CalculateSalaryBL(DataSourceFactory.getDataSource());
+		}
+		return calculateSalaryBL;
 	}
 	
 	

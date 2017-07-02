@@ -5,16 +5,20 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
+import module.system.dao.CommonConfigDAO;
 import module.system.dao.GroupDAO;
 import module.system.dao.LoginDAO;
 import module.system.dao.MenuDAO;
 import module.system.dao.ScreenDAO;
 import module.system.dao.UserDAO;
 import module.system.dao.VersionDAO;
+import module.system.model.CommonConfig;
 import module.system.model.Group;
 import module.system.model.Login;
 import module.system.model.Screen;
@@ -24,9 +28,25 @@ import module.system.model.Menu;
 public class SystemBL {
 
 	private DataSource dataSource;
-	
+	private CommonConfigDAO commonConfigDAO;
 	public SystemBL(DataSource dataSource) {
-		this.dataSource = dataSource;
+		Connection con = null;
+		try {
+			this.dataSource = dataSource;
+			con = dataSource.getConnection();
+			this.commonConfigDAO = new CommonConfigDAO(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Map<String, String> commonConfigMap(){
+		Map<String, String> commonMap = new HashMap<>();
+		for (CommonConfig common : commonConfigDAO.getAll() ) {
+			commonMap.put(common.getKeyConfig(), common.getValueConfig());
+		}
+		return commonMap;
+		
 	}
 	
 	public List<Group> getAllGroup(){
