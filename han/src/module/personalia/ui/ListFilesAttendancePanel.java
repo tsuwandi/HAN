@@ -434,7 +434,7 @@ public class ListFilesAttendancePanel extends JPanel {
 						}
 					}
 				}
-
+				if(currentRow.getRowNum()!=0)System.out.println(attendance.toString());
 				if(currentRow.getRowNum()!=0)ServiceFactory.getPersonaliaBL().saveAttendance(attendance);
 	
 			}

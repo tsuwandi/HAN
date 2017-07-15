@@ -37,23 +37,31 @@ public class CalculateSalaryPanel extends JPanel {
 	Map<Integer, ShiftTime> dailyDayMap = new HashMap<>();
 	Map<Integer, ShiftTime> dailyHolidayMap = new HashMap<>();
 
-	Map<String, ShiftTime> weeklyDayMap = new HashMap<>();
-	Map<String, ShiftTime> weeklyHolidayMap = new HashMap<>();
+	Map<Integer, ShiftTime> weeklyDayMap = new HashMap<>();
+	Map<Integer, ShiftTime> weeklyHolidayMap = new HashMap<>();
 
-	Map<Integer,Map<String,ShiftTime>> patternDayMap = new HashMap<>();
-	Map<Integer, Map<String,ShiftTime>> patternHolidayMap = new HashMap<>();
+	Map<Integer,Map<Integer,ShiftTime>> patternDayMap = new HashMap<>();
+	Map<Integer, Map<Integer,ShiftTime>> patternHolidayMap = new HashMap<>();
 
 	public CalculateSalaryPanel() {
 		MainPanel.bodyPanel.removeAll();
 		MainPanel.bodyPanel.revalidate();
 		MainPanel.bodyPanel.repaint();
 
-		initData();
+		
 		int response = JOptionPane.showConfirmDialog(null, "Apakah anda yakin untuk menghitung gaji ?", "Peringatan",
 				JOptionPane.WARNING_MESSAGE);
 
 		if (response == JOptionPane.YES_OPTION) {
-			calculateSalary();
+			try {
+				initData();
+				calculateWorkDay();
+				calculateHoliday();
+				DialogBox.showInfo("Sukses Menghitung Gaji");
+			} catch (Exception e) {
+				DialogBox.showError("Gagal Menghitung Gaji:"+e.getMessage());
+			}
+			
 		}
 	}
 
@@ -74,6 +82,7 @@ public class CalculateSalaryPanel extends JPanel {
 
 		Calendar c = Calendar.getInstance();
 		c.setTime(new Date());
+		if(c.get(Calendar.DAY_OF_MONTH)<cycle) c.add(Calendar.MONTH, -1);
 		c.set(Calendar.DAY_OF_MONTH, cycle+1);
 
 		Calendar c2 = (Calendar)c.clone();
@@ -82,7 +91,7 @@ public class CalculateSalaryPanel extends JPanel {
 
 		filterAttendance(c, c2);
 		checkDataAndInsertAttendanceLog(c,c2);
-		System.out.println("Last Calendar Time :"+c.getTime());
+	
 	}
 
 	private void makeShiftDetailMap(MasterShift s){
@@ -115,7 +124,7 @@ public class CalculateSalaryPanel extends JPanel {
 						ShiftTime st = new ShiftTime();
 						st.setIn("00:00");
 						st.setOut("00:00");
-						weeklyHolidayMap.put(day, st);
+						weeklyHolidayMap.put(getDayOfWeek(day), st);
 					}
 				}else{
 					String [] days = msd.getDay().split(",");
@@ -123,7 +132,7 @@ public class CalculateSalaryPanel extends JPanel {
 						ShiftTime st = new ShiftTime();
 						st.setIn(msd.getIn());
 						st.setOut(msd.getOut());
-						weeklyDayMap.put(day, st);
+						weeklyDayMap.put(getDayOfWeek(day), st);
 					}
 				}
 			}
@@ -136,11 +145,11 @@ public class CalculateSalaryPanel extends JPanel {
 						st.setIn("00:00");
 						st.setOut("00:00");
 						if(patternHolidayMap.get(msd.getWeek())==null){
-							Map<String, ShiftTime> shiftMap = new HashMap<>();
-							shiftMap.put(day, st);
+							Map<Integer, ShiftTime> shiftMap = new HashMap<>();
+							shiftMap.put(getDayOfWeek(day), st);
 							patternHolidayMap.put(msd.getWeek(), shiftMap);
 						}else{
-							patternHolidayMap.get(msd.getWeek()).put(day, st);
+							patternHolidayMap.get(msd.getWeek()).put(getDayOfWeek(day), st);
 						}
 					}
 				}else{
@@ -150,31 +159,37 @@ public class CalculateSalaryPanel extends JPanel {
 						st.setIn(msd.getIn());
 						st.setOut(msd.getOut());
 						if(patternDayMap.get(msd.getWeek())==null){
-							Map<String, ShiftTime> shiftMap = new HashMap<>();
-							shiftMap.put(day, st);
+							Map<Integer, ShiftTime> shiftMap = new HashMap<>();
+							shiftMap.put(getDayOfWeek(day), st);
 							patternDayMap.put(msd.getWeek(), shiftMap);
 						}else{
-							patternDayMap.get(msd.getWeek()).put(day, st);
+							patternDayMap.get(msd.getWeek()).put(getDayOfWeek(day), st);
 						}
 					}
 				}
 			}
 		}
+
 	}
 
 	private void checkDataAndInsertAttendanceLog(Calendar c, Calendar c2){
 		Map<Date, Map<String,AttendanceLog>> attendanceLogMap = new HashMap<>();
 		List<AttendanceLog> attendanceLogs = ServiceFactory.getCalculateSalaryBL()
-				.getAttendanceLog(" AND attendance_date >='"+sdf.format(c.getTime()+"' AND attendance_date <='"+sdf.format(c2.getTime()+"'")));
-
+				.getAttendanceLog(" AND attendance_date >='"+sdf.format(c.getTime())+"' AND attendance_date <='"+sdf.format(c2.getTime())+"'");
 		if(attendanceLogs.size()>0){
 			for(AttendanceLog attendanceLog : attendanceLogs){
-				if(attendanceLogMap.get(attendanceLog.getDate())!=null){
+				if(attendanceLogMap.get(attendanceLog.getDate())==null){
 					Map<String, AttendanceLog> map = new HashMap<>();
 					map.put(attendanceLog.getNik(), attendanceLog);
 					attendanceLogMap.put(attendanceLog.getDate(), map);
 				}else{
-					attendanceLogMap.get(attendanceLog.getDate()).put(attendanceLog.getNik(), attendanceLog);
+					if(attendanceLogMap.get(attendanceLog.getDate())==null){
+						Map<String, AttendanceLog> map = new HashMap<>();
+						map.put(attendanceLog.getNik(), attendanceLog);
+					}else{
+						attendanceLogMap.get(attendanceLog.getDate()).put(attendanceLog.getNik(), attendanceLog);
+					}
+					
 				}
 			}
 		}
@@ -198,7 +213,6 @@ public class CalculateSalaryPanel extends JPanel {
 						ServiceFactory.getCalculateSalaryBL().save(attendanceLog);
 					}
 				}
-				System.out.println("Calendar Inside Looping "+c.getTime());
 				c.add(Calendar.DAY_OF_MONTH, 1);
 			}
 		} catch (ParseException e) {
@@ -209,7 +223,7 @@ public class CalculateSalaryPanel extends JPanel {
 
 	private void filterAttendance(Calendar c , Calendar c2){
 		attendanceMap = new HashMap<>();
-		List<Attendance> attendances = ServiceFactory.getPersonaliaBL().getAttendances(" AND attendance_date >='"+sdf.format(c.getTime()+"' AND attendance_date <='"+sdf.format(c2.getTime()+"'")));
+		List<Attendance> attendances = ServiceFactory.getPersonaliaBL().getAttendances(" AND attendance_date >='"+sdf.format(c.getTime())+"' AND attendance_date <='"+sdf.format(c2.getTime())+"'");
 		try {
 			for (Attendance a : attendances) {
 				if(attendanceMap.get(a.getNik().toString())==null){
@@ -249,12 +263,86 @@ public class CalculateSalaryPanel extends JPanel {
 				}
 			}
 		} catch (ParseException e) {
+			DialogBox.showError("Gagal Menghitung Gaji:"+e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
+	private void calculateHoliday(){
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		if(c.get(Calendar.DAY_OF_MONTH)<cycle) c.add(Calendar.MONTH, -1);
+		c.set(Calendar.DAY_OF_MONTH, cycle+1);
 
-	private void calculateSalary(){
+		Calendar c2 = (Calendar)c.clone();
+		c2.add(Calendar.MONTH, 1);
+		c2.add(Calendar.DAY_OF_MONTH, 1);
+		
+		List<AttendanceLog> attendanceLogs = ServiceFactory.getCalculateSalaryBL()
+				.getAttendanceLog(" AND attendance_date >='"+sdf.format(c.getTime())+"' AND attendance_date <='"+sdf.format(c2.getTime())+"'");
+		
+		
+		Calendar calendar = Calendar.getInstance();
+		
+		for(AttendanceLog attendanceLog : attendanceLogs){
+			calendar.setTime(attendanceLog.getDate());
+			if(employeeMap.get(attendanceLog.getNik())!=null){
+				EmployeeR employeeR = employeeMap.get(attendanceLog.getNik());
+				if(shiftMap.get(employeeR.getShiftId())!=null){
+					MasterShift ms = shiftMap.get(employeeR.getShiftId());
+					if(ms.getType().toUpperCase().equals("DAILY"))checkHolidayDaily(attendanceLog, calendar, ms.getId());
+					else if(ms.getType().toUpperCase().equals("WEEKLY"))checkHolidayWeekly(attendanceLog, calendar, ms.getId());
+					else checkHolidayPattern(attendanceLog, calendar, ms.getId());
+					
+				}
+			}
+		}
+	}
+	
+	private void checkHolidayDaily(AttendanceLog attendanceLog, Calendar cal,int shiftID){
+		if(dailyHolidayMap.get(cal.get(Calendar.DAY_OF_MONTH))!=null){
+			ShiftTime sf = dailyHolidayMap.get(cal.get(Calendar.DAY_OF_MONTH));
+			attendanceLog.setShiftId(shiftID);
+			attendanceLog.setShiftIn(sf.getIn());
+			attendanceLog.setShiftOut(sf.getOut());
+			attendanceLog.setAttendanceTime(sf.getIn());
+			attendanceLog.setAttendanceOut(sf.getOut());
+			attendanceLog.setStatusIn("Libur");
+			attendanceLog.setStatusOut("Libur");
+			ServiceFactory.getCalculateSalaryBL().update(attendanceLog);
+		}
+	}
+	private void checkHolidayWeekly(AttendanceLog attendanceLog, Calendar cal,int shiftID){
+		if(weeklyHolidayMap.get(cal.get(Calendar.DAY_OF_WEEK))!=null){
+			ShiftTime sf = weeklyHolidayMap.get(cal.get(Calendar.DAY_OF_WEEK));
+			attendanceLog.setShiftId(shiftID);
+			attendanceLog.setShiftIn(sf.getIn());
+			attendanceLog.setShiftOut(sf.getOut());
+			attendanceLog.setAttendanceTime(sf.getIn());
+			attendanceLog.setAttendanceOut(sf.getOut());
+			attendanceLog.setStatusIn("Libur");
+			attendanceLog.setStatusOut("Libur");
+			ServiceFactory.getCalculateSalaryBL().update(attendanceLog);
+		}
+	}
+	private void checkHolidayPattern(AttendanceLog attendanceLog, Calendar cal,int shiftID){
+		if(patternHolidayMap.get(cal.get(Calendar.DAY_OF_WEEK))!=null){
+			if(patternHolidayMap.get(cal.get(Calendar.WEEK_OF_MONTH)).get(cal.get(Calendar.DAY_OF_WEEK))!=null){
+				ShiftTime sf = patternHolidayMap.get(cal.get(Calendar.WEEK_OF_MONTH)).get(cal.get(Calendar.DAY_OF_WEEK));
+				attendanceLog.setShiftId(shiftID);
+				attendanceLog.setShiftIn(sf.getIn());
+				attendanceLog.setAttendanceTime(sf.getIn());
+				attendanceLog.setAttendanceOut(sf.getOut());
+				attendanceLog.setShiftOut(sf.getOut());
+				attendanceLog.setStatusIn("Libur");
+				attendanceLog.setStatusOut("Libur");
+				ServiceFactory.getCalculateSalaryBL().update(attendanceLog);
+			}
+				
+		}
+	}
+
+	private void calculateWorkDay(){
 		try {
 			for(Map.Entry<String, Map<Date, Map<String,Attendance>>> attendanceData : attendanceMap.entrySet()){
 				EmployeeR r = employeeMap.get(attendanceData.getKey());
@@ -262,44 +350,42 @@ public class CalculateSalaryPanel extends JPanel {
 				if(ms.getType().toUpperCase().equals("DAILY")){
 					Calendar cal = Calendar.getInstance();
 					for(Map.Entry<Date, Map<String,Attendance>> dayData : attendanceData.getValue().entrySet()){
-						cal.setTime(dayData.getKey());
+					 	cal.setTime(dayData.getKey());
 						AttendanceLog aLog = new AttendanceLog();
 						aLog.setDate(dayData.getKey());
 						aLog.setNik(r.getEmpCode());
 						ShiftTime shiftTime = new ShiftTime();
 						if(dailyDayMap.get(cal.get(Calendar.DAY_OF_MONTH))!=null){
 							shiftTime = dailyDayMap.get(cal.get(Calendar.DAY_OF_MONTH));
-						}
-						//					else if(holidayMap.get(cal.get(Calendar.DAY_OF_MONTH))!=null){
-						//						shiftTime = holidayMap.get(cal.get(Calendar.DAY_OF_MONTH));
-						//					}
+							aLog.setShiftIn(shiftTime.getIn());
+							aLog.setShiftOut(shiftTime.getOut());
+							
+							aLog.setShiftId(ms.getId());
 
-						aLog.setShiftIn(shiftTime.getIn());
-						aLog.setShiftOut(shiftTime.getOut());
-
-						Date timeIn = sdfTime.parse(shiftTime.getIn());
-						Date timeOut = sdfTime.parse(shiftTime.getOut());
-						for(Map.Entry<String, Attendance> attTypeData : dayData.getValue().entrySet()){
-							if(attTypeData.getValue().getMode().toUpperCase().equals("SCAN MASUK")){
-								Date actualTime = sdfTime.parse(attTypeData.getValue().getAttendanceTime());
-								if(actualTime.after(timeIn)){
-									aLog.setStatusIn("Absen Setelah Shift Masuk");
+							Date timeIn = sdfTime.parse(shiftTime.getIn());
+							Date timeOut = sdfTime.parse(shiftTime.getOut());
+							for(Map.Entry<String, Attendance> attTypeData : dayData.getValue().entrySet()){
+								if(attTypeData.getValue().getMode().toUpperCase().equals("SCAN MASUK")){
+									Date actualTime = sdfTime.parse(attTypeData.getValue().getAttendanceTime());
+									if(actualTime.after(timeIn)){
+										aLog.setStatusIn("Telat");
+									}else{
+										aLog.setStatusIn("Masuk");	
+									}
+									aLog.setAttendanceTime(attTypeData.getValue().getAttendanceTime());
 								}else{
-									aLog.setStatusIn("Masuk");	
+									Date actualTime = sdfTime.parse(attTypeData.getValue().getAttendanceTime());
+									if(actualTime.before(timeOut)){
+										aLog.setStatusOut("Telat");
+									}else{
+										aLog.setStatusOut("Keluar");	
+									}
+									aLog.setAttendanceOut(attTypeData.getValue().getAttendanceTime());
 								}
-								aLog.setAttendanceTime(attTypeData.getValue().getAttendanceTime());
-							}else{
-								Date actualTime = sdfTime.parse(attTypeData.getValue().getAttendanceTime());
-								if(actualTime.before(timeOut)){
-									aLog.setStatusIn("Absen Sebelum Shift Pulang Selesai");
-								}else{
-									aLog.setStatusIn("Absen Keluar");	
-								}
-								aLog.setAttendanceOut(attTypeData.getValue().getAttendanceTime());
 							}
-						}
 
-						ServiceFactory.getCalculateSalaryBL().update(aLog);
+							ServiceFactory.getCalculateSalaryBL().updateByDateAndNik(aLog);
+						}				
 					}
 
 				}else if(ms.getType().toUpperCase().equals("WEEKLY")){
@@ -310,51 +396,122 @@ public class CalculateSalaryPanel extends JPanel {
 						aLog.setDate(dayData.getKey());
 						aLog.setNik(r.getEmpCode());
 						ShiftTime shiftTime = new ShiftTime();
-						if(weeklyDayMap.get(cal.get(Calendar.DAY_OF_MONTH))!=null){
-							shiftTime = weeklyDayMap.get(cal.get(Calendar.DAY_OF_MONTH));
-						}
-						//					else if(holidayMap.get(cal.get(Calendar.DAY_OF_MONTH))!=null){
-						//						shiftTime = holidayMap.get(cal.get(Calendar.DAY_OF_MONTH));
-						//					}
+						if(weeklyDayMap.get(cal.get(Calendar.DAY_OF_WEEK))!=null){
+							shiftTime = weeklyDayMap.get(cal.get(Calendar.DAY_OF_WEEK));
+							aLog.setShiftIn(shiftTime.getIn());
+							aLog.setShiftOut(shiftTime.getOut());
+							aLog.setShiftId(ms.getId());
 
-						aLog.setShiftIn(shiftTime.getIn());
-						aLog.setShiftOut(shiftTime.getOut());
-
-						Date timeIn = sdfTime.parse(shiftTime.getIn());
-						Date timeOut = sdfTime.parse(shiftTime.getOut());
-						for(Map.Entry<String, Attendance> attTypeData : dayData.getValue().entrySet()){
-							if(attTypeData.getValue().getMode().toUpperCase().equals("SCAN MASUK")){
-								Date actualTime = sdfTime.parse(attTypeData.getValue().getAttendanceTime());
-								if(actualTime.after(timeIn)){
-									aLog.setStatusIn("Absen Setelah Shift Masuk");
+							Date timeIn = sdfTime.parse(shiftTime.getIn());
+							Date timeOut = sdfTime.parse(shiftTime.getOut());
+							for(Map.Entry<String, Attendance> attTypeData : dayData.getValue().entrySet()){
+								if(attTypeData.getValue().getMode().toUpperCase().equals("SCAN MASUK")){
+									Date actualTime = sdfTime.parse(attTypeData.getValue().getAttendanceTime());
+									if(actualTime.after(timeIn)){
+										aLog.setStatusIn("Telat");
+									}else{
+										aLog.setStatusIn("Masuk");	
+									}
+									aLog.setAttendanceTime(attTypeData.getValue().getAttendanceTime());
 								}else{
-									aLog.setStatusIn("Masuk");	
-								}
-								aLog.setAttendanceTime(attTypeData.getValue().getAttendanceTime());
-							}else{
-								Date actualTime = sdfTime.parse(attTypeData.getValue().getAttendanceTime());
-								if(actualTime.before(timeOut)){
-									aLog.setStatusIn("Absen Sebelum Shift Pulang Selesai");
-								}else{
-									aLog.setStatusIn("Absen Keluar");	
-								}
+									Date actualTime = sdfTime.parse(attTypeData.getValue().getAttendanceTime());
+									if(actualTime.before(timeOut)){
+										aLog.setStatusOut("Telat");
+									}else{
+										aLog.setStatusOut("Keluar");	
+									}
 
-								aLog.setAttendanceOut(attTypeData.getValue().getAttendanceTime());
+									aLog.setAttendanceOut(attTypeData.getValue().getAttendanceTime());
+								}
 							}
-						}
 
-						ServiceFactory.getCalculateSalaryBL().update(aLog);
+							ServiceFactory.getCalculateSalaryBL().updateByDateAndNik(aLog);
+							
+						}
+						
+						
 					}
 				}else if(ms.getType().toUpperCase().equals("PATTERN")){
-					
+					Calendar cal = Calendar.getInstance();
+					for(Map.Entry<Date, Map<String,Attendance>> dayData : attendanceData.getValue().entrySet()){
+						cal.setTime(dayData.getKey());
+						AttendanceLog aLog = new AttendanceLog();
+						aLog.setDate(dayData.getKey());
+						aLog.setNik(r.getEmpCode());
+						ShiftTime shiftTime = new ShiftTime();
+						if(patternDayMap.get(cal.get(Calendar.WEEK_OF_MONTH))!=null){
+							if(patternDayMap.get(cal.get(Calendar.WEEK_OF_MONTH)).get(Calendar.DAY_OF_WEEK)!=null){
+								shiftTime = patternDayMap.get(cal.get(Calendar.WEEK_OF_MONTH)).get(Calendar.DAY_OF_WEEK);
+								aLog.setShiftIn(shiftTime.getIn());
+								aLog.setShiftOut(shiftTime.getOut());
+								aLog.setShiftId(ms.getId());
+
+								Date timeIn = sdfTime.parse(shiftTime.getIn());
+								Date timeOut = sdfTime.parse(shiftTime.getOut());
+								for(Map.Entry<String, Attendance> attTypeData : dayData.getValue().entrySet()){
+									if(attTypeData.getValue().getMode().toUpperCase().equals("SCAN MASUK")){
+										Date actualTime = sdfTime.parse(attTypeData.getValue().getAttendanceTime());
+										if(actualTime.after(timeIn)){
+											aLog.setStatusIn("Telat");
+										}else{
+											aLog.setStatusIn("Masuk");	
+										}
+										aLog.setAttendanceTime(attTypeData.getValue().getAttendanceTime());
+									}else{
+										Date actualTime = sdfTime.parse(attTypeData.getValue().getAttendanceTime());
+										if(actualTime.before(timeOut)){
+											aLog.setStatusOut("Telat");
+										}else{
+											aLog.setStatusOut("Keluar");	
+										}
+
+										aLog.setAttendanceOut(attTypeData.getValue().getAttendanceTime());
+									}
+								}
+
+								ServiceFactory.getCalculateSalaryBL().updateByDateAndNik(aLog);
+							}
+						}
+					}
 				}
 
 			}
 		} catch (ParseException e) {
+			DialogBox.showError("Gagal Menghitung Gaji:"+e.getMessage());
 			e.printStackTrace();
 		}
+	}
+	
+	private int getDayOfWeek(String day){
+		int dow = 0;
+		switch (day) {
+		case "Senin":
+			 dow = Calendar.MONDAY;
+			break;
+		case "Selasa":
+			 dow = Calendar.TUESDAY;
+			break;
+		case "Rabu":
+			 dow = Calendar.WEDNESDAY;
+			break;
+		case "Kamis":
+			 dow = Calendar.THURSDAY;
+			break;
+		case "Jumat":
+			 dow = Calendar.FRIDAY;
+			break;
+		case "Sabtu":
+			 dow = Calendar.SATURDAY;
+			break;
+		case "Minggu":
+			 dow = Calendar.SUNDAY;
+			break;
 
-
-
+		default:
+			break;
+		}
+		
+		return dow;
+		
 	}
 }

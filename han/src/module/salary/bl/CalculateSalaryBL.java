@@ -49,4 +49,13 @@ public class CalculateSalaryBL {
 			DialogBox.showError(e.getMessage());
 		}
 	}
+	
+	public void updateByDateAndNik(AttendanceLog attendanceLog){
+		try {
+			attendanceLogDAO.updateData(attendanceLog);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			DialogBox.showError(e.getMessage());
+		}
+	}
 }
