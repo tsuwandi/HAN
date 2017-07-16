@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.toedter.calendar.JDateChooser;
 
+import controller.DataSourceFactory;
 import controller.ServiceFactory;
 import module.dailyclosing.bl.DailyClosingBL;
 import module.dailyclosing.model.InventoryLog;
@@ -25,17 +26,24 @@ import module.report.model.RekapKayuMasuk;
 import module.sendtofinance.ui.SendToFinanceDialog;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
+import javax.sql.DataSource;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -66,7 +74,8 @@ private static final long serialVersionUID = 1L;
 	
 	JDateChooser dcDateFrom;
 	JDateChooser dcDateTo;
-
+	private DataSource dataSource = DataSourceFactory.getDataSource();
+	
 	public RekapKayuMasukReportDialog() {
 		LOGGER.info("START FORM REPORT DIALOG.");
 		setModal(true);
@@ -103,39 +112,67 @@ private static final long serialVersionUID = 1L;
 				String endDate;
 				
 				if (rdbtnPerincianPembelianBalken.isSelected()) {
-					JasperPrint jasperPrint;
+					Connection conn = null;
+					JasperDesign jd;
 					try {
-						RekapKayuMasuk rekapKayuMasuk = new RekapKayuMasuk();
-						List<Product> results = new ArrayList<Product>();
-						results = ServiceFactory.getReportBL().getAll(new Product());
-						System.out.println(results.size());
-						JRBeanCollectionDataSource itemsJRBeanResults = new JRBeanCollectionDataSource(
-								results);
 						
-						if(dcDateFrom.getDate() != null && dcDateTo.getDate() != null) {
-							startDate = formatter.format(dcDateFrom.getDate());
-							endDate = formatter.format(dcDateTo.getDate());
-						} else {
-							startDate = formatter.format(new Date());
-							endDate = formatter.format(new Date());
-						}
-						
-						parameters.put("ItemDataSourceResults", itemsJRBeanResults);
-						parameters.put("startDate",startDate);
-						parameters.put("endDate",endDate);
-						
-						jasperPrint = JasperFillManager.fillReport(
-								"src/module/report/jasper/reportGroup.jasper", parameters, new JREmptyDataSource());
-					
-						JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
-	
-						showDialog(jasperViewer, "Laporan Perincian Pembelian Balken");
-					} catch (JRException | SQLException e1) {
+						conn = dataSource.getConnection();
+//						jd = JRXmlLoader.load("src/module/report/Blank_A4.jrxml");
+//						String sql = "";
+//						JRDesignQuery query = new JRDesignQuery();
+//						query.setText(sql);
+//						jd.setQuery(query);
+//						JasperReport jr = JasperCompileManager.compileReport(jd);
+//						JasperPrint jp = JasperFillManager.fillReport(jr, null, conn);
+//						JasperViewer jasperViewer = new JasperViewer(jp, false);
+						//jasperViewer.viewReport(jp);
+						String report = "\\src\\module\\report\\Blank_A4.jrxml";
+						//JasperReport jr = JasperCompileManager.compileReport(report);
+						JasperPrint jp = JasperFillManager.fillReport("src/module/report/Blank_A4.jasper", null, conn);
+						JasperViewer.viewReport(jp);
+						//showDialog(jasperViewer, "Laporan Perincian Pembelian Balken");
+					} catch (JRException e1) {
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(null, "Gagal Memproses Laporan Perincian Pembelian Balken", "Perincian Pembelian Balken",
 								JOptionPane.ERROR_MESSAGE);
 						setVisible(false);
+					} catch (SQLException e2) {
+						e2.printStackTrace();
 					}
+					
+//					JasperPrint jasperPrint;
+//					try {
+//						RekapKayuMasuk rekapKayuMasuk = new RekapKayuMasuk();
+//						List<Product> results = new ArrayList<Product>();
+//						results = ServiceFactory.getReportBL().getAll(new Product());
+//						System.out.println(results.size());
+//						JRBeanCollectionDataSource itemsJRBeanResults = new JRBeanCollectionDataSource(
+//								results);
+//						
+//						if(dcDateFrom.getDate() != null && dcDateTo.getDate() != null) {
+//							startDate = formatter.format(dcDateFrom.getDate());
+//							endDate = formatter.format(dcDateTo.getDate());
+//						} else {
+//							startDate = formatter.format(new Date());
+//							endDate = formatter.format(new Date());
+//						}
+//						
+//						parameters.put("ItemDataSourceResults", itemsJRBeanResults);
+//						parameters.put("startDate",startDate);
+//						parameters.put("endDate",endDate);
+//						
+//						jasperPrint = JasperFillManager.fillReport(
+//								"src/module/report/jasper/reportGroup.jasper", parameters, new JREmptyDataSource());
+//					
+//						JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+//	
+//						showDialog(jasperViewer, "Laporan Perincian Pembelian Balken");
+//					} catch (JRException | SQLException e1) {
+//						e1.printStackTrace();
+//						JOptionPane.showMessageDialog(null, "Gagal Memproses Laporan Perincian Pembelian Balken", "Perincian Pembelian Balken",
+//								JOptionPane.ERROR_MESSAGE);
+//						setVisible(false);
+//					}
 				}
 				
 				else if (rdbtnRekapitulasiPembelianBalken.isSelected()) {
