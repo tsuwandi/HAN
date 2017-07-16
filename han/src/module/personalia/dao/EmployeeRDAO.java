@@ -17,10 +17,10 @@ public class EmployeeRDAO {
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 	
-	String getAllQuery = "SELECT * FROM employee WHERE delete_date IS NULL";
+	String getAllQuery = "SELECT * FROM employee WHERE deleted_date IS NULL";
 	
 	String query = "SELECT emp.* ,struc.position_id, emppos.emp_structure_id, struc.org_value_id, org.value, org.id, sd.shift_id "+
-					"FROM employee emp"+
+					"FROM employee emp "+
 					"INNER JOIN emp_position emppos ON emppos.employee_id = emp.id "+
 					"INNER JOIN emp_structure struc ON struc.id = emppos.emp_structure_id "+
 					"INNER JOIN org_structure_value org ON org.id = struc.org_value_id "+
@@ -34,7 +34,7 @@ public class EmployeeRDAO {
 	public List<EmployeeR> getAll() throws SQLException{
 		List<EmployeeR> employees = new ArrayList<>();
 		try {
-			getAllStatement = connection.prepareStatement(getAllQuery);
+			getAllStatement = connection.prepareStatement(query);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
@@ -52,7 +52,7 @@ public class EmployeeRDAO {
 				employee.setKtpZipCode(rs.getString("ktp_zip_code"));
 				employee.setKtpCity(rs.getString("ktp_city"));
 				employee.setTotalChild(rs.getInt("total_child"));
-				employee.setGroupShiftID(rs.getString("group_shift_id"));
+//				employee.setGroupShiftID(rs.getString("group_shift_id"));
 				employee.setBirthDate(rs.getDate("birth_date"));
 				employee.setEmergencyContact(rs.getString("emergency_contact"));
 				employee.setEmergencyPhone(rs.getString("emergency_phone"));

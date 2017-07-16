@@ -23,14 +23,14 @@ public class AttendanceDAO {
 	private PreparedStatement deleteStatement;
 
 	private String getLastIdQuery = "select * from attendance order by id desc limit 1";
-	private String getAllQuery = "select * from attendance where delete_date is null and delete_by is null";
+	private String getAllQuery = "select * from attendance where delete_date is null ";
 	private String insertQuery = "insert into attendance (pin, nik, employee_name, attendance_date, attendance_time, "
 			+ "machine_serial_number, machine_name, verification_type, mode, update_mode, branch, department, role, input_date, inputed_by) "
 			+ "values (?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?)";
 	private String updateQuery = "update attendance set pin=?, nik=?, employee_name=?, attendance_date=?, attendance_time=?, "
 			+ " machine_serial_number=?, machine_name=?, verification_type=?, mode=?, update_mode=?, branch=?, department=?, role=?, "
 			+ " edit_date = ?, edited_by = ? where id = ?";
-	private String deleteQuery = "update attendance set delete_date = ?, delete_by = ? where id = ?";
+	private String deleteQuery = "update attendance set delete_date = ?, deleted_by = ? where id = ?";
 
 	public AttendanceDAO(Connection connection) {
 		this.connection = connection;
@@ -41,7 +41,6 @@ public class AttendanceDAO {
 
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery+query);
-
 			ResultSet resultSet = getAllStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -96,7 +95,6 @@ public class AttendanceDAO {
 	public void update(Attendance attendance) {
 		try {
 			updateStatement = connection.prepareStatement(updateQuery);
-
 			updateStatement.setInt(1, attendance.getPin());
 			updateStatement.setInt(2, attendance.getNik());
 			updateStatement.setString(3, attendance.getEmployeeName());

@@ -94,4 +94,13 @@ public class AttendanceLog {
 	public void setLembur(int lembur) {
 		this.lembur = lembur;
 	}
+	@Override
+	public String toString() {
+		return "AttendanceLog [id=" + id + ", period=" + period + ", cycle=" + cycle + ", nik=" + nik + ", date=" + date
+				+ ", attendanceTime=" + attendanceTime + ", attendanceOut=" + attendanceOut + ", shiftId=" + shiftId
+				+ ", shiftIn=" + shiftIn + ", shiftOut=" + shiftOut + ", statusIn=" + statusIn + ", statusOut="
+				+ statusOut + ", lembur=" + lembur + "]";
+	}
+	
+	
 }
