@@ -12,26 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.DocumentFilter;
 
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
-import main.component.AppConstants;
-import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
-import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
 import module.customer.model.CustAddress;
 import module.customer.model.CustType;
@@ -42,7 +37,7 @@ import module.sn.currency.model.Currency;
 import module.util.Bridging;
 import module.util.JTextFieldLimit;
 
-public class CustomerCreatePanel extends JPanel implements Bridging {
+public class CustomerViewPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
@@ -71,10 +66,10 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 	JTextField txtCustName;
 	JTextField txtPt;
 	JTextField txtNpwp;
-	ComboBox<Country> cbCountry;
-	ComboBox<CustType> cbCustType;
-	ComboBox<Currency> cbCurrency;
-	ComboBox<Bank> cbBank;
+	JComboBox<String> cbCountry;
+	JComboBox<String> cbCustType;
+	JComboBox<String> cbCurrency;
+	JComboBox<String> cbBank;
 	JTextField txtBankAccount;
 	JTextField txtAccountOwner;
 	NumberField txtTop;
@@ -94,7 +89,9 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 	JScrollPane scrollPane;
 
 	JButton btnCancel;
-	JButton btnSave;
+	JButton btnPrint;
+	JButton btnDelete;
+	JButton btnEdit;
 
 	JLabel lblErrorCustCode;
 	JLabel lblErrorCustName;
@@ -107,19 +104,15 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 	JLabel lblErrorTop;
 	JLabel lblErrorDefaultTax;
 
-	private CustomerCreatePanel customerCreate;
+	private CustomerViewPanel customerView;
 
 	List<Country> listOfCountry;
 	List<CustType> listOfCustType;
 	List<Bank> listOfBank;
 	List<Currency> listOfCurrency;
 
-	public CustomerCreatePanel() {
-		customer = new Customer();
-		customerCreate = this;
-
-		DocumentFilter filter = new UppercaseDocumentFilter();
-
+	public CustomerViewPanel() {
+		customerView = this;
 		setLayout(null);
 		panel = new JPanel();
 		// panel.setPreferredSize(new Dimension(MainPanel.bodyPanel.getWidth() - 100,
@@ -134,7 +127,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		txtCustCode = new JTextField();
 		txtCustCode.setBounds(220, 80, 150, 25);
 		txtCustCode.setDocument(new JTextFieldLimit(9));
-		((AbstractDocument) txtCustCode.getDocument()).setDocumentFilter(filter);
+		txtCustCode.setEnabled(false);
 		panel.add(txtCustCode);
 
 		lblErrorCustCode = new JLabel();
@@ -149,7 +142,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		txtCustName = new JTextField();
 		txtCustName.setBounds(220, 110, 150, 25);
 		txtCustName.setDocument(new JTextFieldLimit(200));
-		((AbstractDocument) txtCustName.getDocument()).setDocumentFilter(filter);
+		txtCustName.setEnabled(false);
 		panel.add(txtCustName);
 
 		lblErrorCustName = new JLabel();
@@ -164,7 +157,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		txtPt = new JTextField();
 		txtPt.setBounds(220, 140, 150, 25);
 		txtPt.setDocument(new JTextFieldLimit(200));
-		((AbstractDocument) txtPt.getDocument()).setDocumentFilter(filter);
+		txtPt.setEnabled(false);
 		panel.add(txtPt);
 
 		lblNpwp = new JLabel("NPWP");
@@ -174,20 +167,16 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		txtNpwp = new JTextField();
 		txtNpwp.setBounds(220, 170, 150, 25);
 		txtNpwp.setDocument(new JTextFieldLimit(30));
-		((AbstractDocument) txtNpwp.getDocument()).setDocumentFilter(filter);
+		txtNpwp.setEnabled(false);
 		panel.add(txtNpwp);
 
 		lblCustType = new JLabel("<html>Tipe Customer <font color=\"red\">*</font></html>");
 		lblCustType.setBounds(50, 200, 150, 25);
 		panel.add(lblCustType);
 
-		listOfCustType = new ArrayList<CustType>();
-		listOfCustType.add(0, new CustType("-- Pilih Tipe Customer --"));
-		listOfCustType.add(1, new CustType("Individu"));
-		listOfCustType.add(2, new CustType("Commercial"));
-		listOfCustType.add(3, new CustType("Government"));
-		cbCustType = new ComboBox<CustType>();
-		cbCustType.setList(listOfCustType);
+		cbCustType = new JComboBox<String>();
+		cbCustType.setEnabled(false);
+		cbCustType.addItem("-- Pilih Tipe Customer --");
 		cbCustType.setBounds(220, 200, 150, 25);
 		panel.add(cbCustType);
 
@@ -200,17 +189,9 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		lblCountry.setBounds(50, 230, 150, 25);
 		panel.add(lblCountry);
 
-		listOfCountry = new ArrayList<Country>();
-		try {
-			listOfCountry = ServiceFactory.getCustomerBL().getAllCountry();
-			listOfCountry.add(0, new Country("-- Pilih Country --"));
-		} catch (SQLException e1) {
-			LOGGER.error(e1.getMessage());
-			DialogBox.showErrorException();
-		}
-		cbCountry = new ComboBox<Country>();
-		cbCountry.setList(listOfCountry);
-		cbCountry.setSelectedIndex(0);
+		cbCountry = new JComboBox<String>();
+		cbCountry.setEnabled(false);
+		cbCountry.addItem("-- Pilih Country --");
 		cbCountry.setBounds(220, 230, 150, 25);
 		panel.add(cbCountry);
 
@@ -224,7 +205,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		lblBreadcrumb.setBounds(50, 10, 320, 25);
 		panel.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("Buat Baru");
+		lblHeader = new JLabel("View Detail");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 25);
 		panel.add(lblHeader);
@@ -234,11 +215,6 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		lblCustAddress.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblCustAddress.setBounds(50, 290, 150, 25);
 		panel.add(lblCustAddress);
-
-		lblErrorCustAddress = new JLabel("");
-		lblErrorCustAddress.setForeground(Color.RED);
-		lblErrorCustAddress.setBounds(220, 290, 225, 25);
-		panel.add(lblErrorCustAddress);
 
 		scrollPaneCustAddress = new JScrollPane();
 		scrollPaneCustAddress.setBounds(50, 325, 975, 150);
@@ -253,39 +229,24 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		tblCustAddress.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tblCustAddress.getValueAt(tblCustAddress.getSelectedRow(), 0).equals(true))
-					listOfCustAddress.get(tblCustAddress.getSelectedRow()).setFlag(false);
-				else
-					listOfCustAddress.get(tblCustAddress.getSelectedRow()).setFlag(true);
-
-				tblCustAddress.updateUI();
-
 				if (e.getClickCount() == 2) {
 					JTable target = (JTable) e.getSource();
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 6)
-						showEditCustAddressDialog(listOfCustAddress.get(row), customerCreate, row);
+					if (column == 2)
+						showViewCustAddressDialog(listOfCustAddress.get(row), customerView, row);
 				}
 			}
 		});
 
 		btnAddCustAddress = new JButton("Tambah");
-		btnAddCustAddress.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				showAddCustAddressDialog(customerCreate);
-			}
-		});
+		btnAddCustAddress.setEnabled(false);
 		btnAddCustAddress.setBounds(820, 290, 100, 25);
 		panel.add(btnAddCustAddress);
 
 		btnDeleteCustAddress = new JButton("Hapus");
-		btnDeleteCustAddress.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				doDeleteCustAddress();
-			}
-		});
+		btnDeleteCustAddress.setEnabled(false);
 		btnDeleteCustAddress.setBounds(925, 290, 100, 25);
 		panel.add(btnDeleteCustAddress);
 
@@ -296,7 +257,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		txtBankAccount = new JTextField();
 		txtBankAccount.setBounds(220, 485, 150, 25);
 		txtBankAccount.setDocument(new JTextFieldLimit(30));
-		((AbstractDocument) txtBankAccount.getDocument()).setDocumentFilter(filter);
+		txtBankAccount.setEnabled(false);
 		panel.add(txtBankAccount);
 
 		lblErrorBankAccount = new JLabel();
@@ -308,16 +269,9 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		lblBank.setBounds(50, 515, 150, 25);
 		panel.add(lblBank);
 
-		listOfBank = new ArrayList<Bank>();
-		try {
-			listOfBank = ServiceFactory.getCustomerBL().getAllBank();
-			listOfBank.add(0, new Bank("-- Pilih Bank --"));
-		} catch (SQLException e1) {
-			LOGGER.error(e1.getMessage());
-			DialogBox.showErrorException();
-		}
-		cbBank = new ComboBox<Bank>();
-		cbBank.setList(listOfBank);
+		cbBank = new JComboBox<String>();
+		cbBank.setEnabled(false);
+		cbBank.addItem("-- Pilih Bank --");
 		cbBank.setBounds(220, 515, 150, 25);
 		panel.add(cbBank);
 
@@ -333,7 +287,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		txtAccountOwner = new JTextField();
 		txtAccountOwner.setBounds(220, 545, 150, 25);
 		txtAccountOwner.setDocument(new JTextFieldLimit(30));
-		((AbstractDocument) txtAccountOwner.getDocument()).setDocumentFilter(filter);
+		txtAccountOwner.setEnabled(false);
 		panel.add(txtAccountOwner);
 
 		lblErrorAccountOwner = new JLabel();
@@ -345,28 +299,9 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		lblCurrency.setBounds(50, 575, 150, 25);
 		panel.add(lblCurrency);
 
-		listOfCurrency = new ArrayList<Currency>();
-		try {
-			listOfCurrency = ServiceFactory.getCustomerBL().getAllCurrency();
-			listOfCurrency.add(0, new Currency("-- Pilih Kurs --"));
-		} catch (SQLException e1) {
-			LOGGER.error(e1.getMessage());
-			DialogBox.showErrorException();
-		}
-		cbCurrency = new ComboBox<Currency>();
-		cbCurrency.setList(listOfCurrency);
-
-		// default IDR
-
-		int i = 0;
-		for (Currency currency : listOfCurrency) {
-			if (AppConstants.CURRENCY_IDR.equals(currency.getCurrencyAbbr())) {
-				cbCurrency.setSelectedIndex(i);
-				break;
-			}
-			i++;
-		}
-
+		cbCurrency = new JComboBox<String>();
+		cbCurrency.setEnabled(false);
+		cbCurrency.addItem("-- Pilih Kurs --");
 		cbCurrency.setBounds(220, 575, 150, 25);
 		panel.add(cbCurrency);
 
@@ -380,6 +315,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		panel.add(lblTop);
 
 		txtTop = new NumberField(3);
+		txtTop.setEnabled(false);
 		txtTop.setBounds(220, 605, 150, 25);
 		panel.add(txtTop);
 
@@ -397,6 +333,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		panel.add(lblDefaultTax);
 
 		txtDefaultTax = new NumberField(6);
+		txtDefaultTax.setEnabled(false);
 		txtDefaultTax.setBounds(220, 635, 150, 25);
 		panel.add(txtDefaultTax);
 
@@ -419,174 +356,116 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		add(scrollPane);
 
-		btnSave = new JButton("Simpan");
-		btnSave.addActionListener(new ActionListener() {
+		btnPrint = new JButton("Cetak");
+		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (doValidate() == false) {
-					return;
-				}
-				int response = DialogBox.showInsertChoice();
+				doPrint();
+			}
+		});
+		btnPrint.setBounds(715, 680, 100, 25);
+		panel.add(btnPrint);
+
+		btnDelete = new JButton("Hapus");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int response = DialogBox.showDeleteChoice();
 				if (response == JOptionPane.YES_OPTION) {
-					doSave();
+					doDelete();
 				}
 			}
 		});
-		btnSave.setBounds(925, 680, 100, 25);
-		panel.add(btnSave);
+		btnDelete.setBounds(820, 680, 100, 25);
+		panel.add(btnDelete);
+
+		btnEdit = new JButton("Ubah");
+		btnEdit.setBounds(925, 680, 100, 25);
+		panel.add(btnEdit);
+
+		btnEdit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.customer.ui.CustomerEditPanel", customer);
+			}
+		});
 
 		btnCancel = new JButton("Kembali");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int response = DialogBox.showCloseChoice();
-				if (response == JOptionPane.YES_OPTION) {
-					MainPanel.changePanel("module.customer.ui.CustomerListPanel");
-				}
+				MainPanel.changePanel("module.customer.ui.CustomerListPanel");
 			}
 		});
 		btnCancel.setBounds(50, 680, 100, 25);
 		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
-
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				txtCustCode.requestFocusInWindow();
-			}
-		});
 	}
 
-	protected boolean doValidate() {
-		boolean isValid = true;
-
-		lblErrorCustCode.setText("");
-		lblErrorCustName.setText("");
-		lblErrorCountry.setText("");
-		lblErrorCurrency.setText("");
-		lblErrorTop.setText("");
-		lblErrorDefaultTax.setText("");
-		lblErrorCustAddress.setText("");
-
-		if (txtCustCode.getText() == null || txtCustCode.getText().length() == 0) {
-			lblErrorCustCode.setText("Textbox Kode Customer harus diisi.");
-			isValid = false;
-		} else {
-			try {
-				if (ServiceFactory.getCustomerBL().isCustCodeExists(txtCustCode.getText()) > 0) {
-					lblErrorCustCode.setText("Kode Customer sudah pernah diinput.");
-					isValid = false;
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				DialogBox.showErrorException();
-				isValid = false;
-			}
-		}
-
-		if (txtCustName.getText() == null || txtCustName.getText().length() == 0) {
-			lblErrorCustName.setText("Textbox Nama Customer harus diisi.");
-			isValid = false;
-		}
-
-		if (cbCustType.getSelectedItem() == null || cbCustType.getSelectedIndex() == 0) {
-			lblErrorCustType.setText("Combobox Tipe Customer harus dipilih.");
-			isValid = false;
-		}
-
-		if (!"".equals(txtDefaultTax.getText())) {
-			if (Double.valueOf(txtDefaultTax.getText()) > 100.00) {
-				lblErrorDefaultTax.setText("Default Tax tidak lebih dari 100%");
-				isValid = false;
-			}
-		}
-
-		return isValid;
+	protected void showViewCustAddressDialog(CustAddress custAddress, CustomerViewPanel customerView, Integer index) {
+		CustomerAddressDialog custAddressDialog = new CustomerAddressDialog(true, custAddress, customerView, index);
+		custAddressDialog.setTitle("Alamat");
+		custAddressDialog.setLocationRelativeTo(null);
+		custAddressDialog.setVisible(true);
 	}
 
-	protected void doSave() {
-		customer = new Customer();
-		customer.setCustCode(txtCustCode.getText());
-		customer.setCustName(txtCustName.getText());
-		customer.setPt(txtPt.getText());
-		customer.setNpwp(txtNpwp.getText());
-		customer.setCustType(cbCustType.getDataIndex().getCustType());
-		customer.setCountry(cbCountry.getDataIndex().getCountryName());
-		customer.setAccountNo(txtBankAccount.getText());
-		customer.setBankId(cbBank.getDataIndex().getId());
-		customer.setAccountName(txtBankAccount.getText());
-		customer.setCurrencyId(cbCurrency.getDataIndex().getId());
-
-		if (!"".equals(txtTop.getText()))
-			customer.setTop(Integer.valueOf(txtTop.getText()));
-		else
-			customer.setTop(0);
-
-		if (!"".equals(txtDefaultTax.getText()))
-			customer.setDefaultTax(Double.valueOf(txtDefaultTax.getText()));
-		else
-			customer.setDefaultTax(0.00);
-
+	protected void loadData(Integer customerId) {
 		try {
-			ServiceFactory.getCustomerBL().save(customer, listOfCustAddress);
-			DialogBox.showInsert();
-			MainPanel.changePanel("module.customer.ui.CustomerListPanel");
-		} catch (SQLException e) {
-			LOGGER.error(e.getMessage());
+			customer = ServiceFactory.getCustomerBL().getCustomerById(customerId);
+			listOfCustAddress = ServiceFactory.getCustomerBL().getCustAddressByCustCode(customer.getCustCode());
+
+			if (customer != null) {
+				txtCustCode.setText(customer.getCustCode());
+				txtCustName.setText(customer.getCustName());
+				txtPt.setText(customer.getPt());
+				txtNpwp.setText(customer.getNpwp());
+				cbCustType.addItem(customer.getCustType());
+				cbCustType.setSelectedIndex(1);
+				cbCountry.addItem(customer.getCountry());
+				cbCountry.setSelectedIndex(1);
+				txtBankAccount.setText(customer.getAccountNo());
+				cbBank.addItem(customer.getBank().getBank());
+				cbBank.setSelectedIndex(1);
+				txtAccountOwner.setText(customer.getAccountName());
+				txtDefaultTax.setText(String.valueOf(customer.getDefaultTax()));
+				cbCurrency.addItem(customer.getCurrency().getCurrency());
+				cbCurrency.setSelectedIndex(1);
+				txtTop.setText(String.valueOf(customer.getTop()));
+
+				refreshTableCustAddress();
+			}
+		} catch (SQLException e1) {
+			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
 
-	/**
-	 * Method to display add cust address dialog
-	 */
-	protected void showAddCustAddressDialog(CustomerCreatePanel customerCreate) {
-		CustomerAddressDialog custAddressDialog = new CustomerAddressDialog(false, new CustAddress(), customerCreate,
-				null);
-		custAddressDialog.setTitle("Alamat");
-		custAddressDialog.setLocationRelativeTo(null);
-		custAddressDialog.setVisible(true);
+	public void refreshTableCustAddress() {
+		try {
+			tblCustAddress.setModel(new CustAddressTableModel(listOfCustAddress));
+		} catch (Exception e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
+		}
 	}
 
-	protected void showEditCustAddressDialog(CustAddress custAddress, CustomerCreatePanel customerCreate,
-			Integer index) {
-		CustomerAddressDialog custAddressDialog = new CustomerAddressDialog(true, custAddress, customerCreate, index);
-		custAddressDialog.setTitle("Alamat");
-		custAddressDialog.setLocationRelativeTo(null);
-		custAddressDialog.setVisible(true);
+	protected void doPrint() {
+
 	}
 
-	protected void doDeleteCustAddress() {
-		if (listOfCustAddress.isEmpty())
-			DialogBox.showDeleteEmptyChoice();
-		else {
-			int count = 0;
-
-			List<CustAddress> temp = new ArrayList<CustAddress>();
-			for (CustAddress s : listOfCustAddress) {
-				if (Boolean.TRUE.equals(s.isFlag())) {
-					temp.add(s);
-				} else
-					count += 1;
-			}
-
-			if (count == listOfCustAddress.size()) {
-				DialogBox.showDeleteEmptyChoice();
-				return;
-			}
-
-			if (Boolean.FALSE.equals(temp.isEmpty())) {
-				for (CustAddress s : temp) {
-					listOfCustAddress.remove(s);
-				}
-				refreshTableCustAddress();
-				DialogBox.showDelete();
-			}
+	protected void doDelete() {
+		try {
+			ServiceFactory.getCustomerBL().deleteAll(customer);
+			DialogBox.showDelete();
+			MainPanel.changePanel("module.customer.ui.CustomerListPanel");
+		} catch (SQLException e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
 		}
 	}
 
 	/**
 	 * Class as TableModel for Cust Address table
 	 * 
-	 * @author TLO
+	 * @author Sandy
 	 *
 	 */
 	class CustAddressTableModel extends AbstractTableModel {
@@ -702,17 +581,10 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		}
 	}
 
-	public void refreshTableCustAddress() {
-		try {
-			tblCustAddress.setModel(new CustAddressTableModel(listOfCustAddress));
-		} catch (Exception e1) {
-			LOGGER.error(e1.getMessage());
-			DialogBox.showErrorException();
-		}
-	}
-
 	@Override
 	public void invokeObjects(Object... objects) {
-		// TODO Auto-generated method stub
+		this.customer = (Customer) objects[0];
+
+		loadData(customer.getId());
 	}
 }

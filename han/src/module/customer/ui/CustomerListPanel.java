@@ -16,12 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 import org.apache.log4j.Logger;
 
@@ -29,7 +25,6 @@ import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
 import module.customer.model.Customer;
-import module.supplier.model.Supplier;
 
 public class CustomerListPanel extends JPanel {
 
@@ -75,7 +70,7 @@ public class CustomerListPanel extends JPanel {
 		btnCreateNew = new JButton("Buat Baru");
 		btnCreateNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MainPanel.changePanel("module.supplier.ui.SupplierCreatePanel");
+				MainPanel.changePanel("module.customer.ui.CustomerCreatePanel");
 			}
 		});
 		btnCreateNew.setBounds(700, 80, 100, 30);
@@ -136,8 +131,8 @@ public class CustomerListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 4)
-						MainPanel.changePanel("module.supplier.ui.SupplierViewPanel", listOfCustomer.get(row));
+					if (column == 3)
+						MainPanel.changePanel("module.customer.ui.CustomerViewPanel", listOfCustomer.get(row));
 				}
 			}
 		});
@@ -183,21 +178,21 @@ public class CustomerListPanel extends JPanel {
 	/**
 	 * Method to display add supp cp dialog
 	 */
-	protected void showAdvancedSearchDialog(CustomerListPanel supplierListPanel) {
-		CustomerAdvSearchDialog suppAdvSearchDialog = new CustomerAdvSearchDialog(supplierListPanel);
-		suppAdvSearchDialog.setTitle("Advanced Search");
+	protected void showAdvancedSearchDialog(CustomerListPanel customerListPanel) {
+		CustomerAdvSearchDialog suppAdvSearchDialog = new CustomerAdvSearchDialog(customerListPanel);
+		suppAdvSearchDialog.setTitle("Pencarian Lanjut");
 		suppAdvSearchDialog.setLocationRelativeTo(null);
 		suppAdvSearchDialog.setVisible(true);
 	}
 
 	/**
-	 * Class as TableModel for Supplier table
+	 * Class as TableModel for Customer table
 	 * 
 	 * @author TLO
 	 *
 	 */
 	class CustomerTableModel extends AbstractTableModel {
-		
+
 		private static final long serialVersionUID = 1L;
 
 		private List<Customer> listOfCustomer;
@@ -247,7 +242,7 @@ public class CustomerListPanel extends JPanel {
 		 *            rowIndex of selected table
 		 * @param columnIndex
 		 *            columnIndex of selected table
-		 * @return ({@link SupplierAddress}) Object
+		 * @return ({@link CustomerAddress}) Object
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			Customer p = listOfCustomer.get(rowIndex);
@@ -261,10 +256,10 @@ public class CustomerListPanel extends JPanel {
 			case 3:
 				return "<html><a><u>View</u></a></html>";
 			default:
-	            throw new IllegalArgumentException("Invalid column index");
-	        }
+				throw new IllegalArgumentException("Invalid column index");
+			}
 		}
-		
+
 		/**
 		 * Method to getColumnName
 		 * 

@@ -7,75 +7,60 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import module.sn.city.model.City;
-import module.sn.province.model.Province;
-import module.supplier.model.SuppAddress;
-import module.supplier.model.SuppCp;
+import module.customer.model.CustAddress;
 import module.util.DateUtil;
 
 public class CustomerAddressDAO {
 	private Connection connection;
 
-	private PreparedStatement getAllBySuppCodeStatement;
+	private PreparedStatement getAllByCustCodeStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 
-	private String getAllBySuppCodeQuery = "select sa.id, sa.supp_code, sa.address_type, sa.address, sa.zip_code,"
-			+ "sa.city, sa.phone, sa.fax, sa.province_id, p.id, p.province, sc.id as supp_cp_id, sc.supp_code as supp_cp_code, sc.supp_address_id, sc.name, sc.email "
-			+ "from supp_address sa "
-			+ "left join province p on p.id = sa.province_id "
-			+ "inner join supp_cp sc on sa.id = sc.supp_address_id where sa.supp_code = ? "
-			+ "and sa.deleted_date is null and p.deleted_date is null";
+	private String getAllByCustCodeQuery = "select id, cust_code, cust_id, name, "
+			+ "addr_type, address, zip_code, email, "
+			+ "city, phone, fax, province "
+			+ "from cust_addr where cust_code = ?"
+			+ "and deleted_date is null";
 
-	private String insertQuery = "insert into supp_address (supp_code, address_type, address, zip_code, "
-			+ "province_id, city, phone, fax, input_date, input_by) values (?,?,?,?,?,?,?,?,?,?)";
+	private String insertQuery = "insert into cust_addr (cust_code, cust_id, name, addr_type, phone, fax, address, zip_code, email, "
+			+ "province, city, input_date, input_by) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-	private String updateQuery = "update supp_address set address_type=?, address=?, zip_code=?, "
-			+ "province_id=?, city=?, phone=?, fax=?, edit_date=?, edited_by=? where id=?";
+	private String updateQuery = "update cust_addr set name=?, addr_type=?, phone=?, "
+			+ "fax=?, address=?, zip_code=?, email=?, province=?, city=?, edit_date=?, edited_by=? where id=?";
 
-	private String deleteQuery = "update supp_address set deleted_date=?, deleted_by=? ";
+	private String deleteQuery = "update cust_addr set deleted_date=?, deleted_by=? ";
 
 	public CustomerAddressDAO(Connection connection) throws SQLException {
 		this.connection = connection;
 	}
 
-	public List<SuppAddress> getAllBySuppCode(String suppCode) throws SQLException {
-		List<SuppAddress> suppAddresses = new ArrayList<SuppAddress>();
+	public List<CustAddress> getAllByCustCode(String custCode) throws SQLException {
+		List<CustAddress> custAddresses = new ArrayList<CustAddress>();
 
 		try {
-			getAllBySuppCodeStatement = connection.prepareStatement(getAllBySuppCodeQuery);
+			getAllByCustCodeStatement = connection.prepareStatement(getAllByCustCodeQuery);
 
-			getAllBySuppCodeStatement.setString(1, suppCode);
+			getAllByCustCodeStatement.setString(1, custCode);
 
-			ResultSet rs = getAllBySuppCodeStatement.executeQuery();
+			ResultSet rs = getAllByCustCodeStatement.executeQuery();
 			while (rs.next()) {
-				SuppAddress supplierAddress = new SuppAddress();
-				supplierAddress.setId(rs.getInt("id"));
-				supplierAddress.setSuppCode(rs.getString("supp_code"));
-				supplierAddress.setAddressType(rs.getString("address_type"));
-				supplierAddress.setAddress(rs.getString("address"));
-				supplierAddress.setZipCode(rs.getString("zip_code"));
-				supplierAddress.setProvinceId(rs.getInt("province_id"));
-				supplierAddress.setCity(rs.getString("city"));
-				supplierAddress.setPhone(rs.getString("phone"));
-				supplierAddress.setFax(rs.getString("fax"));
+				CustAddress customerAddress = new CustAddress();
+				customerAddress.setId(rs.getInt("id"));
+				customerAddress.setCustCode(rs.getString("cust_code"));
+				customerAddress.setCustId(rs.getInt("cust_id"));
+				customerAddress.setName(rs.getString("name"));
+				customerAddress.setAddressType(rs.getString("addr_type"));
+				customerAddress.setAddress(rs.getString("address"));
+				customerAddress.setZipCode(rs.getString("zip_code"));
+				customerAddress.setProvince(rs.getString("province"));
+				customerAddress.setCity(rs.getString("city"));
+				customerAddress.setPhone(rs.getString("phone"));
+				customerAddress.setFax(rs.getString("fax"));
+				customerAddress.setEmail(rs.getString("email"));
 
-				Province province = new Province();
-				province.setId(rs.getInt("province_id"));
-				province.setProvince(rs.getString("province"));
-
-				supplierAddress.setProvince(province);
-
-				SuppCp suppCp = new SuppCp();
-				suppCp.setId(rs.getInt("supp_cp_id"));
-				suppCp.setSuppCode(rs.getString("supp_cp_code"));
-				suppCp.setSuppAddressId(rs.getInt("supp_address_id"));
-				suppCp.setName(rs.getString("name"));
-				suppCp.setEmail(rs.getString("email"));
-				supplierAddress.setSuppCp(suppCp);
-
-				suppAddresses.add(supplierAddress);
+				custAddresses.add(customerAddress);
 
 			}
 
@@ -83,52 +68,58 @@ public class CustomerAddressDAO {
 			throw new SQLException(ex.getMessage());
 		}
 
-		return suppAddresses;
+		return custAddresses;
 	}
 
-	public SuppAddress save(SuppAddress suppAddress) throws SQLException {
+	public CustAddress save(CustAddress custAddress) throws SQLException {
 		ResultSet generatedKeys = null;
 
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
-			insertStatement.setString(1, suppAddress.getSuppCode());
-			insertStatement.setString(2, suppAddress.getAddressType());
-			insertStatement.setString(3, suppAddress.getAddress());
-			insertStatement.setString(4, suppAddress.getZipCode());
-			insertStatement.setInt(5, suppAddress.getProvinceId());
-			insertStatement.setString(6, suppAddress.getCity());
-			insertStatement.setString(7, suppAddress.getPhone());
-			insertStatement.setString(8, suppAddress.getFax());
-			insertStatement.setDate(9, DateUtil.getCurrentDate());
-			insertStatement.setString(10, "timotius");
+			insertStatement.setString(1, custAddress.getCustCode());
+			insertStatement.setInt(2, custAddress.getCustId());
+			insertStatement.setString(3, custAddress.getName());
+			insertStatement.setString(4, custAddress.getAddressType());
+			insertStatement.setString(5, custAddress.getPhone());
+			insertStatement.setString(6, custAddress.getFax());
+			insertStatement.setString(7, custAddress.getAddress());
+			insertStatement.setString(8, custAddress.getZipCode());
+			insertStatement.setString(9, custAddress.getEmail());
+			insertStatement.setString(10, custAddress.getProvince());
+			insertStatement.setString(11, custAddress.getCity());
+			insertStatement.setDate(12, DateUtil.getCurrentDate());
+			insertStatement.setString(13, "Sandy");
 			insertStatement.executeUpdate();
 
 			generatedKeys = insertStatement.getGeneratedKeys();
 
 			if (generatedKeys.next()) {
-				suppAddress.setId(generatedKeys.getInt(1));
+				custAddress.setId(generatedKeys.getInt(1));
 				generatedKeys.close();
 			}
-			return suppAddress;
+			return custAddress;
 
 		} catch (SQLException ex) {
 			throw new SQLException(ex.getMessage());
 		}
 	}
 
-	public void update(SuppAddress suppAddress) throws SQLException {
+	public void update(CustAddress custAddress) throws SQLException {
 		try {
+			
 			updateStatement = connection.prepareStatement(updateQuery);
-			updateStatement.setString(1, suppAddress.getAddressType());
-			updateStatement.setString(2, suppAddress.getAddress());
-			updateStatement.setString(3, suppAddress.getZipCode());
-			updateStatement.setInt(4, suppAddress.getProvinceId());
-			updateStatement.setString(5, suppAddress.getCity());
-			updateStatement.setString(6, suppAddress.getPhone());
-			updateStatement.setString(7, suppAddress.getFax());
-			updateStatement.setDate(8, DateUtil.getCurrentDate());
-			updateStatement.setString(9, "timotius");
-			updateStatement.setInt(10, suppAddress.getId());
+			updateStatement.setString(1, custAddress.getName());
+			updateStatement.setString(2, custAddress.getAddressType());
+			updateStatement.setString(3, custAddress.getPhone());
+			updateStatement.setString(4, custAddress.getFax());
+			updateStatement.setString(5, custAddress.getAddress());
+			updateStatement.setString(6, custAddress.getZipCode());
+			updateStatement.setString(7, custAddress.getEmail());
+			updateStatement.setString(8, custAddress.getProvince());
+			updateStatement.setString(9, custAddress.getCity());
+			updateStatement.setDate(10, DateUtil.getCurrentDate());
+			updateStatement.setString(11, "Sandy");
+			updateStatement.setInt(12, custAddress.getId());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -136,14 +127,14 @@ public class CustomerAddressDAO {
 		}
 	}
 
-	public void deleteAll(String suppCode) throws SQLException {
+	public void deleteAll(String custCode) throws SQLException {
 		try {
-			String query = new StringBuilder().append(deleteQuery).append("where supp_code = ? ").toString();
+			String query = new StringBuilder().append(deleteQuery).append("where cust_code = ? ").toString();
 
 			deleteStatement = connection.prepareStatement(query);
 			deleteStatement.setDate(1, DateUtil.getCurrentDate());
-			deleteStatement.setString(2, "timotius");
-			deleteStatement.setString(3, suppCode);
+			deleteStatement.setString(2, "Sandy");
+			deleteStatement.setString(3, custCode);
 			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {

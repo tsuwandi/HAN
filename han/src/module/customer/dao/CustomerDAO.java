@@ -9,6 +9,7 @@ import java.util.List;
 
 import module.customer.model.Customer;
 import module.sn.bank.model.Bank;
+import module.sn.country.model.Country;
 import module.sn.currency.model.Currency;
 import module.sn.supptype.model.SuppType;
 import module.supplier.model.Supplier;
@@ -18,7 +19,7 @@ public class CustomerDAO {
 	private Connection connection;
 
 	private PreparedStatement getAllStatement;
-	private PreparedStatement isSuppCodeExistsStatement;
+	private PreparedStatement isCustCodeExistsStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
@@ -37,11 +38,11 @@ public class CustomerDAO {
 
 	private String insertQuery = "insert into customer (cust_code, cust_name, pt, npwp, "
 			+ "cust_type, default_tax, account_no, bank_id, account_name, currency_id, top, country, note, "
-			+ "input_date, input_by) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			+ "input_date, input_by) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 	private String updateQuery = "update customer set cust_name=?, pt=?, npwp=?, "
 			+ "cust_type=?, default_tax=?, account_no=?, bank_id=?, account_name=?, currency_id=?, top=?, country=?, note=?, "
-			+ "edit_date=?, edited_by=? where supp_code=?";
+			+ "edit_date=?, edited_by=? where cust_code=?";
 
 	private String deleteQuery = "update customer set deleted_date=?, deleted_by=? where id=?";
 
@@ -207,13 +208,13 @@ public class CustomerDAO {
 		return customers;
 	}
 
-	public int isSuppCodeExists(String suppCode) throws SQLException {
+	public int isCustCodeExists(String custCode) throws SQLException {
 		int count = 0;
 		try {
-			isSuppCodeExistsStatement = connection.prepareStatement(isCustCodeExistsQuery);
-			isSuppCodeExistsStatement.setString(1, suppCode);
+			isCustCodeExistsStatement = connection.prepareStatement(isCustCodeExistsQuery);
+			isCustCodeExistsStatement.setString(1, custCode);
 
-			ResultSet rs = isSuppCodeExistsStatement.executeQuery();
+			ResultSet rs = isCustCodeExistsStatement.executeQuery();
 
 			while (rs.next()) {
 				count = rs.getInt("is_exists");
@@ -226,27 +227,33 @@ public class CustomerDAO {
 		return count;
 	}
 
-	public void save(Supplier supplier) throws SQLException {
+	public void save(Customer customer) throws SQLException {
 		try {
+			
 			insertStatement = connection.prepareStatement(insertQuery);
-			insertStatement.setString(1, supplier.getSuppCode());
-			insertStatement.setString(2, supplier.getSuppName());
-			insertStatement.setString(3, supplier.getPt());
-			insertStatement.setString(4, supplier.getNpwp());
-			insertStatement.setInt(5, supplier.getSuppTypeId());
-			// insertStatement.setString(6, supplier.getSuppStatus());
-			insertStatement.setDouble(6, supplier.getDefaultTax());
-			insertStatement.setString(7, supplier.getAccountNo());
-			insertStatement.setInt(8, supplier.getBankId());
-			insertStatement.setString(9, supplier.getAccountName());
-			if (supplier.getCurrencyId() == 0) {
+			insertStatement.setString(1, customer.getCustCode());
+			insertStatement.setString(2, customer.getCustName());
+			insertStatement.setString(3, customer.getPt());
+			insertStatement.setString(4, customer.getNpwp());
+			insertStatement.setString(5, customer.getCustType());
+			insertStatement.setDouble(6, customer.getDefaultTax());
+			insertStatement.setString(7, customer.getAccountNo());
+			if (customer.getBankId() == 0) {
+				insertStatement.setNull(8, java.sql.Types.INTEGER);
+			} else {
+				insertStatement.setInt(8, customer.getBankId());
+			}
+			insertStatement.setString(9, customer.getAccountName());
+			if (customer.getCurrencyId() == 0) {
 				insertStatement.setNull(10, java.sql.Types.INTEGER);
 			} else {
-				insertStatement.setInt(10, supplier.getCurrencyId());
+				insertStatement.setInt(10, customer.getCurrencyId());
 			}
-			insertStatement.setInt(11, supplier.getTop());
-			insertStatement.setDate(12, DateUtil.getCurrentDate());
-			insertStatement.setString(13, "timotius");
+			insertStatement.setInt(11, customer.getTop());
+			insertStatement.setString(12, customer.getCountry());
+			insertStatement.setString(13, customer.getNote());
+			insertStatement.setDate(14, DateUtil.getCurrentDate());
+			insertStatement.setString(15, "Sandy");
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -254,27 +261,33 @@ public class CustomerDAO {
 		}
 	}
 
-	public void update(Supplier supplier) throws SQLException {
+	public void update(Customer customer) throws SQLException {
 		try {
+			
 			updateStatement = connection.prepareStatement(updateQuery);
-			updateStatement.setString(1, supplier.getSuppName());
-			updateStatement.setString(2, supplier.getPt());
-			updateStatement.setString(3, supplier.getNpwp());
-			updateStatement.setInt(4, supplier.getSuppTypeId());
-			// updateStatement.setString(5, supplier.getSuppStatus());
-			updateStatement.setDouble(5, supplier.getDefaultTax());
-			updateStatement.setString(6, supplier.getAccountNo());
-			updateStatement.setInt(7, supplier.getBankId());
-			updateStatement.setString(8, supplier.getAccountName());
-			if (supplier.getCurrencyId() == 0) {
+			updateStatement.setString(1, customer.getCustName());
+			updateStatement.setString(2, customer.getPt());
+			updateStatement.setString(3, customer.getNpwp());
+			updateStatement.setString(4, customer.getCustType());
+			updateStatement.setDouble(5, customer.getDefaultTax());
+			updateStatement.setString(6, customer.getAccountNo());
+			if (customer.getBankId() == 0) {
+				updateStatement.setNull(7, java.sql.Types.INTEGER);
+			} else {
+				updateStatement.setInt(7, customer.getBankId());
+			}
+			updateStatement.setString(8, customer.getAccountName());
+			if (customer.getCurrencyId() == 0) {
 				updateStatement.setNull(9, java.sql.Types.INTEGER);
 			} else {
-				updateStatement.setInt(9, supplier.getCurrencyId());
+				updateStatement.setInt(9, customer.getCurrencyId());
 			}
-			updateStatement.setInt(10, supplier.getTop());
-			updateStatement.setDate(11, DateUtil.getCurrentDate());
-			updateStatement.setString(12, "timotius");
-			updateStatement.setString(13, supplier.getSuppCode());
+			updateStatement.setInt(10, customer.getTop());
+			updateStatement.setString(11, customer.getCountry());
+			updateStatement.setString(12, customer.getNote());
+			updateStatement.setDate(13, DateUtil.getCurrentDate());
+			updateStatement.setString(14, "Sandy");
+			updateStatement.setString(15, customer.getCustCode());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -286,7 +299,7 @@ public class CustomerDAO {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			deleteStatement.setDate(1, DateUtil.getCurrentDate());
-			deleteStatement.setString(2, "timotius");
+			deleteStatement.setString(2, "Sandy");
 			deleteStatement.setInt(3, id);
 			deleteStatement.executeUpdate();
 		} catch (SQLException ex) {
@@ -294,34 +307,30 @@ public class CustomerDAO {
 		}
 	}
 
-	public Supplier getById(int id) throws SQLException {
-		Supplier supplier = null;
-		String query = new StringBuilder().append(getAllQuery).append(" and s.id=?").toString();
+	public Customer getById(int id) throws SQLException {
+		Customer customer = null;
+		String query = new StringBuilder().append(getAllQuery).append(" and c.id=?").toString();
 		try {
 			getAllStatement = connection.prepareStatement(query);
 			getAllStatement.setInt(1, id);
 			ResultSet rs = getAllStatement.executeQuery();
 
 			while (rs.next()) {
-				supplier = new Supplier();
-				supplier.setId(rs.getInt("id"));
-				supplier.setSuppCode(rs.getString("supp_code"));
-				supplier.setSuppName(rs.getString("supp_name"));
-				supplier.setPt(rs.getString("pt"));
-				supplier.setNpwp(rs.getString("npwp"));
-				supplier.setSuppTypeId(rs.getInt("supp_type_id"));
-				// supplier.setSuppStatus(rs.getString("supp_status"));
-				supplier.setDefaultTax(rs.getInt("default_tax"));
-				supplier.setAccountNo(rs.getString("account_no"));
-				supplier.setBankId(rs.getInt("bank_id"));
-				supplier.setAccountName(rs.getString("account_name"));
-				supplier.setCurrencyId(rs.getInt("currency_id"));
-				supplier.setTop(rs.getInt("top"));
-				supplier.setCity(rs.getString("city"));
-
-				SuppType suppType = new SuppType();
-				suppType.setId(rs.getInt("supp_type_id"));
-				suppType.setSuppType(rs.getString("supp_type"));
+				customer = new Customer();
+				customer.setId(rs.getInt("id"));
+				customer.setCustCode(rs.getString("cust_code"));
+				customer.setCustName(rs.getString("cust_name"));
+				customer.setPt(rs.getString("pt"));
+				customer.setNpwp(rs.getString("npwp"));
+				customer.setCustType(rs.getString("cust_type"));
+				customer.setDefaultTax(rs.getInt("default_tax"));
+				customer.setAccountNo(rs.getString("account_no"));
+				customer.setBankId(rs.getInt("bank_id"));
+				customer.setAccountName(rs.getString("account_name"));
+				customer.setCurrencyId(rs.getInt("currency_id"));
+				customer.setTop(rs.getInt("top"));
+				customer.setCountry(rs.getString("country"));
+				customer.setNote(rs.getString("note"));
 
 				Bank bank = new Bank();
 				bank.setId(rs.getInt("bank_id"));
@@ -333,16 +342,15 @@ public class CustomerDAO {
 				currency.setCurrencyAbbr(rs.getString("currency_abbr"));
 				currency.setCurrency(rs.getString("currency"));
 
-				supplier.setSuppType(suppType);
-				supplier.setBank(bank);
-				supplier.setCurrency(currency);
+				customer.setBank(bank);
+				customer.setCurrency(currency);
 			}
 
 		} catch (SQLException ex) {
 			throw new SQLException(ex.getMessage());
 		}
 
-		return supplier;
+		return customer;
 	}
 
 	public List<Supplier> getAllSupplierBySuppTypeId(int suppTypeId) throws SQLException {

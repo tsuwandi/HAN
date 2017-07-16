@@ -3,8 +3,6 @@ package module.customer.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -15,11 +13,8 @@ import javax.swing.JTextField;
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
-import main.component.ComboBox;
 import main.component.DialogBox;
 import module.customer.model.Customer;
-import module.sn.supptype.model.SuppType;
-import module.supplier.model.Supplier;
 import module.util.JTextFieldLimit;
 
 public class CustomerAdvSearchDialog extends JDialog {

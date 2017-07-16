@@ -1,4 +1,13 @@
-2017-07-01 15:43:50,107 [AWT-EventQueue-0] ERROR (ListMasterShiftPanel.java:113) - 
-2017-07-01 19:03:46,875 [AWT-EventQueue-0] ERROR (CustomerListPanel.java:178) - Unknown column 's.cust_code' in 'where clause'
-2017-07-01 19:06:01,763 [AWT-EventQueue-0] ERROR (CustomerAdvSearchDialog.java:98) - Unknown column 's.supp_code' in 'where clause'
-2017-07-01 19:06:28,129 [AWT-EventQueue-0] ERROR (CustomerAdvSearchDialog.java:98) - Unknown column 'c.supp_code' in 'where clause'
+2017-07-16 15:02:34,241 [AWT-EventQueue-0] ERROR (CustomerCreatePanel.java:533) - Parameter index out of range (14 > number of parameters, which is 13).
+2017-07-16 15:12:56,315 [AWT-EventQueue-0] ERROR (CustomerCreatePanel.java:533) - Parameter index out of range (14 > number of parameters, which is 13).
+2017-07-16 15:15:34,376 [AWT-EventQueue-0] ERROR (CustomerCreatePanel.java:533) - Parameter index out of range (14 > number of parameters, which is 13).
+2017-07-16 15:17:30,880 [AWT-EventQueue-0] ERROR (CustomerCreatePanel.java:533) - Parameter index out of range (15 > number of parameters, which is 14).
+2017-07-16 15:24:45,228 [AWT-EventQueue-0] ERROR (CustomerCreatePanel.java:533) - Parameter index out of range (11 > number of parameters, which is 10).
+2017-07-16 18:12:59,571 [AWT-EventQueue-0] ERROR (CustomerViewPanel.java:434) - Column 'name_name' not found.
+2017-07-16 18:24:36,801 [AWT-EventQueue-0] ERROR (CustomerCreatePanel.java:533) - Duplicate entry '1231' for key 'supp_code_2'
+2017-07-16 18:33:29,444 [AWT-EventQueue-0] ERROR (CustomerViewPanel.java:438) - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ca where sa.supp_code = '12312'and ca.deleted_date is null' at line 1
+2017-07-16 18:33:54,346 [AWT-EventQueue-0] ERROR (CustomerViewPanel.java:438) - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ca where ca.supp_code = '12312'and ca.deleted_date is null' at line 1
+2017-07-16 18:34:22,948 [AWT-EventQueue-0] ERROR (CustomerViewPanel.java:438) - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ca where ca.cust_code = '12312'and ca.deleted_date is null' at line 1
+2017-07-16 18:38:34,197 [AWT-EventQueue-0] ERROR (CustomerViewPanel.java:438) - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ca where ca.cust_code = '12312'and ca.deleted_date is null' at line 1
+2017-07-16 18:40:35,907 [AWT-EventQueue-0] ERROR (CustomerViewPanel.java:438) - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ca where ca.cust_code = '12312'and ca.deleted_date is null' at line 1
+2017-07-16 21:09:28,855 [AWT-EventQueue-0] ERROR (CustomerEditPanel.java:569) - Unknown column 'supp_code' in 'where clause'

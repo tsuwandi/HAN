@@ -3,9 +3,6 @@ package module.customer.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import module.sn.city.model.City;
-import module.sn.province.model.Province;
-
 public class CustAddress implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -20,12 +17,16 @@ public class CustAddress implements Serializable {
 	private String address;
 	private String zipCode;
 	private String email;
+	private String province;
+	private String city;
 	private Date inputDate;
 	private String inputBy;
 	private Date editDate;
 	private String editedBy;
 	private Date deletedDate;
 	private String deletedBy;
+	
+	private boolean flag;
 
 	public int getId() {
 		return id;
@@ -155,12 +156,29 @@ public class CustAddress implements Serializable {
 		this.deletedBy = deletedBy;
 	}
 
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + ((addressType == null) ? 0 : addressType.hashCode());
+		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + ((custCode == null) ? 0 : custCode.hashCode());
 		result = prime * result + custId;
 		result = prime * result + ((deletedBy == null) ? 0 : deletedBy.hashCode());
@@ -169,11 +187,13 @@ public class CustAddress implements Serializable {
 		result = prime * result + ((editedBy == null) ? 0 : editedBy.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((fax == null) ? 0 : fax.hashCode());
+		result = prime * result + (flag ? 1231 : 1237);
 		result = prime * result + id;
 		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
+		result = prime * result + ((province == null) ? 0 : province.hashCode());
 		result = prime * result + ((zipCode == null) ? 0 : zipCode.hashCode());
 		return result;
 	}
@@ -196,6 +216,11 @@ public class CustAddress implements Serializable {
 			if (other.addressType != null)
 				return false;
 		} else if (!addressType.equals(other.addressType))
+			return false;
+		if (city == null) {
+			if (other.city != null)
+				return false;
+		} else if (!city.equals(other.city))
 			return false;
 		if (custCode == null) {
 			if (other.custCode != null)
@@ -234,6 +259,8 @@ public class CustAddress implements Serializable {
 				return false;
 		} else if (!fax.equals(other.fax))
 			return false;
+		if (flag != other.flag)
+			return false;
 		if (id != other.id)
 			return false;
 		if (inputBy == null) {
@@ -256,6 +283,11 @@ public class CustAddress implements Serializable {
 				return false;
 		} else if (!phone.equals(other.phone))
 			return false;
+		if (province == null) {
+			if (other.province != null)
+				return false;
+		} else if (!province.equals(other.province))
+			return false;
 		if (zipCode == null) {
 			if (other.zipCode != null)
 				return false;
@@ -268,9 +300,17 @@ public class CustAddress implements Serializable {
 	public String toString() {
 		return "CustAddress [id=" + id + ", custCode=" + custCode + ", custId=" + custId + ", name=" + name
 				+ ", addressType=" + addressType + ", phone=" + phone + ", fax=" + fax + ", address=" + address
-				+ ", zipCode=" + zipCode + ", email=" + email + ", inputDate=" + inputDate + ", inputBy=" + inputBy
-				+ ", editDate=" + editDate + ", editedBy=" + editedBy + ", deletedDate=" + deletedDate + ", deletedBy="
-				+ deletedBy + "]";
+				+ ", zipCode=" + zipCode + ", email=" + email + ", province=" + province + ", city=" + city
+				+ ", inputDate=" + inputDate + ", inputBy=" + inputBy + ", editDate=" + editDate + ", editedBy="
+				+ editedBy + ", deletedDate=" + deletedDate + ", deletedBy=" + deletedBy + ", flag=" + flag + "]";
+	}
+
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
 	}
 
 }

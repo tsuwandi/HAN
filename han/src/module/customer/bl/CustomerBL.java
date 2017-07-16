@@ -6,14 +6,16 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import main.component.AppConstants;
+import module.customer.dao.CustomerAddressDAO;
 import module.customer.dao.CustomerDAO;
+import module.customer.model.CustAddress;
 import module.customer.model.Customer;
-import module.product.dao.ProductDAO;
 import module.sn.bank.dao.BankDAO;
 import module.sn.bank.model.Bank;
 import module.sn.city.dao.CityDAO;
 import module.sn.city.model.City;
+import module.sn.country.dao.CountryDAO;
+import module.sn.country.model.Country;
 import module.sn.currency.dao.CurrencyDAO;
 import module.sn.currency.model.Currency;
 import module.sn.province.dao.ProvinceDAO;
@@ -78,11 +80,11 @@ public class CustomerBL {
 		}
 	}
 
-	public List<SuppType> getAllSuppType() throws SQLException {
+	public List<Country> getAllCountry() throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new SuppTypeDAO(con).getAll();
+			return new CountryDAO(con).getAll();
 		} finally {
 			con.close();
 		}
@@ -108,85 +110,60 @@ public class CustomerBL {
 		}
 	}
 
-	public int isSuppCodeExists(String suppCode) throws SQLException {
+	public int isCustCodeExists(String custCode) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new SupplierDAO(con).isSuppCodeExists(suppCode);
+			return new CustomerDAO(con).isCustCodeExists(custCode);
 		} finally {
 			con.close();
 		}
 	}
 
-	public void save(Supplier supplier, List<SuppAddress> suppAddress)
+	public void save(Customer customer, List<CustAddress> custAddress) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			con.setAutoCommit(false);
+			new CustomerDAO(con).save(customer);
+
+			for (CustAddress s : custAddress) {
+				s.setCustCode(customer.getCustCode());
+				s.setCustId(0);
+				s = new CustomerAddressDAO(con).save(s);
+			}
+
+			con.commit();
+		} catch (SQLException e) {
+			con.rollback();
+			throw new SQLException(e.getMessage());
+		} finally {
+			con.close();
+		}
+	}
+
+	public void update(Customer customer, List<CustAddress> custAddress, List<CustAddress> custAddressDeleted)
 			throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 
-			new SupplierDAO(con).save(supplier);
+			new CustomerDAO(con).update(customer);
 
-			for (SuppAddress s : suppAddress) {
-				s.setSuppCode(supplier.getSuppCode());
-				s = new SuppAddressDAO(con).save(s);
-
-				s.getSuppCp().setSuppAddressId(s.getId());
-				s.getSuppCp().setSuppCode(supplier.getSuppCode());
-				new SuppCpDAO(con).save(s.getSuppCp());
-			}
-
-			con.commit();
-		} catch (SQLException e) {
-			con.rollback();
-			throw new SQLException(e.getMessage());
-		} finally {
-			con.close();
-		}
-	}
-
-	public void update(Supplier supplier, List<SuppAddress> suppAddress, List<SuppAddress> suppAddressDeleted,
-			List<SuppVehicle> suppVehicle, List<SuppVehicle> suppVehicleDeleted) throws SQLException {
-		Connection con = null;
-		try {
-			con = dataSource.getConnection();
-			con.setAutoCommit(false);
-
-			new SupplierDAO(con).update(supplier);
-
-			for (SuppAddress s : suppAddress) {
+			for (CustAddress s : custAddress) {
 				if (s.getId() == 0) {
-					s.setSuppCode(supplier.getSuppCode());
-					s = new SuppAddressDAO(con).save(s);
-
-					s.getSuppCp().setSuppAddressId(s.getId());
-					s.getSuppCp().setSuppCode(supplier.getSuppCode());
-					new SuppCpDAO(con).save(s.getSuppCp());
+					s.setCustCode(customer.getCustCode());
+					s = new CustomerAddressDAO(con).save(s);
 				} else {
-					new SuppAddressDAO(con).update(s);
-					new SuppCpDAO(con).update(s.getSuppCp());
+					new CustomerAddressDAO(con).update(s);
 				}
 			}
 
-			for (SuppAddress s : suppAddressDeleted) {
+			for (CustAddress s : custAddressDeleted) {
 				if (s.getId() != 0) {
-					new SuppAddressDAO(con).deleteById(s.getId());
-					new SuppCpDAO(con).deleteById(s.getSuppCp().getId());
+					new CustomerAddressDAO(con).deleteById(s.getId());
 				}
-			}
-
-			for (SuppVehicle s : suppVehicle) {
-				if (s.getId() == 0) {
-					s.setSuppCode(supplier.getSuppCode());
-					new SuppVehicleDAO(con).save(s);
-				} else {
-					new SuppVehicleDAO(con).update(s);
-				}
-			}
-
-			for (SuppVehicle s : suppVehicleDeleted) {
-				if (s.getId() != 0)
-					new SuppVehicleDAO(con).deleteById(s.getId());
 			}
 
 			con.commit();
@@ -198,16 +175,14 @@ public class CustomerBL {
 		}
 	}
 
-	public void deleteAll(Supplier supplier) throws SQLException {
+	public void deleteAll(Customer customer) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 
-			new SupplierDAO(con).delete(supplier.getId());
-			new SuppAddressDAO(con).deleteAll(supplier.getSuppCode());
-			new SuppCpDAO(con).deleteAll(supplier.getSuppCode());
-			new SuppVehicleDAO(con).deleteAll(supplier.getSuppCode());
+			new CustomerDAO(con).delete(customer.getId());
+			new CustomerAddressDAO(con).deleteAll(customer.getCustCode());
 
 			con.commit();
 		} catch (SQLException e) {
@@ -219,21 +194,21 @@ public class CustomerBL {
 		}
 	}
 
-	public Supplier getSupplierById(int id) throws SQLException {
+	public Customer getCustomerById(int id) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new SupplierDAO(con).getById(id);
+			return new CustomerDAO(con).getById(id);
 		} finally {
 			con.close();
 		}
 	}
 
-	public List<SuppAddress> getSuppAddressBySuppCode(String suppCode) throws SQLException {
+	public List<CustAddress> getCustAddressByCustCode(String custCode) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new SuppAddressDAO(con).getAllBySuppCode(suppCode);
+			return new CustomerAddressDAO(con).getAllByCustCode(custCode);
 		} finally {
 			con.close();
 		}
@@ -288,14 +263,13 @@ public class CustomerBL {
 			con.close();
 		}
 	}
-	
+
 	public String getOrdinalOfCodeNumber(String suppTypeConstant) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 
 			return String.format("%03d", new SupplierDAO(con).getOrdinalOfCodeNumber(suppTypeConstant) + 1);
-			
 
 		} finally {
 			con.close();

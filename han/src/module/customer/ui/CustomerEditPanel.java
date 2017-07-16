@@ -3,8 +3,11 @@ package module.customer.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -12,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -36,20 +40,26 @@ import main.panel.MainPanel;
 import module.customer.model.CustAddress;
 import module.customer.model.CustType;
 import module.customer.model.Customer;
+import module.customer.ui.CustomerCreatePanel.CustAddressTableModel;
 import module.sn.bank.model.Bank;
 import module.sn.country.model.Country;
 import module.sn.currency.model.Currency;
+import module.sn.supptype.model.SuppType;
+import module.supplier.model.SuppAddress;
+import module.supplier.model.SuppVehicle;
+import module.supplier.model.Supplier;
 import module.util.Bridging;
 import module.util.JTextFieldLimit;
 
-public class CustomerCreatePanel extends JPanel implements Bridging {
+public class CustomerEditPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(CustomerCreatePanel.class);
+	private static final Logger LOGGER = Logger.getLogger(CustomerEditPanel.class);
 
 	private Customer customer;
 	public List<CustAddress> listOfCustAddress = new ArrayList<CustAddress>();
+	public List<CustAddress> listOfDeletedCustAddress = new ArrayList<CustAddress>();
 	private CustAddressTableModel custAddressTableModel;
 
 	JLabel lblCustCode;
@@ -107,23 +117,20 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 	JLabel lblErrorTop;
 	JLabel lblErrorDefaultTax;
 
-	private CustomerCreatePanel customerCreate;
+	private CustomerEditPanel customerEdit;
 
 	List<Country> listOfCountry;
 	List<CustType> listOfCustType;
 	List<Bank> listOfBank;
 	List<Currency> listOfCurrency;
 
-	public CustomerCreatePanel() {
-		customer = new Customer();
-		customerCreate = this;
+	public CustomerEditPanel() {
+		customerEdit = this;
 
 		DocumentFilter filter = new UppercaseDocumentFilter();
 
 		setLayout(null);
 		panel = new JPanel();
-		// panel.setPreferredSize(new Dimension(MainPanel.bodyPanel.getWidth() - 100,
-		// MainPanel.bodyPanel.getHeight()));
 		panel.setPreferredSize(new Dimension(800, 740));
 		panel.setLayout(null);
 
@@ -135,6 +142,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		txtCustCode.setBounds(220, 80, 150, 25);
 		txtCustCode.setDocument(new JTextFieldLimit(9));
 		((AbstractDocument) txtCustCode.getDocument()).setDocumentFilter(filter);
+		txtCustCode.setEnabled(false);
 		panel.add(txtCustCode);
 
 		lblErrorCustCode = new JLabel();
@@ -210,7 +218,6 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		}
 		cbCountry = new ComboBox<Country>();
 		cbCountry.setList(listOfCountry);
-		cbCountry.setSelectedIndex(0);
 		cbCountry.setBounds(220, 230, 150, 25);
 		panel.add(cbCountry);
 
@@ -224,7 +231,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		lblBreadcrumb.setBounds(50, 10, 320, 25);
 		panel.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("Buat Baru");
+		lblHeader = new JLabel("Ubah");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 25);
 		panel.add(lblHeader);
@@ -266,7 +273,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 					int column = target.getSelectedColumn();
 
 					if (column == 6)
-						showEditCustAddressDialog(listOfCustAddress.get(row), customerCreate, row);
+						showEditCustAddressDialog(listOfCustAddress.get(row), customerEdit, row);
 				}
 			}
 		});
@@ -274,7 +281,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		btnAddCustAddress = new JButton("Tambah");
 		btnAddCustAddress.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showAddCustAddressDialog(customerCreate);
+				showAddCustAddressDialog(customerEdit);
 			}
 		});
 		btnAddCustAddress.setBounds(820, 290, 100, 25);
@@ -419,13 +426,21 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		add(scrollPane);
 
+		txtTop.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				scrollPane.getViewport().setViewPosition(new Point(220, 685));
+			}
+		});
+		add(scrollPane);
+
 		btnSave = new JButton("Simpan");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (doValidate() == false) {
 					return;
 				}
-				int response = DialogBox.showInsertChoice();
+				int response = DialogBox.showEditChoice();
 				if (response == JOptionPane.YES_OPTION) {
 					doSave();
 				}
@@ -439,7 +454,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 			public void actionPerformed(ActionEvent arg0) {
 				int response = DialogBox.showCloseChoice();
 				if (response == JOptionPane.YES_OPTION) {
-					MainPanel.changePanel("module.customer.ui.CustomerListPanel");
+					MainPanel.changePanel("module.customer.ui.CustomerViewPanel", customer);
 				}
 			}
 		});
@@ -453,6 +468,41 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 				txtCustCode.requestFocusInWindow();
 			}
 		});
+	}
+
+	protected void loadData(Integer customerId) {
+		try {
+			customer = ServiceFactory.getCustomerBL().getCustomerById(customerId);
+			listOfCustAddress = ServiceFactory.getCustomerBL().getCustAddressByCustCode(customer.getCustCode());
+
+			if (customer != null) {
+				txtCustCode.setText(customer.getCustCode());
+				txtCustName.setText(customer.getCustName());
+				txtPt.setText(customer.getPt());
+				txtNpwp.setText(customer.getNpwp());
+				cbCustType.setSelectedItem(customer.getCustType());
+				cbCountry.setSelectedItem(customer.getCountry());
+				txtBankAccount.setText(customer.getAccountNo());
+				txtAccountOwner.setText(customer.getAccountName());
+				txtDefaultTax.setText(String.valueOf(customer.getDefaultTax()));
+				if (customer.getCurrency().getId() == 0) {
+					cbCurrency.setSelectedItem(listOfCurrency.get(0));
+				} else {
+					cbCurrency.setSelectedItem(customer.getCurrency().getCurrency());
+				}
+				if (customer.getBank().getId() == 0) {
+					cbBank.setSelectedItem(listOfBank.get(0));
+				} else {
+					cbBank.setSelectedItem(customer.getBank().getBank());
+				}
+				txtTop.setText(String.valueOf(customer.getTop()));
+
+				refreshTableCustAddress();
+			}
+		} catch (SQLException e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
+		}
 	}
 
 	protected boolean doValidate() {
@@ -469,17 +519,6 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		if (txtCustCode.getText() == null || txtCustCode.getText().length() == 0) {
 			lblErrorCustCode.setText("Textbox Kode Customer harus diisi.");
 			isValid = false;
-		} else {
-			try {
-				if (ServiceFactory.getCustomerBL().isCustCodeExists(txtCustCode.getText()) > 0) {
-					lblErrorCustCode.setText("Kode Customer sudah pernah diinput.");
-					isValid = false;
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				DialogBox.showErrorException();
-				isValid = false;
-			}
 		}
 
 		if (txtCustName.getText() == null || txtCustName.getText().length() == 0) {
@@ -503,7 +542,6 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 	}
 
 	protected void doSave() {
-		customer = new Customer();
 		customer.setCustCode(txtCustCode.getText());
 		customer.setCustName(txtCustName.getText());
 		customer.setPt(txtPt.getText());
@@ -526,9 +564,9 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 			customer.setDefaultTax(0.00);
 
 		try {
-			ServiceFactory.getCustomerBL().save(customer, listOfCustAddress);
+			ServiceFactory.getCustomerBL().update(customer, listOfCustAddress, listOfDeletedCustAddress);
 			DialogBox.showInsert();
-			MainPanel.changePanel("module.customer.ui.CustomerListPanel");
+			MainPanel.changePanel("module.customer.ui.CustomerViewPanel", customer);
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
@@ -536,19 +574,18 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 	}
 
 	/**
-	 * Method to display add cust address dialog
+	 * Method to display add supp address dialog
 	 */
-	protected void showAddCustAddressDialog(CustomerCreatePanel customerCreate) {
-		CustomerAddressDialog custAddressDialog = new CustomerAddressDialog(false, new CustAddress(), customerCreate,
+	protected void showAddCustAddressDialog(CustomerEditPanel customerEdit) {
+		CustomerAddressDialog custAddressDialog = new CustomerAddressDialog(false, new CustAddress(), customerEdit,
 				null);
 		custAddressDialog.setTitle("Alamat");
 		custAddressDialog.setLocationRelativeTo(null);
 		custAddressDialog.setVisible(true);
 	}
 
-	protected void showEditCustAddressDialog(CustAddress custAddress, CustomerCreatePanel customerCreate,
-			Integer index) {
-		CustomerAddressDialog custAddressDialog = new CustomerAddressDialog(true, custAddress, customerCreate, index);
+	protected void showEditCustAddressDialog(CustAddress custAddress, CustomerEditPanel customerEdit, Integer index) {
+		CustomerAddressDialog custAddressDialog = new CustomerAddressDialog(true, custAddress, customerEdit, index);
 		custAddressDialog.setTitle("Alamat");
 		custAddressDialog.setLocationRelativeTo(null);
 		custAddressDialog.setVisible(true);
@@ -575,6 +612,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 
 			if (Boolean.FALSE.equals(temp.isEmpty())) {
 				for (CustAddress s : temp) {
+					listOfDeletedCustAddress.add(s);
 					listOfCustAddress.remove(s);
 				}
 				refreshTableCustAddress();
@@ -713,6 +751,8 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 
 	@Override
 	public void invokeObjects(Object... objects) {
-		// TODO Auto-generated method stub
+		this.customer = (Customer) objects[0];
+
+		loadData(customer.getId());
 	}
 }
