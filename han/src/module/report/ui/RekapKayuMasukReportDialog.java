@@ -117,6 +117,36 @@ private static final long serialVersionUID = 1L;
 					try {
 						
 						conn = dataSource.getConnection();
+//						jd = JRXmlLoader.load("src/module/report/report3.jrxml");
+//						String sql = new StringBuilder()
+//								.append(" SELECT rcv.received_date,rcv.received_code,MAX(confirm_date) AS TGL EFEKTIV LAPORAN,rcv.supplier_cp_id,cp.name,rcvdtl.id,")
+//								.append(" pallet.length,pallet.width,pallet.thickness,pallet.product_code,SUM(pallet.total) AS 'TOTAL BATANG',SUM(volume) AS 'TOTAL VOLUME',")
+//								.append(" prod.grade_id,")
+//								.append(" grade.grade")
+//								.append(" FROM received rcv")
+//								.append(" LEFT JOIN received_detail rcvdtl")
+//								.append(" ON rcvdtl.received_code = rcv.received_code")
+//								.append(" LEFT JOIN pallet_Card pallet")
+//								.append(" ON pallet.received_detail_id = rcvdtl.id")
+//								.append(" LEFT JOIN product prod")
+//								.append(" ON prod.product_code = pallet.product_code")
+//								.append(" LEFT JOIN grade")
+//								.append(" ON grade.id = prod.id")
+//								.append(" LEFT JOIN supp_cp cp")
+//								.append(" ON cp.id = rcv.supplier_cp_id")
+//								.append(" WHERE rcv.deleted_date IS NULL")
+//								.append(" AND rcv.confirm_date IS NOT NULL")
+//								.append(" AND rcvdtl.deleted_date IS NULL")
+//								.append(" AND pallet.deleted_date IS NULL")
+//								.append(" AND prod.deleted_date IS NULL")
+//								.append(" GROUP BY rcv.received_date,rcv.received_code,rcvdtl.id,")
+//								.append(" pallet.length,pallet.width,pallet.thickness,pallet.product_code,prod.grade_id,")
+//								.append(" grade.grade,cp.name,rcv.supplier_cp_id").toString();
+//						JRDesignQuery query = new JRDesignQuery();
+//						query.setText(sql);
+//						jd.setQuery(query);
+//						JasperReport jr = JasperCompileManager.compileReport(jd);
+//						JasperPrint jp = JasperFillManager.fillReport(jr, null, conn);
 //						jd = JRXmlLoader.load("src/module/report/Blank_A4.jrxml");
 //						String sql = "";
 //						JRDesignQuery query = new JRDesignQuery();
@@ -126,9 +156,11 @@ private static final long serialVersionUID = 1L;
 //						JasperPrint jp = JasperFillManager.fillReport(jr, null, conn);
 //						JasperViewer jasperViewer = new JasperViewer(jp, false);
 						//jasperViewer.viewReport(jp);
-						String report = "\\src\\module\\report\\Blank_A4.jrxml";
+						//String report = "\\src\\module\\report\\LaporanPerincianPembelianBalken.jrxml";
 						//JasperReport jr = JasperCompileManager.compileReport(report);
-						JasperPrint jp = JasperFillManager.fillReport("src/module/report/Blank_A4.jasper", null, conn);
+						//JasperPrint jp = JasperFillManager.fillReport("src/module/report/jasper/rekapkayumasuk/report3.jasper", null, conn);
+						JasperPrint jp = JasperFillManager.fillReport("src/module/report/report3.jasper", null, conn);
+						
 						JasperViewer.viewReport(jp);
 						//showDialog(jasperViewer, "Laporan Perincian Pembelian Balken");
 					} catch (JRException e1) {
