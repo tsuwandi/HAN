@@ -18,31 +18,36 @@ public class AttendanceLogDAO {
 	private PreparedStatement deleteStatement;
 	private PreparedStatement updateStatement;
 	
-	private String getAllQuery = "SELECT id, period, cycle, nik, attendance_date, attendance_time, attendance_out, shift_id, shift_in, shift_out, status_in, status_out, lembur "
-			+ "FROM attendance_log WHERE deleted_date IS NULL";
-	private String insertQuery = "INSERT INTO attendance_log (period, cycle, nik, attendance_date, attendance_time, attendance_out, shift_id, shift_in, shift_out, status_in, status_out, lembur, input_by, input_date) "
+	private String getAllQuery = "SELECT id, periode, cycle, nik, attendance_date, attendance_time, attendance_out, shift_id, shift_in, shift_out, status_in, status_out, lembur "
+			+ "FROM attendance_log WHERE delete_date IS NULL";
+	private String insertQuery = "INSERT INTO attendance_log (periode, cycle, nik, attendance_date, attendance_time, attendance_out, shift_id, shift_in, shift_out, status_in, status_out, lembur, input_by, input_date) "
 			+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-	private String deleteQuery = "UPDATE attendance_log SET deleted_date = ? , delete_by=? WHERE id=?";
+	private String deleteQuery = "UPDATE attendance_log SET delete_date = ? , delete_by=? WHERE id=?";
 	private String updateQuery = "UPDATE attendance_log SET "
-			+ "period=?, cycle=?, nik=?, attendance_date=?, attendance_time=?, attendance_out=?, "
-			+ "shift_id=?, shift_in=?, shift_out=?, status_in=?, status_out=?, lembur=?,edit_by=?, edited_date=?  "
+			+ "periode=?, cycle=?, nik=?, attendance_date=?, attendance_time=?, attendance_out=?, "
+			+ "shift_id=?, shift_in=?, shift_out=?, status_in=?, status_out=?, lembur=?,edit_by=?, edit_date=?  "
 			+ "WHERE id=?";
+	
+	private String update2Query = "UPDATE attendance_log SET "
+			+ "periode=?, cycle=?,  attendance_time=?, attendance_out=?, "
+			+ "shift_id=?, shift_in=?, shift_out=?, status_in=?, status_out=?, lembur=?,edit_by=?, edit_date=?  "
+			+ "WHERE nik=? and attendance_date=?";
 	
 	public AttendanceLogDAO(Connection connection) throws SQLException {
 		this.connection = connection;
 	}
 	
-	public List<AttendanceLog> getAll() throws SQLException {
+	public List<AttendanceLog> getAll(String query) throws SQLException {
 		List<AttendanceLog> attendanceLogs = new ArrayList<AttendanceLog>();
 
 		try {
-			getAllStatement = connection.prepareStatement(getAllQuery);
+			getAllStatement = connection.prepareStatement(getAllQuery+query);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
 				AttendanceLog attendanceLog = new AttendanceLog();
 				attendanceLog.setId(rs.getInt("id"));
-				attendanceLog.setPeriod(rs.getInt("period"));
+				attendanceLog.setPeriod(rs.getInt("periode"));
 				attendanceLog.setCycle(rs.getInt("cycle"));
 				attendanceLog.setNik(rs.getString("nik"));
 				attendanceLog.setDate(rs.getDate("attendance_date"));
@@ -117,6 +122,33 @@ public class AttendanceLogDAO {
 		}
 
 	}
+	
+	public void updateData(AttendanceLog attendanceLog) throws SQLException {
+		try {
+			updateStatement = connection.prepareStatement(update2Query);
+			updateStatement.setInt(1, attendanceLog.getPeriod());
+			updateStatement.setInt(2, attendanceLog.getCycle());
+			updateStatement.setString(3, attendanceLog.getAttendanceTime());
+			updateStatement.setString(4, attendanceLog.getAttendanceOut());
+			updateStatement.setInt(5, attendanceLog.getShiftId());
+			updateStatement.setString(6, attendanceLog.getShiftIn());
+			updateStatement.setString(7, attendanceLog.getShiftOut());
+			updateStatement.setString(8, attendanceLog.getStatusIn());
+			updateStatement.setString(9, attendanceLog.getStatusOut());
+			updateStatement.setInt(10, attendanceLog.getLembur());
+			updateStatement.setString(11, ServiceFactory.getSystemBL().getUsernameActive());
+			updateStatement.setDate(12, DateUtil.toDate(new java.util.Date()));
+			updateStatement.setString(13, attendanceLog.getNik());
+			updateStatement.setDate(14, DateUtil.toDate(attendanceLog.getDate()));
+			updateStatement.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+	}
+	
 	
 	public void delete(AttendanceLog attendanceLog) throws SQLException {
 		try {
