@@ -512,7 +512,7 @@ public class CustomerCreatePanel extends JPanel implements Bridging {
 		customer.setCountry(cbCountry.getDataIndex().getCountryName());
 		customer.setAccountNo(txtBankAccount.getText());
 		customer.setBankId(cbBank.getDataIndex().getId());
-		customer.setAccountName(txtBankAccount.getText());
+		customer.setAccountName(txtAccountOwner.getText());
 		customer.setCurrencyId(cbCurrency.getDataIndex().getId());
 
 		if (!"".equals(txtTop.getText()))
