@@ -342,8 +342,8 @@ public class ProductSuppDAO {
 	private PreparedStatement getAllProductCategory;
 	private PreparedStatement getAllUom;
 	
-	private String productCatQuery = "select id, product_category from product_category where deleted_date is null order by id asc";
-	private String uomQuery = "select id, uom from uom where deleted_date is null order by id asc";
+	private String productCatQuery = "select id, product_category from product_category where delete_date is null order by id asc";
+	private String uomQuery = "select id, uom from uom where delete_date is null order by id asc";
 	
 	public List<ProductCategory> getAllProductCategory() throws SQLException {
 		List<ProductCategory> categories = new ArrayList<ProductCategory>();
@@ -383,6 +383,28 @@ public class ProductSuppDAO {
 		}
 
 		return units;
+	}
+	
+	private PreparedStatement isProductNameExistsStatement;
+	private String isProductNameExistsQuery = "select count(*) as is_exists from product_supp where product_name = ? ";
+
+	public int isProductNameExists(String productName) throws SQLException {
+		int count = 0;
+		try {
+			isProductNameExistsStatement = connection.prepareStatement(isProductNameExistsQuery);
+			isProductNameExistsStatement.setString(1, productName);
+
+			ResultSet rs = isProductNameExistsStatement.executeQuery();
+
+			while (rs.next()) {
+				count = rs.getInt("is_exists");
+			}
+
+		} catch (SQLException ex) {
+			throw new SQLException(ex.getMessage());
+		}
+
+		return count;
 	}
 	//timotius@20170903_end
 }
