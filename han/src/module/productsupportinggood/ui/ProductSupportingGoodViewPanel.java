@@ -41,11 +41,11 @@ import module.supplier.model.Supplier;
 import module.util.Bridging;
 import module.util.JTextFieldLimit;
 
-public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging {
+public class ProductSupportingGoodViewPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(ProductSupportingGoodCreatePanel.class);
+	private static final Logger LOGGER = Logger.getLogger(ProductSupportingGoodViewPanel.class);
 
 	//section_header_start
 	JLabel lblProductCode;
@@ -151,9 +151,10 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 	JTable tblUomConversion;
 	//section_uom_conversion_end
 	
-	JButton btnInsert;
+	JButton btnUpdate;
 	JButton btnDelete;
 	JButton btnCancel;
+	JButton btnPrint;
 	JButton btnSave;
 
 	JPanel panel;
@@ -172,8 +173,8 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 	JLabel lblHeaderConversionUOM;
 	JLabel lblHeaderSalesInformation;
 	
-	public ProductSupportingGoodCreatePanel() {
-		productSupp = new ProductSupp();
+	public ProductSupportingGoodViewPanel() {
+		//productSupp = new ProductSupp();
 
 		setLayout(null);
 		panel = new JPanel();
@@ -219,7 +220,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		//timotius_section_sales_information_end
 		
 		//timotius_section_add_button_start
-		doAddButton();
+		doViewButton();
 		//timotius_section_add_button_end
 		
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -259,7 +260,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		txtProductName.setBounds(220, 110, 150, 25);
 		txtProductName.setDocument(new JTextFieldLimit(50));
 		((AbstractDocument) txtProductName.getDocument()).setDocumentFilter(filter);
-		txtProductName.setEnabled(true);
+		txtProductName.setEnabled(false);
 		panel.add(txtProductName);
 		
 		lblErrorProductName = new JLabel();
@@ -285,7 +286,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		
 		cbProductCategory.setList(getAllProductCategory());
 		cbProductCategory.setBounds(220, 140, 150, 25);
-		cbProductCategory.setEnabled(true);
+		cbProductCategory.setEnabled(false);
 		panel.add(cbProductCategory);
 
 		lblErrorProductCategory = new JLabel();
@@ -300,7 +301,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		cbProductUom = new ComboBox<Uom>();
 		cbProductUom.setList(getAllProductUom());
 		cbProductUom.setBounds(220, 170, 150, 25);
-		cbProductUom.setEnabled(true);
+		cbProductUom.setEnabled(false);
 		panel.add(cbProductUom);
 
 		lblErrorProductUom = new JLabel();
@@ -346,7 +347,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		txtBarcode.setBounds(220, 295, 150, 25);
 		txtBarcode.setDocument(new JTextFieldLimit(50));
 		((AbstractDocument) txtBarcode.getDocument()).setDocumentFilter(filter);
-		txtBarcode.setEnabled(true);
+		txtBarcode.setEnabled(false);
 		panel.add(txtBarcode);
 		
 		lblDescription = new JLabel("<html>Deskripsi</html>");
@@ -357,7 +358,8 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		txtDescription.setBounds(220, 325, 200, 75);
 		txtDescription.setDocument(new JTextFieldLimit(200));
 		((AbstractDocument) txtDescription.getDocument()).setDocumentFilter(filter);
-		txtDescription.setEnabled(true);
+		txtDescription.setEnabled(false);
+		txtDescription.setBackground(Color.GRAY);
 		panel.add(txtDescription);
 		
 	}
@@ -374,7 +376,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 
 		txtLength = new NumberField(4);
 		txtLength.setBounds(220, 445, 150, 25);
-		txtLength.setEnabled(true);
+		txtLength.setEnabled(false);
 		panel.add(txtLength);
 		
 		lblWidth = new JLabel("<html>Lebar</html>");
@@ -383,7 +385,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 
 		txtWidth = new NumberField(4);
 		txtWidth.setBounds(220, 475, 150, 25);
-		txtWidth.setEnabled(true);
+		txtWidth.setEnabled(false);
 		panel.add(txtWidth);
 		
 		lblThickness = new JLabel("<html>Tebal</html>");
@@ -392,7 +394,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 
 		txtThickness = new NumberField(4);
 		txtThickness.setBounds(220, 505, 150, 25);
-		txtThickness.setEnabled(true);
+		txtThickness.setEnabled(false);
 		panel.add(txtThickness);
 		
 		lblUomVolume = new JLabel("<html>Satuan Volume</html>");
@@ -402,7 +404,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		cbVolumeUom = new ComboBox<Uom>();
 		cbVolumeUom.setList(getAllProductUom());
 		cbVolumeUom.setBounds(480, 445, 150, 25);
-		cbVolumeUom.setEnabled(true);
+		cbVolumeUom.setEnabled(false);
 		panel.add(cbVolumeUom);
 		
 		lblWeightNet = new JLabel("<html>Berat Netto</html>");
@@ -411,7 +413,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 
 		txtWeightNet = new NumberField(4);
 		txtWeightNet.setBounds(220, 535, 150, 25);
-		txtWeightNet.setEnabled(true);
+		txtWeightNet.setEnabled(false);
 		panel.add(txtWeightNet);
 		
 		lblWeightGross = new JLabel("<html>Berat Gross</html>");
@@ -420,7 +422,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 
 		txtWeightGross = new NumberField(4);
 		txtWeightGross.setBounds(220, 565, 150, 25);
-		txtWeightGross.setEnabled(true);
+		txtWeightGross.setEnabled(false);
 		panel.add(txtWeightGross);
 		
 		lblUomWeight = new JLabel("<html>Satuan Berat</html>");
@@ -430,7 +432,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		cbWeightUom = new ComboBox<Uom>();
 		cbWeightUom.setList(getAllProductUom());
 		cbWeightUom.setBounds(480, 535, 150, 25);
-		cbWeightUom.setEnabled(true);
+		cbWeightUom.setEnabled(false);
 		panel.add(cbWeightUom);
 	}
 	
@@ -448,10 +450,12 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		fixedAssetYesField = new JRadioButton("Ya");
 		fixedAssetYesField.setSelected(false);
 		fixedAssetYesField.setBounds(220, 625, 50, 25);
+		fixedAssetYesField.setEnabled(false);
 
 		fixedAssetNoField = new JRadioButton("Tidak");
 		fixedAssetNoField.setSelected(true);
 		fixedAssetNoField.setBounds(290, 625, 50, 25);
+		fixedAssetNoField.setEnabled(false);
 
 		fixedAsset.add(fixedAssetYesField);
 		fixedAsset.add(fixedAssetNoField);
@@ -465,7 +469,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		
 		txtWarranty = new NumberField(3);
 		txtWarranty.setBounds(220, 655, 150, 25);
-		txtWarranty.setEnabled(true);
+		txtWarranty.setEnabled(false);
 		panel.add(txtWarranty);
 		
 		lblWarranty = new JLabel("<html>Hari</html>");
@@ -489,10 +493,12 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		purchaseItemYesField = new JRadioButton("Ya");
 		purchaseItemYesField.setSelected(false);
 		purchaseItemYesField.setBounds(220, 715, 50, 25);
+		purchaseItemYesField.setEnabled(false);
 
 		purchaseItemNoField = new JRadioButton("Tidak");
 		purchaseItemNoField.setSelected(true);
 		purchaseItemNoField.setBounds(290, 715, 50, 25);
+		purchaseItemNoField.setEnabled(false);
 
 		purchaseItem.add(purchaseItemYesField);
 		purchaseItem.add(purchaseItemNoField);
@@ -506,13 +512,13 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		
 		txtMininumOrder = new NumberField(3);
 		txtMininumOrder.setBounds(220, 745, 150, 25);
-		txtMininumOrder.setEnabled(true);
+		txtMininumOrder.setEnabled(false);
 		panel.add(txtMininumOrder);
 		
 		cbMininumUom = new ComboBox<Uom>();
 		cbMininumUom.setList(getAllProductUom());
 		cbMininumUom.setBounds(480, 745, 150, 25);
-		cbMininumUom.setEnabled(true);
+		cbMininumUom.setEnabled(false);
 		panel.add(cbMininumUom);
 		
 		lblLeadTime = new JLabel("<html>Lead Time</html>");
@@ -521,7 +527,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		
 		txtLeadTime = new NumberField(3);
 		txtLeadTime.setBounds(220, 775, 150, 25);
-		txtLeadTime.setEnabled(true);
+		txtLeadTime.setEnabled(false);
 		panel.add(txtLeadTime);
 		
 		lblDefaultBuyingCostCenter = new JLabel("<html>Default Buying Cost Center</html>");
@@ -531,7 +537,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		cbDefaultBuyingCostCenter = new ComboBox<Object>();
 		cbDefaultBuyingCostCenter.setList(new ArrayList<>());
 		cbDefaultBuyingCostCenter.setBounds(220, 805, 150, 25);
-		cbDefaultBuyingCostCenter.setEnabled(true);
+		cbDefaultBuyingCostCenter.setEnabled(false);
 		panel.add(cbDefaultBuyingCostCenter);
 		
 		lblDefaultBuyingExpenseAccount = new JLabel("<html>Default Expense Account</html>");
@@ -541,7 +547,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		cbDefaultBuyingExpenseAccount = new ComboBox<Object>();
 		cbDefaultBuyingExpenseAccount.setList(new ArrayList<>());
 		cbDefaultBuyingExpenseAccount.setBounds(220, 835, 150, 25);
-		cbDefaultBuyingExpenseAccount.setEnabled(true);
+		cbDefaultBuyingExpenseAccount.setEnabled(false);
 		panel.add(cbDefaultBuyingExpenseAccount);
 	}
 	
@@ -578,11 +584,12 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		salesItemYesField = new JRadioButton("Ya");
 		salesItemYesField.setSelected(false);
 		salesItemYesField.setBounds(220, 1095, 50, 25);
-
+		salesItemYesField.setEnabled(false);
+		
 		salesItemNoField = new JRadioButton("Tidak");
 		salesItemNoField.setSelected(true);
 		salesItemNoField.setBounds(290, 1095, 50, 25);
-
+		salesItemNoField.setEnabled(false);
 		salesItem.add(salesItemYesField);
 		salesItem.add(salesItemNoField);
 		
@@ -597,10 +604,12 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		serviceItemYesField = new JRadioButton("Ya");
 		serviceItemYesField.setSelected(false);
 		serviceItemYesField.setBounds(220, 1125, 50, 25);
+		serviceItemYesField.setEnabled(false);
 
 		serviceItemNoField = new JRadioButton("Tidak");
 		serviceItemNoField.setSelected(true);
 		serviceItemNoField.setBounds(290, 1125, 50, 25);
+		serviceItemNoField.setEnabled(false);
 
 		serviceItem.add(serviceItemYesField);
 		serviceItem.add(serviceItemNoField);
@@ -615,7 +624,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		cbDefaultSellingCostCenter = new ComboBox<Object>();
 		cbDefaultSellingCostCenter.setList(new ArrayList<>());
 		cbDefaultSellingCostCenter.setBounds(220, 1155, 150, 25);
-		cbDefaultSellingCostCenter.setEnabled(true);
+		cbDefaultSellingCostCenter.setEnabled(false);
 		panel.add(cbDefaultSellingCostCenter);
 		
 		lblDefaultIncomeAccount = new JLabel("<html>Default Income Account</html>");
@@ -625,7 +634,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		cbDefaultIncomeAccount = new ComboBox<Object>();
 		cbDefaultIncomeAccount.setList(new ArrayList<>());
 		cbDefaultIncomeAccount.setBounds(220, 1185, 150, 25);
-		cbDefaultIncomeAccount.setEnabled(true);
+		cbDefaultIncomeAccount.setEnabled(false);
 		panel.add(cbDefaultIncomeAccount);
 		
 		lblDefaultAsset = new JLabel("<html>Default Asset</html>");
@@ -635,7 +644,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		cbDefaultAsset = new ComboBox<Object>();
 		cbDefaultAsset.setList(new ArrayList<>());
 		cbDefaultAsset.setBounds(220, 1215, 150, 25);
-		cbDefaultAsset.setEnabled(true);
+		cbDefaultAsset.setEnabled(false);
 		panel.add(cbDefaultAsset);
 		
 		lblMaximumDiscount = new JLabel("<html>Diskon Maximum</html>");
@@ -644,7 +653,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		
 		txtMaximumDiscount = new NumberField(6);
 		txtMaximumDiscount.setBounds(220, 1275, 150, 25);
-		txtMaximumDiscount.setEnabled(true);
+		txtMaximumDiscount.setEnabled(false);
 		panel.add(txtMaximumDiscount);
 		
 		lblErrorMaximumDiscount = new JLabel();
@@ -659,7 +668,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		cbTax = new ComboBox<Object>();
 		cbTax.setList(new ArrayList<>());
 		cbTax.setBounds(220, 1305, 150, 25);
-		cbTax.setEnabled(true);
+		cbTax.setEnabled(false);
 		panel.add(cbTax);
 		
 		lblErrorTax = new JLabel();
@@ -668,42 +677,38 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		panel.add(lblErrorTax);
 	}
 	
-	public void doAddButton() {
-		btnSave = new JButton("Simpan");
-		btnSave.addActionListener(new ActionListener() {
+	public void doViewButton() {
+		btnPrint = new JButton("Cetak");
+		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (doValidate() == false) {
-					return;
-				} else {
-					int response = DialogBox.showInsertChoice();
-					if (response == JOptionPane.YES_OPTION) {
-						boolean isExists = false;
-						try {
-							if (ServiceFactory.getProductSupportingGoodBL().isProductNameExists(txtProductName.getText()) > 0) {
-								int mes = JOptionPane.showConfirmDialog(null,
-										"Nama Produk sudah pernah diinput. Apakah Anda ingin tetap menyimpan data?",
-										"Warning", JOptionPane.YES_NO_OPTION);
-								if (mes == JOptionPane.YES_OPTION) {
-									isExists = false;
-								} else {
-									isExists = true;
-								}
-							}
-						} catch (SQLException e1) {
-							LOGGER.error(e1.getMessage());
-							DialogBox.showErrorException();
-							isExists = true;
-						}
+				//doPrint();
+			}
+		});
+		btnPrint.setBounds(715, 1345, 100, 25);
+		panel.add(btnPrint);
 
-						if (isExists == false) {
-							doSave();
-						}
-					}
+		btnDelete = new JButton("Hapus");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int response = DialogBox.showDeleteChoice();
+				if (response == JOptionPane.YES_OPTION) {
+					//doDelete();
 				}
 			}
 		});
-		btnSave.setBounds(925, 1345, 100, 25);
-		panel.add(btnSave);
+		btnDelete.setBounds(820, 1345, 100, 25);
+		panel.add(btnDelete);
+		
+		btnUpdate = new JButton("Ubah");
+		btnUpdate.setBounds(925, 1345, 100, 25);
+		btnUpdate.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainPanel.changePanel("module.productsupportinggood.ui.ProductSupportingGoodEditPanel", productSupp);
+			}
+		});
+		panel.add(btnUpdate);
 
 		btnCancel = new JButton("Kembali");
 		btnCancel.addActionListener(new ActionListener() {
@@ -721,7 +726,22 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		panel.add(btnCancel);
 	}
 	
-	protected boolean doValidate() {
+	protected void doPrint() {
+
+	}
+
+	protected void doDelete() {
+		try {
+			ServiceFactory.getProductSupportingGoodBL().delete(productSupp);
+			DialogBox.showDelete();
+			MainPanel.changePanel("module.supplier.ui.SupplierListPanel");
+		} catch (SQLException e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
+		}
+	}
+	
+	/*protected boolean doValidate() {
 		boolean isValid = true;
 
 		lblErrorProductCode.setText("");
@@ -822,7 +842,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 			LOGGER.error(e.getMessage());
 			DialogBox.showErrorException();
 		}
-	}
+	}*/
 	
 	
 	public List<ProductCategory> getAllProductCategory() {
@@ -959,11 +979,91 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 	
 	@Override
 	public void invokeObjects(Object... objects) {
-		// TODO Auto-generated method stub
-		
+		this.productSupp = (ProductSupp) objects[0];
+
+		loadData(productSupp.getId());
 	}
 	
-	
+	protected void loadData(Integer productSuppId) {
+		try {
+			productSupp = ServiceFactory.getProductSupportingGoodBL().getProductSuppById(productSuppId);
+			
+			if (productSupp != null) {
+				txtProductCode.setText(productSupp.getProductCode());
+				txtProductName.setText(productSupp.getProductName());
+				cbProductCategory.setSelectedItem(productSupp.getProductCategory().getProductCategory());
+				cbProductUom.setSelectedItem(productSupp.getProductUom().getUom());
+				if (productSupp.getIsMaintainStock() == 0) {
+					maintainYesField.setSelected(true);
+					maintainNoField.setSelected(false);
+				} else {
+					maintainYesField.setSelected(false);
+					maintainNoField.setSelected(true);
+				}
+				
+				//deskripsi
+				txtBarcode.setText(productSupp.getBarcode());
+				txtDescription.setText(productSupp.getDescription());
+				
+				//atribute product
+				txtLength.setText(String.valueOf(productSupp.getLength()));
+				txtWidth.setText(String.valueOf(productSupp.getWidth()));
+				txtThickness.setText(String.valueOf(productSupp.getThickness()));
+				txtWeightNet.setText(String.valueOf(productSupp.getWeightNet()));
+				txtWeightGross.setText(String.valueOf(productSupp.getWeightGross()));
+				cbVolumeUom.setSelectedItem(productSupp.getVolumeUom().getUom());
+				cbWeightUom.setSelectedItem(productSupp.getWeightUom().getUom());
+				
+				//inventory
+				if (productSupp.getIsFixedAsset() == 0) {
+					fixedAssetYesField.setSelected(true);
+					fixedAssetNoField.setSelected(false);
+				} else {
+					fixedAssetYesField.setSelected(false);
+					fixedAssetNoField.setSelected(true);
+				}
+				txtWarranty.setText(String.valueOf(productSupp.getWarranty()));
+				
+				//purchase information
+				if (productSupp.getIsPurchaseItem() == 0) {
+					purchaseItemYesField.setSelected(true);
+					purchaseItemNoField.setSelected(false);
+				} else {
+					purchaseItemYesField.setSelected(false);
+					purchaseItemNoField.setSelected(true);
+				}
+				txtMininumOrder.setText(String.valueOf(productSupp.getMinor()));
+				cbMininumUom.setSelectedItem(productSupp.getMinorUom().getUom());
+				txtLeadTime.setText(String.valueOf(productSupp.getLeadTime()));
+				cbDefaultBuyingCostCenter.setSelectedItem(null);
+				cbDefaultBuyingExpenseAccount.setSelectedItem(null);
+				
+				//sales information
+				if (productSupp.getIsSalesItem() == 0) {
+					salesItemYesField.setSelected(true);
+					salesItemNoField.setSelected(false);
+				} else {
+					salesItemYesField.setSelected(false);
+					salesItemNoField.setSelected(true);
+				}
+				if (productSupp.getIsServiceItem() == 0) {
+					serviceItemYesField.setSelected(true);
+					serviceItemNoField.setSelected(false);
+				} else {
+					serviceItemYesField.setSelected(false);
+					serviceItemNoField.setSelected(true);
+				}
+				cbDefaultSellingCostCenter.setSelectedItem(null);
+				cbDefaultIncomeAccount.setSelectedItem(null);
+				txtMaximumDiscount.setText(String.valueOf(productSupp.getTax().getTax()));
+				cbTax.setSelectedItem(null);
+				
+			}
+		} catch (SQLException e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
+		}
+	}
 	
 	
 }
