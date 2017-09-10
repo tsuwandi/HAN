@@ -164,7 +164,7 @@ public class SystemBL {
 	}
 	
 	public String getUsernameActive(){
-		return getActiveLogin().getUsername();
+		return getActiveLogin() == null ? "ADMIN" : getActiveLogin().getUsername();
 	}
 	
 	Login activeLogin;

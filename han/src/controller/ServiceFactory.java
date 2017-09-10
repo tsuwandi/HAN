@@ -15,6 +15,7 @@ import module.product.bl.ProductBL;
 import module.production.bl.ProductionBL;
 import module.productionpk.bl.ProdPKBL;
 import module.productionwaste.bl.ProductionWasteBL;
+import module.productsupportinggood.bl.ProductSupportingGoodBL;
 import module.purchaseprodresult.bl.PurchaseProductResultBL;
 import module.receiveprodresult.bl.ReceiveProductResultBL;
 import module.report.bl.ReportBL;
@@ -60,6 +61,8 @@ public class ServiceFactory {
 	private static StockOpnameBL stockOpnameBL = null;
 	private static MasterShiftBL masterShiftBL = null;
 	private static CalculateSalaryBL calculateSalaryBL = null;
+	private static ProductSupportingGoodBL productSupportingGoodBL = null;
+	
 	
 	/**
 	 * Method to init or return {@link SupplierBL}
@@ -292,6 +295,13 @@ public class ServiceFactory {
 			calculateSalaryBL = new CalculateSalaryBL(DataSourceFactory.getDataSource());
 		}
 		return calculateSalaryBL;
+	}
+
+	public static ProductSupportingGoodBL getProductSupportingGoodBL() {
+		if (productSupportingGoodBL == null) {
+			productSupportingGoodBL = new ProductSupportingGoodBL(DataSourceFactory.getDataSource());
+		}
+		return productSupportingGoodBL;
 	}
 	
 	

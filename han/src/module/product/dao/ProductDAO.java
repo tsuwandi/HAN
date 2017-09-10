@@ -698,7 +698,7 @@ public class ProductDAO {
 		try {
 			getOrdinalOfCodeNumberStatement = connection.prepareStatement(getOrdinalOfCodeNumberQuery);
 			getOrdinalOfCodeNumberStatement.setString(1, productCategory);
-			System.out.println(getOrdinalOfCodeNumberStatement);
+			
 			ResultSet rs = getOrdinalOfCodeNumberStatement.executeQuery();
 			while (rs.next()) {
 				ordinal = rs.getInt("ordinal");
