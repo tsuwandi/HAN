@@ -1,7 +1,5 @@
-package module.customer.ui;
+package module.sales.ui;
 
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -11,92 +9,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
 import main.component.DialogBox;
-import main.panel.MainPanel;
+import module.customer.model.CustAddress;
 import module.customer.model.Customer;
 
-public class CustomerListPanel extends JPanel {
+public class CustomerListDialog extends JDialog {
 
-	private static final Logger LOGGER = Logger.getLogger(CustomerListPanel.class);
+	private static final long serialVersionUID = 1L;
 
-	JButton btnCreateNew;
-	JButton btnExport;
-	JButton btnAdvancedSearch;
+	private static final Logger LOGGER = Logger.getLogger(CustomerListDialog.class);
+
+	JPanel panel;
+
 	JButton btnSearch;
 
 	JTextField txtSearch;
 
-	JLabel lblBreadcrumb;
-	JLabel lblHeader;
-
 	JScrollPane scrollPaneCustomer;
 
 	private CustomerTableModel customerTableModel;
+
 	public List<Customer> listOfCustomer = new ArrayList<Customer>();
 
 	JTable tblCustomer;
 
-	private CustomerListPanel customerListPanel;
+	private SalesCreatePanel salesCreate;
 
-	private static final long serialVersionUID = 1L;
+	public CustomerListDialog(SalesCreatePanel salesCreate) {
+		this.salesCreate = salesCreate;
+		init();
+	}
 
-	public CustomerListPanel() {
-		customerListPanel = this;
-		setLayout(null);
-
-		setPreferredSize(new Dimension(1024, 768));
-
-		lblBreadcrumb = new JLabel("ERP > Penjualan");
-		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblBreadcrumb.setBounds(50, 10, 320, 30);
-		add(lblBreadcrumb);
-
-		lblHeader = new JLabel("Customer");
-		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblHeader.setBounds(50, 45, 320, 30);
-		add(lblHeader);
-
-		btnCreateNew = new JButton("Buat Baru");
-		btnCreateNew.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				MainPanel.changePanel("module.customer.ui.CustomerCreatePanel");
-			}
-		});
-		btnCreateNew.setBounds(700, 80, 100, 30);
-		add(btnCreateNew);
-
-		btnExport = new JButton("Export");
-		btnExport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		btnExport.setBounds(800, 80, 100, 30);
-		add(btnExport);
-
-		btnAdvancedSearch = new JButton("Pencarian Lanjut");
-		btnAdvancedSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				showAdvancedSearchDialog(customerListPanel);
-			}
-		});
-		btnAdvancedSearch.setBounds(900, 80, 150, 30);
-		add(btnAdvancedSearch);
+	public void init() {
+		setModal(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 540, 420);
+		getContentPane().setLayout(null);
 
 		txtSearch = new JTextField();
-		txtSearch.setBounds(800, 131, 150, 28);
-		add(txtSearch);
+		txtSearch.setBounds(25, 15, 150, 25);
+		getContentPane().add(txtSearch);
 
 		btnSearch = new JButton("Cari");
 		btnSearch.addActionListener(new ActionListener() {
@@ -104,11 +66,11 @@ public class CustomerListPanel extends JPanel {
 				doSearch(txtSearch.getText());
 			}
 		});
-		btnSearch.setBounds(950, 130, 100, 30);
+		btnSearch.setBounds(190, 15, 75, 25);
 		add(btnSearch);
 
 		scrollPaneCustomer = new JScrollPane();
-		scrollPaneCustomer.setBounds(50, 200, 1000, 300);
+		scrollPaneCustomer.setBounds(25, 45, 480, 300);
 		add(scrollPaneCustomer);
 
 		customerTableModel = new CustomerTableModel(new ArrayList<Customer>());
@@ -116,12 +78,6 @@ public class CustomerListPanel extends JPanel {
 		tblCustomer.setFocusable(false);
 		tblCustomer.setAutoCreateRowSorter(true);
 		scrollPaneCustomer.setViewportView(tblCustomer);
-
-		//
-		// List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
-		// sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-		// sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
-		// sorter.setSortKeys(sortKeys);
 
 		tblCustomer.addMouseListener(new MouseAdapter() {
 			@Override
@@ -131,8 +87,13 @@ public class CustomerListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 3)
-						MainPanel.changePanel("module.customer.ui.CustomerViewPanel", listOfCustomer.get(row));
+					if (column == 3) {
+						try {
+							doInsert(listOfCustomer.get(row));
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						}
+					}
 				}
 			}
 		});
@@ -145,14 +106,29 @@ public class CustomerListPanel extends JPanel {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
 		}
+	}
 
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				btnCreateNew.requestFocusInWindow();
+	protected void doInsert(Customer customer) throws SQLException {
+
+		salesCreate.txtCustCode.setText(customer.getCustCode());
+		salesCreate.txtCustName.setText(customer.getCustName());
+		salesCreate.txtCustId.setText(Integer.toString(customer.getId()));
+
+		salesCreate.cbCustAddress.removeAllItems();
+		salesCreate.listOfCustAddress = ServiceFactory.getSalesBL().getCustAddressByCustCode(customer.getCustCode());
+		if (salesCreate.listOfCustAddress.isEmpty()) {
+			salesCreate.cbCustAddress.setEnabled(false);
+			salesCreate.txtAddress.setEnabled(false);
+		} else {
+			for (CustAddress custAddress : salesCreate.listOfCustAddress) {
+				salesCreate.cbCustAddress.addItem(custAddress);
 			}
-		});
+			salesCreate.cbCustAddress.setEnabled(true);
+		}
 
+		DialogBox.showInsert();
+
+		dispose();
 	}
 
 	public void refreshTableCustomer() {
@@ -173,16 +149,6 @@ public class CustomerListPanel extends JPanel {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
-	}
-
-	/**
-	 * Method to display add cust cp dialog
-	 */
-	protected void showAdvancedSearchDialog(CustomerListPanel customerListPanel) {
-		CustomerAdvSearchDialog custAdvSearchDialog = new CustomerAdvSearchDialog(customerListPanel);
-		custAdvSearchDialog.setTitle("Pencarian Lanjut");
-		custAdvSearchDialog.setLocationRelativeTo(null);
-		custAdvSearchDialog.setVisible(true);
 	}
 
 	/**
@@ -254,7 +220,7 @@ public class CustomerListPanel extends JPanel {
 			case 2:
 				return p.getPt();
 			case 3:
-				return "<html><a><u>View</u></a></html>";
+				return "<html><a><u>Pick</u></a></html>";
 			default:
 				throw new IllegalArgumentException("Invalid column index");
 			}

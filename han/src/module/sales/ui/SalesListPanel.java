@@ -1,4 +1,4 @@
-package module.customer.ui;
+package module.sales.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -24,11 +24,11 @@ import org.apache.log4j.Logger;
 import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.panel.MainPanel;
-import module.customer.model.Customer;
+import module.sales.model.Sales;
 
-public class CustomerListPanel extends JPanel {
+public class SalesListPanel extends JPanel {
 
-	private static final Logger LOGGER = Logger.getLogger(CustomerListPanel.class);
+	private static final Logger LOGGER = Logger.getLogger(SalesListPanel.class);
 
 	JButton btnCreateNew;
 	JButton btnExport;
@@ -40,19 +40,19 @@ public class CustomerListPanel extends JPanel {
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
 
-	JScrollPane scrollPaneCustomer;
+	JScrollPane scrollPaneSales;
 
-	private CustomerTableModel customerTableModel;
-	public List<Customer> listOfCustomer = new ArrayList<Customer>();
+	private SalesTableModel salesTableModel;
+	public List<Sales> listOfSales = new ArrayList<Sales>();
 
-	JTable tblCustomer;
+	JTable tblSales;
 
-	private CustomerListPanel customerListPanel;
+	private SalesListPanel salesListPanel;
 
 	private static final long serialVersionUID = 1L;
 
-	public CustomerListPanel() {
-		customerListPanel = this;
+	public SalesListPanel() {
+		salesListPanel = this;
 		setLayout(null);
 
 		setPreferredSize(new Dimension(1024, 768));
@@ -62,7 +62,7 @@ public class CustomerListPanel extends JPanel {
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		add(lblBreadcrumb);
 
-		lblHeader = new JLabel("Customer");
+		lblHeader = new JLabel("Sales");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		add(lblHeader);
@@ -70,7 +70,7 @@ public class CustomerListPanel extends JPanel {
 		btnCreateNew = new JButton("Buat Baru");
 		btnCreateNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MainPanel.changePanel("module.customer.ui.CustomerCreatePanel");
+				MainPanel.changePanel("module.sales.ui.SalesCreatePanel");
 			}
 		});
 		btnCreateNew.setBounds(700, 80, 100, 30);
@@ -88,7 +88,7 @@ public class CustomerListPanel extends JPanel {
 		btnAdvancedSearch = new JButton("Pencarian Lanjut");
 		btnAdvancedSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showAdvancedSearchDialog(customerListPanel);
+				showAdvancedSearchDialog(salesListPanel);
 			}
 		});
 		btnAdvancedSearch.setBounds(900, 80, 150, 30);
@@ -107,15 +107,15 @@ public class CustomerListPanel extends JPanel {
 		btnSearch.setBounds(950, 130, 100, 30);
 		add(btnSearch);
 
-		scrollPaneCustomer = new JScrollPane();
-		scrollPaneCustomer.setBounds(50, 200, 1000, 300);
-		add(scrollPaneCustomer);
+		scrollPaneSales = new JScrollPane();
+		scrollPaneSales.setBounds(50, 200, 1000, 300);
+		add(scrollPaneSales);
 
-		customerTableModel = new CustomerTableModel(new ArrayList<Customer>());
-		tblCustomer = new JTable(customerTableModel);
-		tblCustomer.setFocusable(false);
-		tblCustomer.setAutoCreateRowSorter(true);
-		scrollPaneCustomer.setViewportView(tblCustomer);
+		salesTableModel = new SalesTableModel(new ArrayList<Sales>());
+		tblSales = new JTable(salesTableModel);
+		tblSales.setFocusable(false);
+		tblSales.setAutoCreateRowSorter(true);
+		scrollPaneSales.setViewportView(tblSales);
 
 		//
 		// List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
@@ -123,7 +123,7 @@ public class CustomerListPanel extends JPanel {
 		// sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
 		// sorter.setSortKeys(sortKeys);
 
-		tblCustomer.addMouseListener(new MouseAdapter() {
+		tblSales.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -132,15 +132,15 @@ public class CustomerListPanel extends JPanel {
 					int column = target.getSelectedColumn();
 
 					if (column == 3)
-						MainPanel.changePanel("module.customer.ui.CustomerViewPanel", listOfCustomer.get(row));
+						MainPanel.changePanel("module.sales.ui.SalesViewPanel", listOfSales.get(row));
 				}
 			}
 		});
 
 		try {
-			listOfCustomer = new ArrayList<Customer>();
-			listOfCustomer = ServiceFactory.getCustomerBL().getAllCustomer();
-			refreshTableCustomer();
+			listOfSales = new ArrayList<Sales>();
+			listOfSales = ServiceFactory.getSalesBL().getAllSales();
+			refreshTableSales();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			DialogBox.showErrorException();
@@ -155,9 +155,9 @@ public class CustomerListPanel extends JPanel {
 
 	}
 
-	public void refreshTableCustomer() {
+	public void refreshTableSales() {
 		try {
-			tblCustomer.setModel(new CustomerTableModel(listOfCustomer));
+			tblSales.setModel(new SalesTableModel(listOfSales));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
@@ -166,9 +166,9 @@ public class CustomerListPanel extends JPanel {
 
 	public void doSearch(String value) {
 		try {
-			listOfCustomer = new ArrayList<Customer>();
-			listOfCustomer = ServiceFactory.getCustomerBL().getAllCustomerBySimpleSearch(value);
-			refreshTableCustomer();
+			listOfSales = new ArrayList<Sales>();
+			listOfSales = ServiceFactory.getSalesBL().getAllSalesBySimpleSearch(value);
+			refreshTableSales();
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
@@ -176,29 +176,29 @@ public class CustomerListPanel extends JPanel {
 	}
 
 	/**
-	 * Method to display add cust cp dialog
+	 * Method to display add sales cp dialog
 	 */
-	protected void showAdvancedSearchDialog(CustomerListPanel customerListPanel) {
-		CustomerAdvSearchDialog custAdvSearchDialog = new CustomerAdvSearchDialog(customerListPanel);
-		custAdvSearchDialog.setTitle("Pencarian Lanjut");
-		custAdvSearchDialog.setLocationRelativeTo(null);
-		custAdvSearchDialog.setVisible(true);
+	protected void showAdvancedSearchDialog(SalesListPanel salesListPanel) {
+		SalesAdvSearchDialog salesAdvSearchDialog = new SalesAdvSearchDialog(salesListPanel);
+		salesAdvSearchDialog.setTitle("Pencarian Lanjut");
+		salesAdvSearchDialog.setLocationRelativeTo(null);
+		salesAdvSearchDialog.setVisible(true);
 	}
 
 	/**
-	 * Class as TableModel for Customer table
+	 * Class as TableModel for Sales table
 	 * 
 	 * @author TLO
 	 *
 	 */
-	class CustomerTableModel extends AbstractTableModel {
+	class SalesTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 1L;
 
-		private List<Customer> listOfCustomer;
+		private List<Sales> listOfSales;
 
-		public CustomerTableModel(List<Customer> listOfCustomer) {
-			this.listOfCustomer = listOfCustomer;
+		public SalesTableModel(List<Sales> listOfSales) {
+			this.listOfSales = listOfSales;
 		}
 
 		/**
@@ -207,7 +207,7 @@ public class CustomerListPanel extends JPanel {
 		 * @return int
 		 */
 		public int getRowCount() {
-			return listOfCustomer.size();
+			return listOfSales.size();
 		}
 
 		/**
@@ -230,6 +230,8 @@ public class CustomerListPanel extends JPanel {
 				return String.class;
 			case 2:
 				return String.class;
+			case 3:
+				return String.class;
 			default:
 				return String.class;
 			}
@@ -242,17 +244,17 @@ public class CustomerListPanel extends JPanel {
 		 *            rowIndex of selected table
 		 * @param columnIndex
 		 *            columnIndex of selected table
-		 * @return ({@link CustomerAddress}) Object
+		 * @return ({@link Sales}) Object
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			Customer p = listOfCustomer.get(rowIndex);
+			Sales s = listOfSales.get(rowIndex);
 			switch (columnIndex) {
 			case 0:
-				return p.getCustCode();
+				return s.getSoNo();
 			case 1:
-				return p.getCustName();
+				return s.getSoDate();
 			case 2:
-				return p.getPt();
+				return s.getCustomer().getCustName();
 			case 3:
 				return "<html><a><u>View</u></a></html>";
 			default:
@@ -270,11 +272,11 @@ public class CustomerListPanel extends JPanel {
 		public String getColumnName(int column) {
 			switch (column) {
 			case 0:
-				return "Kode Customer";
+				return "Nomor SO";
 			case 1:
-				return "Nama Customer";
+				return "Tanggal SO";
 			case 2:
-				return "PT";
+				return "Nama Customer";
 			case 3:
 				return "Tindakan";
 			default:

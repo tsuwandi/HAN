@@ -1,4 +1,4 @@
-package module.customer.dao;
+package module.sales.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import module.customer.model.CustAddress;
+import module.sales.model.SalesDetail;
 import module.util.DateUtil;
 
-public class CustomerAddressDAO {
+public class SalesDetailDAO {
 	private Connection connection;
 
 	private PreparedStatement getAllByCustCodeStatement;
@@ -19,18 +20,20 @@ public class CustomerAddressDAO {
 	private PreparedStatement deleteStatement;
 
 	private String getAllByCustCodeQuery = "select id, cust_code, cust_id, name, "
-			+ "addr_type, address, zip_code, email, " + "city, phone, fax, province "
-			+ "from cust_addr where cust_code = ?" + "and deleted_date is null";
+			+ "addr_type, address, zip_code, email, "
+			+ "city, phone, fax, province "
+			+ "from cust_addr where cust_code = ?"
+			+ "and deleted_date is null";
 
-	private String insertQuery = "insert into cust_addr (cust_code, cust_id, name, addr_type, phone, fax, address, zip_code, email, "
-			+ "province, city, input_date, input_by) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	private String insertQuery = "insert into sales_detail (product_id, sales_id, quantity, nett_price, "
+			+ "input_date, input_by) values (?,?,?,?,?,?)";
 
 	private String updateQuery = "update cust_addr set name=?, addr_type=?, phone=?, "
 			+ "fax=?, address=?, zip_code=?, email=?, province=?, city=?, edit_date=?, edited_by=? where id=?";
 
 	private String deleteQuery = "update cust_addr set deleted_date=?, deleted_by=? ";
 
-	public CustomerAddressDAO(Connection connection) throws SQLException {
+	public SalesDetailDAO(Connection connection) throws SQLException {
 		this.connection = connection;
 	}
 
@@ -69,33 +72,26 @@ public class CustomerAddressDAO {
 		return custAddresses;
 	}
 
-	public CustAddress save(CustAddress custAddress) throws SQLException {
+	public SalesDetail save(SalesDetail salesDetail) throws SQLException {
 		ResultSet generatedKeys = null;
 
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
-			insertStatement.setString(1, custAddress.getCustCode());
-			insertStatement.setInt(2, custAddress.getCustId());
-			insertStatement.setString(3, custAddress.getName());
-			insertStatement.setString(4, custAddress.getAddressType());
-			insertStatement.setString(5, custAddress.getPhone());
-			insertStatement.setString(6, custAddress.getFax());
-			insertStatement.setString(7, custAddress.getAddress());
-			insertStatement.setString(8, custAddress.getZipCode());
-			insertStatement.setString(9, custAddress.getEmail());
-			insertStatement.setString(10, custAddress.getProvince());
-			insertStatement.setString(11, custAddress.getCity());
-			insertStatement.setDate(12, DateUtil.getCurrentDate());
-			insertStatement.setString(13, "Sandy");
+			insertStatement.setInt(1, salesDetail.getProductId());
+			insertStatement.setInt(2, salesDetail.getSalesId());
+			insertStatement.setInt(3, salesDetail.getQuantity());
+			insertStatement.setDouble(4, salesDetail.getNettPrice());
+			insertStatement.setDate(5, DateUtil.getCurrentDate());
+			insertStatement.setString(6, "Sandy");
 			insertStatement.executeUpdate();
 
 			generatedKeys = insertStatement.getGeneratedKeys();
 
 			if (generatedKeys.next()) {
-				custAddress.setId(generatedKeys.getInt(1));
+				salesDetail.setId(generatedKeys.getInt(1));
 				generatedKeys.close();
 			}
-			return custAddress;
+			return salesDetail;
 
 		} catch (SQLException ex) {
 			throw new SQLException(ex.getMessage());
@@ -104,7 +100,7 @@ public class CustomerAddressDAO {
 
 	public void update(CustAddress custAddress) throws SQLException {
 		try {
-
+			
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, custAddress.getName());
 			updateStatement.setString(2, custAddress.getAddressType());
