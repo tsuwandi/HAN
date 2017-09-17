@@ -8,68 +8,83 @@ import java.util.ArrayList;
 import java.util.List;
 
 import module.customer.model.CustAddress;
+import module.pembelian.model.Product;
+import module.product.model.Uom;
 import module.sales.model.SalesDetail;
 import module.util.DateUtil;
 
 public class SalesDetailDAO {
 	private Connection connection;
 
-	private PreparedStatement getAllByCustCodeStatement;
+	private PreparedStatement getAllBySalesIdStatement;
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 
-	private String getAllByCustCodeQuery = "select id, cust_code, cust_id, name, "
-			+ "addr_type, address, zip_code, email, "
-			+ "city, phone, fax, province "
-			+ "from cust_addr where cust_code = ?"
-			+ "and deleted_date is null";
+	private String getAllBySalesIdQuery = "select sd.id, sd.product_id, sd.sales_id, sd.quantity, sd.nett_price, "
+			+ "p.id as product_id, p.product_name as product_name, p.product_code as product_code, p.product_uom_id as product_uom_id, "
+			+ "p.length as product_length, p.width as product_width, p.thickness as product_thickness, "
+			+ "u.id as uom_id, u.uom as uom_name " + "from sales_detail sd "
+			+ "inner join product p on sd.product_id = p.id " + "inner join uom u on p.product_uom_id = u.id "
+			+ "where sales_id = ? " + "and sd.deleted_date is null";
 
 	private String insertQuery = "insert into sales_detail (product_id, sales_id, quantity, nett_price, "
 			+ "input_date, input_by) values (?,?,?,?,?,?)";
 
-	private String updateQuery = "update cust_addr set name=?, addr_type=?, phone=?, "
-			+ "fax=?, address=?, zip_code=?, email=?, province=?, city=?, edit_date=?, edited_by=? where id=?";
+	private String updateQuery = "update sales_detail set product_id=?, sales_id=?, quantity=?, "
+			+ "nett_price=?, edited_date=?, edited_by=? where id=?";
 
-	private String deleteQuery = "update cust_addr set deleted_date=?, deleted_by=? ";
+	private String deleteQuery = "update sales_detail set deleted_date=?, deleted_by=? ";
 
 	public SalesDetailDAO(Connection connection) throws SQLException {
 		this.connection = connection;
 	}
 
-	public List<CustAddress> getAllByCustCode(String custCode) throws SQLException {
-		List<CustAddress> custAddresses = new ArrayList<CustAddress>();
+	public List<SalesDetail> getAllBySalesId(int salesId) throws SQLException {
+		List<SalesDetail> salesDetails = new ArrayList<SalesDetail>();
 
 		try {
-			getAllByCustCodeStatement = connection.prepareStatement(getAllByCustCodeQuery);
 
-			getAllByCustCodeStatement.setString(1, custCode);
+			getAllBySalesIdStatement = connection.prepareStatement(getAllBySalesIdQuery);
 
-			ResultSet rs = getAllByCustCodeStatement.executeQuery();
+			getAllBySalesIdStatement.setInt(1, salesId);
+
+			ResultSet rs = getAllBySalesIdStatement.executeQuery();
 			while (rs.next()) {
-				CustAddress customerAddress = new CustAddress();
-				customerAddress.setId(rs.getInt("id"));
-				customerAddress.setCustCode(rs.getString("cust_code"));
-				customerAddress.setCustId(rs.getInt("cust_id"));
-				customerAddress.setName(rs.getString("name"));
-				customerAddress.setAddressType(rs.getString("addr_type"));
-				customerAddress.setAddress(rs.getString("address"));
-				customerAddress.setZipCode(rs.getString("zip_code"));
-				customerAddress.setProvince(rs.getString("province"));
-				customerAddress.setCity(rs.getString("city"));
-				customerAddress.setPhone(rs.getString("phone"));
-				customerAddress.setFax(rs.getString("fax"));
-				customerAddress.setEmail(rs.getString("email"));
+				SalesDetail salesDetail = new SalesDetail();
+				salesDetail.setId(rs.getInt("id"));
+				salesDetail.setProductId(rs.getInt("product_id"));
+				salesDetail.setSalesId(rs.getInt("sales_id"));
+				salesDetail.setQuantity(rs.getInt("quantity"));
+				salesDetail.setNettPrice(rs.getDouble("nett_price"));
+				salesDetail.setTotalPrice(salesDetail.getQuantity() * salesDetail.getNettPrice());
+				
+				Product product = new Product();
+				product.setId(rs.getInt("product_id"));
+				product.setProductCode(rs.getString("product_code"));
+				product.setProductName(rs.getString("product_name"));
+				product.setProductUomId(rs.getInt("product_uom_id"));
+				product.setLength(rs.getInt("product_length"));
+				product.setWidth(rs.getInt("product_width"));
+				product.setThickness(rs.getInt("product_thickness"));
 
-				custAddresses.add(customerAddress);
+				Uom uom = new Uom();
+				uom.setId(rs.getInt("uom_id"));
+				uom.setUom(rs.getString("uom_name"));
 
+				salesDetail.setUom(uom);
+				salesDetail.setProduct(product);
+				salesDetails.add(salesDetail);
+
+				salesDetail.setTotalVolume(salesDetail.getQuantity() * salesDetail.getProduct().getLength()
+						* salesDetail.getProduct().getWidth() * salesDetail.getProduct().getThickness());
 			}
 
 		} catch (SQLException ex) {
 			throw new SQLException(ex.getMessage());
 		}
 
-		return custAddresses;
+		return salesDetails;
 	}
 
 	public SalesDetail save(SalesDetail salesDetail) throws SQLException {
@@ -98,22 +113,17 @@ public class SalesDetailDAO {
 		}
 	}
 
-	public void update(CustAddress custAddress) throws SQLException {
+	public void update(SalesDetail salesDetail) throws SQLException {
 		try {
-			
+
 			updateStatement = connection.prepareStatement(updateQuery);
-			updateStatement.setString(1, custAddress.getName());
-			updateStatement.setString(2, custAddress.getAddressType());
-			updateStatement.setString(3, custAddress.getPhone());
-			updateStatement.setString(4, custAddress.getFax());
-			updateStatement.setString(5, custAddress.getAddress());
-			updateStatement.setString(6, custAddress.getZipCode());
-			updateStatement.setString(7, custAddress.getEmail());
-			updateStatement.setString(8, custAddress.getProvince());
-			updateStatement.setString(9, custAddress.getCity());
-			updateStatement.setDate(10, DateUtil.getCurrentDate());
-			updateStatement.setString(11, "Sandy");
-			updateStatement.setInt(12, custAddress.getId());
+			updateStatement.setInt(1, salesDetail.getProductId());
+			updateStatement.setInt(2, salesDetail.getSalesId());
+			updateStatement.setInt(3, salesDetail.getQuantity());
+			updateStatement.setDouble(4, salesDetail.getNettPrice());
+			updateStatement.setDate(5, DateUtil.getCurrentDate());
+			updateStatement.setString(6, "Sandy");
+			updateStatement.setInt(7, salesDetail.getId());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -121,14 +131,14 @@ public class SalesDetailDAO {
 		}
 	}
 
-	public void deleteAll(String custCode) throws SQLException {
+	public void deleteAll(int salesId) throws SQLException {
 		try {
-			String query = new StringBuilder().append(deleteQuery).append("where cust_code = ? ").toString();
+			String query = new StringBuilder().append(deleteQuery).append("where sales_id = ? ").toString();
 
 			deleteStatement = connection.prepareStatement(query);
 			deleteStatement.setDate(1, DateUtil.getCurrentDate());
 			deleteStatement.setString(2, "Sandy");
-			deleteStatement.setString(3, custCode);
+			deleteStatement.setInt(3, salesId);
 			deleteStatement.executeUpdate();
 
 		} catch (SQLException ex) {

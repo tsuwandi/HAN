@@ -86,6 +86,7 @@ public class SalesCreatePanel extends JPanel implements Bridging {
 	JLabel lblGrossAmount;
 	JLabel lblNettAmount;
 	JLabel lblDescription;
+	JLabel lblSalesDetail;
 
 	JTextField txtCustCode;
 	JTextField txtCustId;
@@ -115,8 +116,7 @@ public class SalesCreatePanel extends JPanel implements Bridging {
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
-
-	JLabel lblSalesDetail;
+	
 	JLabel lblErrorSalesDetail;
 	JScrollPane scrollPaneSalesDetail;
 	JTable tblSalesDetail;

@@ -49,7 +49,7 @@ public class CustomerListDialog extends JDialog {
 		this.salesCreate = salesCreate;
 		init();
 	}
-
+	
 	public void init() {
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

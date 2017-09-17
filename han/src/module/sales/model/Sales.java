@@ -3,6 +3,7 @@ package module.sales.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import module.customer.model.CustAddress;
 import module.customer.model.Customer;
 import module.sn.currency.model.Currency;
 import module.util.ComboBoxProperties;
@@ -36,7 +37,7 @@ public class Sales implements Serializable, ComboBoxProperties {
 	private String deleteReason;
 
 	private Customer customer;
-	private SalesDetail custAddress;
+	private CustAddress custAddress;
 	private Currency currency;
 	private Currency fcCurrency;
 	private Currency icCurrency;
@@ -237,11 +238,11 @@ public class Sales implements Serializable, ComboBoxProperties {
 		this.customer = customer;
 	}
 
-	public SalesDetail getCustAddress() {
+	public CustAddress getCustAddress() {
 		return custAddress;
 	}
 
-	public void setCustAddress(SalesDetail custAddress) {
+	public void setCustAddress(CustAddress custAddress) {
 		this.custAddress = custAddress;
 	}
 

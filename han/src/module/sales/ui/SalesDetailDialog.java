@@ -287,7 +287,7 @@ public class SalesDetailDialog extends JDialog {
 		if (salesCreate != null) {
 			salesCreate.refreshTableSalesDetail();
 		} else if (salesEdit != null) {
-			salesEdit.refreshTableSalesAddress();
+			salesEdit.refreshTableSalesDetail();
 		}
 
 		dispose();

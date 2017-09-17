@@ -55,7 +55,6 @@ public class CustomerDAO {
 
 		try {
 			getAllStatement = connection.prepareStatement(getAllQuery);
-			System.out.println(getAllQuery);
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {

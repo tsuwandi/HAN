@@ -1,6 +1,14 @@
-2017-09-10 18:22:05,462 [AWT-EventQueue-0] ERROR (SalesCreatePanel.java:765) - Cannot add or update a child row: a foreign key constraint fails (`project`.`sales_detail`, CONSTRAINT `sales_detail_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`))
-2017-09-10 18:23:49,058 [AWT-EventQueue-0] ERROR (SalesCreatePanel.java:765) - Cannot add or update a child row: a foreign key constraint fails (`project`.`sales_detail`, CONSTRAINT `sales_detail_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`))
-2017-09-10 18:25:05,203 [AWT-EventQueue-0] ERROR (SalesCreatePanel.java:765) - Cannot add or update a child row: a foreign key constraint fails (`project`.`sales_detail`, CONSTRAINT `sales_detail_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`))
-2017-09-10 18:31:38,199 [AWT-EventQueue-0] ERROR (SalesCreatePanel.java:765) - Cannot add or update a child row: a foreign key constraint fails (`project`.`sales_detail`, CONSTRAINT `sales_detail_ibfk_2` FOREIGN KEY (`sales_id`) REFERENCES `sales` (`id`))
-2017-09-10 18:33:36,553 [AWT-EventQueue-0] ERROR (SalesCreatePanel.java:765) - Cannot add or update a child row: a foreign key constraint fails (`project`.`sales_detail`, CONSTRAINT `sales_detail_ibfk_2` FOREIGN KEY (`sales_id`) REFERENCES `sales` (`id`))
-2017-09-10 18:34:48,180 [AWT-EventQueue-0] ERROR (SalesCreatePanel.java:765) - Cannot add or update a child row: a foreign key constraint fails (`project`.`sales_detail`, CONSTRAINT `sales_detail_ibfk_2` FOREIGN KEY (`sales_id`) REFERENCES `sales` (`id`))
+2017-09-17 19:03:31,016 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:569) - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'u.id as uom_id, u.uom as uom_name from sales_detail sd where sales_id = 10 inner' at line 1
+2017-09-17 19:06:23,800 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:569) - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'inner join product p on sd.product_id on p.id inner join uom u on p.product_uom_' at line 1
+2017-09-17 19:07:57,333 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:569) - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'inner join product p on sd.product_id on p.id inner join uom u on p.product_uom_' at line 1
+2017-09-17 19:08:52,450 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:569) - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'inner join product p on sd.product_id = p.id inner join uom u on p.product_uom_i' at line 1
+2017-09-17 19:21:50,189 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:569) - Column 'deleted_date' in where clause is ambiguous
+2017-09-17 19:22:15,923 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:569) - Column 'product_code' not found.
+2017-09-17 19:23:15,563 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:570) - Column 'product_code' not found.
+2017-09-17 19:44:47,187 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:592) - 
+2017-09-17 19:45:41,497 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:593) - 
+2017-09-17 19:48:35,128 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:594) - 
+2017-09-17 19:51:42,874 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:594) - 
+2017-09-17 23:01:21,045 [AWT-EventQueue-0] ERROR (SalesEditPanel.java:768) - Parameter index out of range (17 > number of parameters, which is 16).
+2017-09-17 23:02:13,990 [AWT-EventQueue-0] ERROR (SalesEditPanel.java:769) - Parameter index out of range (17 > number of parameters, which is 16).
+2017-09-17 23:03:39,152 [AWT-EventQueue-0] ERROR (SalesEditPanel.java:769) - Unknown column 'edit_date' in 'field list'

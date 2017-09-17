@@ -7,7 +7,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import controller.ServiceFactory;
-import module.customer.dao.CustomerAddressDAO;
 import module.customer.dao.CustomerDAO;
 import module.customer.model.CustAddress;
 import module.customer.model.Customer;
@@ -27,18 +26,8 @@ import module.sn.currency.dao.CurrencyDAO;
 import module.sn.currency.model.Currency;
 import module.sn.province.dao.ProvinceDAO;
 import module.sn.province.model.Province;
-import module.sn.supptype.dao.SuppTypeDAO;
-import module.sn.supptype.model.SuppType;
 import module.sn.vehicletype.dao.VehicleTypeDAO;
 import module.sn.vehicletype.model.VehicleType;
-import module.supplier.dao.SuppAddressDAO;
-import module.supplier.dao.SuppCpDAO;
-import module.supplier.dao.SuppVehicleDAO;
-import module.supplier.dao.SupplierDAO;
-import module.supplier.model.SuppAddress;
-import module.supplier.model.SuppCp;
-import module.supplier.model.SuppVehicle;
-import module.supplier.model.Supplier;
 
 public class SalesBL {
 	private DataSource dataSource;
@@ -107,16 +96,6 @@ public class SalesBL {
 		}
 	}
 
-	public int isLicensePlateExists(String licensePlate) throws SQLException {
-		Connection con = null;
-		try {
-			con = dataSource.getConnection();
-			return new SuppVehicleDAO(con).isLicensePlateExists(licensePlate);
-		} finally {
-			con.close();
-		}
-	}
-
 	public int isCustCodeExists(String custCode) throws SQLException {
 		Connection con = null;
 		try {
@@ -148,41 +127,67 @@ public class SalesBL {
 		}
 	}
 
-	/*
-	 * public void update(Sales customer, List<CustAddress> custAddress,
-	 * List<CustAddress> custAddressDeleted) throws SQLException { Connection con =
-	 * null; try { con = dataSource.getConnection(); con.setAutoCommit(false);
-	 * 
-	 * new CustomerDAO(con).update(customer);
-	 * 
-	 * for (CustAddress s : custAddress) { if (s.getId() == 0) {
-	 * s.setCustCode(customer.getCustCode()); s = new
-	 * CustomerAddressDAO(con).save(s); } else { new
-	 * CustomerAddressDAO(con).update(s); } }
-	 * 
-	 * for (CustAddress s : custAddressDeleted) { if (s.getId() != 0) { new
-	 * CustomerAddressDAO(con).deleteById(s.getId()); } }
-	 * 
-	 * con.commit(); } catch (SQLException e) { con.rollback(); throw new
-	 * SQLException(e.getMessage()); } finally { con.close(); } }
-	 */
+	public void update(Sales sales, List<SalesDetail> salesDetail, List<SalesDetail> salesDetailDeleted)
+			throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			con.setAutoCommit(false);
 
-	/*
-	 * public void deleteAll(Sales customer) throws SQLException { Connection con =
-	 * null; try { con = dataSource.getConnection(); con.setAutoCommit(false);
-	 * 
-	 * new CustomerDAO(con).delete(customer.getId()); new
-	 * CustomerAddressDAO(con).deleteAll(customer.getCustCode());
-	 * 
-	 * con.commit(); } catch (SQLException e) { con.rollback(); e.printStackTrace();
-	 * throw new SQLException(e.getMessage()); } finally { con.close(); } }
-	 */
+			new SalesDAO(con).update(sales);
 
-	/*
-	 * public Sales getCustomerById(int id) throws SQLException { Connection con =
-	 * null; try { con = dataSource.getConnection(); return new
-	 * CustomerDAO(con).getById(id); } finally { con.close(); } }
-	 */
+			for (SalesDetail s : salesDetail) {
+				if (s.getId() == 0) {
+					s.setSalesId(sales.getId());
+					s = new SalesDetailDAO(con).save(s);
+				} else {
+					new SalesDetailDAO(con).update(s);
+				}
+			}
+
+			for (SalesDetail s : salesDetailDeleted) {
+				if (s.getId() != 0) {
+					new SalesDetailDAO(con).deleteById(s.getId());
+				}
+			}
+
+			con.commit();
+		} catch (SQLException e) {
+			con.rollback();
+			throw new SQLException(e.getMessage());
+		} finally {
+			con.close();
+		}
+	}
+
+	public void deleteAll(Sales sales) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			con.setAutoCommit(false);
+
+			new SalesDAO(con).delete(sales.getId());
+			new SalesDetailDAO(con).deleteAll(sales.getId());
+
+			con.commit();
+		} catch (SQLException e) {
+			con.rollback();
+			e.printStackTrace();
+			throw new SQLException(e.getMessage());
+		} finally {
+			con.close();
+		}
+	}
+
+	public Sales getSalesById(int id) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new SalesDAO(con).getById(id);
+		} finally {
+			con.close();
+		}
+	}
 
 	public Integer getLatestIncrementSalesId() {
 		Connection con = null;
@@ -207,21 +212,11 @@ public class SalesBL {
 		}
 	}
 
-	public List<SuppCp> getSuppCpBySuppCode(String suppCode) throws SQLException {
+	public List<SalesDetail> getSalesDetailBySalesId(int salesId) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new SuppCpDAO(con).getAllBySuppCode(suppCode);
-		} finally {
-			con.close();
-		}
-	}
-
-	public List<SuppVehicle> getSuppVehicleBySuppCode(String suppCode) throws SQLException {
-		Connection con = null;
-		try {
-			con = dataSource.getConnection();
-			return new SuppVehicleDAO(con).getAllBySuppCode(suppCode);
+			return new SalesDetailDAO(con).getAllBySalesId(salesId);
 		} finally {
 			con.close();
 		}
@@ -252,18 +247,6 @@ public class SalesBL {
 		try {
 			con = dataSource.getConnection();
 			return new SalesDAO(con).getAllByAdvancedSearch(sales);
-		} finally {
-			con.close();
-		}
-	}
-
-	public String getOrdinalOfCodeNumber(String suppTypeConstant) throws SQLException {
-		Connection con = null;
-		try {
-			con = dataSource.getConnection();
-
-			return String.format("%03d", new SupplierDAO(con).getOrdinalOfCodeNumber(suppTypeConstant) + 1);
-
 		} finally {
 			con.close();
 		}
