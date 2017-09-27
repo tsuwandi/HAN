@@ -1,2 +1,0 @@
-2017-09-02 19:21:46,362 [AWT-EventQueue-0] ERROR (SalesListPanel.java:174) - Column 'freigh_cost_currency_id' not found.
-2017-09-02 19:44:30,399 [AWT-EventQueue-0] ERROR (SalesAdvSearchDialog.java:109) - Unknown column 'c.customer_name' in 'where clause'
