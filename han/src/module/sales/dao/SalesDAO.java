@@ -398,7 +398,7 @@ public class SalesDAO {
 			throw new SQLException(ex.getMessage());
 		}
 
-		return sales.getId();
+		return sales == null ? 0 : sales.getId();
 	}
 
 	public Customer getCustomerByCode(String custCode) throws SQLException {
