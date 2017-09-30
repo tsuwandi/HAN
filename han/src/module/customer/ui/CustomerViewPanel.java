@@ -29,11 +29,11 @@ import main.component.DialogBox;
 import main.component.NumberField;
 import main.panel.MainPanel;
 import module.customer.model.CustAddress;
+import module.customer.model.CustBank;
 import module.customer.model.CustType;
 import module.customer.model.Customer;
-import module.sn.bank.model.Bank;
+import module.customer.ui.CustomerCreatePanel.CustBankTableModel;
 import module.sn.country.model.Country;
-import module.sn.currency.model.Currency;
 import module.util.Bridging;
 import module.util.JTextFieldLimit;
 
@@ -46,6 +46,8 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 	private Customer customer;
 	public List<CustAddress> listOfCustAddress = new ArrayList<CustAddress>();
 	private CustAddressTableModel custAddressTableModel;
+	public List<CustBank> listOfCustBank = new ArrayList<CustBank>();
+	private CustBankTableModel custBankTableModel;
 
 	JLabel lblCustCode;
 	JLabel lblCustName;
@@ -53,11 +55,7 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 	JLabel lblNpwp;
 	JLabel lblCountry;
 	JLabel lblCustType;
-	JLabel lblCurrency;
 	JLabel lblTop;
-	JLabel lblBankAccount;
-	JLabel lblBank;
-	JLabel lblAccountOwner;
 	JLabel lblDefaultTax;
 	JLabel lblTopDays;
 	JLabel lblDefaultTaxPercentage;
@@ -68,10 +66,6 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 	JTextField txtNpwp;
 	JComboBox<String> cbCountry;
 	JComboBox<String> cbCustType;
-	JComboBox<String> cbCurrency;
-	JComboBox<String> cbBank;
-	JTextField txtBankAccount;
-	JTextField txtAccountOwner;
 	NumberField txtTop;
 	NumberField txtDefaultTax;
 
@@ -85,6 +79,13 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 	JButton btnAddCustAddress;
 	JButton btnDeleteCustAddress;
 
+	JLabel lblCustBank;
+	JLabel lblErrorCustBank;
+	JScrollPane scrollPaneCustBank;
+	JTable tblCustBank;
+	JButton btnAddCustBank;
+	JButton btnDeleteCustBank;
+
 	JPanel panel;
 	JScrollPane scrollPane;
 
@@ -97,10 +98,6 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 	JLabel lblErrorCustName;
 	JLabel lblErrorCountry;
 	JLabel lblErrorCustType;
-	JLabel lblErrorCurrency;
-	JLabel lblErrorBank;
-	JLabel lblErrorBankAccount;
-	JLabel lblErrorAccountOwner;
 	JLabel lblErrorTop;
 	JLabel lblErrorDefaultTax;
 
@@ -108,8 +105,6 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 
 	List<Country> listOfCountry;
 	List<CustType> listOfCustType;
-	List<Bank> listOfBank;
-	List<Currency> listOfCurrency;
 
 	public CustomerViewPanel() {
 		customerView = this;
@@ -117,7 +112,7 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 		panel = new JPanel();
 		// panel.setPreferredSize(new Dimension(MainPanel.bodyPanel.getWidth() - 100,
 		// MainPanel.bodyPanel.getHeight()));
-		panel.setPreferredSize(new Dimension(800, 740));
+		panel.setPreferredSize(new Dimension(800, 840));
 		panel.setLayout(null);
 
 		lblCustCode = new JLabel("<html>Kode Customer <font color=\"red\">*</font></html>");
@@ -226,20 +221,6 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 		tblCustAddress.setFocusable(false);
 		scrollPaneCustAddress.setViewportView(tblCustAddress);
 
-		tblCustAddress.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					JTable target = (JTable) e.getSource();
-					int row = target.getSelectedRow();
-					int column = target.getSelectedColumn();
-
-					if (column == 2)
-						showViewCustAddressDialog(listOfCustAddress.get(row), customerView, row);
-				}
-			}
-		});
-
 		btnAddCustAddress = new JButton("Tambah");
 		btnAddCustAddress.setEnabled(false);
 		btnAddCustAddress.setBounds(820, 290, 100, 25);
@@ -250,100 +231,66 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 		btnDeleteCustAddress.setBounds(925, 290, 100, 25);
 		panel.add(btnDeleteCustAddress);
 
-		lblBankAccount = new JLabel("No Akun Bank");
-		lblBankAccount.setBounds(50, 485, 150, 25);
-		panel.add(lblBankAccount);
+		/////// Table CustBank ///////
+		lblCustBank = new JLabel("Bank");
+		lblCustBank.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblCustBank.setBounds(50, 510, 150, 25);
+		panel.add(lblCustBank);
 
-		txtBankAccount = new JTextField();
-		txtBankAccount.setBounds(220, 485, 150, 25);
-		txtBankAccount.setDocument(new JTextFieldLimit(30));
-		txtBankAccount.setEnabled(false);
-		panel.add(txtBankAccount);
+		scrollPaneCustBank = new JScrollPane();
+		scrollPaneCustBank.setBounds(50, 545, 975, 150);
+		panel.add(scrollPaneCustBank);
 
-		lblErrorBankAccount = new JLabel();
-		lblErrorBankAccount.setForeground(Color.RED);
-		lblErrorBankAccount.setBounds(425, 685, 225, 25);
-		panel.add(lblErrorBankAccount);
+		custBankTableModel = new CustBankTableModel(new ArrayList<CustBank>());
+		tblCustBank = new JTable(custBankTableModel);
+		tblCustBank.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tblCustBank.setFocusable(false);
+		scrollPaneCustBank.setViewportView(tblCustBank);
 
-		lblBank = new JLabel("Bank");
-		lblBank.setBounds(50, 515, 150, 25);
-		panel.add(lblBank);
+		btnAddCustBank = new JButton("Tambah");
+		btnAddCustBank.setEnabled(false);
+		btnAddCustBank.setBounds(820, 510, 100, 25);
+		panel.add(btnAddCustBank);
 
-		cbBank = new JComboBox<String>();
-		cbBank.setEnabled(false);
-		cbBank.addItem("-- Pilih Bank --");
-		cbBank.setBounds(220, 515, 150, 25);
-		panel.add(cbBank);
-
-		lblErrorBank = new JLabel();
-		lblErrorBank.setForeground(Color.RED);
-		lblErrorBank.setBounds(425, 545, 225, 25);
-		panel.add(lblErrorBank);
-
-		lblAccountOwner = new JLabel("Nama Pemilik Account");
-		lblAccountOwner.setBounds(50, 545, 150, 25);
-		panel.add(lblAccountOwner);
-
-		txtAccountOwner = new JTextField();
-		txtAccountOwner.setBounds(220, 545, 150, 25);
-		txtAccountOwner.setDocument(new JTextFieldLimit(30));
-		txtAccountOwner.setEnabled(false);
-		panel.add(txtAccountOwner);
-
-		lblErrorAccountOwner = new JLabel();
-		lblErrorAccountOwner.setForeground(Color.RED);
-		lblErrorAccountOwner.setBounds(425, 545, 225, 25);
-		panel.add(lblErrorAccountOwner);
-
-		lblCurrency = new JLabel("Kurs");
-		lblCurrency.setBounds(50, 575, 150, 25);
-		panel.add(lblCurrency);
-
-		cbCurrency = new JComboBox<String>();
-		cbCurrency.setEnabled(false);
-		cbCurrency.addItem("-- Pilih Kurs --");
-		cbCurrency.setBounds(220, 575, 150, 25);
-		panel.add(cbCurrency);
-
-		lblErrorCurrency = new JLabel();
-		lblErrorCurrency.setForeground(Color.RED);
-		lblErrorCurrency.setBounds(425, 575, 225, 25);
-		panel.add(lblErrorCurrency);
+		btnDeleteCustBank = new JButton("Hapus");
+		btnDeleteCustBank.setEnabled(false);
+		btnDeleteCustBank.setBounds(925, 510, 100, 25);
+		panel.add(btnDeleteCustBank);
 
 		lblTop = new JLabel("TOP");
-		lblTop.setBounds(50, 605, 150, 25);
+		lblTop.setBounds(50, 715, 150, 25);
 		panel.add(lblTop);
 
 		txtTop = new NumberField(3);
 		txtTop.setEnabled(false);
-		txtTop.setBounds(220, 605, 150, 25);
+		txtTop.setBounds(220, 715, 150, 25);
 		panel.add(txtTop);
 
 		lblTopDays = new JLabel("hari");
-		lblTopDays.setBounds(380, 605, 150, 25);
+		lblTopDays.setBounds(380, 715, 150, 25);
 		panel.add(lblTopDays);
 
 		lblErrorTop = new JLabel();
 		lblErrorTop.setForeground(Color.RED);
-		lblErrorTop.setBounds(425, 605, 225, 25);
+		lblErrorTop.setBounds(425, 715, 225, 25);
 		panel.add(lblErrorTop);
 
 		lblDefaultTax = new JLabel("Default Pajak");
-		lblDefaultTax.setBounds(50, 635, 150, 25);
+		lblDefaultTax.setBounds(50, 745, 150, 25);
 		panel.add(lblDefaultTax);
 
 		txtDefaultTax = new NumberField(6);
 		txtDefaultTax.setEnabled(false);
-		txtDefaultTax.setBounds(220, 635, 150, 25);
+		txtDefaultTax.setBounds(220, 745, 150, 25);
 		panel.add(txtDefaultTax);
 
 		lblDefaultTaxPercentage = new JLabel("%");
-		lblDefaultTaxPercentage.setBounds(380, 635, 150, 25);
+		lblDefaultTaxPercentage.setBounds(380, 745, 150, 25);
 		panel.add(lblDefaultTaxPercentage);
 
 		lblErrorDefaultTax = new JLabel();
 		lblErrorDefaultTax.setForeground(Color.RED);
-		lblErrorDefaultTax.setBounds(425, 635, 225, 25);
+		lblErrorDefaultTax.setBounds(425, 745, 225, 25);
 		panel.add(lblErrorDefaultTax);
 
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -362,7 +309,7 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 				doPrint();
 			}
 		});
-		btnPrint.setBounds(715, 680, 100, 25);
+		btnPrint.setBounds(715, 785, 100, 25);
 		panel.add(btnPrint);
 
 		btnDelete = new JButton("Hapus");
@@ -374,11 +321,11 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		btnDelete.setBounds(820, 680, 100, 25);
+		btnDelete.setBounds(820, 785, 100, 25);
 		panel.add(btnDelete);
 
 		btnEdit = new JButton("Ubah");
-		btnEdit.setBounds(925, 680, 100, 25);
+		btnEdit.setBounds(925, 785, 100, 25);
 		panel.add(btnEdit);
 
 		btnEdit.addActionListener(new ActionListener() {
@@ -395,7 +342,7 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 				MainPanel.changePanel("module.customer.ui.CustomerListPanel");
 			}
 		});
-		btnCancel.setBounds(50, 680, 100, 25);
+		btnCancel.setBounds(50, 785, 100, 25);
 		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
 	}
@@ -411,6 +358,7 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 		try {
 			customer = ServiceFactory.getCustomerBL().getCustomerById(customerId);
 			listOfCustAddress = ServiceFactory.getCustomerBL().getCustAddressByCustCode(customer.getCustCode());
+			listOfCustBank = ServiceFactory.getCustomerBL().getCustBankByCustCode(customer.getCustCode());
 
 			if (customer != null) {
 				txtCustCode.setText(customer.getCustCode());
@@ -421,16 +369,11 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 				cbCustType.setSelectedIndex(1);
 				cbCountry.addItem(customer.getCountry());
 				cbCountry.setSelectedIndex(1);
-				txtBankAccount.setText(customer.getAccountNo());
-				cbBank.addItem(customer.getBank().getBank());
-				cbBank.setSelectedIndex(1);
-				txtAccountOwner.setText(customer.getAccountName());
 				txtDefaultTax.setText(String.valueOf(customer.getDefaultTax()));
-				cbCurrency.addItem(customer.getCurrency().getCurrency());
-				cbCurrency.setSelectedIndex(1);
 				txtTop.setText(String.valueOf(customer.getTop()));
 
 				refreshTableCustAddress();
+				refreshTableCustBank();
 			}
 		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
@@ -441,6 +384,15 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 	public void refreshTableCustAddress() {
 		try {
 			tblCustAddress.setModel(new CustAddressTableModel(listOfCustAddress));
+		} catch (Exception e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
+		}
+	}
+	
+	public void refreshTableCustBank() {
+		try {
+			tblCustBank.setModel(new CustBankTableModel(listOfCustBank));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
@@ -573,6 +525,125 @@ public class CustomerViewPanel extends JPanel implements Bridging {
 				return "Telepon";
 			case 5:
 				return "Fax";
+			case 6:
+				return "Tindakan";
+			default:
+				return "";
+			}
+		}
+	}
+
+	/**
+	 * Class as TableModel for Cust Bank table
+	 * 
+	 * @author TLO
+	 *
+	 */
+	class CustBankTableModel extends AbstractTableModel {
+
+		private static final long serialVersionUID = 1L;
+
+		private List<CustBank> listOfCustBank;
+
+		public CustBankTableModel(List<CustBank> listOfCustBank) {
+			this.listOfCustBank = listOfCustBank;
+		}
+
+		/**
+		 * Method to get row count
+		 * 
+		 * @return int
+		 */
+		public int getRowCount() {
+			return listOfCustBank.size();
+		}
+
+		/**
+		 * Method to get Column Count
+		 */
+		public int getColumnCount() {
+			return 7;
+		}
+
+		/**
+		 * Method to get selected value
+		 * 
+		 * @param rowIndex
+		 *            rowIndex of selected table
+		 * @param columnIndex
+		 *            columnIndex of selected table
+		 * @return ({@link CustomerAddress}) Object
+		 */
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			CustBank p = listOfCustBank.get(rowIndex);
+			switch (columnIndex) {
+			case 0:
+				return p.isFlag();
+			case 1:
+				return p.getSwiftCode();
+			case 2:
+				return p.getNote();
+			case 3:
+				return p.getBankName();
+			case 4:
+				return p.getAccountNo();
+			case 5:
+				return p.getAccountName();
+			case 6:
+				return "<html><u>Edit</u></html>";
+			default:
+				return "";
+			}
+		}
+
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		}
+
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public Class getColumnClass(int column) {
+			switch (column) {
+
+			case 0:
+				return Boolean.class;
+			case 1:
+				return String.class;
+			case 2:
+				return String.class;
+			case 3:
+				return String.class;
+			case 4:
+				return String.class;
+			case 5:
+				return String.class;
+			case 6:
+				return String.class;
+			default:
+				return String.class;
+			}
+		}
+
+		/**
+		 * Method to getColumnName
+		 * 
+		 * @param column
+		 *            columnIndex
+		 * @return String column name
+		 */
+		public String getColumnName(int column) {
+			switch (column) {
+			case 0:
+				return "";
+			case 1:
+				return "Kode Swift";
+			case 2:
+				return "Note";
+			case 3:
+				return "Nama Bank";
+			case 4:
+				return "Nomor Akun";
+			case 5:
+				return "Nama Akun";
 			case 6:
 				return "Tindakan";
 			default:
