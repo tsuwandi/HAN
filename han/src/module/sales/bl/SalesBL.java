@@ -11,7 +11,7 @@ import module.customer.dao.CustomerDAO;
 import module.customer.model.CustAddress;
 import module.customer.model.Customer;
 import module.pembelian.model.Product;
-import module.product.model.Uom;
+import module.sn.uom.model.Uom;
 import module.sales.dao.SalesDAO;
 import module.sales.dao.SalesDetailDAO;
 import module.sales.model.Sales;

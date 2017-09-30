@@ -34,8 +34,8 @@ import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
-import module.product.model.ProductCategory;
-import module.product.model.Uom;
+import module.sn.productcategory.model.ProductCategory;
+import module.sn.uom.model.Uom;
 import module.productsupportinggood.model.ProductSupp;
 import module.supplier.model.Supplier;
 import module.util.Bridging;
@@ -178,7 +178,7 @@ public class ProductSupportingGoodViewPanel extends JPanel implements Bridging {
 
 		setLayout(null);
 		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(800, 1400));
+		panel.setPreferredSize(new Dimension(800, 1450));
 		panel.setLayout(null);
 
 		lblBreadcrumb = new JLabel("ERP > General > Produk Barang Pendukung");
@@ -884,6 +884,8 @@ public class ProductSupportingGoodViewPanel extends JPanel implements Bridging {
 			constantProductCategory = AppConstants.HASIL_PRODUKSI_CD;
 		} else if (AppConstants.BARANG_PENDUKUNG.equalsIgnoreCase(productCategory)) {
 			constantProductCategory = AppConstants.BARANG_PENDUKUNG_CD;
+		} else {
+			constantProductCategory = AppConstants.PRODUCT_SUPP_1_CD;
 		}
 
 		String ordinal = null;

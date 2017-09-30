@@ -25,7 +25,7 @@ import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import module.pembelian.model.Product;
-import module.product.model.Uom;
+import module.sn.uom.model.Uom;
 import module.sales.model.SalesDetail;
 
 public class SalesDetailDialog extends JDialog {

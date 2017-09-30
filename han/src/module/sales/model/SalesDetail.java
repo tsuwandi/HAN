@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import module.pembelian.model.Product;
-import module.product.model.Uom;
+import module.sn.uom.model.Uom;
 
 public class SalesDetail implements Serializable {
 

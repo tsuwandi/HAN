@@ -165,10 +165,6 @@ CREATE TABLE `sales` (
 -- Dumping data for table `sales`
 --
 
-INSERT INTO `sales` (`id`, `customer_id`, `cust_addr_id`, `currency_id`, `freight_cost_currency_id`, `insurance_cost_currency_id`, `po_no`, `po_date`, `so_no`, `so_date`, `surcharge`, `discount`, `freight_cost`, `insurance_cost`, `vat`, `description`, `delete_reason`, `deleted_date`, `deleted_by`, `input_by`, `input_date`, `edited_by`, `edited_date`) VALUES
-(1, 7, 5, 1, 1, 1, '123123123', '2017-09-01', 'masihtes', '2017-09-01', 10000, 20000, 50000, 1000, 10, 'Lorem Ipsum', NULL, NULL, NULL, 'Sandy', '2017-09-01', NULL, NULL),
-(9, 7, 5, 1, 1, 1, '1', '2017-09-10', '009/BARE/SC/9/17', '2017-09-10', 1, 23, 3, 42, 5, '6', NULL, NULL, NULL, 'Sandy', '2017-09-10', 'Sandy', '2017-09-17'),
-(10, 7, 5, 1, 1, 1, '11', '2017-09-11', '010/BARE/SC/9/17', '2017-09-11', 11, 21, 31, 41, 5, '61', NULL, NULL, NULL, 'Sandy', '2017-09-10', 'Sandy', '2017-09-17');
 
 --
 -- Indexes for dumped tables
@@ -258,11 +254,6 @@ CREATE TABLE `sales_detail` (
 -- Dumping data for table `sales_detail`
 --
 
-INSERT INTO `sales_detail` (`id`, `product_id`, `sales_id`, `quantity`, `nett_price`, `input_by`, `input_date`, `edited_by`, `edited_date`, `deleted_by`, `deleted_date`) VALUES
-(1, 1, 1, 5, 1200, 'Sandy', '2017-09-01', NULL, NULL, NULL, NULL),
-(9, 2, 9, 1, 500, 'Sandy', '2017-09-10', 'Sandy', '2017-09-17', NULL, NULL),
-(10, 2, 10, 1, 300, 'Sandy', '2017-09-10', 'Sandy', '2017-09-17', NULL, NULL),
-(11, 1, 10, 3, 700, 'Sandy', '2017-09-17', 'Sandy', '2017-09-17', NULL, NULL);
 
 --
 -- Indexes for dumped tables
