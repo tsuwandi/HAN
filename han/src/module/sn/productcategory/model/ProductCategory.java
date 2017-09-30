@@ -1,10 +1,19 @@
-package module.product.model;
+package module.sn.productcategory.model;
 
 import module.util.ComboBoxProperties;
 
 public class ProductCategory implements ComboBoxProperties {
 	int id;
 	String productCategory;
+	int productCategoryTypeId;
+
+	public int getProductCategoryTypeId() {
+		return productCategoryTypeId;
+	}
+
+	public void setProductCategoryTypeId(int productCategoryTypeId) {
+		this.productCategoryTypeId = productCategoryTypeId;
+	}
 
 	public int getId() {
 		return id;

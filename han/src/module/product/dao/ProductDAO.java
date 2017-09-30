@@ -8,19 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import module.product.model.Condition;
-import module.product.model.Grade;
 import module.product.model.Product;
-import module.product.model.ProductCategory;
-import module.product.model.Uom;
 import module.util.DateUtil;
 
 public class ProductDAO {
 	private Connection connection;
 	private PreparedStatement getAllProductStatement;
 	private PreparedStatement getProductIdStatement;
-	private PreparedStatement getAllProductCategory;
-	private PreparedStatement getAllGrade;
-	private PreparedStatement getAllUom;
+	
 	private PreparedStatement getAllCondition;
 	private PreparedStatement updateProductStatement;
 	private PreparedStatement deleteProductStatement;
@@ -57,12 +52,6 @@ public class ProductDAO {
 			+ "inner join product_category d on a.product_category_id = d.id "
 			+ "inner join uom e on a.product_uom_id = e.id "
 			+ "where 1=1 ";
-
-	private String productCatQuery = "select * from product_category order by id asc";
-
-	private String gradeQuery = "select * from grade ";
-
-	private String uomQuery = "select * from uom order by id asc";
 
 	private String conditionQuery = "select * from `condition` order by id asc";
 
@@ -316,93 +305,6 @@ public class ProductDAO {
 		}
 
 		return products;
-	}
-
-	public List<ProductCategory> getAllProductCategory() throws SQLException {
-		List<ProductCategory> categories = new ArrayList<ProductCategory>();
-
-		try {
-			getAllProductCategory = connection.prepareStatement(productCatQuery);
-			ResultSet rs = getAllProductCategory.executeQuery();
-			while (rs.next()) {
-				ProductCategory productCat = new ProductCategory();
-				productCat.setId(rs.getInt("id"));
-				productCat.setProductCategory(rs.getString("product_category"));
-				categories.add(productCat);
-			}
-
-		} catch (SQLException ex) {
-			throw new SQLException(ex.getMessage());
-		}
-
-		return categories;
-	}
-
-	public List<Grade> getAllGrade() throws SQLException {
-		List<Grade> grades = new ArrayList<Grade>();
-
-		try {
-			String query = new StringBuilder().append(gradeQuery).append(" order by id asc").toString();
-			getAllGrade = connection.prepareStatement(query);
-			ResultSet rs = getAllGrade.executeQuery();
-			while (rs.next()) {
-				Grade grade = new Grade();
-				grade.setId(rs.getInt("id"));
-				grade.setGrade(rs.getString("grade"));
-				grades.add(grade);
-			}
-
-		} catch (SQLException ex) {
-			throw new SQLException(ex.getMessage());
-		}
-
-		return grades;
-	}
-	
-	public List<Grade> getAllGradeByCategoryProductId(int productCategoryId) throws SQLException {
-		List<Grade> grades = new ArrayList<Grade>();
-
-		try {
-			
-			String query = new StringBuilder().append(gradeQuery).append(" where product_category_id = ? order by id").toString();
-			
-			getAllGrade = connection.prepareStatement(query);
-			getAllGrade.setInt(1, productCategoryId);
-			
-			ResultSet rs = getAllGrade.executeQuery();
-			while (rs.next()) {
-				Grade grade = new Grade();
-				grade.setId(rs.getInt("id"));
-				grade.setProductCategoryId(rs.getInt("product_category_id"));
-				grade.setGrade(rs.getString("grade"));
-				grades.add(grade);
-			}
-
-		} catch (SQLException ex) {
-			throw new SQLException(ex.getMessage());
-		}
-
-		return grades;
-	}
-
-	public List<Uom> getAllUom() throws SQLException {
-		List<Uom> units = new ArrayList<Uom>();
-
-		try {
-			getAllUom = connection.prepareStatement(uomQuery);
-			ResultSet rs = getAllUom.executeQuery();
-			while (rs.next()) {
-				Uom uom = new Uom();
-				uom.setId(rs.getInt("id"));
-				uom.setUom(rs.getString("uom"));
-				units.add(uom);
-			}
-
-		} catch (SQLException ex) {
-			throw new SQLException(ex.getMessage());
-		}
-
-		return units;
 	}
 
 	public List<Condition> getAllCondition() throws SQLException {

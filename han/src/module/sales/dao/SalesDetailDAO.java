@@ -9,7 +9,7 @@ import java.util.List;
 
 import module.customer.model.CustAddress;
 import module.pembelian.model.Product;
-import module.product.model.Uom;
+import module.sn.uom.model.Uom;
 import module.sales.model.SalesDetail;
 import module.util.DateUtil;
 

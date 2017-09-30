@@ -11,13 +11,13 @@ import org.apache.log4j.Logger;
 
 import controller.ServiceFactory;
 import module.personalia.model.Tax;
-import module.product.model.ProductCategory;
-import module.product.model.Uom;
 import module.productsupportinggood.model.ProductSupp;
 import module.productsupportinggood.ui.ProductSupportingGoodListPanel;
 import module.sn.bank.model.Bank;
 import module.sn.currency.model.Currency;
+import module.sn.productcategory.model.ProductCategory;
 import module.sn.supptype.model.SuppType;
+import module.sn.uom.model.Uom;
 import module.supplier.model.Supplier;
 import module.util.DateUtil;
 
@@ -630,52 +630,6 @@ public class ProductSuppDAO {
 	}
 	
 	//timotius@20170903_start
-	private PreparedStatement getAllProductCategory;
-	private PreparedStatement getAllUom;
-	
-	private String productCatQuery = "select id, product_category from product_category where delete_date is null order by id asc";
-	private String uomQuery = "select id, uom from uom where delete_date is null order by id asc";
-	
-	public List<ProductCategory> getAllProductCategory() throws SQLException {
-		List<ProductCategory> categories = new ArrayList<ProductCategory>();
-
-		try {
-			getAllProductCategory = connection.prepareStatement(productCatQuery);
-			ResultSet rs = getAllProductCategory.executeQuery();
-			while (rs.next()) {
-				ProductCategory productCat = new ProductCategory();
-				productCat.setId(rs.getInt("id"));
-				productCat.setProductCategory(rs.getString("product_category"));
-				categories.add(productCat);
-			}
-
-		} catch (SQLException ex) {
-			throw new SQLException(ex.getMessage());
-		}
-
-		return categories;
-	}
-	
-	public List<Uom> getAllUom() throws SQLException {
-		List<Uom> units = new ArrayList<Uom>();
-
-		try {
-			getAllUom = connection.prepareStatement(uomQuery);
-			ResultSet rs = getAllUom.executeQuery();
-			while (rs.next()) {
-				Uom uom = new Uom();
-				uom.setId(rs.getInt("id"));
-				uom.setUom(rs.getString("uom"));
-				units.add(uom);
-			}
-
-		} catch (SQLException ex) {
-			throw new SQLException(ex.getMessage());
-		}
-
-		return units;
-	}
-	
 	private PreparedStatement isProductNameExistsStatement;
 	private String isProductNameExistsQuery = "select count(*) as is_exists from product_supp where product_name = ? ";
 

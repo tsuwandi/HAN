@@ -98,4 +98,9 @@ public class AppConstants {
 	public static final String PPR_PRODUCT = "PPR_PRODUCT";
 	public static final String PACKING_RM = "PACKING_RM";
 	public static final String PACKING_RESULT = "PACKING_RESULT";
+	
+	public static final int PRODUCT_CATEGORY_TYPE_ID_GENERAL = 1;
+	public static final int PRODUCT_CATEGORY_TYPE_ID_PRODUCT_SUPP = 2;
+	
+	public static final String PRODUCT_SUPP_1_CD = "SUPP";
 }

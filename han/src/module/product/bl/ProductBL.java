@@ -10,15 +10,18 @@ import main.component.AppConstants;
 import module.product.dao.ProductDAO;
 import module.product.dao.ProductPPDAO;
 import module.product.model.Condition;
-import module.product.model.Grade;
 import module.product.model.Product;
-import module.product.model.ProductCategory;
 import module.product.model.ProductPP;
-import module.product.model.Uom;
+import module.sn.grade.dao.GradeDAO;
+import module.sn.grade.model.Grade;
+import module.sn.productcategory.dao.ProductCategoryDAO;
+import module.sn.productcategory.model.ProductCategory;
 import module.sn.production.quality.dao.ProductionQualityDAO;
 import module.sn.production.quality.model.ProductionQuality;
 import module.sn.production.type.dao.ProductionTypeDAO;
 import module.sn.production.type.model.ProductionType;
+import module.sn.uom.dao.UomDAO;
+import module.sn.uom.model.Uom;
 import module.sn.woodtype.dao.WoodTypeDAO;
 import module.sn.woodtype.model.WoodType;
 
@@ -142,7 +145,7 @@ public class ProductBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProductDAO(con).getAllProductCategory();
+			return new ProductCategoryDAO(con).getAllByProductCategoryTypeId(AppConstants.PRODUCT_CATEGORY_TYPE_ID_GENERAL);
 		} finally {
 			con.close();
 		}
@@ -162,7 +165,7 @@ public class ProductBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProductDAO(con).getAllGrade();
+			return new GradeDAO(con).getAllGrade();
 		} finally {
 			con.close();
 		}
@@ -172,7 +175,7 @@ public class ProductBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProductDAO(con).getAllGradeByCategoryProductId(productCategoryId);
+			return new GradeDAO(con).getAllGradeByCategoryProductId(productCategoryId);
 		} finally {
 			con.close();
 		}
@@ -182,7 +185,7 @@ public class ProductBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProductDAO(con).getAllUom();
+			return new UomDAO(con).getAllUom();
 		} finally {
 			con.close();
 		}

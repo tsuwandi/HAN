@@ -7,18 +7,12 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import main.component.AppConstants;
-import module.product.dao.ProductDAO;
-import module.product.model.ProductCategory;
-import module.product.model.Uom;
 import module.productsupportinggood.dao.ProductSuppDAO;
 import module.productsupportinggood.model.ProductSupp;
-import module.supplier.dao.SuppAddressDAO;
-import module.supplier.dao.SuppCpDAO;
-import module.supplier.dao.SuppVehicleDAO;
-import module.supplier.dao.SupplierDAO;
-import module.supplier.model.SuppAddress;
-import module.supplier.model.SuppVehicle;
-import module.supplier.model.Supplier;
+import module.sn.productcategory.dao.ProductCategoryDAO;
+import module.sn.productcategory.model.ProductCategory;
+import module.sn.uom.dao.UomDAO;
+import module.sn.uom.model.Uom;
 
 public class ProductSupportingGoodBL {
 
@@ -42,7 +36,7 @@ public class ProductSupportingGoodBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProductSuppDAO(con).getAllProductCategory();
+			return new ProductCategoryDAO(con).getAllByProductCategoryTypeId(AppConstants.PRODUCT_CATEGORY_TYPE_ID_PRODUCT_SUPP);
 		} finally {
 			con.close();
 		}
@@ -52,7 +46,7 @@ public class ProductSupportingGoodBL {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProductSuppDAO(con).getAllUom();
+			return new UomDAO(con).getAllUom();
 		} finally {
 			con.close();
 		}

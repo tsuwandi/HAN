@@ -13,7 +13,7 @@ import com.mysql.jdbc.Statement;
 import module.customer.model.CustAddress;
 import module.customer.model.Customer;
 import module.pembelian.model.Product;
-import module.product.model.Uom;
+import module.sn.uom.model.Uom;
 import module.sales.model.Sales;
 import module.sn.currency.model.Currency;
 import module.util.DateUtil;
@@ -398,7 +398,7 @@ public class SalesDAO {
 			throw new SQLException(ex.getMessage());
 		}
 
-		return sales.getId();
+		return sales == null ? 0 : sales.getId();
 	}
 
 	public Customer getCustomerByCode(String custCode) throws SQLException {
