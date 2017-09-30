@@ -299,3 +299,48 @@ ALTER TABLE `sales_detail`
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
+/*
+SQLyog Enterprise - MySQL GUI v8.05 
+MySQL - 5.6.24 : Database - julia4
+*********************************************************************
+*/
+
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
+
+/*Table structure for table `bank_cust` */
+
+CREATE TABLE `bank_cust` (
+  `id` int(3) NOT NULL,
+  `cust_id` int(5) DEFAULT NULL,
+  `swiftcode` varchar(15) NOT NULL,
+  `bankname` varchar(50) NOT NULL,
+  `accountno` varchar(25) DEFAULT NULL,
+  `currency_id` varchar(5) DEFAULT NULL,
+  `accname` varchar(50) DEFAULT NULL,
+  `note` varchar(25) DEFAULT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `bank_cust` */
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+
+
