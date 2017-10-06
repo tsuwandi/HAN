@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import module.personalia.model.Tax;
-import module.product.model.ProductCategory;
-import module.product.model.Uom;
+import module.sn.productcategory.model.ProductCategory;
+import module.sn.uom.model.Uom;
 import module.util.ComboBoxProperties;
 
 public class ProductSupp implements Serializable, ComboBoxProperties {

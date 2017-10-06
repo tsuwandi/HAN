@@ -19,10 +19,8 @@ public class CustomerAddressDAO {
 	private PreparedStatement deleteStatement;
 
 	private String getAllByCustCodeQuery = "select id, cust_code, cust_id, name, "
-			+ "addr_type, address, zip_code, email, "
-			+ "city, phone, fax, province "
-			+ "from cust_addr where cust_code = ?"
-			+ "and deleted_date is null";
+			+ "addr_type, address, zip_code, email, " + "city, phone, fax, province "
+			+ "from cust_addr where cust_code = ?" + "and deleted_date is null";
 
 	private String insertQuery = "insert into cust_addr (cust_code, cust_id, name, addr_type, phone, fax, address, zip_code, email, "
 			+ "province, city, input_date, input_by) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -106,7 +104,7 @@ public class CustomerAddressDAO {
 
 	public void update(CustAddress custAddress) throws SQLException {
 		try {
-			
+
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, custAddress.getName());
 			updateStatement.setString(2, custAddress.getAddressType());

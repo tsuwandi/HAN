@@ -106,3 +106,232 @@ create table shift_department(
     dept_id int
 );
 INSERT INTO `shift_department` (`id`, `shift_id`, `dept_id`) VALUES (NULL, '1', '1'), (NULL, '2', '2'), (NULL, '3', '3');
+
+-- phpMyAdmin SQL Dump
+-- version 4.5.1
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Generation Time: Sep 28, 2017 at 12:56 PM
+-- Server version: 10.1.19-MariaDB
+-- PHP Version: 5.6.28
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `project`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sales`
+--
+
+CREATE TABLE `sales` (
+  `id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `cust_addr_id` int(11) NOT NULL,
+  `currency_id` int(11) NOT NULL,
+  `freight_cost_currency_id` int(11) NOT NULL,
+  `insurance_cost_currency_id` int(11) NOT NULL,
+  `po_no` varchar(255) DEFAULT NULL,
+  `po_date` date DEFAULT NULL,
+  `so_no` varchar(18) NOT NULL,
+  `so_date` date NOT NULL,
+  `surcharge` double DEFAULT NULL,
+  `discount` double DEFAULT NULL,
+  `freight_cost` double NOT NULL,
+  `insurance_cost` double NOT NULL,
+  `vat` double NOT NULL,
+  `description` text,
+  `delete_reason` varchar(255) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `input_date` date NOT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `edited_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sales`
+--
+
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `sales`
+--
+ALTER TABLE `sales`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `customer_id` (`customer_id`),
+  ADD KEY `cust_addr_id` (`cust_addr_id`),
+  ADD KEY `currency_id` (`currency_id`),
+  ADD KEY `freight_cost_currency_id` (`freight_cost_currency_id`),
+  ADD KEY `insurance_cost_currency_id` (`insurance_cost_currency_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `sales`
+--
+ALTER TABLE `sales`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `sales`
+--
+ALTER TABLE `sales`
+  ADD CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
+  ADD CONSTRAINT `sales_ibfk_2` FOREIGN KEY (`cust_addr_id`) REFERENCES `cust_addr` (`id`),
+  ADD CONSTRAINT `sales_ibfk_3` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`),
+  ADD CONSTRAINT `sales_ibfk_4` FOREIGN KEY (`freight_cost_currency_id`) REFERENCES `currency` (`id`),
+  ADD CONSTRAINT `sales_ibfk_5` FOREIGN KEY (`insurance_cost_currency_id`) REFERENCES `currency` (`id`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- phpMyAdmin SQL Dump
+-- version 4.5.1
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Generation Time: Sep 28, 2017 at 12:57 PM
+-- Server version: 10.1.19-MariaDB
+-- PHP Version: 5.6.28
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `project`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sales_detail`
+--
+
+CREATE TABLE `sales_detail` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `sales_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `nett_price` double NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `input_date` date NOT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `edited_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sales_detail`
+--
+
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `sales_detail`
+--
+ALTER TABLE `sales_detail`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `sales_id` (`sales_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `sales_detail`
+--
+ALTER TABLE `sales_detail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `sales_detail`
+--
+ALTER TABLE `sales_detail`
+  ADD CONSTRAINT `sales_detail_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+/*
+SQLyog Enterprise - MySQL GUI v8.05 
+MySQL - 5.6.24 : Database - julia4
+*********************************************************************
+*/
+
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
+
+/*Table structure for table `bank_cust` */
+
+CREATE TABLE `bank_cust` (
+  `id` int(3) NOT NULL,
+  `cust_id` int(5) DEFAULT NULL,
+  `swiftcode` varchar(15) NOT NULL,
+  `bankname` varchar(50) NOT NULL,
+  `accountno` varchar(25) DEFAULT NULL,
+  `currency_id` varchar(5) DEFAULT NULL,
+  `accname` varchar(50) DEFAULT NULL,
+  `note` varchar(25) DEFAULT NULL,
+  `input_date` date NOT NULL,
+  `input_by` varchar(25) NOT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `input_by` (`input_by`),
+  KEY `edited_by` (`edited_by`),
+  KEY `deleted_by` (`deleted_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `bank_cust` */
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+
+

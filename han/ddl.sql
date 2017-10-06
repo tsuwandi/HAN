@@ -54,4 +54,5 @@ CREATE TABLE `product_supp` (
 
 ALTER TABLE `product_supp` CHANGE `volume_uom` `volume_uom_id` INT(3) NULL DEFAULT NULL;
 ALTER TABLE `product_supp` CHANGE `weight_uom` `weight_uom_id` INT(3) NULL DEFAULT NULL;
+ALTER TABLE `product_supp` CHANGE `image_path` `image_path` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '';
 --timotius@20170903_end

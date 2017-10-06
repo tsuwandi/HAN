@@ -1,4 +1,4 @@
-package module.product.model;
+package module.sn.grade.model;
 
 import module.util.ComboBoxProperties;
 

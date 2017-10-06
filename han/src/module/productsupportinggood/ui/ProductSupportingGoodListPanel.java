@@ -23,7 +23,9 @@ import org.apache.log4j.Logger;
 
 import main.component.DialogBox;
 import main.panel.MainPanel;
+import module.productsupportinggood.model.ProductSupp;
 import module.supplier.model.Supplier;
+import controller.ServiceFactory;
 
 public class ProductSupportingGoodListPanel extends JPanel {
 
@@ -132,7 +134,7 @@ public class ProductSupportingGoodListPanel extends JPanel {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 4)
+					if (column == 3)
 						MainPanel.changePanel("module.productsupportinggood.ui.ProductSupportingGoodViewPanel", listOfProductSupportingGoods.get(row));
 				}
 			}
@@ -140,9 +142,9 @@ public class ProductSupportingGoodListPanel extends JPanel {
 
 		try {
 			listOfProductSupportingGoods = new ArrayList<Supplier>();
-			//listOfProductSupportingGoods = ServiceFactory.getProductSupportingGoodBL().getAllProductSupportingGood();
+			listOfProductSupportingGoods = ServiceFactory.getProductSupportingGoodBL().getAllProductSupp();
 			refreshTableProductSupportingGood();
-		} catch (Exception e1) {
+		} catch (SQLException e1) {
 			LOGGER.error(e1.getMessage());
 			e1.printStackTrace();
 			DialogBox.showErrorException();
@@ -160,7 +162,7 @@ public class ProductSupportingGoodListPanel extends JPanel {
 	public void doSearch(String value) {
 		try {
 			listOfProductSupportingGoods = new ArrayList<>();
-			//listOfProductSupportingGoods = ServiceFactory.getProductSupportingGoodBL().getAllProductSupportingGoodBySimpleSearch(value);
+			listOfProductSupportingGoods = ServiceFactory.getProductSupportingGoodBL().getAllProductSuppBySimpleSearch(value);
 			refreshTableProductSupportingGood();
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
@@ -193,9 +195,9 @@ public class ProductSupportingGoodListPanel extends JPanel {
 		private static final long serialVersionUID = 1L;
 
 		@SuppressWarnings("rawtypes")
-		private List productSupportingGoods;
+		private List<ProductSupp> productSupportingGoods;
 
-		public ProductSupportingGoodTableModel(@SuppressWarnings("rawtypes") List productSupportingGoods) {
+		public ProductSupportingGoodTableModel(List<ProductSupp> productSupportingGoods) {
 			this.productSupportingGoods = productSupportingGoods;
 		}
 
@@ -214,6 +216,22 @@ public class ProductSupportingGoodListPanel extends JPanel {
 		public int getColumnCount() {
 			return 4;
 		}
+		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public Class getColumnClass(int column) {
+			switch (column) {
+			case 0:
+				return String.class;
+			case 1:
+				return String.class;
+			case 2:
+				return String.class;
+			case 3:
+				return String.class;
+			default:
+				return String.class;
+			}
+		}
 
 		/**
 		 * Method to get selected value
@@ -225,14 +243,14 @@ public class ProductSupportingGoodListPanel extends JPanel {
 		 * @return ({@link Supplier}) Object
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			Object p = productSupportingGoods.get(rowIndex);
+			ProductSupp p = productSupportingGoods.get(rowIndex);
 			switch (columnIndex) {
 			case 0:
-				return null;
+				return p.getProductCode();
 			case 1:
-				return null;
+				return p.getProductName();
 			case 2:
-				return null;
+				return p.getProductCategory().getProductCategory();
 			case 3:
 				return "<html><u>View</u></html>";
 			default:

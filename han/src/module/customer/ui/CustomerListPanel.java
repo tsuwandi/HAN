@@ -176,13 +176,13 @@ public class CustomerListPanel extends JPanel {
 	}
 
 	/**
-	 * Method to display add supp cp dialog
+	 * Method to display add cust cp dialog
 	 */
 	protected void showAdvancedSearchDialog(CustomerListPanel customerListPanel) {
-		CustomerAdvSearchDialog suppAdvSearchDialog = new CustomerAdvSearchDialog(customerListPanel);
-		suppAdvSearchDialog.setTitle("Pencarian Lanjut");
-		suppAdvSearchDialog.setLocationRelativeTo(null);
-		suppAdvSearchDialog.setVisible(true);
+		CustomerAdvSearchDialog custAdvSearchDialog = new CustomerAdvSearchDialog(customerListPanel);
+		custAdvSearchDialog.setTitle("Pencarian Lanjut");
+		custAdvSearchDialog.setLocationRelativeTo(null);
+		custAdvSearchDialog.setVisible(true);
 	}
 
 	/**

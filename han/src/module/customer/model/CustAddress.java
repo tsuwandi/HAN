@@ -3,7 +3,9 @@ package module.customer.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class CustAddress implements Serializable {
+import module.util.ComboBoxProperties;
+
+public class CustAddress implements Serializable, ComboBoxProperties {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,8 +27,15 @@ public class CustAddress implements Serializable {
 	private String editedBy;
 	private Date deletedDate;
 	private String deletedBy;
-	
+
 	private boolean flag;
+
+	public CustAddress() {
+	}
+
+	public CustAddress(String name) {
+		this.name = name;
+	}
 
 	public int getId() {
 		return id;
@@ -298,11 +307,7 @@ public class CustAddress implements Serializable {
 
 	@Override
 	public String toString() {
-		return "CustAddress [id=" + id + ", custCode=" + custCode + ", custId=" + custId + ", name=" + name
-				+ ", addressType=" + addressType + ", phone=" + phone + ", fax=" + fax + ", address=" + address
-				+ ", zipCode=" + zipCode + ", email=" + email + ", province=" + province + ", city=" + city
-				+ ", inputDate=" + inputDate + ", inputBy=" + inputBy + ", editDate=" + editDate + ", editedBy="
-				+ editedBy + ", deletedDate=" + deletedDate + ", deletedBy=" + deletedBy + ", flag=" + flag + "]";
+		return name;
 	}
 
 	public boolean isFlag() {
@@ -311,6 +316,11 @@ public class CustAddress implements Serializable {
 
 	public void setFlag(boolean flag) {
 		this.flag = flag;
+	}
+
+	@Override
+	public Object getField() {
+		return name;
 	}
 
 }

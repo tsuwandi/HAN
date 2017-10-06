@@ -3,12 +3,17 @@ package module.productsupportinggood.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -22,13 +27,15 @@ import javax.swing.text.DocumentFilter;
 
 import org.apache.log4j.Logger;
 
+import controller.ServiceFactory;
+import main.component.AppConstants;
 import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
-import module.product.model.ProductCategory;
-import module.product.model.Uom;
+import module.sn.productcategory.model.ProductCategory;
+import module.sn.uom.model.Uom;
 import module.productsupportinggood.model.ProductSupp;
 import module.supplier.model.Supplier;
 import module.util.Bridging;
@@ -103,13 +110,39 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 	
 	JLabel lblMininumOrder;
 	NumberField txtMininumOrder;
+	ComboBox<Uom> cbMininumUom;
 	JLabel lblLeadTime;
 	NumberField txtLeadTime;
 	JLabel lblDefaultBuyingCostCenter;
-	NumberField txtDefaultBuyingCostCenter;
+	ComboBox<Object> cbDefaultBuyingCostCenter;
 	JLabel lblDefaultBuyingExpenseAccount;
-	NumberField txtDefaultBuyingExpenseAccount;
+	ComboBox<Object> cbDefaultBuyingExpenseAccount;
 	//section_purchase_information_end
+	
+	//section_sales_information_start
+	JLabel lblSalesItem;
+	ButtonGroup salesItem;
+	JRadioButton salesItemYesField;
+	JRadioButton salesItemNoField;
+	
+	JLabel lblServiceItem;
+	ButtonGroup serviceItem;
+	JRadioButton serviceItemYesField;
+	JRadioButton serviceItemNoField;
+	
+	JLabel lblDefaultSellingCostCenter;
+	ComboBox<Object> cbDefaultSellingCostCenter;
+	JLabel lblDefaultIncomeAccount;
+	ComboBox<Object> cbDefaultIncomeAccount;
+	JLabel lblDefaultAsset;
+	ComboBox<Object> cbDefaultAsset;
+	JLabel lblMaximumDiscount;
+	NumberField txtMaximumDiscount;
+	JLabel lblErrorMaximumDiscount;
+	JLabel lblTax;
+	ComboBox<Object> cbTax;
+	JLabel lblErrorTax;
+	//section_sales_information_end
 	
 	
 	//section_uom_conversion_start
@@ -137,13 +170,14 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 	JLabel lblHeaderInventory;
 	JLabel lblHeaderPurchaseInformation;
 	JLabel lblHeaderConversionUOM;
+	JLabel lblHeaderSalesInformation;
 	
 	public ProductSupportingGoodCreatePanel() {
 		productSupp = new ProductSupp();
 
 		setLayout(null);
 		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(800, 1250));
+		panel.setPreferredSize(new Dimension(800, 1450));
 		panel.setLayout(null);
 
 		lblBreadcrumb = new JLabel("ERP > General > Produk Barang Pendukung");
@@ -176,29 +210,17 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		doAddPurchaseInformation();
 		//timotius_section_purchase_information_end
 		
+		//timotius_section_conversion_uom_start
 		doAddConversionUomInformation();
+		//timotius_section_conversion_uom_end
 		
-//		btnSave = new JButton("Simpan");
-//		btnSave.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//
-//			}
-//		});
-//		btnSave.setBounds(925, 570, 100, 25);
-//		panel.add(btnSave);
-//
-//		btnCancel = new JButton("Kembali");
-//		btnCancel.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				 int response = DialogBox.showCloseChoice();
-//				 if (response == JOptionPane.YES_OPTION) {
-//					 MainPanel.changePanel("module.prodpk.ui.ProdPKListPanel");
-//				 }
-//			}
-//		});
-//		btnCancel.setBounds(50, 570, 100, 25);
-//		btnCancel.setFocusable(false);
-//		panel.add(btnCancel);
+		//timotius_section_sales_information_start
+		doAddSalesInformation();
+		//timotius_section_sales_information_end
+		
+		//timotius_section_add_button_start
+		doAddButton();
+		//timotius_section_add_button_end
 		
 		scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -250,6 +272,17 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		panel.add(lblProductCategory);
 		
 		cbProductCategory = new ComboBox<ProductCategory>();
+		
+		cbProductCategory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (cbProductCategory.getSelectedIndex() != 0) {
+					makeCodeNumber(cbProductCategory.getDataIndex().getProductCategory());
+				} else {
+					//do nothing
+				}
+			}
+		});
+		
 		cbProductCategory.setList(getAllProductCategory());
 		cbProductCategory.setBounds(220, 140, 150, 25);
 		cbProductCategory.setEnabled(true);
@@ -476,6 +509,12 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		txtMininumOrder.setEnabled(true);
 		panel.add(txtMininumOrder);
 		
+		cbMininumUom = new ComboBox<Uom>();
+		cbMininumUom.setList(getAllProductUom());
+		cbMininumUom.setBounds(480, 745, 150, 25);
+		cbMininumUom.setEnabled(true);
+		panel.add(cbMininumUom);
+		
 		lblLeadTime = new JLabel("<html>Lead Time</html>");
 		lblLeadTime.setBounds(50, 775, 150, 25);
 		panel.add(lblLeadTime);
@@ -489,19 +528,21 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		lblDefaultBuyingCostCenter.setBounds(50, 805, 150, 25);
 		panel.add(lblDefaultBuyingCostCenter);
 		
-		txtDefaultBuyingCostCenter = new NumberField(3);
-		txtDefaultBuyingCostCenter.setBounds(220, 805, 150, 25);
-		txtDefaultBuyingCostCenter.setEnabled(false);
-		panel.add(txtDefaultBuyingCostCenter);
+		cbDefaultBuyingCostCenter = new ComboBox<Object>();
+		cbDefaultBuyingCostCenter.setList(new ArrayList<>());
+		cbDefaultBuyingCostCenter.setBounds(220, 805, 150, 25);
+		cbDefaultBuyingCostCenter.setEnabled(true);
+		panel.add(cbDefaultBuyingCostCenter);
 		
 		lblDefaultBuyingExpenseAccount = new JLabel("<html>Default Expense Account</html>");
 		lblDefaultBuyingExpenseAccount.setBounds(50, 835, 150, 25);
 		panel.add(lblDefaultBuyingExpenseAccount);
 		
-		txtDefaultBuyingExpenseAccount = new NumberField(3);
-		txtDefaultBuyingExpenseAccount.setBounds(220, 835, 150, 25);
-		txtDefaultBuyingExpenseAccount.setEnabled(false);
-		panel.add(txtDefaultBuyingExpenseAccount);
+		cbDefaultBuyingExpenseAccount = new ComboBox<Object>();
+		cbDefaultBuyingExpenseAccount.setList(new ArrayList<>());
+		cbDefaultBuyingExpenseAccount.setBounds(220, 835, 150, 25);
+		cbDefaultBuyingExpenseAccount.setEnabled(true);
+		panel.add(cbDefaultBuyingExpenseAccount);
 	}
 	
 	
@@ -523,12 +564,272 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		scrollPaneUomConversion.setViewportView(tblUomConversion);
 	}
 	
+	public void doAddSalesInformation() {
+		lblHeaderSalesInformation = new JLabel("Sales Information");
+		lblHeaderSalesInformation.setBounds(50, 1065, 200, 25);
+		lblHeaderSalesInformation.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panel.add(lblHeaderSalesInformation);
+		
+		lblSalesItem = new JLabel("<html>Flag Sales Item</html>");
+		lblSalesItem.setBounds(50, 1095, 150, 25);
+		panel.add(lblSalesItem);
+		
+		salesItem = new ButtonGroup();
+		salesItemYesField = new JRadioButton("Ya");
+		salesItemYesField.setSelected(false);
+		salesItemYesField.setBounds(220, 1095, 50, 25);
+
+		salesItemNoField = new JRadioButton("Tidak");
+		salesItemNoField.setSelected(true);
+		salesItemNoField.setBounds(290, 1095, 50, 25);
+
+		salesItem.add(salesItemYesField);
+		salesItem.add(salesItemNoField);
+		
+		panel.add(salesItemYesField);
+		panel.add(salesItemNoField);
+		
+		lblServiceItem = new JLabel("<html>Flag Service Item</html>");
+		lblServiceItem.setBounds(50, 1125, 150, 25);
+		panel.add(lblServiceItem);
+		
+		serviceItem = new ButtonGroup();
+		serviceItemYesField = new JRadioButton("Ya");
+		serviceItemYesField.setSelected(false);
+		serviceItemYesField.setBounds(220, 1125, 50, 25);
+
+		serviceItemNoField = new JRadioButton("Tidak");
+		serviceItemNoField.setSelected(true);
+		serviceItemNoField.setBounds(290, 1125, 50, 25);
+
+		serviceItem.add(serviceItemYesField);
+		serviceItem.add(serviceItemNoField);
+		
+		panel.add(serviceItemYesField);
+		panel.add(serviceItemNoField);
+		
+		lblDefaultSellingCostCenter = new JLabel("<html>Default Selling Cost Center</html>");
+		lblDefaultSellingCostCenter.setBounds(50, 1155, 150, 25);
+		panel.add(lblDefaultSellingCostCenter);
+		
+		cbDefaultSellingCostCenter = new ComboBox<Object>();
+		cbDefaultSellingCostCenter.setList(new ArrayList<>());
+		cbDefaultSellingCostCenter.setBounds(220, 1155, 150, 25);
+		cbDefaultSellingCostCenter.setEnabled(true);
+		panel.add(cbDefaultSellingCostCenter);
+		
+		lblDefaultIncomeAccount = new JLabel("<html>Default Income Account</html>");
+		lblDefaultIncomeAccount.setBounds(50, 1185, 150, 25);
+		panel.add(lblDefaultIncomeAccount);
+		
+		cbDefaultIncomeAccount = new ComboBox<Object>();
+		cbDefaultIncomeAccount.setList(new ArrayList<>());
+		cbDefaultIncomeAccount.setBounds(220, 1185, 150, 25);
+		cbDefaultIncomeAccount.setEnabled(true);
+		panel.add(cbDefaultIncomeAccount);
+		
+		lblDefaultAsset = new JLabel("<html>Default Asset</html>");
+		lblDefaultAsset.setBounds(50, 1215, 150, 25);
+		panel.add(lblDefaultAsset);
+		
+		cbDefaultAsset = new ComboBox<Object>();
+		cbDefaultAsset.setList(new ArrayList<>());
+		cbDefaultAsset.setBounds(220, 1215, 150, 25);
+		cbDefaultAsset.setEnabled(true);
+		panel.add(cbDefaultAsset);
+		
+		lblMaximumDiscount = new JLabel("<html>Diskon Maximum</html>");
+		lblMaximumDiscount.setBounds(50, 1275, 150, 25);
+		panel.add(lblMaximumDiscount);
+		
+		txtMaximumDiscount = new NumberField(6);
+		txtMaximumDiscount.setBounds(220, 1275, 150, 25);
+		txtMaximumDiscount.setEnabled(true);
+		panel.add(txtMaximumDiscount);
+		
+		lblErrorMaximumDiscount = new JLabel();
+		lblErrorMaximumDiscount.setForeground(Color.RED);
+		lblErrorMaximumDiscount.setBounds(425, 1275, 225, 25);
+		panel.add(lblErrorMaximumDiscount);
+		
+		lblTax = new JLabel("<html>Tax</html>");
+		lblTax.setBounds(50, 1305, 150, 25);
+		panel.add(lblTax);
+		
+		cbTax = new ComboBox<Object>();
+		cbTax.setList(new ArrayList<>());
+		cbTax.setBounds(220, 1305, 150, 25);
+		cbTax.setEnabled(true);
+		panel.add(cbTax);
+		
+		lblErrorTax = new JLabel();
+		lblErrorTax.setForeground(Color.RED);
+		lblErrorTax.setBounds(425, 1305, 225, 25);
+		panel.add(lblErrorTax);
+	}
+	
+	public void doAddButton() {
+		btnSave = new JButton("Simpan");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (doValidate() == false) {
+					return;
+				} else {
+					int response = DialogBox.showInsertChoice();
+					if (response == JOptionPane.YES_OPTION) {
+						boolean isExists = false;
+						try {
+							if (ServiceFactory.getProductSupportingGoodBL().isProductNameExists(txtProductName.getText()) > 0) {
+								int mes = JOptionPane.showConfirmDialog(null,
+										"Nama Produk sudah pernah diinput. Apakah Anda ingin tetap menyimpan data?",
+										"Warning", JOptionPane.YES_NO_OPTION);
+								if (mes == JOptionPane.YES_OPTION) {
+									isExists = false;
+								} else {
+									isExists = true;
+								}
+							}
+						} catch (SQLException e1) {
+							LOGGER.error(e1.getMessage());
+							DialogBox.showErrorException();
+							isExists = true;
+						}
+
+						if (isExists == false) {
+							doSave();
+						}
+					}
+				}
+			}
+		});
+		btnSave.setBounds(925, 1345, 100, 25);
+		panel.add(btnSave);
+
+		btnCancel = new JButton("Kembali");
+		btnCancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				 int response = DialogBox.showCloseChoice();
+				 if (response == JOptionPane.YES_OPTION) {
+					 MainPanel.changePanel("module.productsupportinggood.ui.ProductSupportingGoodListPanel");
+				 }
+				
+			}
+		});
+		btnCancel.setBounds(50, 1345, 100, 25);
+		btnCancel.setFocusable(false);
+		panel.add(btnCancel);
+	}
+	
+	protected boolean doValidate() {
+		boolean isValid = true;
+
+		lblErrorProductCode.setText("");
+		lblErrorProductName.setText("");
+		lblErrorProductCategory.setText("");
+		lblErrorProductUom.setText("");
+		
+
+		if (txtProductCode.getText() == null || txtProductCode.getText().length() == 0) {
+			lblErrorProductCode.setText("Textbox Kode Produk harus diisi.");
+			isValid = false;
+		} else {
+			try {
+				if (ServiceFactory.getProductSupportingGoodBL().isProductCodeExists(txtProductCode.getText()) > 0) {
+					lblErrorProductCode.setText("Kode Produk sudah pernah diinput.");
+					isValid = false;
+				}
+			} catch (SQLException e) {
+				LOGGER.error(e.getMessage());
+				DialogBox.showErrorException();
+				isValid = false;
+			}
+		}
+
+		if (txtProductName.getText() == null || txtProductName.getText().length() == 0) {
+			lblErrorProductName.setText("Textbox Nama Produk harus diisi.");
+			isValid = false;
+		}
+
+		if (cbProductCategory.getSelectedItem() == null || cbProductCategory.getSelectedIndex() == 0) {
+			lblErrorProductCategory.setText("Combobox Kategori Produk harus dipilih.");
+			isValid = false;
+		}
+
+		if (cbProductUom.getSelectedItem() == null || cbProductUom.getSelectedIndex() == 0) {
+			lblErrorProductUom.setText("Combobox Satuan Produk harus dipilih.");
+			isValid = false;
+		}
+
+		if (!"".equals(txtMaximumDiscount.getText())) {
+			if (Double.valueOf(txtMaximumDiscount.getText()) > 100.00) {
+				lblErrorMaximumDiscount.setText("Diskon Maksimum tidak lebih dari 100%");
+				isValid = false;
+			}
+		}
+		
+		return isValid;
+	}
+	
+	public void doSave() {
+		productSupp = new ProductSupp();
+		
+		//header
+		productSupp.setProductCode(txtProductCode.getText());
+		productSupp.setProductName(txtProductName.getText());
+		productSupp.setProductCategoryId(cbProductCategory.getDataIndex().getId());
+		productSupp.setProductUomId(cbProductUom.getDataIndex().getId());
+		productSupp.setIsMaintainStock(maintainYesField.isSelected() ? 0 : 1);
+		
+		//deskripsi
+		productSupp.setBarcode(txtBarcode.getText());
+		productSupp.setDescription(txtDescription.getText());
+		
+		//atribute product
+		productSupp.setLength("".equals(txtLength.getText()) ? null : BigDecimal.valueOf(Double.valueOf(txtLength.getText())));
+		productSupp.setWidth("".equals(txtWidth.getText()) ? null : BigDecimal.valueOf(Double.valueOf(txtWidth.getText())));
+		productSupp.setThickness("".equals(txtThickness.getText()) ? null : BigDecimal.valueOf(Double.valueOf(txtThickness.getText())));
+		productSupp.setWeightNet("".equals(txtWeightNet.getText()) ? null : BigDecimal.valueOf(Double.valueOf(txtWeightNet.getText())));
+		productSupp.setWeightGross("".equals(txtWeightGross.getText()) ? null : BigDecimal.valueOf(Double.valueOf(txtWeightGross.getText())));
+		productSupp.setVolumeUomId(cbVolumeUom.getDataIndex().getId());
+		productSupp.setWeightUomId(cbWeightUom.getDataIndex().getId());
+		
+		//inventory
+		productSupp.setIsFixedAsset(fixedAssetYesField.isSelected() ? 0 : 1);
+		productSupp.setWarranty("".equals(txtWarranty.getText()) ? null : Integer.valueOf(txtWarranty.getText()));
+		
+		//purchase information
+		productSupp.setIsPurchaseItem(purchaseItemYesField.isSelected() ? 0 : 1);
+		productSupp.setMinor("".equals(txtMininumOrder.getText()) ? null : Integer.valueOf(txtMininumOrder.getText()));
+		productSupp.setMinorUomId(Integer.valueOf(cbMininumUom.getDataIndex().getId()));
+		productSupp.setLeadTime("".equals(txtLeadTime.getText()) ? null : Integer.valueOf(txtLeadTime.getText()));
+		productSupp.setBuyCostCenterId(null);
+		productSupp.setExpenseAccId(null);
+		
+		//sales information
+		productSupp.setIsSalesItem(salesItemYesField.isSelected() ? 0 : 1);
+		productSupp.setIsServiceItem(serviceItemYesField.isSelected() ? 0 : 1);
+		productSupp.setSellCostCenterId(null);
+		productSupp.setIncomeAccId(null);
+		productSupp.setMaxDisc("".equals(txtMaximumDiscount.getText()) ? null : BigDecimal.valueOf(Double.valueOf(txtMaximumDiscount.getText())));
+		productSupp.setTaxId(null);
+		
+		try {
+			ServiceFactory.getProductSupportingGoodBL().save(productSupp);
+			DialogBox.showInsert();
+			MainPanel.changePanel("module.productsupportinggood.ui.ProductSupportingGoodListPanel");
+		} catch (SQLException e) {
+			LOGGER.error(e.getMessage());
+			DialogBox.showErrorException();
+		}
+	}
+	
 	
 	public List<ProductCategory> getAllProductCategory() {
 		List<ProductCategory> listOfProductCategory = null;
 		try {
 			listOfProductCategory = new ArrayList<ProductCategory>();
-			//listOfProductCategory = ServiceFactory.getProductSuppGoodBL().getAllProductCategory();
+			listOfProductCategory = ServiceFactory.getProductSupportingGoodBL().getAllProductCategory();
 			listOfProductCategory.add(0, new ProductCategory("-- Pilih Kategori Produk --"));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
@@ -542,7 +843,7 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		List<Uom> listOfProductUom = null;
 		try {
 			listOfProductUom = new ArrayList<Uom>();
-			//listOfProductUom = ServiceFactory.getProductSuppGoodBL().getAllProductUom();
+			listOfProductUom = ServiceFactory.getProductSupportingGoodBL().getAllUom();
 			listOfProductUom.add(0, new Uom("-- Pilih Satuan Produk --"));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
@@ -550,6 +851,33 @@ public class ProductSupportingGoodCreatePanel extends JPanel implements Bridging
 		}
 		
 		return listOfProductUom;
+	}
+	
+	public void makeCodeNumber(String productCategory) {
+		String constantProductCategory = "";
+
+		if (AppConstants.BALKEN_BASAH.equalsIgnoreCase(productCategory)) {
+			constantProductCategory = AppConstants.BALKEN_BASAH_CD;
+		} else if (AppConstants.BALKEN_KERING.equalsIgnoreCase(productCategory)) {
+			constantProductCategory = AppConstants.BALKEN_KERING_CD;
+		} else if (AppConstants.HASIL_PRODUKSI.equalsIgnoreCase(productCategory)) {
+			constantProductCategory = AppConstants.HASIL_PRODUKSI_CD;
+		} else if (AppConstants.BARANG_PENDUKUNG.equalsIgnoreCase(productCategory)) {
+			constantProductCategory = AppConstants.BARANG_PENDUKUNG_CD;
+		}  else {
+			constantProductCategory = AppConstants.PRODUCT_SUPP_1_CD;
+		}
+
+		String ordinal = null;
+		try {
+			ordinal = ServiceFactory.getProductSupportingGoodBL().getOrdinalOfCodeNumber(productCategory);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			LOGGER.error(e.getMessage());
+			DialogBox.showErrorException();
+		}
+
+		txtProductCode.setText(new StringBuilder().append(constantProductCategory).append("-").append(ordinal).toString());
 	}
 	
 	/**

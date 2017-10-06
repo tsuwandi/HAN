@@ -120,6 +120,7 @@ public class MenuPanel extends JPanel {
 		
 		menu.addNewMenu("Penjualan", "Penjualan");
 		menu.addNewLeafTo("Penjualan", "Customer", "Customer", "module.customer.ui.CustomerListPanel");
+		menu.addNewLeafTo("Penjualan", "Sales", "Sales", "module.sales.ui.SalesListPanel");
 		menu.calculateAvaiableSpace();
 		
 		setMouseAdapter(menu);

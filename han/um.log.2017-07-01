@@ -1,5 +1,0 @@
-2017-07-01 15:43:50,107 [AWT-EventQueue-0] ERROR (ListMasterShiftPanel.java:113) - 
-2017-07-01 19:03:46,875 [AWT-EventQueue-0] ERROR (CustomerListPanel.java:178) - Unknown column 's.cust_code' in 'where clause'
-2017-07-01 19:06:01,763 [AWT-EventQueue-0] ERROR (CustomerAdvSearchDialog.java:98) - Unknown column 's.supp_code' in 'where clause'
-2017-07-01 19:06:28,129 [AWT-EventQueue-0] ERROR (CustomerAdvSearchDialog.java:98) - Unknown column 'c.supp_code' in 'where clause'
-2017-07-01 22:51:26,339 [AWT-EventQueue-0] INFO (RekapKayuMasukReportDialog.java:71) - START FORM REPORT DIALOG.

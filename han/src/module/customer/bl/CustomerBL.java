@@ -7,8 +7,10 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import module.customer.dao.CustomerAddressDAO;
+import module.customer.dao.CustomerBankDAO;
 import module.customer.dao.CustomerDAO;
 import module.customer.model.CustAddress;
+import module.customer.model.CustBank;
 import module.customer.model.Customer;
 import module.sn.bank.dao.BankDAO;
 import module.sn.bank.model.Bank;
@@ -120,7 +122,7 @@ public class CustomerBL {
 		}
 	}
 
-	public void save(Customer customer, List<CustAddress> custAddress) throws SQLException {
+	public void save(Customer customer, List<CustAddress> custAddress, List<CustBank> custBank) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -133,6 +135,12 @@ public class CustomerBL {
 				s = new CustomerAddressDAO(con).save(s);
 			}
 
+			for (CustBank b : custBank) {
+				b.setCustCode(customer.getCustCode());
+				b.setCustId(0);
+				b = new CustomerBankDAO(con).save(b);
+			}
+
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
@@ -142,8 +150,8 @@ public class CustomerBL {
 		}
 	}
 
-	public void update(Customer customer, List<CustAddress> custAddress, List<CustAddress> custAddressDeleted)
-			throws SQLException {
+	public void update(Customer customer, List<CustAddress> custAddress, List<CustAddress> custAddressDeleted,
+			List<CustBank> custBanks, List<CustBank> custBanksDeleted) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -163,6 +171,21 @@ public class CustomerBL {
 			for (CustAddress s : custAddressDeleted) {
 				if (s.getId() != 0) {
 					new CustomerAddressDAO(con).deleteById(s.getId());
+				}
+			}
+
+			for (CustBank s : custBanks) {
+				if (s.getId() == 0) {
+					s.setCustCode(customer.getCustCode());
+					s = new CustomerBankDAO(con).save(s);
+				} else {
+					new CustomerBankDAO(con).update(s);
+				}
+			}
+
+			for (CustBank s : custBanksDeleted) {
+				if (s.getId() != 0) {
+					new CustomerBankDAO(con).deleteById(s.getId());
 				}
 			}
 
@@ -209,6 +232,16 @@ public class CustomerBL {
 		try {
 			con = dataSource.getConnection();
 			return new CustomerAddressDAO(con).getAllByCustCode(custCode);
+		} finally {
+			con.close();
+		}
+	}
+
+	public List<CustBank> getCustBankByCustCode(String custCode) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new CustomerBankDAO(con).getAllByCustCode(custCode);
 		} finally {
 			con.close();
 		}
