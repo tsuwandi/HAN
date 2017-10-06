@@ -393,9 +393,9 @@ public class ViewMasterShiftPanel extends JPanel implements Bridging {
 				paddingTop=80;
 				paddingLine=i-18;
 			}
-			else if(i>27){
+			else if(i>26){
 				paddingTop=120;
-				paddingLine=i-28;
+				paddingLine=i-27;
 			}
 			JCheckBox checkbox = new JCheckBox(i+1+"");
 			checkbox.setBounds(20+(paddingLine*paddingRight),50+paddingTop,40,20);
