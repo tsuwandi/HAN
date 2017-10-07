@@ -76,6 +76,7 @@ public class SalesEditPanel extends JPanel implements Bridging {
 	JLabel lblFreightCost;
 	JLabel lblInsuranceCost;
 	JLabel lblVat;
+	JLabel lblVatPercentage;
 	JLabel lblFcCurrency;
 	JLabel lblIcCurrency;
 	JLabel lblTotalWeight;
@@ -496,6 +497,10 @@ public class SalesEditPanel extends JPanel implements Bridging {
 		txtVat = new NumberField(3);
 		txtVat.setBounds(220, 690, 150, 25);
 		panel.add(txtVat);
+		
+		lblVatPercentage = new JLabel("%");
+		lblVatPercentage.setBounds(390, 690, 225, 25);
+		panel.add(lblVatPercentage);
 
 		lblErrorVat = new JLabel();
 		lblErrorVat.setForeground(Color.RED);
@@ -546,7 +551,7 @@ public class SalesEditPanel extends JPanel implements Bridging {
 		((AbstractDocument) txtGrossAmount.getDocument()).setDocumentFilter(filter);
 		panel.add(txtGrossAmount);
 
-		lblNettAmount = new JLabel("Nett Amount");
+		lblNettAmount = new JLabel("Net Amount");
 		lblNettAmount.setBounds(50, 840, 150, 25);
 		panel.add(lblNettAmount);
 
@@ -921,7 +926,7 @@ public class SalesEditPanel extends JPanel implements Bridging {
 			case 4:
 				return "QTY";
 			case 5:
-				return "Nett Price";
+				return "Net Price";
 			case 6:
 				return "Total Price";
 			case 7:

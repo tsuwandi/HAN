@@ -25,8 +25,8 @@ import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import module.pembelian.model.Product;
-import module.sn.uom.model.Uom;
 import module.sales.model.SalesDetail;
+import module.sn.uom.model.Uom;
 
 public class SalesDetailDialog extends JDialog {
 
@@ -49,6 +49,7 @@ public class SalesDetailDialog extends JDialog {
 	NumberField txtNettPrice;
 
 	JButton btnInsert;
+	JButton btnSelectProduct;
 
 	JLabel lblErrorProductCode;
 	JLabel lblErrorOrderQty;
@@ -56,12 +57,16 @@ public class SalesDetailDialog extends JDialog {
 
 	private boolean isEdit;
 	private boolean isView;
-	private SalesDetail salesDetail;
+	protected SalesDetail salesDetail;
+	private SalesDetailDialog salesDetailDialog;
 	private SalesCreatePanel salesCreate;
 	private SalesEditPanel salesEdit;
 	private SalesViewPanel salesView;
 
 	private Integer index;
+
+	Product product;
+	Uom uom;
 
 	public SalesDetailDialog(boolean edit, SalesDetail salesDetail, SalesCreatePanel salesCreate, Integer index) {
 		this.isEdit = edit;
@@ -91,6 +96,7 @@ public class SalesDetailDialog extends JDialog {
 	}
 
 	public void init() {
+		salesDetailDialog = this;
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 540, 310);
@@ -111,14 +117,14 @@ public class SalesDetailDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Product product = new Product();
-					Uom uom = new Uom();
+					product = new Product();
+					uom = new Uom();
 
 					product = ServiceFactory.getSalesBL().getProductByCode(txtProductCode.getText());
 					if (product == null) {
 						txtProductName.setText("");
 						txtUom.setText("");
-						
+
 						salesDetail = new SalesDetail();
 					} else {
 						txtProductName.setText(product.getProductName());
@@ -126,7 +132,7 @@ public class SalesDetailDialog extends JDialog {
 						salesDetail.getProduct().setLength(product.getLength());
 						salesDetail.getProduct().setWidth(product.getWidth());
 						salesDetail.getProduct().setThickness(product.getThickness());
-						
+
 						uom = ServiceFactory.getSalesBL().getUomByProductUomId(product.getProductUomId());
 						txtUom.setText(uom.getUom());
 					}
@@ -140,9 +146,18 @@ public class SalesDetailDialog extends JDialog {
 		((AbstractDocument) txtProductCode.getDocument()).setDocumentFilter(filter);
 		getContentPane().add(txtProductCode);
 
+		btnSelectProduct = new JButton("...");
+		btnSelectProduct.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showProductListDialog(salesDetailDialog);
+			}
+		});
+		btnSelectProduct.setBounds(335, 15, 50, 25);
+		getContentPane().add(btnSelectProduct);
+
 		lblErrorProductCode = new JLabel();
 		lblErrorProductCode.setForeground(Color.RED);
-		lblErrorProductCode.setBounds(335, 15, 225, 25);
+		lblErrorProductCode.setBounds(400, 15, 225, 25);
 		getContentPane().add(lblErrorProductCode);
 
 		lblProductName = new JLabel("Nama Product");
@@ -182,7 +197,7 @@ public class SalesDetailDialog extends JDialog {
 		lblErrorOrderQty.setBounds(335, 155, 200, 25);
 		getContentPane().add(lblErrorOrderQty);
 
-		lblNettPrice = new JLabel("<html>Nett Price <font color=\"red\">*</font></html>");
+		lblNettPrice = new JLabel("<html>Net Price <font color=\"red\">*</font></html>");
 		lblNettPrice.setBounds(25, 185, 150, 25);
 		getContentPane().add(lblNettPrice);
 
@@ -254,8 +269,8 @@ public class SalesDetailDialog extends JDialog {
 		salesDetail.setQuantity(Integer.parseInt(txtOrderQty.getText()));
 		salesDetail.setNettPrice(Double.parseDouble(txtNettPrice.getText()));
 		salesDetail.setTotalPrice(salesDetail.getQuantity() * salesDetail.getNettPrice());
-		salesDetail.setTotalVolume(salesDetail.getQuantity() * salesDetail.getProduct().getLength() * salesDetail.getProduct().getWidth()
-				* salesDetail.getProduct().getThickness());
+		salesDetail.setTotalVolume(salesDetail.getQuantity() * salesDetail.getProduct().getLength()
+				* salesDetail.getProduct().getWidth() * salesDetail.getProduct().getThickness());
 
 		try {
 			if (isEdit == false) {
@@ -291,5 +306,15 @@ public class SalesDetailDialog extends JDialog {
 		}
 
 		dispose();
+	}
+
+	/**
+	 * Method to display add product select dialog
+	 */
+	protected void showProductListDialog(SalesDetailDialog salesDetailDialog) {
+		ProductListDialog productListDialog = new ProductListDialog(salesDetailDialog);
+		productListDialog.setTitle("Product");
+		productListDialog.setLocationRelativeTo(null);
+		productListDialog.setVisible(true);
 	}
 }

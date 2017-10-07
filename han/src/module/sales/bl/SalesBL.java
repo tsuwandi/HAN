@@ -291,4 +291,24 @@ public class SalesBL {
 			con.close();
 		}
 	}
+
+	public List<Product> getAllProduct() throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new SalesDAO(con).getAllProduct();
+		} finally {
+			con.close();
+		}
+	}
+
+	public List<Product> getSearchProduct(String value) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new SalesDAO(con).getAllProductBySimpleSearch(value);
+		} finally {
+			con.close();
+		}
+	}
 }

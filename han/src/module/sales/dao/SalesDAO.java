@@ -35,14 +35,11 @@ public class SalesDAO {
 			+ "cur.id as currency_id, cur.currency as currency_name, cur.currency_abbr as currency_abbr, "
 			+ "fcur.id as fcurrency_id, fcur.currency as fcurrency_name, fcur.currency_abbr as fcurrency_abbr, "
 			+ "icur.id as icurrency_id, icur.currency as icurrency_name, icur.currency_abbr as icurrency_abbr, "
-			+ "ca.id as ca_id, ca.name as ca_name, ca.address as ca_address "
-			+ "from sales s "
-			+ "inner join customer c on s.customer_id = c.id "
-			+ "inner join cust_addr ca on s.cust_addr_id = ca.id "
+			+ "ca.id as ca_id, ca.name as ca_name, ca.address as ca_address " + "from sales s "
+			+ "inner join customer c on s.customer_id = c.id " + "inner join cust_addr ca on s.cust_addr_id = ca.id "
 			+ "inner join currency cur on s.currency_id = cur.id "
 			+ "inner join currency fcur on s.freight_cost_currency_id = fcur.id "
-			+ "inner join currency icur on s.insurance_cost_currency_id = icur.id "
-			+ "where s.deleted_date is null "
+			+ "inner join currency icur on s.insurance_cost_currency_id = icur.id " + "where s.deleted_date is null "
 			+ "and c.deleted_date is null";
 
 	private String isCustCodeExistsQuery = "select count(*) as is_exists from customer where cust_code = ? and deleted_date is null ";
@@ -70,6 +67,8 @@ public class SalesDAO {
 	private String getAllByCustCodeQuery = "select id, cust_code, cust_id, name, "
 			+ "addr_type, address, zip_code, email, " + "city, phone, fax, province "
 			+ "from cust_addr where cust_code = ? " + "and deleted_date is null";
+
+	private String getAllProductQuery = "SELECT id, product_code, product_name, product_uom_id, length, width, thickness, product_uom_id FROM product WHERE deleted_date is null";
 
 	public SalesDAO(Connection connection) throws SQLException {
 		this.connection = connection;
@@ -102,7 +101,7 @@ public class SalesDAO {
 				sale.setDescription(rs.getString("description"));
 				sale.setInputBy(rs.getString("input_by"));
 				sale.setInputDate(rs.getDate("input_date"));
-				
+
 				Customer customer = new Customer();
 				customer.setId(rs.getInt("customer_id"));
 				customer.setCustName(rs.getString("customer_name"));
@@ -276,7 +275,7 @@ public class SalesDAO {
 
 	public void update(Sales sales) throws SQLException {
 		try {
-			
+
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setInt(1, sales.getCustAddrId());
 			updateStatement.setInt(2, sales.getCurrencyId());
@@ -342,12 +341,12 @@ public class SalesDAO {
 				sales.setDescription(rs.getString("description"));
 				sales.setInputBy(rs.getString("input_by"));
 				sales.setInputDate(rs.getDate("input_date"));
-				
+
 				Customer customer = new Customer();
 				customer.setId(rs.getInt("customer_id"));
 				customer.setCustCode(rs.getString("customer_code"));
 				customer.setCustName(rs.getString("customer_name"));
-				
+
 				CustAddress custAddress = new CustAddress();
 				custAddress.setId(rs.getInt("ca_id"));
 				custAddress.setName(rs.getString("ca_name"));
@@ -357,12 +356,12 @@ public class SalesDAO {
 				currency.setId(rs.getInt("currency_id"));
 				currency.setCurrencyAbbr(rs.getString("currency_abbr"));
 				currency.setCurrency(rs.getString("currency_name"));
-				
+
 				Currency FCurrency = new Currency();
 				FCurrency.setId(rs.getInt("fcurrency_id"));
 				FCurrency.setCurrencyAbbr(rs.getString("fcurrency_abbr"));
 				FCurrency.setCurrency(rs.getString("fcurrency_name"));
-				
+
 				Currency ICurrency = new Currency();
 				ICurrency.setId(rs.getInt("icurrency_id"));
 				ICurrency.setCurrencyAbbr(rs.getString("icurrency_abbr"));
@@ -511,8 +510,9 @@ public class SalesDAO {
 	}
 
 	public Uom getUomByProductUomId(int productUomId) throws SQLException {
-		Uom uom = null;
+		Uom uom = new Uom();
 		String query = new StringBuilder().append(selectUomByProductUomQuery).toString();
+
 		try {
 			getAllStatement = connection.prepareStatement(query);
 			getAllStatement.setInt(1, productUomId);
@@ -527,7 +527,66 @@ public class SalesDAO {
 		} catch (SQLException ex) {
 			throw new SQLException(ex.getMessage());
 		}
-
+		
 		return uom;
+	}
+
+	public List<Product> getAllProduct() throws SQLException {
+
+		List<Product> products = new ArrayList<Product>();
+
+		try {
+			getAllStatement = connection.prepareStatement(getAllProductQuery);
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				Product product = new Product();
+				product.setId(rs.getInt("id"));
+				product.setProductName(rs.getString("product_name"));
+				product.setProductCode(rs.getString("product_code"));
+				product.setLength(rs.getDouble("length"));
+				product.setWidth(rs.getDouble("width"));
+				product.setThickness(rs.getDouble("thickness"));
+				product.setProductUomId(rs.getInt("product_uom_id"));
+				products.add(product);
+			}
+
+		} catch (SQLException ex) {
+			throw new SQLException(ex.getMessage());
+		}
+		return products;
+	}
+
+	public List<Product> getAllProductBySimpleSearch(String value) throws SQLException {
+		ArrayList<Product> products = new ArrayList<Product>();
+		try {
+
+			if (null != value && !"".equals(value)) {
+				String keyword = new StringBuilder().append("%").append(value).append("%").toString();
+				String query = new StringBuilder().append(getAllProductQuery).append(" and")
+						.append(" lower(product_code) like lower('%s')")
+						.append(" or lower(product_name) like lower('%s')").toString();
+				getAllStatement = connection.prepareStatement(String.format(query, keyword, keyword, keyword));
+			} else {
+				getAllStatement = connection.prepareStatement(getAllProductQuery);
+			}
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				Product product = new Product();
+				product.setId(rs.getInt("id"));
+				product.setProductName(rs.getString("product_name"));
+				product.setProductCode(rs.getString("product_code"));
+				product.setLength(rs.getDouble("length"));
+				product.setWidth(rs.getDouble("width"));
+				product.setThickness(rs.getDouble("thickness"));
+				product.setProductUomId(rs.getInt("product_uom_id"));
+				products.add(product);
+			}
+
+		} catch (SQLException ex) {
+			throw new SQLException(ex.getMessage());
+		}
+		return products;
 	}
 }
