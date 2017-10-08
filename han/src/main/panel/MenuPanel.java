@@ -96,6 +96,7 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Personalia", "Absensi", "Absensi", "module.personalia.ui.AttendanceConfigPanel");
 		menu.addNewLeafTo("Personalia", "Import FingerPrint", "Import FingerPrint", "module.personalia.ui.ListFilesAttendancePanel");
 		menu.addNewLeafTo("Personalia", "Hitung Gaji", "Hitung Gaji", "module.salary.ui.CalculateSalaryPanel");
+		menu.addNewLeafTo("Personalia", "Karyawan ", "Karyawan ", "module.employeemanagement.ui.ListEmployeePanel");
 		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Payroll", "Payroll");
