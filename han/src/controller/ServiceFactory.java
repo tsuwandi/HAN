@@ -5,6 +5,8 @@ import module.dailyclosing.bl.DailyClosingBL;
 import module.dryin.bl.DryInBL;
 import module.dryout.bl.DryOutBL;
 import module.employee.bl.EmployeeBL;
+import module.employeemanagement.bl.EmployeeManagementBL;
+import module.employeemanagement.dao.EmployeeDAO;
 import module.invoicebalken.bl.InvoiceBalkenBL;
 import module.invoiceprodresult.bl.InvoiceProductResultBL;
 import module.mastershift.bl.MasterShiftBL;
@@ -62,6 +64,7 @@ public class ServiceFactory {
 	private static MasterShiftBL masterShiftBL = null;
 	private static CalculateSalaryBL calculateSalaryBL = null;
 	private static ProductSupportingGoodBL productSupportingGoodBL = null;
+	private static EmployeeManagementBL employeeManagementBL = null;
 	
 	
 	/**
@@ -303,6 +306,15 @@ public class ServiceFactory {
 		}
 		return productSupportingGoodBL;
 	}
+	
+	public static EmployeeManagementBL getEmployeeManagementBL() {
+		if (employeeManagementBL == null) {
+			employeeManagementBL = new EmployeeManagementBL(DataSourceFactory.getDataSource());
+		}
+		return employeeManagementBL;
+	}
+	
+	
 	
 	
 }

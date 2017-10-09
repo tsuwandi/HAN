@@ -29,17 +29,19 @@ import org.apache.log4j.Logger;
 
 import com.toedter.calendar.JDateChooser;
 
+import controller.ServiceFactory;
 import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.TextArea;
 import main.component.TextField;
+import main.panel.MainPanel;
 import module.employeemanagement.model.Employee;
+import module.util.Bridging;
 import module.util.EmailValidator;
 
-public class CreateEmployeePanel extends JPanel {
+public class CreateEmployeePanel extends JPanel implements Bridging{
 
 	private static final long serialVersionUID = 1L;
-	
 	Logger log = LogManager.getLogger(CreateEmployeePanel.class.getName());
 	private JLabel empCodeLbl;
 	private JLabel empFNameLbl;
@@ -188,7 +190,7 @@ public class CreateEmployeePanel extends JPanel {
 		
 		empLNameLbl = new JLabel("<html>Nama Akhir<font color='red'></font></html>");
 		empLNameLbl.setBounds(30,200,150,20);
-		containerPnl.add(empFNameLbl);
+		containerPnl.add(empLNameLbl);
 		
 		lNameField = new TextField();
 		lNameField.setBounds(180,200,150,20);
@@ -275,7 +277,7 @@ public class CreateEmployeePanel extends JPanel {
 		containerPnl.add(emailField);
 		
 		emailErrorLbl = new JLabel();
-		emailErrorLbl.setBounds(30,540,150,20);
+		emailErrorLbl.setBounds(340,540,150,20);
 		containerPnl.add(emailErrorLbl);
 		
 		phoneNumberLbl = new JLabel("<html>Nomor Telpon<font color='red'>*</font></html>");
@@ -454,6 +456,8 @@ public class CreateEmployeePanel extends JPanel {
 		maritalMap.put(2, "Nikah");
 		maritalMap.put(3, "Duda/Janda");
 		
+		empCodeField.setText(ServiceFactory.getEmployeeManagementBL().lastEmpCode());
+		
 	}
 	
 	private void listener(){
@@ -497,7 +501,7 @@ public class CreateEmployeePanel extends JPanel {
 	
 	private void save(){
 		int error = 0 ;
-		if(empFNameLbl.getText().equals("")){
+		if(fNameField.getText().equals("")){
 			empFNameErrorLbl.setText("<html><font color='red'>Nama pertama harus diisi!</font></html>");
 			error++;
 		}else{
@@ -655,7 +659,11 @@ public class CreateEmployeePanel extends JPanel {
 				emp.setBankAccount(bankAccountNoField.getText());
 				emp.setRfid(Long.valueOf(rfidField.getText()));
 				emp.setStatus(statusActive.isSelected() ? 1 : 2);
-				emp.setImage(writePhoto());
+				emp.setImage(getFileName());
+				ServiceFactory.getEmployeeManagementBL().save(emp);
+				writePhoto();
+				DialogBox.showInsert();
+				MainPanel.changePanel("module.employeemanagement.ui.ListEmployeePanel");
 			} catch (IOException e) {
 				DialogBox.showError("Cannot Write Image");
 				e.printStackTrace();
@@ -663,17 +671,19 @@ public class CreateEmployeePanel extends JPanel {
 		}
 		
 	}
+
 	
-	private String writePhoto() throws IOException{
+	private String getFileName() {
+		return empCodeField.getText()+"-"+fNameField.getText()+"."+getFileExtension(photoChooser.getSelectedFile());
+	}
+	
+	private void writePhoto()throws IOException{
 		File file = photoChooser.getSelectedFile();
 		File fileOutput = new File("image/");
 		fileOutput.mkdirs();
 		BufferedImage image = null;
 		image = ImageIO.read(file);
-		String fileName = empCodeField.getText()+"-"+fNameField.getText()+"."+getFileExtension(file);
-		ImageIO.write(image, getFileExtension(file), new File("image/"+fileName));
-		
-		return fileName;
+		ImageIO.write(image, getFileExtension(file), new File("image/"+getFileName()));
 	}
 	
 	private String getFileExtension(File file) {
@@ -682,6 +692,11 @@ public class CreateEmployeePanel extends JPanel {
         return fileName.substring(fileName.lastIndexOf(".")+1);
         else return "";
     }
+
+	@Override
+	public void invokeObjects(Object... objects) {
+		
+	}
 	
 	
 }

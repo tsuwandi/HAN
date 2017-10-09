@@ -21,10 +21,10 @@ public class EmployeeDAO {
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 
-	private String getLastCodeQuery = "select empCode from employee order by id desc limit 1";
+	private String getLastCodeQuery = "select emp_code from employee order by id desc limit 1";
 	private String getAllQuery = "select * from employee where delete_date is null and delete_by is null";
 	private String insertQuery = "insert into employee (emp_code, fname, lname, current_address, current_city, npwp, ktp, ktp_address, total_child, birth_date, email, phone,  gender_id, marital_id, emergency_contact, emergency_phone, emergency_relation,bank_name,bank_account,rfid,image, input_date, input_by,status_id)"
-			+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	private String updateQuery = "update employee set emp_code = ?, fname = ?, lname=?, current_address = ?, current_city = ?, npwp = ?, ktp = ?, "
 			+ "ktp_address = ?, total_child = ?, birth_date = ?, email = ?, phone = ?, gender_id = ?, marital_id = ?,"
 			+ " emergency_contact=?, emergency_phone=?, emergency_relation=?,bank_name=?, bank_account=?,rfid=?,image=?, edit_date = ?, edited_by = ? , status_id = ? where id = ?";
