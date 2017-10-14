@@ -31,6 +31,10 @@ public class EmployeeManagementBL {
 		employeeDAO.insert(emp);
 	}
 	
+	public void delete(Employee emp){
+		employeeDAO.delete(emp);
+	}
+	
 	
 	public void update(Employee emp){
 		employeeDAO.update(emp);

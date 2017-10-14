@@ -40,11 +40,10 @@ import module.employeemanagement.model.Employee;
 import module.util.Bridging;
 import module.util.EmailValidator;
 
-public class CreateEmployeePanel extends JPanel implements Bridging{
+public class ViewEmployeePanel extends JPanel implements Bridging{
 
 	private static final long serialVersionUID = 1L;
-	Logger log = LogManager.getLogger(CreateEmployeePanel.class.getName());
-	private JLabel lblHeader;
+	Logger log = LogManager.getLogger(ViewEmployeePanel.class.getName());
 	private JLabel empCodeLbl;
 	private JLabel empFNameLbl;
 	private JLabel empLNameLbl;
@@ -131,20 +130,17 @@ public class CreateEmployeePanel extends JPanel implements Bridging{
 	
 	private FileNameExtensionFilter filter;
 	
-	private JButton saveBtn;
+	private JButton editBtn;
+	private JButton deleteBtn;
 	private JButton backBtn;
 	private JButton uploadBtn;
 	
-	private EmailValidator emailVal;
 	
-	private CreateEmployeePanel createEmployeePanel;
+	private ViewEmployeePanel createEmployeePanel;
 	
 	private Employee emp;
 	
-	private boolean editMode;
-	
-	
-	public CreateEmployeePanel(){
+	public ViewEmployeePanel(){
 		createGUI();
 		setData();
 		listener();
@@ -168,7 +164,7 @@ public class CreateEmployeePanel extends JPanel implements Bridging{
 		lblBreadcrumb.setBounds(50, 10, 320, 30);
 		containerPnl.add(lblBreadcrumb);
 
-		lblHeader = new JLabel("INPUT KARYAWAN");
+		JLabel lblHeader = new JLabel("INPUT KARYAWAN");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 30);
 		containerPnl.add(lblHeader);
@@ -441,9 +437,13 @@ public class CreateEmployeePanel extends JPanel implements Bridging{
 		imageLbl.setBounds(150,1060,200,200);
 		containerPnl.add(imageLbl);
 		
-		saveBtn = new JButton("Simpan");
-		saveBtn.setBounds(850,1300,150,30);
-		containerPnl.add(saveBtn);
+		editBtn = new JButton("Edit");
+		editBtn.setBounds(850,1300,150,30);
+		containerPnl.add(editBtn);
+		
+		deleteBtn = new JButton("Hapus");
+		deleteBtn.setBounds(690,1300,150,30);
+		containerPnl.add(deleteBtn);
 		
 		backBtn = new JButton("Kembali");
 		backBtn.setBounds(50,1300,150,30);
@@ -453,7 +453,6 @@ public class CreateEmployeePanel extends JPanel implements Bridging{
 	}
 	
 	private void setData(){
-		emailVal = new EmailValidator();
 		genderMap = new HashMap<>();
 		genderMap.put(1, "Laki-Laki");
 		genderMap.put(2, "Perempuan");
@@ -494,11 +493,11 @@ public class CreateEmployeePanel extends JPanel implements Bridging{
 			}
 		});
 		
-		saveBtn.addActionListener(new ActionListener() {
+		editBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				save();
+				MainPanel.changePanel("module.employeemanagement.ui.CreateEmployeePanel",emp);
 			}
 		});
 		
@@ -506,223 +505,27 @@ public class CreateEmployeePanel extends JPanel implements Bridging{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(DialogBox.showBackChoice()==JOptionPane.YES_OPTION)MainPanel.changePanel("module.employeemanagement.ui.ListEmployeePanel");				
+				MainPanel.changePanel("module.employeemanagement.ui.ListEmployeePanel");
+			}
+		});
+		
+		deleteBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(DialogBox.showDeleteChoice()==JOptionPane.YES_OPTION)ServiceFactory.getEmployeeManagementBL().delete(emp);
 			}
 		});
 	}
+	
 	private void setPhoto(File file) throws IOException{
 		ImageIcon icon = new ImageIcon(ImageIO.read(file));
 		Image image = icon.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT);
 		ImageIcon newIcon = new ImageIcon(image);
 		imageLbl.setIcon(newIcon);
 	}
-	private void save(){
-		int error = 0 ;
-		if(fNameField.getText().equals("")){
-			empFNameErrorLbl.setText("<html><font color='red'>Nama pertama harus diisi!</font></html>");
-			error++;
-		}else{
-			empFNameErrorLbl.setText("");
-		}
-		if(npwpField.getText().equals("")){
-			npwpErrorLbl.setText("<html><font color='red'>NPWP harus diisi!</font></html>");
-			error++;
-		}else{
-			npwpErrorLbl.setText("");
-		}
-		if(ktpField.getText().equals("")){
-			ktpErrorLbl.setText("<html><font color='red'>KTP harus diisi!</font></html>");
-			error++;
-		}else{
-			ktpErrorLbl.setText("");
-		}
-		if(ktpAddressArea.getTextArea().getText().equals("")){
-			ktpAddressErrorLbl.setText("<html><font color='red'>Alamat KTP harus diisi!</font></html>");
-			error++;
-		}else{
-			ktpAddressErrorLbl.setText("");
-		}
-		if(ktpAddressArea.getTextArea().getText().equals("")){
-			ktpAddressErrorLbl.setText("<html><font color='red'>Alamat KTP harus diisi!</font></html>");
-			error++;
-		}else{
-			ktpAddressErrorLbl.setText("");
-		}
-		if(currentAddressArea.getTextArea().getText().equals("")){
-			currentAddressErrorLbl.setText("<html><font color='red'>Alamat harus diisi!</font></html>");
-			error++;
-		}else{
-			currentAddressErrorLbl.setText("");
-		}
-		if(currentCityField.getText().equals("")){
-			currentCityErrorLbl.setText("<html><font color='red'>Kota harus diisi!</font></html>");
-			error++;
-		}else{
-			currentCityErrorLbl.setText("");
-		}
-		if(currentCityField.getText().equals("")){
-			currentCityErrorLbl.setText("<html><font color='red'>Kota harus diisi!</font></html>");
-			error++;
-		}else{
-			currentCityErrorLbl.setText("");
-		}
-		if(emailField.getText().equals("")){
-			emailErrorLbl.setText("<html><font color='red'>Email harus diisi!</font></html>");
-			error++;
-		}else{
-			if(!emailVal.validate(emailField.getText())){
-				emailErrorLbl.setText("<html><font color='red'>Format email harus example@yahoo.co.id / example@yahoo.com</font></html>");
-				error++;
-			}else{
-				emailErrorLbl.setText("");
-			}
-			
-		}
-		if(phoneNumberField.getText().equals("")){
-			phoneNumberErrorLbl.setText("<html><font color='red'>Nomor Telepon harus diisi!</font></html>");
-			error++;
-		}else{
-			phoneNumberErrorLbl.setText("");
-		}
-		if(emergencyContactNameField.getText().equals("")){
-			emergencyContactNameErrorLbl.setText("<html><font color='red'>Nama Kontak Darurat harus diisi!</font></html>");
-			error++;
-		}else{
-			emergencyContactNameErrorLbl.setText("");
-		}
-		if(emergencyPhoneNumberField.getText().equals("")){
-			emergencyContactPhoneErrorLbl.setText("<html><font color='red'>Telpon Kontak Darurat harus diisi!</font></html>");
-			error++;
-		}else{
-			emergencyContactPhoneErrorLbl.setText("");
-		}
-		if(emergencyContactRelationField.getText().equals("")){
-			emergencyContactRelationErrorLbl.setText("<html><font color='red'>Relasi Kontak Darurat harus diisi!</font></html>");
-			error++;
-		}else{
-			emergencyContactRelationErrorLbl.setText("");
-		}
-		if(emergencyContactRelationField.getText().equals("")){
-			emergencyContactRelationErrorLbl.setText("<html><font color='red'>Relasi Kontak Darurat harus diisi!</font></html>");
-			error++;
-		}else{
-			emergencyContactRelationErrorLbl.setText("");
-		}
-		if(genderCmb.getSelectedIndex()==0){
-			genderErrorLbl.setText("<html><font color='red'>Jenis kelamin harus dipilih!</font></html>");
-			error++;
-		}else{
-			genderErrorLbl.setText("");
-		}
-		if(maritalCmb.getSelectedIndex()==0){
-			maritalErrorLbl.setText("<html><font color='red'>Status nikah harus dipilih!</font></html>");
-			error++;
-		}else{
-			maritalErrorLbl.setText("");
-		}
-		if(childrenField.getText().equals("")){
-			childrenErrorLbl.setText("<html><font color='red'>Jumlah Anak harus diisi!</font></html>");
-			error++;
-		}else{
-			childrenErrorLbl.setText("");
-		}
-		if(bankNameField.getText().equals("")){
-			bankNameErrorLbl.setText("<html><font color='red'>Nama Bank harus diisi!</font></html>");
-			error++;
-		}else{
-			bankNameErrorLbl.setText("");
-		}
-		if(bankAccountNoField.getText().equals("")){
-			bankAccountNoErrorLbl.setText("<html><font color='red'>No Rekening Bank harus diisi!</font></html>");
-			error++;
-		}else{
-			bankAccountNoErrorLbl.setText("");
-		}
-		if(rfidField.getText().equals("")){
-			rfidErrorLbl.setText("<html><font color='red'>RFID harus diisi!</font></html>");
-			error++;
-		}else{
-			rfidErrorLbl.setText("");
-		}
-		
-		if(imageLbl.getIcon()==null){
-			photoErrorLbl.setText("<html><font color='red'>Foto harus dpilih!</font></html>");
-			error++;
-		}else{
-			photoErrorLbl.setText("");
-		}
-		
-		if(error==0){
-			try {
-				if(DialogBox.showInsertChoice()==JOptionPane.YES_OPTION){
-					if(!editMode){
-						emp  = new Employee();
-						emp.setEmpCode(empCodeField.getText());
-					}
-					emp.setFname(fNameField.getText());
-					emp.setLname(lNameField.getText());
-					emp.setKtp(ktpField.getText());
-					emp.setNpwp(npwpField.getText());
-					emp.setKtpAddress(ktpAddressArea.getTextArea().getText());
-					emp.setCurrentAddress(currentAddressArea.getTextArea().getText());
-					emp.setCurrentCity(currentCityField.getText());
-					emp.setBirthDate(dobChooser.getDate());
-					emp.setEmail(emailField.getText());
-					emp.setPhone(phoneNumberField.getText());
-					emp.setEmergencyContact(emergencyContactNameField.getText());
-					emp.setEmergencyPhone(emergencyPhoneNumberField.getText());
-					emp.setEmergencyRelation(emergencyContactRelationField.getText());
-					emp.setGenderId(genderCmb.getSelectedIndex()+1);
-					emp.setMaritalId(maritalCmb.getSelectedIndex()+1);
-					emp.setTotalChild(Integer.valueOf(childrenField.getText()));
-					emp.setBankName(bankNameField.getText());
-					emp.setBankAccount(bankAccountNoField.getText());
-					emp.setRfid(Long.valueOf(rfidField.getText()));
-					emp.setStatus(statusActive.isSelected() ? 1 : 2);
-					emp.setImage(getFileName());
-					if(!editMode){
-						ServiceFactory.getEmployeeManagementBL().save(emp);
-						DialogBox.showInsert();
-					}else{
-						ServiceFactory.getEmployeeManagementBL().update(emp);
-						DialogBox.showInsert();
-					}
-					writePhoto();
-					MainPanel.changePanel("module.employeemanagement.ui.ListEmployeePanel");
-				}
-			} catch (IOException e) {
-				DialogBox.showError("Cannot Write Image");
-				e.printStackTrace();
-			}
-		}
-		
-	}
+	
 
-	
-	private String getFileName() {
-		File file = null;
-		if(photoChooser.getSelectedFile()==null) file = new File("image/"+emp.getImage());
-		else file = photoChooser.getSelectedFile();
-		return empCodeField.getText()+"-"+fNameField.getText()+"."+getFileExtension(file);
-	}
-	
-	private void writePhoto()throws IOException{
-		if(photoChooser.getSelectedFile()!=null){
-			File file = photoChooser.getSelectedFile();
-			File fileOutput = new File("image/");
-			fileOutput.mkdirs();
-			BufferedImage image = null;
-			image = ImageIO.read(file);
-			ImageIO.write(image, getFileExtension(file), new File("image/"+getFileName()));
-		}
-	}
-	
-	private String getFileExtension(File file) {
-        String fileName = file.getName();
-        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
-        return fileName.substring(fileName.lastIndexOf(".")+1);
-        else return "";
-    }
 
 	@Override
 	public void invokeObjects(Object... objects) {
@@ -750,9 +553,30 @@ public class CreateEmployeePanel extends JPanel implements Bridging{
 			rfidField.setText(emp.getRfid().toString());
 			File file = new File("image/"+emp.getImage());
 			setPhoto(file);
-			editMode=true;
-			lblHeader.setText("EDIT KARYAWAN");
+			
+			empCodeField.setEnabled(false);
+			fNameField.setEnabled(false);
+			lNameField.setEnabled(false);
+			ktpField.setEnabled(false);
+			npwpField.setEnabled(false);
+			ktpAddressArea.getTextArea().setEnabled(false);
+			currentAddressArea.getTextArea().setEnabled(false);
+			currentCityField.setEnabled(false);
+			dobChooser.setEnabled(false);
+			emailField.setEnabled(false);
+			phoneNumberField.setEnabled(false);
+			emergencyContactNameField.setEnabled(false);
+			emergencyContactRelationField.setEnabled(false);
+			emergencyPhoneNumberField.setEnabled(false);
+			genderCmb.setEnabled(false);
+			maritalCmb.setEnabled(false);
+			childrenField.setEnabled(false);
+			bankNameField.setEnabled(false);
+			bankAccountNoField.setEnabled(false);
+			rfidField.setEnabled(false);
+			photoChooser.setEnabled(false);
 		} catch (IOException e) {
+			
 			e.printStackTrace();
 		}
 		

@@ -4,6 +4,8 @@ package module.employeemanagement.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import javax.swing.table.TableColumn;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import controller.ServiceFactory;
 import main.component.PagingPanel;
 import main.component.TextField;
 import main.panel.MainPanel;
@@ -38,7 +41,7 @@ public class ListEmployeePanel extends JPanel{
 	
 	private JButton advancedSearchBtn;
 	private JButton inputEmployeeBtn;
-	private PagingPanel<Production> pagingPanel;
+	private PagingPanel<Employee> pagingPanel;
 	
 	private ListEmployeeTableModel employeeTableModel;
 	private List<Employee> employees;
@@ -46,6 +49,7 @@ public class ListEmployeePanel extends JPanel{
 	
 	public ListEmployeePanel(){
 		createGUI();
+		setData();
 		listener();
 	}
 	
@@ -158,6 +162,25 @@ public class ListEmployeePanel extends JPanel{
 				MainPanel.changePanel("module.employeemanagement.ui.CreateEmployeePanel");
 			}
 		});
+		
+		employeeTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(employeeTable.columnAtPoint(e.getPoint())==8){
+					MainPanel.changePanel("module.employeemanagement.ui.ViewEmployeePanel", pagingPanel.getSubListData().get(employeeTable.getSelectedRow()));
+				}
+			}
+		});
+	}
+	
+	private void setData(){
+		employees = ServiceFactory.getEmployeeManagementBL().getEmployee();
+		pagingPanel.setPage(1);
+		pagingPanel.setMaxDataPerPage(20);
+		pagingPanel.setData(employees);
+		pagingPanel.setTable(employeeTable);
+		pagingPanel.setTableModel(employeeTableModel);
+		pagingPanel.setBounds(450,510,130,50);
 	}
 	private class ListEmployeeTableModel extends AbstractTableModel implements Pagination{
 		private static final long serialVersionUID = 1L;
@@ -208,7 +231,7 @@ public class ListEmployeePanel extends JPanel{
 	            case 6 :
 	                return p.getPhone();
 	            case 7 :
-	                return p.getStatus();
+	                return p.getStatus()==1?"Aktif" : "Tidak Aktif";
 	            case 8 :
 	                return "View";
 	            default :
