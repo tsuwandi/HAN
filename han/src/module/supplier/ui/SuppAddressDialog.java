@@ -316,6 +316,7 @@ public class SuppAddressDialog extends JDialog {
 		boolean isValid = true;
 		lblErrorAddressType.setText("");
 		lblErrorAddress.setText("");
+		lblErrorProvince.setText("");
 		lblErrorCity.setText("");
 		lblErrorContactPerson.setText("");
 		lblErrorEmail.setText("");
@@ -362,7 +363,7 @@ public class SuppAddressDialog extends JDialog {
 		suppAddress.setZipCode(txtZipCode.getText());
 		suppAddress.setProvinceId(cbProvince.getDataIndex().getId());
 		suppAddress.setCity(txtCity.getText());
-		
+		suppAddress.getProvince().setProvince(cbProvince.getDataIndex().getProvince());
 
 		suppAddress.setPhone(txtPhone.getText());
 		suppAddress.setFax(txtFax.getText());

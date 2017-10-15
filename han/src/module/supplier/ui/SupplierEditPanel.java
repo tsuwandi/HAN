@@ -249,7 +249,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 6)
+					if (column == 2)
 						showEditSuppAddressDialog(listOfSuppAddress.get(row), supplierEdit, row);
 				}
 			}

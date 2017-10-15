@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -150,7 +152,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 
 		txtSuppName = new JTextField();
 		txtSuppName.setBounds(220, 110, 150, 25);
-		txtSuppName.setDocument(new JTextFieldLimit(200));
+		txtSuppName.setDocument(new JTextFieldLimit(1));
 		((AbstractDocument) txtSuppName.getDocument()).setDocumentFilter(filter);
 		panel.add(txtSuppName);
 
@@ -196,11 +198,16 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		cbSuppType.setBounds(220, 200, 150, 25);
 		panel.add(cbSuppType);
 		
-		cbSuppType.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String code = makeCodeNumber(cbSuppType.getDataIndex().getId());
+		cbSuppType.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				if(cbSuppType.getDataIndex().getId() != 0) {
+					String code = makeCodeNumber(cbSuppType.getDataIndex().getId());
+					
+					txtSuppCode.setText(code);
+				} else {
+					txtSuppCode.setText("");
+				}
 				
-				txtSuppCode.setText(code);
 			}
 		});
 
@@ -255,7 +262,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 					int row = target.getSelectedRow();
 					int column = target.getSelectedColumn();
 
-					if (column == 6)
+					if (column == 2)
 						showEditSuppAddressDialog(listOfSuppAddress.get(row), supplierCreate, row);
 				}
 			}
@@ -368,7 +375,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 
 		lblErrorCurrency = new JLabel();
 		lblErrorCurrency.setForeground(Color.RED);
-		lblErrorCurrency.setBounds(425, 655, 225, 25);
+		lblErrorCurrency.setBounds(425, 455, 225, 25);
 		panel.add(lblErrorCurrency);
 
 		lblTop = new JLabel("TOP");
@@ -913,7 +920,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 		} else if (AppConstants.SUPP_TYPE_PROD_SUPP_ID == suppTypeId) {
 			constantSuppType = AppConstants.SUPP_TYPE_PROD_SUPP_CD;
 		}
-
+		
 		if(!"".equals(constantSuppType)) {
 			String ordinal = null;
 			try {
@@ -927,7 +934,7 @@ public class SupplierCreatePanel extends JPanel implements Bridging {
 				return null;
 			}
 		} else {
-			return null;
+			return "";
 		}
 	}
 }
