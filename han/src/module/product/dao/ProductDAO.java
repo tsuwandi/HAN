@@ -612,4 +612,31 @@ public class ProductDAO {
 
 		return ordinal;
 	}
+	
+	private PreparedStatement getAllByProductCategoryIdStatement;
+	private String getAllByProductCategoryIdQuery = "select product_code, product_name from product where product_category_id = ? and deleted_date is null";
+
+	public List<Product> getAllByProductCategoryId(int productCategoryId) throws SQLException {
+		List<Product> products = new ArrayList<Product>();
+
+		try {
+			getAllByProductCategoryIdStatement = connection.prepareStatement(getAllByProductCategoryIdQuery);
+			getAllByProductCategoryIdStatement.setInt(1, productCategoryId);
+			
+			ResultSet rs = getAllByProductCategoryIdStatement.executeQuery();
+			while (rs.next()) {
+				Product product = new Product();
+				product.setProductCode(rs.getString("product_code"));
+				product.setProductName(rs.getString("product_name"));
+
+				products.add(product);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return products;
+	}
 }

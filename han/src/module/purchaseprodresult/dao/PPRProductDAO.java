@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.product.model.Product;
 import module.purchaseprodresult.model.PPRProduct;
 import module.util.DateUtil;
@@ -90,7 +91,7 @@ public class PPRProductDAO {
 			insertStatement.setBigDecimal(4, pprProduct.getUnitPrice());
 			insertStatement.setBigDecimal(5, pprProduct.getSubTotal());
 			insertStatement.setDate(6, DateUtil.getCurrentDate());
-			insertStatement.setString(7, "timotius");
+			insertStatement.setString(7, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -106,7 +107,7 @@ public class PPRProductDAO {
 			updateStatement.setBigDecimal(3, pprProduct.getUnitPrice());
 			updateStatement.setBigDecimal(4, pprProduct.getSubTotal());
 			updateStatement.setDate(5, DateUtil.getCurrentDate());
-			updateStatement.setString(6, "timotius");
+			updateStatement.setString(6, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setInt(7, pprProduct.getId());
 			updateStatement.executeUpdate();
 
@@ -121,7 +122,7 @@ public class PPRProductDAO {
 
 			deleteStatement = connection.prepareStatement(query);
 			deleteStatement.setDate(1, DateUtil.getCurrentDate());
-			deleteStatement.setString(2, "timotius");
+			deleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			deleteStatement.setString(3, pprCode);
 			deleteStatement.executeUpdate();
 
@@ -136,7 +137,7 @@ public class PPRProductDAO {
 
 			deleteStatement = connection.prepareStatement(query);
 			deleteStatement.setDate(1, DateUtil.getCurrentDate());
-			deleteStatement.setString(2, "timotius");
+			deleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			deleteStatement.setInt(3, id);
 			deleteStatement.executeUpdate();
 

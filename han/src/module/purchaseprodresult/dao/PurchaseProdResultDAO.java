@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ServiceFactory;
 import module.purchaseprodresult.model.PurchaseProdResult;
 import module.supplier.model.Supplier;
 import module.util.DateUtil;
@@ -162,7 +163,7 @@ public class PurchaseProdResultDAO {
 			insertStatement.setBigDecimal(4, ppr.getTotal());
 			insertStatement.setString(5, ppr.getStatus());
 			insertStatement.setDate(6, DateUtil.getCurrentDate());
-			insertStatement.setString(7, "timotius");
+			insertStatement.setString(7, ServiceFactory.getSystemBL().getUsernameActive());
 			insertStatement.executeUpdate();
 			
 		} catch (SQLException ex) {
@@ -179,7 +180,7 @@ public class PurchaseProdResultDAO {
 			updateStatement.setString(3, ppr.getStatus());
 			updateStatement.setBigDecimal(4, ppr.getTotal());
 			updateStatement.setDate(5, DateUtil.getCurrentDate());
-			updateStatement.setString(6, "timotius");
+			updateStatement.setString(6, ServiceFactory.getSystemBL().getUsernameActive());
 			updateStatement.setString(7, ppr.getPprCode());
 			
 			updateStatement.executeUpdate();
@@ -193,7 +194,7 @@ public class PurchaseProdResultDAO {
 		try {
 			deleteStatement = connection.prepareStatement(deleteQuery);
 			deleteStatement.setDate(1, DateUtil.getCurrentDate());
-			deleteStatement.setString(2, "timotius");
+			deleteStatement.setString(2, ServiceFactory.getSystemBL().getUsernameActive());
 			deleteStatement.setInt(3, id);
 			deleteStatement.executeUpdate();
 		} catch (SQLException ex) {
