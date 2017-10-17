@@ -25,7 +25,7 @@ public class NumericField extends TextField implements KeyListener, FocusListene
 	NumberValidator numberValidator;
 	int maxLenght = 0;
 	String txtValue = "";
-	int value = 0;
+	Long value = 0L;
 	String numberChars = "0123456789";
 
 	public NumericField(int maxLenght, String format){
@@ -55,15 +55,15 @@ public class NumericField extends TextField implements KeyListener, FocusListene
 		numberValidator.setMaxCharacter(this.maxLenght);
 	}
 	
-	public int getValue() {
+	public Long getValue() {
 		if(txtValue.contains("."))
-			value = Integer.valueOf(txtValue.replaceAll("\\.", ""));
+			value = Long.valueOf(txtValue.replaceAll("\\.", ""));
 		else
-			value = Integer.valueOf(txtValue);
+			value = Long.valueOf(txtValue);
 		return value;
 	}
 
-	public void setValue(int value) {
+	public void setValue(Long value) {
 		this.value = value;
 		txtValue = df.format(value);
 		numberChars = "0123456789.";
@@ -78,6 +78,13 @@ public class NumericField extends TextField implements KeyListener, FocusListene
 	public void setFormat(String format) {
 		this.format = format;
 		this.setFormat(format);
+	}
+	
+	@Override
+	public String getText() {
+		String result = super.getText();
+		result = result.replaceAll("\\.", "");
+		return result;
 	}
 	
 	public String getId() {
@@ -102,7 +109,7 @@ public class NumericField extends TextField implements KeyListener, FocusListene
 	@Override
 	public void focusLost(FocusEvent paramFocusEvent) {
 		if(getText().equals("")) {
-			setValue(0);
+			setValue(0L);
 		}
 	}
 
@@ -116,7 +123,7 @@ public class NumericField extends TextField implements KeyListener, FocusListene
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			 if(getText().length() == 0) {
-				 setValue(0);
+				 setValue(0L);
 			 }
 		}
 	}
@@ -125,9 +132,9 @@ public class NumericField extends TextField implements KeyListener, FocusListene
 	public void keyReleased(KeyEvent paramKeyEvent) {
 		if(getText().length() != 0) {
 			if(getText().contains("."))
-				txtValue = df.format(Integer.valueOf(getText().replaceAll("\\.", "")));
+				txtValue = df.format(Long.valueOf(getText().replaceAll("\\.", "")));
 			else 
-				txtValue = df.format(Integer.valueOf(getText()));
+				txtValue = df.format(Long.valueOf(getText()));
 			
 			if(txtValue.contains(".")) {
 				numberValidator.numberChars = "0123456789.";

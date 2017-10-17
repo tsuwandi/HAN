@@ -178,8 +178,8 @@ public class CreateMSPositionPanel extends JPanel {
 		msPosition.setName(msPositionNameField.getText());
 		msPosition.setDepartementId(departemenCmbBox.getDataIndex().getId());
 		msPosition.setDivisionId(divisionCmbBox.getDataIndex().getId());
-		msPosition.setSalaryMin(salaryMinField.getValue());
-		msPosition.setSalaryMax(salaryMaxField.getValue());
+		msPosition.setSalaryMin(salaryMinField.getValue().intValue());
+		msPosition.setSalaryMax(salaryMaxField.getValue().intValue());
 		msPosition.setInputDate(DateUtil.toDate(new Date()));
 		msPosition.setInputBy(ServiceFactory.getSystemBL().getUsernameActive());
 		msPosition.setEditDate(DateUtil.toDate(new Date()));

@@ -335,3 +335,69 @@ CREATE TABLE `bank_cust` (
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 
 
+
+
+/*18-10-2017 Employee  * MS POSITION FOR HRD*/
+
+
+CREATE TABLE `employee` (
+  `id` int(10) NOT NULL,
+  `emp_code` varchar(10) DEFAULT NULL COMMENT 'nik',
+  `fname` varchar(50) DEFAULT NULL,
+  `lname` varchar(50) DEFAULT NULL,
+  `current_address` text,
+  `current_zip_code` varchar(10) DEFAULT NULL,
+  `current_city` varchar(50) DEFAULT NULL,
+  `npwp` varchar(15) DEFAULT NULL,
+  `ktp` varchar(20) DEFAULT NULL,
+  `ktp_address` text,
+  `ktp_zip_code` varchar(10) DEFAULT NULL,
+  `ktp_city` varchar(50) DEFAULT NULL,
+  `total_child` int(2) DEFAULT NULL,
+  `birth_date` date DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `mobile` varchar(15) DEFAULT NULL,
+  `gender_id` varchar(10) DEFAULT NULL,
+  `marital_id` varchar(10) DEFAULT NULL,
+  `emergency_contact` varchar(50) DEFAULT NULL,
+  `emergency_phone` varchar(15) DEFAULT NULL,
+  `emergency_relation` varchar(100) NOT NULL,
+  `bank_name` varchar(50) NOT NULL,
+  `bank_account` varchar(20) NOT NULL,
+  `rfid` bigint(20) NOT NULL,
+  `image` varchar(200) NOT NULL,
+  `status_id` int(11) NOT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `employee`
+  ADD PRIMARY KEY (`id`);
+ALTER TABLE `employee`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  
+  
+CREATE TABLE `ms_position` (
+  `id` int(10) NOT NULL,
+  `code` varchar(20) NOT NULL,
+  `NAME` varchar(20) DEFAULT NULL,
+  `min_salary` decimal(20,4) DEFAULT NULL,
+  `max_salary` decimal(20,4) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(30) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(30) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `ms_position`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `ms_position`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;

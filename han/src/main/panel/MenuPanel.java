@@ -87,16 +87,15 @@ public class MenuPanel extends JPanel {
 		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Personalia", "Personalia");
-		menu.addNewLeafTo("Personalia", "Divisi", "Divisi", "module.personalia.ui.DivisionConfigPanel");
-		menu.addNewLeafTo("Personalia", "Departemen", "Departemen", "module.personalia.ui.DepartmentConfigPanel");
 		menu.addNewLeafTo("Personalia", "Jabatan", "Jabatan", "module.personalia.ui.MSPositionConfigPanel");
 		menu.addNewLeafTo("Personalia", "Tipe Karyawan", "Tipe Karyawan", "module.personalia.ui.EmployeeTypeConfigPanel");
-		menu.addNewLeafTo("Personalia", "Karyawan", "Karyawan", "module.personalia.ui.EmployeeConfigPanel");
+//		menu.addNewLeafTo("Personalia", "Karyawan", "Karyawan", "module.personalia.ui.EmployeeConfigPanel");
 		menu.addNewLeafTo("Personalia", "Lembur", "Lembur", "module.personalia.ui.OverTimeConfigPanel");
 		menu.addNewLeafTo("Personalia", "Absensi", "Absensi", "module.personalia.ui.AttendanceConfigPanel");
 		menu.addNewLeafTo("Personalia", "Import FingerPrint", "Import FingerPrint", "module.personalia.ui.ListFilesAttendancePanel");
 		menu.addNewLeafTo("Personalia", "Hitung Gaji", "Hitung Gaji", "module.salary.ui.CalculateSalaryPanel");
 		menu.addNewLeafTo("Personalia", "Karyawan ", "Karyawan ", "module.employeemanagement.ui.ListEmployeePanel");
+		menu.addNewLeafTo("Personalia", "Posisi Karyawan ", "Posisi Karyawan", "module.employeemanagement.ui.ListPositionPanel");
 		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Payroll", "Payroll");
