@@ -401,3 +401,79 @@ ALTER TABLE `ms_position`
 
 ALTER TABLE `ms_position`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  
+  
+CREATE TABLE `emp_structure` (
+  `id` int(3) NOT NULL,
+  `code` varchar(50) NOT NULL,
+  `org_value_id` varchar(10) DEFAULT NULL,
+  `position_id` int(3) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `org_structure_value` (
+  `id` int(5) NOT NULL,
+  `value` varchar(50) DEFAULT NULL,
+  `parent_id` int(5) DEFAULT NULL,
+  `structure_id` int(3) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `daleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `org_structure_value` (`id`, `value`, `parent_id`, `structure_id`, `input_date`, `input_by`, `edit_date`, `edited_by`, `daleted_date`, `deleted_by`) VALUES
+(1, 'BARECORE', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'PLYWOOD', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(3, 'FINANCE', 1, 2, NULL, NULL, NULL, NULL, NULL, NULL),
+(4, 'HRD', 1, 2, NULL, NULL, NULL, NULL, NULL, NULL),
+(5, 'PENJUALAN BARECORE', 1, 2, NULL, NULL, NULL, NULL, NULL, NULL),
+(6, 'PENJUALAN PLYWOOD', 2, 2, NULL, NULL, NULL, NULL, NULL, NULL),
+(7, 'PRODUKSI BARECORE', 1, 2, NULL, NULL, NULL, NULL, NULL, NULL),
+(8, 'PRODUKSI PLYWOORD', 2, 2, NULL, NULL, NULL, NULL, NULL, NULL);
+
+
+CREATE TABLE `payroll_component` (
+  `id` int(11) NOT NULL,
+  `code` varchar(10) DEFAULT NULL,
+  `description` varchar(50) DEFAULT NULL,
+  `is_daily` int(11) NOT NULL,
+  `is_salary` int(11) DEFAULT NULL,
+  `is_thr` int(11) DEFAULT NULL,
+  `is_bonus` int(11) DEFAULT NULL,
+  `reference_document` varchar(300) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(30) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edit_by` varchar(30) DEFAULT NULL,
+  `delete_date` date DEFAULT NULL,
+  `delete_by` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `emp_structure`
+  ADD PRIMARY KEY (`id`);
+  
+  ALTER TABLE `emp_structure`
+  ADD PRIMARY KEY (`id`);
+  
+ALTER TABLE `payroll_component`
+  ADD PRIMARY KEY (`id`);
+  
+  
+ALTER TABLE `emp_structure`
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  
+  
+ALTER TABLE `org_structure_value`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  
+  
+ALTER TABLE `payroll_component`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
