@@ -96,10 +96,12 @@ public class MenuPanel extends JPanel {
 		menu.addNewLeafTo("Personalia", "Hitung Gaji", "Hitung Gaji", "module.salary.ui.CalculateSalaryPanel");
 		menu.addNewLeafTo("Personalia", "Karyawan ", "Karyawan ", "module.employeemanagement.ui.ListEmployeePanel");
 		menu.addNewLeafTo("Personalia", "Posisi Karyawan ", "Posisi Karyawan", "module.employeemanagement.ui.ListPositionPanel");
+		menu.addNewLeafTo("Personalia", "Emp Structure ", "Emp Structure", "module.employeemanagement.ui.ListEmpStructurePanel");
 		menu.calculateAvaiableSpace();
 		
 		menu.addNewMenu("Payroll", "Payroll");
-		menu.addNewLeafTo("Payroll", "Komponen Payroll", "Komponen Payroll", "module.personalia.ui.PayrollComponentConfigPanel");
+//		menu.addNewLeafTo("Payroll", "Komponen Payroll", "Komponen Payroll", "module.personalia.ui.PayrollComponentConfigPanel");
+		menu.addNewLeafTo("Payroll", "Komponen Payroll", "Komponen Payroll", "module.employeemanagement.ui.ListComponentPayrollPanel");
 		menu.addNewLeafTo("Payroll", "Pemetaan Gaji", "Pemetaan Gaji", "module.personalia.ui.PayrollMappingConfigPanel");
 		menu.addNewLeafTo("Payroll", "Setting Gaji", "Setting Gaji", "module.personalia.ui.SalarySettingConfigPanel");
 		menu.addNewLeafTo("Payroll", "Master Jenis Tunjangan Non Rutin", "Master Jenis Tunjangan Non Rutin", "module.personalia.ui.NonRoutineAllowanceMasterTypeConfigPanel");

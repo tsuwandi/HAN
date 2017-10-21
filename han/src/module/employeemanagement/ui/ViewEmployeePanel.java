@@ -27,6 +27,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.joda.time.Years;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -437,7 +438,7 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 		imageLbl.setBounds(150,1060,200,200);
 		containerPnl.add(imageLbl);
 		
-		editBtn = new JButton("Edit");
+		editBtn = new JButton("Ubah");
 		editBtn.setBounds(850,1300,150,30);
 		containerPnl.add(editBtn);
 		
@@ -574,7 +575,9 @@ public class ViewEmployeePanel extends JPanel implements Bridging{
 			bankNameField.setEnabled(false);
 			bankAccountNoField.setEnabled(false);
 			rfidField.setEnabled(false);
-			photoChooser.setEnabled(false);
+			uploadBtn.setEnabled(false);
+			statusActive.setEnabled(false);
+			statusInactive.setEnabled(false);
 		} catch (IOException e) {
 			
 			e.printStackTrace();

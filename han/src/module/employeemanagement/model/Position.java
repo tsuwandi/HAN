@@ -2,12 +2,21 @@ package module.employeemanagement.model;
 
 import java.math.BigDecimal;
 
-public class Position {
+import module.util.ComboBoxProperties;
+
+public class Position implements ComboBoxProperties{
 	  Integer id;
 	  String code;
 	  String name;
 	  BigDecimal minSalary;
 	  BigDecimal maxSalary;
+	  
+	public Position(){
+		
+	}
+	public Position(String name){
+		this.name = name;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -37,6 +46,11 @@ public class Position {
 	}
 	public void setMaxSalary(BigDecimal maxSalary) {
 		this.maxSalary = maxSalary;
+	}
+	@Override
+	public Object getField() {
+
+		return name;
 	}
 	  
 	  
