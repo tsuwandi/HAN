@@ -186,8 +186,8 @@ public class CreatePositionPanel extends JPanel implements Bridging{
 		position = (Position)objects[0];
 		positionCodeField.setText(position.getCode());
 		positionNameField.setText(position.getName());
-		minSalaryField.setText(position.getMinSalary().toString());
-		maxSalaryField.setText(position.getMaxSalary().toString());
+		minSalaryField.setText(String.valueOf(position.getMinSalary().intValue()));
+		maxSalaryField.setText(String.valueOf(position.getMaxSalary().intValue()));
 		editMode=true;
 		lblHeader.setText("EDIT POSITION");
 	}

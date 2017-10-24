@@ -111,8 +111,8 @@ public class ViewPositionPanel extends JPanel implements Bridging{
 		add(editBtn);
 		
 		deleteBtn = new JButton("Hapus");
-		deleteBtn.setBounds(640,550,150,30);
-		add(editBtn);
+		deleteBtn.setBounds(790,550,150,30);
+		add(deleteBtn);
 		
 		backBtn = new JButton("Kembali");
 		backBtn.setBounds(30,550,150,30);
@@ -160,8 +160,13 @@ public class ViewPositionPanel extends JPanel implements Bridging{
 		position = (Position)objects[0];
 		positionCodeField.setText(position.getCode());
 		positionNameField.setText(position.getName());
-		minSalaryField.setText(position.getMinSalary().toString());
-		maxSalaryField.setText(position.getMaxSalary().toString());
+		minSalaryField.setText(String.valueOf(position.getMinSalary().intValue()));
+		maxSalaryField.setText(String.valueOf(position.getMaxSalary().intValue()));
+		
+		positionNameField.setEnabled(false);
+		positionCodeField.setEnabled(false);
+		minSalaryField.setEnabled(false);
+		maxSalaryField.setEnabled(false);
 	}
 	
 	

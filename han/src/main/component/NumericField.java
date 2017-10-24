@@ -87,6 +87,28 @@ public class NumericField extends TextField implements KeyListener, FocusListene
 		return result;
 	}
 	
+	@Override
+	public void setText(String t) {
+		if(t.length() != 0) {
+			if(t.contains("."))
+				txtValue = df.format(Long.valueOf(t.replaceAll("\\.", "")));
+			else 
+				txtValue = df.format(Long.valueOf(t));
+			
+			if(txtValue.contains(".")) {
+				numberValidator.numberChars = "0123456789.";
+				int separatorCount = StringUtils.countOccurrencesOf(txtValue, ".");
+				numberValidator.setMaxCharacter(maxLenght+separatorCount);
+				super.setText(txtValue);
+			} else {
+				numberChars = "0123456789";
+				numberValidator.setMaxCharacter(maxLenght);
+				super.setText(txtValue);
+			}
+		}
+		
+	}
+	
 	public String getId() {
 		return id;
 	}
