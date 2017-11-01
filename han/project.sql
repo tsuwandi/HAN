@@ -477,3 +477,58 @@ ALTER TABLE `org_structure_value`
   
 ALTER TABLE `payroll_component`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  
+--timotius purchase product supp
+CREATE TABLE IF NOT EXISTS `purchase_prod_supp` (
+  `id` int(12) NOT NULL,
+  `pps_code` varchar(50) NOT NULL,
+  `supp_code` varchar(9) NOT NULL,
+  `cost_center_id` int(11) NOT NULL,
+  `purchase_date` date NOT NULL,
+  `delivery_date` date NOT NULL,
+  `note` text,
+  `status` varchar(20) DEFAULT NULL,
+  `confirm_code` varchar(5) DEFAULT NULL,
+  `confirm_date` date DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  `total` decimal(20,4) DEFAULT NULL,
+  `tax` decimal(20,4) DEFAULT NULL,
+  `grand_total` decimal(20,4) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+ALTER TABLE `purchase_prod_supp`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `purchase_prod_supp`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+  
+CREATE TABLE IF NOT EXISTS `pps_product` (
+  `id` int(11) NOT NULL,
+  `pps_code` varchar(50) NOT NULL,
+  `product_code` varchar(20) NOT NULL,
+  `qty` decimal(20,4) NOT NULL,
+  `unit_price` decimal(20,4) NOT NULL DEFAULT '0.0000',
+  `sub_total` decimal(20,4) NOT NULL DEFAULT '0.0000',
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+ALTER TABLE `pps_product`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `pps_product`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+  
+
+INSERT INTO `cost_center` (`id`, `cost_center`, `input_date`, `input_by`, `edit_date`, `edit_by`, `deleted_date`, `deleted_by`) VALUES
+(1, 'default', '2017-10-18', 'ADMIN', NULL, NULL, NULL, NULL);
+  
