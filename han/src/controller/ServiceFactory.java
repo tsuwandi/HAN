@@ -19,6 +19,7 @@ import module.productionpk.bl.ProdPKBL;
 import module.productionwaste.bl.ProductionWasteBL;
 import module.productsupportinggood.bl.ProductSupportingGoodBL;
 import module.purchaseprodresult.bl.PurchaseProductResultBL;
+import module.purchaseprodsupp.bl.PurchaseProductSuppBL;
 import module.receiveprodresult.bl.ReceiveProductResultBL;
 import module.report.bl.ReportBL;
 import module.salary.bl.CalculateSalaryBL;
@@ -65,6 +66,7 @@ public class ServiceFactory {
 	private static CalculateSalaryBL calculateSalaryBL = null;
 	private static ProductSupportingGoodBL productSupportingGoodBL = null;
 	private static EmployeeManagementBL employeeManagementBL = null;
+	private static PurchaseProductSuppBL purchaseProductSuppBL = null;
 	
 	
 	/**
@@ -314,7 +316,12 @@ public class ServiceFactory {
 		return employeeManagementBL;
 	}
 	
-	
+	public static PurchaseProductSuppBL getPurchaseProductSuppBL() {
+		if (purchaseProductSuppBL == null) {
+			purchaseProductSuppBL = new PurchaseProductSuppBL(DataSourceFactory.getDataSource());
+		}
+		return purchaseProductSuppBL;
+	}
 	
 	
 }

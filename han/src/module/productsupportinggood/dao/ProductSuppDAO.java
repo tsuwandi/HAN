@@ -652,4 +652,94 @@ public class ProductSuppDAO {
 		return count;
 	}
 	//timotius@20170903_end
+	
+	public List<ProductSupp> getAllByProductCategoryId(ProductSupp pProductSupp) throws SQLException {
+		List<ProductSupp> productSupps = new ArrayList<ProductSupp>();
+
+		try {
+			StringBuilder query = new StringBuilder().append(getAllQuery);
+			query.append(" and product_category_id = ");
+			query.append(pProductSupp.getProductCategoryId());
+			query.append(" and lower(product_code) like lower('%");
+			query.append(pProductSupp.getProductCode());
+			query.append("%') ");
+			query.append(" and lower(product_name) like lower('%");
+			query.append(pProductSupp.getProductName());
+			query.append("%') order by id asc");
+			getAllStatement = connection.prepareStatement(query.toString());
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				
+				ProductSupp productSupp = new ProductSupp();
+				productSupp.setId(rs.getInt("id"));
+				productSupp.setProductCode(rs.getString("product_code"));
+				productSupp.setProductName(rs.getString("product_name"));
+				productSupp.setProductCategoryId(rs.getInt("product_category_id"));
+				productSupp.setProductUomId(rs.getInt("product_uom_id"));
+				productSupp.setIsMaintainStock(rs.getInt("is_maintain_stock"));
+				productSupp.setImagePath(rs.getString("image_path"));
+				productSupp.setBrand(rs.getString("brand"));
+				productSupp.setBarcode(rs.getString("barcode"));
+				productSupp.setDescription(rs.getString("description"));
+				productSupp.setIsFixedAsset(rs.getInt("is_fixed_asset"));
+				productSupp.setWarranty(rs.getObject("warranty") != null ? rs.getInt("warranty") : null);
+				productSupp.setWeightNet(rs.getBigDecimal("weight_net"));
+				productSupp.setWeightGross(rs.getBigDecimal("weight_gross"));
+				productSupp.setWeightUomId(rs.getInt("weight_uom_id"));
+				productSupp.setIsPurchaseItem(rs.getInt("is_purchase_item"));
+				productSupp.setMinor(rs.getObject("minor") != null ? rs.getInt("minor") : null);
+				productSupp.setMinorUomId(rs.getInt("minor_uom_id"));
+				productSupp.setLeadTime(rs.getObject("lead_time") != null ? rs.getInt("lead_time") : null);
+				productSupp.setBuyCostCenterId(rs.getInt("buy_cost_center_id"));
+				productSupp.setExpenseAccId(rs.getInt("expense_acc_id"));
+				productSupp.setMainSuppCode(rs.getString("main_supp_code"));
+				productSupp.setManufacturer(rs.getString("manufacturer"));
+				productSupp.setIsSalesItem(rs.getInt("is_sales_item"));
+				productSupp.setIsServiceItem(rs.getInt("is_service_item"));
+				productSupp.setSellCostCenterId(rs.getInt("sell_cost_center_id"));
+				productSupp.setIncomeAccId(rs.getInt("income_acc_id"));
+				productSupp.setAssetId(rs.getInt("asset_id"));
+				productSupp.setMaxDisc(rs.getBigDecimal("max_disc"));
+				productSupp.setMinqty(rs.getInt("minqty"));
+				productSupp.setThickness(rs.getBigDecimal("thickness"));
+				productSupp.setLength(rs.getBigDecimal("length"));
+				productSupp.setWidth(rs.getBigDecimal("width"));
+				productSupp.setVolumeUomId(rs.getInt("volume_uom_id"));
+				productSupp.setTaxId(rs.getInt("tax_id"));
+				
+				ProductCategory productCategory = new ProductCategory();
+				productCategory.setProductCategory(rs.getString("product_category"));
+				productSupp.setProductCategory(productCategory);
+				
+				Uom productUom = new Uom();
+				productUom.setUom(rs.getString("uom_product_uom"));
+				productSupp.setProductUom(productUom);
+				
+				Uom volumeUom = new Uom();
+				volumeUom.setUom(rs.getString("uom_volume_uom"));
+				productSupp.setVolumeUom(volumeUom);
+				
+				Uom weightUom = new Uom();
+				weightUom.setUom(rs.getString("uom_weight_uom"));
+				productSupp.setWeightUom(weightUom);
+				
+				Uom minorUom = new Uom();
+				minorUom.setUom(rs.getString("uom_minor_uom"));
+				productSupp.setMinorUom(minorUom);
+				
+				Tax tax = new Tax();
+				tax.setTax(rs.getString("tax"));
+				productSupp.setTax(tax);
+				
+				productSupps.add(productSupp);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return productSupps;
+	}
 }

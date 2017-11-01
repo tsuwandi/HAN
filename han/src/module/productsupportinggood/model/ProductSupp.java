@@ -663,11 +663,6 @@ public class ProductSupp implements Serializable, ComboBoxProperties {
 		this.taxId = taxId;
 	}
 
-	@Override
-	public Object getField() {
-		return null;
-	}
-
 	public Tax getTax() {
 		if (tax == null)
 			tax = new Tax();
@@ -738,6 +733,19 @@ public class ProductSupp implements Serializable, ComboBoxProperties {
 		if (productUom == null)
 			productUom = new Uom();
 		this.productUom = productUom;
+	}
+	
+	public ProductSupp() {
+		
+	}
+	
+	@Override
+	public Object getField() {
+		return productName ;
+	}
+	
+	public ProductSupp(String productName) {
+		this.productName = productName;
 	}
 
 }

@@ -447,4 +447,88 @@ public class SupplierDAO {
 
 		return ordinal;
 	}
+	
+	private String getBySupplierQuery = "select s.id, s.supp_code, s.supp_name, s.pt, s.npwp, "
+			+ "s.supp_type_id, s.default_tax, s.account_no,"
+			+ "scp.name as contact_person, sa.city, sa.address, sa.phone, "
+			+ "s.bank_id, s.account_name, s.currency_id, s.top, sa.city, "
+			+ "st.supp_type, b.bank, b.bank_abbr, c.currency, c.currency_abbr from supplier s "
+			+ "inner join supp_type st on s.supp_type_id = st.id left join bank b on s.bank_id = b.id "
+			+ "left join supp_address sa on s.supp_code = sa.supp_code "
+			+ "left join supp_cp scp on scp.supp_address_id = sa.id "
+			+ "left join currency c on s.currency_id = c.id "
+			+ "where s.deleted_date is null and st.deleted_date is null "
+			+ "and b.deleted_date is null and c.deleted_date is null ";
+	
+	public List<Supplier> getBySupplier(Supplier supplierSearch) throws SQLException {
+		List<Supplier> suppliers = new ArrayList<Supplier>();
+		try {
+			StringBuilder query = new StringBuilder().append(getBySupplierQuery);
+			query.append(" and lower(s.supp_code) like lower('%");
+			query.append(supplierSearch.getSuppCode());
+			query.append("%') ");
+			query.append(" and lower(s.supp_name) like lower('%");
+			query.append(supplierSearch.getSuppName());
+			query.append("%') ");
+			query.append(" and lower(sa.city) like lower('%");
+			query.append(supplierSearch.getCity());
+			query.append("%') ");
+			query.append(" and lower(sa.address) like lower('%");
+			query.append(supplierSearch.getAddress());
+			query.append("%') ");
+			query.append(" and lower(sa.phone) like lower('%");
+			query.append(supplierSearch.getPhone());
+			query.append("%') ");
+			query.append(" and lower(scp.name) like lower('%");
+			query.append(supplierSearch.getContactPerson());
+			query.append("%') ");
+			
+			getAllStatement = connection.prepareStatement(query.toString());
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				Supplier supplier = new Supplier();
+				supplier.setId(rs.getInt("id"));
+				supplier.setSuppCode(rs.getString("supp_code"));
+				supplier.setSuppName(rs.getString("supp_name"));
+				supplier.setPt(rs.getString("pt"));
+				supplier.setNpwp(rs.getString("npwp"));
+				supplier.setSuppTypeId(rs.getInt("supp_type_id"));
+				supplier.setDefaultTax(rs.getInt("default_tax"));
+				supplier.setAccountNo(rs.getString("account_no"));
+				supplier.setBankId(rs.getInt("bank_id"));
+				supplier.setAccountName(rs.getString("account_name"));
+				supplier.setCurrencyId(rs.getInt("currency_id"));
+				supplier.setTop(rs.getInt("top"));
+				supplier.setCity(rs.getString("city"));
+				supplier.setAddress(rs.getString("address"));
+				supplier.setPhone(rs.getString("phone"));
+				supplier.setContactPerson(rs.getString("contact_person"));
+				
+				SuppType suppType = new SuppType();
+				suppType.setId(rs.getInt("supp_type_id"));
+				suppType.setSuppType(rs.getString("supp_type"));
+
+				Bank bank = new Bank();
+				bank.setId(rs.getInt("bank_id"));
+				bank.setBankAbbr(rs.getString("bank_abbr"));
+				bank.setBank(rs.getString("bank"));
+
+				Currency currency = new Currency();
+				currency.setId(rs.getInt("currency_id"));
+				currency.setCurrencyAbbr(rs.getString("currency_abbr"));
+				currency.setCurrency(rs.getString("currency"));
+
+				supplier.setSuppType(suppType);
+				supplier.setBank(bank);
+				supplier.setCurrency(currency);
+
+				suppliers.add(supplier);
+			}
+		} catch (SQLException ex) {
+			throw new SQLException(ex.getMessage());
+		}
+
+		return suppliers;
+	}
 }

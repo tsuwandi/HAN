@@ -532,7 +532,7 @@ public class SupplierEditPanel extends JPanel implements Bridging {
 		try {
 			ServiceFactory.getSupplierBL().update(supplier, listOfSuppAddress, listOfDeletedSuppAddress,
 					listOfSuppVehicle, listOfDeletedSuppVehicle);
-			DialogBox.showInsert();
+			DialogBox.showEdit();
 			MainPanel.changePanel("module.supplier.ui.SupplierViewPanel", supplier);
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());

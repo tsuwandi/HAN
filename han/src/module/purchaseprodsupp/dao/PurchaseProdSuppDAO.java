@@ -25,7 +25,7 @@ public class PurchaseProdSuppDAO {
 	
 	private String getAllQuery = new StringBuilder()
 			.append("select p.id, p.pps_code, p.supp_code, p.cost_center_id, ")
-			.append("p.purchase_date, p.delivery_date, p.status, p.total, ")
+			.append("p.purchase_date, p.delivery_date, p.status, p.total, p.note, p.tax, p.total, p.grand_total, ")
 			.append("s.id as supp_id, s.supp_name, c.cost_center from purchase_prod_supp p ")
 			.append("inner join supplier s on p.supp_code = s.supp_code ")
 			.append("inner join cost_center c on p.cost_center_id = c.id ")
@@ -39,7 +39,7 @@ public class PurchaseProdSuppDAO {
 			.append("values (?,?,?,?,?,?,?,?,?,?,?,?)").toString();
 
 	private String updateQuery = new StringBuilder()
-			.append("update purchase_prod_supp set supp_code=?, cost_center_id=? purchase_date=?, delivery_date=?, note=?, ")
+			.append("update purchase_prod_supp set supp_code=?, cost_center_id=?, purchase_date=?, delivery_date=?, note=?, ")
 			.append("status=?, total=?, tax=?, grand_total=?, ")
 			.append("edit_date=?, edited_by=? where pps_code=?").toString();
 

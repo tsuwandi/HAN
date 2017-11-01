@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import module.product.model.Product;
+import module.productsupportinggood.model.ProductSupp;
 
 public class PPSProduct implements Serializable {
 
@@ -82,18 +82,18 @@ public class PPSProduct implements Serializable {
 		this.deletedBy = deletedBy;
 	}
 	
-	public Product getProduct() {
-		if(product == null)
-			product = new Product();
-		return product;
+	public ProductSupp getProductSupp() {
+		if(productSupp == null)
+			productSupp = new ProductSupp();
+		return productSupp;
 	}
-	public void setProduct(Product product) {
-		if(product == null)
-			product = new Product();
-		this.product = product;
+	public void setProductSupp(ProductSupp productSupp) {
+		if(productSupp == null)
+			productSupp = new ProductSupp();
+		this.productSupp = productSupp;
 	}
 
-	private Product product;
+	private ProductSupp productSupp;
 	private BigDecimal unitPrice;
 	private BigDecimal subTotal;
 	private boolean isFlag;

@@ -38,6 +38,34 @@ public class Supplier implements Serializable, ComboBoxProperties {
 	private String city;
 	
 	private boolean isFlag;
+	
+	private String address;
+	private String phone;
+	private String contactPerson;
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getContactPerson() {
+		return contactPerson;
+	}
+
+	public void setContactPerson(String contactPerson) {
+		this.contactPerson = contactPerson;
+	}
 
 	public Supplier(){
 		

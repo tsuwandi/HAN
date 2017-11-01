@@ -639,4 +639,79 @@ public class ProductDAO {
 
 		return products;
 	}
+	
+	public List<Product> getByProduct(Product productSearch) throws SQLException {
+		List<Product> products = new ArrayList<Product>();
+		try {
+			StringBuilder query = new StringBuilder().append(selectAllQuery);
+			query.append(" and lower(a.product_code) like lower('%");
+			query.append(productSearch.getProductCode());
+			query.append("%') ");
+			query.append(" and lower(a.product_name) like lower('%");
+			query.append(productSearch.getProductName());
+			query.append("%') ");
+			query.append(" and lower(a.product_category_id) like lower('%");
+			query.append(productSearch.getProductCat());
+			query.append("%') order by a.id asc");
+			
+			getAllProductStatement = connection.prepareStatement(query.toString());
+			ResultSet rs = getAllProductStatement.executeQuery();
+			while (rs.next()) {
+				Product product = new Product();
+				product.setProductId(rs.getInt("id"));
+				product.setProductCode(rs.getString("product_code"));
+				product.setProductName(rs.getString("product_name"));
+				product.setProductCat(rs.getInt("product_category_id"));
+				product.setProductStat(rs.getString("product_status"));
+				product.setProductUom(rs.getInt("product_uom_id"));
+				product.setIsMaintain(rs.getInt("is_maintain_stock"));
+				product.setImagePath(rs.getString("image_path"));
+				product.setBrand(rs.getString("brand"));
+				product.setBarcode(rs.getString("barcode"));
+				product.setDescription(rs.getString("description"));
+				product.setWoodType(rs.getInt("wood_type_id"));
+				product.setGrade(rs.getInt("grade_id"));
+				product.setThickness(rs.getDouble("thickness"));
+				product.setLength(rs.getDouble("length"));
+				product.setWidth(rs.getDouble("width"));
+				product.setCondition(rs.getInt("condition_id"));
+				product.setMinQty(rs.getInt("minqty"));
+				product.setIsSerial(rs.getInt("is_has_serial"));
+				product.setIsAsset(rs.getInt("is_fixed_asset"));
+				product.setWarranty(rs.getInt("warranty"));
+				product.setNetto(rs.getDouble("netto"));
+				product.setNettoUom(rs.getInt("netto_uom_id"));
+				product.setIsPurchase(rs.getInt("is_purchase_item"));
+				product.setMinor(rs.getInt("minor"));
+				product.setMinorUom(rs.getInt("minor_uom_id"));
+				product.setLeadTime(rs.getInt("lead_time"));
+				product.setBuyCost(rs.getInt("buy_cost_center_id"));
+				product.setExpense(rs.getInt("expense_acc_id"));
+				product.setMainSuppCode(rs.getString("main_supp_code"));
+				product.setManufacturer(rs.getString("manufacturer"));
+				product.setIsSales(rs.getInt("is_sales_item"));
+				product.setIsService(rs.getInt("is_service_item"));
+				product.setSellCost(rs.getInt("sell_cost_center_id"));
+				product.setIncome(rs.getInt("income_acc_id"));
+				product.setMaxDisc(rs.getDouble("max_disc"));
+				product.setInputDate(rs.getDate("a.input_date"));
+				product.setInputBy(rs.getString("a.input_by"));
+				product.setEditDate(rs.getDate("a.edit_date"));
+				product.setEditBy(rs.getString("a.edited_by"));
+				product.setWoodTypeName(rs.getString("b.wood_type"));
+				product.setGradeName(rs.getString("c.grade"));
+				product.setProductCatName(rs.getString("d.product_category"));
+				product.setProductionTypeId(rs.getInt("production_type_id"));
+				product.setProductionQualityId(rs.getInt("production_quality_id"));
+				product.setProductionType(rs.getString("production_type"));
+				product.setProductionQuality(rs.getString("production_quality"));
+				products.add(product);
+			}
+
+		} catch (SQLException ex) {
+			throw new SQLException(ex.getMessage());
+		}
+
+		return products;
+	}
 }

@@ -7,8 +7,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import main.component.AppConstants;
-import module.product.dao.ProductDAO;
-import module.product.model.Product;
+import module.productsupportinggood.dao.ProductSuppDAO;
+import module.productsupportinggood.model.ProductSupp;
 import module.purchaseprodsupp.dao.PPSProductDAO;
 import module.purchaseprodsupp.dao.PurchaseProdSuppDAO;
 import module.purchaseprodsupp.model.PPSProduct;
@@ -17,6 +17,8 @@ import module.sn.costcenter.dao.CostCenterDAO;
 import module.sn.costcenter.model.CostCenter;
 import module.sn.currency.dao.CurrencyDAO;
 import module.sn.currency.model.Currency;
+import module.sn.productcategory.dao.ProductCategoryDAO;
+import module.sn.productcategory.model.ProductCategory;
 import module.sn.production.type.dao.ProductionTypeDAO;
 import module.sn.production.type.model.ProductionType;
 import module.supplier.dao.SupplierDAO;
@@ -29,11 +31,13 @@ public class PurchaseProductSuppBL  {
 		this.dataSource = dataSource;
 	}
 	
-	public List<Product> getAllByProductCategoryId(int productionCategoryId) throws SQLException {
+	public List<ProductSupp> getAllByProductCategoryId(int productionCategoryId) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
-			return new ProductDAO(con).getAllByProductCategoryId(productionCategoryId);
+			ProductSupp productSupp = new ProductSupp();
+			productSupp.setProductCategoryId(productionCategoryId);
+			return new ProductSuppDAO(con).getAllByProductCategoryId(productSupp);
 		} finally {
 			con.close();
 		}
@@ -214,6 +218,46 @@ public class PurchaseProductSuppBL  {
 		try {
 			con = dataSource.getConnection();
 			return new ProductionTypeDAO(con).getAll();
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<Supplier> getAllSupplierByAdvancedSearch(Supplier supplier) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new SupplierDAO(con).getBySupplier(supplier);
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<CostCenter> getAllCostCenterByAdvancedSearch(CostCenter costCenter) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new CostCenterDAO(con).getAllByCostCenter(costCenter);
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<ProductCategory> getAllProductCategory(int productCategoryTypeId) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductCategoryDAO(con).getAllByProductCategoryTypeId(productCategoryTypeId);
+		} finally {
+			con.close();
+		}
+	}
+	
+	public List<ProductSupp> getAllProductByAdvancedSearch(ProductSupp productSupp) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ProductSuppDAO(con).getAllByProductCategoryId(productSupp);
 		} finally {
 			con.close();
 		}

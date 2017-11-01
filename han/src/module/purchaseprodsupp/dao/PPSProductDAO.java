@@ -10,7 +10,9 @@ import java.util.List;
 
 import controller.ServiceFactory;
 import module.product.model.Product;
+import module.productsupportinggood.model.ProductSupp;
 import module.purchaseprodsupp.model.PPSProduct;
+import module.sn.productcategory.model.ProductCategory;
 import module.util.DateUtil;
 
 public class PPSProductDAO {
@@ -22,10 +24,10 @@ public class PPSProductDAO {
 
 	private String getAllByPPSCodeQuery = new StringBuilder()
 			.append("select pp.id, pp.pps_code, pp.product_code, pp.qty, ")
-			.append("pp.unit_price, pp.sub_total, p.product_name, p.id as product_id, p.production_type_id, pt.production_type from pps_product pp ")
-			.append("inner join product p on pp.product_code = p.product_code ")
-			.append("inner join production_type pt on pt.id = p.production_type_id ")
-			.append("where pp.pps_code = ? and pp.deleted_date is null and p.deleted_date is null and pt.deleted_date is null ").toString();
+			.append("pp.unit_price, pp.sub_total, p.product_name, p.id as product_id, p.product_category_id, pt.product_category from pps_product pp ")
+			.append("inner join product_supp p on pp.product_code = p.product_code ")
+			.append("inner join product_category pt on pt.id = p.product_category_id ")
+			.append("where pp.pps_code = ? and pp.deleted_date is null and p.deleted_date is null and pt.delete_date is null ").toString();
 
 	private String insertQuery = new StringBuilder()
 			.append("insert into pps_product (pps_code, product_code, qty, unit_price, sub_total, ")
@@ -65,13 +67,15 @@ public class PPSProductDAO {
 				ppsProduct.setQty(qty);
 				ppsProduct.setUnitPrice(unitPrice);
 				ppsProduct.setSubTotal(subTotal);
-				Product	product = new Product();
+				ProductSupp	product = new ProductSupp();
 				product.setProductCode(rs.getString("product_code"));
 				product.setProductName(rs.getString("product_name"));
-				product.setProductionType(rs.getString("production_type"));
-				product.setProductionTypeId(rs.getInt("production_type_id"));
+				ProductCategory productCategory = new ProductCategory();
+				productCategory.setProductCategory(rs.getString("product_category"));
+				product.setProductCategory(productCategory);
+				product.setProductCategoryId(rs.getInt("product_category_id"));
 				
-				ppsProduct.setProduct(product);
+				ppsProduct.setProductSupp(product);
 				ppsProducts.add(ppsProduct);
 			}
 
@@ -86,7 +90,7 @@ public class PPSProductDAO {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 			insertStatement.setString(1, ppsProduct.getPpsCode());
-			insertStatement.setString(2, ppsProduct.getProductCode());
+			insertStatement.setString(2, ppsProduct.getProductSupp().getProductCode());
 			insertStatement.setBigDecimal(3, ppsProduct.getQty());
 			insertStatement.setBigDecimal(4, ppsProduct.getUnitPrice());
 			insertStatement.setBigDecimal(5, ppsProduct.getSubTotal());
