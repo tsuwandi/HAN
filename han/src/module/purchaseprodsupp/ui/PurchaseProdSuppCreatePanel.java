@@ -670,8 +670,15 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 	}
 	
 	private BigDecimal calculateGrandTotal(String sTotalPurchase, String sTax) {
-		BigDecimal totalPurchase = new BigDecimal(sTotalPurchase);
-		BigDecimal tax = new BigDecimal(sTax);
+		BigDecimal totalPurchase = new BigDecimal("0.00");
+		if(!"".equals(sTotalPurchase)) {
+			totalPurchase = new BigDecimal(sTotalPurchase);
+		}
+		
+		BigDecimal tax = new BigDecimal("0.00");
+		if(!"".equals(sTax)) {
+			tax = new BigDecimal(sTax);
+		}
 		
 		BigDecimal grandTotal = totalPurchase.add(tax);
 		
