@@ -31,6 +31,7 @@ public class ProductSuppDAO {
 	private PreparedStatement insertStatement;
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
+	private PreparedStatement getAllByPpsStatement;
 
 	private String getAllQuery = new StringBuilder()
 			.append("SELECT ps.id, product_code, product_name, product_category_id, product_uom_id, is_maintain_stock, ")
@@ -731,6 +732,120 @@ public class ProductSuppDAO {
 				Tax tax = new Tax();
 				tax.setTax(rs.getString("tax"));
 				productSupp.setTax(tax);
+				
+				productSupps.add(productSupp);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new SQLException(ex.getMessage());
+		}
+
+		return productSupps;
+	}
+	
+	private String getAllByPpsQuery = new StringBuilder()
+			.append("SELECT ps.id, ps.product_code, product_name, product_category_id, product_uom_id, is_maintain_stock, ")
+			.append("image_path, brand, barcode, description, is_fixed_asset, warranty, weight_net, weight_gross, ")
+			.append("weight_uom_id, is_purchase_item, minor, minor_uom_id, lead_time, buy_cost_center_id, expense_acc_id, ")
+			.append("main_supp_code, manufacturer, is_sales_item, is_service_item, sell_cost_center_id, income_acc_id, ")
+			.append("asset_id, max_disc, ps.input_date, ps.input_by, ps.edit_date, ps.edited_by, ps.deleted_date, ps.deleted_by, minqty, ")
+			.append("thickness, length, width, volume_uom_id, tax_id, pc.product_category, ")
+			.append("uom_weight.uom uom_weight_uom, uom_minor.uom uom_minor_uom, uom_volume.uom uom_volume_uom, uom_product.uom uom_product_uom, tax.tax, pps.qty, pps.unit_price ")
+			.append("FROM product_supp ps ")
+			.append("LEFT JOIN uom uom_weight on ps.minor_uom_id = uom_weight.id ")
+			.append("LEFT JOIN uom uom_minor on ps.volume_uom_id = uom_minor.id ")
+			.append("LEFT JOIN uom uom_volume on ps.minor_uom_id = uom_volume.id ")
+			.append("LEFT JOIN uom uom_product on ps.product_uom_id = uom_product.id ")
+			.append("LEFT JOIN tax tax on ps.tax_id = tax.id ")
+			.append("LEFT JOIN product_category pc on ps.product_category_id = pc.id ")
+			.append("INNER JOIN pps_product pps on pps.product_code = ps.product_code ")
+			.append("WHERE ps.deleted_date is null AND pps.deleted_date is null ")
+			.toString();
+	
+	public List<ProductSupp> getAllByPPSCode(ProductSupp pProductSupp, String ppsCode) throws SQLException {
+		List<ProductSupp> productSupps = new ArrayList<ProductSupp>();
+
+		try {
+			StringBuilder query = new StringBuilder().append(getAllByPpsQuery);
+			query.append(" and lower(ps.product_code) like lower('%");
+			query.append(pProductSupp.getProductCode());
+			query.append("%') ");
+			query.append(" and lower(product_name) like lower('%");
+			query.append(pProductSupp.getProductName());
+			query.append("%') ");
+
+			query.append(" and ps.product_code IN (SELECT product_code FROM pps_product WHERE pps_code = '");
+			query.append(ppsCode);
+			query.append("' AND deleted_date is null) order by id asc");
+			getAllByPpsStatement = connection.prepareStatement(query.toString());
+			
+			ResultSet rs = getAllByPpsStatement.executeQuery();
+			while (rs.next()) {
+				
+				ProductSupp productSupp = new ProductSupp();
+				productSupp.setId(rs.getInt("id"));
+				productSupp.setProductCode(rs.getString("ps.product_code"));
+				productSupp.setProductName(rs.getString("product_name"));
+				productSupp.setProductCategoryId(rs.getInt("product_category_id"));
+				productSupp.setProductUomId(rs.getInt("product_uom_id"));
+				productSupp.setIsMaintainStock(rs.getInt("is_maintain_stock"));
+				productSupp.setImagePath(rs.getString("image_path"));
+				productSupp.setBrand(rs.getString("brand"));
+				productSupp.setBarcode(rs.getString("barcode"));
+				productSupp.setDescription(rs.getString("description"));
+				productSupp.setIsFixedAsset(rs.getInt("is_fixed_asset"));
+				productSupp.setWarranty(rs.getObject("warranty") != null ? rs.getInt("warranty") : null);
+				productSupp.setWeightNet(rs.getBigDecimal("weight_net"));
+				productSupp.setWeightGross(rs.getBigDecimal("weight_gross"));
+				productSupp.setWeightUomId(rs.getInt("weight_uom_id"));
+				productSupp.setIsPurchaseItem(rs.getInt("is_purchase_item"));
+				productSupp.setMinor(rs.getObject("minor") != null ? rs.getInt("minor") : null);
+				productSupp.setMinorUomId(rs.getInt("minor_uom_id"));
+				productSupp.setLeadTime(rs.getObject("lead_time") != null ? rs.getInt("lead_time") : null);
+				productSupp.setBuyCostCenterId(rs.getInt("buy_cost_center_id"));
+				productSupp.setExpenseAccId(rs.getInt("expense_acc_id"));
+				productSupp.setMainSuppCode(rs.getString("main_supp_code"));
+				productSupp.setManufacturer(rs.getString("manufacturer"));
+				productSupp.setIsSalesItem(rs.getInt("is_sales_item"));
+				productSupp.setIsServiceItem(rs.getInt("is_service_item"));
+				productSupp.setSellCostCenterId(rs.getInt("sell_cost_center_id"));
+				productSupp.setIncomeAccId(rs.getInt("income_acc_id"));
+				productSupp.setAssetId(rs.getInt("asset_id"));
+				productSupp.setMaxDisc(rs.getBigDecimal("max_disc"));
+				productSupp.setMinqty(rs.getInt("minqty"));
+				productSupp.setThickness(rs.getBigDecimal("thickness"));
+				productSupp.setLength(rs.getBigDecimal("length"));
+				productSupp.setWidth(rs.getBigDecimal("width"));
+				productSupp.setVolumeUomId(rs.getInt("volume_uom_id"));
+				productSupp.setTaxId(rs.getInt("tax_id"));
+				
+				ProductCategory productCategory = new ProductCategory();
+				productCategory.setProductCategory(rs.getString("product_category"));
+				productSupp.setProductCategory(productCategory);
+				
+				Uom productUom = new Uom();
+				productUom.setUom(rs.getString("uom_product_uom"));
+				productSupp.setProductUom(productUom);
+				
+				Uom volumeUom = new Uom();
+				volumeUom.setUom(rs.getString("uom_volume_uom"));
+				productSupp.setVolumeUom(volumeUom);
+				
+				Uom weightUom = new Uom();
+				weightUom.setUom(rs.getString("uom_weight_uom"));
+				productSupp.setWeightUom(weightUom);
+				
+				Uom minorUom = new Uom();
+				minorUom.setUom(rs.getString("uom_minor_uom"));
+				productSupp.setMinorUom(minorUom);
+				
+				Tax tax = new Tax();
+				tax.setTax(rs.getString("tax"));
+				productSupp.setTax(tax);
+				
+				productSupp.setUnitPrice(rs.getBigDecimal("unit_price"));
+				productSupp.setQty(rs.getBigDecimal("qty"));
 				
 				productSupps.add(productSupp);
 			}

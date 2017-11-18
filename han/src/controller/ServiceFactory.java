@@ -6,11 +6,11 @@ import module.dryin.bl.DryInBL;
 import module.dryout.bl.DryOutBL;
 import module.employee.bl.EmployeeBL;
 import module.employeemanagement.bl.EmployeeManagementBL;
-import module.employeemanagement.dao.EmployeeDAO;
 import module.invoicebalken.bl.InvoiceBalkenBL;
 import module.invoiceprodresult.bl.InvoiceProductResultBL;
 import module.mastershift.bl.MasterShiftBL;
 import module.packingresult.bl.PackingBL;
+import module.paymentbalken.bl.PaymentBalkenBL;
 import module.paymentprodresult.bl.PaymentProductResultBL;
 import module.personalia.bl.PersonaliaBL;
 import module.product.bl.ProductBL;
@@ -21,6 +21,7 @@ import module.productsupportinggood.bl.ProductSupportingGoodBL;
 import module.purchaseprodresult.bl.PurchaseProductResultBL;
 import module.purchaseprodsupp.bl.PurchaseProductSuppBL;
 import module.receiveprodresult.bl.ReceiveProductResultBL;
+import module.receiveprodsupp.bl.ReceiveProductSuppBL;
 import module.report.bl.ReportBL;
 import module.salary.bl.CalculateSalaryBL;
 import module.sales.bl.SalesBL;
@@ -30,7 +31,6 @@ import module.sn.woodtype.bl.WoodTypeBL;
 import module.stockopname.bl.StockOpnameBL;
 import module.supplier.bl.SupplierBL;
 import module.system.bl.SystemBL;
-import module.paymentbalken.bl.PaymentBalkenBL;
 
 public class ServiceFactory {
 	// private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
@@ -67,6 +67,7 @@ public class ServiceFactory {
 	private static ProductSupportingGoodBL productSupportingGoodBL = null;
 	private static EmployeeManagementBL employeeManagementBL = null;
 	private static PurchaseProductSuppBL purchaseProductSuppBL = null;
+	private static ReceiveProductSuppBL receiveProductSuppBL = null;
 	
 	
 	/**
@@ -321,6 +322,13 @@ public class ServiceFactory {
 			purchaseProductSuppBL = new PurchaseProductSuppBL(DataSourceFactory.getDataSource());
 		}
 		return purchaseProductSuppBL;
+	}
+	
+	public static ReceiveProductSuppBL getReceiveProductSuppBL() {
+		if (receiveProductSuppBL == null) {
+			receiveProductSuppBL = new ReceiveProductSuppBL(DataSourceFactory.getDataSource());
+		}
+		return receiveProductSuppBL;
 	}
 	
 	

@@ -626,7 +626,11 @@ public class PurchaseProdSuppEditPanel extends JPanel implements Bridging {
 	
 	protected boolean doValidateProductSupp() {
 		boolean isValid = true;
-
+		lblErrorProduct.setText("");
+		lblErrorUnitPrice.setText("");
+		lblErrorQty.setText("");
+		lblErrorProductCategory.setText("");
+		
 		if (txtProduct.getText() == null || txtProduct.getText().length() == 0) {
 			lblErrorProduct.setText("Textbox Produk harus dipilih.");
 			isValid = false;
