@@ -246,10 +246,10 @@ public class SalesCreatePanel extends JPanel implements Bridging {
 		lblCreatedBy.setBounds(600, 110, 150, 25);
 		panel.add(lblCreatedBy);
 
-		// System.out.println(ServiceFactory.getSystemBL().getUsernameActive());
 		txtCreatedBy = new JTextField();
 		txtCreatedBy.setBounds(720, 110, 150, 25);
 		txtCreatedBy.setEnabled(false);
+		txtCreatedBy.setText(ServiceFactory.getSystemBL().getUsernameActive());
 		((AbstractDocument) txtCreatedBy.getDocument()).setDocumentFilter(filter);
 		panel.add(txtCreatedBy);
 
@@ -327,13 +327,14 @@ public class SalesCreatePanel extends JPanel implements Bridging {
 		Date soNoDate = new Date();
 		Calendar soNoCal = Calendar.getInstance();
 		soNoCal.setTime(soNoDate);
+		Integer soNoTanggal = soNoCal.get(Calendar.DATE);
 		Integer soNoMonth = soNoCal.get(Calendar.MONTH) + 1;
 		Integer soNoYear = soNoCal.get(Calendar.YEAR);
 
 		String soNo = new String();
 		Integer codeIncrement = ServiceFactory.getSalesBL().getLatestIncrementSalesId();
-		soNo = String.format("%03d", codeIncrement) + "/BARE/SC" + "/" + soNoMonth + "/"
-				+ Integer.toString(soNoYear).substring(2, 4);
+		soNo = String.format("%04d", codeIncrement) + "/SC" + "/" + soNoTanggal + "/" + soNoMonth + "/" +
+				+ soNoYear;
 		txtSoNo = new JTextField();
 		txtSoNo.setBounds(220, 260, 150, 25);
 		txtSoNo.setEnabled(false);
