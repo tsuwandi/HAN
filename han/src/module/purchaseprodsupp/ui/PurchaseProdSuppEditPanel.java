@@ -626,7 +626,11 @@ public class PurchaseProdSuppEditPanel extends JPanel implements Bridging {
 	
 	protected boolean doValidateProductSupp() {
 		boolean isValid = true;
-
+		lblErrorProduct.setText("");
+		lblErrorUnitPrice.setText("");
+		lblErrorQty.setText("");
+		lblErrorProductCategory.setText("");
+		
 		if (txtProduct.getText() == null || txtProduct.getText().length() == 0) {
 			lblErrorProduct.setText("Textbox Produk harus dipilih.");
 			isValid = false;
@@ -717,8 +721,15 @@ public class PurchaseProdSuppEditPanel extends JPanel implements Bridging {
 	}
 	
 	private BigDecimal calculateGrandTotal(String sTotalPurchase, String sTax) {
-		BigDecimal totalPurchase = new BigDecimal(sTotalPurchase);
-		BigDecimal tax = new BigDecimal(sTax);
+		BigDecimal totalPurchase = new BigDecimal("0.00");
+		if(!"".equals(sTotalPurchase)) {
+			totalPurchase = new BigDecimal(sTotalPurchase);
+		}
+		
+		BigDecimal tax = new BigDecimal("0.00");
+		if(!"".equals(sTax)) {
+			tax = new BigDecimal(sTax);
+		}
 		
 		BigDecimal grandTotal = totalPurchase.add(tax);
 		

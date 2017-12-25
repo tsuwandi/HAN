@@ -62,6 +62,9 @@ public class ProductSupp implements Serializable, ComboBoxProperties {
 	private Uom productUom;
 	private ProductCategory productCategory;
 	
+	private BigDecimal unitPrice;
+	private BigDecimal qty;
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -746,6 +749,22 @@ public class ProductSupp implements Serializable, ComboBoxProperties {
 	
 	public ProductSupp(String productName) {
 		this.productName = productName;
+	}
+
+	public BigDecimal getUnitPrice() {
+		return unitPrice;
+	}
+
+	public void setUnitPrice(BigDecimal unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+
+	public BigDecimal getQty() {
+		return qty;
+	}
+
+	public void setQty(BigDecimal qty) {
+		this.qty = qty;
 	}
 
 }

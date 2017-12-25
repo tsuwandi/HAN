@@ -301,6 +301,58 @@ public class PurchaseProdSuppDAO {
 
 		return ordinal;
 	}
+	
+	public List<PurchaseProdSupp> getAllPurchaseProdSuppByAdvancedSearch(PurchaseProdSupp pPurchaseProdSupp) throws SQLException {
+		List<PurchaseProdSupp> ppss = new ArrayList<PurchaseProdSupp>();
+		try {
+			StringBuilder query = new StringBuilder().append(getAllQuery);
+			query.append(" and lower(p.supp_code) like lower('%");
+			query.append(pPurchaseProdSupp.getSupplier().getSuppCode());
+			query.append("%') ");
+			query.append(" and lower(s.supp_name) like lower('%");
+			query.append(pPurchaseProdSupp.getSupplier().getSuppName());
+			query.append("%') ");
+			query.append(" and lower(p.pps_code) like lower('%");
+			query.append(pPurchaseProdSupp.getPpsCode());
+			query.append("%') ");
+			
+			getAllStatement = connection.prepareStatement(query.toString());
+
+			ResultSet rs = getAllStatement.executeQuery();
+			while (rs.next()) {
+				PurchaseProdSupp pps = new PurchaseProdSupp();
+				pps.setId(rs.getInt("id"));
+				pps.setPpsCode(rs.getString("pps_code"));
+				pps.setSuppCode(rs.getString("supp_code"));
+				pps.setCostCenterId(rs.getInt("cost_center_id") == 0 ? null : rs.getInt("cost_center_id"));
+				pps.setPurchaseDate(rs.getDate("purchase_date"));
+				pps.setDeliveryDate(rs.getDate("delivery_date"));
+				pps.setNote(rs.getString("note"));
+				pps.setStatus(rs.getString("status"));
+				pps.setTotal(rs.getBigDecimal("total"));
+				pps.setTax(rs.getBigDecimal("tax"));
+				pps.setGrandTotal(rs.getBigDecimal("grand_total"));
+				
+				Supplier supplier = new Supplier();
+				supplier.setId(rs.getInt("supp_id"));
+				supplier.setSuppCode(rs.getString("supp_code"));
+				supplier.setSuppName(rs.getString("supp_name"));
+				
+				CostCenter costCenter = new CostCenter();
+				costCenter.setId(rs.getInt("cost_center_id"));
+				costCenter.setCostCenter(rs.getString("cost_center"));
+				
+				pps.setSupplier(supplier);
+				pps.setCostCenter(costCenter);
+
+				ppss.add(pps);
+			}
+		} catch (SQLException ex) {
+			throw new SQLException(ex.getMessage());
+		}
+
+		return ppss;
+	}
 
 
 }

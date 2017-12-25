@@ -531,4 +531,51 @@ ALTER TABLE `pps_product`
 
 INSERT INTO `cost_center` (`id`, `cost_center`, `input_date`, `input_by`, `edit_date`, `edit_by`, `deleted_date`, `deleted_by`) VALUES
 (1, 'default', '2017-10-18', 'ADMIN', NULL, NULL, NULL, NULL);
+
+--timotius receive prod supp
+CREATE TABLE IF NOT EXISTS `receive_prod_supp` (
+  `id` int(12) NOT NULL,
+  `rps_code` varchar(50) DEFAULT NULL,
+  `pps_code` varchar(50) DEFAULT NULL,
+  `receive_date` date DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL,
+  `confirm_code` varchar(5) DEFAULT NULL,
+  `confirm_date` date DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL,
+  `total` decimal(20,4) DEFAULT NULL,
+  `tax` decimal(20,4) DEFAULT NULL,
+  `grand_total` decimal(20,4) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+ALTER TABLE `receive_prod_supp`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `receive_prod_supp`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+  
+CREATE TABLE IF NOT EXISTS `rps_product` (
+  `id` int(11) NOT NULL,
+  `rps_code` varchar(50) DEFAULT NULL,
+  `product_code` varchar(20) DEFAULT NULL,
+  `qty` decimal(20,4) DEFAULT NULL,
+  `unit_price` decimal(20,4) DEFAULT NULL,
+  `sub_total` decimal(20,4) DEFAULT NULL,
+  `input_date` date DEFAULT NULL,
+  `input_by` varchar(25) DEFAULT NULL,
+  `edit_date` date DEFAULT NULL,
+  `edited_by` varchar(25) DEFAULT NULL,
+  `deleted_date` date DEFAULT NULL,
+  `deleted_by` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `rps_product`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `rps_product`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
   

@@ -1,4 +1,4 @@
-package module.purchaseprodsupp.ui;
+package module.receiveprodsupp.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -37,107 +37,141 @@ import com.toedter.calendar.JDateChooser;
 
 import controller.ServiceFactory;
 import main.component.AppConstants;
-import main.component.ComboBox;
 import main.component.DialogBox;
 import main.component.NumberField;
 import main.component.UppercaseDocumentFilter;
 import main.panel.MainPanel;
 import module.productsupportinggood.model.ProductSupp;
 import module.purchaseprodsupp.model.PPSProduct;
-import module.purchaseprodsupp.model.PurchaseProdSupp;
-import module.sn.currency.model.Currency;
+import module.receiveprodsupp.model.RPSProduct;
+import module.receiveprodsupp.model.ReceiveProdSupp;
 import module.sn.productcategory.model.ProductCategory;
 import module.sn.uom.model.Uom;
 import module.supplier.model.Supplier;
 import module.util.Bridging;
 import module.util.JTextFieldLimit;
 
-public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
+public class ReceiveProdSuppEditPanel extends JPanel implements Bridging {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void invokeObjects(Object... objects) {
-		// TODO Auto-generated method stub
+		this.receiveProductSupp = (ReceiveProdSupp) objects[0];
+		
+		loadData(receiveProductSupp.getId());
+	}
+	
+	protected void loadData(Integer id) {
+		try {
+			receiveProductSupp = ServiceFactory.getReceiveProductSuppBL().getRPSById(id);
+			
+			if (receiveProductSupp != null) {
+				txtReceiveProductSuppCode.setText(receiveProductSupp.getRpsCode());
+				txtPurchaseProductSuppCode.setText(receiveProductSupp.getPpsCode());
+				
+				txtSupplier.setText(receiveProductSupp.getPurchaseProdSupp().getSupplier().getSuppName());
+				supplierCode = receiveProductSupp.getPurchaseProdSupp().getSupplier().getSuppCode();
+				
+				txtCostCenter.setText(receiveProductSupp.getPurchaseProdSupp().getCostCenter().getCostCenter());
+				costCenterId = receiveProductSupp.getPurchaseProdSupp().getCostCenter().getId();
+				
+				dcReceiveDate.setDate(receiveProductSupp.getReceiveDate());
+				
+				txtNote.setText(receiveProductSupp.getNote());
+				txtTotal.setText(String.format("%.2f", receiveProductSupp.getTotal()));
+				
+				String tax = String.format("%.2f",receiveProductSupp.getTax());
+				
+				txtTax.setText(tax);
+				txtGrandTotal.setText(String.format("%.2f",receiveProductSupp.getGrandTotal()));
+				
+				listOfRPSProduct = ServiceFactory.getReceiveProductSuppBL().getRPSProductByRPSCode(receiveProductSupp.getRpsCode());
+				
+				refreshTableRPSProduct();
+			}
+		} catch (SQLException e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
+		}
 	}
 
 	private static final Logger LOGGER = Logger
-			.getLogger(PurchaseProdSuppCreatePanel.class);
+			.getLogger(ReceiveProdSuppEditPanel.class);
 
+	JLabel lblReceiveProductSuppCode;
 	JLabel lblPurchaseProductSuppCode;
 	JLabel lblSupplier;
 	JLabel lblCostCenter;
-	JLabel lblPurchaseDate;
-	JLabel lblDeliveryDate;
+	JLabel lblReceiveDate;
 	JLabel lblNote;
 
-	JButton btnInsertPPSProduct;
-	JButton btnDeletePPSProduct;
+	JButton btnInsertRPSProduct;
+	JButton btnDeleteRPSProduct;
 
-	JButton btnInsertPPSNote;
-	JButton btnDeletePPSNote;
 	JButton btnCancel;
 	JButton btnSave;
-	
-	JButton btnSearchSupplier;
-	JButton btnSearchCostCenter;
 
 	JPanel panel;
 	JScrollPane scrollPane;
 
+	JTextField txtReceiveProductSuppCode;
 	JTextField txtPurchaseProductSuppCode;
 	JTextField txtSupplier;
 	JTextField txtCostCenter;
-	JDateChooser dcPurchaseDate;
-	JDateChooser dcDeliveryDate;
+	JDateChooser dcReceiveDate;
 	JTextArea txtNote;
+	
+	JButton btnSearchPPS;
 
+	JLabel lblErrorReceiveProductSuppCode;
 	JLabel lblErrorPurchaseProductSuppCode;
 	JLabel lblErrorSupplier;
 	JLabel lblErrorCostCenter;
-	JLabel lblErrorPurchaseDate;
-	JLabel lblErrorDeliveryDate;
+	JLabel lblErrorReceiveDate;
 
-	PurchaseProdSupp purchaseProductSupp;
+	ReceiveProdSupp receiveProductSupp;
 	DocumentFilter filter = new UppercaseDocumentFilter();
 
 	List<Supplier> listOfSupplier = null;
 
-	List<PPSProduct> listOfPPSProduct = null;
+	private List<RPSProduct> listOfRPSProduct = null;
+	private List<RPSProduct> listOfDeletedRPSProduct = new ArrayList<RPSProduct>();
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
 
-	JScrollPane scrollPanePPSProduct;
-	JTable tblPPSProduct;
+	JScrollPane scrollPaneRPSProduct;
+	JTable tblRPSProduct;
 
-	PPSProductTableModel pprProductTableModel = null;
+	RPSProductTableModel rprProductTableModel = null;
 
-	PurchaseProdSuppCreatePanel pprCreatePanel;
+	ReceiveProdSuppEditPanel rprEditPanel;
 
-	JLabel lblPPSProduct;
+	JLabel lblRPSProduct;
 	
 	private String supplierCode;
 	private Integer costCenterId;
 	private String productCode;
 	private Integer productUomId;
+	private BigDecimal qty;
 
-	public PurchaseProdSuppCreatePanel() {
-		purchaseProductSupp = new PurchaseProdSupp();
+	public ReceiveProdSuppEditPanel() {
+		receiveProductSupp = new ReceiveProdSupp();
 
-		pprCreatePanel = this;
+		rprEditPanel = this;
 
 		setLayout(null);
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(800, 800));
 		panel.setLayout(null);
 
-		lblBreadcrumb = new JLabel("ERP > Pembelian > Barang Pendukung");
+		lblBreadcrumb = new JLabel("ERP > Penerimaan > Barang Pendukung");
 		lblBreadcrumb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblBreadcrumb.setBounds(50, 10, 500, 25);
 		panel.add(lblBreadcrumb);
 
-		addPOBarangPendukung();
+		addPenerimaanBarangPendukung();
 		
 		addProductSupp();
 		
@@ -161,7 +195,7 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 			public void actionPerformed(ActionEvent arg0) {
 				int response = DialogBox.showCloseChoice();
 				if (response == JOptionPane.YES_OPTION) {
-					MainPanel.changePanel("module.purchaseprodsupp.ui.PurchaseProdSuppListPanel");
+					MainPanel.changePanel("module.receiveprodsupp.ui.ReceiveProdSuppListPanel");
 				}
 			}
 		});
@@ -185,24 +219,45 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 
 	}
 	
-	public void addPOBarangPendukung() {
-		lblHeader = new JLabel("Buat Baru PO Barang Pendukung");
+	public void addPenerimaanBarangPendukung() {
+		lblHeader = new JLabel("Buat Baru Penerimaan Barang Pendukung");
 		lblHeader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblHeader.setBounds(50, 45, 320, 25);
 		panel.add(lblHeader);
-
-		lblPurchaseProductSuppCode = new JLabel(
+		
+		lblReceiveProductSuppCode = new JLabel(
 				"<html>Kode Pembelian <font color=\"red\">*</font></html>");
-		lblPurchaseProductSuppCode.setBounds(50, 80, 150, 25);
-		panel.add(lblPurchaseProductSuppCode);
+		lblReceiveProductSuppCode.setBounds(50, 80, 150, 25);
+		panel.add(lblReceiveProductSuppCode);
 
-		txtPurchaseProductSuppCode = new JTextField();
-		txtPurchaseProductSuppCode.setBounds(220, 80, 150, 25);
-		txtPurchaseProductSuppCode.setDocument(new JTextFieldLimit(15));
-		((AbstractDocument) txtPurchaseProductSuppCode.getDocument())
+		txtReceiveProductSuppCode = new JTextField();
+		txtReceiveProductSuppCode.setBounds(220, 80, 150, 25);
+		txtReceiveProductSuppCode.setDocument(new JTextFieldLimit(15));
+		((AbstractDocument) txtReceiveProductSuppCode.getDocument())
 				.setDocumentFilter(filter);
-		txtPurchaseProductSuppCode.setEnabled(false);
-		panel.add(txtPurchaseProductSuppCode);
+		txtReceiveProductSuppCode.setEnabled(false);
+		panel.add(txtReceiveProductSuppCode);
+		
+		lblErrorReceiveProductSuppCode = new JLabel();
+		lblErrorReceiveProductSuppCode.setForeground(Color.RED);
+		lblErrorReceiveProductSuppCode.setBounds(525, 80, 225, 25);
+		panel.add(lblErrorReceiveProductSuppCode);
+		
+		lblReceiveDate = new JLabel(
+				"<html>Tanggal Penerimaan <font color=\"red\">*</font></html>");
+		lblReceiveDate.setBounds(50, 110, 150, 25);
+		panel.add(lblReceiveDate);
+
+		dcReceiveDate = new JDateChooser(new Date());
+		dcReceiveDate.setBounds(220, 110, 150, 25);
+		dcReceiveDate.setDateFormatString("dd-MM-yyyy");
+		dcReceiveDate.setEnabled(false);
+		panel.add(dcReceiveDate);
+
+		lblErrorReceiveDate = new JLabel();
+		lblErrorReceiveDate.setForeground(Color.RED);
+		lblErrorReceiveDate.setBounds(425, 110, 225, 25);
+		panel.add(lblErrorReceiveDate);
 		
 		lblNote = new JLabel("Catatan");
 		lblNote.setBounds(585, 80, 150, 25);
@@ -215,68 +270,37 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 				.setDocumentFilter(filter);
 		panel.add(txtNote);
 
+		lblPurchaseProductSuppCode = new JLabel(
+				"<html>Kode Pembelian <font color=\"red\">*</font></html>");
+		lblPurchaseProductSuppCode.setBounds(50, 140, 150, 25);
+		panel.add(lblPurchaseProductSuppCode);
+
+		txtPurchaseProductSuppCode = new JTextField();
+		txtPurchaseProductSuppCode.setBounds(220, 140, 150, 25);
+		txtPurchaseProductSuppCode.setDocument(new JTextFieldLimit(15));
+		((AbstractDocument) txtPurchaseProductSuppCode.getDocument())
+				.setDocumentFilter(filter);
+		txtPurchaseProductSuppCode.setEnabled(false);
+		panel.add(txtPurchaseProductSuppCode);
+	
 		lblErrorPurchaseProductSuppCode = new JLabel();
 		lblErrorPurchaseProductSuppCode.setForeground(Color.RED);
-		lblErrorPurchaseProductSuppCode.setBounds(425, 80, 225, 25);
+		lblErrorPurchaseProductSuppCode.setBounds(525, 140, 225, 25);
 		panel.add(lblErrorPurchaseProductSuppCode);
 		
-		lblPurchaseDate = new JLabel(
-				"<html>Tanggal Pengajuan <font color=\"red\">*</font></html>");
-		lblPurchaseDate.setBounds(50, 110, 150, 25);
-		panel.add(lblPurchaseDate);
-
-		dcPurchaseDate = new JDateChooser(new Date());
-		dcPurchaseDate.setBounds(220, 110, 150, 25);
-		dcPurchaseDate.setDateFormatString("dd-MM-yyyy");
-
-		dcPurchaseDate.getDateEditor().addPropertyChangeListener(
-				new PropertyChangeListener() {
-					@Override
-					public void propertyChange(PropertyChangeEvent e) {
-						if ("date".equals(e.getPropertyName())) {
-							makeCodeNumber(dcPurchaseDate.getDate());
-						}
-					}
-				});
-		makeCodeNumber(dcPurchaseDate.getDate());
-		panel.add(dcPurchaseDate);
-
-		lblErrorPurchaseDate = new JLabel();
-		lblErrorPurchaseDate.setForeground(Color.RED);
-		lblErrorPurchaseDate.setBounds(425, 110, 225, 25);
-		panel.add(lblErrorPurchaseDate);
+		btnSearchPPS = new JButton("Cari PO");
+		btnSearchPPS.setBounds(385, 140, 125, 25);
+		btnSearchPPS.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showPPSDialog(rprEditPanel);
+			}
+		});
+		panel.add(btnSearchPPS);
 		
-		lblDeliveryDate = new JLabel(
-				"<html>Tanggal Pengiriman <font color=\"red\">*</font></html>");
-		lblDeliveryDate.setBounds(50, 140, 150, 25);
-		panel.add(lblDeliveryDate);
-
-		dcDeliveryDate = new JDateChooser(new Date());
-		dcDeliveryDate.setBounds(220, 140, 150, 25);
-		dcDeliveryDate.setDateFormatString("dd-MM-yyyy");
-		panel.add(dcDeliveryDate);
-
-		lblErrorDeliveryDate = new JLabel();
-		lblErrorDeliveryDate.setForeground(Color.RED);
-		lblErrorDeliveryDate.setBounds(425, 140, 225, 25);
-		panel.add(lblErrorDeliveryDate);
-		
-
 		lblSupplier = new JLabel(
 				"<html>Supplier <font color=\"red\">*</font></html>");
 		lblSupplier.setBounds(50, 170, 150, 25);
 		panel.add(lblSupplier);
-
-		listOfSupplier = new ArrayList<Supplier>();
-		try {
-			listOfSupplier = ServiceFactory.getPurchaseProductSuppBL()
-					.getAllSupplierBySuppTypeId(
-							AppConstants.SUPP_TYPE_ID_BARECORE);
-			listOfSupplier.add(0, new Supplier("-- Pilih Supplier --"));
-		} catch (SQLException e1) {
-			LOGGER.error(e1.getMessage());
-			DialogBox.showErrorException();
-		}
 
 		txtSupplier = new JTextField();
 		txtSupplier.setBounds(220, 170, 150, 25);
@@ -288,18 +312,9 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 
 		lblErrorSupplier = new JLabel("");
 		lblErrorSupplier.setForeground(Color.RED);
-		lblErrorSupplier.setBounds(525, 170, 225, 25);
+		lblErrorSupplier.setBounds(425, 170, 225, 25);
 		panel.add(lblErrorSupplier);
 
-		btnSearchSupplier = new JButton("Cari Supplier");
-		btnSearchSupplier.setBounds(385, 170, 125, 25);
-		btnSearchSupplier.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				showSupplierDialog(pprCreatePanel);
-			}
-		});
-		panel.add(btnSearchSupplier);
-		
 		lblCostCenter = new JLabel(
 				"<html>Cost Center <font color=\"red\">*</font></html>");
 		lblCostCenter.setBounds(50, 200, 150, 25);
@@ -315,17 +330,8 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 
 		lblErrorCostCenter = new JLabel("");
 		lblErrorCostCenter.setForeground(Color.RED);
-		lblErrorCostCenter.setBounds(525, 200, 225, 25);
+		lblErrorCostCenter.setBounds(425, 200, 225, 25);
 		panel.add(lblErrorCostCenter);
-
-		btnSearchCostCenter = new JButton("Cari Cost Center");
-		btnSearchCostCenter.setBounds(385, 200, 125, 25);
-		btnSearchCostCenter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				showCostCenterDialog(pprCreatePanel);
-			}
-		});
-		panel.add(btnSearchCostCenter);
 	}
 	
 	JLabel lblHeaderAddProduct;
@@ -338,10 +344,10 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 	JLabel lblTax;
 	JLabel lblGrandTotal;
 
-	ComboBox<ProductCategory> cbProductCategory;
+	JTextField txtProductCategory;
 	JTextField txtProduct;
 	NumberField txtQty;
-	NumberField txtUnitPrice;
+	JTextField txtUnitPrice;
 	JTextField txtUOM;
 	JTextField txtTotal;
 	NumberField txtTax;
@@ -365,9 +371,27 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 		lblHeaderAddProduct.setBounds(50, 230, 320, 25);
 		panel.add(lblHeaderAddProduct);
 		
+		lblProduct = new JLabel(
+				"<html>Produk <font color=\"red\">*</font></html>");
+		lblProduct.setBounds(50, 260, 100, 25);
+		panel.add(lblProduct);
+		
+		txtProduct = new JTextField();
+		txtProduct.setBounds(220, 260, 150, 25);
+		txtProduct.setDocument(new JTextFieldLimit(15));
+		((AbstractDocument) txtProduct.getDocument())
+				.setDocumentFilter(filter);
+		txtProduct.setEnabled(false);
+		panel.add(txtProduct);
+		
+		lblErrorProduct = new JLabel("");
+		lblErrorProduct.setForeground(Color.RED);
+		lblErrorProduct.setBounds(525, 260, 225, 25);
+		panel.add(lblErrorProduct);
+		
 		lblProductCategory = new JLabel(
 				"<html>Kategori Produk <font color=\"red\">*</font></html>");
-		lblProductCategory.setBounds(50, 260, 100, 25);
+		lblProductCategory.setBounds(50, 290, 100, 25);
 		panel.add(lblProductCategory);
 		
 		listOfProductCategory = new ArrayList<ProductCategory>();
@@ -380,58 +404,29 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 		}
 		listOfProduct = new ArrayList<ProductSupp>();
 		
-		cbProductCategory = new ComboBox<ProductCategory>();
-		cbProductCategory.setList(listOfProductCategory);
-		cbProductCategory.setBounds(220, 260, 150, 25);
-		cbProductCategory.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				try {
-					txtProduct.setText("");
-					productCode = "";
-					txtUOM.setText("");
-					int productCatId = cbProductCategory.getDataIndex().getId();
-					if(productCatId == 0 || cbProductCategory == null) {
-						productCategoryId = 0;
-					} else {
-						productCategoryId = cbProductCategory.getDataIndex().getId();
-					}
-				} catch (Exception e1) {
-					LOGGER.error(e1.getMessage());
-					DialogBox.showErrorException();
-				}
-			}
-		});
-		panel.add(cbProductCategory);
+		txtProductCategory = new JTextField();
+		txtProductCategory.setBounds(220, 290, 150, 25);
+		txtProductCategory.setEnabled(false);
+		panel.add(txtProductCategory);
 
 		lblErrorProductCategory = new JLabel("");
 		lblErrorProductCategory.setForeground(Color.RED);
-		lblErrorProductCategory.setBounds(525, 260, 225, 25);
+		lblErrorProductCategory.setBounds(525, 290, 225, 25);
 		panel.add(lblErrorProductCategory);
-
-		lblProduct = new JLabel(
-				"<html>Produk <font color=\"red\">*</font></html>");
-		lblProduct.setBounds(50, 290, 100, 25);
-		panel.add(lblProduct);
-		
-		txtProduct = new JTextField();
-		txtProduct.setBounds(220, 290, 150, 25);
-		txtProduct.setDocument(new JTextFieldLimit(15));
-		((AbstractDocument) txtProduct.getDocument())
-				.setDocumentFilter(filter);
-		txtProduct.setEnabled(false);
-		panel.add(txtProduct);
-		
-		lblErrorProduct = new JLabel("");
-		lblErrorProduct.setForeground(Color.RED);
-		lblErrorProduct.setBounds(525, 290, 225, 25);
-		panel.add(lblErrorProduct);
 		
 		btnSearchProduct = new JButton("Cari Barang");
-		btnSearchProduct.setBounds(385, 290, 125, 25);
+		btnSearchProduct.setBounds(385, 260, 125, 25);
 		btnSearchProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showProductDialog(pprCreatePanel);
+				if("".equals(txtPurchaseProductSuppCode.getText()))
+				{
+					lblErrorProduct.setText("Kode Pembelian harus dipilih.");
+				}
+				else 
+				{
+					showProductDialog(rprEditPanel);
+				}
+				
 			}
 		});
 		panel.add(btnSearchProduct);
@@ -463,9 +458,9 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 		lblUnitPrice.setBounds(50, 380, 120, 25);
 		panel.add(lblUnitPrice); 
 		
-		txtUnitPrice = new NumberField(20);
+		txtUnitPrice = new JTextField();
 		txtUnitPrice.setBounds(220, 380, 150, 25);
-		txtUnitPrice.setText("0.00");
+		txtUnitPrice.setEnabled(false);
 		panel.add(txtUnitPrice);
 		
 		lblErrorUnitPrice = new JLabel("");
@@ -474,9 +469,9 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 		panel.add(lblErrorUnitPrice);
 		
 
-		btnInsertPPSProduct = new JButton("Tambah");
-		btnInsertPPSProduct.setBounds(220, 410, 100, 25);
-		btnInsertPPSProduct.addActionListener(new ActionListener() {
+		btnInsertRPSProduct = new JButton("Tambah");
+		btnInsertRPSProduct.setBounds(220, 410, 100, 25);
+		btnInsertRPSProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (doValidateProductSupp() == false) {
 					return;
@@ -484,18 +479,18 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 				doAddProductSupp();
 			}
 		});
-		panel.add(btnInsertPPSProduct);
+		panel.add(btnInsertRPSProduct);
 
-		scrollPanePPSProduct = new JScrollPane();
-		scrollPanePPSProduct.setBounds(50, 440, 975, 150);
-		panel.add(scrollPanePPSProduct);
+		scrollPaneRPSProduct = new JScrollPane();
+		scrollPaneRPSProduct.setBounds(50, 440, 975, 150);
+		panel.add(scrollPaneRPSProduct);
 
-		listOfPPSProduct = new ArrayList<PPSProduct>();
-		pprProductTableModel = new PPSProductTableModel(listOfPPSProduct);
-		tblPPSProduct = new JTable(pprProductTableModel);
-		tblPPSProduct.setBorder(new EmptyBorder(5, 5, 5, 5));
-		tblPPSProduct.setFocusable(false);
-		tblPPSProduct.addMouseListener(new MouseAdapter() {
+		listOfRPSProduct = new ArrayList<RPSProduct>();
+		rprProductTableModel = new RPSProductTableModel(listOfRPSProduct);
+		tblRPSProduct = new JTable(rprProductTableModel);
+		tblRPSProduct.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tblRPSProduct.setFocusable(false);
+		tblRPSProduct.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -504,14 +499,14 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 					int column = target.getSelectedColumn();
 
 					if (column == 8) {
-						deletePPSProduct(listOfPPSProduct, row);
+						deleteRPSProduct(listOfRPSProduct, row);
 					}
 				}
 			}
 		});
-		scrollPanePPSProduct.setViewportView(tblPPSProduct);
+		scrollPaneRPSProduct.setViewportView(tblRPSProduct);
 
-		lblTotal = new JLabel("<html>Total Pembelian<font color=\"red\"></font></html>");
+		lblTotal = new JLabel("<html>Total Penerimaan<font color=\"red\"></font></html>");
 		lblTotal.setBounds(770, 600, 150, 25);
 		panel.add(lblTotal);
 
@@ -528,6 +523,10 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 		txtTax = new NumberField(20);
 		txtTax.setText("0.00");
 		txtTax.setBounds(875, 630, 150, 25);
+		txtTax.setMaxLength(10); //Set maximum length             
+		txtTax.setPrecision(5); //Set precision (1 in your case)     
+		txtTax.setFormat(3);
+		txtTax.setAllowNegative(false); //Set false to disable negatives
 		panel.add(txtTax);
 		
 		txtTax.addFocusListener(new FocusAdapter() {
@@ -559,12 +558,13 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 	
 
 
-	private void deletePPSProduct(List<PPSProduct> listOfPPSProduct, int row) {
-		if(listOfPPSProduct.size() > 0) {
-			listOfPPSProduct.remove(row);
+	private void deleteRPSProduct(List<RPSProduct> listOfRPSProduct, int row) {
+		if(listOfRPSProduct.size() > 0) {
+			listOfDeletedRPSProduct.add(listOfRPSProduct.get(row));
+			listOfRPSProduct.remove(row);
 		}
 		
-		String totalPurchase = calculateTotalPurchase(listOfPPSProduct).toString();
+		String totalPurchase = calculateTotalReceive(listOfRPSProduct).toString();
 		
 		txtTotal.setText(totalPurchase);
 		
@@ -572,7 +572,7 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 		
 		txtGrandTotal.setText(grandTotal);
 		
-		refreshTablePPSProduct();
+		refreshTableRPSProduct();
 		
 		
 	}
@@ -582,20 +582,21 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 		lblErrorProduct.setText("");
 		lblErrorUnitPrice.setText("");
 		lblErrorQty.setText("");
-		lblErrorProductCategory.setText("");
 		if (txtProduct.getText() == null || txtProduct.getText().length() == 0) {
 			lblErrorProduct.setText("Textbox Produk harus dipilih.");
 			isValid = false;
 		}
 		
-		if (cbProductCategory.getSelectedItem() == null || cbProductCategory.getSelectedIndex() == 0) {
-			lblErrorProductCategory.setText("Combobox Kategori Produk harus dipilih.");
-			isValid = false;
-		}
-
 		if (txtQty.getText() == null || txtQty.getText().length() == 0) {
 			lblErrorQty.setText("Textbox Qty harus diisi.");
 			isValid = false;
+		} else {
+			BigDecimal qtyBD = new BigDecimal(txtQty.getText());
+			if(qtyBD.compareTo(qty) > 0)
+			{
+				lblErrorQty.setText("Qty penerimaan lebih besar dari pembelian.");
+				isValid = false;
+			}
 		}
 		
 		if (txtUnitPrice.getText() == null || txtUnitPrice.getText().length() == 0) {
@@ -603,7 +604,7 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 			isValid = false;
 		}
 		
-		for(PPSProduct ppsp : listOfPPSProduct) {
+		for(RPSProduct ppsp : listOfRPSProduct) {
 			if(productCode.equals(ppsp.getProductSupp().getProductCode()))
 			{
 				lblErrorProduct.setText("Produk sudah dipilih.");
@@ -621,7 +622,7 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 		productSupp.setProductCategoryId(productCategoryId);
 		ProductCategory productCategory = new ProductCategory();
 		productCategory.setId(productCategoryId);
-		productCategory.setProductCategory(cbProductCategory.getDataIndex().getProductCategory());
+		productCategory.setProductCategory(txtProductCategory.getText());
 		productSupp.setProductCategory(productCategory);
 		productSupp.setProductUomId(productUomId);
 		
@@ -632,23 +633,22 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 		
 		String subtotal = calculateSubTotal(txtQty.getText(), txtUnitPrice.getText()).toString();
 		
+		RPSProduct rpsProduct = new RPSProduct();
+		rpsProduct.setProductSupp(productSupp);
+		rpsProduct.setQty(new BigDecimal(txtQty.getText()));
+		rpsProduct.setUnitPrice(new BigDecimal(txtUnitPrice.getText()));
+		rpsProduct.setSubTotal(new BigDecimal(subtotal));
+		listOfRPSProduct.add(rpsProduct);
 		
-		PPSProduct ppsProduct = new PPSProduct();
-		ppsProduct.setProductSupp(productSupp);
-		ppsProduct.setQty(new BigDecimal(txtQty.getText()));
-		ppsProduct.setUnitPrice(new BigDecimal(txtUnitPrice.getText()));
-		ppsProduct.setSubTotal(new BigDecimal(subtotal));
-		listOfPPSProduct.add(ppsProduct);
+		String totalReceive = calculateTotalReceive(listOfRPSProduct).toString();
 		
-		String totalPurchase = calculateTotalPurchase(listOfPPSProduct).toString();
-		
-		txtTotal.setText(totalPurchase);
+		txtTotal.setText(totalReceive);
 		
 		String grandTotal = calculateGrandTotal(txtTotal.getText(), txtTax.getText()).toString();
 		
 		txtGrandTotal.setText(grandTotal);
 		
-		refreshTablePPSProduct();
+		refreshTableRPSProduct();
 		
 		clearAddProduct();
 	}
@@ -657,25 +657,25 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 		productCode = "";
 		txtProduct.setText("");
 		productCategoryId = 0;
-		cbProductCategory.setSelectedIndex(productCategoryId);
+		txtProductCategory.setText("");
 		productUomId = null;
 		txtUOM.setText("");
 		txtQty.setText("0");
 		txtUnitPrice.setText("0.00");
 	};
 	
-	private BigDecimal calculateTotalPurchase(List<PPSProduct> listOfPPSProduct) {
-		BigDecimal totalPurchase = new BigDecimal("0.00");
-		for (PPSProduct ppsp : listOfPPSProduct) {
-			totalPurchase = totalPurchase.add(ppsp.getSubTotal());
+	private BigDecimal calculateTotalReceive(List<RPSProduct> listOfRPSProduct) {
+		BigDecimal totalReceive = new BigDecimal("0.00");
+		for (RPSProduct ppsp : listOfRPSProduct) {
+			totalReceive = totalReceive.add(ppsp.getSubTotal());
 		}
-		return totalPurchase;
+		return totalReceive;
 	}
 	
-	private BigDecimal calculateGrandTotal(String sTotalPurchase, String sTax) {
-		BigDecimal totalPurchase = new BigDecimal("0.00");
-		if(!"".equals(sTotalPurchase)) {
-			totalPurchase = new BigDecimal(sTotalPurchase);
+	private BigDecimal calculateGrandTotal(String sTotalReceive, String sTax) {
+		BigDecimal totalReceive = new BigDecimal("0.00");
+		if(!"".equals(sTotalReceive)) {
+			totalReceive = new BigDecimal(sTotalReceive);
 		}
 		
 		BigDecimal tax = new BigDecimal("0.00");
@@ -683,7 +683,7 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 			tax = new BigDecimal(sTax);
 		}
 		
-		BigDecimal grandTotal = totalPurchase.add(tax);
+		BigDecimal grandTotal = totalReceive.add(tax);
 		
 		return grandTotal;
 	}
@@ -706,7 +706,7 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 
 	protected String doCalculateSubTotal() {
 		BigDecimal total = new BigDecimal("0");
-		for (PPSProduct pprProduct : listOfPPSProduct) {
+		for (RPSProduct pprProduct : listOfRPSProduct) {
 			total = total.add(pprProduct.getSubTotal());
 		}
 
@@ -714,20 +714,17 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 	}
 
 	protected void doSave() {
-		purchaseProductSupp = new PurchaseProdSupp();
-		purchaseProductSupp.setPpsCode(txtPurchaseProductSuppCode.getText());
-		purchaseProductSupp.setSuppCode(supplierCode);
-		purchaseProductSupp.setCostCenterId(costCenterId);
-		purchaseProductSupp.setPurchaseDate(dcPurchaseDate.getDate());
-		purchaseProductSupp.setDeliveryDate(dcDeliveryDate.getDate());
-		purchaseProductSupp.setTotal(new BigDecimal(txtTotal.getText()));
-		purchaseProductSupp.setTax(new BigDecimal(txtTax.getText()));
-		purchaseProductSupp.setGrandTotal(new BigDecimal(txtGrandTotal.getText()));
-		purchaseProductSupp.setNote(txtNote.getText());
+		receiveProductSupp.setRpsCode(txtReceiveProductSuppCode.getText());
+		receiveProductSupp.setPpsCode(txtPurchaseProductSuppCode.getText());
+		receiveProductSupp.setReceiveDate(dcReceiveDate.getDate());
+		receiveProductSupp.setTotal(new BigDecimal(txtTotal.getText()));
+		receiveProductSupp.setTax(new BigDecimal(txtTax.getText()));
+		receiveProductSupp.setGrandTotal(new BigDecimal(txtGrandTotal.getText()));
+		receiveProductSupp.setNote(txtNote.getText());
 		try {
-			ServiceFactory.getPurchaseProductSuppBL().save(purchaseProductSupp, listOfPPSProduct);
+			ServiceFactory.getReceiveProductSuppBL().update(receiveProductSupp, listOfRPSProduct, listOfDeletedRPSProduct);
 			DialogBox.showInsert();
-			MainPanel.changePanel("module.purchaseprodsupp.ui.PurchaseProdSuppListPanel");
+			MainPanel.changePanel("module.receiveprodsupp.ui.ReceiveProdSuppListPanel");
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.error(e.getMessage());
@@ -737,25 +734,23 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 
 	protected boolean doValidate() {
 		boolean isValid = true;
-
+		lblErrorReceiveProductSuppCode.setText("");
 		lblErrorPurchaseProductSuppCode.setText("");
 		lblErrorSupplier.setText("");
-		lblErrorPurchaseDate.setText("");
-		lblErrorDeliveryDate.setText("");
-		lblErrorCostCenter.setText("");
+		lblErrorReceiveDate.setText("");
 		
-		if (txtPurchaseProductSuppCode.getText() == null
-				|| txtPurchaseProductSuppCode.getText().length() == 0) {
-			lblErrorPurchaseProductSuppCode
+		if (txtReceiveProductSuppCode.getText() == null
+				|| txtReceiveProductSuppCode.getText().length() == 0) {
+			lblErrorReceiveProductSuppCode
 					.setText("Textbox Kode Pembelian harus diisi.");
 			isValid = false;
 		} else {
 			try {
 				if (ServiceFactory
-						.getPurchaseProductSuppBL()
-						.isPPSCodeExists(txtPurchaseProductSuppCode.getText()) > 0) {
-					lblErrorPurchaseProductSuppCode
-							.setText("Kode Pembelian sudah pernah diinput.");
+						.getReceiveProductSuppBL()
+						.isRPSCodeExists(txtReceiveProductSuppCode.getText()) > 0) {
+					lblErrorReceiveProductSuppCode
+							.setText("Kode Penerimaan sudah pernah diinput.");
 					isValid = false;
 				}
 			} catch (SQLException e) {
@@ -764,34 +759,24 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 				isValid = false;
 			}
 		}
-
-		if (supplierCode == null || supplierCode == "") {
-			lblErrorSupplier.setText("Supplier harus dipilih.");
+		System.out.println(txtPurchaseProductSuppCode.getText());
+		if (txtPurchaseProductSuppCode.getText() == null
+				|| txtPurchaseProductSuppCode.getText().length() == 0) {
+			lblErrorPurchaseProductSuppCode
+					.setText("Textbox Kode Pembelian harus dipilih.");
 			isValid = false;
 		}
 
-		if (dcPurchaseDate.getDate() == null) {
-			lblErrorPurchaseDate.setText("Tanggal Pengajuan harus dipilih.");
-			isValid = false;
-		}
-		
-		if (dcDeliveryDate.getDate() == null) {
-			lblErrorDeliveryDate.setText("Tanggal Pengiriman harus dipilih.");
-			isValid = false;
-		}
-		
-		if(costCenterId == null) {
-			lblErrorCostCenter.setText("Cost Center harus dipilih.");
+		if (dcReceiveDate.getDate() == null) {
+			lblErrorReceiveDate.setText("Tanggal Pengiriman harus dipilih.");
 			isValid = false;
 		}
 		
 		if("".equals(lblErrorPurchaseProductSuppCode.getText()) &&
-				"".equals(lblErrorSupplier.getText()) &&
-				"".equals(lblErrorPurchaseDate.getText()) &&
-				"".equals(lblErrorDeliveryDate.getText()) &&
-				"".equals(lblErrorCostCenter.getText()))
+				"".equals(lblErrorReceiveDate.getText()) &&
+				"".equals(lblErrorReceiveProductSuppCode.getText()))
 		{
-			if(listOfPPSProduct.isEmpty()) {
+			if(listOfRPSProduct.isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Produk tidak boleh kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
 				isValid = false;
 			}
@@ -804,47 +789,38 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 	
 	
 	
-	protected void showSupplierDialog(
-			PurchaseProdSuppCreatePanel pprCreatePanel) {
-		SupplierDialog supplierDialog = new SupplierDialog(pprCreatePanel);
-		supplierDialog.setTitle("Supplier");
-		supplierDialog.setLocationRelativeTo(null);
-		supplierDialog.setVisible(true);
+	protected void showPPSDialog(
+			ReceiveProdSuppEditPanel rprEditPanel) {
+		PPSDialog ppsDialog = new PPSDialog(rprEditPanel);
+		ppsDialog.setTitle("PO Barang Pendukung");
+		ppsDialog.setLocationRelativeTo(null);
+		ppsDialog.setVisible(true);
 	}
 	
 	protected void showCostCenterDialog(
-			PurchaseProdSuppCreatePanel pprCreatePanel) {
-		CostCenterDialog costCenterDialog = new CostCenterDialog(pprCreatePanel);
-		costCenterDialog.setTitle("Cost Center");
-		costCenterDialog.setLocationRelativeTo(null);
-		costCenterDialog.setVisible(true);
+			ReceiveProdSuppEditPanel pprCreatePanel) {
 	}
 	
 	protected void showProductDialog(
-			PurchaseProdSuppCreatePanel pprCreatePanel) {
-		ProductDialog productDialog = new ProductDialog(pprCreatePanel);
-		productDialog.setTitle("Barang");
+			ReceiveProdSuppEditPanel pprCreatePanel) {
+		ProductDialog productDialog = new ProductDialog(rprEditPanel);
+		productDialog.setTitle("Produk");
 		productDialog.setLocationRelativeTo(null);
 		productDialog.setVisible(true);
 	}
 
 	protected void showEditPPSProductDialog(PPSProduct pprProduct,
-			PurchaseProdSuppCreatePanel pprCreatePanel, Integer index) {
-//		PPSProductDialog pprProductDialog = new PPSProductDialog(true,
-//				pprProduct, pprCreatePanel, index);
-//		pprProductDialog.setTitle("Barang");
-//		pprProductDialog.setLocationRelativeTo(null);
-//		pprProductDialog.setVisible(true);
+			ReceiveProdSuppEditPanel pprCreatePanel, Integer index) {
 	}
 
 	protected void doDeletePPSProduct() {
-		if (listOfPPSProduct.isEmpty())
+		if (listOfRPSProduct.isEmpty())
 			DialogBox.showDeleteEmptyChoice();
 		else {
 			int count = 0;
 
-			List<PPSProduct> temp = new ArrayList<PPSProduct>();
-			for (PPSProduct s : listOfPPSProduct) {
+			List<RPSProduct> temp = new ArrayList<RPSProduct>();
+			for (RPSProduct s : listOfRPSProduct) {
 				if (Boolean.TRUE.equals(s.isFlag())) {
 					temp.add(s);
 				} else {
@@ -852,16 +828,16 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 				}
 			}
 
-			if (count == listOfPPSProduct.size()) {
+			if (count == listOfRPSProduct.size()) {
 				DialogBox.showDeleteEmptyChoice();
 				return;
 			}
 
 			if (Boolean.FALSE.equals(temp.isEmpty())) {
-				for (PPSProduct s : temp) {
-					listOfPPSProduct.remove(s);
+				for (RPSProduct s : temp) {
+					listOfRPSProduct.remove(s);
 				}
-				refreshTablePPSProduct();
+				refreshTableRPSProduct();
 				DialogBox.showDelete();
 			}
 		}
@@ -873,14 +849,14 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 	 * @author TSI
 	 *
 	 */
-	class PPSProductTableModel extends AbstractTableModel {
+	class RPSProductTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 1L;
 
-		private List<PPSProduct> listOfPPSProduct;
+		private List<RPSProduct> listOfRPSProduct;
 
-		public PPSProductTableModel(List<PPSProduct> listOfPPSProduct) {
-			this.listOfPPSProduct = listOfPPSProduct;
+		public RPSProductTableModel(List<RPSProduct> listOfRPSProduct) {
+			this.listOfRPSProduct = listOfRPSProduct;
 		}
 
 		/**
@@ -889,7 +865,7 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 		 * @return int
 		 */
 		public int getRowCount() {
-			return listOfPPSProduct.size();
+			return listOfRPSProduct.size();
 		}
 
 		/**
@@ -906,10 +882,10 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 		 *            rowIndex of selected table
 		 * @param columnIndex
 		 *            columnIndex of selected table
-		 * @return ({@link PPSProduct}) Object
+		 * @return ({@link RPSProduct}) Object
 		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			PPSProduct p = listOfPPSProduct.get(rowIndex);
+			RPSProduct p = listOfRPSProduct.get(rowIndex);
 			switch (columnIndex) {
 			case 0:
 				return rowIndex + 1;
@@ -974,7 +950,7 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 			case 0:
 				return "No.";
 			case 1:
-				return "Kategori Product";
+				return "Kategori Produk";
 			case 2:
 				return "Kode Produk";
 			case 3:
@@ -996,21 +972,21 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 
 	}
 
-	public void refreshTablePPSProduct() {
+	public void refreshTableRPSProduct() {
 		try {
-			tblPPSProduct.setModel(new PPSProductTableModel(listOfPPSProduct));
+			tblRPSProduct.setModel(new RPSProductTableModel(listOfRPSProduct));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();
 		}
 	}
 
-	public void makeCodeNumber(Date producationDate) {
-		final String constant = "POB";
+	public void makeCodeNumber(Date receiveDate) {
+		final String constant = "RCV";
 
 		Calendar cal = Calendar.getInstance();
-		if(producationDate != null) {
-			cal.setTime(producationDate);
+		if(receiveDate != null) {
+			cal.setTime(receiveDate);
 
 			String date = String.valueOf(cal.get(Calendar.DATE));
 			String year = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
@@ -1018,19 +994,18 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 
 			String ordinal = null;
 			try {
-				ordinal = ServiceFactory.getPurchaseProductSuppBL()
+				ordinal = ServiceFactory.getReceiveProductSuppBL()
 						.getOrdinalOfCodeNumber(Integer.valueOf(year));
 			} catch (SQLException e) {
 				LOGGER.error(e.getMessage());
 				DialogBox.showErrorException();
 			}
 
-			txtPurchaseProductSuppCode.setText(new StringBuilder()
+			txtReceiveProductSuppCode.setText(new StringBuilder()
 					.append(ordinal).append("/").append(constant).append("/")
 					.append(date).append("/").append(month).append("/")
 					.append(year).toString());
 		}
-		
 	}
 
 	public String getSupplierCode() {
@@ -1072,4 +1047,29 @@ public class PurchaseProdSuppCreatePanel extends JPanel implements Bridging {
 	public void setProductUomId(Integer productUomId) {
 		this.productUomId = productUomId;
 	}
+
+	public BigDecimal getQty() {
+		return qty;
+	}
+
+	public void setQty(BigDecimal qty) {
+		this.qty = qty;
+	}
+	
+	public List<RPSProduct> getListOfRPSProduct() {
+		return listOfRPSProduct;
+	}
+
+	public void setListOfRPSProduct(List<RPSProduct> listOfRPSProduct) {
+		this.listOfRPSProduct = listOfRPSProduct;
+	}
+	
+	public List<RPSProduct> getListOfDeletedRPSProduct() {
+		return listOfDeletedRPSProduct;
+	}
+
+	public void setListOfDeletedRPSProduct(List<RPSProduct> listOfDeletedRPSProduct) {
+		this.listOfDeletedRPSProduct = listOfDeletedRPSProduct;
+	}
+
 }
