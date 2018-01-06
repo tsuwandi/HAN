@@ -45,6 +45,11 @@ import module.customer.model.CustAddress;
 import module.customer.model.Customer;
 import module.sales.model.Sales;
 import module.sales.model.SalesDetail;
+import module.sales.model.SalesInsuranceDetail;
+import module.sales.model.ShipmentSalesOrder;
+import module.sales.ui.SalesCreatePanel.SalesInsuranceDetailTableModel;
+import module.sales.ui.SalesCreatePanel.SalesShipmentDetailTableModel;
+import module.sn.bank.model.BankCust;
 import module.sn.currency.model.Currency;
 import module.util.Bridging;
 import module.util.JTextFieldLimit;
@@ -59,6 +64,12 @@ public class SalesEditPanel extends JPanel implements Bridging {
 	public List<SalesDetail> listOfSalesDetail = new ArrayList<SalesDetail>();
 	private SalesDetailTableModel salesDetailTableModel;
 	public List<SalesDetail> listOfDeletedSalesDetail = new ArrayList<SalesDetail>();
+	public List<SalesInsuranceDetail> listOfSalesInsuranceDetail = new ArrayList<SalesInsuranceDetail>();
+	private SalesInsuranceDetailTableModel salesInsuranceDetailTableModel;
+	public List<SalesInsuranceDetail> listOfDeletedSalesInsuranceDetail = new ArrayList<SalesInsuranceDetail>();
+	public List<ShipmentSalesOrder> listOfSalesShipmentDetail = new ArrayList<ShipmentSalesOrder>();
+	private SalesShipmentDetailTableModel salesShipmentDetailTableModel;
+	public List<ShipmentSalesOrder> listOfDeletedSalesShipmentDetail = new ArrayList<ShipmentSalesOrder>();
 
 	JLabel lblCustCode;
 	JLabel lblCustName;
@@ -74,18 +85,22 @@ public class SalesEditPanel extends JPanel implements Bridging {
 	JLabel lblSurcharge;
 	JLabel lblDiscount;
 	JLabel lblFreightCost;
-	JLabel lblInsuranceCost;
 	JLabel lblVat;
 	JLabel lblVatPercentage;
-	JLabel lblFcCurrency;
-	JLabel lblIcCurrency;
 	JLabel lblTotalWeight;
 	JLabel lblTotalVolume;
 	JLabel lblTotalItem;
-	JLabel lblGrossAmount;
-	JLabel lblNettAmount;
 	JLabel lblDescription;
 	JLabel lblSalesDetail;
+	JLabel lblInsuranceDetail;
+	JLabel lblShipmentDetail;
+	JLabel lblPriceTerm;
+	JLabel lblBankName;
+	JLabel lblBankAccountNo;
+	JLabel lblBankSwiftCode;
+	JLabel lblBankAccountName;
+	JLabel lblAccountCurrency;
+	JLabel lblCurrencyToRupiah;
 
 	JTextField txtCustCode;
 	JTextField txtCustId;
@@ -93,25 +108,27 @@ public class SalesEditPanel extends JPanel implements Bridging {
 	JTextField txtCreatedBy;
 	JTextField txtCreatedOn;
 	ComboBox<CustAddress> cbCustAddress;
+	ComboBox<String> cbPriceTerm;
 	JTextField txtAddress;
 	JTextField txtPoNo;
 	JTextField txtSoNo;
 	JDateChooser poDateChooser;
 	JDateChooser soDateChooser;
 	ComboBox<Currency> cbCurrency;
-	NumberField txtSurcharge;
-	NumberField txtDiscount;
-	NumberField txtFreightCost;
-	NumberField txtInsuranceCost;
-	ComboBox<Currency> cbFcCurrency;
-	ComboBox<Currency> cbIcCurrency;
-	NumberField txtVat;
+	JTextField txtSurcharge;
+	JTextField txtDiscount;
+	JTextField txtFreightCost;
+	JTextField txtVat;
 	JTextField txtTotalWeight;
 	JTextField txtTotalVolume;
 	JTextField txtTotalItem;
-	JTextField txtGrossAmount;
-	JTextField txtNettAmount;
 	JTextArea txtDescription;
+	ComboBox<BankCust> cbBankCust;
+	JTextField txtBankAccountNo;
+	JTextField txtBankSwiftCode;
+	JTextField txtBankAccountName;
+	JTextField txtCurrency;
+	JTextField txtCurrencyToRupiah;
 
 	JLabel lblBreadcrumb;
 	JLabel lblHeader;
@@ -121,6 +138,16 @@ public class SalesEditPanel extends JPanel implements Bridging {
 	JTable tblSalesDetail;
 	JButton btnAddSalesDetail;
 	JButton btnDeleteSalesDetail;
+	JLabel lblErrorInsuranceDetail;
+	JScrollPane scrollPaneInsuranceDetail;
+	JTable tblInsuranceDetail;
+	JButton btnAddInsuranceDetail;
+	JButton btnDeleteInsuranceDetail;
+	JLabel lblErrorShipmentDetail;
+	JScrollPane scrollPaneShipmentDetail;
+	JTable tblShipmentDetail;
+	JButton btnAddShipmentDetail;
+	JButton btnDeleteShipmentDetail;
 	JButton btnSelectCustomer;
 	JButton btnSelectProduct;
 
@@ -134,17 +161,16 @@ public class SalesEditPanel extends JPanel implements Bridging {
 	JLabel lblErrorShipTo;
 	JLabel lblErrorCurrency;
 	JLabel lblErrorFreightCost;
-	JLabel lblErrorInsuranceCost;
-	JLabel lblErrorFcCurrency;
-	JLabel lblErrorIcCurrency;
 	JLabel lblErrorVat;
+	JLabel lblErrorPriceTerm;
+	JLabel lblErrorBankCust;
 
 	private SalesEditPanel salesEdit;
 
 	List<CustAddress> listOfCustAddress;
 	List<Currency> listOfCurrency;
-	List<Currency> listOfFcCurrency;
-	List<Currency> listOfIcCurrency;
+	List<BankCust> listOfBankCust;
+	List<String> listOfPriceTerm;
 	Customer customer;
 
 	public SalesEditPanel() {
@@ -154,7 +180,7 @@ public class SalesEditPanel extends JPanel implements Bridging {
 
 		setLayout(null);
 		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(800, 1050));
+		panel.setPreferredSize(new Dimension(800, 1600));
 		panel.setLayout(null);
 
 		lblCustCode = new JLabel("<html>Kode Customer <font color=\"red\">*</font></html>");
@@ -190,22 +216,22 @@ public class SalesEditPanel extends JPanel implements Bridging {
 		panel.add(txtCustName);
 
 		lblCreatedBy = new JLabel("Created by");
-		lblCreatedBy.setBounds(600, 110, 150, 25);
+		lblCreatedBy.setBounds(600, 80, 150, 25);
 		panel.add(lblCreatedBy);
 
 		// System.out.println(ServiceFactory.getSystemBL().getUsernameActive());
 		txtCreatedBy = new JTextField();
-		txtCreatedBy.setBounds(720, 110, 150, 25);
+		txtCreatedBy.setBounds(720, 80, 150, 25);
 		txtCreatedBy.setEnabled(false);
 		((AbstractDocument) txtCreatedBy.getDocument()).setDocumentFilter(filter);
 		panel.add(txtCreatedBy);
 
 		lblCreatedOn = new JLabel("<html>Created on</html>");
-		lblCreatedOn.setBounds(600, 140, 150, 25);
+		lblCreatedOn.setBounds(600, 110, 150, 25);
 		panel.add(lblCreatedOn);
 
 		txtCreatedOn = new JTextField();
-		txtCreatedOn.setBounds(720, 140, 150, 25);
+		txtCreatedOn.setBounds(720, 110, 150, 25);
 		txtCreatedOn.setEnabled(false);
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String currDateString = dateFormat.format(new Date());
@@ -392,7 +418,7 @@ public class SalesEditPanel extends JPanel implements Bridging {
 		lblSurcharge.setBounds(50, 570, 150, 25);
 		panel.add(lblSurcharge);
 
-		txtSurcharge = new NumberField(12);
+		txtSurcharge = new JTextField();
 		txtSurcharge.setBounds(220, 570, 150, 25);
 		panel.add(txtSurcharge);
 
@@ -400,7 +426,7 @@ public class SalesEditPanel extends JPanel implements Bridging {
 		lblDiscount.setBounds(50, 600, 150, 25);
 		panel.add(lblDiscount);
 
-		txtDiscount = new NumberField(12);
+		txtDiscount = new JTextField();
 		txtDiscount.setBounds(220, 600, 150, 25);
 		panel.add(txtDiscount);
 
@@ -408,166 +434,297 @@ public class SalesEditPanel extends JPanel implements Bridging {
 		lblFreightCost.setBounds(50, 630, 150, 25);
 		panel.add(lblFreightCost);
 
-		txtFreightCost = new NumberField(12);
+		txtFreightCost = new JTextField();
 		txtFreightCost.setBounds(220, 630, 150, 25);
 		panel.add(txtFreightCost);
 
-		listOfFcCurrency = new ArrayList<Currency>();
-		try {
-			listOfFcCurrency = ServiceFactory.getSalesBL().getAllCurrency();
-			listOfFcCurrency.add(0, new Currency("-- Pilih Kurs --"));
-		} catch (SQLException e1) {
-			LOGGER.error(e1.getMessage());
-			DialogBox.showErrorException();
-		}
-		cbFcCurrency = new ComboBox<Currency>();
-		cbFcCurrency.setList(listOfFcCurrency);
-
-		// default IDR
-
-		int x = 0;
-		for (Currency currency : listOfFcCurrency) {
-			if (AppConstants.CURRENCY_IDR.equals(currency.getCurrencyAbbr())) {
-				cbFcCurrency.setSelectedIndex(x);
-				break;
-			}
-			x++;
-		}
-
-		cbFcCurrency.setBounds(390, 630, 150, 25);
-		panel.add(cbFcCurrency);
-
 		lblErrorFreightCost = new JLabel();
 		lblErrorFreightCost.setForeground(Color.RED);
-		lblErrorFreightCost.setBounds(600, 630, 225, 25);
+		lblErrorFreightCost.setBounds(390, 630, 225, 25);
 		panel.add(lblErrorFreightCost);
 
-		lblErrorFcCurrency = new JLabel();
-		lblErrorFcCurrency.setForeground(Color.RED);
-		lblErrorFcCurrency.setBounds(600, 630, 225, 25);
-		panel.add(lblErrorFcCurrency);
+		/////// Table SalesInsuranceDetail ///////
+		lblInsuranceDetail = new JLabel("Asuransi");
+		lblInsuranceDetail.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblInsuranceDetail.setBounds(50, 660, 150, 25);
+		panel.add(lblInsuranceDetail);
 
-		lblInsuranceCost = new JLabel("<html>Insurance Cost <font color=\"red\">*</font></html>");
-		lblInsuranceCost.setBounds(50, 660, 150, 25);
-		panel.add(lblInsuranceCost);
+		lblErrorInsuranceDetail = new JLabel("");
+		lblErrorInsuranceDetail.setForeground(Color.RED);
+		lblErrorInsuranceDetail.setBounds(220, 660, 225, 25);
+		panel.add(lblErrorInsuranceDetail);
 
-		txtInsuranceCost = new NumberField(12);
-		txtInsuranceCost.setBounds(220, 660, 150, 25);
-		panel.add(txtInsuranceCost);
+		scrollPaneInsuranceDetail = new JScrollPane();
+		scrollPaneInsuranceDetail.setBounds(50, 690, 975, 170);
+		panel.add(scrollPaneInsuranceDetail);
 
-		listOfIcCurrency = new ArrayList<Currency>();
-		try {
-			listOfIcCurrency = ServiceFactory.getSalesBL().getAllCurrency();
-			listOfIcCurrency.add(0, new Currency("-- Pilih Kurs --"));
-		} catch (SQLException e1) {
-			LOGGER.error(e1.getMessage());
-			DialogBox.showErrorException();
-		}
-		cbIcCurrency = new ComboBox<Currency>();
-		cbIcCurrency.setList(listOfIcCurrency);
+		salesInsuranceDetailTableModel = new SalesInsuranceDetailTableModel(new ArrayList<SalesInsuranceDetail>());
+		tblInsuranceDetail = new JTable(salesInsuranceDetailTableModel);
+		tblInsuranceDetail.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tblInsuranceDetail.setFocusable(false);
+		scrollPaneInsuranceDetail.setViewportView(tblInsuranceDetail);
 
-		// default IDR
+		tblInsuranceDetail.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (tblInsuranceDetail.getValueAt(tblInsuranceDetail.getSelectedRow(), 0).equals(true))
+					listOfSalesInsuranceDetail.get(tblInsuranceDetail.getSelectedRow()).setFlag(false);
+				else
+					listOfSalesInsuranceDetail.get(tblInsuranceDetail.getSelectedRow()).setFlag(true);
 
-		int j = 0;
-		for (Currency currency : listOfIcCurrency) {
-			if (AppConstants.CURRENCY_IDR.equals(currency.getCurrencyAbbr())) {
-				cbIcCurrency.setSelectedIndex(j);
-				break;
+				tblInsuranceDetail.updateUI();
+
+				if (e.getClickCount() == 2) {
+					JTable target = (JTable) e.getSource();
+					int row = target.getSelectedRow();
+					int column = target.getSelectedColumn();
+
+					if (column == 4)
+						showEditInsuranceDetailDialog(listOfSalesInsuranceDetail.get(row), salesEdit, row);
+				}
 			}
-			j++;
-		}
+		});
 
-		cbIcCurrency.setBounds(390, 660, 150, 25);
-		panel.add(cbIcCurrency);
+		btnAddInsuranceDetail = new JButton("Tambah");
+		btnAddInsuranceDetail.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showAddInsuranceDetailDialog(salesEdit);
+			}
+		});
+		btnAddInsuranceDetail.setBounds(820, 660, 100, 25);
+		panel.add(btnAddInsuranceDetail);
 
-		lblErrorInsuranceCost = new JLabel();
-		lblErrorInsuranceCost.setForeground(Color.RED);
-		lblErrorInsuranceCost.setBounds(600, 660, 225, 25);
-		panel.add(lblErrorInsuranceCost);
+		btnDeleteInsuranceDetail = new JButton("Hapus");
+		btnDeleteInsuranceDetail.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				doDeleteSalesInsuranceDetail();
+			}
+		});
+		btnDeleteInsuranceDetail.setBounds(925, 660, 100, 25);
+		panel.add(btnDeleteInsuranceDetail);
 
-		lblErrorIcCurrency = new JLabel();
-		lblErrorIcCurrency.setForeground(Color.RED);
-		lblErrorIcCurrency.setBounds(600, 660, 225, 25);
-		panel.add(lblErrorIcCurrency);
+		/////// Table SalesShipmentDetail ///////
+		lblShipmentDetail = new JLabel("Shipment");
+		lblShipmentDetail.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblShipmentDetail.setBounds(50, 880, 150, 25);
+		panel.add(lblShipmentDetail);
+
+		lblErrorShipmentDetail = new JLabel("");
+		lblErrorShipmentDetail.setForeground(Color.RED);
+		lblErrorShipmentDetail.setBounds(220, 880, 225, 25);
+		panel.add(lblErrorShipmentDetail);
+
+		scrollPaneShipmentDetail = new JScrollPane();
+		scrollPaneShipmentDetail.setBounds(50, 910, 975, 170);
+		panel.add(scrollPaneShipmentDetail);
+
+		salesShipmentDetailTableModel = new SalesShipmentDetailTableModel(new ArrayList<ShipmentSalesOrder>());
+		tblShipmentDetail = new JTable(salesShipmentDetailTableModel);
+		tblShipmentDetail.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tblShipmentDetail.setFocusable(false);
+		scrollPaneShipmentDetail.setViewportView(tblShipmentDetail);
+
+		tblShipmentDetail.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (tblShipmentDetail.getValueAt(tblShipmentDetail.getSelectedRow(), 0).equals(true))
+					listOfSalesShipmentDetail.get(tblShipmentDetail.getSelectedRow()).setFlag(false);
+				else
+					listOfSalesShipmentDetail.get(tblShipmentDetail.getSelectedRow()).setFlag(true);
+
+				tblShipmentDetail.updateUI();
+
+				if (e.getClickCount() == 2) {
+					JTable target = (JTable) e.getSource();
+					int row = target.getSelectedRow();
+					int column = target.getSelectedColumn();
+
+					if (column == 8)
+						showEditShipmentDetailDialog(listOfSalesShipmentDetail.get(row), salesEdit, row);
+				}
+			}
+		});
+
+		btnAddShipmentDetail = new JButton("Tambah");
+		btnAddShipmentDetail.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showAddShipmentDetailDialog(salesEdit);
+			}
+		});
+		btnAddShipmentDetail.setBounds(820, 880, 100, 25);
+		panel.add(btnAddShipmentDetail);
+
+		btnDeleteShipmentDetail = new JButton("Hapus");
+		btnDeleteShipmentDetail.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				doDeleteSalesShipmentDetail();
+			}
+		});
+		btnDeleteShipmentDetail.setBounds(925, 880, 100, 25);
+		panel.add(btnDeleteShipmentDetail);
+
+		lblPriceTerm = new JLabel("<html>Price Term<font color=\"red\">*</font></html>");
+		lblPriceTerm.setBounds(50, 1100, 150, 25);
+		panel.add(lblPriceTerm);
+
+		listOfPriceTerm = new ArrayList<String>();
+		listOfPriceTerm.add(0, new String("-- Pilih Price Term --"));
+		listOfPriceTerm.add(1, new String("CNF"));
+		listOfPriceTerm.add(2, new String("CFR"));
+		listOfPriceTerm.add(3, new String("FOB"));
+		cbPriceTerm = new ComboBox<String>();
+		cbPriceTerm.setList(listOfPriceTerm);
+		cbPriceTerm.setBounds(220, 1100, 150, 25);
+		panel.add(cbPriceTerm);
+
+		lblErrorPriceTerm = new JLabel();
+		lblErrorPriceTerm.setForeground(Color.RED);
+		lblErrorPriceTerm.setBounds(425, 1100, 225, 25);
+		panel.add(lblErrorPriceTerm);
+
+		lblBankName = new JLabel("<html>Bank Name <font color=\"red\">*</font></html>");
+		lblBankName.setBounds(50, 1130, 150, 25);
+		panel.add(lblBankName);
+
+		cbBankCust = new ComboBox<BankCust>();
+		cbBankCust.setBounds(220, 1130, 150, 25);
+		panel.add(cbBankCust);
+
+		lblErrorBankCust = new JLabel();
+		lblErrorBankCust.setForeground(Color.RED);
+		lblErrorBankCust.setBounds(425, 1130, 225, 25);
+		panel.add(lblErrorCustCode);
+
+		cbBankCust.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BankCust selectedBankCust = (BankCust) cbBankCust.getSelectedItem();
+				if (selectedBankCust == null) {
+					txtBankAccountNo.setText("");
+					txtBankSwiftCode.setText("");
+					txtBankAccountName.setText("");
+					txtCurrency.setText("");
+					txtCurrencyToRupiah.setText("");
+				} else {
+					txtBankAccountNo.setText(selectedBankCust.getAccountno());
+					txtBankSwiftCode.setText(selectedBankCust.getSwiftcode());
+					txtBankAccountName.setText(selectedBankCust.getAccname());
+					txtCurrency.setText(selectedBankCust.getCurrency().getCurrency());
+					txtCurrencyToRupiah.setText(String.valueOf(sales.getCurrencyToRupiah()));
+				}
+			}
+		});
+
+		lblBankAccountNo = new JLabel("Bank Account No");
+		lblBankAccountNo.setBounds(50, 1160, 150, 25);
+		panel.add(lblBankAccountNo);
+
+		txtBankAccountNo = new JTextField();
+		txtBankAccountNo.setBounds(220, 1160, 150, 25);
+		txtBankAccountNo.setDocument(new JTextFieldLimit(30));
+		txtBankAccountNo.setEnabled(false);
+		((AbstractDocument) txtBankAccountNo.getDocument()).setDocumentFilter(filter);
+		panel.add(txtBankAccountNo);
+
+		lblBankSwiftCode = new JLabel("Bank Swift Code");
+		lblBankSwiftCode.setBounds(50, 1190, 150, 25);
+		panel.add(lblBankSwiftCode);
+
+		txtBankSwiftCode = new JTextField();
+		txtBankSwiftCode.setBounds(220, 1190, 150, 25);
+		txtBankSwiftCode.setDocument(new JTextFieldLimit(30));
+		txtBankSwiftCode.setEnabled(false);
+		((AbstractDocument) txtBankSwiftCode.getDocument()).setDocumentFilter(filter);
+		panel.add(txtBankSwiftCode);
+
+		lblBankAccountName = new JLabel("Bank Account Name");
+		lblBankAccountName.setBounds(50, 1220, 150, 25);
+		panel.add(lblBankAccountName);
+
+		txtBankAccountName = new JTextField();
+		txtBankAccountName.setBounds(220, 1220, 150, 25);
+		txtBankAccountName.setDocument(new JTextFieldLimit(30));
+		txtBankAccountName.setEnabled(false);
+		((AbstractDocument) txtBankAccountName.getDocument()).setDocumentFilter(filter);
+		panel.add(txtBankAccountName);
+
+		lblAccountCurrency = new JLabel("Currency");
+		lblAccountCurrency.setBounds(50, 1250, 150, 25);
+		panel.add(lblAccountCurrency);
+
+		txtCurrency = new JTextField();
+		txtCurrency.setBounds(220, 1250, 150, 25);
+		txtCurrency.setDocument(new JTextFieldLimit(30));
+		txtCurrency.setEnabled(false);
+		((AbstractDocument) txtCurrency.getDocument()).setDocumentFilter(filter);
+		panel.add(txtCurrency);
+
+		lblCurrencyToRupiah = new JLabel("Currency to Rupiah");
+		lblCurrencyToRupiah.setBounds(50, 1280, 150, 25);
+		panel.add(lblCurrencyToRupiah);
+
+		txtCurrencyToRupiah = new JTextField();
+		txtCurrencyToRupiah.setBounds(220, 1280, 150, 25);
+		txtCurrencyToRupiah.setDocument(new JTextFieldLimit(30));
+		txtCurrencyToRupiah.setEnabled(false);
+		((AbstractDocument) txtCurrencyToRupiah.getDocument()).setDocumentFilter(filter);
+		panel.add(txtCurrencyToRupiah);
 
 		lblVat = new JLabel("<html>VAT <font color=\"red\">*</font></html>");
-		lblVat.setBounds(50, 690, 150, 25);
+		lblVat.setBounds(50, 1310, 150, 25);
 		panel.add(lblVat);
 
-		txtVat = new NumberField(3);
-		txtVat.setBounds(220, 690, 150, 25);
+		txtVat = new JTextField();
+		txtVat.setBounds(220, 1310, 150, 25);
 		panel.add(txtVat);
-		
+
 		lblVatPercentage = new JLabel("%");
-		lblVatPercentage.setBounds(390, 690, 225, 25);
+		lblVatPercentage.setBounds(390, 1310, 225, 25);
 		panel.add(lblVatPercentage);
 
 		lblErrorVat = new JLabel();
 		lblErrorVat.setForeground(Color.RED);
-		lblErrorVat.setBounds(425, 690, 225, 25);
+		lblErrorVat.setBounds(425, 1310, 225, 25);
 		panel.add(lblErrorVat);
 
 		lblTotalWeight = new JLabel("Total Weight");
-		lblTotalWeight.setBounds(50, 720, 150, 25);
+		lblTotalWeight.setBounds(50, 1340, 150, 25);
 		panel.add(lblTotalWeight);
 
 		txtTotalWeight = new JTextField();
-		txtTotalWeight.setBounds(220, 720, 150, 25);
+		txtTotalWeight.setBounds(220, 1340, 150, 25);
 		txtTotalWeight.setDocument(new JTextFieldLimit(30));
 		txtTotalWeight.setEnabled(false);
 		((AbstractDocument) txtTotalWeight.getDocument()).setDocumentFilter(filter);
 		panel.add(txtTotalWeight);
 
 		lblTotalVolume = new JLabel("Total Volume");
-		lblTotalVolume.setBounds(50, 750, 150, 25);
+		lblTotalVolume.setBounds(50, 1370, 150, 25);
 		panel.add(lblTotalVolume);
 
 		txtTotalVolume = new JTextField();
-		txtTotalVolume.setBounds(220, 750, 150, 25);
+		txtTotalVolume.setBounds(220, 1370, 150, 25);
 		txtTotalVolume.setDocument(new JTextFieldLimit(30));
 		txtTotalVolume.setEnabled(false);
 		((AbstractDocument) txtTotalVolume.getDocument()).setDocumentFilter(filter);
 		panel.add(txtTotalVolume);
 
 		lblTotalItem = new JLabel("Total Item");
-		lblTotalItem.setBounds(50, 780, 150, 25);
+		lblTotalItem.setBounds(50, 1400, 150, 25);
 		panel.add(lblTotalItem);
 
 		txtTotalItem = new JTextField();
-		txtTotalItem.setBounds(220, 780, 150, 25);
+		txtTotalItem.setBounds(220, 1400, 150, 25);
 		txtTotalItem.setDocument(new JTextFieldLimit(30));
 		txtTotalItem.setEnabled(false);
 		((AbstractDocument) txtTotalItem.getDocument()).setDocumentFilter(filter);
 		panel.add(txtTotalItem);
 
-		lblGrossAmount = new JLabel("Gross Amount");
-		lblGrossAmount.setBounds(50, 810, 150, 25);
-		panel.add(lblGrossAmount);
-
-		txtGrossAmount = new JTextField();
-		txtGrossAmount.setBounds(220, 810, 150, 25);
-		txtGrossAmount.setDocument(new JTextFieldLimit(30));
-		txtGrossAmount.setEnabled(false);
-		((AbstractDocument) txtGrossAmount.getDocument()).setDocumentFilter(filter);
-		panel.add(txtGrossAmount);
-
-		lblNettAmount = new JLabel("Net Amount");
-		lblNettAmount.setBounds(50, 840, 150, 25);
-		panel.add(lblNettAmount);
-
-		txtNettAmount = new JTextField();
-		txtNettAmount.setBounds(220, 840, 150, 25);
-		txtNettAmount.setDocument(new JTextFieldLimit(30));
-		txtNettAmount.setEnabled(false);
-		((AbstractDocument) txtNettAmount.getDocument()).setDocumentFilter(filter);
-		panel.add(txtNettAmount);
-
 		lblDescription = new JLabel("Description");
-		lblDescription.setBounds(50, 870, 150, 25);
+		lblDescription.setBounds(50, 1430, 150, 25);
 		panel.add(lblDescription);
 
 		txtDescription = new JTextArea();
-		txtDescription.setBounds(220, 870, 150, 85);
+		txtDescription.setBounds(220, 1430, 150, 85);
 		Border border = BorderFactory.createLineBorder(Color.gray);
 		txtDescription.setBorder(border);
 		panel.add(txtDescription);
@@ -594,7 +751,7 @@ public class SalesEditPanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		btnSave.setBounds(925, 1000, 100, 25);
+		btnSave.setBounds(925, 1550, 100, 25);
 		panel.add(btnSave);
 
 		btnCancel = new JButton("Kembali");
@@ -606,7 +763,7 @@ public class SalesEditPanel extends JPanel implements Bridging {
 				}
 			}
 		});
-		btnCancel.setBounds(50, 1000, 100, 25);
+		btnCancel.setBounds(50, 1550, 100, 25);
 		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
 
@@ -622,7 +779,15 @@ public class SalesEditPanel extends JPanel implements Bridging {
 		try {
 			sales = ServiceFactory.getSalesBL().getSalesById(salesId);
 			listOfSalesDetail = ServiceFactory.getSalesBL().getSalesDetailBySalesId(salesId);
-			
+			listOfSalesShipmentDetail = ServiceFactory.getSalesBL().getSalesShipmentDetailBySalesId(salesId);
+			listOfSalesInsuranceDetail = ServiceFactory.getSalesBL().getSalesInsuranceDetailBySalesId(salesId);
+
+			List<BankCust> listOfBankCust = new ArrayList<BankCust>();
+			listOfBankCust = ServiceFactory.getSalesBL().getBankCustByCustCode(sales.getCustomer().getCustCode());
+			for (BankCust bankCust : listOfBankCust) {
+				cbBankCust.addItem(bankCust);
+			}
+
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 			if (sales != null) {
@@ -630,15 +795,15 @@ public class SalesEditPanel extends JPanel implements Bridging {
 				txtCustName.setText(sales.getCustomer().getCustName());
 				txtCreatedBy.setText(sales.getInputBy());
 				txtCreatedOn.setText(dateFormat.format(sales.getInputDate()));
-				
+
 				listOfCustAddress = ServiceFactory.getSalesBL().getCustAddressByCustCode(txtCustCode.getText());
 				for (CustAddress custAddress : listOfCustAddress) {
 					cbCustAddress.addItem(custAddress);
-					if(custAddress.getId() == sales.getCustAddress().getId()){
+					if (custAddress.getId() == sales.getCustAddress().getId()) {
 						cbCustAddress.setSelectedItem(custAddress);
 					}
 				}
-				
+
 				txtAddress.setText(sales.getCustAddress().getAddress());
 				txtPoNo.setText(sales.getPoNo());
 				poDateChooser.setDate(sales.getPoDate());
@@ -649,24 +814,27 @@ public class SalesEditPanel extends JPanel implements Bridging {
 				} else {
 					cbCurrency.setSelectedItem(sales.getCurrency().getCurrency());
 				}
-				if (sales.getFcCurrency().getId() == 0) {
-					cbFcCurrency.setSelectedItem(listOfFcCurrency.get(0));
-				} else {
-					cbFcCurrency.setSelectedItem(sales.getFcCurrency().getCurrency());
-				}
-				if (sales.getIcCurrency().getId() == 0) {
-					cbIcCurrency.setSelectedItem(listOfIcCurrency.get(0));
-				} else {
-					cbIcCurrency.setSelectedItem(sales.getIcCurrency().getCurrency());
-				}
 				txtSurcharge.setText(Double.toString(sales.getSurcharge()));
 				txtDiscount.setText(Double.toString(sales.getDiscount()));
 				txtFreightCost.setText(Double.toString(sales.getFreightCost()));
-				txtInsuranceCost.setText(Double.toString(sales.getInsuranceCost()));
+				if (sales.getBankCust().getId() == 0) {
+					cbBankCust.setSelectedItem(listOfBankCust.get(0));
+				} else {
+					cbBankCust.setSelectedItem(sales.getBankCust());
+				}
+				cbPriceTerm.setSelectedItem(sales.getPriceTerm());
+				cbBankCust.addItem(sales.getBankCust().getBankname());
+				txtBankAccountNo.setText(sales.getBankCust().getAccountno());
+				txtBankSwiftCode.setText(sales.getBankCust().getSwiftcode());
+				txtBankAccountName.setText(sales.getBankCust().getAccname());
+				txtCurrency.setText(sales.getBankCust().getCurrency().getCurrency());
+				txtCurrencyToRupiah.setText(String.valueOf(sales.getCurrencyToRupiah()));
 				txtVat.setText(String.valueOf(sales.getVat()));
 				txtDescription.setText(sales.getDescription());
-				
+
 				refreshTableSalesDetail();
+				refreshTableInsuranceDetail();
+				refreshTableShipmentDetail();
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -682,21 +850,18 @@ public class SalesEditPanel extends JPanel implements Bridging {
 		lblErrorShipTo.setText("");
 		lblErrorCurrency.setText("");
 		lblErrorFreightCost.setText("");
-		lblErrorInsuranceCost.setText("");
-		lblErrorFcCurrency.setText("");
-		lblErrorIcCurrency.setText("");
 		lblErrorVat.setText("");
 
 		if (txtCustCode.getText() == null || txtCustCode.getText().length() == 0) {
 			lblErrorCustCode.setText("Textbox Kode Customer harus diisi.");
 			isValid = false;
 		}
-		
+
 		if (cbCustAddress.getSelectedItem() == null) {
 			lblErrorShipTo.setText("Combobox Alamat harus dipilih.");
 			isValid = false;
 		}
-		
+
 		if (cbCurrency.getSelectedItem() == null || cbCurrency.getSelectedIndex() == 0) {
 			lblErrorCurrency.setText("Combobox Currency harus dipilih.");
 			isValid = false;
@@ -706,22 +871,7 @@ public class SalesEditPanel extends JPanel implements Bridging {
 			lblErrorFreightCost.setText("Textbox Freight Cost harus diisi.");
 			isValid = false;
 		}
-		
-		if (txtInsuranceCost.getText() == null || txtInsuranceCost.getText().length() == 0) {
-			lblErrorInsuranceCost.setText("Textbox Insurance Cost harus diisi.");
-			isValid = false;
-		}
-		
-		if (cbFcCurrency.getSelectedItem() == null || cbFcCurrency.getSelectedIndex() == 0) {
-			lblErrorFcCurrency.setText("Combobox Currency harus dipilih.");
-			isValid = false;
-		}
-		
-		if (cbIcCurrency.getSelectedItem() == null || cbIcCurrency.getSelectedIndex() == 0) {
-			lblErrorIcCurrency.setText("Combobox Currency harus dipilih.");
-			isValid = false;
-		}
-		
+
 		if (txtVat.getText() == null || txtCustCode.getText().length() == 0) {
 			lblErrorVat.setText("Textbox VAT harus diisi.");
 			isValid = false;
@@ -733,7 +883,7 @@ public class SalesEditPanel extends JPanel implements Bridging {
 				isValid = false;
 			}
 		}
-		
+
 		return isValid;
 	}
 
@@ -742,8 +892,6 @@ public class SalesEditPanel extends JPanel implements Bridging {
 
 		sales.setCustAddrId(custAddress.getId());
 		sales.setCurrencyId(cbCurrency.getDataIndex().getId());
-		sales.setFreightCostCurrencyId(cbFcCurrency.getDataIndex().getId());
-		sales.setInsuranceCostCurrencyId(cbIcCurrency.getDataIndex().getId());
 		sales.setPoNo(txtPoNo.getText());
 		sales.setPoDate(poDateChooser.getDate());
 		sales.setSoNo(txtSoNo.getText());
@@ -751,12 +899,12 @@ public class SalesEditPanel extends JPanel implements Bridging {
 		sales.setSurcharge(Double.valueOf(txtSurcharge.getText()));
 		sales.setDiscount(Double.valueOf(txtDiscount.getText()));
 		sales.setFreightCost(Double.valueOf(txtFreightCost.getText()));
-		sales.setInsuranceCost(Double.valueOf(txtInsuranceCost.getText()));
 		sales.setVat(Double.valueOf(txtVat.getText()));
 		sales.setDescription(txtDescription.getText());
 
 		try {
-			ServiceFactory.getSalesBL().update(sales, listOfSalesDetail, listOfDeletedSalesDetail);
+			ServiceFactory.getSalesBL().update(sales, listOfSalesDetail, listOfDeletedSalesDetail, listOfSalesShipmentDetail, listOfDeletedSalesShipmentDetail, listOfSalesInsuranceDetail,
+					listOfDeletedSalesInsuranceDetail);
 			DialogBox.showInsert();
 			MainPanel.changePanel("module.sales.ui.SalesViewPanel", sales);
 		} catch (SQLException e) {
@@ -781,6 +929,46 @@ public class SalesEditPanel extends JPanel implements Bridging {
 		salesDetailDialog.setTitle("Produk");
 		salesDetailDialog.setLocationRelativeTo(null);
 		salesDetailDialog.setVisible(true);
+	}
+
+	/**
+	 * Method to display add sales insurance dialog
+	 */
+	protected void showAddInsuranceDetailDialog(SalesEditPanel salesEdit) {
+		SalesInsuranceDetailDialog insuranceDetailDialog = new SalesInsuranceDetailDialog(false,
+				new SalesInsuranceDetail(), salesEdit, null);
+		insuranceDetailDialog.setTitle("Asuransi");
+		insuranceDetailDialog.setLocationRelativeTo(null);
+		insuranceDetailDialog.setVisible(true);
+	}
+
+	protected void showEditInsuranceDetailDialog(SalesInsuranceDetail salesInsuranceDetail, SalesEditPanel salesEdit,
+			Integer index) {
+		SalesInsuranceDetailDialog insuranceDetailDialog = new SalesInsuranceDetailDialog(true, salesInsuranceDetail,
+				salesEdit, index);
+		insuranceDetailDialog.setTitle("Asuransi");
+		insuranceDetailDialog.setLocationRelativeTo(null);
+		insuranceDetailDialog.setVisible(true);
+	}
+
+	/**
+	 * Method to display add sales shipment dialog
+	 */
+	protected void showAddShipmentDetailDialog(SalesEditPanel salesEdit) {
+		SalesShipmentDetailDialog shipmentDetailDialog = new SalesShipmentDetailDialog(false, new ShipmentSalesOrder(),
+				salesEdit, null);
+		shipmentDetailDialog.setTitle("Shipment");
+		shipmentDetailDialog.setLocationRelativeTo(null);
+		shipmentDetailDialog.setVisible(true);
+	}
+
+	protected void showEditShipmentDetailDialog(ShipmentSalesOrder shipmentSalesOrder, SalesEditPanel salesEdit,
+			Integer index) {
+		SalesShipmentDetailDialog shipmentDetailDialog = new SalesShipmentDetailDialog(true, shipmentSalesOrder,
+				salesEdit, index);
+		shipmentDetailDialog.setTitle("Shipment");
+		shipmentDetailDialog.setLocationRelativeTo(null);
+		shipmentDetailDialog.setVisible(true);
 	}
 
 	protected void doDeleteSalesDetail() {
@@ -812,7 +1000,7 @@ public class SalesEditPanel extends JPanel implements Bridging {
 			}
 		}
 	}
-	
+
 	/**
 	 * Class as TableModel for Cust Address table
 	 * 
@@ -937,6 +1125,302 @@ public class SalesEditPanel extends JPanel implements Bridging {
 		}
 	}
 
+	protected void doDeleteSalesInsuranceDetail() {
+		if (listOfSalesInsuranceDetail.isEmpty())
+			DialogBox.showDeleteEmptyChoice();
+		else {
+			int count = 0;
+
+			List<SalesInsuranceDetail> temp = new ArrayList<SalesInsuranceDetail>();
+			for (SalesInsuranceDetail s : listOfSalesInsuranceDetail) {
+				if (Boolean.TRUE.equals(s.isFlag())) {
+					temp.add(s);
+				} else
+					count += 1;
+			}
+
+			if (count == listOfSalesInsuranceDetail.size()) {
+				DialogBox.showDeleteEmptyChoice();
+				return;
+			}
+
+			if (Boolean.FALSE.equals(temp.isEmpty())) {
+				for (SalesInsuranceDetail s : temp) {
+					listOfDeletedSalesInsuranceDetail.add(s);
+					listOfSalesInsuranceDetail.remove(s);
+				}
+				refreshTableInsuranceDetail();
+				DialogBox.showDelete();
+			}
+		}
+	}
+
+	/**
+	 * Class as TableModel for Insurance Detail table
+	 * 
+	 * @author TLO
+	 *
+	 */
+	class SalesInsuranceDetailTableModel extends AbstractTableModel {
+
+		private static final long serialVersionUID = 1L;
+
+		private List<SalesInsuranceDetail> listOfSalesInsuranceDetail;
+
+		public SalesInsuranceDetailTableModel(List<SalesInsuranceDetail> listOfSalesInsuranceDetail) {
+			this.listOfSalesInsuranceDetail = listOfSalesInsuranceDetail;
+		}
+
+		/**
+		 * Method to get row count
+		 * 
+		 * @return int
+		 */
+		public int getRowCount() {
+			return listOfSalesInsuranceDetail.size();
+		}
+
+		/**
+		 * Method to get Column Count
+		 */
+		public int getColumnCount() {
+			return 5;
+		}
+
+		/**
+		 * Method to get selected value
+		 * 
+		 * @param rowIndex
+		 *            rowIndex of selected table
+		 * @param columnIndex
+		 *            columnIndex of selected table
+		 * @return ({@link InsuranceDetail}) Object
+		 */
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			SalesInsuranceDetail p = listOfSalesInsuranceDetail.get(rowIndex);
+			switch (columnIndex) {
+			case 0:
+				return p.isFlag();
+			case 1:
+				return p.getInsurance().getInsuranceCompanyName();
+			case 2:
+				return p.getInsurance().getInsuranceType();
+			case 3:
+				return p.getCost();
+			case 4:
+				return "<html><u>Edit</u></html>";
+			default:
+				return "";
+			}
+		}
+
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		}
+
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public Class getColumnClass(int column) {
+			switch (column) {
+			case 0:
+				return Boolean.class;
+			case 1:
+				return String.class;
+			case 2:
+				return String.class;
+			case 3:
+				return String.class;
+			case 4:
+				return String.class;
+			default:
+				return String.class;
+			}
+		}
+
+		/**
+		 * Method to getColumnName
+		 * 
+		 * @param column
+		 *            columnIndex
+		 * @return String column name
+		 */
+		public String getColumnName(int column) {
+			switch (column) {
+			case 0:
+				return "";
+			case 1:
+				return "Insurance Company";
+			case 2:
+				return "Insurance Type";
+			case 3:
+				return "Insurance Cost";
+			case 4:
+				return "Tindakan";
+			default:
+				return "";
+			}
+		}
+	}
+
+	protected void doDeleteSalesShipmentDetail() {
+		if (listOfSalesShipmentDetail.isEmpty())
+			DialogBox.showDeleteEmptyChoice();
+		else {
+			int count = 0;
+
+			List<ShipmentSalesOrder> temp = new ArrayList<ShipmentSalesOrder>();
+			for (ShipmentSalesOrder s : listOfSalesShipmentDetail) {
+				if (Boolean.TRUE.equals(s.isFlag())) {
+					temp.add(s);
+				} else
+					count += 1;
+			}
+
+			if (count == listOfSalesShipmentDetail.size()) {
+				DialogBox.showDeleteEmptyChoice();
+				return;
+			}
+
+			if (Boolean.FALSE.equals(temp.isEmpty())) {
+				for (ShipmentSalesOrder s : temp) {
+					listOfDeletedSalesShipmentDetail.remove(s);
+					listOfSalesShipmentDetail.remove(s);
+				}
+				refreshTableShipmentDetail();
+				DialogBox.showDelete();
+			}
+		}
+	}
+
+	/**
+	 * Class as TableModel for Shipment Detail table
+	 * 
+	 * @author TLO
+	 *
+	 */
+	class SalesShipmentDetailTableModel extends AbstractTableModel {
+
+		private static final long serialVersionUID = 1L;
+
+		private List<ShipmentSalesOrder> listOfSalesShipmentDetail;
+
+		public SalesShipmentDetailTableModel(List<ShipmentSalesOrder> listOfSalesShipmentDetail) {
+			this.listOfSalesShipmentDetail = listOfSalesShipmentDetail;
+		}
+
+		/**
+		 * Method to get row count
+		 * 
+		 * @return int
+		 */
+		public int getRowCount() {
+			return listOfSalesShipmentDetail.size();
+		}
+
+		/**
+		 * Method to get Column Count
+		 */
+		public int getColumnCount() {
+			return 9;
+		}
+
+		/**
+		 * Method to get selected value
+		 * 
+		 * @param rowIndex
+		 *            rowIndex of selected table
+		 * @param columnIndex
+		 *            columnIndex of selected table
+		 * @return ({@link InsuranceDetail}) Object
+		 */
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			ShipmentSalesOrder p = listOfSalesShipmentDetail.get(rowIndex);
+			switch (columnIndex) {
+			case 0:
+				return p.isFlag();
+			case 1:
+				return p.getShipmentAgent();
+			case 2:
+				return p.getShipmentType();
+			case 3:
+				return p.getOriginAddress();
+			case 4:
+				return p.getDestionationAddress();
+			case 5:
+				return p.getDateOfShipment();
+			case 6:
+				return p.getPickupDate();
+			case 7:
+				return p.getShipmentCost();
+			case 8:
+				return "<html><u>Edit</u></html>";
+			default:
+				return "";
+			}
+		}
+
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		}
+
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public Class getColumnClass(int column) {
+			switch (column) {
+			case 0:
+				return Boolean.class;
+			case 1:
+				return String.class;
+			case 2:
+				return String.class;
+			case 3:
+				return String.class;
+			case 4:
+				return String.class;
+			case 5:
+				return String.class;
+			case 6:
+				return String.class;
+			case 7:
+				return String.class;
+			case 8:
+				return String.class;
+			default:
+				return String.class;
+			}
+		}
+
+		/**
+		 * Method to getColumnName
+		 * 
+		 * @param column
+		 *            columnIndex
+		 * @return String column name
+		 */
+		public String getColumnName(int column) {
+			switch (column) {
+			case 0:
+				return "";
+			case 1:
+				return "Shipment Agent";
+			case 2:
+				return "Shipment Type";
+			case 3:
+				return "Origin Address";
+			case 4:
+				return "Destination Address";
+			case 5:
+				return "Date Of Shipment";
+			case 6:
+				return "Pickup Date";
+			case 7:
+				return "Shipment Cost";
+			case 8:
+				return "Tindakan";
+			default:
+				return "";
+			}
+		}
+	}
+
 	public void refreshTableSalesDetail() {
 		try {
 			tblSalesDetail.setModel(new SalesDetailTableModel(listOfSalesDetail));
@@ -951,8 +1435,25 @@ public class SalesEditPanel extends JPanel implements Bridging {
 			}
 			txtTotalItem.setText(Integer.toString(totalItem));
 			txtTotalVolume.setText(Double.toString(totalVolume));
-			txtGrossAmount.setText(Double.toString(totalPrice));
 
+		} catch (Exception e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
+		}
+	}
+
+	public void refreshTableInsuranceDetail() {
+		try {
+			tblInsuranceDetail.setModel(new SalesInsuranceDetailTableModel(listOfSalesInsuranceDetail));
+		} catch (Exception e1) {
+			LOGGER.error(e1.getMessage());
+			DialogBox.showErrorException();
+		}
+	}
+
+	public void refreshTableShipmentDetail() {
+		try {
+			tblShipmentDetail.setModel(new SalesShipmentDetailTableModel(listOfSalesShipmentDetail));
 		} catch (Exception e1) {
 			LOGGER.error(e1.getMessage());
 			DialogBox.showErrorException();

@@ -1,0 +1,2 @@
+2017-10-08 00:10:47,821 [AWT-EventQueue-0] ERROR (ProductListDialog.java:150) - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+2017-10-08 00:11:47,249 [AWT-EventQueue-0] ERROR (ProductListDialog.java:150) - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1

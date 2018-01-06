@@ -14,18 +14,27 @@ import module.pembelian.model.Product;
 import module.sn.uom.model.Uom;
 import module.sales.dao.SalesDAO;
 import module.sales.dao.SalesDetailDAO;
+import module.sales.dao.SalesInsuranceDetailDAO;
+import module.sales.dao.SalesShipmentDetailDAO;
 import module.sales.model.Sales;
 import module.sales.model.SalesDetail;
+import module.sales.model.SalesInsuranceDetail;
+import module.sales.model.ShipmentSalesOrder;
 import module.sn.bank.dao.BankDAO;
 import module.sn.bank.model.Bank;
+import module.sn.bank.model.BankCust;
 import module.sn.city.dao.CityDAO;
 import module.sn.city.model.City;
 import module.sn.country.dao.CountryDAO;
 import module.sn.country.model.Country;
 import module.sn.currency.dao.CurrencyDAO;
 import module.sn.currency.model.Currency;
+import module.sn.insurance.dao.InsuranceDAO;
+import module.sn.insurance.model.Insurance;
 import module.sn.province.dao.ProvinceDAO;
 import module.sn.province.model.Province;
+import module.sn.shipment.dao.ShipmentDAO;
+import module.sn.shipment.model.Shipment;
 import module.sn.vehicletype.dao.VehicleTypeDAO;
 import module.sn.vehicletype.model.VehicleType;
 
@@ -61,6 +70,26 @@ public class SalesBL {
 		try {
 			con = dataSource.getConnection();
 			return new CurrencyDAO(con).getAll();
+		} finally {
+			con.close();
+		}
+	}
+
+	public List<Insurance> getAllInsurance() throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new InsuranceDAO(con).getAll();
+		} finally {
+			con.close();
+		}
+	}
+
+	public List<Shipment> getAllShipment() throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new ShipmentDAO(con).getAll();
 		} finally {
 			con.close();
 		}
@@ -106,7 +135,8 @@ public class SalesBL {
 		}
 	}
 
-	public void save(Sales sales, List<SalesDetail> salesDetails) throws SQLException {
+	public void save(Sales sales, List<SalesDetail> salesDetails, List<SalesInsuranceDetail> salesInsuranceDetails,
+			List<ShipmentSalesOrder> salesShipmentDetails) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -118,6 +148,16 @@ public class SalesBL {
 				s = new SalesDetailDAO(con).save(s);
 			}
 
+			for (SalesInsuranceDetail s : salesInsuranceDetails) {
+				s.setSalesId(ServiceFactory.getSalesBL().getLatestIncrementSalesId());
+				s = new SalesInsuranceDetailDAO(con).save(s);
+			}
+
+			for (ShipmentSalesOrder s : salesShipmentDetails) {
+				s.setSalesOrderId(ServiceFactory.getSalesBL().getLatestIncrementSalesId());
+				s = new SalesShipmentDetailDAO(con).save(s);
+			}
+
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
@@ -127,8 +167,9 @@ public class SalesBL {
 		}
 	}
 
-	public void update(Sales sales, List<SalesDetail> salesDetail, List<SalesDetail> salesDetailDeleted)
-			throws SQLException {
+	public void update(Sales sales, List<SalesDetail> salesDetail, List<SalesDetail> salesDetailDeleted,
+			List<ShipmentSalesOrder> shipmentSalesDetail, List<ShipmentSalesOrder> shipmentSalesDetailDeleted, List<SalesInsuranceDetail> insuranceSalesDetail,
+			List<SalesInsuranceDetail> insuranceSalesDetailDeleted) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
@@ -142,6 +183,36 @@ public class SalesBL {
 					s = new SalesDetailDAO(con).save(s);
 				} else {
 					new SalesDetailDAO(con).update(s);
+				}
+			}
+
+			for (SalesDetail s : salesDetailDeleted) {
+				if (s.getId() != 0) {
+					new SalesDetailDAO(con).deleteById(s.getId());
+				}
+			}
+			
+			for (ShipmentSalesOrder s : shipmentSalesDetail) {
+				if (s.getId() == 0) {
+					s.setSalesOrderId(sales.getId());
+					s = new SalesShipmentDetailDAO(con).save(s);
+				} else {
+					new SalesShipmentDetailDAO(con).update(s);
+				}
+			}
+
+			for (ShipmentSalesOrder s : shipmentSalesDetailDeleted) {
+				if (s.getId() != 0) {
+					new SalesShipmentDetailDAO(con).deleteById(s.getId());
+				}
+			}
+			
+			for (SalesInsuranceDetail s : insuranceSalesDetail) {
+				if (s.getId() == 0) {
+					s.setSalesId(sales.getId());
+					s = new SalesInsuranceDetailDAO(con).save(s);
+				} else {
+					new SalesInsuranceDetailDAO(con).update(s);
 				}
 			}
 
@@ -168,6 +239,8 @@ public class SalesBL {
 
 			new SalesDAO(con).delete(sales.getId());
 			new SalesDetailDAO(con).deleteAll(sales.getId());
+			new SalesShipmentDetailDAO(con).deleteAll(sales.getId());
+			new SalesInsuranceDetailDAO(con).deleteAll(sales.getId());
 
 			con.commit();
 		} catch (SQLException e) {
@@ -212,11 +285,41 @@ public class SalesBL {
 		}
 	}
 
+	public List<BankCust> getBankCustByCustCode(String custCode) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new SalesDAO(con).getAllBankCustByCustCode(custCode);
+		} finally {
+			con.close();
+		}
+	}
+
 	public List<SalesDetail> getSalesDetailBySalesId(int salesId) throws SQLException {
 		Connection con = null;
 		try {
 			con = dataSource.getConnection();
 			return new SalesDetailDAO(con).getAllBySalesId(salesId);
+		} finally {
+			con.close();
+		}
+	}
+
+	public List<ShipmentSalesOrder> getSalesShipmentDetailBySalesId(int salesId) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new SalesShipmentDetailDAO(con).getAllBySalesId(salesId);
+		} finally {
+			con.close();
+		}
+	}
+
+	public List<SalesInsuranceDetail> getSalesInsuranceDetailBySalesId(int salesId) throws SQLException {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+			return new SalesInsuranceDetailDAO(con).getAllBySalesId(salesId);
 		} finally {
 			con.close();
 		}

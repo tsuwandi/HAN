@@ -15,6 +15,7 @@ import module.customer.model.Customer;
 import module.pembelian.model.Product;
 import module.sn.uom.model.Uom;
 import module.sales.model.Sales;
+import module.sn.bank.model.BankCust;
 import module.sn.currency.model.Currency;
 import module.util.DateUtil;
 
@@ -27,30 +28,34 @@ public class SalesDAO {
 	private PreparedStatement updateStatement;
 	private PreparedStatement deleteStatement;
 	private PreparedStatement getAllByCustCodeStatement;
+	private PreparedStatement getAllBankCustByCustCodeStatement;
 
 	private String getAllQuery = "select s.id, s.customer_id, s.cust_addr_id, s.currency_id, s.freight_cost_currency_id, "
 			+ "s.insurance_cost_currency_id, s.po_no, s.po_date, s.so_no, s.so_date, s.surcharge, s.discount, "
-			+ "s.freight_cost, s.insurance_cost, s.vat, s.description, s.input_by, s.input_date, "
+			+ "s.freight_cost, s.insurance_cost, s.vat, s.description, s.input_by, s.input_date, s.price_term, s.bank_id, s.currency_to_rupiah, s.currency, "
 			+ "c.id as customer_id, c.cust_name as customer_name, c.cust_code as customer_code, "
 			+ "cur.id as currency_id, cur.currency as currency_name, cur.currency_abbr as currency_abbr, "
-			+ "fcur.id as fcurrency_id, fcur.currency as fcurrency_name, fcur.currency_abbr as fcurrency_abbr, "
-			+ "icur.id as icurrency_id, icur.currency as icurrency_name, icur.currency_abbr as icurrency_abbr, "
-			+ "ca.id as ca_id, ca.name as ca_name, ca.address as ca_address " + "from sales s "
+			+ "ca.id as ca_id, ca.name as ca_name, ca.address as ca_address, "
+			+ "bc.id as bc_id, bc.cust_code as bc_cust_code, bc.cust_id as bc_cust_id, bc.swiftcode as bc_swiftcode, bc.bankname as bc_bankname, "
+			+ "bc.accountno as bc_accountno, bc.currency_id as bc_currency_id, bc.accname as bc_accname, bc.note as bc_note, "
+			+ "bcur.id as bcurrency_id, bcur.currency as bcurrency_name, bcur.currency_abbr as bcurrency_abbr "
+			+ "from sales s "
 			+ "inner join customer c on s.customer_id = c.id " + "inner join cust_addr ca on s.cust_addr_id = ca.id "
 			+ "inner join currency cur on s.currency_id = cur.id "
-			+ "inner join currency fcur on s.freight_cost_currency_id = fcur.id "
-			+ "inner join currency icur on s.insurance_cost_currency_id = icur.id " + "where s.deleted_date is null "
+			+ "inner join bank_cust bc on s.bank_id = bc.id "
+			+ "inner join currency bcur on bc.currency_id = bcur.id "
+			+ "where s.deleted_date is null "
 			+ "and c.deleted_date is null";
 
 	private String isCustCodeExistsQuery = "select count(*) as is_exists from customer where cust_code = ? and deleted_date is null ";
 
 	private String insertQuery = "insert into sales (customer_id, cust_addr_id, currency_id, freight_cost_currency_id, insurance_cost_currency_id, "
-			+ "po_no, po_date, so_no, so_date, surcharge, discount, freight_cost, insurance_cost, vat, description, "
-			+ "input_by, input_date) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			+ "po_no, po_date, so_no, so_date, surcharge, discount, freight_cost, vat, description, "
+			+ "input_by, input_date, price_term, bank_id, currency_to_rupiah, currency) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 	private String updateQuery = "update sales set cust_addr_id=?, currency_id=?, freight_cost_currency_id=?, insurance_cost_currency_id=?, "
 			+ "po_no=?, po_date=?, so_no=?, so_date=?, surcharge=?, discount=?, freight_cost=?, insurance_cost=?, vat=?, description=?, "
-			+ "edited_date=?, edited_by=? where id=?";
+			+ "edited_date=?, edited_by=?, price_term=?, bank_id=?, currency_to_rupiah=?, currency=? where id=?";
 
 	private String deleteQuery = "update sales set deleted_date=?, deleted_by=? where id=?";
 
@@ -68,6 +73,11 @@ public class SalesDAO {
 			+ "addr_type, address, zip_code, email, " + "city, phone, fax, province "
 			+ "from cust_addr where cust_code = ? " + "and deleted_date is null";
 
+	private String getAllBankCustByCustCodeQuery = "select bc.id, bc.cust_code, bc.cust_id, bc.swiftcode, bc.bankname, bc.accountno, bc.currency_id, bc.accname, bc.note, "
+			+ "c.id as currency_id, c.currency from bank_cust bc "
+			+ "inner join currency c on bc.currency_id = c.id "
+			+ "where cust_code = ? and bc.deleted_date is null ";
+
 	private String getAllProductQuery = "SELECT id, product_code, product_name, product_uom_id, length, width, thickness, product_uom_id FROM product WHERE deleted_date is null";
 
 	public SalesDAO(Connection connection) throws SQLException {
@@ -78,7 +88,9 @@ public class SalesDAO {
 		List<Sales> sales = new ArrayList<Sales>();
 
 		try {
+			System.out.println(getAllQuery);
 			getAllStatement = connection.prepareStatement(getAllQuery);
+			
 
 			ResultSet rs = getAllStatement.executeQuery();
 			while (rs.next()) {
@@ -251,9 +263,9 @@ public class SalesDAO {
 			insertStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 			insertStatement.setInt(1, sales.getCustomerId());
 			insertStatement.setInt(2, sales.getCustAddrId());
-			insertStatement.setInt(3, sales.getFreightCostCurrencyId());
-			insertStatement.setInt(4, sales.getFreightCostCurrencyId());
-			insertStatement.setInt(5, sales.getInsuranceCostCurrencyId());
+			insertStatement.setInt(3, sales.getCurrencyId());
+			insertStatement.setInt(4, 1);
+			insertStatement.setInt(5, 1);
 			insertStatement.setString(6, sales.getPoNo());
 			insertStatement.setDate(7, new java.sql.Date(sales.getPoDate().getTime()));
 			insertStatement.setString(8, sales.getSoNo());
@@ -261,11 +273,14 @@ public class SalesDAO {
 			insertStatement.setDouble(10, sales.getSurcharge());
 			insertStatement.setDouble(11, sales.getDiscount());
 			insertStatement.setDouble(12, sales.getFreightCost());
-			insertStatement.setDouble(13, sales.getInsuranceCost());
-			insertStatement.setDouble(14, sales.getVat());
-			insertStatement.setString(15, sales.getDescription());
-			insertStatement.setString(16, "Sandy");
-			insertStatement.setDate(17, DateUtil.getCurrentDate());
+			insertStatement.setDouble(13, sales.getVat());
+			insertStatement.setString(14, sales.getDescription());
+			insertStatement.setString(15, "Sandy");
+			insertStatement.setDate(16, DateUtil.getCurrentDate());
+			insertStatement.setString(17, sales.getPriceTerm());
+			insertStatement.setInt(18, sales.getBankId());
+			insertStatement.setInt(19, sales.getCurrencyToRupiah());
+			insertStatement.setString(20, sales.getCurrencyBank());
 			insertStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -293,7 +308,11 @@ public class SalesDAO {
 			updateStatement.setString(14, sales.getDescription());
 			updateStatement.setDate(15, DateUtil.getCurrentDate());
 			updateStatement.setString(16, "Sandy");
-			updateStatement.setInt(17, sales.getId());
+			updateStatement.setString(17, sales.getPriceTerm());
+			updateStatement.setInt(18, sales.getBankId());
+			updateStatement.setInt(19, sales.getCurrencyToRupiah());
+			updateStatement.setString(20, sales.getCurrencyBank());
+			updateStatement.setInt(21, sales.getId());
 			updateStatement.executeUpdate();
 
 		} catch (SQLException ex) {
@@ -341,6 +360,10 @@ public class SalesDAO {
 				sales.setDescription(rs.getString("description"));
 				sales.setInputBy(rs.getString("input_by"));
 				sales.setInputDate(rs.getDate("input_date"));
+				sales.setPriceTerm(rs.getString("price_term"));
+				sales.setBankId(rs.getInt("bank_id"));
+				sales.setCurrencyToRupiah(rs.getInt("currency_to_rupiah"));
+				sales.setCurrencyBank(rs.getString("currency"));
 
 				Customer customer = new Customer();
 				customer.setId(rs.getInt("customer_id"));
@@ -351,27 +374,33 @@ public class SalesDAO {
 				custAddress.setId(rs.getInt("ca_id"));
 				custAddress.setName(rs.getString("ca_name"));
 				custAddress.setAddress(rs.getString("ca_address"));
+				
+				BankCust bankCust = new BankCust();
+				bankCust.setId(rs.getInt("bc_id"));
+				bankCust.setCustCode(rs.getString("bc_cust_code"));
+				bankCust.setCustId(rs.getInt("bc_cust_id"));
+				bankCust.setSwiftcode(rs.getString("bc_swiftcode"));
+				bankCust.setBankname(rs.getString("bc_bankname"));
+				bankCust.setAccountno(rs.getString("bc_accountno"));
+				bankCust.setCurrencyId(rs.getString("bc_currency_id"));
+				bankCust.setAccname(rs.getString("bc_accname"));
+				bankCust.setNote(rs.getString("bc_note"));
+				
+				Currency bcurrency = new Currency();
+				bcurrency.setId(rs.getInt("bcurrency_id"));
+				bcurrency.setCurrencyAbbr(rs.getString("bcurrency_abbr"));
+				bcurrency.setCurrency(rs.getString("bcurrency_name"));				
 
 				Currency currency = new Currency();
 				currency.setId(rs.getInt("currency_id"));
 				currency.setCurrencyAbbr(rs.getString("currency_abbr"));
 				currency.setCurrency(rs.getString("currency_name"));
 
-				Currency FCurrency = new Currency();
-				FCurrency.setId(rs.getInt("fcurrency_id"));
-				FCurrency.setCurrencyAbbr(rs.getString("fcurrency_abbr"));
-				FCurrency.setCurrency(rs.getString("fcurrency_name"));
-
-				Currency ICurrency = new Currency();
-				ICurrency.setId(rs.getInt("icurrency_id"));
-				ICurrency.setCurrencyAbbr(rs.getString("icurrency_abbr"));
-				ICurrency.setCurrency(rs.getString("icurrency_name"));
-
+				bankCust.setCurrency(bcurrency);
+				sales.setBankCust(bankCust);
 				sales.setCustomer(customer);
 				sales.setCustAddress(custAddress);
 				sales.setCurrency(currency);
-				sales.setFcCurrency(ICurrency);
-				sales.setIcCurrency(FCurrency);
 			}
 
 		} catch (SQLException ex) {
@@ -483,6 +512,43 @@ public class SalesDAO {
 		return custAddresses;
 	}
 
+	public List<BankCust> getAllBankCustByCustCode(String custCode) throws SQLException {
+		List<BankCust> bankCusts = new ArrayList<BankCust>();
+
+		try {
+			getAllBankCustByCustCodeStatement = connection.prepareStatement(getAllBankCustByCustCodeQuery);
+
+			getAllBankCustByCustCodeStatement.setString(1, custCode);
+
+			ResultSet rs = getAllBankCustByCustCodeStatement.executeQuery();
+			while (rs.next()) {
+				BankCust bankCust = new BankCust();
+				bankCust.setId(rs.getInt("id"));
+				bankCust.setCustCode(rs.getString("cust_code"));
+				bankCust.setCustId(rs.getInt("cust_id"));
+				bankCust.setSwiftcode(rs.getString("swiftcode"));
+				bankCust.setBankname(rs.getString("bankname"));
+				bankCust.setAccountno(rs.getString("accountno"));
+				bankCust.setCurrencyId(rs.getString("currency_id"));
+				bankCust.setAccname(rs.getString("accname"));
+				bankCust.setNote(rs.getString("note"));
+				
+				Currency currency = new Currency();
+				currency.setId(rs.getInt("currency_id"));
+				currency.setCurrency(rs.getString("currency"));
+				bankCust.setCurrency(currency);
+				
+				bankCusts.add(bankCust);
+
+			}
+
+		} catch (SQLException ex) {
+			throw new SQLException(ex.getMessage());
+		}
+
+		return bankCusts;
+	}
+
 	public Product getProductByCode(String productCode) throws SQLException {
 		Product product = null;
 		String query = new StringBuilder().append(selectProductByCodeQuery).toString();
@@ -527,7 +593,7 @@ public class SalesDAO {
 		} catch (SQLException ex) {
 			throw new SQLException(ex.getMessage());
 		}
-		
+
 		return uom;
 	}
 

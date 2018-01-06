@@ -1,41 +1,31 @@
-package module.customer.model;
+package module.sn.bank.model;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import module.util.ComboBoxProperties;
+import module.sn.currency.model.Currency;
 
-public class CustAddress implements Serializable, ComboBoxProperties{
+public class BankCust implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private int id;
 	private String custCode;
 	private int custId;
-	private String name;
-	private String addressType;
-	private String phone;
-	private String fax;
-	private String address;
-	private String zipCode;
-	private String email;
-	private String province;
-	private String city;
+	private String swiftcode;
+	private String bankname;
+	private String accountno;
+	private String currencyId;
+	private String accname;
+	private String note;
 	private Date inputDate;
 	private String inputBy;
 	private Date editDate;
 	private String editedBy;
 	private Date deletedDate;
 	private String deletedBy;
-
-	private boolean flag;
-
-	public CustAddress() {
-	}
-
-	public CustAddress(String name) {
-		this.name = name;
-	}
+	
+	private Currency currency;
 
 	public int getId() {
 		return id;
@@ -61,60 +51,52 @@ public class CustAddress implements Serializable, ComboBoxProperties{
 		this.custId = custId;
 	}
 
-	public String getName() {
-		return name;
+	public String getSwiftcode() {
+		return swiftcode;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setSwiftcode(String swiftcode) {
+		this.swiftcode = swiftcode;
 	}
 
-	public String getAddressType() {
-		return addressType;
+	public String getBankname() {
+		return bankname;
 	}
 
-	public void setAddressType(String addressType) {
-		this.addressType = addressType;
+	public void setBankname(String bankname) {
+		this.bankname = bankname;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getAccountno() {
+		return accountno;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setAccountno(String accountno) {
+		this.accountno = accountno;
 	}
 
-	public String getFax() {
-		return fax;
+	public String getCurrencyId() {
+		return currencyId;
 	}
 
-	public void setFax(String fax) {
-		this.fax = fax;
+	public void setCurrencyId(String currencyId) {
+		this.currencyId = currencyId;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getAccname() {
+		return accname;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAccname(String accname) {
+		this.accname = accname;
 	}
 
-	public String getZipCode() {
-		return zipCode;
+	public String getNote() {
+		return note;
 	}
 
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public Date getInputDate() {
@@ -165,45 +147,25 @@ public class CustAddress implements Serializable, ComboBoxProperties{
 		this.deletedBy = deletedBy;
 	}
 
-	public String getProvince() {
-		return province;
-	}
-
-	public void setProvince(String province) {
-		this.province = province;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((address == null) ? 0 : address.hashCode());
-		result = prime * result + ((addressType == null) ? 0 : addressType.hashCode());
-		result = prime * result + ((city == null) ? 0 : city.hashCode());
+		result = prime * result + ((accname == null) ? 0 : accname.hashCode());
+		result = prime * result + ((accountno == null) ? 0 : accountno.hashCode());
+		result = prime * result + ((bankname == null) ? 0 : bankname.hashCode());
+		result = prime * result + ((currencyId == null) ? 0 : currencyId.hashCode());
 		result = prime * result + ((custCode == null) ? 0 : custCode.hashCode());
 		result = prime * result + custId;
 		result = prime * result + ((deletedBy == null) ? 0 : deletedBy.hashCode());
 		result = prime * result + ((deletedDate == null) ? 0 : deletedDate.hashCode());
 		result = prime * result + ((editDate == null) ? 0 : editDate.hashCode());
 		result = prime * result + ((editedBy == null) ? 0 : editedBy.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((fax == null) ? 0 : fax.hashCode());
-		result = prime * result + (flag ? 1231 : 1237);
 		result = prime * result + id;
 		result = prime * result + ((inputBy == null) ? 0 : inputBy.hashCode());
 		result = prime * result + ((inputDate == null) ? 0 : inputDate.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
-		result = prime * result + ((province == null) ? 0 : province.hashCode());
-		result = prime * result + ((zipCode == null) ? 0 : zipCode.hashCode());
+		result = prime * result + ((note == null) ? 0 : note.hashCode());
+		result = prime * result + ((swiftcode == null) ? 0 : swiftcode.hashCode());
 		return result;
 	}
 
@@ -215,21 +177,26 @@ public class CustAddress implements Serializable, ComboBoxProperties{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CustAddress other = (CustAddress) obj;
-		if (address == null) {
-			if (other.address != null)
+		BankCust other = (BankCust) obj;
+		if (accname == null) {
+			if (other.accname != null)
 				return false;
-		} else if (!address.equals(other.address))
+		} else if (!accname.equals(other.accname))
 			return false;
-		if (addressType == null) {
-			if (other.addressType != null)
+		if (accountno == null) {
+			if (other.accountno != null)
 				return false;
-		} else if (!addressType.equals(other.addressType))
+		} else if (!accountno.equals(other.accountno))
 			return false;
-		if (city == null) {
-			if (other.city != null)
+		if (bankname == null) {
+			if (other.bankname != null)
 				return false;
-		} else if (!city.equals(other.city))
+		} else if (!bankname.equals(other.bankname))
+			return false;
+		if (currencyId == null) {
+			if (other.currencyId != null)
+				return false;
+		} else if (!currencyId.equals(other.currencyId))
 			return false;
 		if (custCode == null) {
 			if (other.custCode != null)
@@ -258,18 +225,6 @@ public class CustAddress implements Serializable, ComboBoxProperties{
 				return false;
 		} else if (!editedBy.equals(other.editedBy))
 			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (fax == null) {
-			if (other.fax != null)
-				return false;
-		} else if (!fax.equals(other.fax))
-			return false;
-		if (flag != other.flag)
-			return false;
 		if (id != other.id)
 			return false;
 		if (inputBy == null) {
@@ -282,45 +237,29 @@ public class CustAddress implements Serializable, ComboBoxProperties{
 				return false;
 		} else if (!inputDate.equals(other.inputDate))
 			return false;
-		if (name == null) {
-			if (other.name != null)
+		if (note == null) {
+			if (other.note != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!note.equals(other.note))
 			return false;
-		if (phone == null) {
-			if (other.phone != null)
+		if (swiftcode == null) {
+			if (other.swiftcode != null)
 				return false;
-		} else if (!phone.equals(other.phone))
-			return false;
-		if (province == null) {
-			if (other.province != null)
-				return false;
-		} else if (!province.equals(other.province))
-			return false;
-		if (zipCode == null) {
-			if (other.zipCode != null)
-				return false;
-		} else if (!zipCode.equals(other.zipCode))
+		} else if (!swiftcode.equals(other.swiftcode))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return name;
+		return bankname;
 	}
 
-	public boolean isFlag() {
-		return flag;
+	public Currency getCurrency() {
+		return currency;
 	}
 
-	public void setFlag(boolean flag) {
-		this.flag = flag;
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
 	}
-	
-	@Override
-	public Object getField() {
-		return name;
-	}
-
 }

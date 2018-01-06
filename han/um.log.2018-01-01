@@ -1,0 +1,10 @@
+2018-01-01 12:34:28,365 [AWT-EventQueue-0] ERROR (SalesCreatePanel.java:945) - Cannot add or update a child row: a foreign key constraint fails (`project`.`sales`, CONSTRAINT `sales_ibfk_4` FOREIGN KEY (`freight_cost_currency_id`) REFERENCES `currency` (`id`))
+2018-01-01 12:36:17,145 [AWT-EventQueue-0] ERROR (SalesCreatePanel.java:945) - Cannot add or update a child row: a foreign key constraint fails (`project`.`sales`, CONSTRAINT `sales_ibfk_4` FOREIGN KEY (`freight_cost_currency_id`) REFERENCES `currency` (`id`))
+2018-01-01 12:40:56,304 [AWT-EventQueue-0] ERROR (SalesCreatePanel.java:945) - Field 'id' doesn't have a default value
+2018-01-01 16:08:33,943 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:657) - Column 'note' not found.
+2018-01-01 16:09:06,832 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:657) - Unknown column 'sid.deleted_date' in 'where clause'
+2018-01-01 16:10:02,128 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:657) - Unknown column 'i.id' in 'on clause'
+2018-01-01 23:13:15,611 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:732) - Unknown column 'deleted_date' in 'field list'
+2018-01-01 23:15:03,767 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:732) - Table 'project.sales_shipment_detail' doesn't exist
+2018-01-01 23:15:26,399 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:732) - Table 'project.sales_shipment_detail' doesn't exist
+2018-01-01 23:17:29,359 [AWT-EventQueue-0] ERROR (SalesViewPanel.java:732) - Table 'project.sales_shipment_detail' doesn't exist

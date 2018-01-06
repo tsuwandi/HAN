@@ -22,6 +22,7 @@ import controller.ServiceFactory;
 import main.component.DialogBox;
 import module.customer.model.CustAddress;
 import module.customer.model.Customer;
+import module.sn.bank.model.BankCust;
 
 public class CustomerListDialog extends JDialog {
 
@@ -125,6 +126,17 @@ public class CustomerListDialog extends JDialog {
 			}
 			salesCreate.cbCustAddress.setEnabled(true);
 		}
+		
+		salesCreate.cbBankCust.removeAllItems();
+		salesCreate.listOfBankCust = ServiceFactory.getSalesBL().getBankCustByCustCode(customer.getCustCode());
+		if (salesCreate.listOfBankCust.isEmpty()) {
+			salesCreate.cbBankCust.setEnabled(false);
+		} else {
+			for (BankCust bankCust : salesCreate.listOfBankCust) {
+				salesCreate.cbBankCust.addItem(bankCust);
+			}
+			salesCreate.cbBankCust.setEnabled(true);
+		}
 
 		DialogBox.showInsert();
 
@@ -220,7 +232,7 @@ public class CustomerListDialog extends JDialog {
 			case 2:
 				return p.getPt();
 			case 3:
-				return "<html><a><u>Pick</u></a></html>";
+				return "<html><a><u>Pilih</u></a></html>";
 			default:
 				throw new IllegalArgumentException("Invalid column index");
 			}

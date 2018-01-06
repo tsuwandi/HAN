@@ -46,7 +46,7 @@ public class SalesDetailDialog extends JDialog {
 	JTextArea txtProductName;
 	NumberField txtOrderQty;
 	JTextField txtUom;
-	NumberField txtNettPrice;
+	JTextField txtNettPrice;
 
 	JButton btnInsert;
 	JButton btnSelectProduct;
@@ -201,7 +201,7 @@ public class SalesDetailDialog extends JDialog {
 		lblNettPrice.setBounds(25, 185, 150, 25);
 		getContentPane().add(lblNettPrice);
 
-		txtNettPrice = new NumberField(12);
+		txtNettPrice = new JTextField(12);
 		txtNettPrice.setBounds(150, 185, 150, 25);
 		getContentPane().add(txtNettPrice);
 
@@ -227,7 +227,7 @@ public class SalesDetailDialog extends JDialog {
 			txtProductName.setText(salesDetail.getProduct().getProductName());
 			txtUom.setText(salesDetail.getUom().getUom());
 			txtOrderQty.setText(Integer.toString(salesDetail.getQuantity()));
-			txtNettPrice.setText(Double.toString(salesDetail.getNettPrice()));
+			txtNettPrice.setText(String.valueOf(salesDetail.getNettPrice()));
 		}
 		if (isView == true) {
 			txtProductCode.setEnabled(false);

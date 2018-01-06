@@ -5,6 +5,7 @@ import java.util.Date;
 
 import module.customer.model.CustAddress;
 import module.customer.model.Customer;
+import module.sn.bank.model.BankCust;
 import module.sn.currency.model.Currency;
 import module.util.ComboBoxProperties;
 
@@ -35,9 +36,14 @@ public class Sales implements Serializable, ComboBoxProperties {
 	private Date deletedDate;
 	private String deletedBy;
 	private String deleteReason;
+	private String priceTerm;
+	private int bankId;
+	private int currencyToRupiah;
+	private String currencyBank;
 
 	private Customer customer;
 	private CustAddress custAddress;
+	private BankCust bankCust;
 	private Currency currency;
 	private Currency fcCurrency;
 	private Currency icCurrency;
@@ -270,12 +276,47 @@ public class Sales implements Serializable, ComboBoxProperties {
 		this.icCurrency = icCurrency;
 	}
 
+	public String getPriceTerm() {
+		return priceTerm;
+	}
+
+	public void setPriceTerm(String priceTerm) {
+		this.priceTerm = priceTerm;
+	}
+
+	public int getBankId() {
+		return bankId;
+	}
+
+	public void setBankId(int bankId) {
+		this.bankId = bankId;
+	}
+
+	public int getCurrencyToRupiah() {
+		return currencyToRupiah;
+	}
+
+	public void setCurrencyToRupiah(int currencyToRupiah) {
+		this.currencyToRupiah = currencyToRupiah;
+	}
+
+	public String getCurrencyBank() {
+		return currencyBank;
+	}
+
+	public void setCurrencyBank(String currencyBank) {
+		this.currencyBank = currencyBank;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + bankId;
 		result = prime * result + ((currency == null) ? 0 : currency.hashCode());
+		result = prime * result + ((currencyBank == null) ? 0 : currencyBank.hashCode());
 		result = prime * result + currencyId;
+		result = prime * result + currencyToRupiah;
 		result = prime * result + custAddrId;
 		result = prime * result + ((custAddress == null) ? 0 : custAddress.hashCode());
 		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
@@ -298,6 +339,7 @@ public class Sales implements Serializable, ComboBoxProperties {
 		result = prime * result + insuranceCostCurrencyId;
 		result = prime * result + ((poDate == null) ? 0 : poDate.hashCode());
 		result = prime * result + ((poNo == null) ? 0 : poNo.hashCode());
+		result = prime * result + ((priceTerm == null) ? 0 : priceTerm.hashCode());
 		result = prime * result + ((soDate == null) ? 0 : soDate.hashCode());
 		result = prime * result + ((soNo == null) ? 0 : soNo.hashCode());
 		result = prime * result + ((surcharge == null) ? 0 : surcharge.hashCode());
@@ -314,12 +356,21 @@ public class Sales implements Serializable, ComboBoxProperties {
 		if (getClass() != obj.getClass())
 			return false;
 		Sales other = (Sales) obj;
+		if (bankId != other.bankId)
+			return false;
 		if (currency == null) {
 			if (other.currency != null)
 				return false;
 		} else if (!currency.equals(other.currency))
 			return false;
+		if (currencyBank == null) {
+			if (other.currencyBank != null)
+				return false;
+		} else if (!currencyBank.equals(other.currencyBank))
+			return false;
 		if (currencyId != other.currencyId)
+			return false;
+		if (currencyToRupiah != other.currencyToRupiah)
 			return false;
 		if (custAddrId != other.custAddrId)
 			return false;
@@ -416,6 +467,11 @@ public class Sales implements Serializable, ComboBoxProperties {
 				return false;
 		} else if (!poNo.equals(other.poNo))
 			return false;
+		if (priceTerm == null) {
+			if (other.priceTerm != null)
+				return false;
+		} else if (!priceTerm.equals(other.priceTerm))
+			return false;
 		if (soDate == null) {
 			if (other.soDate != null)
 				return false;
@@ -448,13 +504,22 @@ public class Sales implements Serializable, ComboBoxProperties {
 				+ ", insuranceCost=" + insuranceCost + ", vat=" + vat + ", description=" + description + ", inputDate="
 				+ inputDate + ", inputBy=" + inputBy + ", editedDate=" + editedDate + ", editedBy=" + editedBy
 				+ ", deletedDate=" + deletedDate + ", deletedBy=" + deletedBy + ", deleteReason=" + deleteReason
-				+ ", customer=" + customer + ", custAddress=" + custAddress + ", currency=" + currency + ", fcCurrency="
-				+ fcCurrency + ", icCurrency=" + icCurrency + "]";
+				+ ", priceTerm=" + priceTerm + ", bankId=" + bankId + ", currencyToRupiah=" + currencyToRupiah
+				+ ", currencyBank=" + currencyBank + ", customer=" + customer + ", custAddress=" + custAddress
+				+ ", currency=" + currency + ", fcCurrency=" + fcCurrency + ", icCurrency=" + icCurrency + "]";
 	}
 
 	@Override
 	public Object getField() {
 		return soNo;
+	}
+
+	public BankCust getBankCust() {
+		return bankCust;
+	}
+
+	public void setBankCust(BankCust bankCust) {
+		this.bankCust = bankCust;
 	}
 
 }
