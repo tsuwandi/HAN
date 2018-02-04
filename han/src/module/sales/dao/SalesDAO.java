@@ -270,8 +270,18 @@ public class SalesDAO {
 			insertStatement.setDate(7, new java.sql.Date(sales.getPoDate().getTime()));
 			insertStatement.setString(8, sales.getSoNo());
 			insertStatement.setDate(9, new java.sql.Date(sales.getSoDate().getTime()));
-			insertStatement.setDouble(10, sales.getSurcharge());
-			insertStatement.setDouble(11, sales.getDiscount());
+			if(sales.getSurcharge() == null) {
+				insertStatement.setDouble(10, 0);
+			}
+			else {
+				insertStatement.setDouble(10, sales.getSurcharge());
+			}
+			if(sales.getDiscount() == null) {
+				insertStatement.setDouble(11, 0);
+			}
+			else {
+				insertStatement.setDouble(11, sales.getDiscount());
+			}
 			insertStatement.setDouble(12, sales.getFreightCost());
 			insertStatement.setDouble(13, sales.getVat());
 			insertStatement.setString(14, sales.getDescription());

@@ -928,8 +928,13 @@ public class SalesCreatePanel extends JPanel implements Bridging {
 		sales.setPoDate(poDateChooser.getDate());
 		sales.setSoNo(txtSoNo.getText());
 		sales.setSoDate(soDateChooser.getDate());
-		sales.setSurcharge(Double.valueOf(txtSurcharge.getText()));
-		sales.setDiscount(Double.valueOf(txtDiscount.getText()));
+		if(txtSurcharge.getText().isEmpty() == false) {
+			System.out.println("aaa = "+txtSurcharge.getText());
+			sales.setSurcharge(Double.valueOf(txtSurcharge.getText()));
+		}
+		if(txtDiscount.getText().isEmpty() == false) {
+			sales.setDiscount(Double.valueOf(txtDiscount.getText()));
+		}		
 		sales.setFreightCost(Double.valueOf(txtFreightCost.getText()));
 		sales.setPriceTerm(cbPriceTerm.getSelectedItem().toString());
 		sales.setVat(Double.valueOf(txtVat.getText()));
