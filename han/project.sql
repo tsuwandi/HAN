@@ -140,8 +140,8 @@ CREATE TABLE `sales` (
   `customer_id` int(11) NOT NULL,
   `cust_addr_id` int(11) NOT NULL,
   `currency_id` int(11) NOT NULL,
-  `freight_cost_currency_id` int(11) NOT NULL,
-  `insurance_cost_currency_id` int(11) NOT NULL,
+  `freight_cost_currency_id` int(11) DEFAULT NULL,
+  `insurance_cost_currency_id` int(11) DEFAULT NULL,
   `po_no` varchar(255) DEFAULT NULL,
   `po_date` date DEFAULT NULL,
   `so_no` varchar(18) NOT NULL,
@@ -149,7 +149,7 @@ CREATE TABLE `sales` (
   `surcharge` double DEFAULT NULL,
   `discount` double DEFAULT NULL,
   `freight_cost` double NOT NULL,
-  `insurance_cost` double NOT NULL,
+  `insurance_cost` double DEFAULT NULL,
   `vat` double NOT NULL,
   `description` text,
   `delete_reason` varchar(255) DEFAULT NULL,
@@ -158,7 +158,13 @@ CREATE TABLE `sales` (
   `input_by` varchar(25) NOT NULL,
   `input_date` date NOT NULL,
   `edited_by` varchar(25) DEFAULT NULL,
-  `edited_date` date DEFAULT NULL
+  `edited_date` date DEFAULT NULL,
+  `price_term` varchar(5) DEFAULT NULL,
+  `bank_id` int(11) DEFAULT NULL,
+  `currency_to_rupiah` int(11) DEFAULT NULL,
+  `currency` varchar(50) DEFAULT NULL,
+  `confirm_code` varchar(5) DEFAULT NULL,
+  `confirm_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

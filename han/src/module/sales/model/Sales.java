@@ -40,6 +40,8 @@ public class Sales implements Serializable, ComboBoxProperties {
 	private int bankId;
 	private int currencyToRupiah;
 	private String currencyBank;
+	private String confirmCode;
+	private Date confirmDate;
 
 	private Customer customer;
 	private CustAddress custAddress;
@@ -520,6 +522,22 @@ public class Sales implements Serializable, ComboBoxProperties {
 
 	public void setBankCust(BankCust bankCust) {
 		this.bankCust = bankCust;
+	}
+
+	public String getConfirmCode() {
+		return confirmCode;
+	}
+
+	public void setConfirmCode(String confirmCode) {
+		this.confirmCode = confirmCode;
+	}
+
+	public Date getConfirmDate() {
+		return confirmDate;
+	}
+
+	public void setConfirmDate(Date confirmDate) {
+		this.confirmDate = confirmDate;
 	}
 
 }

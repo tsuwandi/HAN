@@ -10,6 +10,9 @@ import controller.ServiceFactory;
 import module.customer.dao.CustomerDAO;
 import module.customer.model.CustAddress;
 import module.customer.model.Customer;
+import module.dailyclosing.bl.DailyClosingBL;
+import module.dailyclosing.dao.ConfirmDAO;
+import module.dailyclosing.model.Confirm;
 import module.pembelian.model.Product;
 import module.sn.uom.model.Uom;
 import module.sales.dao.SalesDAO;
@@ -37,6 +40,7 @@ import module.sn.shipment.dao.ShipmentDAO;
 import module.sn.shipment.model.Shipment;
 import module.sn.vehicletype.dao.VehicleTypeDAO;
 import module.sn.vehicletype.model.VehicleType;
+import module.util.DateUtil;
 
 public class SalesBL {
 	private DataSource dataSource;
@@ -157,6 +161,12 @@ public class SalesBL {
 				s.setSalesOrderId(ServiceFactory.getSalesBL().getLatestIncrementSalesId());
 				s = new SalesShipmentDetailDAO(con).save(s);
 			}
+			
+			Confirm confirm = new Confirm();
+			confirm.setConfirmCode(DailyClosingBL.makeConfirmCode());
+			confirm.setModule("Sales");
+			confirm.setDailyClosingDate(null);
+			new ConfirmDAO(con).save(confirm);
 
 			con.commit();
 		} catch (SQLException e) {
